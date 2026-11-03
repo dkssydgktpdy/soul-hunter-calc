@@ -536,7 +536,7 @@
       </div>
       <h1 style="margin:0; font-size:26px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">❄️ 소헌키 종합 시뮬레이터 & 계산기</h1>
     </div>
-    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전</div>
+    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.1.1.0</div>
   </header>
 
   <!-- Navigation Tabs -->
@@ -544,7 +544,7 @@
     <button class="nav-tab-btn active" onclick="showTab('tab-passive')">🔮 고대 패시브 계산</button>
     <button class="nav-tab-btn" onclick="showTab('tab-synergy')">✨ 신화 우선 시너지</button>
     <button class="nav-tab-btn" onclick="showTab('tab-refine')">🔨 영원 장비 연마</button>
-    <button class="nav-tab-btn" onclick="showTab('tab-orb')">🌌 영원 장비 각성</button>
+    <button class="nav-tab-btn" onclick="showTab('tab-orb')">🌌 영원 장비 변환</button>
     <button class="nav-tab-btn" onclick="showTab('tab-ability')">🌙 가호 & 원혼 어빌</button>
   </div>
 
@@ -855,75 +855,165 @@
   </div>
 
   <!-- ==================== TAB 4: 영원 오브 연마 (옵션 변환) ==================== -->
+    <!-- ==================== TAB 4: 영원 장비 연마 (옵션 변환) ==================== -->
   <div id="tab-orb" class="tab-content" style="display:none;">
+    <!-- 부위 선택 카드 (대낫 / 오브 / 장식) -->
     <div class="card">
       <div class="card-title">
-        <span>🌌 영원 오브 연마 (옵션 변환) 기댓값 & 곱연산 계산기</span>
-        <span class="grade-badge grade-ancient">1옵션 × 2옵션 개별 설정</span>
+        <span>⚔️ 영원 장비 부위 선택</span>
+        <span class="grade-badge grade-ancient" id="equip_active_badge">대낫 선택됨</span>
       </div>
       <p class="card-subtitle">
-        영원 등급 오브는 <strong>1옵션(오브 공격력%) × 2옵션(모든 속성 피해량 증가%)</strong>의 곱연산 수치가 높은 것이 핵심입니다. 
-        1옵션과 2옵션의 목표 등급을 각각 독립적으로 선택하여 동시 달성 기댓값과 실질 배율을 계산합니다.
+        옵션 변환을 시뮬레이션할 영원 장비를 선택하세요. (변환 1회당 <strong>심연정수 2개</strong> 소모)
       </p>
 
-      <div style="margin-bottom:16px;">
-        <label>오브 현재 등급 선택</label>
-        <select id="orb_tier" onchange="calculateOrbExpected()">
-          <option value="상급">상급 (등급업 1%)</option>
-          <option value="특급">특급 (등급업 0.15%)</option>
-          <option value="전설">전설 (등급업 0.1%)</option>
-          <option value="신화" selected>신화</option>
-        </select>
-      </div>
-
-      <div class="grid-2">
-        <div style="background:#0f172a; padding:14px; border-radius:10px; border:1px solid #334155;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-            <strong style="color:#38bdf8; font-size:15px;">1옵션: 영원 오브 공격력(%)</strong>
-            <span class="grade-badge grade-ancient" id="orb_opt1_badge">수치 대기</span>
+      <div class="grid-3" style="margin-bottom:18px;">
+        <!-- 대낫 -->
+        <div class="ancient-select-card selected" id="equip_card_scythe" onclick="selectEquipPart('scythe')">
+          <div class="ancient-header">
+            <div class="ancient-title-box">
+              <div class="icon-avatar-wrapper" style="border-color:#f43f5e;">
+                <span class="icon-avatar-fallback">대낫</span>
+                <img src="images/scythe.png" alt="대낫" onerror="this.onerror=null; this.src='images/scythe.jpg'; this.onerror=function(){this.src='images/strike_master.jpg'; this.onerror=function(){this.style.display='none';};};" class="icon-avatar-img">
+              </div>
+              <div>
+                <span class="ancient-name">🗡️ 영원 대낫</span>
+                <span class="ancient-sub" style="color:#f43f5e;">공격력 & 크리티컬 피해</span>
+              </div>
+            </div>
+            <span class="grade-badge grade-mythic">활성화</span>
           </div>
-          <label>1옵션 목표 등급 선택</label>
-          <select id="orb_target_grade1" onchange="calculateOrbExpected()">
-            <option value="SSS">SSS급 이상</option>
-            <option value="SS">SS급 이상</option>
-            <option value="S" selected>S급 이상</option>
-            <option value="A">A급 이상</option>
-            <option value="B">B급 이상</option>
-            <option value="C">C급 이상</option>
-            <option value="D">D급 이상</option>
-            <option value="ANY">상관없음 (조건 없음)</option>
-          </select>
-          <div style="font-size:13px; color:#94a3b8; margin-top:8px;">
-            선택 등급 기준 수치: <strong id="orb_val1_detail" style="color:#ffffff;">+0%</strong>
-          </div>
+          <div class="ancient-desc">주옵션: 대낫 공격력% × 대낫 크피%</div>
         </div>
 
-        <div style="background:#0f172a; padding:14px; border-radius:10px; border:1px solid #334155;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-            <strong style="color:#f43f5e; font-size:15px;">2옵션: 모든 속성 피해량 증가(%)</strong>
-            <span class="grade-badge grade-mythic" id="orb_opt2_badge">수치 대기</span>
+        <!-- 오브 -->
+        <div class="ancient-select-card" id="equip_card_orb" onclick="selectEquipPart('orb')">
+          <div class="ancient-header">
+            <div class="ancient-title-box">
+              <div class="icon-avatar-wrapper" style="border-color:#38bdf8;">
+                <span class="icon-avatar-fallback">오브</span>
+                <img src="images/orb.png" alt="오브" onerror="this.onerror=null; this.src='images/orb.jpg'; this.onerror=function(){this.src='images/elem_fusion.jpg'; this.onerror=function(){this.style.display='none';};};" class="icon-avatar-img">
+              </div>
+              <div>
+                <span class="ancient-name">🔮 영원 오브</span>
+                <span class="ancient-sub" style="color:#38bdf8;">공격력 & 모든 속성 피해량</span>
+              </div>
+            </div>
+            <span class="grade-badge grade-ancient">활성화</span>
           </div>
-          <label>2옵션 목표 등급 선택</label>
-          <select id="orb_target_grade2" onchange="calculateOrbExpected()">
-            <option value="SSS">SSS급 이상</option>
-            <option value="SS" selected>SS급 이상</option>
-            <option value="S">S급 이상</option>
-            <option value="A">A급 이상</option>
-            <option value="B">B급 이상</option>
-            <option value="C">C급 이상</option>
-            <option value="D">D급 이상</option>
-            <option value="ANY">상관없음 (조건 없음)</option>
+          <div class="ancient-desc">주옵션: 오브 공격력% × 속성 피해량%</div>
+        </div>
+
+        <!-- 장식 (미구현) -->
+        <div class="ancient-select-card" id="equip_card_accessory" onclick="selectEquipPart('accessory')" style="opacity:0.65; cursor:pointer;">
+          <div class="ancient-header">
+            <div class="ancient-title-box">
+              <div class="icon-avatar-wrapper" style="border-color:#64748b;">
+                <span class="icon-avatar-fallback">장식</span>
+                <img src="images/accessory.png" alt="장식" onerror="this.onerror=null; this.src='images/accessory.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
+              </div>
+              <div>
+                <span class="ancient-name">💍 영원 장식 🔒</span>
+                <span class="ancient-sub" style="color:#94a3b8;">데이터 준비 중</span>
+              </div>
+            </div>
+            <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">🔒 미구현</span>
+          </div>
+          <div class="ancient-desc" style="color:#94a3b8;">인게임 수치 파악 후 업데이트 예정</div>
+        </div>
+      </div>
+
+      <!-- 슬롯 선택 탭 (왼쪽 칸 vs 오른쪽 칸) -->
+      <div style="display:flex; gap:10px; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:16px;">
+        <button id="btn_slot_left" onclick="selectEquipSlot('left')" style="flex:1; background:var(--accent); color:#ffffff; border:none; padding:10px 14px; border-radius:8px; font-weight:700; font-size:14px; cursor:pointer;">
+          👈 왼쪽 슬롯 (1슬롯 / 수치 적용)
+        </button>
+        <button id="btn_slot_right" onclick="selectEquipSlot('right')" style="flex:1; background:#1e293b; color:#94a3b8; border:1px solid #334155; padding:10px 14px; border-radius:8px; font-weight:700; font-size:14px; cursor:pointer;">
+          👉 오른쪽 슬롯 🔒 (2슬롯 / 준비 중)
+        </button>
+      </div>
+
+      <!-- 오른쪽 슬롯 미구현 안내창 -->
+      <div id="slot_right_notice" style="display:none; text-align:center; padding:30px 20px; background:#0f172a; border-radius:12px; border:1px dashed #64748b; margin-bottom:14px;">
+        <div style="font-size:28px; margin-bottom:8px;">🔒</div>
+        <strong style="font-size:16px; color:#ffffff;">오른쪽 슬롯(2슬롯)은 현재 데이터 수집 중입니다.</strong>
+        <p style="font-size:13.5px; color:#94a3b8; margin-top:6px;">인게임 내 수치와 등장 확률 정보가 확인되는 대로 즉시 시뮬레이션에 반영될 예정입니다.</p>
+      </div>
+
+      <!-- 장식 미구현 안내창 -->
+      <div id="equip_accessory_notice" style="display:none; text-align:center; padding:30px 20px; background:#0f172a; border-radius:12px; border:1px dashed #64748b; margin-bottom:14px;">
+        <div style="font-size:28px; margin-bottom:8px;">🔒</div>
+        <strong style="font-size:16px; color:#ffffff;">영원 장식 옵션 변환은 현재 미구현 상태입니다.</strong>
+        <p style="font-size:13.5px; color:#94a3b8; margin-top:6px;">장식의 등급별 변환 확률 정보가 공식 제공되면 업데이트됩니다.</p>
+      </div>
+
+      <!-- 실제 계산 컨트롤러 영역 -->
+      <div id="equip_calc_body">
+        <div style="margin-bottom:16px;">
+          <label>장비 현재 등급 선택</label>
+          <select id="orb_tier" onchange="calculateOrbExpected()">
+            <option value="상급">상급 (등급업 1%)</option>
+            <option value="특급">특급 (등급업 0.15%)</option>
+            <option value="전설">전설 (등급업 0.1%)</option>
+            <option value="신화" selected>신화</option>
           </select>
-          <div style="font-size:13px; color:#94a3b8; margin-top:8px;">
-            선택 등급 기준 수치: <strong id="orb_val2_detail" style="color:#ffffff;">+0%</strong>
+        </div>
+
+        <div class="grid-2">
+          <!-- 1옵션 -->
+          <div style="background:#0f172a; padding:14px; border-radius:10px; border:1px solid #334155;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <strong style="color:#38bdf8; font-size:15px;" id="orb_opt1_title">1옵션: 영원 대낫 공격력(%)</strong>
+              <span class="grade-badge grade-ancient" id="orb_opt1_badge">수치 대기</span>
+            </div>
+            <label>1옵션 목표 등급 선택</label>
+            <select id="orb_target_grade1" onchange="calculateOrbExpected()">
+              <option value="SSS">SSS급 이상</option>
+              <option value="SS">SS급 이상</option>
+              <option value="S" selected>S급 이상</option>
+              <option value="A">A급 이상</option>
+              <option value="B">B급 이상</option>
+              <option value="C">C급 이상</option>
+              <option value="D">D급 이상</option>
+              <option value="ANY">상관없음 (조건 없음)</option>
+            </select>
+            <div style="font-size:13px; color:#94a3b8; margin-top:8px;">
+              선택 등급 기준 수치: <strong id="orb_val1_detail" style="color:#ffffff;">+0%</strong>
+            </div>
+          </div>
+
+          <!-- 2옵션 -->
+          <div style="background:#0f172a; padding:14px; border-radius:10px; border:1px solid #334155;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <strong style="color:#f43f5e; font-size:15px;" id="orb_opt2_title">2옵션: 영원 대낫 크리티컬 피해(%)</strong>
+              <span class="grade-badge grade-mythic" id="orb_opt2_badge">수치 대기</span>
+            </div>
+            <label>2옵션 목표 등급 선택</label>
+            <select id="orb_target_grade2" onchange="calculateOrbExpected()">
+              <option value="SSS">SSS급 이상</option>
+              <option value="SS" selected>SS급 이상</option>
+              <option value="S">S급 이상</option>
+              <option value="A">A급 이상</option>
+              <option value="B">B급 이상</option>
+              <option value="C">C급 이상</option>
+              <option value="D">D급 이상</option>
+              <option value="ANY">상관없음 (조건 없음)</option>
+            </select>
+            <div style="font-size:13px; color:#94a3b8; margin-top:8px;">
+              선택 등급 기준 수치: <strong id="orb_val2_detail" style="color:#ffffff;">+0%</strong>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="result-dashboard">
-      <div class="res-label">선택 조합 동시 달성 평균 시도 기댓값</div>
+    <!-- 대시보드 결과 (심연정수 2개씩 계산 포함) -->
+    <div class="result-dashboard" id="equip_result_dashboard">
+      <div class="res-label" id="equip_res_label">선택 조합 동시 달성 평균 시도 기댓값</div>
       <div class="res-value" id="orb_expected_tries">0회</div>
+      <div style="margin-bottom:12px; font-size:18px; font-weight:800; color:#a855f7;" id="orb_essence_cost">
+        🔮 필요 심연정수 기댓값: <strong>0개 (1회당 2개)</strong>
+      </div>
       <div class="res-sub">
         <span>동시 등장 확률: <strong id="orb_combined_prob">0%</strong></span>
         <span>|</span>
@@ -1304,26 +1394,25 @@
   }
 
   
-  // 재료 패시브 이미지: GitHub 저장소의 실제 파일명과 확장자를 직접 지정
   const MATERIAL_IMAGE_MAP = {
-    "마력폭주": "mana_surge.jpg",
-    "시간왜곡": "time_warp.jpg",
-    "강타전문가": "strike_expert.png",
-    "폭발준비": "blast_ready.jpg",
-    "전투지휘": "battle_command.jpg",
-    "전술가속": "tactical_haste.jpg",
-    "철갑관통": "armor_pierce.jpg",
-    "절대관통": "absolute_pierce.jpg",
-    "원소융합": "elem_fusion.jpg",
-    "불길의 권능": "flame_power.jpg",
-    "불길권능": "flame_power.jpg",
-    "천둥의 격노": "thunder_rage.jpg",
-    "천둥격노": "thunder_rage.jpg",
-    "그림자 침식": "shadow_erosion.png",
-    "그림자침식": "shadow_erosion.png",
-    "타속성 1": "thunder_rage.jpg",
-    "타속성 2": "shadow_erosion.png",
-    "주속성 신화": "flame_power.jpg"
+    "마력폭주": "mana_surge",
+    "시간왜곡": "time_warp",
+    "강타전문가": "strike_expert",
+    "폭발준비": "blast_ready",
+    "전투지휘": "battle_command",
+    "전술가속": "tactical_haste",
+    "철갑관통": "armor_pierce",
+    "절대관통": "absolute_pierce",
+    "원소융합": "elem_fusion",
+    "불길의 권능": "flame_power",
+    "불길권능": "flame_power",
+    "천둥의 격노": "thunder_rage",
+    "천둥격노": "thunder_rage",
+    "그림자 침식": "shadow_erosion",
+    "그림자침식": "shadow_erosion",
+    "타속성 1": "thunder_rage",
+    "타속성 2": "shadow_erosion",
+    "주속성 신화": "flame_power"
   };
 
   function renderMaterialList() {
@@ -1376,8 +1465,8 @@
         <div style="display:flex; align-items:center; gap:10px;">
           <div class="icon-avatar-wrapper" style="width:38px; height:38px; border-radius:8px; border-color:#475569;">
             <span class="icon-avatar-fallback" style="font-size:11px; color:#cbd5e1;">${gradeKr}</span>
-            <img src="images/${MATERIAL_IMAGE_MAP[matName] || encodeURIComponent(matName + '.jpg')}" alt="${matName}"
-            onerror="this.style.display='none';"
+            <img src="images/${MATERIAL_IMAGE_MAP[matName] || matName}.jpg" alt="${matName}" 
+            onerror="this.onerror=null; this.src='images/${MATERIAL_IMAGE_MAP[matName] || matName}.png'; this.onerror=function(){this.style.display='none';};" 
             class="icon-avatar-img">
           </div>
           <div>
@@ -1545,21 +1634,31 @@
       return;
     }
 
-    let expected = 0;
-    if (safeMode) {
-      for (let i = cur; i < tar; i++) {
-        const rate = REFINE_RATES[i] ? REFINE_RATES[i].s : 0.01;
-        expected += (1 / rate);
+    // 마르코프 연쇄(Markov Chain) 기반 1단계 상승 정밀 기댓값 점화식:
+    // U[i]: i 레벨에서 i+1 레벨로 가기 위한 평균 시도 횟수
+    // U[i] = (1 + d_i * U[i-1]) / s_i
+    let U = new Array(tar).fill(0);
+    for (let i = 0; i < tar; i++) {
+      const s = REFINE_RATES[i] ? REFINE_RATES[i].s : 0.01;
+      const d = (safeMode || !REFINE_RATES[i]) ? 0 : REFINE_RATES[i].d;
+      
+      if (i === 0 || d === 0) {
+        U[i] = 1.0 / s;
+      } else {
+        U[i] = (1.0 + d * U[i - 1]) / s;
       }
-      document.getElementById("ref_safe_status").innerText = "ON (재화 2배 소모, 하락 없음)";
+    }
+
+    let expected = 0;
+    for (let i = cur; i < tar; i++) {
+      expected += U[i];
+    }
+
+    if (safeMode) {
+      document.getElementById("ref_safe_status").innerText = "ON (재화 2배 소모, 하락 0% 고정)";
       document.getElementById("ref_safe_status").style.color = "#10b981";
     } else {
-      for (let i = cur; i < tar; i++) {
-        const rate = REFINE_RATES[i] ? REFINE_RATES[i].s : 0.01;
-        const downRate = REFINE_RATES[i] ? REFINE_RATES[i].d : 0;
-        expected += (1 / rate) * (1 + (downRate * 2.5));
-      }
-      document.getElementById("ref_safe_status").innerText = "OFF (하락 페널티 적용됨)";
+      document.getElementById("ref_safe_status").innerText = "OFF (마르코프 연쇄 연쇄하락 정밀 반영)";
       document.getElementById("ref_safe_status").style.color = "#ef4444";
     }
 
@@ -1570,31 +1669,149 @@
     document.getElementById("ref_prob_range").innerText = `${minProb}% ~ ${maxProb}%`;
   }
 
-  // ==================== TAB 4 LOGIC (영원 오브 연마 - 옵션 변환) ====================
-  const ORB_DATA = {
-    "상급": {
-      opt1: { SSS: 2600, SS: 1300, S: 650, A: 330, B: 200, C: 160, D: 130, ANY: 0 },
-      opt2: { SSS: 2000, SS: 1500, S: 1000, A: 400, B: 300, C: 240, D: 200, ANY: 0 },
-      prob: { SSS: 0.005, SS: 0.015, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.30 }
+    // ==================== TAB 4 LOGIC (영원 장비 연마 - 대낫/오브/장식 옵션 변환) ====================
+  let currentEquipPart = 'scythe'; // 'scythe' | 'orb' | 'accessory'
+  let currentEquipSlot = 'left';   // 'left' | 'right'
+
+  const EQUIP_DATA = {
+    scythe: {
+      name: "영원 대낫",
+      opt1_title: "1옵션: 영원 대낫 공격력(%)",
+      opt2_title: "2옵션: 영원 대낫 크리티컬 피해(%)",
+      rates: {
+        "상급": {
+          opt1: { SSS: 2600, SS: 1300, S: 650, A: 330, B: 200, C: 160, D: 130, ANY: 0 },
+          opt2: { SSS: 2000, SS: 1500, S: 1000, A: 400, B: 300, C: 240, D: 200, ANY: 0 },
+          prob: { SSS: 0.005, SS: 0.015, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.30 }
+        },
+        "특급": {
+          opt1: { SSS: 6600, SS: 3300, S: 1650, A: 830, B: 500, C: 400, D: 330, ANY: 0 },
+          opt2: { SSS: 4000, SS: 3000, S: 2000, A: 800, B: 600, C: 480, D: 400, ANY: 0 },
+          prob: { SSS: 0.005, SS: 0.015, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.30 }
+        },
+        "전설": {
+          opt1: { SSS: 166000, SS: 24900, S: 4150, A: 2080, B: 1250, C: 1000, D: 830, ANY: 0 },
+          opt2: { SSS: 40000, SS: 12000, S: 4000, A: 1600, B: 1200, C: 960, D: 800, ANY: 0 },
+          prob: { SSS: 0.003, SS: 0.01, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.307 }
+        },
+        "신화": {
+          opt1: { SSS: 1248000, SS: 104000, S: 10400, A: 5200, B: 3120, C: 2500, D: 2080, ANY: 0 },
+          opt2: { SSS: 160000, SS: 24000, S: 8000, A: 3200, B: 2400, C: 1920, D: 1600, ANY: 0 },
+          prob: { SSS: 0.001, SS: 0.007, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.312 }
+        }
+      }
     },
-    "특급": {
-      opt1: { SSS: 6600, SS: 3300, S: 1650, A: 830, B: 500, C: 400, D: 330, ANY: 0 },
-      opt2: { SSS: 4000, SS: 3000, S: 2000, A: 800, B: 600, C: 480, D: 400, ANY: 0 },
-      prob: { SSS: 0.005, SS: 0.015, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.30 }
-    },
-    "전설": {
-      opt1: { SSS: 166000, SS: 24900, S: 4150, A: 2080, B: 1250, C: 1000, D: 830, ANY: 0 },
-      opt2: { SSS: 40000, SS: 12000, S: 4000, A: 1600, B: 1200, C: 960, D: 800, ANY: 0 },
-      prob: { SSS: 0.003, SS: 0.01, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.307 }
-    },
-    "신화": {
-      opt1: { SSS: 1248000, SS: 104000, S: 10400, A: 5200, B: 3120, C: 2500, D: 2080, ANY: 0 },
-      opt2: { SSS: 160000, SS: 24000, S: 8000, A: 3200, B: 2400, C: 1920, D: 1600, ANY: 0 },
-      prob: { SSS: 0.001, SS: 0.007, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.312 }
+    orb: {
+      name: "영원 오브",
+      opt1_title: "1옵션: 영원 오브 공격력(%)",
+      opt2_title: "2옵션: 모든 속성 피해량 증가(%)",
+      rates: {
+        "상급": {
+          opt1: { SSS: 2600, SS: 1300, S: 650, A: 330, B: 200, C: 160, D: 130, ANY: 0 },
+          opt2: { SSS: 2000, SS: 1500, S: 1000, A: 400, B: 300, C: 240, D: 200, ANY: 0 },
+          prob: { SSS: 0.005, SS: 0.015, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.30 }
+        },
+        "특급": {
+          opt1: { SSS: 6600, SS: 3300, S: 1650, A: 830, B: 500, C: 400, D: 330, ANY: 0 },
+          opt2: { SSS: 4000, SS: 3000, S: 2000, A: 800, B: 600, C: 480, D: 400, ANY: 0 },
+          prob: { SSS: 0.005, SS: 0.015, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.30 }
+        },
+        "전설": {
+          opt1: { SSS: 166000, SS: 24900, S: 4150, A: 2080, B: 1250, C: 1000, D: 830, ANY: 0 },
+          opt2: { SSS: 40000, SS: 12000, S: 4000, A: 1600, B: 1200, C: 960, D: 800, ANY: 0 },
+          prob: { SSS: 0.003, SS: 0.01, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.307 }
+        },
+        "신화": {
+          opt1: { SSS: 1248000, SS: 104000, S: 10400, A: 5200, B: 3120, C: 2500, D: 2080, ANY: 0 },
+          opt2: { SSS: 160000, SS: 24000, S: 8000, A: 3200, B: 2400, C: 1920, D: 1600, ANY: 0 },
+          prob: { SSS: 0.001, SS: 0.007, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.312 }
+        }
+      }
     }
   };
 
   const GRADE_ORDER = ["SSS", "SS", "S", "A", "B", "C", "D"];
+
+  function selectEquipPart(part) {
+    currentEquipPart = part;
+
+    // 카드 스타일 업데이트
+    ['scythe', 'orb', 'accessory'].forEach(p => {
+      const card = document.getElementById(`equip_card_${p}`);
+      if (card) {
+        if (p === part) card.classList.add('selected');
+        else card.classList.remove('selected');
+      }
+    });
+
+    const badge = document.getElementById('equip_active_badge');
+    const calcBody = document.getElementById('equip_calc_body');
+    const resDash = document.getElementById('equip_result_dashboard');
+    const accNotice = document.getElementById('equip_accessory_notice');
+    const rightNotice = document.getElementById('slot_right_notice');
+
+    if (part === 'accessory') {
+      if (badge) badge.innerText = "장식 🔒 미구현";
+      if (calcBody) calcBody.style.display = 'none';
+      if (resDash) resDash.style.display = 'none';
+      if (rightNotice) rightNotice.style.display = 'none';
+      if (accNotice) accNotice.style.display = 'block';
+      return;
+    }
+
+    if (accNotice) accNotice.style.display = 'none';
+    if (badge) badge.innerText = `${EQUIP_DATA[part].name} 선택됨`;
+
+    // 만약 현재 슬롯이 right(오른쪽)라면 오른쪽 미구현 안내 유지
+    if (currentEquipSlot === 'right') {
+      if (calcBody) calcBody.style.display = 'none';
+      if (resDash) resDash.style.display = 'none';
+      if (rightNotice) rightNotice.style.display = 'block';
+    } else {
+      if (calcBody) calcBody.style.display = 'block';
+      if (resDash) resDash.style.display = 'block';
+      if (rightNotice) rightNotice.style.display = 'none';
+    }
+
+    // 옵션 라벨 텍스트 변경
+    document.getElementById('orb_opt1_title').innerText = EQUIP_DATA[part].opt1_title;
+    document.getElementById('orb_opt2_title').innerText = EQUIP_DATA[part].opt2_title;
+
+    calculateOrbExpected();
+  }
+
+  function selectEquipSlot(slot) {
+    currentEquipSlot = slot;
+    const btnLeft = document.getElementById('btn_slot_left');
+    const btnRight = document.getElementById('btn_slot_right');
+    const calcBody = document.getElementById('equip_calc_body');
+    const resDash = document.getElementById('equip_result_dashboard');
+    const rightNotice = document.getElementById('slot_right_notice');
+    const accNotice = document.getElementById('equip_accessory_notice');
+
+    if (currentEquipPart === 'accessory') return;
+
+    if (slot === 'left') {
+      btnLeft.style.background = 'var(--accent)';
+      btnLeft.style.color = '#ffffff';
+      btnRight.style.background = '#1e293b';
+      btnRight.style.color = '#94a3b8';
+
+      if (calcBody) calcBody.style.display = 'block';
+      if (resDash) resDash.style.display = 'block';
+      if (rightNotice) rightNotice.style.display = 'none';
+      calculateOrbExpected();
+    } else {
+      btnRight.style.background = 'var(--accent)';
+      btnRight.style.color = '#ffffff';
+      btnLeft.style.background = '#1e293b';
+      btnLeft.style.color = '#94a3b8';
+
+      if (calcBody) calcBody.style.display = 'none';
+      if (resDash) resDash.style.display = 'none';
+      if (rightNotice) rightNotice.style.display = 'block';
+    }
+  }
 
   function getCumulativeProb(probDict, targetGrade) {
     if (targetGrade === "ANY") return 1.0;
@@ -1607,16 +1824,20 @@
   }
 
   function calculateOrbExpected() {
+    if (currentEquipPart === 'accessory' || currentEquipSlot === 'right') return;
+
     const tier = document.getElementById("orb_tier").value;
     const grade1 = document.getElementById("orb_target_grade1").value;
     const grade2 = document.getElementById("orb_target_grade2").value;
-    const data = ORB_DATA[tier];
+    const equip = EQUIP_DATA[currentEquipPart];
+    const data = equip.rates[tier];
 
     const p1 = getCumulativeProb(data.prob, grade1);
     const p2 = getCumulativeProb(data.prob, grade2);
 
     const pBoth = p1 * p2;
     const tries = pBoth > 0 ? Math.round(1 / pBoth) : 0;
+    const essenceCost = tries * 2; // 변환 1회당 심연정수 2개
 
     const val1 = data.opt1[grade1] || 0;
     const val2 = data.opt2[grade2] || 0;
@@ -1625,6 +1846,11 @@
     const multiplier = ((1 + val1 / 100) * (1 + val2 / 100)).toFixed(1);
 
     document.getElementById("orb_expected_tries").innerText = tries.toLocaleString() + "회";
+    
+    // 심연정수 소모량 표시
+    const essenceMan = (essenceCost / 10000).toFixed(1);
+    document.getElementById("orb_essence_cost").innerHTML = `🔮 필요 심연정수 기댓값: <strong style="color:#ffffff;">${essenceCost.toLocaleString()}개</strong> <span style="font-size:14.5px; color:#c084fc;">(약 ${essenceMan}만 개)</span>`;
+
     document.getElementById("orb_combined_prob").innerText = (pBoth * 100).toFixed(4) + "%";
     document.getElementById("orb_val1_detail").innerText = grade1 === "ANY" ? "옵션 미지정 (+0%)" : `+${val1.toLocaleString()}%`;
     document.getElementById("orb_val2_detail").innerText = grade2 === "ANY" ? "옵션 미지정 (+0%)" : `+${val2.toLocaleString()}%`;
