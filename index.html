@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소헌키 각성석 & 고대 패시브 계산기 - 29서버 겨울눈사람</title>
+<style>
+  :root {
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --bg-card-inner: #0f172a;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+    --ancient: #06b6d4;
+    --mythic: #f43f5e;
+    --legend: #f97316;
+    --unique: #a855f7;
+    --border: #334155;
+    --success: #10b981;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: 20px 14px;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 24px 16px;
+    background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid #6366f1;
+    color: #a5b4fc;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .author-tag {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .author-tag strong {
+    color: #38bdf8;
+  }
+
+  /* Tab Menu */
+  .tab-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    background: #1e293b;
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  .tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+  }
+
+  /* Presets (Quick Selection) */
+  .preset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .preset-btn {
+    background: #0f172a;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .preset-btn:hover {
+    border-color: var(--accent);
+    background: #1e1b4b;
+  }
+  .preset-btn .badge {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+  }
+
+  /* List of passives to calculate */
+  .item-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 14px;
+    background: var(--bg-card-inner);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  @media (max-width: 600px) {
+    .item-row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+  }
+  .item-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .grade-badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .grade-unique { background: rgba(168, 85, 247, 0.2); color: var(--unique); border: 1px solid var(--unique); }
+  .grade-legend { background: rgba(249, 115, 22, 0.2); color: var(--legend); border: 1px solid var(--legend); }
+  .grade-mythic { background: rgba(244, 63, 94, 0.2); color: var(--mythic); border: 1px solid var(--mythic); }
+  .grade-ancient { background: rgba(6, 182, 212, 0.2); color: var(--ancient); border: 1px solid var(--ancient); }
+
+  .select-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .select-group label {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  select, input[type="number"] {
+    width: 100%;
+    background: #1e293b;
+    border: 1px solid var(--border);
+    color: #ffffff;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+  }
+  select:focus, input[type="number"]:focus {
+    border-color: var(--accent);
+  }
+
+  /* Total Dashboard Box */
+  .total-dashboard {
+    background: linear-gradient(135deg, #312e81 0%, #1e1b4b 100%);
+    border: 1px solid #6366f1;
+    border-radius: 14px;
+    padding: 22px;
+    text-align: center;
+    margin-top: 24px;
+    box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.3);
+  }
+  .total-label {
+    font-size: 15px;
+    color: #c7d2fe;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .total-cost {
+    font-size: 34px;
+    font-weight: 900;
+    color: #38bdf8;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+  .total-sub {
+    font-size: 14px;
+    color: #a5b4fc;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .total-sub span strong {
+    color: #ffffff;
+  }
+
+  /* Synergy Calculator Section */
+  .synergy-input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .synergy-box {
+    background: var(--bg-card-inner);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .synergy-box h4 {
+    font-size: 14.5px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 36px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 13.5px;
+    color: var(--text-secondary);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-badge">소울 헌터 키우기 유틸리티</div>
+    <h1>❄️ 각성석 & 고대 패시브 계산기</h1>
+    <div class="author-tag">제작: <strong>29서버 겨울눈사람</strong> | v1.0 웹 계산기</div>
+  </header>
+
+  <!-- Tab Menu -->
+  <div class="tab-group">
+    <button class="tab-btn active" onclick="switchTab('goal')">🎯 목표 고패 제작 계산</button>
+    <button class="tab-btn" onclick="switchTab('synergy')">✨ 창고 1각 & 시너지 계산</button>
+  </div>
+
+  <!-- TAB 1: 고패 목표 계산기 -->
+  <div id="tab-goal">
+    <div class="card">
+      <div class="card-title">
+        <span>⚡ 빠른 목표 프리셋 선택</span>
+        <small style="font-size:12px; color:var(--text-secondary); font-weight:normal;">원클릭 자동 설정</small>
+      </div>
+      <div class="preset-grid">
+        <button class="preset-btn" onclick="applyPreset('am1')">
+          🧙‍♂️ <strong>아크메이지 1고패</strong><br>
+          <small style="color:#94a3b8;">마력광란 (20.8만 개)</small>
+        </button>
+        <button class="preset-btn" onclick="applyPreset('am3')">
+          🧙‍♂️ <strong>아크메이지 3고패</strong><br>
+          <small style="color:#10b981;">광란+근원+불길지배 (종결)</small>
+        </button>
+        <button class="preset-btn" onclick="applyPreset('reaper3')">
+          🗡️ <strong>대사신 3고패</strong><br>
+          <small style="color:#f43f5e;">강타대가+근원+주속성</small>
+        </button>
+        <button class="preset-btn" onclick="applyPreset('dl3')">
+          ⚔️ <strong>다크로드 3고패</strong><br>
+          <small style="color:#38bdf8;">전투통솔+근원+주속성</small>
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>📋 세부 패시브별 각성 설정</span>
+        <button onclick="resetGoalInputs()" style="background:#334155; border:none; color:#cbd5e1; padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer;">초기화</button>
+      </div>
+
+      <!-- 마력폭주 (특급) -->
+      <div class="item-row">
+        <div class="item-info">
+          <span class="grade-badge grade-unique">특급</span>
+          <strong>마력폭주 (or 직업 특급)</strong>
+        </div>
+        <div class="select-group">
+          <label>현재</label>
+          <select id="cur_unique1" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3">3각</option>
+          </select>
+        </div>
+        <div class="select-group">
+          <label>목표</label>
+          <select id="tar_unique1" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3" selected>3각 (풀각)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 시간왜곡 (전설) -->
+      <div class="item-row">
+        <div class="item-info">
+          <span class="grade-badge grade-legend">전설</span>
+          <strong>시간왜곡 (마력광란 재료)</strong>
+        </div>
+        <div class="select-group">
+          <label>현재</label>
+          <select id="cur_legend1" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3">3각</option>
+          </select>
+        </div>
+        <div class="select-group">
+          <label>목표</label>
+          <select id="tar_legend1" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3" selected>3각 (풀각)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 철갑관통 (전설) -->
+      <div class="item-row">
+        <div class="item-info">
+          <span class="grade-badge grade-legend">전설</span>
+          <strong>철갑관통 (근원관통 재료)</strong>
+        </div>
+        <div class="select-group">
+          <label>현재</label>
+          <select id="cur_legend2" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3">3각</option>
+          </select>
+        </div>
+        <div class="select-group">
+          <label>목표</label>
+          <select id="tar_legend2" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3" selected>3각 (풀각)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 절대관통 (신화) -->
+      <div class="item-row">
+        <div class="item-info">
+          <span class="grade-badge grade-mythic">신화</span>
+          <strong>절대관통 (근원관통 재료)</strong>
+        </div>
+        <div class="select-group">
+          <label>현재</label>
+          <select id="cur_mythic1" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3">3각</option>
+          </select>
+        </div>
+        <div class="select-group">
+          <label>목표</label>
+          <select id="tar_mythic1" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3" selected>3각 (풀각)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 주속성 신화 (신화) -->
+      <div class="item-row">
+        <div class="item-info">
+          <span class="grade-badge grade-mythic">신화</span>
+          <strong>주속성 신화 (불길권능 등)</strong>
+        </div>
+        <div class="select-group">
+          <label>현재</label>
+          <select id="cur_mythic2" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3">3각</option>
+          </select>
+        </div>
+        <div class="select-group">
+          <label>목표</label>
+          <select id="tar_mythic2" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3" selected>3각 (풀각)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 원소융합 (신화) -->
+      <div class="item-row">
+        <div class="item-info">
+          <span class="grade-badge grade-mythic">신화</span>
+          <strong>원소융합 (주속성 고패 재료)</strong>
+        </div>
+        <div class="select-group">
+          <label>현재</label>
+          <select id="cur_mythic3" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3">3각</option>
+          </select>
+        </div>
+        <div class="select-group">
+          <label>목표</label>
+          <select id="tar_mythic3" onchange="calculateGoal()">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3" selected>3각 (풀각)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 일일 수급 설정 -->
+    <div class="card">
+      <div class="card-title">
+        <span>⏳ 파밍 소요 기간 예측</span>
+      </div>
+      <div style="display:flex; gap:14px; align-items:center;">
+        <div style="flex:1;">
+          <label style="font-size:13.5px; color:var(--text-secondary); margin-bottom:4px; display:block;">하루 평균 각성석 획득량</label>
+          <input type="number" id="daily_gain" value="50000" step="5000" oninput="calculateGoal()">
+        </div>
+        <div style="flex:1;">
+          <label style="font-size:13.5px; color:var(--text-secondary); margin-bottom:4px; display:block;">현재 보유 각성석</label>
+          <input type="number" id="current_holding" value="0" step="10000" oninput="calculateGoal()">
+        </div>
+      </div>
+    </div>
+
+    <!-- 대시보드 결과 -->
+    <div class="total-dashboard">
+      <div class="total-label">필요한 순수 각성석 총량</div>
+      <div class="total-cost" id="goal_total_cost">0개</div>
+      <div class="total-sub">
+        <span>만 단위 환산: <strong id="goal_cost_man">0만 개</strong></span>
+        <span>|</span>
+        <span>파밍 예상 기간: <strong id="goal_days_left" style="color:#38bdf8;">0일</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: 창고 1각 시너지 계산기 -->
+  <div id="tab-synergy" style="display:none;">
+    <div class="card">
+      <div class="card-title">
+        <span>📦 창고 미사용 패시브 1각 도배 계산기</span>
+        <small style="font-size:12px; color:#10b981;">가성비 딜 뻥튀기</small>
+      </div>
+      <p style="font-size:14.5px; color:var(--text-secondary); margin-bottom:14px;">
+        고패를 무리하게 돌파하는 대신, 창고에 보관 중인 안 쓰는 패시브들을 1각성하여 <strong>시너지 점수</strong>와 <strong>시너지 공격력%</strong>를 확보할 때 소모되는 각성석을 계산합니다.
+      </p>
+
+      <div class="synergy-input-grid">
+        <div class="synergy-box">
+          <h4>
+            <span class="grade-badge grade-unique">특급</span> 1각 개수
+            <small style="color:#a855f7;">개당 1.5만 / +2점</small>
+          </h4>
+          <input type="number" id="syn_unique" value="5" min="0" oninput="calculateSynergy()">
+        </div>
+
+        <div class="synergy-box">
+          <h4>
+            <span class="grade-badge grade-legend">전설</span> 1각 개수
+            <small style="color:#f97316;">개당 2만 / +3점</small>
+          </h4>
+          <input type="number" id="syn_legend" value="5" min="0" oninput="calculateSynergy()">
+        </div>
+
+        <div class="synergy-box">
+          <h4>
+            <span class="grade-badge grade-mythic">신화</span> 1각 개수
+            <small style="color:#f43f5e;">개당 10만 / +15점</small>
+          </h4>
+          <input type="number" id="syn_mythic" value="10" min="0" oninput="calculateSynergy()">
+        </div>
+      </div>
+    </div>
+
+    <!-- 시너지 대시보드 결과 -->
+    <div class="total-dashboard" style="background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); border-color:#10b981;">
+      <div class="total-label" style="color:#a7f3d0;">1각 도배 총 소모 각성석</div>
+      <div class="total-cost" id="syn_total_cost" style="color:#34d399;">0개</div>
+      <div class="total-sub" style="color:#6ee7b7;">
+        <span>만 단위 환산: <strong id="syn_cost_man">0만 개</strong></span>
+        <span>|</span>
+        <span>획득 시너지 점수: <strong id="syn_points" style="color:#fef08a;">+0점</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    소울 헌터 키우기 29서버 <strong>겨울눈사람</strong> 제작 | 공식 네이버 게임 라운지 공략 연계 계산기
+  </footer>
+</div>
+
+<script>
+  // 각성 단계별 누적 비용
+  const COSTS = {
+    unique: [0, 15000, 43000, 83000],   // 1각 1.5만, 2각 2.8만, 3각 4만
+    legend: [0, 20000, 60000, 125000],  // 1각 2.0만, 2각 4.0만, 3각 6.5만
+    mythic: [0, 100000, 450000, 1150000] // 1각 10만, 2각 35만, 3각 70만
+  };
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    if (tab === 'goal') {
+      document.querySelectorAll('.tab-btn')[0].classList.add('active');
+      document.getElementById('tab-goal').style.display = 'block';
+      document.getElementById('tab-synergy').style.display = 'none';
+      calculateGoal();
+    } else {
+      document.querySelectorAll('.tab-btn')[1].classList.add('active');
+      document.getElementById('tab-goal').style.display = 'none';
+      document.getElementById('tab-synergy').style.display = 'block';
+      calculateSynergy();
+    }
+  }
+
+  function getDiffCost(type, cur, tar) {
+    if (tar <= cur) return 0;
+    return COSTS[type][tar] - COSTS[type][cur];
+  }
+
+  function calculateGoal() {
+    let total = 0;
+    
+    // 특급 1 (마력폭주)
+    total += getDiffCost('unique', parseInt(document.getElementById('cur_unique1').value), parseInt(document.getElementById('tar_unique1').value));
+    // 전설 1 (시간왜곡)
+    total += getDiffCost('legend', parseInt(document.getElementById('cur_legend1').value), parseInt(document.getElementById('tar_legend1').value));
+    // 전설 2 (철갑관통)
+    total += getDiffCost('legend', parseInt(document.getElementById('cur_legend2').value), parseInt(document.getElementById('tar_legend2').value));
+    // 신화 1 (절대관통)
+    total += getDiffCost('mythic', parseInt(document.getElementById('cur_mythic1').value), parseInt(document.getElementById('tar_mythic1').value));
+    // 신화 2 (주속성 신화)
+    total += getDiffCost('mythic', parseInt(document.getElementById('cur_mythic2').value), parseInt(document.getElementById('tar_mythic2').value));
+    // 신화 3 (원소융합)
+    total += getDiffCost('mythic', parseInt(document.getElementById('cur_mythic3').value), parseInt(document.getElementById('tar_mythic3').value));
+
+    const holding = parseInt(document.getElementById('current_holding').value) || 0;
+    const daily = parseInt(document.getElementById('daily_gain').value) || 1;
+
+    const remaining = Math.max(0, total - holding);
+    const days = Math.ceil(remaining / Math.max(1, daily));
+
+    document.getElementById('goal_total_cost').innerText = total.toLocaleString() + '개';
+    document.getElementById('goal_cost_man').innerText = (total / 10000).toFixed(1) + '만 개';
+    document.getElementById('goal_days_left').innerText = days + '일 (보유분 반영)';
+  }
+
+  function calculateSynergy() {
+    const u = parseInt(document.getElementById('syn_unique').value) || 0;
+    const l = parseInt(document.getElementById('syn_legend').value) || 0;
+    const m = parseInt(document.getElementById('syn_mythic').value) || 0;
+
+    const cost = (u * 15000) + (l * 20000) + (m * 100000);
+    const points = (u * 2) + (l * 3) + (m * 15);
+
+    document.getElementById('syn_total_cost').innerText = cost.toLocaleString() + '개';
+    document.getElementById('syn_cost_man').innerText = (cost / 10000).toFixed(1) + '만 개';
+    document.getElementById('syn_points').innerText = '+' + points.toLocaleString() + '점';
+  }
+
+  function applyPreset(preset) {
+    resetGoalInputs();
+    if (preset === 'am1') {
+      // 마력광란: 마력폭주 3각 + 시간왜곡 3각만
+      document.getElementById('tar_unique1').value = '3';
+      document.getElementById('tar_legend1').value = '3';
+      document.getElementById('tar_legend2').value = '0';
+      document.getElementById('tar_mythic1').value = '0';
+      document.getElementById('tar_mythic2').value = '0';
+      document.getElementById('tar_mythic3').value = '0';
+    } else if (preset === 'am3' || preset === 'reaper3' || preset === 'dl3') {
+      // 3고패 풀세트 (마력광란 + 근원관통 + 주속성 고패)
+      document.getElementById('tar_unique1').value = '3';
+      document.getElementById('tar_legend1').value = '3';
+      document.getElementById('tar_legend2').value = '3';
+      document.getElementById('tar_mythic1').value = '3';
+      document.getElementById('tar_mythic2').value = '3';
+      document.getElementById('tar_mythic3').value = '3';
+    }
+    calculateGoal();
+  }
+
+  function resetGoalInputs() {
+    ['unique1', 'legend1', 'legend2', 'mythic1', 'mythic2', 'mythic3'].forEach(id => {
+      document.getElementById('cur_' + id).value = '0';
+      document.getElementById('tar_' + id).value = '3';
+    });
+    calculateGoal();
+  }
+
+  // 초기 실행
+  calculateGoal();
+  calculateSynergy();
+</script>
+
+</body>
+</html>
