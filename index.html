@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소헌키 종합 시뮬레이터 & 각성석·확률 계산기 - 29서버 겨울눈사람</title>
+<style>
+  :root {
+    --bg-main: #0b1120;
+    --bg-card: #1e293b;
+    --bg-card-inner: #0f172a;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+    --ancient: #06b6d4;
+    --mythic: #f43f5e;
+    --legend: #f97316;
+    --unique: #a855f7;
+    --border: #334155;
+    --success: #10b981;
+    --gold: #fbbf24;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.65;
+    padding: 20px 12px;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 26px 18px;
+    background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid #6366f1;
+    color: #a5b4fc;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .author-tag {
+    font-size: 14.5px;
+    color: var(--text-secondary);
+  }
+  .author-tag strong {
+    color: #38bdf8;
+  }
+
+  /* Navigation Tabs */
+  .nav-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    background: #1e293b;
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    margin-bottom: 22px;
+  }
+  .nav-tab-btn {
+    flex: 1;
+    min-width: 130px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 12px 8px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.2s;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .nav-tab-btn.active {
+    background: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 22px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  }
+  .card-title {
+    font-size: 18.5px;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+  }
+  .card-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: -8px;
+    margin-bottom: 16px;
+  }
+
+  /* Priority Section Titles in Tab 1 */
+  .rank-section {
+    margin-bottom: 22px;
+  }
+  .rank-title {
+    font-size: 15.5px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: #0f172a;
+    border-left: 4px solid var(--accent);
+  }
+  .rank-title.rank-1 { border-left-color: #a855f7; color: #d8b4fe; }
+  .rank-title.rank-2 { border-left-color: #38bdf8; color: #7dd3fc; }
+  .rank-title.rank-3 { border-left-color: #f59e0b; color: #fde68a; }
+  .rank-title.rank-4 { border-left-color: #f43f5e; color: #fda4af; }
+
+  /* Badges */
+  .grade-badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .grade-advanced { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
+  .grade-unique { background: rgba(168, 85, 247, 0.2); color: var(--unique); border: 1px solid var(--unique); }
+  .grade-legend { background: rgba(249, 115, 22, 0.2); color: var(--legend); border: 1px solid var(--legend); }
+  .grade-mythic { background: rgba(244, 63, 94, 0.2); color: var(--mythic); border: 1px solid var(--mythic); }
+  .grade-ancient { background: rgba(6, 182, 212, 0.2); color: var(--ancient); border: 1px solid var(--ancient); }
+
+  /* Grid & Inputs */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+
+  label {
+    display: block;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  select, input[type="number"] {
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid var(--border);
+    color: #ffffff;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14.5px;
+    outline: none;
+    transition: border 0.2s;
+  }
+  select:focus, input[type="number"]:focus {
+    border-color: var(--accent);
+  }
+
+  /* Ancient Passive Selector Cards */
+  .ancient-select-card {
+    background: #0f172a;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    user-select: none;
+  }
+  .ancient-select-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .ancient-select-card.selected {
+    border-color: var(--ancient);
+    background: rgba(6, 182, 212, 0.1);
+    box-shadow: 0 0 16px rgba(6, 182, 212, 0.25);
+  }
+  .ancient-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .ancient-title-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ancient-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 1.5px solid var(--ancient);
+    object-fit: cover;
+    background: #1e293b;
+    flex-shrink: 0;
+  }
+  .ancient-name {
+    font-size: 16.5px;
+    font-weight: 800;
+    color: #ffffff;
+    display: block;
+  }
+  .ancient-sub {
+    font-size: 12.5px;
+    color: #38bdf8;
+    display: block;
+    margin-top: 1px;
+  }
+  .ancient-desc {
+    font-size: 13.5px;
+    color: #cbd5e1;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .ancient-req {
+    font-size: 12px;
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Material Row Styling with Exclusion Toggle */
+  .material-row {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr 1fr 1.2fr;
+    gap: 12px;
+    align-items: center;
+    background: #0f172a;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #334155;
+    transition: all 0.2s;
+  }
+  @media (max-width: 768px) {
+    .material-row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+  }
+  .material-row.excluded {
+    opacity: 0.45;
+    background: #111827;
+    border-color: #1f2937;
+    text-decoration: line-through;
+  }
+  .material-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #475569;
+    object-fit: cover;
+    background: #1e293b;
+    flex-shrink: 0;
+  }
+  .exclude-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    cursor: pointer;
+    background: rgba(99, 102, 241, 0.1);
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #c7d2fe;
+    user-select: none;
+    white-space: nowrap;
+    justify-content: center;
+  }
+  .exclude-btn input {
+    width: auto;
+    cursor: pointer;
+    accent-color: var(--accent);
+  }
+
+  /* Dashboard Result Box */
+  .result-dashboard {
+    background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+    border: 1.5px solid var(--accent);
+    border-radius: 14px;
+    padding: 24px 20px;
+    text-align: center;
+    margin-top: 20px;
+    box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.3);
+  }
+  .result-dashboard.green {
+    background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+    border-color: var(--success);
+  }
+  .res-label {
+    font-size: 14.5px;
+    color: #c7d2fe;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .res-value {
+    font-size: 34px;
+    font-weight: 900;
+    color: #38bdf8;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .result-dashboard.green .res-value { color: #34d399; }
+  .res-sub {
+    font-size: 14px;
+    color: #cbd5e1;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .res-sub strong { color: #ffffff; }
+
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  /* Reference Table Redesign */
+  .custom-table-container {
+    overflow-x: auto;
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: 12px;
+    background: #0d1527;
+    margin-top: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  }
+  .custom-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14.5px;
+  }
+  .custom-table th {
+    background: #172554;
+    color: #93c5fd;
+    font-weight: 700;
+    padding: 12px 14px;
+    text-align: center;
+    border-bottom: 2px solid #1e3a8a;
+    letter-spacing: -0.3px;
+  }
+  .custom-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: #e2e8f0;
+    text-align: center;
+  }
+  .custom-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .custom-table tbody tr:hover {
+    background: rgba(99, 102, 241, 0.08);
+  }
+
+  /* Accordion Styling for Ranks */
+  .accordion-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .accordion-item {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0f172a;
+    transition: all 0.2s ease;
+  }
+  .accordion-item.active {
+    border-color: var(--accent);
+    box-shadow: 0 4px 18px rgba(99, 102, 241, 0.18);
+  }
+  .accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    cursor: pointer;
+    background: #131d33;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .accordion-header:hover {
+    background: #1c2b4a;
+  }
+  .accordion-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .accordion-toggle-icon {
+    font-size: 14px;
+    color: #94a3b8;
+    transition: transform 0.25s ease;
+    display: inline-block;
+    width: 16px;
+    text-align: center;
+  }
+  .accordion-item.active .accordion-toggle-icon {
+    transform: rotate(90deg);
+    color: #38bdf8;
+  }
+  .accordion-title-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  .rank-pill-1 { color: #d8b4fe; }
+  .rank-pill-2 { color: #7dd3fc; }
+  .rank-pill-3 { color: #fde68a; }
+  .rank-pill-4 { color: #fda4af; }
+
+  .accordion-right-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .accordion-count-badge {
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: #1e293b;
+    color: #94a3b8;
+    border: 1px solid #334155;
+  }
+  .accordion-count-badge.has-selected {
+    background: rgba(6, 182, 212, 0.15);
+    color: #22d3ee;
+    border-color: #06b6d4;
+  }
+
+  .accordion-content {
+    display: none;
+    padding: 16px;
+    background: #0b1120;
+    border-top: 1px solid var(--border);
+  }
+  .accordion-item.active .accordion-content {
+    display: block;
+  }
+
+  /* Safe Icon Avatar with Clean Fallback */
+  .icon-avatar-wrapper {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 1.5px solid var(--ancient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .icon-avatar-fallback {
+    font-size: 13px;
+    font-weight: 800;
+    color: #38bdf8;
+    user-select: none;
+  }
+  .icon-avatar-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-badge">소울 헌터 키우기 네이버 라운지 전용 툴</div>
+    <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:10px; flex-wrap:wrap;">
+      <div style="position:relative; width:80px; height:80px; flex-shrink:0;">
+        <img id="main-avatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAYAAAAbWs+BAAABV2lDQ1BJQ0MgUHJvZmlsZQAAeJx1kD9Lw1AUxU9qpKClKDg4KASnIlUk/ulgl5pBCg6hVVC39LVNtW18vkTUL+DkLg6CQz+CUHDRwUFnUXRyFFyFIGiJN42aVvHC5f44HC73HiAiG5zXZAB1yxG5xQVldW1dib6gHxLimIJkMJtndH2JLPie3eXek5fqdsLflXaPjsvWfKN5NZxKVuXsX39X9RVLNqP5QT3OuHAAKUGs7zrc5z3iIUFHER/6bAZ86nMh4LO2ZzmnEV8TD7CKUSR+IE4WOnSzg+u1HfZ1g399rGSt5GnGqUeQh4oUNOpZygD/eGfaXg1b4NiHwAZMVOBAQYYUjhpKxFlYYJhEklilbSrm/Ix/Zxdqm09A6hmIVEONjQHNG2DwINQSd/SGDlykuSGMn0QlV7bL02rAMQH0vnne6ygQPQdawvPeTzyv1QB6HoHL7U8dxWDxcZ4jawAAdkRJREFUeNrt/XecJFd234l+7w2XPstXtfcOHgNgBmYMx3DoJYqkSEqkSOlRj9JnKa20q11K2pXhZ/X43q6etLsSV35FPomUSA7NDDnD4fjBwA5so9EO7V15k5U+w977/ojIqKy2VY1uoLuR5w+gK03kjbj3+HN+R+x64GktpYVpjLE0fxBhmhD4hA8+hh4YxHr1RXQmA1rTp/eQhADPJdpzP3pgEPOFbyKcDDoK0fkiwWd+CDk9iei0Qcr+83ovSWuwLKJtu7C+8xXE4gJCSlTgMjj8MBgtwqAFqOTzilZtGQDT8zXSECjl0Gy7CNMCw8DfuB3z1RdxIwFuCGhA3Ggl/c24dRwHmPDOcYJP/yBmroxs1CEK8D/6fRhHjmAcfxtsuy8M3w9hGAREcwu0HnkG+0u/B0KiPJd8yQHVIfA1oNFo0Ipmy40ZToj4+0JopJQIAapYQoYRZr2KdhxQCiEkAo2OoqsynpYShLzq5oursKLos+iNSUqE20bVq4ihEWStgh4aRVoW1onD6Hx+5XkLcWOp3KdbR7aNdfYEeuceGN+IMTcFhkQIDeLK7ZAyfsG8pnQVoIWIN0oIdBjiCYmZL17Jbloj3A5EERhG/LcQSClRSqGUSphZpP/WWqO1Tl/XWqOU6m/k1aSpEImEEmjLgiBEd4Wb1ghARGH8TK96DXmF2SmSE6ETRpQyvp7ueV8plX6uV2h23/vAm5VSQuCjLWvN8sy8FrNdrj4ZGGTXg48w3/bwtEYo0AIECmFahEohTryNaDURhkkYhnQ6LpZtkctm8X0fzw8o5HM0Wy0Mw8C2bNqdDqHnY2UcHNv+4DDR9Xboqu8LtEjek2KVpRBEEeHwGGaxhBACoRSgUcJAChDLS4jacsp0Smk830UIgWPbKKVpdzoYhpEynlIax7bxgyC2epQCITCkJAhDMo5zb+/PWq0FIdf2nWsz3GWqUAhaQcAzn/wk/92PfJZ/9+9/gzeXqohNW9EoMvUa4twF2jv20jzwMOZrL+AHAZvGx/ibf/XnmF9c4s3DRzl55jzf/6mP8W/+9X/kn/3T/4UwCDl17jzNVpvv/+TH+fZL3+Vzf/xlLNNKpe49S2G4ormuRlEI0riKEBSrzHkhJX67zeanPsrHHrif7x59h6aQ6HwRaUrsToMAaD34MN4br8LUBbRhks043LdvN57ncWl6BseyeeDAo1SqNRYXKzgZm6HBAY6fOsvGkTG01gwOlKnVG3i+z+YNExx552Sq/e45zRX41zXzMcyrM6gQNwxzXNuk7P5+FGHkCywvLPH2m2+z5ORoZmt4z/8RyvMpPPAIxS2byV66QHvvPoSTJazX2Ll9Kz/1Z3+Q6dl56s0mn/roU3z40YeYmpnn0x99inanw5ZNG3jj7SN89nue4e13ThAFEbZl37sMJwSEAXpiE9GWHQnj9WxYYr4TBJjHD4NWV92TlAe1xrdsHty7h5/+6GPULl7kDT+k6Tfwmy4bBocZvFTBsl2q9z+IN3WRMAwZmRjnhz79Cfbs3M707DxRFPHYw/dzcWqGbCbDxvExDr9zkn/4q/+Mv/kLf4mR4SGWqzV2btuCbVssLi3zl//W3yXrOKh7aa+0BstGTWxabWl07WkhEO0Wolq56ciweeM1aGxDcmp+iX/5jefo5Ey8E0cYfewj2PkiUy89h79FMbxrF1IrtCA1O46dPEMUhkyMjrBYWebM+YuMDpR46bU3efqJD/HWkeM0mi2efelVfM8nl88RhuG9KTl7NlWNTiBrFfC8hAkTjWeaMUOObUCXBxBLC9eNDGsV4WSzvHbsBKLZ5riTZfL5P2T75i0Mj2/gtS/+Npu+/yfJNlwYKqKlJGdZnDj2Ds9NjOEHASNDgxw+cYp9u3fgej6V5SqOYxMEAY3lWqz1KssopRgol8jnsswtLN57e5QIw+jAQ+hcPo5JKBUzVleoGAZRLo/59hvx+zfxDMy1Mr5pmugNY6jzR9nw8U+z/4d+mIGBAd7aspWpF5/Fy4JWZrxIIZmamaNar3PinVMs1WpknQyu67FUrRNGEYuVZWqNBlprFpYqGKaBZZoEQZAGVe5ZLReFsV9s20RbdqaBJjU0gvXd74Dvr413ERhaU4sULwqTxVe/yp499/HoX/pFbMtgfP8DvPCtr2E+/kmMVgchBO12m898+hP8o//xv6WyXOX5V17n/h1b2bF1C41Wm8mLl3Acm1KxyL4HDxBFEX/yjWf5iR/+fn7rd/+QH/7+zzA+NkoUqRv7ondhVBgpkTOTYFrogUFoNcG20U4WOX0RMbYBHAfarduj4dLgvZR4toXrdcjv28cz9x/gvtER5isVLjz/HTrCIDIdLKWwHYvZ+UX+2i//I7KZDLVanUazBVGE6Th86+VXKRXyLFSWCfwAFQRIyyKbySANI4mGictyB/cSA4p4c30fbAc1OASBjxqduL5vdw1paNk2YSnHSD7Pp//KX6W0YSNjI0O0dm9n+fwpjrkNDBmb6tIwOHNpkl/6e7+CEILKcpXJ8xd57vW3UFrztW88y9DIME89/ijnLk7y//k//w1bt2zm5dcP8vXvvMjLB9/mMx9/Bse20PdipFLrOLcJqJFx1P4HEb5HNDqB8+XZROPd/OXNtZyNbjTGyxfIjW/A90NOVRucrrepLCyRGR6mlctjqm4SVoCO6NTrtGo1TMOgnMvEUiPwidotFl0XG0UmY0MhD0oRKRWnFnrSC2gVBxBWBRHuAVIKVR5E5XLIqQug9JXO+JoPiEXNMnn04UcZ2bad+UoNwzQQWjOyey/e5AKOYYBWmKYZ+21KgdaYpkV5bJSvfPs5pJAUyiVc1+XL3/wO2WyGcrnE4vIyX3vuJcqDAyit+eLXvkU2m0Xre1DLxSFZdL6IGptAtBpow0IkCex3SyZr5jiN3rQFtTTFxVdfQtsmUktmjx+Lo5X79hOeupg8fA2ZPHJsGKkVBD6RNGBpGsa2IPJlrPlL6NFNRI1lWJ4DKxN/z3IgX4ZWPT6A+SLUK9CsJUx3D2xu4hfIhTmM2an0b33+NITB6kDKGowPAL3vQSZfe5Z33nyd8vY9vHXwIHMLCxz/kz8k+sGfhsUa6MQnlyL2wYxYS0VhSCGfj1MJUQSGST4jUCoiQmBEIXnLIIoiUIq8baICFwwLVHRvCUOtY7fIdzGPHIROCxFFqOEx0CpJudxWhgOBQCvF5r07KW0ZZvaPfp+Zb38DpSJyuSwbPvV9qCce5cL5yZhBQx827kR/5AcQ1UVYmISFqfj/B55Ej26C176GfuAZxNwFOOHD2FbYsgcOvwDlUdiwAz2xHbJFxPmjcOTF5DCKu35DRbuF2rAZfK9HiIgVYWVaiFYziYTpG8pDHYbknn6cxtmP8YXf/S888cN/ju1bt/LVz/0mzkOPUHzkIcJvPBfnjKIAvXkvav+HEfUlaFahVUOdOwof+QF0aQjx9vNEj3wP4tJJOP0Wev8TcSXR9BnYtAfVaUKhDIUBuPAOTJ6MhePdrum0BsNAF8txUKTZACnRhomsLKCz+dgiUdHtNCkFBB7aNLGHRtgxuo+t49u4cOQwdhixbf9+xnbu5pKdZdHJ4Xou0rFgeR5x/hi4bVAhDI3DZAZUhPA9sByElQGvA6YN5WEoDMLAOAxPQKuGUBHad2Pz0nIg8EAYd/eGmhby/GnEwlwiPC47pEIiPBc8N45aruWaKJ4ZM9n2S7/AwaDF4Ze+zaGXYfMD+9nzkz/L8vAIF557GV9FSEDbDiJXiLWTjqU5lo0emoBMDkY2Ipws2A4MjEBxCF0cQMyci39zYBR2PhjvbasOcxdjIXs3C0MdSy956Txq01a0k+m5H41O6rWM+VlEox7vje/dLoYLYWmBMy+8wRmlyNh5ys4AZcvi3Okqk8dfwcg46BefQ0gZM0VjGeYuxKag2wLTijf31JsxY02fgeJAvFluC2bPx9qtMAC1Beg04fALiIkdkC/Fn7lXTBchEI3aDaNlNzwghoHotIkMg3MiS1TIsunv/gPk4SlydZetGzeTiRQzIZyfm48tBMeBxWmYPgf1pfha2Xxct1mZjTVXbREyeeg0YoZu1RC+C6ObY4acn4TqfPy3UrFAvevTBLF2E5VFjIW562RjBFjWbdRwSTJQXjpH7j/+S3ShiFaKqtZU4lpohJToeg3LcxGOE38nDODkwZWDE+cWYObsSoDg1a/GjCiNmMG0hqWZ1YGSqdPJAbzHgibGLbif5JmqQweZ/lv/MzPFQUSoKFgOtoYzbRcTgbc0S/uVbyMzmVhSt+pw/JV4j/xOqlk59J34OYc+/OlvxBaF1rEGbNbifekm58MALp6IGTCK7p0WIdO8sWXxLkxnc80ba1nge4jFNoKrVD4bBtp2Vlev25nVJpPWsfnY9Vey+bQAN/1O12TspgIs+x5MC9xan0N02vD530ObBgpY1jqtu9QIhIownQyrxHa7nhQ1myvPNgwAP369+74gCVjJ1ea8acefbyzfe0GT28nPaw6sAdowrpDM3Up/rVT8meTv+HWVWEgyrTwXSRhZJ6VJmqtH5DR6pYJdgBDJNboaNXkw6e9/UNtPukxXLEBShSTTg5OIRrmyR9090D3PXOse90HIuJLJMFfYsysDVz3jpFoe2W/9ueVRSiHoeB6ym5RNGAogCEMs08SyLFzPQwiBaZr4QYBpmnHxc7tNxnGIooggDONDkTCNNIyVBGrPtaWUuG5c0U7SDtLtJvCT16WUhFGEZZqYpvnB3UWtUaFaJXgMw0AlJmAUqPT5RVFEEAQY5kpUsfvstI7TApq4PE/1tExFSmGZ5qo2KxWptM9LSkkURalw7f1/99r3dMnerWI4IQSB7/Ohhx8GNIZhsrC4SKlYRCnFholxzp2/wIWLF/npn/gJGs0Gx46/wzNPPsmbbx3indOn+J6PfpQ33nqLgXKZ+w/sJwwjXNelUCwwOTVFIZ8nihSLS0sIIYiiiE6nw8MPPIBpWdTqNQr5AhcnJ6lUKjz60ENIQzI9M8umDRtwPY9nX3iBjON84DRd9yBbloVlWdi2jVaKeqOBbVmYhkGxWCSXzXLx0iSFfJ6xsTGq1WrKDJXl5ZiRgHypBELQbrWwbZtMJgNAoZBnbn6BTqcT5/IsCzvnEARBLJBdl0I+T7vdJpvJ4Hpe+n8AyzQJo6jPcGvZUCklmzZs4MixY3z8mWcoPfE4AsFrBw/y0P0PMDc/T6lYZPvWrVQqFdDw0aefZmZujsnpKX70h3+I+YUFlFI8dP8D+EGA67rs3rWTZ59/niAIQWuGBgc4sG8fbx0+woULF7j/wAGy2QynzpxlfHyMUrHIkWPHuP++AyilqNcbfO+nPsXBtw8RhSEik/lAMZyUkla7w8eefoqhwUHanTZPffgjLFUq/Nbv/A5//sd+jBOnTrFn50727dnD//rP/zl7d+/m5/7iX+BLX/kqvu8zMT7Os88/z+BAGdf1EEJyYP9e3I7L3j17UErxwksv8fSTT/L6m29y8O23KRWLPPLQQwwPD1FdrpLJZnnj4EE++6lPMbewQLlcolJZZqBcwrEdlqtV3jx0iLn5+VggfIBN0BuGlrpJ79m5OXbu2EG1VuXtI0c5fOxY0iNVp1wuEyad3aZlsVSpcPrsWQr5PKVikXq9wSMPPcSFixcBWFxcZHFxkfMXLlCvN9i8cQMT4+PU6g2qtTq+51GpVjl/8SLPv/wy8wsLTM/MsLi0xPTsLOfOX+DNtw7hui7ffu65uIfuA2lJahzHplAo0Gq3U5OyXCpRKhZZWFhg88aNmKZJo9kkl8+Ty+UYHBhk08YNZBwHAbQ7HYaHhlmu1hBSoJXGsiwK+TyObXPf/v3s3rmTIAzZu2cPf+MXfxEpJaVCkXK5TKPRYNvWrSxWKuzZtYtWq83WzZtYXKrQ7nTYt3cPjz3yyD2QOngvNBwawzR5/eBBHMehVCwyPTvL6MgI2UyG1988iFKKTsflS1/5Ckpr3jlxglffeIPRkRGWq1V+/bd+i3anA1LyjWefpdlsEgQBo6OjzM7NcfL06dSnu3DpElEY4vs+Fy5dAuDto0dxbJtyuYzv+1yanCQMQ94+epQz588zPDhIxnE+cG3/QgiCIGBxaZEtmzZz+uxZvvL1rzM+NkalWmV+cREpBOVyObEI6lQqFU6fPcPJk6d46623eOzxx7FME8Mw8DyXzRs34PkeZ8+f58Tp0+zfswff9zl15jT1RoO5+Xk+94XPo5RGCkG90WDjxASzC3Ff3QsvvcT42BivH3yLibExnn/pJc5duEC5VKLPbiC27HtKS8PBMjYxO/08wjBRA0OET34c69mvxukAHT9cpTWRUtimSRCG6QEXQsQb5vsIwEna78MwxDCMtOUm3lQv9h2EIIpCzKsU7Hav53oeAshmMvFvR1H8ehI0yWazRFFEGIb3pqkiJaLdInjm08jJ88izJ9FjGwgfeQLr21+Jk9jJPWcyGTzPo9VuYyf+XJjskWVZq4IaXb+v+34mkyGXy1Gr1wj8IA2adM1WISWmYaS9it19jZI6zFwuRzaTYXFpKW7jSqPUemUdWt9bEBrJ3vgf/yzGyaMYl86jlM/Y+NMgawR+HVApald9aX59aYFIJdGvJDIopUyd7q5508W56KYADMNIHrod60qtUye863hfi0m01mSTz0aXXS+bzcavR1ESMLDvOe223oheu91GCEE+l0fr2Lw3DAPTNFFKpc+q+5y01hiGgZEwUrVaxTCMVfuzav+7zApYSaWFYRgxPmMUUW80yOVyV0QjtdbY3XaXe2CP3m2kdW0NqIBlGli21c8/3+4NJQYFCtbYhNola1W5kXFFcGUtv3uzW9uNcOo1fO5up27a5LYyXGwm2it/3ETY+ups3Lfqr0aOYRGFIZFeA/SuhlzWibXN1RinW4p1CwWCvklmfTdMfUUgL66h4XJgwOut71b8vlKKdse9zQwnRNxLlZiFK0yke6qyro05GaX5F43sKQPSWqUPrmuGdq9xeSK1m+j+AEVErlvB0T08Uq7gf2qtiCK1CqLCMEy0iohUlFb5gEh9rNhM1EnxgUAaxhVMHpuj3Sq82BTtrRyKohAhZLrflx/Q3kR47/uGYaRno3fNvcny+AwIRAJHp9ErZyVSK9B+CYVhmJ7HlCmT+4yh/rhq3GA9JqWUkijBA70tDNfd4SiMGBwYZPfufczMTmNIiWGYTE1fwjQt9u+7j6WlRRrNOkZi72/dvI1qvcqmDZu5NHmRc+fPYFkWvu+xb+995PN5Tp0+yfat27lw6TzjYxsIw5DJqYvs2L4L13MZHR7FD3zOnD2V+iJ9utKScJwMhUKRdruNacb+br1ew3EyDOQGCLrBJaXwPA/LtpMAFGQzcQCq1W4RhmEq8AzDYHBgkDCKMA0Dy7ap1+s4Tly14vs+IyOj+L5Pq9UkDAOkNAijEIEgn8+TcbJ03Db5fIEg8NFJPKDeqDM0NIzWmk6njSHjNbfarbgU13YYGBgkCAI810WjMU2TQqGI67oUC0VqtSrtTjtOSZkmE+MbUErheh0sK16jZVq4nks+lyeKQirLlfftDJk3w+HjYxO4bgetNJlslsryElopxkbHkUKQyWYxDQM07Nixm9OnT2BZFoYhKZfLPPzgh/juqy9SyBcwTZM9u/eyedNWhDQYGBigUqmQzxcYHBykVqsxMREz4aVLF2iH7T7DXcXEiqKQgfIEDz/0KGfPnUFKiWmaXLhwDtOy+OT3fC8zM9PUalU83yObzTJQHuCdk8cxDZOHH/oQs3MzOLbDhUvnWF6usGXzNi5eOs99Bx5AGgbNZpNSscjU9BQT4xuYnZ9hauoSB/bdj+u6zM3PMr8wS6fTYevmbSwvV3A9l+GhESYmNjAyMsbs7DQD5UE83+OdE8e4b/8DuK6L63XIZLKcPXsK23EwDZMg8HnqIx9lenqSeqOGTIqpd+/ax9zcDOPjGzh1+gSTkxcZH59gcuoSu3btwbZtlpYWsSwLFSmKxRIdt8PI8CjtdovnX3z2fTtD67LRpJS0Wi1arWYSPYwIAh8hBH4QMDc3Q7VWTfNozVaTmZmpmCG1RkWKVqvFpckLBEHApckLTM1McuLkcU6ceodqtYLb6eD7Hq7bwe24eJ7LufNnmZ2bwU9+q0+Xe8OxydRsNbFMi2wmSz5foJAvIqQgCkOymSxCxiVgExMbaLfbsbVAXPtaq1XxPJfBoSHKxTIZJ8OOHbswTZN6o87CwjydTpt8roAhJe1OC0NIQLC0tECjWWdwYJD7DzwEwLat2ykWS9i2jW3HsHtKRZRKZaq15cQdUYnmy9No1BOTVDI6MsrGjZtSrYmAXC6Pk8li2w6WZdHutPCSc5LJZtm5Yzda67gkzbLxPA/DMMnlcnTcDpWlRZSKyGQyqb97Z2s4HWu3MAp5+ZUXUSo2J4RI/AStOf7OUZRW+L4PAgxpMDM7TRgGLCwuEEUhURRx9twZDMNgqbKU2vknThzDNE3mF+aJojg/dP7iWaIoot1up7mkPsNdy/KQeJ7LydMnqDdqSb7TQEWKIAx44+BrsdS3bdqdNpcmLzA/P4vSGs9zmRKXqNWrdDodlqsVavUaL738HEEQMD8/h5SSdqdNkAhWP/DJ5wq4bofjJ45RLg/E3QhJvvW7r76EUopCoUC1VsV1XcIwwPM9Ll26yOBgbCpOz0yRy+aZnLrE/Pwchmly5uwphIivc+78Gdqddurraa1pNhtUa1VMIzYVq9UKL778HFEUsVRZpN1pc+bsKfL5ArZtk8vmqNaqeMc9IMZq6fqEdwjD6Sv8gy5qndbgJ63lvVXmAF7yeleCaK1TDeh5bppL6+bT0kX0XKf7eSkErhtHgzKZDFqpD0wN3opQ6cUJ1Ffdm97vhGHIseNHVgURukLqyNFDqWDUWmGaFkEQpJ+r1uJi5uXqclqk0E1wz87PIJJAy/JyBcMw4n9XK+leVypLSZJ3Zf+FENTr9SRoITjdqCGI86b1eqzRpmem0lIyz/fQnpuuPwxDzl84lwZ4utesVJYQUrBUWcQ0TIxkloVpmly8dD7N/dYbK8BJUkpqteqq83aHMJy+qkPu+wG2bQF6JWJ0GQNc7fX4tWt/5+qfT1AkhEw14K0LKt/5zBYEsYYXvVFZzUoQXPewn9ZopZFG3JdmZrNXfcammSSlkwjoFXuXPF1LJMUI3ekwWmNbKxUiVk+xgtGFMrxOBLn3dat7B1ojzbjx1Zb2Koa6ct3mVdYaXyeFxe9Zq2M76f11f1tcloTSN32OBEp1o6Rydeql9//r1nB69ZdjHy0kSEKufbr9EUfROyCid0O1vkLwdDwvDlL16XZHp4jCaLXxcTnz6nUznIhRoywrvmiCry76JSbvg0kJBAE6k4NOO97lbnlUV6qreMqm3+81ey+iU3ENweXz9rpYL+s2KRPzQDTriMoi4VOfxHzp26ttmD69V1wHnkv46EfANJGzk2DbiGoFncmiB4eQ8zMxCBP9mp33nKIIVSqjS4PIpcUYeiRag0nZtWfTj6oILBvzlecJn/kU/g//BIRRv5fpfRGnEtFpYT37lVjrRREiDDAPvUbwqR/AOPVOvF99dnt/eG7PAYxDryHazQQcS9/QpjRXELH0io+QTLu0vv2VGBbPslJnu0/viROXCD8V41d2zZcoBMNEnjuN1W4R7Tmwgpgl+nruPRGCK9EqzOe/Ec+FsCxEGK7JCjTT66yKtChEFEPjCbeDcDurUJ769F7458nmGmasxbq+W6gQholYmEVOX1r/tJ0+3RqB2MVZNa0EXrA7M111/3VthtM6REoNSLSOECRYheEKoq7oS9D3R5KmlkeP1x5F8ZzvVXDcfXrPmU6pmEcSRkNrhDRQyr/KPvYwnFIhCI+h0UdZmn8NuMrQjP6+vuc8d1UG7Aq+qG/i3zGmP6B1RHnoIUxb0um4sY1yFQBjExRCmHjeHJnsRjZu+wxo2Y1/9h/qncV5fel3x1ojEUgfz51EINGEV907My4ijRDCxHWnMYwMQlrEPVM9e97f4/eez8RN8GKf3ktHO9ViWodEXiepclHX9uHiqgaNVtGK/amCnt3uc1qf+nR9iRcXH8TTUyNA9ZiT4mpBExVXECmNFiJBpO8zWp/6tHbG68LMr/z/qhquy4Ux0wnQYmWofZ/61Kf1aTqtVzFhDAURJfwlu6VdSbWJ7jvpferT+pjseu8JDNOi3agmek1gXtlW0WeuPvXpxiSuw2zdJLimVavgd9qIZJa7WVuc7T+7PvXpNpBSKp6b2IMSZn7Q8Pj71Kf3TgcKxGWQfOb7he3Qpz59EKnPbX3q03vo45m6b1L2qU+3j+0uC0qa+fJg/6n0qU+3QcGpKMJrt1ZBvJt2Jtd/OH3q0y2nGHXOyeapVxbQUTLXQEV9JK4+9en2sFyIYVpk80VateWk0qTfU9WnPt0mqzKe8GNadurL9aOUferTbee8FaXWZ7g+9ek9pFVp8F789pWBf/Kq73crVLrRFykESusU+2T14MZ4cKBSK6/1DvjrhbruHczXva5Ofvvyz/b+fi9AcXd9l+OwdL8fD+eLEhhO0QO8ulIH13t/vcMnu/9WSq/6/e7aeyt30rVqndSurl5rd3la84GZm9BnuN4/kiEHkdKESmEIaLXb6SHKZjIopfA8n3w+jm6GYYhSGs/3yTg2YRihtMKyLCzTJAhDtNZ4nkfGySQMpQjDAMuyME2TKIrSyZqtVhsnuQ4CAj/ANA1My8JMJmb2CgHX8zANkzBcwWHRqjvIPV6XFPFkT5m83+645HPZhLF0MgVIJIc/npqZy2UJowi0xvP8eICFFIRBiGFIHMdBa538voHW8VryuWw60DAM4+GRlmViGAae72MaRgwZr7vzEwRSSGzb6jPdB4HhpAA3UOyeyPN99w/T9DWR1iy1Ir51ZJ7HHnmQTMYhm8ly5NgJhIC9u3fy3dfeRErJQLlMJuPwwH37OHXmHI7jkMtmmJ1bYG5hkaHBASzT5OEH7+P4iVMsLlXIZbNs27qFU2fOUq3VKeTzGFLSaDb58OOPcvHSJBPjY7iex45tW1msVLg0Oc38/CLlUhE/CBIhoNm5fSutdoetmzeyVFlGK83o6DCnz55HRYp9e3dhGibNZoul5WVM0+QHv+8xXnntTVzPw7Ft9u3ZhZCC5eUalmVSyOd56ZXXKRXj+Wr3799Lu9NhYbHC2OgwzVabM2fP4zg2O7Ztod5oIqXksUce5JXXD5LJZPADn+1bt7CwuMTiUoVqtcbOHdtYrtbYsW0rrVaLSCkyjoPn+5w+E1+vz3T3OMPpxGxrewpH+uQyioGBIpfq0Gi5/MxP/Tl2bN/GxUtTTIyPcf+BvVSqVT78+KP86j/9F/zDv/e32b51C5s2TvB//qv/myefeJSHH7qfl15+jX/8//7n/No/+yfkczn27dnF3/7lf8QnP/Y0cwuL7Nq5jQ8//gjFQp5dO7bxL//Nr9NxXf7dr/1vfOPbz9NoNBkaHOCHvv/TvPX2UX7t3/4G1WqNf/9r/5QXvvsqv/JP/hk/+zM/wV/48z/KkaPvsLi0zIbxUZ76yGMsVZb55X/wq/zoj34/hWKe2dkFHnpgPxcnp/nkx59m/95d/PjP/CLbtm7mF37up9m6ZRNf+fqzbBgfpZDPI6Sg0WwyNjrKz//MTzA8PMS3n3uJ+fkFfuCzn8I0DX70p36BT33io/z0n/8zXLg4yX3797J180Z+47c+xyMP3Y8hJQtLFYYGynzj2Rf4D//xN/mf/vU/w/cCNJoXX36NX/prf5kzZ8/z1W98h8NHjpPNZnrmoffpXiSZDkEyTB56YD97d25ly8YJnGwOKSUZxyGbcXAcm4XFJVzPS2YoezSXa9TqDZrNFkEQYBoGo6MjnD5zjtPnzuN5Pq7r0Wy14iF4UvLJTzzNQw8eYHm5hu/7HNi3h5HhIaq1OsNDg4RhyIcefoChwQHqjSZLS8torVNNuXPHVvbv3c2WLZvYtnkzf/rVb7F965bYxwPmF5bIZDIorWm7HaIw4r4De1hernH02AlKxQK1ehMVKU6dPsvGDePU601y2QzzC0tMzczS7rjMLywxOT2NZVksLVUwDYOR4SFq9QYHDx3FDwKKhRxf/+ZznD5zng0TY1RrdeYXFgnDkFqjwdT0LN997SBBEPKhDz2M7wV0PJfZuQWymQxHj5/ENE2Wl6vv61TOPr2nDAdojSEFWcchY9mUigXyuRztjsuzz71EoVDgiQ89gmFINm4Y58d+5AeIoohtu7ZTyOdQWpHP53AyDgPlEh965CHu27+XcrnEhokxNm/aQL3R5Hs/9TEOHT5OuVhk/95dLCwucf7iJd44dJhCIc+Zs+c5dfoc/8f/9R84efosAigWC2zeuIFvPfsCn/7kR7k0NcNnPvkxDuzfw8uvvsGP/sj3cejIMRzHZrla49f+7a/zR1/6KlII3jp0lDCM+PJXv8X5i5M8/qGH+Pe//l+YGB9Fa81TH36MF7/7OgMDJTzf57uvvYnvBxTyeS5emuLJJz7EhYuX2LZ1M0EQUC6X2L93Nx965AEGB0o02202b9rA0OAAbx8+zvjYKFJIhgcHyWYyDA2UcT2PXDbDwUNHqDcafOihB9i2ZRNnL1yk1WqjNQQ90z37dI+blN2JVMWszUDWxNU2pZzN9rEitilpddx4oP3kFOVSiZe++zovffd1IB7O9yu/+r8zPDTA3/8f/iZSCH7/83+C49i0Wm1y2Qy/+Dd/mXw+x9//O3+D5196lT/84z9lz67t/MxP/hiu63Hk2AkMKXFsm4XFCidPn2X/3t2cPH2Wk6fOMDExRhiEOBmHV14/yNYtm/j2d17E83wOHz3OX/nrf4edO7ayd/dOOh2XP/9jP8L0zFysZeoNdmzfgkZz8NAR/svn/pCNG8Z58eVXsW2L3/v8l/j13/wdfuV/+js0W23++E++xvMvvsIv/bW/zNjoMP/1c1+gVq/zd//7X8I0DN54821OnDyDYUhsy8aQBvv27uYv/Px/w9YtG/nVX/m71BsNfvkf/iojw4M8/eTjPPbogxx6+xhRFGHbNhpYqiyzsLCEZZrMzS8wP78YB6z6/HbPk9i85zEdKs1QIcP+zUVsQ2Kbgk6geeXkApGKo4dSStrtNs1WO40SFgsFDEMSRREqCX83W22kEAgpKOTzKK3RyXAQMxlV2w3W1xrNNGzuODaZTIYgCMlkkgig6zJQLtHuuHHUEk273UEpRS6XxXGc2JQ1TaSUuK6LaZqYpolSijCKUFE8SD2OhMah/yhS2JZJGEWYpkGn45HNOPFak2ipSkYcSynxPB/btqjXG2m437RMtm/dwpMf/hBf+tNv4PsBWqv4834c1cw4Dn/mB7+XV994i/MXJ8k4DlLGUclGq0U+l43/3Wyl99yne47FAE19aT7+a9Oex3Q3FeAFXdMmjrBnHTOZ672SI+sNyXcd/N5clCFlKqijKFr1nl4FDa3jqZ1iJe/VzZMpFefzpBAEYYRhyJ58nkQAUc/nuzm6y3N4Vxuv273O5a9dvrbedXff7/WztFb4fkC73aFUKq66rpQigZ5XNJpNctkslmWtytH15uwuX3efPgAMFw92FD0f4Yrk7vtxKK43//l9f5RJEv16kcVebUlSUND31z64DJcmvjWgoqs3o76fh+NOPphaa26ECRP2zkXXuu+mfQDY63oNAWaviSNkv7SyT316V0JYaZSKbsxw3do+KWJ/rk996tNNsdx13zV7WBPPC/H8iHzWSobLrTjzvYEEnRQpCyGTSSHiMov12v7Xtd5f9fqqz6waw3WdmxQ3fP9W+oMrRdjXv8fVRc9XXGRVUfOq73d9vlXP/Nq+9BVF3cnD6w0siZ4npbkyOLRmf7rnbFz7GusYudRzr92Idu/rN70/7wOr3Whwqdk91EGoGC7b7Nla4pXDCximie97CCHTtEAUhmjANC2UiggCD8uyCcOwJzigMAwTrTVRGCINY1WUU6kIIeJoZxAEcVGwEATpNSLiwpd4CmsQRPHrUYRMooS9h2f1deOb7RUSoNP1xoXP8b2QHJbeDe36Y2k0Mnm/23mgVHzYDMNAGgZRGBJFEYZprrrHMIriQukkqCKlSAu0eyOSUkqkSN5TCpFGNyMsy47TLYl5YkiDKHk2pmkmPncUB7o0qJ6or1YKpRRKKwwZ70uXQeI0ToyxEReOx4XUIoma9jKqYRipUOgGfrpnwfc8pCExDDP2U7VO92eFOaOUZ7r/7wbipJQpA3f3LwojLNteFXWOkgJyaRhEUYgQchUjdqPmUTKtt/u3fB/co7UweMJwEtdt8b/86l/hx3/qZ/jJn/4FvvbCaZ586iNESjE7M83s9CTDI6OYpsXczDS5QoEt23cwfekim7duY2lhntLAIIVCkcrSIiqKGJvYQBCEIDSGYVJZXKBQKOJ5Lp7rMjI+wdL8HJ7nsmnLNly3g207mKZJtVrB9zw2jozRabcYGh6hsrREGPpkMjk0mpHRceq1Kgtzs0xs3EQYBLTbLaSUGKZJoVhCANNTl7Asm5HRMaIoYmZ6klwuh5PJ0mzUMQwDrRTlgSEs22a5sojv+0gZM9WO3XtYmJtlYGgYy7KYuniB5coSExs3UxoYoLZcIV8oEoYhrWadUnmAwA8IAp/lSoXA9xjfsJHh0XEW5mZxO22cTIbqcoUwCMgXi2zaso3F+VlsO8P4ho289carjI1PUB4cIvD9OI2S5Bjr9RqtZpPyQPw70pCMjW/g5PGjSEOSzeawLJuNm7dQq1UJAx/LdpBSsrgwz9ZtO2i3mpw6cZyx8Q0UiiVazSamZRIGcdeF42RYWpxHKUU+XySTzWCaFu1Wk/m5GR5/8hkWF+a4eP4sExs3USyVqVaW0gR/dXkZJ5Mhm82hlGJweJhmo47nupQHBmk2G1QrSwwODVOpLLFh0xY2bNzE4UNvgtaUB4ZYriwxOjaB7Ti0mnWKpQHcTgfbic+I63ZYnJ8jm8tRHhgiCkM8z8V1O7RbrXVp7/eKzF4byPdDdOgRhLEE3LpjJ/VaHYB2q0k2m2PDxs0EgY9SmtGxCQqFIplsjoGBIXKFAkPDI7x98A2CwOehDz3BpQvnEAgM08CyLGzbxnM9hICNm7dRry6TyWYZG58giiKCIKBYLBFFIQvtWTZv3U6tWsEwDEbHx8nl8ti2w3JlkU2bt5LJZKgtVxif2AhoGo0Gg4NDNBp1iqUymWyGRr1ONp/jwAMPMz87TSabxTRNPNdj245d+J5Ho15naGSUsfEJjh4+iG05WLZNvbbMgQcexslkyecLOI5DbXmZubkZJjZt4uEPfZi333wN3/fS9MDuvQdoNOpEUcSDjz7OKy98h2KpzI5du4nCEKUicvkCu/cd4MihgxRLJTZt3optOxQKRUbHJzh7+iTlgUG2bNsBWqcJ/lyhwKnjR1FK8eTHPsml82cJw5Dde/czMzVJvlAgikI2b93B/Q89wtG336I8MECn3abZbJDL5dm2cxfLS0ucPvkO++5/kHyhyDtHD5PNZskXipimST5fQAjB8Ogo9WqNcnmAwZFhLp4/R6vVZMfuPeQLRS6cPcPQ8Ah7D9zP2VMnsO2kaKHT4b6HHkVFEUtLC+zcvZdadZnAD9iweQvHD7/Flq3bsWyH+puxcCmWygyPjDI2voFOux3v8dZtZDJZliuLAGSyWYaGR7Asm0a9RhgESGmwcdMWTr5zlF179rG4MMfZ06ewrDuv5clMfQlh8rkvPMveTQ4vvnEey4S5mVl27t1Ho17DsmyWFhcYGBymPDBEGASEQYDjZLAtm9nlSfzAXzERooipSxcwDINzZ06xbccuGvUaQ8OjRFFENpfFyTggBJ1OB9ftEAQBWilaMjbjYtNUEfgBwhH4voeKFGMbCkRKYdk2tpOhWq2QSQ7LuTOnGRoeBqCytIBpWrRaDUzLpF6vYlk2vuetVKd02rFpaxo06zVM08QwTEzLSipKLMIwxPdcwjBgZHQ83ngng9vuoKIIt9NhYGiIQqHI+bOnqdWq1JYrFEplbNtGGgae6yINA9MyCYI4krW8tIiUgka9TqfTpl6rEoUhjuOkh2VhbhYpJZZlEUURHbeDYRj4nkfgebjtNoZpJn2JEflCkfnZaRYX5lhaXACg1WyitMb33Lh20w8S09lkYW4WwzDJZDJJpY5Fw3PptNtYiabKOBkajTqtdpPK4gKWZdFqNgkCn0w2S215malLFzFNM7ZulKLTacf3Z8jUjFZKUVlawDANiqUyi4sLDA0NIxAsL1ewbJtSeYDqcoVSeQDDtKgsLlIslRBCUCoNUKkssrS4wI5de6gsLVIqDWAn1sLQ8AitVpNWq4WUdyZWj9i05zEtiAtoRwYHePDALp59OVbrExs2smHTFqanLlFbXk6bRhuNOtlsjvLAYGwajo2zvLRIo1Enk80ipUG9VsWyLAaHhpmfnSGXaIcoxejTSGkQBD7tVguAYqlMq1FHGgZOJkPgB5TKAyzMz2JZcemX7TjkC0Vq1WXGJjbQqNeYnZ5iy7YdSCmZnZliw8bNNOp1tFYUS2XmZ2dot5tYlsPg8DBzM1NkMlkKxRJhEBApRaFYRAqJaZk06g26s73CIGBoZJTq8hLZbJ5SuUzg+8zOTONkYvNvdnqSYqmMaVnUlpcpDQxQrVSwLItcvsD05EUcJ8Po+AStZjPxuzSZbI652Wncdpt8sYjb6RAGAYViCd/z2LpzJ6ZhcvjQm2zeso2lxQUMw6BUHqDTaZMvFGNzUyly+QIL87Ps3LOPS+fPUq/XmNiwCdu2mZudYWBwiJ179jI3M4NpGriuy/zsDEEQMDQ8gjSMxHRVNBuxJtRoGrUaA0NDmKbFwNAQSwvzdFptNm3dRqfTYnF+niiKKJUHME2DUnmQVrNBZXEBpRSZXA7HcSiVY3NwdnqKgaFhDMNgYW6G4dFxPLdDu92iWCwjpWS5ssTI2Biu6+J2OuTzBUzLYmh4hHariee5bNy8ldnpKRYX5hgYHMLtdADI5fP4no/ve3dk4jutNAFQWhEGYdwtnRy2MAwSqW8kUcmYUeKu7TBxbEMMw0y7ubWOAw/dwImZlDVppa4ImooeR1cpterfQgiiKMQ0rfQ1ndRmdoMThpQYpkUY+LHUTqR99zpaKQzTTKVsdz1a67j0jBUoCa11GpyJo6+xf5u+phRRFMXaMek+765PRVF6nVg7G+lau/fffU4iCZSATp9b934vh6/o+iHdwBSslMx1A1Dd75i9wRvDIAyC1Pfr/rZSK/tmmslawhDdE8ntBsC614mSoEikIkzDREhJGAQIKVbdT1eLSSnTYFg3kNa9P9O00ns3zdh6WIG9UOl6r/Z6HCSSqSA0TRMjQQxYOTdRPETjjskpX4fh4uiOWFXS1VurePUwcW8UV18RFF8drhbp26u/c+0cwLUwTK4Woucaoe5r1U2KBC9lVRj+Ote+/Hrx63E/obhBiLr3eXW15+q1ievmcK5Y9w3us/dZXY4Fc/lvr6V070bfudEzX/V6FzOnN4R5ozRH7zVi0cDqiaPXTkXdSQxnXv62UquLeK+3+JXw+7UTf6u/r9O3r3rZq7x4+e9faz2XFx/faM2r1n9ZXuxGa1j9ul5DunMta9Tr/u6NDta1fm+tz3Q9+7DWZ37Fc17Dfl71b9b2vTszSrnubEKf+tSn9VaZXMFwsc8R9gts+9Snm6A4mS/XyHBaJ4GH9Y+vEohrMqm4jvrvU5/uJVKRiGHNr8N0ZpctlI4SZlufSamBa+nEbhjAQPQN1T59IEzKboT6Wual+W4tVhPBFsNBChB6dclq9ydnIh8fnQKxXitqdrc4vn26c3yi95/Wp0rMG9/w1avchRCEaEalSUYImt281WVGaV4IRgyTi6GHCCKENDBNI8mzSIQgzbl0mc2QRtp93qfbfaZvviL/dh9kIYy74PFF757hdFKdbduZVcynuzyoNUHgpSFdT2s8pRghxjOxEFhCMEdEh7iS3bFtnnjiYTquy7kLFyjk83ieT6PZ5Oknn2Bmdg6347Jt21YWFhZ55+Spe+hMX5kzez8Ka6/IWSX4MJd3rb//a5NYVp6482MNrHlFTvDacmV1Dq+3k2G1XbbW31UqJIpa747hhBDYdmYFi6P3gSS9UJZpE/gduu0wOcdh19gELRUyJi0sKWnOz9BxY+DYQrnEvr278Py4JWdkZJgg8JmbX2Dn9u3kslk6rsfo6Aj5XI4LlyZptVppxcbdRt0KjvENm8kXCyzMzdKo15LO+gS9bNUhIE2K3zaNIeOWnkRqsmHjFgzDYOrS+aQNSCClQVqg0OuL6xWL5/J2tZVl65tfm+h2SmukNJMBJ/4NTDaRVASplFGFWAFn6h3usjI8hrQVKv5s93yvVPesDHlZiyC1EcJA63BN5qV5NXtU9EysiXutVJyz1nF5jo4U0pSrPh8GIZWlCp6KCKVBVkh8P4h9OyFxXY+ZmTlsx0ZKEbfoeD5SSMIoJAwjFhaXGBsdod3pJAWodzealUYzMFBiaHiYdrNOrbqMYZrJoL4oKS9TaXWPlOK29nF1+xDjMi+D0ZFhbMtmfnaKTifENI1435PewdVIZLKnVGulp623rOrdrL0bUlcqvOw8Xr+x2DAcTDNHEGqgg4p8LMtZVRYXl+BFSdM0ZPIFgiDAc90UTS2TySKkJPB9TNOMC/GVWtMu3zofLmE204g/Jo24hm7VSKbE1OyoiMl2Ew20tcIElBBkpEQK8HyfpcoyfuCzvFzDtAyU0riey8lTZ1iqVKgsV9m6eROVyvKqesS7lYQQTE9NU280qVVrSeMrIOIKHsuyGBzM47kehUIePwio1uq3PKIbKRU3cUpSyEGlFO+8c5xiqZxO+emqBaU15XIJrTTSiOHuW602zVaLfD7H0OAgAJXKMvlCHhVFdFyXTsdd/9pSxDOxTldSoJRPvrCTXPFxNm80OX3qZXxvir37H0qbn9EwO3OJXK7AwOAQ1WqFsbGNNBo1Lp4/zej4RoLAZ+++B6guLyaMKXnn+Nv4l8E83goyrxd7CcKALVu2MD4+jlaK0bFRDr55kNnZ2bjwFfDRjAiJaXRr4gQ5EUtKBWQRLGhNFAa8+vobaedxzLQCKQUzM3Ppv7/wxT/BMIxVhbh3q98mpUGr1aDjtlFRtzBbA5JIKSaGBiiXS/he3PRZMiSNRvMKPM93u47hwUEMQ+J6Hq1WO32v027hdtorNbOJA6SVolwqUSzkabZaOI6DbdsYhsHw8CAD5XJaWJ7PF9BaUdYl5uYWaCaWyVoF0ujIMEIImq02nueth99SM/KhAxaRAs8TWIYkl3WIQiPthi+Xi3G3w0CZKPQYHh7CkApvYpxs1iGKTLIZi7CQR6kIKWR6Tt8zhutuVrlUJJ/PoaKIbDYTw3UnjGAIQVVFKHzMVYMPV66xDNRVhCkEwrZXPeyr1RMaRuaeSg1orQgDdeUh1HG1vGXZGIaJY9sJwnR4y8xKIUhMVsnmTRs59s7J6w6/7N0bKSWZTAaEIJ/LMevOUx4oIQ2DXC6Lbduxxsvl8HyfZrNJNpuh3mis2TIJw5BcLkexUKCyfCqGmFhr0C+5vNKK5VrEYkVhmIJGo8Grr75CsVii3W4lEe9Yq1frcc/h3PwSzWYdy7KQssHC/CyzcwvkcgUWFmYZGBiKOxNuQ/Ao6RZIoi1hkD5wy84Q+H7cvl4uU6tWkdLA931838eyzDhSCQSrYMFWqueFlHF7DCQtPVeiGwtxb4b/hYj9tGJ5kMGhEWrLSywvL8WNrcQBlUw2S7lUZGZ2DtuOh6gsVZZvuR+XtvtIiZFOf9UMj46nfWnd99Gx5hoZHkJrzfzCIuVyKcZIUZqBcolMJm6QPXvuAlprSqUSGcem3mjSbrfXtf4V9GkjwTwJMYwMUjprCERopLRQOotpCJRqo1SwKsDTFTwqga8zpJGC/RiGlbST6bSNSAqJTno118L1QphEUTtdqzRMDMPickisa3YL9EoQKWXcmt9opNIwZhKZ1shLaVDK5lapX9OMb6TZbJArlOKu7OWluK9NgBSSTDZHu92M+6ruUabTWrNhwwSbNm3h1EmfytJCenxEMguh1Wql/V+3g9l6gxmXB0E2TownTbNLeJ6LYCX4sbC4BMQDW7pmqBCC5WoV140FbbeiolqtknEc/CBY9/pXr219HRQgiCIfgUugVqKUV0POklKkmlek/mOYfrYbtElHQa+t/4N3mfjWaZg/Hb+boDtdUR1CDHopTYOBwWFAp42WcQOgIPB9SgMDlAeG6LSblAeGYoSuwKdQKKJUSKM77vceZDZpmJw/f45ms02n00qRsWRi5si0UZc0gna7LOm4dU+ge6yR+cWlJNIY+9NaKaRhgpZYUq6E/uXK8QiCCMuyVrkOpgl+EN6wcPfaWkIkQZAoiVQGSCODFPYNn0f83NYOxd971K527NZzFIUQKB0myW/BursFeg9LFAZpZ/SVuQdBFPpJhzNknHjUkpPJpIcqDAKGhgexTQNTwvjYGIViKZFKIflCiWajTv0yRr7H2A7PdZmeupDCDcZmVNy53BWONzoEt2w1lw1AmZ2e7AnJJ0NVotU+5Kr1iO7fVyaYYwwRfdPPaTVasSYM6kmlib7DBev6iv2vmfiOoiCROFfvsE5HM3k+Z86cWeWEm5aNADzPjcPftk0URsmmJIkE3bWjjXu6dvJaJtbV4CZuN/NfaWbJ6/pV7+fa4nMW3g3e+q2KUooUk+Ma9slKREuIxATtJsH9xNRIQMFU1IOilNjQ/VLJO/pg3Blru/cOyY27BdZg41xe1XN1vI4+9alP8nLHtU996tPNa2op5HX9TnNFK8Vwc11s/z71qU/r99dvBM9nrv6CscaEX5/61Kd3YVJ2nbG+autTn26a9DrzcDLpCohLs/r+XJ/6tEZOo9tDqKJoDQyXVEX4nofXaXN5A+L13cQbf1SzehBgn/p0L2o3y3HIZHNrGDmctGS47dZKTZteO2+7Wl0V76vLZJmk5KfPbH26l8nrdLAsG2lcu3E6Gcgo0Fed630NTddb9Q/stTI4Qq7mqIRvQzTnQi+Gy+sZRiGTaZ9xIW23lk6tqmzpzef1kbw+aHT32UNpieJ1imKvm/i+lmoUgCElHa04YGV50s6zqEIM4qbTXhNyWJrkpOQ1t0VYbxApxcBAmU7HQ0qBbdu4bjwmybbteMpM0qEcRfHUFdu27sjhemvdhK7Q6K9tPRZadMfHEXRaU7r2om3zek5goVRCSOMKbg3DAL/dRgEFIbkU+kxGPkOGiRP3CpARgikVUNURWS2wbYuf/dmfws44/Pbv/iEPPXiATtvl5Omz7Nu7i9HRYY4cPYFhSEqlIgPlElGkGBsb4dKlaU6ePkPGce46pgvDMKk7NVZGaHVbRN7jLonLO5gD30ejsSz7mp95v9bmZMaQhvOearl16VStEcIgDOr4fnXNTGdeReyhlaY0MIA0TcIwSJfSra20nQwSQavVQBF3fg8ZJn8hN8xc5LPddBgyTP5jc5GWVrhRyOBAkZ/88T+DloLZ2Rl+9md+iuVqjW99+3n+0l/8SYIg4Bd/6e/w8z/7U9x3YC8H3zrMpz/5MTZumOA3fvN3OHL0OLlstgcD487XbFEYxuNxbZtmo06n3U5npJm2TS9oG+Lq45duXRAtbogNkkGFWms2b9uOYZhMT15MzXbLdjBMs/c4kLZsJevt1sVqpXvWfZNeerK2KJmoq1FYVgnDzBFF7esLJX3lfMHus1dapRpyVR+nVlcKlW6nRDLbrguahbgBC+oQyxkkDNtoHdwkw2mNYRgYhkknwbvQKb6YJlLx0MZsJpMqfIXGEoJFFVLTEWFycCKtU6DXsYlxZuYXaLXbPP30U+zauYNOu8PRoyeYX1igkM9jGiZKRTz/wnfJZDPpUD/TMO6gAXvr0277H3iYXfv289Kz3+TEsSNkczlM28J3O+lQSJ34tYZhYN0GLJfuHtqOg2lZBEkP4qNPPIXt2Hz58zN4notl20hp4HXa6eGNBy2CaRoYyRBKz/NBgGWaVwxgvFmz1nYy6UDQmDGCGwbvhIAgDNPpp9lsNh7UGQRYtkUYKYSIG6J9zyOMQkzTxLLspPk0DhaqpPvFth08t4NpWUnnS8T1Y/AKrcK0cfVdmJQxVkQX/q7bkq+iKDY/5JV2/1IUcjZ0aWvFQb/NgDSpqJCMkORyOV549Q3+dMMETjbD57/wJ3z5K9/gez72FN999XWefuoJ6o0m1eUKjWaLzZs3cv7CJb7wR19i//59XLw0tUbIsjvP769WlpibnsJzO8juRM8Ets0wDAbKJaSUlMsl2u0Oc/OLMVzdLWS6IOmqdzsumVyWuGNDUqstMzI6jmEaaFcnzagBURRRLMRz1MvlIo5ts7xcY7lapVwu8ejDD6K0Ympqhlwul3ar++tsJtZaE4Zh+rBMyyIMvB4D79okpaDddnn8Qwf4W//NzwKCf/Gv/hPHTk7z2R/4c/i+h+Nk0BqOHTlIsVRmw8atzExf5IEHH2d66gIvvfANHnjkwzSbdT71mR9maXGeeq1KJpvl2W99mXargZTmdbTc+gWMeT3J43keO3fu5P777ydSEbt27eKPv/BHnD17lmwmk1oEQ9KkrRRnAw8hQCKoqhBLCEYNkzkVYuayfPPbz6OT1ubnX/gubx8+hlKK/+5//Idxv5xh8rnf/2OGBgdoNptMTc+SzWYol0oUCvm7xpzskmGYTE9dRKmI6vJyMso4tiBc1+OTn3iaT3z8aV5/4xA7tm/FMEz+f7/523ief0tRu8bHx2i3WuRyeZZr9QQiQ/PCt77OyNh4CjWvE1iNwPf5kR/+PorFAmfPXmD/vt2cP3+RF15+lU9+4hk++vRHEMB//q+/x1MfeRylNPV6na9+/dssLlXWFOCKYQJNhoYGE4wcm1q9seZAiRAC3w/YtHGcP/PD3w/A5/7gTzg3WWfbtl24npuOYz75zmEGBob51Gc+y5/88ecZGx+j3W4yPDJGoVAkk8nw5NOf4uUXvsmWrbvodJq3zY+9rp0WhSEPPPgAu/fs5v777ufTn/kM4xMThEE8L8cRktOhS0VHlAyTAcOkJE0K0qAkTUrSoK01xwOXrDQIo4gwjNV6uVxKAgqaWq1Oq93GME1832dyapp6o8XIyDDZbIZ2x73rYBi6s6qXFhY4+NorNOq1OC3SA8c9MjLCmTPnefLDj9HuuDQaDVqtzi3DNZFS0um4PP3k4/zrX/un8TNP5pp3fZbpyYupidn1y0zL4tDbR9m0YYKtWzYRhiFTM7Ps3L6NMIxQSpEv5Nm7ZxdKaWq1GhcvTbFv325cz1vTXkkpabc7/MxP/zj/r1/5+7HftE6lEQsJ1SPgLObnZvjOs1/h9MmjvPbKc7z5+ksYhkG1usTxY8doNmrMzc4wdekcQ0OjuJ02R48c5A8+9xu0202e/daXmJ2ZRApxWyodzet5pEIIzp45i+M4XDh3nsOHDzMzNYVhxBDRAuhoxVda1R7Ia73ipCbIvA4CyzTT2c5KKYJkKDr0NKom3+tC8XXNDXmXDvZQSjE2PsHExs0szs8yOz2V3ivAxUuTfPITz/Dv/uNvsmfXDjZumEgwKe1bYlLGiMIOf/Kn3+DosXc4ceoc+UIeL/F5tmzbgWmaTF48v9LlLUBFivsO7OXsuQv8yZe/ysc+9jS+5xNGEVrF+2JbFi+89AqjI8Ps3rmDQiHP5OR0jIq1xrULIflPv/m7FIsFKpUquWwWN/TWeG+abDbDwUMn+H/84v8AwJuHjuPYJkcOvU42l8d1O0hp4DgOQRBw+NBrGIbJsaMHCQKfwaFRojCkurzEn37pc5imTatZ58jbbyClcd2xUzftZWza85juJr6b9Voa9ckXS7heBxUqEMROZxiSyWSQQuBkc7QadaSU2JadwqBLacRgQlEY+wzZLKZlUa/XekwJm1w+T6NRJ+qZnHMvkZASt9Phw898nMc+8jQvf+dbHHztZQqlGETV9zyixKlXShGGIcViscenubXa1nM98oUC0jAI/Hgvv+ezP0A2l+frX/pCGqHUWhH4/iofSwhBJpPBNAx27drOhYuTmKZJvd6g3e6Qy2W578BeTp46GyN3ibWbhWEYEoYhhWIRrcH32jjOMIaVI4rc66q8+PsR7XYSNMllsEwzRZbuQn70QjL2/h1FMbRdFySra+6rFPvl2vXI3UGjppHDcxdRykVryBWKGJbZE3NYK0yeEKhIpWrbTtB3oyhCJQtWSpHL59l74AGUUjiOg+d5MZOZJq+++Dzbdu9lx+49fOWP/pAt27cjhMRzXSY2bebiuTPMTk1i2fa9V0miNbZtszg/y8LcTFqBoKIIy3GQRjcvF0N8O5nMqrFdtzpKmc3nMEwzDYBZlhVjMKo4Oue6HbSKMCx7pQBXiBShSymFrxRvHz6WIo2ZpkGxGAdX3nr7KLZlYazTHI6jhhZSxoJACEmkXCw52MNs134mjgPZbDFdY/cYGSYpbs7lkc0uIyWFTysTu5IsgFyTYtNJ7i2GXH9XqF1RFKHCkEw2l4LDdgd7SCmxbIfA9xMfocPS4iK2bcWSMJul1WzSbjUxLRPP7dBqNslksxSKpVTKlMsDeK57W4dXvN8+nJSSc6dPsjg/h2GY2LYTm9O+j+04qyu6u0AvtxEnLwpDQn8FB/TVF58DERcySCnTmX12JrtyeC7D98nkcil2YxcMyhSQyWbTM3IzawsDP0E7lkRhB68zh2Fk0Dcxlfe9C0ILwrDJeiYHXxO1q9VskMnmkvxXl5tjlRsGPp6bBDK0ZnF+FrQmm8+n/4/CEN/zOHvqBM1GgyDwmZmaRApJEPgca7cIAj/FcL9Xmc5xMrjt9io0XxWGuGH4Hh6MHhzgnnKudruV7m3X5AoCnyABgXrPD7AQqW8Xhq3kMN/hroOQ6xII162lbLea10w49paydD/XajZWPTyZ6OypSxcwDCP+nAaRjGcyDOOe1XCrNJ1hpAGl7gN8r2W2uEak8FqH/m47yO/jDt+qKOXa532lcNWGccVhA9K8TG/NXu/79zr1Ox3em8N8N9DlRXO35WBdMUW1T326RwWruAFevQmkmPJ2JoPvdujD5fWpT+sny7bTSPD1NZyIBylkcjnsTKbfmt2nPt0ESUOuEdMkIRWFkI776VOf+rQeUmuo9b0saBLbn30F16c+3R4yVzt9qo+83Kc+3axJKWWMkLAWhtNaJ1Nv1stta7U/+1zcp3vcpFQC0xTXbZY2u0wTd7euf4SqJu74FogrWKpb/iMTnJNV710GYLNqumraGtFn0j7dTaRRWmFw7WJM891dHmwh2CSdqwZaNHEz6lTk01ErfViXV3ADKK2RSUF0L1PKe7j0q0/XP13vF6DRmleo1z91yrw+O4lrTkAVxJiTZWEiETSVirWZEKieuXAFAYPCoGNosqZFlBT1xn1hGrfjoomrUcIgwHGcFFQnCAI6nQ6mad7zJWDv14HptTbuJGaT0k5GDt/pZmSQWIfvguHiviATq1vR3uuFJehNge9BAh4boAm1YkKYKK2xhIEjBJMqwEMQKUUm6/ADn/kUGnjzrbfZtXM7lUoVw5AUi0WUUrz+5kE2bdzI7p07mJqeIZNxqNXqTM/MUm80MKS8C43Mq7dtiN5+kBt89lat4/J51LHQ6/aFXWnu39hv17ds3StWjEYIC8PIrQHEp2c9gp5uerFKO64eDKqvisd5+T2v1aoyDJsobLDW2P41uwUs20FFKkXsSh+HijWUZdkEXocuhFrWcdg6voGWChmXFqaUVOZnYg2mNfl8joGBMpHSbNuyhVwuF3cHA/lcFiEEGzdsYPOmjYyOjRCpCNf12L1rJ/Kttzly7B0MQ9w1E366zZWbNm+lWCozOzNFrbqMlDLpGkgOaRexOj2zt+/+hEyqIJJnuHHzNgzD4OL5M0mneVJwrq8WENNXfy1t9X83axcIodMKDSGMBM4uvAHDxbGH7ixwIcyk0yBaFRMwDAOtYv9KCpkCZBmGgYoSdLKeefYCgTTWYlHFwiHew3BNwsG8muQSIg6AdPubVJfpehpPu82T3c/7QcDi3DyeVnSEJCsknu/FwkcKms14boHjmLxz8hQ//IOfJeM4PPfCyyBg08YNzMzMMlAucebMOZYqywwkuCeNZvMK6Xy3+CGFQp6BgRK15SWqSiESiIVuI2gXvasL896Ffb9dQkAKSaRCDMNgcKCEbTvMTF0kDMO0sVQrlQA2iaRZMxay4io+di88/bsx+4WUCCFRKryMucV1mC3EdoZwnI0x6JU7he9XGRqeAK2QZiw8Ws1GokRsAt+nPDBEp9NmubJAoVhO8ENHUSrC81xM06JWXbotDcHmdQ0hHQN82rYdw5ubJq7rEoVR720jgUArpvy41b2jFQZxa21WSAwh8f2Ab337OTRQbzT46te+iZSSmbl5Wq02ly5N4fk+Z86eZ3CwTKVSZW5unpnZORYWF9M2+LvKmBSSqckpavUGtWo1lpqJNot75WxKxSLtdodSsYCfwM3danZTKoaMNxP4gS6jHDt2lGKxvPpgaY3SmqGhwZSZctkMjWaLRr1JsVRgeGgQrWFxcYlSqUgURXRcl1arve61reBeinVXOGkdYTujDI89yo4tFq+/4WLbPvfffx9BEKQCYGb6ErlcnqHhUZaXl9iwYTONeo0LFwyGh8eIooh9Bx5iYW4aIWPt+sYbr8Jt6Fm8bpQyDEO2b9/OxPg4SivGx8d5/bXXmZqaxrJMJNDUiiFpYYmVtECBpNESsBBMqRjb8tSZc+gEQPTCpUm0joMluVyWai3GU1mqVJibX8A042vMLyxiWeZdidoVd8S3cN12Yh3INHYbRYqhwUFKxQLlcgmlNAVDUq3WUvPuVq1jZGQY27Jotlo0ms2UoQPfY2lxPtVeOglWaaXI53IMlEs0W21s28I0LSwzhrUbKJdTLZ3L5VCRolQqMje3QKPZXLOmE0IwMT6OlIJarY7reeuQZukN8uB+g9mFED8Q6MhlYWEBo4ugDESRioXagMJ1PVzXp9FsYpo2nY5Lp91kdnY6wfWpkM3k4jTXbYiSmjfYLXK5LJZtEYWxqu9FMpJC0NaKk5G7grd3mRJSaCJiOHTTiTWlSvA+ugdCKZWYMzG0XC+ylWne3W09uqfpdLX/GTOkbdv4QUAhn6HTcQnD8JZFZIWASMUAviMT4ywuVWIcE61SDXy18xTDscdYI45jUywUaLc75PN5tAYnY+PYDtVajWwmQxCE1BsNnIxDrV5P9/JGFEMmGhQLBebmFxBSsOaAn+52hrd589A0fqCRokPb8zl29G1y+QJup4M0JKYZ92POzc8R+D7TU1N4nksul0frGsvLSywsVXCcDPXaMvl8kTAMbg++zKY9j+kYCCVM8UtiezdD4Ps4mQzFYpF6rbaCTx+EWJZJEKzg1KdTU5Nu5l5odtEjOXVq64u71C9bu78URRGDQyMMjYxSWVygsjSPadkI4vdsOz7M8wsLmKZJqVikVq/f8o3uolB1O+y7/uPY+AYM02RuZipGXZMG6DhqOThQRmvN4lKFYqEQX0drBsslTMvENC0uXppEKUWpWCSXzVJrNOi47ppRu1avzUwQzEIMI4OUzhqCJrFIVypG2IrPX9fXjFJUgt5+zG6/mpAruJPxM1ForTASuP215dc0QphEUTtdqzRMDMO6IoJ7Y9QurRFS4rke7VYriaytjOfpBlVM0yRfLKFV/HmtVNLZrVlcmKM8MES+WGLq4nmyuVwaPcrlC7SaDXzPvSdh8rrPcGx0lI2bt+B32iwt6BUcKiHwfZ/5hcVUo1drtduSb0w78nvC4YZhMD4+hmVaVBbn8Tw3XZuUkspyFQDHcVJTTwhBZbmK6/mJ9REzcL3RwHVdgjBcF7OtWpvstQC60du1HHpjFfpW9/9SGj0M1UWVThC65JXZhHgd8orv3jgd0XUTbgpESKdh/m64Nx6G0A1YdN+LgyXxxkmGBwcBsBwnQTIKk+EfIeWBIYqlMpHXpjQQQ58FgU+xVGby0gXcTvuuDIisyYczTM6ePc1yrY7vdVJJGo+uMhIT3Uysg3jTb18WrmtlrITMZ2bnkEISJhHJbiOy0HLFCkndiPh0REql7kDqWkhJ1HULbi4pkGjQKIlUBgjhI4S5rlTD1SDxLv/3qtfW+LnrrVxFbk++8CZh8mIA0ADzOhjxYRBDWqtI0Ww2Ytvej6eqSGkQhSFRpKhW4vCq0hrf81KztNNu39LgwJ2aFgjDkIXZKYSUKahSr7nT3aTbLW60AB2pld/TmoW5mcSXXJl8o6Lw+msTXN0VEDfva2v0FdeMovZdtM/vsrRLCIEKAwLVy7li5cH2zOEKwpCZmZkrzITYh4k3eHFpKZFgq2d2dX2Ke7lWUnSRR68Qauq95v0rjbGu5rrs+V93bXqdr78Hh/huousiL68M4et5ovrKA9VF5708MmdZNwqC9ouS74gIap/uAIa7BRvX39A+9emyIFFXbd09wJt96tOd68vJNGp5Aw0XJzvtpIC0r5n61Kd1s5u88Whsc/UX5Lqnn/SpT31at0mZOl39J9KnPt00rTMPJ7sJ6D7f9alPN2FSijUCwSZVEV6ng9/prHvOwI0KcFR/L/p0zys3jWk7ZPP5G0Odd/ujvE7npio/OlpdVylmhOzHP/t0j6s3ge+52I6DNK5dzJHOFujik1ypu25sXz5s58gkMHki/V5MIZp3ApeIuO5SKZ32iq10OcueucpiVSdxP5f3QVYaCnFHi+reSugeqMfrTNC5buL7WqpRAIaUtLXiQSvHo1aO+ShAJuZjtz5FAKOGiSUEL3bqiKaHnXGQUuK6HrZtE4Y+vh+jddm2RRiGdDou2WyWKIrIZTNECTPenYLvSsCa/tpufJAFEmlkudMDCvF875vuFiDdACklpYHBlU7gxE4VQhAGAW67hQYyQjAV+kxFPhOGhS0kBpAVknORRwuFoTSlYpF/8A9/mXdOnaVWq/HRpz/C2XMXOHjoKE99+EOESvF7v//HfOLjT/HEY49w+MhxTp0+x7efe4F8LnfXdhQEQYBWCqMH6i/ty1oFwHM7OYtVmDSp9ZE2FZur9v79XVvcY5bJbVzz1+mBh9BcBXVMk/Zr6p7x2THcY/e19aN2CSSR8vA6M2u+XfNqtihaUygPIKQgDMJ01V3kI8uyyebytBp1NGAIGDJMfiI3xGzks9PKMCxN/n1zgaZWeGHI0MQo3/vp7+EjH3mcb337BZ55+iNs37aVXC7Lkx9+nFq9zh9/8SuMjY6waeMG6o0mI6PDPPDAfv70K99kamYW+zrdC3ei9gh8nz0H7mdgcIjzZ0+zOD+LYZiYloVl2T1Nuyvm+225v6QbWKso7thIDtTDjz2BZTscev2VpHMDbCeDNIwVed17mLsmfyo4VM+6uTltlKwtCkNC30ejMK08Wqu4Y+BalRu6G3vQCeARSTF8fK3e7oVuMX23vSwMA6Q0MNNZbiK5hk564VTSECuuA38nQCtMs4CUDkp5N8lwPVX8rttJsR16GU6FIRknu7IXgIFgLgpY1hEtFZETkjDZoChS5PM5Xnr5Nd45dZparUGtVkcpxezsAucvXGLDxBhCCKanZzlx8jRRFDE/t8DP/exP8vobh5iemb3rtJvSitGxCXbt289yZYnZ6Sls28E0LdxOG60VQRilPYSmacSF4F0/4FaZZwl0vOU4mJZN4HtIKdm5Zz+243D0rTcJgwDTcUAIvE470X4xHojWCsuyME2DIAjxfB+BwLJMwijCkBLDMHrgN8Q6BBMJbEMWZZqEQdjtJ+kpN7wqDgRaazKORbGQBaDR6uC6AeXB4aTnMBYMge/jep24Q0UabN6yg2azQXV5iVyuSBiFFItlLMum2aiRyeao16oEgb9qlv2Va5Cwzq4PozS88VdEYj74npcGLexMBhVFhGGQYARqIhUhExPTMk1anssW08ZBMhPF8AyLKuIFr8lhv8OSDjGJgYJem51m7/ataA0H3z6MlJKzZ8/zxS9/ja9+41lcz2NyaoYXX36Vs+cvUMjnmZ1b4PU3D9FqtZidm0/bSe4WDRdFEU4mg9aa6cmLtJvNtBs+DAJs22Z8fJR8Lsvu3TvIZrPUavW0b+5W2Wy+H6CUIgojbMdO8GkgCH0Mw2B68iK+72PaNlpFhL7P6OgIGcdm44ZxtmzehNY6tjpGhnnyw4+xfdsWwjBkx7atDAwMEIURvu+vK8qttcYPwli7EuOoRGGAaWaRhn1dIFjDkDQaLT75icf4wu/+a37h53+CN948xEKlw5/78Z9l+47d7N33ALv33k9laZ69+x7g+3/wxxBC8tGPfy/l8iCXLpzlQ48/TbE0wF//G3+PcnmIvfseZM/e+zh58miMRnCDaThSmERhO0VftmwnQWdbjePpdVrXD5pIIfBcl/379/PgQw8lUGL7+dxv/w4nT5wglyAbNbTiQStLTkq8BDJvq2Gj0BSxGZYmh4IOUkj+xb/6D3FHsRC8/sYhAGzbQkrJH33xK1iWSaGQZ3Z2nt/53BfSxlXLNMnlsneVD6e1xrIspi9doFGrUq/XkEZirkgL1/X42DMf4ZmnP8zbh48zMT5GJuPw6//pt/ESwXer1rFj+1Y818WwLOYXltJrnzhymAtnTqc+OwnUQBAEfO+nP87I8DAnT51hz+4dXLw0xcuvvMEnP/40Tz/1BCD4rd/+fZ547BG0hlarxVe/8W1mZ+exbfuGe9V9Pps2bSAIAqJIs1ytrSsqqZQim80yODgEQC4XB9q6mCRhFCKIAV+jKGLr1m0cPvQG2YwDwNjYBsIgSBjYxLIdLNtJo6O347RdB9MkltB79+9j0+ZNGIbB448/xje/9nXCMEQLcITgbOgREv/7cgBstOaE8LgQ+mSEwCgWe/DsM4BO0wSZjJMO+TAMI4bGS0CJushedxtJKWm329SqyzhOBqMHjUwIGBgoc+7cRR5+6H6mp2ep1eo0mk2ymcwtuV8pJc1mi4cevI+f/skf5R/8yv+G0iu4KtIwcN0OprnSz6iVxrQsjhw9wU/+2I/QbrcRQnDx0hTbtmym3e4QRYqBgTI7d2xDCEG9XufMufPs3b2LCxcmcRznhgwnpaTVbPGjv/CX2LtnJ//zP/5fk2DNOu7PMGi12szPzwECzwtYrizyhT/8LTZu3MbCwgy25WDZNtNTF/jjL/weM9OXiKKQqckL5HIF6o0qh996nXa7yYYNmzl08BV27j7QAyR0a9lObNrzmBZCJJh8tTQvVhwYoLZcZf99+9l/4ABnz5ylXC5x5tQZJicvUSyVadZrALSDIMZ7gcTnUyC6JkKIDViWveoQqShCGsY9PaRDqdiH27R1G3PTU0xeOk82m0MaJrValUcfeoBPfPxpfuu//j47d25j29Yt/MHnv5QKn1ul4QDGRoeZnlkgX8zjdWLA3q07dmFaJudPn0IphWU7gKbdbPETP/5nsG2LL3/5qzzzzFNcvDRFEIQc2L+Hxz70EGOjI/zjf/JPGSiV2LdvD0opzpw9z9tHjpPLZm64/i4UfDabIZvNUlmukclk8NwWjjOEYRWSQIS4zr2BZRnkMhYgaLs+YRilwLdd90cQQ5mHQYBp2Slql+NkUSr+fBSFiR9toVSEZdlrsDI0hszguQso5aE15ApFDMtMUREuR+26JsPliyU8L8ZJVFFEFCnCMMRxbAzDwMlkadZrOI7D8PDoKv8um82hlGJm8hIj4xOUBgY4feI4mUwWRKy+h0ZGmZ+dodVs3JNMJ6TE7XT4yDMf5/EnP8qLz36Dg6+9TKFUjhG7PI8wjIiiENM0CcOQTCazcpJuMdaL7/sJsxsEvkcYhnzq+36IbC7HV7/4+TgwYmfiQI4fH9x0GpJSOI6DaRhs3bqZ8xcuYRgGQRDgui6WZbF3zy7Onb+Y+GPceP3JPaoEVj2Xy6MB32snDFciilrXDFqk4xi0TqA8Yr9O9KIAXTaso7eQQrMaKqQ3itmFd79R+EejMY08XmduzQx3XYiFKIphz6RpYhga27YSG1ml6lZKg9ENMbZ7NpdLYLNjIKGZmSlGJybYsXsf586cYvP2HbEp0WgwsXETzXqdRr26ZuDQu4l0ckhnpiaZvHgufWYqirAcB8M0MQwDIRw0MRydUvq29QBnMhkMK7Y4tNYxuG8Upwls28F1O6gojIe4KJXCZugeTRkpxclTZzEtE5VAicfgsJp3Tp7Gtqx1I3eZUmJaFtIw8H0PIQzCsIVplzHN4ppMOstaewJ/lRx4l3JeCImK3B5NfJOoXVEUEQUBuVwhTY7GmQGNYapkco6HFHHqYG5mGtM0KZbKONkMvufRrNcxpMHC7CyZbA7bcdJ0g2EYWLaN53tJ3uPeLN8SQnDpwlkWF+YwTRPbiX2zwPNi5/wqm3E7YfKiKCQMEkRhDa+88Gyag5JSxtopCLAvW1svjJSTWYFKTEGlifN3WuubhMmDIPDRURfCL6TTmkRK847f47jSZB1pkKuZlF1yMpk4yXnZ0w+DkMBfiaTFALCx1FRRRC5fQAhBrbqMiiLyhSJ+EIeguz5ePJBHJUnKe7e0uVsXmkYCL/Ot3o/1XL6Gq732nq/rqmbo3SCIVz+7mzcpAbfdvuot944KpscW9j0XEFSXK4lNbWBaFu12PKoq6gLE9nz33sal5IrRynfSfV9tDXfWftx7Z8O8keN/1Q24hhTsOrhd6O7eMP+qoRZ96tMHlMxUCndHFl3OTDdhYlwJLNpvsenTvU8rBQRrQu2CbKGQ5mj61Kc+rY/i5lODKLr25FRzJdoSxTPBSuU+pEmf+nQT3mZcEXX9eRlm71fiFoWo//T61KebZbwbxCh6GE7HpVbJ7Ld+aKNPfVqvD6duWAObMlw8Yiqi4zZvSp1et+atb6T26QPhw2UwLWttPpzW0G42erp4185sEZqrfaurKc3b1OrQpz7dSRT6PoWBweuOYEth8nSKmiUvN0qvpjtTZguBgjBwxJVMJYBAa+paYUJPa76+6qLi6aCr5zJ3a1D7qYUPYhjirjEm0/+qKMKwzJtD7dJa95SorHYMpRD4WrPFtPmUU6SlFQZxyKVbe6eBopC87Lc47ndQrTZIiWmacZW5bSVYGfF187ks7XYbpeLmRCHjkjPQa2pqvJOd6D5q13r9obtjqIxI53yvjczrMZvtOOks6t4S1jAMUEFAiGZcWkxHAZdCH0sIHCGIEjOyrSNGDIsRYSItk6ce/TCtjku90eCB+/ZTq9XpuC6djsvGDRN87Rvf5qknn6BYKDAzO8fiUoWBcolMJsOht4+sqbHxjjMzwiDR6MYdV0sZ+D4ancA+rFgv+n1Z14pWi1uFShgyew1n5XZrK7GmzwkkQdggCtvXxz65LsMl6E75Ygknm0vxL1IgIa1xslm8Vou22yZKBsLnpeTHcoMsRyHjpsWgNPndVgVXqxgEVkryuRyf/d5P4nke3/99n+b5F15hfmGBDz/+KNVancNHj/NXfu6n2bplM5/7gz9m395dZByHV18/yGuvH0yxKu8WzRaFIUMjY9i2TaNeo9OO+7uEENhO5rJ9vaJf/hafIUEUBmm3gNaazdt2YJgm05cupPsrTTNu0ryiX2BlbenY6J6/3y2bhn6AiuJogGnmsZ0RoshFiht1DIhUkMURQp0U3OsU6k9rlfa7JXBfl71+JYjr2gSiwDHHcNuTax4hfVXULikNbCdDu9VKwx3dBURR3GiayWTQbjz4PEJTkBKlIUAzJi1GpIGZoEUJ4vrKV18/yL79e2h3Oly8OMXExCjNVhOlFYVCHlNKTp46i21ZbBgf5czZCzz9kcexLeuuhFgIw5AD9z/Ern37efHZb3Ly2BEy2SyW48RYGt0mzEil2Ijd1plbLtQ1WI6N1hCFMdM9+uEnsW2HL89M4XleXPhgOQSBl0aeI7XSUCpF7HcHYYysJQ2ZMF/ik69HQVymUCzHxvc8dBQhpY1SHkp5125ATXgjDCNcN66OymSyGIbEbcWwEd1ooW07cSO1iuJofBQipcS2HYIgoAvqZJhmGkdYS8e31grTyCGEidY3C5OXcLvSKkZAjxRBEMadwEEQM1oiDbpGpkRQVSGzKqCuIv6os8yItKirCEtKOq7L2MZx/vwPfJZIK945eZqO6zI0WOb1Nw7xb//Df+a//aW/yrkLF1lYXGJgoEyz1eZzv/P7VKtVspnM3ZkXFKTweK7bSbrpjRgNLfCJojhvk8vl4metNIEfpNj04hYpN4hBoXzXxbSdmOEQ1JYrjIxNYBgmWrtI0yQMfcIgSHAqBblcDq0UYRTh+S6maTA6PIgGOu1OAtQjaXc6ab/jWteuL/OFDMMkCleQjK83ldcwJO12hyc+dIC//Td+DhD8i3/1n3jz7TM8/dFPEwQBjhMDT01eOodhmBSLZVqtBnv3P8D83DSHD73Grt0H6HTaPPDQY/ieR3V5iWw+z+G3XqfTafW4VFfjk/V3sJrXcwbDIGBwcJBt27eD1oxPjPP6q68xNzdP1smkeJS2ECgNL3kNBHEw5SQeUsCEluQch1NnzvH//d//L0KtyTgZ3jp0BK00y7UaUgj+j3/57yiWivzB57/Il778NYIgoNlq8/t/+EUKhQKFYuGuMSdXDoXJ9OQFoiiktlyJUbvQSGHgeT6PPvIgn/qej/LKq2/yyMMP0ul0+J3f+0LSNX9rRIxMtGaz0WRwaIgosRQ0mue/9XVGxsZjpkk0q5QxgO1P/9SPobWmUlnmvgP7eOfEKV58+TU++vSH+Z6PPwNa818/93k+/tEn8TyfufkFvvP8S7TbnTVDZhhSEoYRvu+Ry+bww3BdPp/vB2zcOM4P/+BnAfid3/siA4M1nvjwx3BdNzbfpWBpcY7NW3bwqe/9Ab7x1S+xb/8D5HIFLl44y+YtO/DcDn/xL/11Xnzu6+RyBTpum6Nvv3lbzHvzej6I7/t8+MknOXDgAFIKPvqxj7G4sMjk5CRaxIx2MfLYZdnstTLIVOORmJpgC8HzXpOsaeHYDiSSvFarA+DYscPexTQMohDP85FS4mSzoDWu5yHvsrYerTWmabJcqTA/O4Ntx7AK9GBm7Ni+jbn5RT79yY9z8vRZ8gnM2y1jNilptdr81E/8WZ5+6gn+0299jiPHTmIaK6b+3PQUlm33RCxjNKxTp8/xY3/2Bzhz9gKtdhvP89m7ZxdDg4M4jk0mk+G+A3sJghDXdQHYv28PL778KsVCYU0uQBiG/LX/588zMT7Kv/2/f5OFHgi/tfrJvVF0KQ0qSwscPXKQbC6P2+kgDQPLsmk0atRrNXzfI/BdqstLjI1N0Om0mJ66yMsvfgshJSdOHGF0dDzR1Lx3DNf12ZYrFSqVCgvz83TabarL1RSN2USwpCL+oF1N/LXEdU4MbAGEWsdgK0LG0jVxSqWUq3JxKcJSgvbVm5KQd2kPndaafL5AceMmOu0W9VothcrTOhY6D9y3j69981l2bNuC1pp2u0OhkL8lPmuM/WjywsuvgoCjx0+SzWbwEvO2NDiIlAaNWnX172nNnt07aDRaHD58hKeffpJ6vRFD4jUaZLMZNkyMc+LkabZv28rw0CDN5sy69kkKgesHPPfcS2zcOMH09Cz5fA6346/p+0ppstkMBw+9w8//1f8eARw8dAKB4ptf/yLDI2PUqsuYpkkuXyAMA06dPEoUhpw+dZxmo8bI6AT1epVzZ0/xn3/91yiVBpiaPM/I2ASe19XU7xFMXr5UptNuYZom+XyBytISYRgkYDeKTDZHq1FHAKoHdz6uxxTpBspErXfRmbqS3zTNdSP13m35N8/zePSJj/DI40/y+ssvcOiNVymUSvF7rotpmgwMlJiamkUI2LRpI0tLS7c0YtKFo2u1WgwMDGJYJoHnEYUhz3zyM2SyOZ792pcTYKEYBNV3PUZGhgjCkJmZWUqlEvlcDgQ8/OD9LC5VyGQc3j5yjEajyYaJcR556H7ePHiYerO55jnxQgrcjocf+AwNDvWgdg1jWDmiyL3us4jvLaLdcYGYAS3TRAhJGAZp4/PK6DMVA/8kgRGtVRxMsm2iKEyQqeNAipSxD3n9aKXGNHLrgsm7DhCsTqM3S4sLmKaJlHbqRwliaIVcociOPXuJwhDTsgh8n3yhiJCSQ6+/wq69+9m0dTvf+fpX2Lh5UzqWdXzDJiYvnGN+bhbrLhrSsT4fziDwY6h4achk/oPCsGxkgoo2N7dALhdj48/NzWMmft6t1LKGYVAul5GmkXbhS8Mgly/gZDKp8IvXaSKNgIWFJRBQLpdRUUStXkcIwXeefwnfD5IDnqVULLK8XOPb33kxBoiSa5/ppyNNxrHJZByElKgwRAhJFLlYziA3nq0LjgPZbDFNC3R/2radFPLuyuCpWPVKrARsTDNeewyidKPR2yuzD5QKeNeoXQCmGePQW7Ydc2zigHeh1IQUeL6XYhM6mSz5YolOq4XvewkUnIlt2ziZDMOjowghadRrDAwOceHs6XtWw8WbaHH8yFssVxbRSiWh6gghQzK5/BXD+5zM7YFz12meSeEn/pZhGBw5+AZCiiQiGOfppDTI5PJXxt97jm0x+Vt1NYSTWXn/pmC7YiEcpyskUdTB68whjQx37MBqDQhJFDaTNb6L+XAArUadXKGY4pP0PvAoiui0mgkuX8Ti3CxCCArFEtKIcxhup0MUhpw7fRI/8GK1WqshpcTrdJibnSYMg3t6ymk89shidmoShEg1eQy0Gr7nqY5eoamUYmryYmwWmVYq+HzPfV+AeVewTklMwhaEzTt+j6+XulizD9eVbPpaCMAJBkrvw+qWBHV9tC7OYWrCJH93VbGKIkzLuudRu7q+Rm8gqr+uNa/wbhCrq6yad4W8fE1muOz1VQP8YJWj2gsx3UXzTezVD0wHwJ16n3f+87/3zod5LSZa585d99GkeO79Fps+3eOCVVw20+CqDKdVHJ2yM5nUqe5Tn/q0PrKS4oZ4jPH1NJwQKBWRyeWwMxn67dl96tP6vU1hxLGJtZmUgIpCELIPjtynPt0EqTXU+ppX8KnuQ/70qU+3i1YxnFYKpaO+SdmnPt0ESSkR0lgbw2mtCdNepPVar2uhPhf36R43KZXANMWqHPU1GE70gLasz4HTgEKnbfdXvq+J+4L7jmGf7nXSKK0wuHbTqvnuLh/3u22STg8IjE4wLkj/PR35tBNUrwReg+48ZWBVedcN0hh9+oAd4Duf1qdIzOvf7NWrTbot9CGasjCRCBpJ7kEm8AzdxeQFDEqDllKoSCGkJIoUUaSw7bjyJAwjjARWIIo0hiH7Z+29OM5XmYB6pzBaXKNo3gXPMHz3DKe1xjBNLDuzSt1oQCQNpaHvgYrfC9BEWjMhTVSi9WwhmFIBPhBGilwuy/c8/SStVptKtUYQ+EyMjTE3v8Dw8BCu61Kr1fnQow/zzolTvHnobZy7FIvy6hJw9X2soEi9l4djdeW9aZoJmld4B61NI4SBaRaS19fwhC+rCV2RH9dqmYlf723WEGL1Pq31d7WOCNdRZH1NECHLcmLYshj2OEVk0glCk2nZ+F4nNQ2zjsPW8Q20VMi4tDClpDI/g9txk87nPMNDQxQKBUZGhrk0OcWGDROEUcTQ4ABSSoaHh9m4YYJWq82RY8fvambrNn5u2ryNYrnE7PQUtepy0ulucDlkWzLv6PauSSZVEMnvbNyyDUMaXDx/JoV2kIbRc0bFVcy7ywRI6gOsrR/sWkJJJMUX8SWtpOg9uAHjd+fFRwmTGUl7T7RqPasg8ljpTJDSSBullVIJqGv3tm6cj45LuWyEMBJNJ9bLcD0YfV2JoeOObrRGJbViKlJIU676fBAELM7N42lFRwiywsDzPRAxwtLS8jIA4+NjvH34KIV8DCNgGAZLlWWazRamZdJstgjC4J7xQQqFLAOlErXKIlWlEEm7k1JRYkJHGIbRcwhun3YRCdRdpEIMw2CwVMJ2HGamLhKG8Wtaxdqme2i7+CsymZDbC8XQ/burHd5NW088gVeiVHgZc4vrPl/TzGJaZaJIo1QMyprNFkCQ4pKEgU+kohTmr1Qq4vkunXYL28mgVEShkAchCHwPw7Tw3PYa8WXWJ2RuCHUOYNt2gi1p4bodwjDqlTFowFWKS36MD9jRCiORFlkhY4i2wOfosXfI5rIcPnqMWq3Ogf17WV6usWFijHqjQb3ewLYsZufmCcPwru8EF0IyNTlFrd6kVq3FXd+JMtBa4zgOpVKRdqtNqVTEDwIqleVbvg6lYjg+0zTT7g2lFMeOHaVQLF+GEqZRSjM0NIhOmCmbzdJstqjXGxRLBYaHhgDNwsISpVIx7o90XVqt9rrXFrdwEYfTxfq0olI++cIuCuUn2LbZ4vjxFwmCaQ7c91DczCrjLpaZ6Uvk8nkGB0dYXl5ifGITjXqNC+dPMza+gSDw2bf/ISpL8zE8JIIjRw7eFpQ483qeRxiG7NixnfHxcbTSjI2P8/rrrzE1NY1lmQjARTMiJLax8rSKxMk/BTgI5lSAFILX33wLpTW2bWGaJseOn0BKg+mZGQwj/s6LLy8hBCmQ0N0ckJBS0um0cd1Oz6CUGNcsihRDgwOUigXKpSJaaQqFPNVq7ZYidymtGR0ZxrYtGs0WjWYz1RlB4FFZmk+1l05MRK0V+VyOgXKJVruNbVkpDs3Q0AAD5TJCQJT45ipSlEpF5uYWaDSba9Z0Qgg2TMQIWdVqDdfz1sNv6T8eud+g3YnwPDCkQgoNUoCIz08uFwPE5vI5Ou0GhUKewO8wPDyEaUqENtAqJJOJ8UwMw0jxTG51QOkGGg6ymQyWZRGGIVpHq4aGG0JQVxHntY8prqJcNSgBbRVhILAydurz6URzxs67cU3tei9FAlffk07Qf2083yebz9DpeIRheMs6roUArTRhGDExPsb8QiUxq9R1/ZQucpppWdiWTbFYoNnukM/n0BqcjI1jO1SWa2QdhyCMqDcaOI5DrV5PwXtuRF0ztljIMzs3Hw9vWatS0V3tHTI541GtKQxT06y3eO21VykWS3TaMZCrYRggBJVKnVarwczsPK1WA8fOIGSdxflZZuYWyObyLC3MUSoPEoXRbYneik17HtOxeg6JEt8pxi3JJOi1DoVCgXqtnjq2QRBiWiZhEEukUEU9KfMVgJbu9BsJVxlPde20w71AQsRQFINDIwyPjFFZnGdpaR7TshEJTIVt2xQLeeYXFjFNk1KxmIL13GqTsgsmJKVM/cexiY0YhsHczFSMaCUN0PHaBgZKaK1ZWqpQKBRS4TFQLiWQ6CYXL02hlKJYLJLPZqk16nTc9WGIRglagGlaiTkbYhgZpHTWEIiII5pKWRgGaB2kwkQnmDvdI9edv90VBt2gSRdoSEUKpVXyWnds2o39NyFMoqidrlUaJoZhXeaHrgm1K86pea5Lu9VKolc6lYxdFSgNg3K+GN9oEnGzLAulNY1aNRkKkmVpYS6e0iJiVOdsLk+73SS4h6Hy0Jqx0VE2bt6M12mxuLACAd4F2p1fdFPcmGqC+XKrqXvN3vC5YRiMj41imRaVxXk8z03XJqVgebkKgOM4eImpJ4SgslzF8/zUMpFS0mg0cF031s7r3MsUUm9VkFMnJt2NgiZd6DuXOJaz8nlpmIlZv/JZwzDpnQQVH2eRgN+aMZBxMltjrcM8SN2EmwIR0qnJR09+IvWnxMp7omfjBgYHAVJ0r64EiQKPgcFBSgODeJ0W5YEY+iwIfArFEmo+xPdchDDuQV6Lc5lnzp5muVrD991Eu6hkdFVcd7NyCEgHYtw28ZNMRuqatzMzswgpCZOIZLcRWWiZSniNTv3rrra0HZuVyR2k99X7ufWmBWJ/M0oilQFC+AhhriEKKG6Yn7v658U1zelrf/cqgZvITcoi3wVMXlzIHGDaVjIQ8XKWhDD00gxjtzDEMiTCipkzDAKKpSLoCB0FDAwMUCgUQUAUhuQLRaqVpZSp70X4Ba01KgxZmJtGSBlbCUlKYGUQhH6XgeZ1rCcZ59Rd28L8bOJLGukBU1F4xdr0Zef1akM6u5HXm02fXJ6Uj6L2XbTTaxeR156eEwX43VFFV1HjvWbRuXPnegIDYFpmPNTD92IUL8tCXRZ560bx1upg382+HFctj3v/8Ra7Guny53/dtel1vv4eHOK7iczr3vBVm1H1VSNa3Y2LEZnjIEoXpasLnde7sYJ+w86dEkHt0x3BcDe3cbpHOq16Xev3xGzqU5/uZJK9USH6PWt96tO7MoOluP7EHXO1aWgnBaR9/dOnPq2b3aRx3W7vK0xKIeWaRw31qU99ummTsk996lOf4frUpz7D9alPfeozXJ/6dBfQ/x9MldKFDKHdrgAAAABJRU5ErkJggg==" alt="겨울눈사람 아바타" 
+          style="width:80px; height:80px; border-radius:50%; border:3px solid #38bdf8; object-fit:cover; background:#1e293b; box-shadow:0 0 22px rgba(56, 189, 248, 0.6); display:block;">
+      </div>
+      <h1 style="margin:0; font-size:26px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">❄️ 소헌키 종합 시뮬레이터 & 계산기</h1>
+    </div>
+    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전</div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs">
+    <button class="nav-tab-btn active" onclick="showTab('tab-passive')">🔮 고대 패시브 계산</button>
+    <button class="nav-tab-btn" onclick="showTab('tab-synergy')">✨ 신화 우선 시너지</button>
+    <button class="nav-tab-btn" onclick="showTab('tab-refine')">🔨 영원 장비 연마</button>
+    <button class="nav-tab-btn" onclick="showTab('tab-orb')">🌌 영원 오브 연마</button>
+    <button class="nav-tab-btn" onclick="showTab('tab-ability')">🌙 가호 & 원혼 어빌</button>
+  </div>
+
+  <!-- ==================== TAB 1: 고대 패시브 선택형 계산기 ==================== -->
+  <div id="tab-passive" class="tab-content">
+    <!-- 등급별 각성 단계 소모 기준표 -->
+    <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px;">
+      <div class="card-title" style="margin-bottom: 8px;">
+        <span style="font-size:17.5px;">📊 등급별 각성석 소모 기준표 (패시브 / 영웅 / 스킬 공통)</span>
+        <span class="grade-badge grade-ancient">전 분야 공통 적용</span>
+      </div>
+      <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
+        소헌키의 모든 패시브, 영웅, 스킬은 등급별로 각성석 소모량이 완전히 동일합니다.
+      </p>
+      <div class="custom-table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>등급</th>
+              <th>1각성</th>
+              <th>2각성</th>
+              <th>3각성 (풀각)</th>
+              <th>3각 누적 비용</th>
+              <th>1각당 시너지</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="grade-badge grade-advanced">상급</span></td>
+              <td>6,500 <small style="color:#94a3b8;">(실측)</small></td>
+              <td>12,000 <small style="color:#f59e0b;">(추정)</small></td>
+              <td>17,000 <small style="color:#f59e0b;">(추정)</small></td>
+              <td style="color:#93c5fd; font-weight:800; font-size:15px;">35,500 <small>(약 3.55만·추정)</small></td>
+              <td><strong style="color:#10b981; font-size:15px;">+1점</strong></td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge grade-unique">특급</span></td>
+              <td>15,000 <small style="color:#94a3b8;">(1.5만)</small></td>
+              <td>28,000 <small style="color:#94a3b8;">(2.8만)</small></td>
+              <td>40,000 <small style="color:#94a3b8;">(4.0만)</small></td>
+              <td style="color:#d8b4fe; font-weight:800; font-size:15px;">83,000 <small>(8.3만)</small></td>
+              <td><strong style="color:#10b981; font-size:15px;">+2점</strong></td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge grade-legend">전설</span></td>
+              <td>20,000 <small style="color:#94a3b8;">(2.0만)</small></td>
+              <td>40,000 <small style="color:#94a3b8;">(4.0만)</small></td>
+              <td>65,000 <small style="color:#94a3b8;">(6.5만)</small></td>
+              <td style="color:#fdba74; font-weight:800; font-size:15px;">125,000 <small>(12.5만)</small></td>
+              <td><strong style="color:#10b981; font-size:15px;">+3점</strong></td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge grade-mythic">신화</span></td>
+              <td>100,000 <small style="color:#94a3b8;">(10만)</small></td>
+              <td>350,000 <small style="color:#94a3b8;">(35만)</small></td>
+              <td>700,000 <small style="color:#94a3b8;">(70만)</small></td>
+              <td style="color:#fda4af; font-weight:800; font-size:15px;">1,150,000 <small>(115만)</small></td>
+              <td><strong style="color:#f59e0b; font-size:15px;">+15점 (추천)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>🔮 제작할 고대 패시브 선택 (순위별 분류)</span>
+        <button onclick="clearAncientSelection()" style="background:#334155; border:none; color:#cbd5e1; padding:6px 12px; border-radius:8px; font-size:12.5px; cursor:pointer;">초기화</button>
+      </div>
+      <p class="card-subtitle">원하는 추천 빌드를 누르면 해당 고패 및 재료가 자동으로 세팅됩니다.</p>
+      
+      <!-- 4종 추천 원클릭 선택 버튼 그룹 -->
+      <div class="grid-4" style="margin-bottom:18px;">
+        <button onclick="selectJobCore('am')" style="background:linear-gradient(135deg, #4338ca 0%, #312e81 100%); border:1px solid #6366f1; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(99,102,241,0.25); text-align:center;">
+          🧙‍♂️ 아크메이지(제네시스)
+        </button>
+        <button onclick="selectJobCore('reaper')" style="background:linear-gradient(135deg, #991b1b 0%, #450a0a 100%); border:1px solid #ef4444; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(239,68,68,0.25); text-align:center;">
+          🗡️ 대사신(소울리퍼)
+        </button>
+        <button onclick="selectJobCore('phantom')" style="background:linear-gradient(135deg, #0369a1 0%, #082f49 100%); border:1px solid #38bdf8; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(56,189,248,0.25); text-align:center;">
+          ⚔️ 팬텀(오버로드)
+        </button>
+        <button onclick="selectEndgamePassives()" style="background:linear-gradient(135deg, #86198f 0%, #4a044e 100%); border:1px solid #d946ef; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(217,70,239,0.25); text-align:center;">
+          👑 종결패시브(1·2·3순위제외)
+        </button>
+      </div>
+      <p class="card-subtitle">제작하고 싶은 고대 패시브 카드를 클릭하세요. 1·2·3순위에서 이미 완성한 재료는 아래 재료 목록에서 <strong>[제외]</strong>하여 4순위 고패의 실제 추가 비용만 정확히 계산할 수 있습니다.</p>
+
+      <!-- 접이식 순위별 고대 패시브 아코디언 그룹 -->
+      <div class="accordion-group">
+        <!-- 1순위 -->
+        <div class="accordion-item active" id="acc-item-1">
+          <div class="accordion-header" onclick="toggleRankAccordion(1)">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon" id="acc-arrow-1">▶</span>
+              <span class="accordion-title-text rank-pill-1">🥇 1순위 : 직업 메인 고대 패시브 <small style="font-weight:normal; opacity:0.85;">(상급/특급+전설 = 약 16.1만 ~ 20.8만 개)</small></span>
+            </div>
+            <div class="accordion-right-info">
+              <span class="accordion-count-badge" id="acc-count-1">선택 1개</span>
+            </div>
+          </div>
+          <div class="accordion-content" id="acc-content-1">
+            <div class="grid-3" id="rank-1-container"></div>
+          </div>
+        </div>
+
+        <!-- 2순위 -->
+        <div class="accordion-item" id="acc-item-2">
+          <div class="accordion-header" onclick="toggleRankAccordion(2)">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon" id="acc-arrow-2">▶</span>
+              <span class="accordion-title-text rank-pill-2">🥈 2순위 : 전 직업 필수 방어 관통 (근원관통) <small style="font-weight:normal; opacity:0.85;">(127.5만 개)</small></span>
+            </div>
+            <div class="accordion-right-info">
+              <span class="accordion-count-badge" id="acc-count-2">선택 없음</span>
+            </div>
+          </div>
+          <div class="accordion-content" id="acc-content-2">
+            <div class="grid-3" id="rank-2-container"></div>
+          </div>
+        </div>
+
+        <!-- 3순위 -->
+        <div class="accordion-item" id="acc-item-3">
+          <div class="accordion-header" onclick="toggleRankAccordion(3)">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon" id="acc-arrow-3">▶</span>
+              <span class="accordion-title-text rank-pill-3">🥉 3순위 : 주속성 고대 패시브 3종 <small style="font-weight:normal; opacity:0.85;">(화염/번개/어둠 택1)</small></span>
+            </div>
+            <div class="accordion-right-info">
+              <span class="accordion-count-badge" id="acc-count-3">선택 없음</span>
+            </div>
+          </div>
+          <div class="accordion-content" id="acc-content-3">
+            <div class="grid-3" id="rank-3-container"></div>
+          </div>
+        </div>
+
+        <!-- 4순위 -->
+        <div class="accordion-item" id="acc-item-4">
+          <div class="accordion-header" onclick="toggleRankAccordion(4)">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon" id="acc-arrow-4">▶</span>
+              <span class="accordion-title-text rank-pill-4">👑 4순위 : 초극후반 엔드 종결 패시브 <small style="font-weight:normal; opacity:0.85;">(원소창조 & 고대의 기억)</small></span>
+            </div>
+            <div class="accordion-right-info">
+              <span class="accordion-count-badge" id="acc-count-4">선택 없음</span>
+            </div>
+          </div>
+          <div class="accordion-content" id="acc-content-4">
+            <div class="grid-2" id="rank-4-container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 선택된 고패 필요 재료 목록 & 제외 토글 -->
+    <div class="card" id="recipe-card" style="display:none;">
+      <div class="card-title">
+        <span>📜 필요 재료 패시브 현황 & 이전 단계 제작 재료 [제외] 설정</span>
+      </div>
+      <p style="font-size:13.5px; color:#94a3b8; margin-top:-8px; margin-bottom:14px;">
+        💡 <strong>팁:</strong> 1~3순위 제작으로 이미 3각성을 달성한 패시브(원소융합, 불길권능 등)는 우측 <strong>[이미 보유 / 제외]</strong>를 체크하시면 총 계산 비용에서 즉시 차감됩니다!
+      </p>
+      <div id="material-list"></div>
+    </div>
+
+    <!-- 파밍 소요 기간 예측 (주단위) -->
+    <div class="card">
+      <div class="card-title">
+        <span>⏳ 주단위 파밍 소요 기간 예측</span>
+      </div>
+      <div class="grid-3">
+        <div>
+          <label>🏆 주간 쟁탈전 보상 각성석</label>
+          <input type="number" id="p_war_gain" value="150000" step="10000" oninput="calculateAncientCost()">
+        </div>
+        <div>
+          <label>🎁 주간 이벤트/상점 획득 각성석</label>
+          <input type="number" id="p_event_gain" value="100000" step="10000" oninput="calculateAncientCost()">
+        </div>
+        <div>
+          <label>⚔️ 일일 던전/방치 획득량 (하루)</label>
+          <input type="number" id="p_daily_gain" value="30000" step="5000" oninput="calculateAncientCost()">
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <label>💰 현재 보유 중인 각성석</label>
+        <input type="number" id="p_current_holding" value="0" step="10000" oninput="calculateAncientCost()">
+      </div>
+    </div>
+
+    <!-- 대시보드 결과 -->
+    <div class="result-dashboard">
+      <div class="res-label">선택한 고대 패시브 총 필요 각성석</div>
+      <div class="res-value" id="p_total_cost">0개</div>
+      <div class="res-sub">
+        <span>만 단위 환산: <strong id="p_cost_man">0만 개</strong></span>
+        <span>|</span>
+        <span>주간 총 수급량: <strong id="p_weekly_total">0개/주</strong></span>
+        <span>|</span>
+        <span>목표 달성 예상: <strong id="p_weeks_left" style="color:#38bdf8;">0주 (0일)</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 2: 신화 우선 시너지 계산기 ==================== -->
+  <div id="tab-synergy" class="tab-content" style="display:none;">
+    <div class="card">
+      <div class="card-title">
+        <span>👑 미사용 신화급 패시브/스킬/영웅 1각 시너지 계산기</span>
+        <span class="grade-badge grade-mythic">신화 우선 +15점</span>
+      </div>
+      <p class="card-subtitle">
+        신화급 1각은 각성석 <strong>10만 개당 시너지 15점</strong>을 제공하여 가성비가 가장 뛰어납니다. 
+        신영웅(이그니스, 제논, 다미안) 3각 조건을 위한 <strong>시너지 600점 달성</strong>에 필수적입니다.
+      </p>
+
+      <div class="grid-3">
+        <div>
+          <label>미사용 <span class="grade-badge grade-mythic">신화 패시브</span> 1각 개수</label>
+          <input type="number" id="syn_mythic_p" value="5" min="0" oninput="calculateSynergyDetailed()">
+        </div>
+        <div>
+          <label>미사용 <span class="grade-badge grade-mythic">신화 스킬</span> 1각 개수</label>
+          <input type="number" id="syn_mythic_s" value="5" min="0" oninput="calculateSynergyDetailed()">
+        </div>
+        <div>
+          <label>미사용 <span class="grade-badge grade-mythic">신화 영웅</span> 1각 개수</label>
+          <input type="number" id="syn_mythic_h" value="5" min="0" oninput="calculateSynergyDetailed()">
+        </div>
+      </div>
+    </div>
+
+    <!-- 전설 및 특급 추가 업그레이드 -->
+    <div class="card">
+      <div class="card-title">
+        <span>✨ 신화 이후 잔여 각성석: 전설 & 특급 업그레이드</span>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label><span class="grade-badge grade-legend">전설급</span> 1각 개수 (개당 2만 / +3점)</label>
+          <input type="number" id="syn_legend_all" value="10" min="0" oninput="calculateSynergyDetailed()">
+        </div>
+        <div>
+          <label><span class="grade-badge grade-unique">특급</span> 1각 개수 (개당 1.5만 / +2점)</label>
+          <input type="number" id="syn_unique_all" value="10" min="0" oninput="calculateSynergyDetailed()">
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <label>🎯 현재 내 각성 시너지 총점수 (인게임 편성창 확인)</label>
+        <input type="number" id="syn_cur_points" value="411" step="5" oninput="calculateSynergyDetailed()">
+      </div>
+    </div>
+
+    <!-- 시너지 결과 대시보드 -->
+    <div class="result-dashboard green">
+      <div class="res-label">시너지 업그레이드 총 소모 각성석</div>
+      <div class="res-value" id="syn_total_stones">0개</div>
+      <div class="res-sub">
+        <span>소모 각성석: <strong id="syn_stones_man">0만 개</strong></span>
+        <span>|</span>
+        <span>추가 획득 점수: <strong id="syn_add_points" style="color:#fef08a;">+0점</strong></span>
+        <span>|</span>
+        <span>적용 후 최종 시너지: <strong id="syn_final_points" style="color:#67e8f9;">0점</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 3: 영원 장비 연마 기댓값 ==================== -->
+  <div id="tab-refine" class="tab-content" style="display:none;">
+    <div class="card">
+      <div class="card-title">
+        <span>🔨 영원 장비 연마 기댓값 시뮬레이터</span>
+        <span class="grade-badge grade-ancient">Lv.0 ~ Lv.20</span>
+      </div>
+      <p class="card-subtitle">인게임 공식 연마 확률 정보를 바탕으로 목표 레벨까지 필요한 평균 시도 횟수를 계산합니다.</p>
+
+      <div class="grid-2">
+        <div>
+          <label>현재 연마 단계</label>
+          <select id="ref_cur_lv" onchange="calculateRefineExpected()"></select>
+        </div>
+        <div>
+          <label>목표 연마 단계</label>
+          <select id="ref_tar_lv" onchange="calculateRefineExpected()"></select>
+        </div>
+      </div>
+
+      <div style="margin-top:16px; display:flex; align-items:center; gap:8px;">
+        <input type="checkbox" id="ref_safe_mode" checked onchange="calculateRefineExpected()" style="width:18px; height:18px; accent-color:var(--accent);">
+        <label for="ref_safe_mode" style="margin-bottom:0; cursor:pointer; font-size:15px; color:#ffffff;">
+          🛡️ <strong>하락 방지 사용 (재화 2배 소모, 하락 확률 0% 고정)</strong>
+        </label>
+      </div>
+    </div>
+
+    <div class="result-dashboard">
+      <div class="res-label">목표 단계 달성 평균 연마 시도 기댓값</div>
+      <div class="res-value" id="ref_expected_trials">0회</div>
+      <div class="res-sub">
+        <span>성공 확률 구간: <strong id="ref_prob_range">0%</strong></span>
+        <span>|</span>
+        <span>하락 방지 상태: <strong id="ref_safe_status" style="color:#10b981;">ON (재화 2배)</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 4: 영원 오브 연마 (옵션 변환) ==================== -->
+  <div id="tab-orb" class="tab-content" style="display:none;">
+    <div class="card">
+      <div class="card-title">
+        <span>🌌 영원 오브 연마 (옵션 변환) 기댓값 & 곱연산 계산기</span>
+        <span class="grade-badge grade-ancient">1옵션 × 2옵션 개별 설정</span>
+      </div>
+      <p class="card-subtitle">
+        영원 등급 오브는 <strong>1옵션(오브 공격력%) × 2옵션(모든 속성 피해량 증가%)</strong>의 곱연산 수치가 높은 것이 핵심입니다. 
+        1옵션과 2옵션의 목표 등급을 각각 독립적으로 선택하여 동시 달성 기댓값과 실질 배율을 계산합니다.
+      </p>
+
+      <div style="margin-bottom:16px;">
+        <label>오브 현재 등급 선택</label>
+        <select id="orb_tier" onchange="calculateOrbExpected()">
+          <option value="상급">상급 (등급업 1%)</option>
+          <option value="특급">특급 (등급업 0.15%)</option>
+          <option value="전설">전설 (등급업 0.1%)</option>
+          <option value="신화" selected>신화</option>
+        </select>
+      </div>
+
+      <div class="grid-2">
+        <div style="background:#0f172a; padding:14px; border-radius:10px; border:1px solid #334155;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <strong style="color:#38bdf8; font-size:15px;">1옵션: 영원 오브 공격력(%)</strong>
+            <span class="grade-badge grade-ancient" id="orb_opt1_badge">수치 대기</span>
+          </div>
+          <label>1옵션 목표 등급 선택</label>
+          <select id="orb_target_grade1" onchange="calculateOrbExpected()">
+            <option value="SSS">SSS급 이상</option>
+            <option value="SS">SS급 이상</option>
+            <option value="S" selected>S급 이상</option>
+            <option value="A">A급 이상</option>
+            <option value="B">B급 이상</option>
+            <option value="C">C급 이상</option>
+            <option value="D">D급 이상</option>
+            <option value="ANY">상관없음 (조건 없음)</option>
+          </select>
+          <div style="font-size:13px; color:#94a3b8; margin-top:8px;">
+            선택 등급 기준 수치: <strong id="orb_val1_detail" style="color:#ffffff;">+0%</strong>
+          </div>
+        </div>
+
+        <div style="background:#0f172a; padding:14px; border-radius:10px; border:1px solid #334155;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <strong style="color:#f43f5e; font-size:15px;">2옵션: 모든 속성 피해량 증가(%)</strong>
+            <span class="grade-badge grade-mythic" id="orb_opt2_badge">수치 대기</span>
+          </div>
+          <label>2옵션 목표 등급 선택</label>
+          <select id="orb_target_grade2" onchange="calculateOrbExpected()">
+            <option value="SSS">SSS급 이상</option>
+            <option value="SS" selected>SS급 이상</option>
+            <option value="S">S급 이상</option>
+            <option value="A">A급 이상</option>
+            <option value="B">B급 이상</option>
+            <option value="C">C급 이상</option>
+            <option value="D">D급 이상</option>
+            <option value="ANY">상관없음 (조건 없음)</option>
+          </select>
+          <div style="font-size:13px; color:#94a3b8; margin-top:8px;">
+            선택 등급 기준 수치: <strong id="orb_val2_detail" style="color:#ffffff;">+0%</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-dashboard">
+      <div class="res-label">선택 조합 동시 달성 평균 시도 기댓값</div>
+      <div class="res-value" id="orb_expected_tries">0회</div>
+      <div class="res-sub">
+        <span>동시 등장 확률: <strong id="orb_combined_prob">0%</strong></span>
+        <span>|</span>
+        <span>1옵 × 2옵 실질 곱연산 배율: <strong id="orb_mult" style="color:#f59e0b;">약 0배</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 5: 가호 & 원혼 어빌리티 ==================== -->
+  <div id="tab-ability" class="tab-content" style="display:none;">
+    <!-- 가호 어빌리티 (7칸) -->
+    <div class="card">
+      <div class="card-title">
+        <span>🌙 별 / 달 / 해의 가호 어빌리티 (총 7칸)</span>
+        <span class="grade-badge grade-ancient">고대 옵공증 0.064%</span>
+      </div>
+      <p class="card-subtitle">목표: 7칸 모두 <strong>[고대: 가호 옵션 공격력 증폭 1,000%]</strong> 맞추기 (단일 등장 확률 0.064%)</p>
+
+      <div class="grid-2">
+        <div>
+          <label>현재 완성된 고대 옵공증 칸 수</label>
+          <select id="gaho_locked" onchange="calculateGaho()">
+            <option value="0">0개 (7칸 돌리는 중)</option>
+            <option value="1">1개 잠금 (6칸 돌림)</option>
+            <option value="2">2개 잠금 (5칸 돌림)</option>
+            <option value="3">3개 잠금 (4칸 돌림)</option>
+            <option value="4">4개 잠금 (3칸 돌림)</option>
+            <option value="5">5개 잠금 (2칸 돌림)</option>
+            <option value="6">6개 잠금 (마지막 1칸 남음)</option>
+          </select>
+        </div>
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <div style="font-size:14px; color:#cbd5e1;">남은 돌릴 슬롯: <strong id="gaho_remain_slots" style="color:#38bdf8;">7칸</strong></div>
+          <div style="font-size:14px; color:#cbd5e1;">7칸 올 고대 완성까지 예상 시도 횟수:</div>
+          <div style="font-size:24px; font-weight:800; color:#34d399;" id="gaho_expected_trials">0회</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 원혼 어빌리티 (6칸) -->
+    <div class="card">
+      <div class="card-title">
+        <span>💀 원혼 강화 어빌리티 (총 6칸)</span>
+        <span class="grade-badge grade-ancient">고대 원혼옵공증 0.019%</span>
+      </div>
+      <p class="card-subtitle">목표: 6칸 모두 <strong>[고대: 원혼 옵션 공격력 증폭 500%]</strong> 맞추기 (단일 등장 확률 0.019%)</p>
+
+      <div class="grid-2">
+        <div>
+          <label>현재 완성된 고대 원혼옵공증 칸 수</label>
+          <select id="wonhon_locked" onchange="calculateWonhon()">
+            <option value="0">0개 (6칸 돌리는 중)</option>
+            <option value="1">1개 잠금 (5칸 돌림)</option>
+            <option value="2">2개 잠금 (4칸 돌림)</option>
+            <option value="3">3개 잠금 (3칸 돌림)</option>
+            <option value="4">4개 잠금 (2칸 돌림)</option>
+            <option value="5">5개 잠금 (마지막 1칸 남음)</option>
+          </select>
+        </div>
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <div style="font-size:14px; color:#cbd5e1;">남은 돌릴 슬롯: <strong id="wonhon_remain_slots" style="color:#f43f5e;">6칸</strong></div>
+          <div style="font-size:14px; color:#cbd5e1;">6칸 올 고대 완성까지 예상 시도 횟수:</div>
+          <div style="font-size:24px; font-weight:800; color:#fbbf24;" id="wonhon_expected_trials">0회</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    소울헌터키우기 네이버 라운지 전용 계산기
+  </footer>
+</div>
+
+<script>
+  // ==================== DATA DEFINITIONS ====================
+  const AWAKENING_COSTS = {
+    advanced: [0, 6500, 18500, 35500], // 1각 6500, 2각 12000(추정), 3각 17000(추정), 누적 35500
+    unique: [0, 15000, 43000, 83000],
+    legend: [0, 20000, 60000, 125000],
+    mythic: [0, 100000, 450000, 1150000]
+  };
+
+  const ANCIENT_LIST = [
+    // 1순위
+    {
+      id: "frenzy",
+      name: "마력광란",
+      job: "아크메이지 (1순위)",
+      rank: 1,
+      desc: "스킬 피해량 +10,000%",
+      materials: [
+        { name: "마력폭주", grade: "unique", need: 3 },
+        { name: "시간왜곡", grade: "legend", need: 3 }
+      ]
+    },
+    {
+      id: "strike_master",
+      name: "강타의 대가",
+      job: "대사신 (1순위)",
+      rank: 1,
+      desc: "강타 피해량 대폭 증가",
+      materials: [
+        { name: "강타전문가", grade: "advanced", need: 3 },
+        { name: "폭발준비", grade: "legend", need: 3 }
+      ]
+    },
+    {
+      id: "command",
+      name: "전투 통솔",
+      job: "다크로드 (1순위)",
+      rank: 1,
+      desc: "영웅 스킬 피해량 +10,000%",
+      materials: [
+        { name: "전투지휘", grade: "unique", need: 3 },
+        { name: "전술가속", grade: "legend", need: 3 }
+      ]
+    },
+
+    // 2순위
+    {
+      id: "pierce",
+      name: "근원관통",
+      job: "전 직업 필수",
+      rank: 2,
+      desc: "방어도 무시 곱연산 증폭",
+      materials: [
+        { name: "철갑관통", grade: "legend", need: 3 },
+        { name: "절대관통", grade: "mythic", need: 3 }
+      ]
+    },
+
+    // 3순위 (주속성 고패 3종)
+    {
+      id: "elem_fire",
+      name: "불길의 지배",
+      job: "화염 속성 (3순위)",
+      rank: 3,
+      desc: "화염 속성 피해량 +20,000%",
+      materials: [
+        { name: "불길의 권능", grade: "mythic", need: 3 },
+        { name: "원소융합", grade: "mythic", need: 3 }
+      ]
+    },
+    {
+      id: "elem_light",
+      name: "천둥의 진노",
+      job: "번개 속성 (3순위)",
+      rank: 3,
+      desc: "번개 속성 피해량 +20,000%",
+      materials: [
+        { name: "천둥의 격노", grade: "mythic", need: 3 },
+        { name: "원소융합", grade: "mythic", need: 3 }
+      ]
+    },
+    {
+      id: "elem_dark",
+      name: "그림자 동화",
+      job: "어둠 속성 (3순위)",
+      rank: 3,
+      desc: "어둠 속성 피해량 +20,000%",
+      materials: [
+        { name: "그림자 침식", grade: "mythic", need: 3 },
+        { name: "원소융합", grade: "mythic", need: 3 }
+      ]
+    },
+
+    // 4순위 (엔드 종결 5고패)
+    {
+      id: "elem_create",
+      name: "원소창조",
+      job: "엔드 종결 (4고패)",
+      rank: 4,
+      desc: "디버프 증폭 & 영원오브 연마 연계",
+      materials: [
+        { name: "원소융합", grade: "mythic", need: 3 },
+        { name: "주속성 신화", grade: "mythic", need: 3 }
+      ]
+    },
+    {
+      id: "ancient_mem",
+      name: "고대의 기억",
+      job: "엔드 종결 (5고패)",
+      rank: 4,
+      desc: "신화 5종 풀각 / 고패공 +50,000%",
+      materials: [
+        { name: "불길의 권능", grade: "mythic", need: 3 },
+        { name: "천둥의 격노", grade: "mythic", need: 3 },
+        { name: "그림자 침식", grade: "mythic", need: 3 },
+        { name: "원소융합", grade: "mythic", need: 3 },
+        { name: "절대관통", grade: "mythic", need: 3 }
+      ]
+    }
+  ];
+
+  let selectedAncients = new Set(["frenzy"]);
+  let excludedMaterials = new Set(); // 이전 단계에서 만들어진 재료 제외 Set
+
+  // ==================== TAB NAVIGATION ====================
+  function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tabId).style.display = 'block';
+    event.target.classList.add('active');
+  }
+
+  // ==================== TAB 1 LOGIC ====================
+  function toggleRankAccordion(rank) {
+    const item = document.getElementById(`acc-item-${rank}`);
+    if (item.classList.contains("active")) {
+      item.classList.remove("active");
+    } else {
+      item.classList.add("active");
+    }
+  }
+
+  function updateAccordionBadges() {
+    [1, 2, 3, 4].forEach(rank => {
+      const items = ANCIENT_LIST.filter(a => a.rank === rank);
+      const selCount = items.filter(a => selectedAncients.has(a.id)).length;
+      const badge = document.getElementById(`acc-count-${rank}`);
+      if (badge) {
+        if (selCount > 0) {
+          badge.innerText = `선택 ${selCount}개`;
+          badge.classList.add("has-selected");
+        } else {
+          badge.innerText = "선택 없음";
+          badge.classList.remove("has-selected");
+        }
+      }
+    });
+  }
+
+  function renderAncientCards() {
+    [1, 2, 3, 4].forEach(rank => {
+      const container = document.getElementById(`rank-${rank}-container`);
+      container.innerHTML = "";
+
+      const items = ANCIENT_LIST.filter(a => a.rank === rank);
+      items.forEach(item => {
+        const isSel = selectedAncients.has(item.id);
+        const card = document.createElement("div");
+        card.className = "ancient-select-card" + (isSel ? " selected" : "");
+        card.onclick = () => toggleAncient(item.id);
+
+        card.innerHTML = `
+          <div>
+            <div class="ancient-header">
+              <div class="ancient-title-box">
+                <div class="icon-avatar-wrapper">
+                  <span class="icon-avatar-fallback">고대</span>
+                  <img src="images/${item.id}.jpg" alt="${item.name}" onerror="this.onerror=null; this.src='images/${item.id}.png'; this.onerror=function(){this.style.display='none';}" class="icon-avatar-img">
+                </div>
+                <div>
+                  <span class="ancient-name">${item.name}</span>
+                  <span class="ancient-sub">${item.job}</span>
+                </div>
+              </div>
+              <span class="grade-badge grade-ancient">고대</span>
+            </div>
+            <div class="ancient-desc">${item.desc}</div>
+          </div>
+          <div class="ancient-req">
+            필요: ${item.materials.map(m => m.name).join(' + ')}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    });
+
+    updateAccordionBadges();
+    renderMaterialList();
+  }
+
+  function toggleAncient(id) {
+    if (selectedAncients.has(id)) {
+      selectedAncients.delete(id);
+    } else {
+      selectedAncients.add(id);
+    }
+    renderAncientCards();
+    calculateAncientCost();
+  }
+
+  // 아바타 이미지 로드 에러 처리 (상대경로 및 대소문자 자동 탐색)
+  const avatarFallbacks = [
+    'avatar.png',
+    'images/Avatar.png',
+    'Avatar.png',
+    'images/avatar.PNG',
+    'avatar.PNG',
+    'images/sd.png',
+    'sd.png',
+    'images/avatar.jpg',
+    'avatar.jpg'
+  ];
+  let avatarIndex = 0;
+  function handleAvatarError(img) {
+    if (avatarIndex < avatarFallbacks.length) {
+      img.src = avatarFallbacks[avatarIndex++];
+    } else {
+      img.onerror = null;
+      img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="%231e293b" stroke="%2338bdf8" stroke-width="2.5"/><text x="50%" y="54%" fill="%2338bdf8" font-size="22" font-weight="bold" text-anchor="middle" dominant-baseline="middle">❄️</text></svg>';
+    }
+  }
+
+  // 3대 직업 3고패 자동 선택
+  function selectJobCore(jobType) {
+    selectedAncients.clear();
+    excludedMaterials.clear();
+
+    if (jobType === 'am') {
+      selectedAncients.add("frenzy");     // 마력광란
+    } else if (jobType === 'reaper') {
+      selectedAncients.add("strike_master"); // 강타의 대가
+    } else if (jobType === 'phantom') {
+      selectedAncients.add("command");   // 전투 통솔
+    }
+
+    selectedAncients.add("pierce");      // 2순위: 근원관통
+    selectedAncients.add("elem_fire");   // 3순위: 불길의 지배 (기본 화염)
+
+    // 1, 2, 3 순위 아코디언 열고 4순위 닫기
+    [1, 2, 3].forEach(r => document.getElementById(`acc-item-${r}`)?.classList.add("active"));
+    document.getElementById("acc-item-4")?.classList.remove("active");
+
+    renderAncientCards();
+    calculateAncientCost();
+  }
+
+  // 종결 패시브 (1, 2, 3순위 재료 자동 제외) 선택
+  function selectEndgamePassives() {
+    selectedAncients.clear();
+    excludedMaterials.clear();
+
+    // 4순위 원소창조 & 고대의 기억 선택
+    selectedAncients.add("elem_create");
+    selectedAncients.add("ancient_mem");
+
+    // 1·2·3순위에서 이미 완성한 것으로 간주하여 해당 재료들을 제외 목록에 추가!
+    excludedMaterials.add("원소융합");
+    excludedMaterials.add("주속성 신화");
+    excludedMaterials.add("불길의 권능");
+    excludedMaterials.add("절대관통");
+
+    // 4순위 아코디언 열기
+    document.getElementById("acc-item-4")?.classList.add("active");
+    [1, 2, 3].forEach(r => document.getElementById(`acc-item-${r}`)?.classList.remove("active"));
+
+    renderAncientCards();
+    calculateAncientCost();
+  }
+
+  function clearAncientSelection() {
+    selectedAncients.clear();
+    renderAncientCards();
+    calculateAncientCost();
+  }
+
+  function renderMaterialList() {
+    const listCard = document.getElementById("recipe-card");
+    const container = document.getElementById("material-list");
+    container.innerHTML = "";
+
+    if (selectedAncients.size === 0) {
+      listCard.style.display = "none";
+      return;
+    }
+    listCard.style.display = "block";
+
+    // 중복 제거된 재료 모으기
+    const materialMap = new Map();
+    selectedAncients.forEach(ancId => {
+      const anc = ANCIENT_LIST.find(a => a.id === ancId);
+      if (!anc) return;
+      anc.materials.forEach(mat => {
+        if (!materialMap.has(mat.name)) {
+          materialMap.set(mat.name, { grade: mat.grade, cur: 0, tar: 3 });
+        }
+      });
+    });
+
+    materialMap.forEach((val, matName) => {
+      const row = document.createElement("div");
+      const isExcluded = excludedMaterials.has(matName);
+      row.className = "material-row" + (isExcluded ? " excluded" : "");
+      row.id = `row_${matName}`;
+
+      let gradeClass = "grade-mythic";
+      let gradeKr = "신화";
+      let costStr = "115만 개";
+      if (val.grade === "advanced") {
+        gradeClass = "grade-advanced";
+        gradeKr = "상급";
+        costStr = "약 3.55만 개(추정)";
+      } else if (val.grade === "unique") {
+        gradeClass = "grade-unique";
+        gradeKr = "특급";
+        costStr = "8.3만 개";
+      } else if (val.grade === "legend") {
+        gradeClass = "grade-legend";
+        gradeKr = "전설";
+        costStr = "12.5만 개";
+      }
+
+      row.innerHTML = `
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="icon-avatar-wrapper" style="width:38px; height:38px; border-radius:8px; border-color:#475569;">
+            <span class="icon-avatar-fallback" style="font-size:11px; color:#cbd5e1;">${gradeKr}</span>
+            <img src="images/${matName.replace(/\s+/g, '')}.jpg" alt="${matName}" 
+            onerror="this.onerror=null; this.src='images/${matName.replace(/\s+/g, '')}.png'; this.onerror=function(){this.src='images/${matName}.jpg'; this.onerror=function(){this.src='images/${matName}.png'; this.onerror=function(){this.style.display='none';};};};" 
+            class="icon-avatar-img">
+          </div>
+          <div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span class="grade-badge ${gradeClass}">${gradeKr}</span>
+              <strong style="font-size:15px; color:#ffffff;">${matName}</strong>
+            </div>
+            <span style="font-size:12px; color:#94a3b8;">${costStr} 소모</span>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:4px;">
+          <label style="margin:0; font-size:12px;">현재</label>
+          <select id="cur_${matName}" onchange="calculateAncientCost()" ${isExcluded ? 'disabled' : ''} style="padding:6px;">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3">3각</option>
+          </select>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:4px;">
+          <label style="margin:0; font-size:12px;">목표</label>
+          <select id="tar_${matName}" onchange="calculateAncientCost()" ${isExcluded ? 'disabled' : ''} style="padding:6px;">
+            <option value="0">0각</option>
+            <option value="1">1각</option>
+            <option value="2">2각</option>
+            <option value="3" selected>3각 (풀각)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="exclude-btn">
+            <input type="checkbox" onchange="toggleExcludeMaterial('${matName}', this.checked)" ${isExcluded ? 'checked' : ''}>
+            <span>이미 보유 / 제외</span>
+          </label>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  function toggleExcludeMaterial(matName, checked) {
+    if (checked) {
+      excludedMaterials.add(matName);
+    } else {
+      excludedMaterials.delete(matName);
+    }
+    const row = document.getElementById(`row_${matName}`);
+    if (row) {
+      if (checked) row.classList.add("excluded");
+      else row.classList.remove("excluded");
+      const selects = row.querySelectorAll("select");
+      selects.forEach(s => s.disabled = checked);
+    }
+    calculateAncientCost();
+  }
+
+  function calculateAncientCost() {
+    let totalStones = 0;
+
+    const materialMap = new Map();
+    selectedAncients.forEach(ancId => {
+      const anc = ANCIENT_LIST.find(a => a.id === ancId);
+      if (!anc) return;
+      anc.materials.forEach(mat => {
+        materialMap.set(mat.name, mat.grade);
+      });
+    });
+
+    materialMap.forEach((grade, matName) => {
+      // 제외된 재료는 비용 0 처리!
+      if (excludedMaterials.has(matName)) return;
+
+      const curEl = document.getElementById("cur_" + matName);
+      const tarEl = document.getElementById("tar_" + matName);
+      const cur = curEl ? parseInt(curEl.value) : 0;
+      const tar = tarEl ? parseInt(tarEl.value) : 3;
+
+      if (tar > cur) {
+        totalStones += (AWAKENING_COSTS[grade][tar] - AWAKENING_COSTS[grade][cur]);
+      }
+    });
+
+    const war = parseInt(document.getElementById("p_war_gain").value) || 0;
+    const evt = parseInt(document.getElementById("p_event_gain").value) || 0;
+    const daily = parseInt(document.getElementById("p_daily_gain").value) || 0;
+    const holding = parseInt(document.getElementById("p_current_holding").value) || 0;
+
+    const weeklyGain = war + evt + (daily * 7);
+    const needNet = Math.max(0, totalStones - holding);
+    const weeksLeft = weeklyGain > 0 ? (needNet / weeklyGain).toFixed(1) : "∞";
+    const daysLeft = weeklyGain > 0 ? Math.ceil(needNet / (weeklyGain / 7)) : 0;
+
+    document.getElementById("p_total_cost").innerText = totalStones.toLocaleString() + "개";
+    document.getElementById("p_cost_man").innerText = (totalStones / 10000).toFixed(1) + "만 개";
+    document.getElementById("p_weekly_total").innerText = weeklyGain.toLocaleString() + "개 / 주";
+    document.getElementById("p_weeks_left").innerText = `${weeksLeft}주 (약 ${daysLeft}일)`;
+  }
+
+  // ==================== TAB 2 LOGIC ====================
+  function calculateSynergyDetailed() {
+    const mp = parseInt(document.getElementById("syn_mythic_p").value) || 0;
+    const ms = parseInt(document.getElementById("syn_mythic_s").value) || 0;
+    const mh = parseInt(document.getElementById("syn_mythic_h").value) || 0;
+    const l = parseInt(document.getElementById("syn_legend_all").value) || 0;
+    const u = parseInt(document.getElementById("syn_unique_all").value) || 0;
+    const curPts = parseInt(document.getElementById("syn_cur_points").value) || 0;
+
+    const mythicCount = mp + ms + mh;
+    const stoneCost = (mythicCount * 100000) + (l * 20000) + (u * 15000);
+    const addPoints = (mythicCount * 15) + (l * 3) + (u * 2);
+    const finalPts = curPts + addPoints;
+
+    document.getElementById("syn_total_stones").innerText = stoneCost.toLocaleString() + "개";
+    document.getElementById("syn_stones_man").innerText = (stoneCost / 10000).toFixed(1) + "만 개";
+    document.getElementById("syn_add_points").innerText = "+" + addPoints.toLocaleString() + "점";
+    document.getElementById("syn_final_points").innerText = finalPts.toLocaleString() + "점";
+  }
+
+  // ==================== TAB 3 LOGIC (영원 장비 연마) ====================
+  const REFINE_RATES = [
+    { lv: 0, s: 1.00, k: 0.00, d: 0.00 },
+    { lv: 1, s: 0.90, k: 0.10, d: 0.00 },
+    { lv: 2, s: 0.80, k: 0.20, d: 0.00 },
+    { lv: 3, s: 0.65, k: 0.35, d: 0.00 },
+    { lv: 4, s: 0.45, k: 0.55, d: 0.00 },
+    { lv: 5, s: 0.48, k: 0.52, d: 0.00 },
+    { lv: 6, s: 0.40, k: 0.60, d: 0.00 },
+    { lv: 7, s: 0.32, k: 0.68, d: 0.00 },
+    { lv: 8, s: 0.28, k: 0.72, d: 0.00 },
+    { lv: 9, s: 0.20, k: 0.80, d: 0.00 },
+    { lv: 10, s: 0.20, k: 0.80, d: 0.00 },
+    { lv: 11, s: 0.20, k: 0.75, d: 0.05 },
+    { lv: 12, s: 0.12, k: 0.82, d: 0.06 },
+    { lv: 13, s: 0.18, k: 0.76, d: 0.06 },
+    { lv: 14, s: 0.15, k: 0.78, d: 0.07 },
+    { lv: 15, s: 0.05, k: 0.87, d: 0.08 },
+    { lv: 16, s: 0.10, k: 0.81, d: 0.09 },
+    { lv: 17, s: 0.05, k: 0.80, d: 0.15 },
+    { lv: 18, s: 0.03, k: 0.80, d: 0.17 },
+    { lv: 19, s: 0.01, k: 0.795, d: 0.195 }
+  ];
+
+  function initRefineSelects() {
+    const curSel = document.getElementById("ref_cur_lv");
+    const tarSel = document.getElementById("ref_tar_lv");
+    curSel.innerHTML = "";
+    tarSel.innerHTML = "";
+
+    for (let i = 0; i <= 20; i++) {
+      curSel.innerHTML += `<option value="${i}">Lv.${i}</option>`;
+      tarSel.innerHTML += `<option value="${i}" ${i === 15 ? "selected" : ""}>Lv.${i}</option>`;
+    }
+  }
+
+  function calculateRefineExpected() {
+    const cur = parseInt(document.getElementById("ref_cur_lv").value);
+    const tar = parseInt(document.getElementById("ref_tar_lv").value);
+    const safeMode = document.getElementById("ref_safe_mode").checked;
+
+    if (tar <= cur) {
+      document.getElementById("ref_expected_trials").innerText = "0회";
+      document.getElementById("ref_prob_range").innerText = "-";
+      return;
+    }
+
+    let expected = 0;
+    if (safeMode) {
+      for (let i = cur; i < tar; i++) {
+        const rate = REFINE_RATES[i] ? REFINE_RATES[i].s : 0.01;
+        expected += (1 / rate);
+      }
+      document.getElementById("ref_safe_status").innerText = "ON (재화 2배 소모, 하락 없음)";
+      document.getElementById("ref_safe_status").style.color = "#10b981";
+    } else {
+      for (let i = cur; i < tar; i++) {
+        const rate = REFINE_RATES[i] ? REFINE_RATES[i].s : 0.01;
+        const downRate = REFINE_RATES[i] ? REFINE_RATES[i].d : 0;
+        expected += (1 / rate) * (1 + (downRate * 2.5));
+      }
+      document.getElementById("ref_safe_status").innerText = "OFF (하락 페널티 적용됨)";
+      document.getElementById("ref_safe_status").style.color = "#ef4444";
+    }
+
+    const minProb = (REFINE_RATES[tar - 1] ? REFINE_RATES[tar - 1].s * 100 : 1).toFixed(1);
+    const maxProb = (REFINE_RATES[cur] ? REFINE_RATES[cur].s * 100 : 100).toFixed(1);
+
+    document.getElementById("ref_expected_trials").innerText = Math.round(expected).toLocaleString() + "회";
+    document.getElementById("ref_prob_range").innerText = `${minProb}% ~ ${maxProb}%`;
+  }
+
+  // ==================== TAB 4 LOGIC (영원 오브 연마 - 옵션 변환) ====================
+  const ORB_DATA = {
+    "상급": {
+      opt1: { SSS: 2600, SS: 1300, S: 650, A: 330, B: 200, C: 160, D: 130, ANY: 0 },
+      opt2: { SSS: 2000, SS: 1500, S: 1000, A: 400, B: 300, C: 240, D: 200, ANY: 0 },
+      prob: { SSS: 0.005, SS: 0.015, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.30 }
+    },
+    "특급": {
+      opt1: { SSS: 6600, SS: 3300, S: 1650, A: 830, B: 500, C: 400, D: 330, ANY: 0 },
+      opt2: { SSS: 4000, SS: 3000, S: 2000, A: 800, B: 600, C: 480, D: 400, ANY: 0 },
+      prob: { SSS: 0.005, SS: 0.015, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.30 }
+    },
+    "전설": {
+      opt1: { SSS: 166000, SS: 24900, S: 4150, A: 2080, B: 1250, C: 1000, D: 830, ANY: 0 },
+      opt2: { SSS: 40000, SS: 12000, S: 4000, A: 1600, B: 1200, C: 960, D: 800, ANY: 0 },
+      prob: { SSS: 0.003, SS: 0.01, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.307 }
+    },
+    "신화": {
+      opt1: { SSS: 1248000, SS: 104000, S: 10400, A: 5200, B: 3120, C: 2500, D: 2080, ANY: 0 },
+      opt2: { SSS: 160000, SS: 24000, S: 8000, A: 3200, B: 2400, C: 1920, D: 1600, ANY: 0 },
+      prob: { SSS: 0.001, SS: 0.007, S: 0.08, A: 0.15, B: 0.20, C: 0.25, D: 0.312 }
+    }
+  };
+
+  const GRADE_ORDER = ["SSS", "SS", "S", "A", "B", "C", "D"];
+
+  function getCumulativeProb(probDict, targetGrade) {
+    if (targetGrade === "ANY") return 1.0;
+    let sum = 0;
+    for (let g of GRADE_ORDER) {
+      sum += probDict[g] || 0;
+      if (g === targetGrade) break;
+    }
+    return sum;
+  }
+
+  function calculateOrbExpected() {
+    const tier = document.getElementById("orb_tier").value;
+    const grade1 = document.getElementById("orb_target_grade1").value;
+    const grade2 = document.getElementById("orb_target_grade2").value;
+    const data = ORB_DATA[tier];
+
+    const p1 = getCumulativeProb(data.prob, grade1);
+    const p2 = getCumulativeProb(data.prob, grade2);
+
+    const pBoth = p1 * p2;
+    const tries = pBoth > 0 ? Math.round(1 / pBoth) : 0;
+
+    const val1 = data.opt1[grade1] || 0;
+    const val2 = data.opt2[grade2] || 0;
+
+    // 배율 계산: (1 + val1/100) * (1 + val2/100)
+    const multiplier = ((1 + val1 / 100) * (1 + val2 / 100)).toFixed(1);
+
+    document.getElementById("orb_expected_tries").innerText = tries.toLocaleString() + "회";
+    document.getElementById("orb_combined_prob").innerText = (pBoth * 100).toFixed(4) + "%";
+    document.getElementById("orb_val1_detail").innerText = grade1 === "ANY" ? "옵션 미지정 (+0%)" : `+${val1.toLocaleString()}%`;
+    document.getElementById("orb_val2_detail").innerText = grade2 === "ANY" ? "옵션 미지정 (+0%)" : `+${val2.toLocaleString()}%`;
+    document.getElementById("orb_opt1_badge").innerText = grade1 === "ANY" ? "자유" : grade1 + "급";
+    document.getElementById("orb_opt2_badge").innerText = grade2 === "ANY" ? "자유" : grade2 + "급";
+    document.getElementById("orb_mult").innerText = `약 ${Number(multiplier).toLocaleString()}배`;
+  }
+
+  // ==================== TAB 5 LOGIC (가호 & 원혼) ====================
+  function calculateGaho() {
+    const locked = parseInt(document.getElementById("gaho_locked").value);
+    const remain = 7 - locked;
+    document.getElementById("gaho_remain_slots").innerText = remain + "칸";
+
+    const p = 0.00064;
+    let totalTries = 0;
+    for (let i = locked; i < 7; i++) {
+      totalTries += 1 / ((7 - i) * p);
+    }
+    document.getElementById("gaho_expected_trials").innerText = Math.round(totalTries).toLocaleString() + "회";
+  }
+
+  function calculateWonhon() {
+    const locked = parseInt(document.getElementById("wonhon_locked").value);
+    const remain = 6 - locked;
+    document.getElementById("wonhon_remain_slots").innerText = remain + "칸";
+
+    const p = 0.00019;
+    let totalTries = 0;
+    for (let i = locked; i < 6; i++) {
+      totalTries += 1 / ((6 - i) * p);
+    }
+    document.getElementById("wonhon_expected_trials").innerText = Math.round(totalTries).toLocaleString() + "회";
+  }
+
+  // ==================== INITIALIZATION ====================
+  window.onload = function() {
+    renderAncientCards();
+    calculateAncientCost();
+    calculateSynergyDetailed();
+    initRefineSelects();
+    calculateRefineExpected();
+    calculateOrbExpected();
+    calculateGaho();
+    calculateWonhon();
+  };
+</script>
+
+</body>
+</html>
