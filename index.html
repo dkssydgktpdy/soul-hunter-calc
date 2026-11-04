@@ -195,9 +195,12 @@
     overflow: hidden;
   }
   .hub-card-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    padding: 3px;
   }
   .hub-card-title {
     font-size: 16.5px;
@@ -584,6 +587,31 @@
     height: 100%;
     object-fit: cover;
     z-index: 2;
+  }
+
+  
+  /* Gaho & Item Icon Styling (No Cropping) */
+  .gaho-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #0f172a;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .gaho-icon-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
   }
 
   /* Resource Icon In-line */
@@ -1184,7 +1212,7 @@
             <div class="ancient-select-card selected" id="gaho_btn_star" onclick="selectGahoType('star')">
               <div class="ancient-header">
                 <div class="ancient-title-box">
-                  <div class="icon-avatar-wrapper" style="border-color:#fbbf24;">
+                  <div class="gaho-icon-wrapper" style="border-color:#fbbf24; background:rgba(251,191,36,0.1);">
                     <img src="images/star.png" alt="별" onerror="this.onerror=null; this.parentElement.innerHTML='⭐';">
                   </div>
                   <div><span class="ancient-name">⭐ 별의 가호</span><span class="ancient-sub" style="color:#fbbf24;">10만 ~ 70만/회</span></div>
@@ -1197,7 +1225,7 @@
             <div class="ancient-select-card" id="gaho_btn_moon" onclick="selectGahoType('moon')">
               <div class="ancient-header">
                 <div class="ancient-title-box">
-                  <div class="icon-avatar-wrapper" style="border-color:#38bdf8;">
+                  <div class="gaho-icon-wrapper" style="border-color:#38bdf8; background:rgba(56,189,248,0.1);">
                     <img src="images/moon.png" alt="달" onerror="this.onerror=null; this.parentElement.innerHTML='🌙';">
                   </div>
                   <div><span class="ancient-name">🌙 달의 가호</span><span class="ancient-sub" style="color:#38bdf8;">50만 ~ 350만/회</span></div>
@@ -1210,7 +1238,7 @@
             <div class="ancient-select-card" id="gaho_btn_sun" onclick="selectGahoType('sun')">
               <div class="ancient-header">
                 <div class="ancient-title-box">
-                  <div class="icon-avatar-wrapper" style="border-color:#f43f5e;">
+                  <div class="gaho-icon-wrapper" style="border-color:#f43f5e; background:rgba(244,63,94,0.1);">
                     <img src="images/sun.png" alt="해" onerror="this.onerror=null; this.parentElement.innerHTML='☀️';">
                   </div>
                   <div><span class="ancient-name">☀️ 해의 가호</span><span class="ancient-sub" style="color:#f43f5e;">70만 ~ 490만/회</span></div>
