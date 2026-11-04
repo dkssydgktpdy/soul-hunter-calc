@@ -17,6 +17,7 @@
     --mythic: #f43f5e;
     --legend: #f97316;
     --unique: #a855f7;
+    --advanced: #3b82f6;
     --border: #334155;
     --success: #10b981;
     --gold: #fbbf24;
@@ -44,7 +45,7 @@
     background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
     border: 1px solid var(--border);
     border-radius: 16px;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
   }
   .header-badge {
@@ -73,36 +74,150 @@
     color: #38bdf8;
   }
 
-  /* Navigation Tabs */
-  .nav-tabs {
+  /* Top Mode Switcher */
+  .mode-switcher {
     display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    background: #1e293b;
-    padding: 6px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    margin-bottom: 22px;
+    gap: 12px;
+    margin-bottom: 24px;
+    background: #0f172a;
+    padding: 8px;
+    border-radius: 16px;
+    border: 1.5px solid var(--border);
   }
-  .nav-tab-btn {
+  .mode-btn {
     flex: 1;
-    min-width: 130px;
-    background: transparent;
+    padding: 14px 16px;
+    border-radius: 12px;
     border: none;
-    color: var(--text-secondary);
-    padding: 12px 8px;
-    font-size: 14.5px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 800;
     cursor: pointer;
-    border-radius: 10px;
-    transition: all 0.2s;
-    text-align: center;
-    white-space: nowrap;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    background: transparent;
   }
-  .nav-tab-btn.active {
-    background: var(--accent);
+  .mode-btn.active {
+    background: linear-gradient(135deg, #4338ca 0%, #312e81 100%);
     color: #ffffff;
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+    border: 1px solid #6366f1;
+  }
+  .mode-btn.newbie.active {
+    background: linear-gradient(135deg, #b45309 0%, #78350f 100%);
+    border-color: #f59e0b;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+  }
+
+  /* Floating Back Button */
+  .floating-back-btn {
+    position: fixed;
+    right: 22px;
+    bottom: 26px;
+    z-index: 9999;
+    background: linear-gradient(135deg, #4f46e5 0%, #312e81 100%);
+    color: #ffffff;
+    border: 1.5px solid #818cf8;
+    border-radius: 30px;
+    padding: 12px 20px;
+    font-size: 14.5px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 12px rgba(99, 102, 241, 0.5);
+    display: none;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+  .floating-back-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.6);
+  }
+
+  /* Hub Category Section */
+  .hub-section {
+    margin-bottom: 24px;
+  }
+  .hub-section-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-left: 6px;
+    border-left: 4px solid var(--accent);
+  }
+  .hub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 14px;
+  }
+  .hub-card {
+    background: #1e293b;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  }
+  .hub-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(99, 102, 241, 0.25);
+    background: #172554;
+  }
+  .hub-card-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .hub-card-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: #0f172a;
+    border: 1.5px solid #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .hub-card-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hub-card-title {
+    font-size: 16.5px;
+    font-weight: 800;
+    color: #ffffff;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .hub-card-desc {
+    font-size: 12.5px;
+    color: #94a3b8;
+  }
+  .hub-card-arrow {
+    font-size: 18px;
+    color: #64748b;
+    transition: transform 0.2s;
+  }
+  .hub-card:hover .hub-card-arrow {
+    transform: translateX(4px);
+    color: #38bdf8;
   }
 
   /* Cards */
@@ -131,27 +246,6 @@
     margin-top: -8px;
     margin-bottom: 16px;
   }
-
-  /* Priority Section Titles in Tab 1 */
-  .rank-section {
-    margin-bottom: 22px;
-  }
-  .rank-title {
-    font-size: 15.5px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    padding: 6px 12px;
-    border-radius: 6px;
-    background: #0f172a;
-    border-left: 4px solid var(--accent);
-  }
-  .rank-title.rank-1 { border-left-color: #a855f7; color: #d8b4fe; }
-  .rank-title.rank-2 { border-left-color: #38bdf8; color: #7dd3fc; }
-  .rank-title.rank-3 { border-left-color: #f59e0b; color: #fde68a; }
-  .rank-title.rank-4 { border-left-color: #f43f5e; color: #fda4af; }
 
   /* Badges */
   .grade-badge {
@@ -228,15 +322,6 @@
     align-items: center;
     gap: 12px;
   }
-  .ancient-img {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    border: 1.5px solid var(--ancient);
-    object-fit: cover;
-    background: #1e293b;
-    flex-shrink: 0;
-  }
   .ancient-name {
     font-size: 16.5px;
     font-weight: 800;
@@ -264,7 +349,7 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
-  /* Material Row Styling with Exclusion Toggle */
+  /* Material Row */
   .material-row {
     display: grid;
     grid-template-columns: 2.2fr 1fr 1fr 1.2fr;
@@ -288,15 +373,6 @@
     background: #111827;
     border-color: #1f2937;
     text-decoration: line-through;
-  }
-  .material-img {
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
-    border: 1px solid #475569;
-    object-fit: cover;
-    background: #1e293b;
-    flex-shrink: 0;
   }
   .exclude-btn {
     display: flex;
@@ -357,53 +433,7 @@
   }
   .res-sub strong { color: #ffffff; }
 
-  footer {
-    text-align: center;
-    margin-top: 40px;
-    padding-top: 22px;
-    border-top: 1px solid var(--border);
-    font-size: 14px;
-    color: var(--text-secondary);
-  }
-
-  /* Reference Table Redesign */
-  .custom-table-container {
-    overflow-x: auto;
-    border: 1px solid rgba(99, 102, 241, 0.25);
-    border-radius: 12px;
-    background: #0d1527;
-    margin-top: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-  }
-  .custom-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-size: 14.5px;
-  }
-  .custom-table th {
-    background: #172554;
-    color: #93c5fd;
-    font-weight: 700;
-    padding: 12px 14px;
-    text-align: center;
-    border-bottom: 2px solid #1e3a8a;
-    letter-spacing: -0.3px;
-  }
-  .custom-table td {
-    padding: 12px 14px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    color: #e2e8f0;
-    text-align: center;
-  }
-  .custom-table tbody tr:last-child td {
-    border-bottom: none;
-  }
-  .custom-table tbody tr:hover {
-    background: rgba(99, 102, 241, 0.08);
-  }
-
-  /* Accordion Styling for Ranks */
+  /* Accordion Styling */
   .accordion-group {
     display: flex;
     flex-direction: column;
@@ -480,7 +510,6 @@
     color: #22d3ee;
     border-color: #06b6d4;
   }
-
   .accordion-content {
     display: none;
     padding: 16px;
@@ -491,7 +520,43 @@
     display: block;
   }
 
-  /* Safe Icon Avatar with Clean Fallback */
+  /* Table styling */
+  .custom-table-container {
+    overflow-x: auto;
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: 12px;
+    background: #0d1527;
+    margin-top: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  }
+  .custom-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14.5px;
+  }
+  .custom-table th {
+    background: #172554;
+    color: #93c5fd;
+    font-weight: 700;
+    padding: 12px 14px;
+    text-align: center;
+    border-bottom: 2px solid #1e3a8a;
+  }
+  .custom-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: #e2e8f0;
+    text-align: center;
+  }
+  .custom-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .custom-table tbody tr:hover {
+    background: rgba(99, 102, 241, 0.08);
+  }
+
+  /* Safe Icon Avatar */
   .icon-avatar-wrapper {
     width: 44px;
     height: 44px;
@@ -521,11 +586,29 @@
     z-index: 2;
   }
 
+  /* Resource Icon In-line */
+  .inline-res-icon {
+    width: 22px;
+    height: 22px;
+    vertical-align: middle;
+    margin-right: 4px;
+    object-fit: contain;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
 </style>
 </head>
 <body>
 
 <div class="container">
+  <!-- Header -->
   <header>
     <div class="header-badge">소울 헌터 키우기 네이버 라운지 전용 툴</div>
     <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:10px; flex-wrap:wrap;">
@@ -536,568 +619,830 @@
       </div>
       <h1 style="margin:0; font-size:26px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">❄️ 소헌키 종합 시뮬레이터 & 계산기</h1>
     </div>
-    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.1.1.0</div>
+    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.2.0.0</div>
   </header>
 
-  <!-- Navigation Tabs -->
-  <div class="nav-tabs">
-    <button class="nav-tab-btn active" onclick="showTab('tab-passive')">🔮 고대 패시브 계산</button>
-    <button class="nav-tab-btn" onclick="showTab('tab-synergy')">✨ 신화 우선 시너지</button>
-    <button class="nav-tab-btn" onclick="showTab('tab-refine')">🔨 영원 장비 연마</button>
-    <button class="nav-tab-btn" onclick="showTab('tab-orb')">🌌 영원 장비 변환</button>
-    <button class="nav-tab-btn" onclick="showTab('tab-ability')">🌙 가호 & 원혼 어빌</button>
+  <!-- Top Mode Switcher (심화 공략 vs 뉴비 공략) -->
+  <div class="mode-switcher">
+    <button class="mode-btn active" id="btn_mode_deep" onclick="switchMainMode('deep')">
+      <span>💎 심화 공략 (스펙업 계산기)</span>
+    </button>
+    <button class="mode-btn newbie" id="btn_mode_newbie" onclick="switchMainMode('newbie')">
+      <span>🐣 뉴비 공략 (가이드 & 소환)</span>
+    </button>
   </div>
 
-  <!-- ==================== TAB 1: 고대 패시브 선택형 계산기 ==================== -->
-  <div id="tab-passive" class="tab-content">
-    <!-- 등급별 각성 단계 소모 기준표 -->
-    <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px;">
-      <div class="card-title" style="margin-bottom: 8px;">
-        <span style="font-size:17.5px;">📊 등급별 각성석 소모 기준표 (패시브 / 영웅 / 스킬 공통)</span>
-        <span class="grade-badge grade-ancient">전 분야 공통 적용</span>
-      </div>
-      <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
-        소헌키의 모든 패시브, 영웅, 스킬은 등급별로 각성석 소모량이 완전히 동일합니다.
-      </p>
-      <div class="custom-table-container">
-        <table class="custom-table">
-          <thead>
-            <tr>
-              <th>등급</th>
-              <th>1각성</th>
-              <th>2각성</th>
-              <th>3각성 (풀각)</th>
-              <th>3각 누적 비용</th>
-              <th>1각당 시너지</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="grade-badge grade-advanced">상급</span></td>
-              <td>6,500 <small style="color:#94a3b8;">(실측)</small></td>
-              <td>12,000 <small style="color:#f59e0b;">(추정)</small></td>
-              <td>17,000 <small style="color:#f59e0b;">(추정)</small></td>
-              <td style="color:#93c5fd; font-weight:800; font-size:15px;">35,500 <small>(약 3.55만·추정)</small></td>
-              <td><strong style="color:#10b981; font-size:15px;">+1점</strong></td>
-            </tr>
-            <tr>
-              <td><span class="grade-badge grade-unique">특급</span></td>
-              <td>15,000 <small style="color:#94a3b8;">(1.5만)</small></td>
-              <td>28,000 <small style="color:#94a3b8;">(2.8만)</small></td>
-              <td>40,000 <small style="color:#94a3b8;">(4.0만)</small></td>
-              <td style="color:#d8b4fe; font-weight:800; font-size:15px;">83,000 <small>(8.3만)</small></td>
-              <td><strong style="color:#10b981; font-size:15px;">+2점</strong></td>
-            </tr>
-            <tr>
-              <td><span class="grade-badge grade-legend">전설</span></td>
-              <td>20,000 <small style="color:#94a3b8;">(2.0만)</small></td>
-              <td>40,000 <small style="color:#94a3b8;">(4.0만)</small></td>
-              <td>65,000 <small style="color:#94a3b8;">(6.5만)</small></td>
-              <td style="color:#fdba74; font-weight:800; font-size:15px;">125,000 <small>(12.5만)</small></td>
-              <td><strong style="color:#10b981; font-size:15px;">+3점</strong></td>
-            </tr>
-            <tr>
-              <td><span class="grade-badge grade-mythic">신화</span></td>
-              <td>100,000 <small style="color:#94a3b8;">(10만)</small></td>
-              <td>350,000 <small style="color:#94a3b8;">(35만)</small></td>
-              <td>700,000 <small style="color:#94a3b8;">(70만)</small></td>
-              <td style="color:#fda4af; font-weight:800; font-size:15px;">1,150,000 <small>(115만)</small></td>
-              <td><strong style="color:#f59e0b; font-size:15px;">+15점 (추천)</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <!-- Floating Back Button (오른쪽 스크롤 추적) -->
+  <button class="floating-back-btn" id="floating_back_btn" onclick="returnToDeepHub()">
+    <span>🔙</span>
+    <span>심화 메뉴로 돌아가기</span>
+  </button>
 
-    <div class="card">
-      <div class="card-title">
-        <span>🔮 제작할 고대 패시브 선택 (순위별 분류)</span>
-        <button onclick="clearAncientSelection()" style="background:#334155; border:none; color:#cbd5e1; padding:6px 12px; border-radius:8px; font-size:12.5px; cursor:pointer;">초기화</button>
-      </div>
-      <p class="card-subtitle">원하는 추천 빌드를 누르면 해당 고패 및 재료가 자동으로 세팅됩니다.</p>
+  <!-- ==================== [MODE 1] 심화 공략 영역 ==================== -->
+  <div id="mode_deep_container">
+    
+    <!-- 심화 공략 메인 허브 (선택 화면) -->
+    <div id="deep_hub_view">
       
-      <!-- 4종 추천 원클릭 선택 버튼 그룹 -->
-      <div class="grid-4" style="margin-bottom:18px;">
-        <button onclick="selectJobCore('am')" style="background:linear-gradient(135deg, #4338ca 0%, #312e81 100%); border:1px solid #6366f1; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(99,102,241,0.25); text-align:center;">
-          🧙‍♂️ 아크메이지(제네시스)
-        </button>
-        <button onclick="selectJobCore('reaper')" style="background:linear-gradient(135deg, #991b1b 0%, #450a0a 100%); border:1px solid #ef4444; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(239,68,68,0.25); text-align:center;">
-          🗡️ 대사신(소울리퍼)
-        </button>
-        <button onclick="selectJobCore('phantom')" style="background:linear-gradient(135deg, #0369a1 0%, #082f49 100%); border:1px solid #38bdf8; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(56,189,248,0.25); text-align:center;">
-          ⚔️ 팬텀(오버로드)
-        </button>
-        <button onclick="selectEndgamePassives()" style="background:linear-gradient(135deg, #86198f 0%, #4a044e 100%); border:1px solid #d946ef; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(217,70,239,0.25); text-align:center;">
-          👑 종결패시브(1·2·3순위제외)
-        </button>
-      </div>
-      <p class="card-subtitle">제작하고 싶은 고대 패시브 카드를 클릭하세요. 1·2·3순위에서 이미 완성한 재료는 아래 재료 목록에서 <strong>[제외]</strong>하여 4순위 고패의 실제 추가 비용만 정확히 계산할 수 있습니다.</p>
-
-      <!-- 접이식 순위별 고대 패시브 아코디언 그룹 -->
-      <div class="accordion-group">
-        <!-- 1순위 -->
-        <div class="accordion-item active" id="acc-item-1">
-          <div class="accordion-header" onclick="toggleRankAccordion(1)">
-            <div class="accordion-left">
-              <span class="accordion-toggle-icon" id="acc-arrow-1">▶</span>
-              <span class="accordion-title-text rank-pill-1">🥇 1순위 : 직업 메인 고대 패시브 <small style="font-weight:normal; opacity:0.85;">(상급/특급+전설 = 약 16.1만 ~ 20.8만 개)</small></span>
-            </div>
-            <div class="accordion-right-info">
-              <span class="accordion-count-badge" id="acc-count-1">선택 1개</span>
-            </div>
-          </div>
-          <div class="accordion-content" id="acc-content-1">
-            <div class="grid-3" id="rank-1-container"></div>
-          </div>
+      <!-- 섹션 1: 영원무기 관련 기댓값 계산기 -->
+      <div class="hub-section">
+        <div class="hub-section-title">
+          <span>⚔️ 영원무기 관련 기댓값 계산기</span>
         </div>
+        <div class="hub-grid">
+          <div class="hub-card" onclick="openDeepCalculator('tab-refine')">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#38bdf8;">
+                <img src="images/elem_buffing.png" alt="연마" onerror="this.onerror=null; this.src='images/scythe.png'; this.onerror=function(){this.parentElement.innerHTML='🔨';};">
+              </div>
+              <div>
+                <span class="hub-card-title">🔨 영원 장비 연마</span>
+                <span class="hub-card-desc">Lv.0 ~ 20 마르코프 연쇄 정밀 연마 시뮬레이터</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
 
-        <!-- 2순위 -->
-        <div class="accordion-item" id="acc-item-2">
-          <div class="accordion-header" onclick="toggleRankAccordion(2)">
-            <div class="accordion-left">
-              <span class="accordion-toggle-icon" id="acc-arrow-2">▶</span>
-              <span class="accordion-title-text rank-pill-2">🥈 2순위 : 전 직업 필수 방어 관통 (근원관통) <small style="font-weight:normal; opacity:0.85;">(127.5만 개)</small></span>
+          <div class="hub-card" onclick="openDeepCalculator('tab-orb')">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#f43f5e;">
+                <img src="images/elem_option.png" alt="옵션변환" onerror="this.onerror=null; this.src='images/elem_create.jpg'; this.onerror=function(){this.parentElement.innerHTML='🌌';};">
+              </div>
+              <div>
+                <span class="hub-card-title">🌌 영원 장비 옵션 변환</span>
+                <span class="hub-card-desc">대낫/오브 SSS·SS 1·2옵션 곱연산 & 심연정수 기댓값</span>
+              </div>
             </div>
-            <div class="accordion-right-info">
-              <span class="accordion-count-badge" id="acc-count-2">선택 없음</span>
-            </div>
-          </div>
-          <div class="accordion-content" id="acc-content-2">
-            <div class="grid-3" id="rank-2-container"></div>
-          </div>
-        </div>
-
-        <!-- 3순위 -->
-        <div class="accordion-item" id="acc-item-3">
-          <div class="accordion-header" onclick="toggleRankAccordion(3)">
-            <div class="accordion-left">
-              <span class="accordion-toggle-icon" id="acc-arrow-3">▶</span>
-              <span class="accordion-title-text rank-pill-3">🥉 3순위 : 주속성 고대 패시브 3종 <small style="font-weight:normal; opacity:0.85;">(화염/번개/어둠 택1)</small></span>
-            </div>
-            <div class="accordion-right-info">
-              <span class="accordion-count-badge" id="acc-count-3">선택 없음</span>
-            </div>
-          </div>
-          <div class="accordion-content" id="acc-content-3">
-            <div class="grid-3" id="rank-3-container"></div>
-          </div>
-        </div>
-
-        <!-- 4순위 -->
-        <div class="accordion-item" id="acc-item-4">
-          <div class="accordion-header" onclick="toggleRankAccordion(4)">
-            <div class="accordion-left">
-              <span class="accordion-toggle-icon" id="acc-arrow-4">▶</span>
-              <span class="accordion-title-text rank-pill-4">👑 4순위 : 초극후반 엔드 종결 패시브 <small style="font-weight:normal; opacity:0.85;">(원소창조 & 고대의 기억)</small></span>
-            </div>
-            <div class="accordion-right-info">
-              <span class="accordion-count-badge" id="acc-count-4">선택 없음</span>
-            </div>
-          </div>
-          <div class="accordion-content" id="acc-content-4">
-            <div class="grid-2" id="rank-4-container"></div>
+            <div class="hub-card-arrow">➔</div>
           </div>
         </div>
       </div>
+
+      <!-- 섹션 2: 각성석 사용 관련 계산기 -->
+      <div class="hub-section">
+        <div class="hub-section-title">
+          <span>🔮 각성석 사용 관련 계산기</span>
+        </div>
+        <div class="hub-grid">
+          <div class="hub-card" onclick="openDeepCalculator('tab-passive')">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#a855f7;">
+                <img src="images/ancient_passive.png" alt="고패" onerror="this.onerror=null; this.src='images/frenzy.jpg'; this.onerror=function(){this.parentElement.innerHTML='🔮';};">
+              </div>
+              <div>
+                <span class="hub-card-title">🔮 고대 패시브</span>
+                <span class="hub-card-desc">직업별 3고패 자동선택, 종결 합성 & 주간 파밍 예측</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+
+          <div class="hub-card" onclick="openDeepCalculator('tab-synergy')">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#f59e0b;">
+                <img src="images/synergy.png" alt="각성시너지" onerror="this.onerror=null; this.src='images/command.jpg'; this.onerror=function(){this.parentElement.innerHTML='✨';};">
+              </div>
+              <div>
+                <span class="hub-card-title">✨ 각성 시너지 점수 계산기</span>
+                <span class="hub-card-desc">미사용 1각시 시너지 점수 및 공격력(%) 계산</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 섹션 3: 어빌리티 기댓값 및 재화 계산기 -->
+      <div class="hub-section">
+        <div class="hub-section-title">
+          <span>🌙 어빌리티 기댓값 및 재화 계산기</span>
+        </div>
+        <div class="hub-grid">
+          <div class="hub-card" onclick="openDeepCalculator('tab-ability')">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#22c55e;">
+                <img src="images/option_dice.png" alt="어빌" onerror="this.onerror=null; this.src='images/elem_light.jpg'; this.onerror=function(){this.parentElement.innerHTML='🌙';};">
+              </div>
+              <div>
+                <span class="hub-card-title">🌙 가호 & 원혼 어빌리티</span>
+                <span class="hub-card-desc">별/달/해 가호 및 원혼 단계별 잠금 옵션 주사위 계산</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- 선택된 고패 필요 재료 목록 & 제외 토글 -->
-    <div class="card" id="recipe-card" style="display:none;">
-      <div class="card-title">
-        <span>📜 필요 재료 패시브 현황 & 이전 단계 제작 재료 [제외] 설정</span>
-      </div>
-      <p style="font-size:13.5px; color:#94a3b8; margin-top:-8px; margin-bottom:14px;">
-        💡 <strong>팁:</strong> 1~3순위 제작으로 이미 3각성을 달성한 패시브(원소융합, 불길권능 등)는 우측 <strong>[이미 보유 / 제외]</strong>를 체크하시면 총 계산 비용에서 즉시 차감됩니다!
-      </p>
-      <div id="material-list"></div>
-    </div>
+    <!-- 계산기 실제 상세 화면들 (선택 시 전환) -->
+    <div id="deep_calc_view" style="display:none;">
 
-    <!-- 파밍 소요 기간 예측 (주단위) -->
-    <div class="card">
-      <div class="card-title">
-        <span>⏳ 주단위 파밍 소요 기간 예측</span>
-      </div>
-      <div class="grid-3">
-        <div>
-          <label>🏆 주간 쟁탈전 보상 각성석</label>
-          <input type="number" id="p_war_gain" value="150000" step="10000" oninput="calculateAncientCost()">
-        </div>
-        <div>
-          <label>🎁 주간 이벤트/상점 획득 각성석</label>
-          <input type="number" id="p_event_gain" value="100000" step="10000" oninput="calculateAncientCost()">
-        </div>
-        <div>
-          <label>⚔️ 일일 던전/방치 획득량 (하루)</label>
-          <input type="number" id="p_daily_gain" value="30000" step="5000" oninput="calculateAncientCost()">
-        </div>
-      </div>
-      <div style="margin-top:14px;">
-        <label>💰 현재 보유 중인 각성석</label>
-        <input type="number" id="p_current_holding" value="0" step="10000" oninput="calculateAncientCost()">
-      </div>
-    </div>
+      <!-- ==================== 1. 고대 패시브 계산 ==================== -->
+      <div id="tab-passive" class="tab-content" style="display:none;">
+        <div class="card">
+          <div class="card-title">
+            <span>🔮 제작할 고대 패시브 선택 (순위별 택1 / 4순위 다중선택)</span>
+            <button onclick="clearAncientSelection()" style="background:#334155; border:none; color:#cbd5e1; padding:6px 12px; border-radius:8px; font-size:12.5px; cursor:pointer;">초기화</button>
+          </div>
+          <p class="card-subtitle">원하는 추천 빌드를 누르면 해당 고패 및 재료가 자동으로 세팅됩니다. (1~3순위는 순위당 1개만 선택 가능합니다)</p>
+          
+          <!-- 4종 추천 원클릭 선택 버튼 그룹 -->
+          <div class="grid-4" style="margin-bottom:18px;">
+            <button onclick="selectJobCore('am')" style="background:linear-gradient(135deg, #4338ca 0%, #312e81 100%); border:1px solid #6366f1; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; text-align:center;">
+              🧙‍♂️ 아크메이지(제네시스)
+            </button>
+            <button onclick="selectJobCore('reaper')" style="background:linear-gradient(135deg, #991b1b 0%, #450a0a 100%); border:1px solid #ef4444; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; text-align:center;">
+              🗡️ 대사신(소울리퍼)
+            </button>
+            <button onclick="selectJobCore('phantom')" style="background:linear-gradient(135deg, #0369a1 0%, #082f49 100%); border:1px solid #38bdf8; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; text-align:center;">
+              ⚔️ 팬텀(오버로드)
+            </button>
+            <button onclick="selectEndgamePassives()" style="background:linear-gradient(135deg, #86198f 0%, #4a044e 100%); border:1px solid #d946ef; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; text-align:center;">
+              👑 종결패시브(1·2·3순위제외)
+            </button>
+          </div>
 
-    <!-- 대시보드 결과 -->
-    <div class="result-dashboard">
-      <div class="res-label">선택한 고대 패시브 총 필요 각성석</div>
-      <div class="res-value" id="p_total_cost">0개</div>
-      <div class="res-sub">
-        <span>만 단위 환산: <strong id="p_cost_man">0만 개</strong></span>
-        <span>|</span>
-        <span>주간 총 수급량: <strong id="p_weekly_total">0개/주</strong></span>
-        <span>|</span>
-        <span>목표 달성 예상: <strong id="p_weeks_left" style="color:#38bdf8;">0주 (0일)</strong></span>
+          <!-- 접이식 순위별 아코디언 그룹 (순위당 택1 안내) -->
+          <div class="accordion-group">
+            <div class="accordion-item" id="acc-item-1">
+              <div class="accordion-header" onclick="toggleRankAccordion(1)">
+                <div class="accordion-left">
+                  <span class="accordion-toggle-icon" id="acc-arrow-1">▶</span>
+                  <span class="accordion-title-text rank-pill-1">🥇 1순위 : 직업 메인 고대 패시브 <span style="font-size:12px; background:#4338ca; color:#c7d2fe; padding:2px 8px; border-radius:4px; margin-left:6px;">택 1</span> <small style="font-weight:normal; opacity:0.85;">(약 16.1만 ~ 20.8만 개)</small></span>
+                </div>
+                <div class="accordion-right-info"><span class="accordion-count-badge" id="acc-count-1">선택 없음</span></div>
+              </div>
+              <div class="accordion-content" id="acc-content-1"><div class="grid-3" id="rank-1-container"></div></div>
+            </div>
+
+            <div class="accordion-item" id="acc-item-2">
+              <div class="accordion-header" onclick="toggleRankAccordion(2)">
+                <div class="accordion-left">
+                  <span class="accordion-toggle-icon" id="acc-arrow-2">▶</span>
+                  <span class="accordion-title-text rank-pill-2">🥈 2순위 : 전 직업 필수 방어 관통 (근원관통) <span style="font-size:12px; background:#0369a1; color:#bae6fd; padding:2px 8px; border-radius:4px; margin-left:6px;">택 1</span> <small style="font-weight:normal; opacity:0.85;">(127.5만 개)</small></span>
+                </div>
+                <div class="accordion-right-info"><span class="accordion-count-badge" id="acc-count-2">선택 없음</span></div>
+              </div>
+              <div class="accordion-content" id="acc-content-2"><div class="grid-3" id="rank-2-container"></div></div>
+            </div>
+
+            <div class="accordion-item" id="acc-item-3">
+              <div class="accordion-header" onclick="toggleRankAccordion(3)">
+                <div class="accordion-left">
+                  <span class="accordion-toggle-icon" id="acc-arrow-3">▶</span>
+                  <span class="accordion-title-text rank-pill-3">🥉 3순위 : 주속성 고대 패시브 3종 <span style="font-size:12px; background:#b45309; color:#fde68a; padding:2px 8px; border-radius:4px; margin-left:6px;">택 1</span> <small style="font-weight:normal; opacity:0.85;">(화염/번개/어둠 택1)</small></span>
+                </div>
+                <div class="accordion-right-info"><span class="accordion-count-badge" id="acc-count-3">선택 없음</span></div>
+              </div>
+              <div class="accordion-content" id="acc-content-3"><div class="grid-3" id="rank-3-container"></div></div>
+            </div>
+
+            <div class="accordion-item" id="acc-item-4">
+              <div class="accordion-header" onclick="toggleRankAccordion(4)">
+                <div class="accordion-left">
+                  <span class="accordion-toggle-icon" id="acc-arrow-4">▶</span>
+                  <span class="accordion-title-text rank-pill-4">👑 4순위 : 초극후반 엔드 종결 패시브 <span style="font-size:12px; background:#86198f; color:#f5d0fe; padding:2px 8px; border-radius:4px; margin-left:6px;">2개 동시선택 가능</span> <small style="font-weight:normal; opacity:0.85;">(원소창조 & 고대의 기억)</small></span>
+                </div>
+                <div class="accordion-right-info"><span class="accordion-count-badge" id="acc-count-4">선택 없음</span></div>
+              </div>
+              <div class="accordion-content" id="acc-content-4"><div class="grid-2" id="rank-4-container"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 필요 재료 목록 & 제외 토글 -->
+        <div class="card" id="recipe-card" style="display:none;">
+          <div class="card-title">
+            <span>📜 필요 재료 패시브 현황 & 이전 단계 제작 재료 [제외] 설정</span>
+          </div>
+          <p style="font-size:13.5px; color:#94a3b8; margin-top:-8px; margin-bottom:14px;">
+            💡 <strong>팁:</strong> 1~3순위 제작으로 이미 3각성을 달성한 패시브는 우측 <strong>[이미 보유 / 제외]</strong>를 체크하시면 총 계산 비용에서 즉시 차감됩니다!
+          </p>
+          <div id="material-list"></div>
+        </div>
+
+        <!-- 파밍 소요 기간 예측 (콤팩트 미니 사이즈로 축소) -->
+        <div class="card" style="padding: 16px 20px;">
+          <div class="card-title" style="font-size: 15.5px; margin-bottom: 12px; padding-bottom: 8px;">
+            <span>⏳ 주단위 파밍 소요 기간 예측 (옵션)</span>
+          </div>
+          <div class="grid-4" style="gap: 8px;">
+            <div><label style="font-size:12px;">🏆 주간 쟁탈전</label><input type="number" id="p_war_gain" value="0" step="10000" oninput="calculateAncientCost()" style="padding:6px 8px; font-size:13.5px;"></div>
+            <div><label style="font-size:12px;">🎁 주간 이벤트/상점</label><input type="number" id="p_event_gain" value="0" step="10000" oninput="calculateAncientCost()" style="padding:6px 8px; font-size:13.5px;"></div>
+            <div><label style="font-size:12px;">⚔️ 일일 방치(하루)</label><input type="number" id="p_daily_gain" value="0" step="5000" oninput="calculateAncientCost()" style="padding:6px 8px; font-size:13.5px;"></div>
+            <div><label style="font-size:12px;">💰 현재 보유량</label><input type="number" id="p_current_holding" value="0" step="10000" oninput="calculateAncientCost()" style="padding:6px 8px; font-size:13.5px;"></div>
+          </div>
+        </div>
+
+        <!-- 고대 패시브 결과 대시보드 -->
+        <div class="result-dashboard">
+          <div class="res-label">선택한 고대 패시브 총 필요 각성석</div>
+          <div class="res-value" id="p_total_cost">0개</div>
+          <div class="res-sub">
+            <span>만 단위 환산: <strong id="p_cost_man">0만 개</strong></span>
+            <span>|</span>
+            <span>주간 총 수급량: <strong id="p_weekly_total">0개/주</strong></span>
+            <span>|</span>
+            <span>목표 달성 예상: <strong id="p_weeks_left" style="color:#38bdf8;">0주 (0일)</strong></span>
+          </div>
+        </div>
+
+        <!-- 등급별 각성석 소모 기준표 (맨 밑 배치) -->
+        <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
+          <div class="card-title" style="margin-bottom: 8px;">
+            <span style="font-size:17.5px;">📊 등급별 각성석 소모 기준표 (패시브 / 영웅 / 스킬 공통)</span>
+            <span class="grade-badge grade-ancient">전 분야 공통 적용</span>
+          </div>
+          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
+            소헌키의 모든 패시브, 영웅, 스킬은 등급별로 각성석 소모량이 완전히 동일합니다.
+          </p>
+          <div class="custom-table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>등급</th><th>1각성</th><th>2각성</th><th>3각성 (풀각)</th><th>3각 누적 비용</th><th>1각당 시너지</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="grade-badge grade-advanced">상급</span></td>
+                  <td>6,500 <small style="color:#94a3b8;">(실측)</small></td><td>12,000 <small style="color:#f59e0b;">(추정)</small></td><td>17,000 <small style="color:#f59e0b;">(추정)</small></td>
+                  <td style="color:#93c5fd; font-weight:800; font-size:15px;">35,500 <small>(약 3.55만·추정)</small></td>
+                  <td><strong style="color:#10b981; font-size:15px;">+1점</strong></td>
+                </tr>
+                <tr>
+                  <td><span class="grade-badge grade-unique">특급</span></td>
+                  <td>15,000 <small style="color:#94a3b8;">(1.5만)</small></td><td>28,000 <small style="color:#94a3b8;">(2.8만)</small></td><td>40,000 <small style="color:#94a3b8;">(4.0만)</small></td>
+                  <td style="color:#d8b4fe; font-weight:800; font-size:15px;">83,000 <small>(8.3만)</small></td>
+                  <td><strong style="color:#10b981; font-size:15px;">+2점</strong></td>
+                </tr>
+                <tr>
+                  <td><span class="grade-badge grade-legend">전설</span></td>
+                  <td>20,000 <small style="color:#94a3b8;">(2.0만)</small></td><td>40,000 <small style="color:#94a3b8;">(4.0만)</small></td><td>65,000 <small style="color:#94a3b8;">(6.5만)</small></td>
+                  <td style="color:#fdba74; font-weight:800; font-size:15px;">125,000 <small>(12.5만)</small></td>
+                  <td><strong style="color:#10b981; font-size:15px;">+3점</strong></td>
+                </tr>
+                <tr>
+                  <td><span class="grade-badge grade-mythic">신화</span></td>
+                  <td>100,000 <small style="color:#94a3b8;">(10만)</small></td><td>350,000 <small style="color:#94a3b8;">(35만)</small></td><td>700,000 <small style="color:#94a3b8;">(70만)</small></td>
+                  <td style="color:#fda4af; font-weight:800; font-size:15px;">1,150,000 <small>(115만)</small></td>
+                  <td><strong style="color:#f59e0b; font-size:15px;">+15점 (추천)</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+
+      <!-- ==================== 2. 각성 시너지 점수 계산기 ==================== -->
+      <div id="tab-synergy" class="tab-content" style="display:none;">
+        <div class="card">
+          <div class="card-title">
+            <span>✨ 각성 시너지 점수 계산기</span>
+            <span class="grade-badge grade-mythic">미사용 1각시 시너지 점수 계산</span>
+          </div>
+          <p class="card-subtitle">
+            미사용 상태의 신화/전설/특급을 1각성하여 시너지를 채울 때 필요한 각성석과 시너지 점수, 그리고 공격력(%) 상승치를 계산합니다. (신영웅 3각 조건: <strong>시너지 600점</strong>)
+          </p>
+          <div class="grid-3">
+            <div><label><span class="grade-badge grade-mythic">신화 패시브</span> 1각 할 개수</label><input type="number" id="syn_mythic_p" value="0" min="0" oninput="calculateSynergyDetailed()"></div>
+            <div><label><span class="grade-badge grade-mythic">신화 스킬</span> 1각 할 개수</label><input type="number" id="syn_mythic_s" value="0" min="0" oninput="calculateSynergyDetailed()"></div>
+            <div><label><span class="grade-badge grade-mythic">신화 영웅</span> 1각 할 개수</label><input type="number" id="syn_mythic_h" value="0" min="0" oninput="calculateSynergyDetailed()"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span>✨ 전설 & 특급 1각 할 개수</span></div>
+          <div class="grid-2">
+            <div><label><span class="grade-badge grade-legend">전설급</span> 1각 할 개수 (개당 2만 / +3점)</label><input type="number" id="syn_legend_all" value="0" min="0" oninput="calculateSynergyDetailed()"></div>
+            <div><label><span class="grade-badge grade-unique">특급</span> 1각 할 개수 (개당 1.5만 / +2점)</label><input type="number" id="syn_unique_all" value="0" min="0" oninput="calculateSynergyDetailed()"></div>
+          </div>
+          <div style="margin-top:16px;">
+            <label>🎯 현재 내 각성 시너지 총점수 (인게임 편성창 확인)</label>
+            <input type="number" id="syn_cur_points" value="0" min="0" step="5" oninput="calculateSynergyDetailed()">
+          </div>
+        </div>
+
+        <div class="result-dashboard green">
+          <div class="res-label">시너지 1각성 총 소모 각성석 및 공격력(%) 효과</div>
+          <div class="res-value" id="syn_total_stones">0개</div>
+          <div style="margin-bottom:12px; font-size:17px; font-weight:800; color:#fde68a;">
+            현재 시너지 공격력: <span id="syn_cur_atk_pct" style="color:#ffffff;">0%</span> ➔ 1각 적용 후 최종: <span id="syn_final_atk_pct" style="color:#67e8f9; font-size:20px;">0%</span>
+          </div>
+          <div class="res-sub">
+            <span>소모 각성석: <strong id="syn_stones_man">0만 개</strong></span>
+            <span>|</span>
+            <span>추가 획득 점수: <strong id="syn_add_points" style="color:#fef08a;">+0점</strong></span>
+            <span>|</span>
+            <span>최종 시너지 총점수: <strong id="syn_final_points" style="color:#67e8f9;">0점</strong></span>
+          </div>
+        </div>
+
+        <!-- 각성 시너지 구간별 공격력 기준표 (인게임 스크린샷 15장 종합 표) -->
+        <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
+          <div class="card-title" style="margin-bottom: 8px;">
+            <span style="font-size:17.5px;">📊 각성 시너지 점수 총합별 공격력(%) 효과 기준표</span>
+            <span class="grade-badge grade-mythic">인게임 15구간 실측</span>
+          </div>
+          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
+            스킬/패시브/영웅 각성 시너지 점수 총합에 따라 적용되는 영구 보유 효과입니다.
+          </p>
+          <div class="custom-table-container">
+            <table class="custom-table" style="font-size:13.5px;">
+              <thead>
+                <tr>
+                  <th>점수 구간</th><th>시너지 공격력(%)</th>
+                  <th>점수 구간</th><th>시너지 공격력(%)</th>
+                  <th>점수 구간</th><th>시너지 공격력(%)</th>
+                </tr>
+              </thead>
+              <tbody id="synergy_reference_tbody">
+                <!-- JS dynamically populates the 3-column compact synergy table -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== 3. 영원 장비 연마 ==================== -->
+      <div id="tab-refine" class="tab-content" style="display:none;">
+        <div class="card">
+          <div class="card-title">
+            <span>🔨 영원 장비 연마 기댓값 시뮬레이터</span>
+            <span class="grade-badge grade-ancient">Lv.0 ~ Lv.20 마르코프 연쇄 정밀식</span>
+          </div>
+          <p class="card-subtitle">인게임 공식 연마 확률 정보를 바탕으로 목표 레벨까지 필요한 평균 시도 횟수를 정밀 계산합니다.</p>
+          <div class="grid-2">
+            <div><label>현재 연마 단계</label><select id="ref_cur_lv" onchange="calculateRefineExpected()"></select></div>
+            <div><label>목표 연마 단계</label><select id="ref_tar_lv" onchange="calculateRefineExpected()"></select></div>
+          </div>
+          <div style="margin-top:16px; display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="ref_safe_mode" checked onchange="calculateRefineExpected()" style="width:18px; height:18px; accent-color:var(--accent);">
+            <label for="ref_safe_mode" style="margin-bottom:0; cursor:pointer; font-size:15px; color:#ffffff;">
+              🛡️ <strong>하락 방지 사용 (재화 2배 소모, 하락 확률 0% 고정)</strong>
+            </label>
+          </div>
+        </div>
+
+        <div class="result-dashboard">
+          <div class="res-label">목표 단계 달성 평균 연마 시도 기댓값</div>
+          <div class="res-value" id="ref_expected_trials">0회</div>
+          <div class="res-sub">
+            <span>성공 확률 구간: <strong id="ref_prob_range">0%</strong></span>
+            <span>|</span>
+            <span>하락 방지 상태: <strong id="ref_safe_status" style="color:#10b981;">ON (재화 2배)</strong></span>
+          </div>
+        </div>
+
+        <!-- 영원 장비 연마 공식 확률표 (맨 밑 신설) -->
+        <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
+          <div class="card-title" style="margin-bottom: 8px;">
+            <span style="font-size:17.5px;">📊 영원 장비 연마 단계별 공식 확률표</span>
+            <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">영원의 돌 소모량: 데이터 수집 중 🔒</span>
+          </div>
+          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
+            인게임 공식 연마 확률 정보 기준이며, Lv.11 이상부터 실패 시 1단계 하락 페널티가 발생합니다.
+          </p>
+          <div class="custom-table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>단계</th><th>성공 확률</th><th>유지 확률</th><th>하락 확률</th><th>영원의 돌 소모</th>
+                </tr>
+              </thead>
+              <tbody id="refine_rates_tbody">
+                <!-- JS dynamically renders Lv.0~Lv.20 table -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== 4. 영원 장비 옵션 변환 ==================== -->
+      <div id="tab-orb" class="tab-content" style="display:none;">
+        <div class="card">
+          <div class="card-title">
+            <span>⚔️ 영원 장비 부위 선택</span>
+            <span class="grade-badge grade-ancient" id="equip_active_badge">대낫 선택됨</span>
+          </div>
+          <p class="card-subtitle">옵션 변환을 시뮬레이션할 영원 장비를 선택하세요. (변환 1회당 <strong>심연정수 2개</strong> 소모)</p>
+
+          <div class="grid-3" style="margin-bottom:18px;">
+            <div class="ancient-select-card selected" id="equip_card_scythe" onclick="selectEquipPart('scythe')">
+              <div class="ancient-header">
+                <div class="ancient-title-box">
+                  <div class="icon-avatar-wrapper" style="border-color:#f43f5e;"><span class="icon-avatar-fallback">대낫</span><img src="images/scythe.png" alt="대낫" onerror="this.onerror=null; this.src='images/scythe.jpg'; this.onerror=function(){this.src='images/strike_master.jpg'; this.onerror=function(){this.style.display='none';};};" class="icon-avatar-img"></div>
+                  <div><span class="ancient-name">🗡️ 영원 대낫</span><span class="ancient-sub" style="color:#f43f5e;">공격력 & 크리티컬 피해</span></div>
+                </div>
+                <span class="grade-badge grade-mythic">활성화</span>
+              </div>
+              <div class="ancient-desc">주옵션: 대낫 공격력% × 대낫 크피%</div>
+            </div>
+
+            <div class="ancient-select-card" id="equip_card_orb" onclick="selectEquipPart('orb')">
+              <div class="ancient-header">
+                <div class="ancient-title-box">
+                  <div class="icon-avatar-wrapper" style="border-color:#38bdf8;"><span class="icon-avatar-fallback">오브</span><img src="images/orb.png" alt="오브" onerror="this.onerror=null; this.src='images/orb.jpg'; this.onerror=function(){this.src='images/elem_fusion.jpg'; this.onerror=function(){this.style.display='none';};};" class="icon-avatar-img"></div>
+                  <div><span class="ancient-name">🔮 영원 오브</span><span class="ancient-sub" style="color:#38bdf8;">공격력 & 모든 속성 피해량</span></div>
+                </div>
+                <span class="grade-badge grade-ancient">활성화</span>
+              </div>
+              <div class="ancient-desc">주옵션: 오브 공격력% × 속성 피해량%</div>
+            </div>
+
+            <div class="ancient-select-card" id="equip_card_accessory" onclick="selectEquipPart('accessory')" style="opacity:0.65; cursor:pointer;">
+              <div class="ancient-header">
+                <div class="ancient-title-box">
+                  <div class="icon-avatar-wrapper" style="border-color:#64748b;"><span class="icon-avatar-fallback">장식</span><img src="images/accessory.png" alt="장식" onerror="this.onerror=null; this.src='images/accessory.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img"></div>
+                  <div><span class="ancient-name">💍 영원 장식 🔒</span><span class="ancient-sub" style="color:#94a3b8;">데이터 수집 중</span></div>
+                </div>
+                <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">🔒 미구현</span>
+              </div>
+              <div class="ancient-desc" style="color:#94a3b8;">인게임 수치 파악 후 업데이트 예정</div>
+            </div>
+          </div>
+
+          <!-- 좌/우 슬롯 분리 탭 -->
+          <div style="display:flex; gap:10px; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:16px;">
+            <button id="btn_slot_left" onclick="selectEquipSlot('left')" style="flex:1; background:var(--accent); color:#ffffff; border:none; padding:10px 14px; border-radius:8px; font-weight:700; font-size:14px; cursor:pointer;">
+              👈 왼쪽 슬롯 (1슬롯 / 수치 적용)
+            </button>
+            <button id="btn_slot_right" onclick="selectEquipSlot('right')" style="flex:1; background:#1e293b; color:#94a3b8; border:1px solid #334155; padding:10px 14px; border-radius:8px; font-weight:700; font-size:14px; cursor:pointer;">
+              👉 오른쪽 슬롯 🔒 (2슬롯 / 데이터 수집 중)
+            </button>
+          </div>
+
+          <div id="slot_right_notice" style="display:none; text-align:center; padding:30px 20px; background:#0f172a; border-radius:12px; border:1px dashed #64748b; margin-bottom:14px;">
+            <div style="font-size:28px; margin-bottom:8px;">🔒</div>
+            <strong style="font-size:16px; color:#ffffff;">오른쪽 슬롯(2슬롯)은 현재 데이터 수집 중입니다.</strong>
+            <p style="font-size:13.5px; color:#94a3b8; margin-top:6px;">인게임 내 수치와 등장 확률 정보가 확인되는 대로 즉시 시뮬레이션에 반영될 예정입니다.</p>
+          </div>
+
+          <div id="equip_accessory_notice" style="display:none; text-align:center; padding:30px 20px; background:#0f172a; border-radius:12px; border:1px dashed #64748b; margin-bottom:14px;">
+            <div style="font-size:28px; margin-bottom:8px;">🔒</div>
+            <strong style="font-size:16px; color:#ffffff;">영원 장식 옵션 변환은 현재 미구현 상태입니다.</strong>
+            <p style="font-size:13.5px; color:#94a3b8; margin-top:6px;">장식의 등급별 변환 확률 정보가 공식 제공되면 업데이트됩니다.</p>
+          </div>
+
+          <div id="equip_calc_body">
+            <div style="margin-bottom:16px;">
+              <label>장비 현재 등급 선택</label>
+              <select id="orb_tier" onchange="calculateOrbExpected()">
+                <option value="상급">상급 (등급업 1%)</option>
+                <option value="특급">특급 (등급업 0.15%)</option>
+                <option value="전설">전설 (등급업 0.1%)</option>
+                <option value="신화" selected>신화</option>
+              </select>
+            </div>
+            <div class="grid-2">
+              <div style="background:#0f172a; padding:14px; border-radius:10px; border:1px solid #334155;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                  <strong style="color:#38bdf8; font-size:15px;" id="orb_opt1_title">1옵션: 영원 대낫 공격력(%)</strong>
+                  <span class="grade-badge grade-ancient" id="orb_opt1_badge">수치 대기</span>
+                </div>
+                <label>1옵션 목표 등급 선택</label>
+                <select id="orb_target_grade1" onchange="calculateOrbExpected()">
+                  <option value="SSS">SSS급 이상</option><option value="SS">SS급 이상</option><option value="S" selected>S급 이상</option>
+                  <option value="A">A급 이상</option><option value="B">B급 이상</option><option value="C">C급 이상</option><option value="D">D급 이상</option><option value="ANY">상관없음 (조건 없음)</option>
+                </select>
+                <div style="font-size:13px; color:#94a3b8; margin-top:8px;">선택 등급 기준 수치: <strong id="orb_val1_detail" style="color:#ffffff;">+0%</strong></div>
+              </div>
+              <div style="background:#0f172a; padding:14px; border-radius:10px; border:1px solid #334155;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                  <strong style="color:#f43f5e; font-size:15px;" id="orb_opt2_title">2옵션: 영원 대낫 크리티컬 피해(%)</strong>
+                  <span class="grade-badge grade-mythic" id="orb_opt2_badge">수치 대기</span>
+                </div>
+                <label>2옵션 목표 등급 선택</label>
+                <select id="orb_target_grade2" onchange="calculateOrbExpected()">
+                  <option value="SSS">SSS급 이상</option><option value="SS" selected>SS급 이상</option><option value="S">S급 이상</option>
+                  <option value="A">A급 이상</option><option value="B">B급 이상</option><option value="C">C급 이상</option><option value="D">D급 이상</option><option value="ANY">상관없음 (조건 없음)</option>
+                </select>
+                <div style="font-size:13px; color:#94a3b8; margin-top:8px;">선택 등급 기준 수치: <strong id="orb_val2_detail" style="color:#ffffff;">+0%</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-dashboard" id="equip_result_dashboard">
+          <div class="res-label">선택 조합 동시 달성 평균 시도 기댓값</div>
+          <div class="res-value" id="orb_expected_tries">0회</div>
+          <div style="margin-bottom:12px; font-size:18px; font-weight:800; color:#a855f7; display:flex; align-items:center; justify-content:center; gap:6px;">
+            <img src="images/essence.png" alt="심연정수" class="inline-res-icon" onerror="this.style.display='none';">
+            <span id="orb_essence_cost_text">필요 심연정수 기댓값: 0개 (1회당 2개)</span>
+          </div>
+          <div class="res-sub">
+            <span>동시 등장 확률: <strong id="orb_combined_prob">0%</strong></span>
+            <span>|</span>
+            <span>1옵 × 2옵 실질 곱연산 배율: <strong id="orb_mult" style="color:#f59e0b;">약 0배</strong></span>
+          </div>
+        </div>
+
+        <!-- 옵션 변환 상세 수치 기준표 (드롭다운으로 등급 선택 가능) -->
+        <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
+          <div class="card-title" style="margin-bottom: 8px;">
+            <span>📊 영원 장비 옵션 등급별 수치 및 등장 확률표</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <label style="margin:0; font-size:13px; color:#cbd5e1;">등급 선택:</label>
+              <select id="equip_table_tier_select" onchange="renderEquipRateTable()" style="width:auto; padding:4px 8px; font-size:13px;">
+                <option value="신화" selected>신화</option>
+                <option value="전설">전설</option>
+                <option value="특급">특급</option>
+                <option value="상급">상급</option>
+              </select>
+            </div>
+          </div>
+          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
+            현재 선택된 무기 부위(<span id="table_current_part_name" style="color:#38bdf8; font-weight:700;">영원 대낫</span>)의 등급별 1옵션/2옵션 상세 수치 및 공식 등장 확률입니다.
+          </p>
+          <div class="custom-table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>등급</th><th>1옵션 수치</th><th>2옵션 수치</th><th>등장 확률</th>
+                </tr>
+              </thead>
+              <tbody id="equip_rates_tbody">
+                <!-- JS dynamically renders option rates table -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== 5. 가호 & 원혼 어빌리티 ==================== -->
+      <div id="tab-ability" class="tab-content" style="display:none;">
+        <div class="card">
+          <div class="card-title">
+            <span>🌙 가호 종류 선택</span>
+            <span class="grade-badge grade-ancient" id="gaho_active_badge">⭐ 별의 가호 선택됨</span>
+          </div>
+          <p class="card-subtitle">시뮬레이션할 가호 종류를 선택하세요. (잠금 수에 따라 1회당 소모 주사위가 증가합니다)</p>
+
+          <!-- 별 / 달 / 해 가호 선택 버튼 (이미지 아이콘 적용) -->
+          <div class="grid-3" style="margin-bottom:18px;">
+            <div class="ancient-select-card selected" id="gaho_btn_star" onclick="selectGahoType('star')">
+              <div class="ancient-header">
+                <div class="ancient-title-box">
+                  <div class="icon-avatar-wrapper" style="border-color:#fbbf24;">
+                    <img src="images/star.png" alt="별" onerror="this.onerror=null; this.parentElement.innerHTML='⭐';">
+                  </div>
+                  <div><span class="ancient-name">⭐ 별의 가호</span><span class="ancient-sub" style="color:#fbbf24;">10만 ~ 70만/회</span></div>
+                </div>
+                <span class="grade-badge" style="background:rgba(251,191,36,0.2); color:#fbbf24; border:1px solid #fbbf24;">7칸</span>
+              </div>
+              <div class="ancient-desc">잠금당 +10만 주사위 증가</div>
+            </div>
+
+            <div class="ancient-select-card" id="gaho_btn_moon" onclick="selectGahoType('moon')">
+              <div class="ancient-header">
+                <div class="ancient-title-box">
+                  <div class="icon-avatar-wrapper" style="border-color:#38bdf8;">
+                    <img src="images/moon.png" alt="달" onerror="this.onerror=null; this.parentElement.innerHTML='🌙';">
+                  </div>
+                  <div><span class="ancient-name">🌙 달의 가호</span><span class="ancient-sub" style="color:#38bdf8;">50만 ~ 350만/회</span></div>
+                </div>
+                <span class="grade-badge" style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid #38bdf8;">7칸</span>
+              </div>
+              <div class="ancient-desc">잠금당 +50만 주사위 증가</div>
+            </div>
+
+            <div class="ancient-select-card" id="gaho_btn_sun" onclick="selectGahoType('sun')">
+              <div class="ancient-header">
+                <div class="ancient-title-box">
+                  <div class="icon-avatar-wrapper" style="border-color:#f43f5e;">
+                    <img src="images/sun.png" alt="해" onerror="this.onerror=null; this.parentElement.innerHTML='☀️';">
+                  </div>
+                  <div><span class="ancient-name">☀️ 해의 가호</span><span class="ancient-sub" style="color:#f43f5e;">70만 ~ 490만/회</span></div>
+                </div>
+                <span class="grade-badge" style="background:rgba(244,63,94,0.2); color:#f43f5e; border:1px solid #f43f5e;">7칸</span>
+              </div>
+              <div class="ancient-desc">잠금당 +70만 주사위 증가</div>
+            </div>
+          </div>
+
+          <!-- 가호 계산 컨트롤러 -->
+          <div class="grid-2">
+            <div>
+              <label>현재 완성된 고대 옵공증(1,000%) 칸 수</label>
+              <select id="gaho_locked" onchange="calculateGaho()">
+                <option value="0">0개 잠금 (7칸 전체 돌림)</option>
+                <option value="1">1개 잠금 (6칸 돌림)</option>
+                <option value="2">2개 잠금 (5칸 돌림)</option>
+                <option value="3">3개 잠금 (4칸 돌림)</option>
+                <option value="4">4개 잠금 (3칸 돌림)</option>
+                <option value="5">5개 잠금 (2칸 돌림)</option>
+                <option value="6">6개 잠금 (마지막 1칸 남음)</option>
+              </select>
+              <div style="font-size:13px; color:#94a3b8; margin-top:8px; display:flex; align-items:center;">
+                <img src="images/option_dice.png" alt="옵션 주사위" class="inline-res-icon" onerror="this.style.display='none';">
+                현재 1회당 소모 주사위: <strong id="gaho_cost_per_try" style="color:#fde047; margin-left:4px;">10만 개</strong>
+              </div>
+            </div>
+            <div style="display:flex; flex-direction:column; justify-content:center; background:#0f172a; padding:16px; border-radius:10px; border:1px solid #334155;">
+              <div style="font-size:13.5px; color:#cbd5e1;">남은 목표 슬롯: <strong id="gaho_remain_slots" style="color:#38bdf8;">7칸</strong></div>
+              <div style="font-size:13.5px; color:#cbd5e1; margin-top:6px;">
+                🎯 <strong>다음 1칸 달성 기댓값:</strong> <strong id="gaho_next_step_tries" style="color:#34d399;">0회</strong> 
+                <span id="gaho_next_step_dice" style="color:#a7f3d0; font-size:13px;">(약 0개)</span>
+              </div>
+              <div style="font-size:13.5px; color:#cbd5e1; margin-top:6px;">
+                👑 <strong>7칸 올 고대 최종 완성 총 누적:</strong> <strong id="gaho_total_tries" style="color:#fbbf24;">0회</strong>
+              </div>
+              <div style="margin-top:6px; font-size:15px; font-weight:800; color:#f59e0b;" id="gaho_total_dice_formatted">
+                총 필요 옵션 주사위: 0개
+              </div>
+              <div style="font-size:11.5px; color:#64748b;" id="gaho_total_dice_raw">
+                (실제 기댓값 수치: 0개)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 원혼 어빌리티 (6칸, 해골 위치에 soul.png 적용) -->
+        <div class="card">
+          <div class="card-title">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <img src="images/soul.png" alt="원혼" class="inline-res-icon" style="width:26px; height:26px;" onerror="this.parentElement.innerHTML='💀';">
+              <span>원혼 강화 어빌리티 (총 6칸)</span>
+            </div>
+            <span class="grade-badge grade-ancient">30만 ~ 180만/회</span>
+          </div>
+          <p class="card-subtitle">목표: 6칸 모두 <strong>[고대: 원혼 옵션 공격력 증폭 500%]</strong> 맞추기 (단일 등장 확률 0.019%, 잠금당 30만씩 증가)</p>
+          <div class="grid-2">
+            <div>
+              <label>현재 완성된 고대 원혼옵공증 칸 수</label>
+              <select id="wonhon_locked" onchange="calculateWonhon()">
+                <option value="0">0개 잠금 (6칸 전체 돌림)</option>
+                <option value="1">1개 잠금 (5칸 돌림)</option>
+                <option value="2">2개 잠금 (4칸 돌림)</option>
+                <option value="3">3개 잠금 (3칸 돌림)</option>
+                <option value="4">4개 잠금 (2칸 돌림)</option>
+                <option value="5">5개 잠금 (마지막 1칸 남음)</option>
+              </select>
+              <div style="font-size:13px; color:#94a3b8; margin-top:8px; display:flex; align-items:center;">
+                <img src="images/option_dice.png" alt="옵션 주사위" class="inline-res-icon" onerror="this.style.display='none';">
+                현재 1회당 소모 주사위: <strong id="wonhon_cost_per_try" style="color:#fde047; margin-left:4px;">30만 개</strong>
+              </div>
+            </div>
+            <div style="display:flex; flex-direction:column; justify-content:center; background:#0f172a; padding:16px; border-radius:10px; border:1px solid #334155;">
+              <div style="font-size:13.5px; color:#cbd5e1;">남은 목표 슬롯: <strong id="wonhon_remain_slots" style="color:#f43f5e;">6칸</strong></div>
+              <div style="font-size:13.5px; color:#cbd5e1; margin-top:6px;">
+                🎯 <strong>다음 1칸 달성 기댓값:</strong> <strong id="wonhon_next_step_tries" style="color:#34d399;">0회</strong>
+                <span id="wonhon_next_step_dice" style="color:#a7f3d0; font-size:13px;">(약 0개)</span>
+              </div>
+              <div style="font-size:13.5px; color:#cbd5e1; margin-top:6px;">
+                👑 <strong>6칸 올 고대 최종 완성 총 누적:</strong> <strong id="wonhon_total_tries" style="color:#fbbf24;">0회</strong>
+              </div>
+              <div style="margin-top:6px; font-size:15px; font-weight:800; color:#f97316;" id="wonhon_total_dice_formatted">
+                총 필요 옵션 주사위: 0개
+              </div>
+              <div style="font-size:11.5px; color:#64748b;" id="wonhon_total_dice_raw">
+                (실제 기댓값 수치: 0개)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 가호 및 원혼 단계별 주사위 소모 기준표 (맨 밑 배치) -->
+        <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
+          <div class="card-title" style="margin-bottom: 8px;">
+            <span style="font-size:17.5px;">📊 가호 및 원혼 어빌리티 단계별 잠금 주사위 소모 기준표</span>
+            <span class="grade-badge grade-ancient">옵션 주사위</span>
+          </div>
+          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
+            원하는 옵션을 잠글 때마다 1회 변환 시 소모되는 옵션 주사위 개수 기준입니다.
+          </p>
+          <div class="custom-table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>구분</th><th>0잠금 (전체)</th><th>1잠금</th><th>2잠금</th><th>3잠금</th><th>4잠금</th><th>5잠금</th><th>6잠금 (막칸)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong style="color:#fbbf24;">⭐ 별의 가호</strong></td>
+                  <td>10만</td><td>20만</td><td>30만</td><td>40만</td><td>50만</td><td>60만</td><td>70만</td>
+                </tr>
+                <tr>
+                  <td><strong style="color:#38bdf8;">🌙 달의 가호</strong></td>
+                  <td>50만</td><td>100만</td><td>150만</td><td>200만</td><td>250만</td><td>300만</td><td>350만</td>
+                </tr>
+                <tr>
+                  <td><strong style="color:#f43f5e;">☀️ 해의 가호</strong></td>
+                  <td>70만</td><td>140만</td><td>210만</td><td>280만</td><td>350만</td><td>420만</td><td>490만</td>
+                </tr>
+                <tr>
+                  <td><strong style="color:#a855f7;">💀 원혼 어빌리티</strong></td>
+                  <td>30만</td><td>60만</td><td>90만</td><td>120만</td><td>150만</td><td>180만</td><td>-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </div>
 
-  <!-- ==================== TAB 2: 신화 우선 시너지 계산기 ==================== -->
-  <div id="tab-synergy" class="tab-content" style="display:none;">
-    <div class="card">
+  <!-- ==================== [MODE 2] 🐣 뉴비 공략 영역 ==================== -->
+  <div id="mode_newbie_container" style="display:none;">
+    <div class="card" style="border-left: 4px solid #f59e0b;">
       <div class="card-title">
-        <span>👑 미사용 신화급 패시브/스킬/영웅 1각 시너지 계산기</span>
-        <span class="grade-badge grade-mythic">신화 우선 +15점</span>
+        <span>🐣 뉴비 전용 추천 가이드 & 소환 기댓값 계산기</span>
+        <span class="grade-badge" style="background:#b45309; color:#fde68a; border:1px solid #f59e0b;">🚧 개발 중</span>
       </div>
       <p class="card-subtitle">
-        신화급 1각은 각성석 <strong>10만 개당 시너지 15점</strong>을 제공하여 가성비가 가장 뛰어납니다. 
-        신영웅(이그니스, 제논, 다미안) 3각 조건을 위한 <strong>시너지 600점 달성</strong>에 필수적입니다.
+        뉴비 유저분들의 빠른 정착을 위한 소환 레벨업 기댓값, 초기 각성석 분배 가이드라인이 준비 중입니다.
       </p>
 
-      <div class="grid-3">
-        <div>
-          <label>미사용 <span class="grade-badge grade-mythic">신화 패시브</span> 1각 개수</label>
-          <input type="number" id="syn_mythic_p" value="5" min="0" oninput="calculateSynergyDetailed()">
-        </div>
-        <div>
-          <label>미사용 <span class="grade-badge grade-mythic">신화 스킬</span> 1각 개수</label>
-          <input type="number" id="syn_mythic_s" value="5" min="0" oninput="calculateSynergyDetailed()">
-        </div>
-        <div>
-          <label>미사용 <span class="grade-badge grade-mythic">신화 영웅</span> 1각 개수</label>
-          <input type="number" id="syn_mythic_h" value="5" min="0" oninput="calculateSynergyDetailed()">
-        </div>
-      </div>
-    </div>
-
-    <!-- 전설 및 특급 추가 업그레이드 -->
-    <div class="card">
-      <div class="card-title">
-        <span>✨ 신화 이후 잔여 각성석: 전설 & 특급 업그레이드</span>
-      </div>
-      <div class="grid-2">
-        <div>
-          <label><span class="grade-badge grade-legend">전설급</span> 1각 개수 (개당 2만 / +3점)</label>
-          <input type="number" id="syn_legend_all" value="10" min="0" oninput="calculateSynergyDetailed()">
-        </div>
-        <div>
-          <label><span class="grade-badge grade-unique">특급</span> 1각 개수 (개당 1.5만 / +2점)</label>
-          <input type="number" id="syn_unique_all" value="10" min="0" oninput="calculateSynergyDetailed()">
-        </div>
-      </div>
-
-      <div style="margin-top:16px;">
-        <label>🎯 현재 내 각성 시너지 총점수 (인게임 편성창 확인)</label>
-        <input type="number" id="syn_cur_points" value="411" step="5" oninput="calculateSynergyDetailed()">
-      </div>
-    </div>
-
-    <!-- 시너지 결과 대시보드 -->
-    <div class="result-dashboard green">
-      <div class="res-label">시너지 업그레이드 총 소모 각성석</div>
-      <div class="res-value" id="syn_total_stones">0개</div>
-      <div class="res-sub">
-        <span>소모 각성석: <strong id="syn_stones_man">0만 개</strong></span>
-        <span>|</span>
-        <span>추가 획득 점수: <strong id="syn_add_points" style="color:#fef08a;">+0점</strong></span>
-        <span>|</span>
-        <span>적용 후 최종 시너지: <strong id="syn_final_points" style="color:#67e8f9;">0점</strong></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== TAB 3: 영원 장비 연마 기댓값 ==================== -->
-  <div id="tab-refine" class="tab-content" style="display:none;">
-    <div class="card">
-      <div class="card-title">
-        <span>🔨 영원 장비 연마 기댓값 시뮬레이터</span>
-        <span class="grade-badge grade-ancient">Lv.0 ~ Lv.20</span>
-      </div>
-      <p class="card-subtitle">인게임 공식 연마 확률 정보를 바탕으로 목표 레벨까지 필요한 평균 시도 횟수를 계산합니다.</p>
-
-      <div class="grid-2">
-        <div>
-          <label>현재 연마 단계</label>
-          <select id="ref_cur_lv" onchange="calculateRefineExpected()"></select>
-        </div>
-        <div>
-          <label>목표 연마 단계</label>
-          <select id="ref_tar_lv" onchange="calculateRefineExpected()"></select>
-        </div>
-      </div>
-
-      <div style="margin-top:16px; display:flex; align-items:center; gap:8px;">
-        <input type="checkbox" id="ref_safe_mode" checked onchange="calculateRefineExpected()" style="width:18px; height:18px; accent-color:var(--accent);">
-        <label for="ref_safe_mode" style="margin-bottom:0; cursor:pointer; font-size:15px; color:#ffffff;">
-          🛡️ <strong>하락 방지 사용 (재화 2배 소모, 하락 확률 0% 고정)</strong>
-        </label>
-      </div>
-    </div>
-
-    <div class="result-dashboard">
-      <div class="res-label">목표 단계 달성 평균 연마 시도 기댓값</div>
-      <div class="res-value" id="ref_expected_trials">0회</div>
-      <div class="res-sub">
-        <span>성공 확률 구간: <strong id="ref_prob_range">0%</strong></span>
-        <span>|</span>
-        <span>하락 방지 상태: <strong id="ref_safe_status" style="color:#10b981;">ON (재화 2배)</strong></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== TAB 4: 영원 오브 연마 (옵션 변환) ==================== -->
-    <!-- ==================== TAB 4: 영원 장비 연마 (옵션 변환) ==================== -->
-  <div id="tab-orb" class="tab-content" style="display:none;">
-    <!-- 부위 선택 카드 (대낫 / 오브 / 장식) -->
-    <div class="card">
-      <div class="card-title">
-        <span>⚔️ 영원 장비 부위 선택</span>
-        <span class="grade-badge grade-ancient" id="equip_active_badge">대낫 선택됨</span>
-      </div>
-      <p class="card-subtitle">
-        옵션 변환을 시뮬레이션할 영원 장비를 선택하세요. (변환 1회당 <strong>심연정수 2개</strong> 소모)
-      </p>
-
-      <div class="grid-3" style="margin-bottom:18px;">
-        <!-- 대낫 -->
-        <div class="ancient-select-card selected" id="equip_card_scythe" onclick="selectEquipPart('scythe')">
-          <div class="ancient-header">
-            <div class="ancient-title-box">
-              <div class="icon-avatar-wrapper" style="border-color:#f43f5e;">
-                <span class="icon-avatar-fallback">대낫</span>
-                <img src="images/scythe.png" alt="대낫" onerror="this.onerror=null; this.src='images/scythe.jpg'; this.onerror=function(){this.src='images/strike_master.jpg'; this.onerror=function(){this.style.display='none';};};" class="icon-avatar-img">
-              </div>
-              <div>
-                <span class="ancient-name">🗡️ 영원 대낫</span>
-                <span class="ancient-sub" style="color:#f43f5e;">공격력 & 크리티컬 피해</span>
-              </div>
-            </div>
-            <span class="grade-badge grade-mythic">활성화</span>
-          </div>
-          <div class="ancient-desc">주옵션: 대낫 공격력% × 대낫 크피%</div>
-        </div>
-
-        <!-- 오브 -->
-        <div class="ancient-select-card" id="equip_card_orb" onclick="selectEquipPart('orb')">
-          <div class="ancient-header">
-            <div class="ancient-title-box">
-              <div class="icon-avatar-wrapper" style="border-color:#38bdf8;">
-                <span class="icon-avatar-fallback">오브</span>
-                <img src="images/orb.png" alt="오브" onerror="this.onerror=null; this.src='images/orb.jpg'; this.onerror=function(){this.src='images/elem_fusion.jpg'; this.onerror=function(){this.style.display='none';};};" class="icon-avatar-img">
-              </div>
-              <div>
-                <span class="ancient-name">🔮 영원 오브</span>
-                <span class="ancient-sub" style="color:#38bdf8;">공격력 & 모든 속성 피해량</span>
-              </div>
-            </div>
-            <span class="grade-badge grade-ancient">활성화</span>
-          </div>
-          <div class="ancient-desc">주옵션: 오브 공격력% × 속성 피해량%</div>
-        </div>
-
-        <!-- 장식 (미구현) -->
-        <div class="ancient-select-card" id="equip_card_accessory" onclick="selectEquipPart('accessory')" style="opacity:0.65; cursor:pointer;">
-          <div class="ancient-header">
-            <div class="ancient-title-box">
-              <div class="icon-avatar-wrapper" style="border-color:#64748b;">
-                <span class="icon-avatar-fallback">장식</span>
-                <img src="images/accessory.png" alt="장식" onerror="this.onerror=null; this.src='images/accessory.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
-              </div>
-              <div>
-                <span class="ancient-name">💍 영원 장식 🔒</span>
-                <span class="ancient-sub" style="color:#94a3b8;">데이터 준비 중</span>
-              </div>
-            </div>
-            <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">🔒 미구현</span>
-          </div>
-          <div class="ancient-desc" style="color:#94a3b8;">인게임 수치 파악 후 업데이트 예정</div>
-        </div>
-      </div>
-
-      <!-- 슬롯 선택 탭 (왼쪽 칸 vs 오른쪽 칸) -->
-      <div style="display:flex; gap:10px; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:16px;">
-        <button id="btn_slot_left" onclick="selectEquipSlot('left')" style="flex:1; background:var(--accent); color:#ffffff; border:none; padding:10px 14px; border-radius:8px; font-weight:700; font-size:14px; cursor:pointer;">
-          👈 왼쪽 슬롯 (1슬롯 / 수치 적용)
-        </button>
-        <button id="btn_slot_right" onclick="selectEquipSlot('right')" style="flex:1; background:#1e293b; color:#94a3b8; border:1px solid #334155; padding:10px 14px; border-radius:8px; font-weight:700; font-size:14px; cursor:pointer;">
-          👉 오른쪽 슬롯 🔒 (2슬롯 / 준비 중)
+      <div style="text-align:center; padding:50px 20px; background:#0f172a; border-radius:12px; border:1px dashed #78350f;">
+        <div style="font-size:48px; margin-bottom:12px;">🐣🚧</div>
+        <h3 style="font-size:20px; color:#fde68a; margin-bottom:8px;">소환 기댓값 및 뉴비 가이드 준비 중</h3>
+        <p style="font-size:14.5px; color:#cbd5e1; max-width:550px; margin:0 auto 16px auto; line-height:1.6;">
+          장비 소환 / 스킬 소환 / 영웅 소환 레벨별 필요 재화 및 다이아 소모 기댓값 계산기가 곧 업데이트될 예정입니다. 조금만 기다려 주세요!
+        </p>
+        <button onclick="switchMainMode('deep')" style="background:linear-gradient(135deg, #4338ca 0%, #312e81 100%); border:1px solid #6366f1; color:#ffffff; padding:10px 20px; border-radius:8px; font-weight:700; cursor:pointer;">
+          💎 심화 공략 계산기로 바로가기
         </button>
       </div>
-
-      <!-- 오른쪽 슬롯 미구현 안내창 -->
-      <div id="slot_right_notice" style="display:none; text-align:center; padding:30px 20px; background:#0f172a; border-radius:12px; border:1px dashed #64748b; margin-bottom:14px;">
-        <div style="font-size:28px; margin-bottom:8px;">🔒</div>
-        <strong style="font-size:16px; color:#ffffff;">오른쪽 슬롯(2슬롯)은 현재 데이터 수집 중입니다.</strong>
-        <p style="font-size:13.5px; color:#94a3b8; margin-top:6px;">인게임 내 수치와 등장 확률 정보가 확인되는 대로 즉시 시뮬레이션에 반영될 예정입니다.</p>
-      </div>
-
-      <!-- 장식 미구현 안내창 -->
-      <div id="equip_accessory_notice" style="display:none; text-align:center; padding:30px 20px; background:#0f172a; border-radius:12px; border:1px dashed #64748b; margin-bottom:14px;">
-        <div style="font-size:28px; margin-bottom:8px;">🔒</div>
-        <strong style="font-size:16px; color:#ffffff;">영원 장식 옵션 변환은 현재 미구현 상태입니다.</strong>
-        <p style="font-size:13.5px; color:#94a3b8; margin-top:6px;">장식의 등급별 변환 확률 정보가 공식 제공되면 업데이트됩니다.</p>
-      </div>
-
-      <!-- 실제 계산 컨트롤러 영역 -->
-      <div id="equip_calc_body">
-        <div style="margin-bottom:16px;">
-          <label>장비 현재 등급 선택</label>
-          <select id="orb_tier" onchange="calculateOrbExpected()">
-            <option value="상급">상급 (등급업 1%)</option>
-            <option value="특급">특급 (등급업 0.15%)</option>
-            <option value="전설">전설 (등급업 0.1%)</option>
-            <option value="신화" selected>신화</option>
-          </select>
-        </div>
-
-        <div class="grid-2">
-          <!-- 1옵션 -->
-          <div style="background:#0f172a; padding:14px; border-radius:10px; border:1px solid #334155;">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-              <strong style="color:#38bdf8; font-size:15px;" id="orb_opt1_title">1옵션: 영원 대낫 공격력(%)</strong>
-              <span class="grade-badge grade-ancient" id="orb_opt1_badge">수치 대기</span>
-            </div>
-            <label>1옵션 목표 등급 선택</label>
-            <select id="orb_target_grade1" onchange="calculateOrbExpected()">
-              <option value="SSS">SSS급 이상</option>
-              <option value="SS">SS급 이상</option>
-              <option value="S" selected>S급 이상</option>
-              <option value="A">A급 이상</option>
-              <option value="B">B급 이상</option>
-              <option value="C">C급 이상</option>
-              <option value="D">D급 이상</option>
-              <option value="ANY">상관없음 (조건 없음)</option>
-            </select>
-            <div style="font-size:13px; color:#94a3b8; margin-top:8px;">
-              선택 등급 기준 수치: <strong id="orb_val1_detail" style="color:#ffffff;">+0%</strong>
-            </div>
-          </div>
-
-          <!-- 2옵션 -->
-          <div style="background:#0f172a; padding:14px; border-radius:10px; border:1px solid #334155;">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-              <strong style="color:#f43f5e; font-size:15px;" id="orb_opt2_title">2옵션: 영원 대낫 크리티컬 피해(%)</strong>
-              <span class="grade-badge grade-mythic" id="orb_opt2_badge">수치 대기</span>
-            </div>
-            <label>2옵션 목표 등급 선택</label>
-            <select id="orb_target_grade2" onchange="calculateOrbExpected()">
-              <option value="SSS">SSS급 이상</option>
-              <option value="SS" selected>SS급 이상</option>
-              <option value="S">S급 이상</option>
-              <option value="A">A급 이상</option>
-              <option value="B">B급 이상</option>
-              <option value="C">C급 이상</option>
-              <option value="D">D급 이상</option>
-              <option value="ANY">상관없음 (조건 없음)</option>
-            </select>
-            <div style="font-size:13px; color:#94a3b8; margin-top:8px;">
-              선택 등급 기준 수치: <strong id="orb_val2_detail" style="color:#ffffff;">+0%</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 대시보드 결과 (심연정수 2개씩 계산 포함) -->
-    <div class="result-dashboard" id="equip_result_dashboard">
-      <div class="res-label" id="equip_res_label">선택 조합 동시 달성 평균 시도 기댓값</div>
-      <div class="res-value" id="orb_expected_tries">0회</div>
-      <div style="margin-bottom:12px; font-size:18px; font-weight:800; color:#a855f7;" id="orb_essence_cost">
-        🔮 필요 심연정수 기댓값: <strong>0개 (1회당 2개)</strong>
-      </div>
-      <div class="res-sub">
-        <span>동시 등장 확률: <strong id="orb_combined_prob">0%</strong></span>
-        <span>|</span>
-        <span>1옵 × 2옵 실질 곱연산 배율: <strong id="orb_mult" style="color:#f59e0b;">약 0배</strong></span>
-      </div>
     </div>
   </div>
 
-  <!-- ==================== TAB 5: 가호 & 원혼 어빌리티 ==================== -->
-  <div id="tab-ability" class="tab-content" style="display:none;">
-    <!-- 가호 어빌리티 (7칸) -->
-    <div class="card">
-      <div class="card-title">
-        <span>🌙 별 / 달 / 해의 가호 어빌리티 (총 7칸)</span>
-        <span class="grade-badge grade-ancient">고대 옵공증 0.064%</span>
-      </div>
-      <p class="card-subtitle">목표: 7칸 모두 <strong>[고대: 가호 옵션 공격력 증폭 1,000%]</strong> 맞추기 (단일 등장 확률 0.064%)</p>
-
-      <div class="grid-2">
-        <div>
-          <label>현재 완성된 고대 옵공증 칸 수</label>
-          <select id="gaho_locked" onchange="calculateGaho()">
-            <option value="0">0개 (7칸 돌리는 중)</option>
-            <option value="1">1개 잠금 (6칸 돌림)</option>
-            <option value="2">2개 잠금 (5칸 돌림)</option>
-            <option value="3">3개 잠금 (4칸 돌림)</option>
-            <option value="4">4개 잠금 (3칸 돌림)</option>
-            <option value="5">5개 잠금 (2칸 돌림)</option>
-            <option value="6">6개 잠금 (마지막 1칸 남음)</option>
-          </select>
-        </div>
-        <div style="display:flex; flex-direction:column; justify-content:center;">
-          <div style="font-size:14px; color:#cbd5e1;">남은 돌릴 슬롯: <strong id="gaho_remain_slots" style="color:#38bdf8;">7칸</strong></div>
-          <div style="font-size:14px; color:#cbd5e1;">7칸 올 고대 완성까지 예상 시도 횟수:</div>
-          <div style="font-size:24px; font-weight:800; color:#34d399;" id="gaho_expected_trials">0회</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 원혼 어빌리티 (6칸) -->
-    <div class="card">
-      <div class="card-title">
-        <span>💀 원혼 강화 어빌리티 (총 6칸)</span>
-        <span class="grade-badge grade-ancient">고대 원혼옵공증 0.019%</span>
-      </div>
-      <p class="card-subtitle">목표: 6칸 모두 <strong>[고대: 원혼 옵션 공격력 증폭 500%]</strong> 맞추기 (단일 등장 확률 0.019%)</p>
-
-      <div class="grid-2">
-        <div>
-          <label>현재 완성된 고대 원혼옵공증 칸 수</label>
-          <select id="wonhon_locked" onchange="calculateWonhon()">
-            <option value="0">0개 (6칸 돌리는 중)</option>
-            <option value="1">1개 잠금 (5칸 돌림)</option>
-            <option value="2">2개 잠금 (4칸 돌림)</option>
-            <option value="3">3개 잠금 (3칸 돌림)</option>
-            <option value="4">4개 잠금 (2칸 돌림)</option>
-            <option value="5">5개 잠금 (마지막 1칸 남음)</option>
-          </select>
-        </div>
-        <div style="display:flex; flex-direction:column; justify-content:center;">
-          <div style="font-size:14px; color:#cbd5e1;">남은 돌릴 슬롯: <strong id="wonhon_remain_slots" style="color:#f43f5e;">6칸</strong></div>
-          <div style="font-size:14px; color:#cbd5e1;">6칸 올 고대 완성까지 예상 시도 횟수:</div>
-          <div style="font-size:24px; font-weight:800; color:#fbbf24;" id="wonhon_expected_trials">0회</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <!-- Footer -->
   <footer>
     소울헌터키우기 네이버 라운지 전용 계산기
   </footer>
 </div>
 
 <script>
-  // ==================== DATA DEFINITIONS ====================
+  // ==================== FORMATTING HELPER ====================
+  function formatKoreanNumber(num) {
+    if (num >= 100000000) {
+      const eok = Math.floor(num / 100000000);
+      const man = Math.floor((num % 100000000) / 10000);
+      return man > 0 ? `${eok.toLocaleString()}억 ${man.toLocaleString()}만` : `${eok.toLocaleString()}억`;
+    } else if (num >= 10000) {
+      return `${Math.floor(num / 10000).toLocaleString()}만`;
+    }
+    return Math.round(num).toLocaleString();
+  }
+
+  // ==================== GLOBAL NAVIGATION LOGIC ====================
+  function switchMainMode(mode) {
+    const deepContainer = document.getElementById("mode_deep_container");
+    const newbieContainer = document.getElementById("mode_newbie_container");
+    const btnDeep = document.getElementById("btn_mode_deep");
+    const btnNewbie = document.getElementById("btn_mode_newbie");
+
+    if (mode === 'deep') {
+      deepContainer.style.display = "block";
+      newbieContainer.style.display = "none";
+      btnDeep.classList.add("active");
+      btnNewbie.classList.remove("active");
+      returnToDeepHub();
+    } else {
+      deepContainer.style.display = "none";
+      newbieContainer.style.display = "block";
+      btnDeep.classList.remove("active");
+      btnNewbie.classList.add("active");
+      document.getElementById("floating_back_btn").style.display = "none";
+    }
+  }
+
+  function openDeepCalculator(calcTabId) {
+    document.getElementById("deep_hub_view").style.display = "none";
+    document.getElementById("deep_calc_view").style.display = "block";
+    document.getElementById("floating_back_btn").style.display = "flex";
+
+    document.querySelectorAll('#deep_calc_view .tab-content').forEach(el => el.style.display = 'none');
+    const target = document.getElementById(calcTabId);
+    if (target) target.style.display = 'block';
+
+    window.scrollTo({ top: 120, behavior: 'smooth' });
+  }
+
+  function returnToDeepHub() {
+    document.getElementById("deep_hub_view").style.display = "block";
+    document.getElementById("deep_calc_view").style.display = "none";
+    document.getElementById("floating_back_btn").style.display = "none";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showTab(tabId) {
+    openDeepCalculator(tabId);
+  }
+
+  // ==================== DATA DEFINITIONS: ANCIENT PASSIVE ====================
   const AWAKENING_COSTS = {
-    advanced: [0, 6500, 18500, 35500], // 1각 6500, 2각 12000(추정), 3각 17000(추정), 누적 35500
+    advanced: [0, 6500, 18500, 35500],
     unique: [0, 15000, 43000, 83000],
     legend: [0, 20000, 60000, 125000],
     mythic: [0, 100000, 450000, 1150000]
   };
 
   const ANCIENT_LIST = [
-    // 1순위
     {
       id: "frenzy",
       name: "마력광란",
@@ -1131,8 +1476,6 @@
         { name: "전술가속", grade: "legend", need: 3 }
       ]
     },
-
-    // 2순위
     {
       id: "pierce",
       name: "근원관통",
@@ -1144,8 +1487,6 @@
         { name: "절대관통", grade: "mythic", need: 3 }
       ]
     },
-
-    // 3순위 (주속성 고패 3종)
     {
       id: "elem_fire",
       name: "불길의 지배",
@@ -1179,8 +1520,6 @@
         { name: "원소융합", grade: "mythic", need: 3 }
       ]
     },
-
-    // 4순위 (엔드 종결 5고패)
     {
       id: "elem_create",
       name: "원소창조",
@@ -1207,17 +1546,8 @@
   ];
 
   let selectedAncients = new Set();
-  let excludedMaterials = new Set(); // 이전 단계에서 만들어진 재료 제외 Set
+  let excludedMaterials = new Set();
 
-  // ==================== TAB NAVIGATION ====================
-  function showTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(tabId).style.display = 'block';
-    event.target.classList.add('active');
-  }
-
-  // ==================== TAB 1 LOGIC ====================
   function toggleRankAccordion(rank) {
     const item = document.getElementById(`acc-item-${rank}`);
     if (item.classList.contains("active")) {
@@ -1285,17 +1615,29 @@
     renderMaterialList();
   }
 
+  // 1순위, 2순위, 3순위는 [택 1] (라디오 버튼 방식), 4순위는 [다중 선택 가능]
   function toggleAncient(id) {
-    if (selectedAncients.has(id)) {
-      selectedAncients.delete(id);
+    const target = ANCIENT_LIST.find(a => a.id === id);
+    if (!target) return;
+
+    if (target.rank <= 3) {
+      if (selectedAncients.has(id)) {
+        selectedAncients.delete(id);
+      } else {
+        ANCIENT_LIST.filter(a => a.rank === target.rank).forEach(a => selectedAncients.delete(a.id));
+        selectedAncients.add(id);
+      }
     } else {
-      selectedAncients.add(id);
+      if (selectedAncients.has(id)) {
+        selectedAncients.delete(id);
+      } else {
+        selectedAncients.add(id);
+      }
     }
     renderAncientCards();
     calculateAncientCost();
   }
 
-  // 아바타 이미지 로드 에러 처리 (루트 및 images 폴더, 대소문자 .png/.PNG 완벽 탐색)
   const avatarFallbacks = [
     'avatar.PNG',
     'images/avatar.PNG',
@@ -1317,48 +1659,21 @@
     }
   }
 
-  // Mac(NFD) 및 윈도우/리눅스(NFC) 한글 유니코드 호환 이미지 로더
-  function handleMaterialError(img, matName) {
-    const raw = matName.replace(/\s+/g, '');
-    const candidates = [
-      `images/${encodeURI(raw.normalize('NFD'))}.jpg`,
-      `images/${encodeURI(raw.normalize('NFC'))}.jpg`,
-      `images/${encodeURI(raw.normalize('NFD'))}.png`,
-      `images/${encodeURI(raw.normalize('NFC'))}.png`,
-      `images/${raw}.jpg`,
-      `images/${raw}.png`,
-      `images/${matName}.jpg`,
-      `images/${matName}.png`,
-      `images/${encodeURI(matName.normalize('NFD'))}.jpg`,
-      `images/${encodeURI(matName.normalize('NFC'))}.jpg`
-    ];
-
-    let step = parseInt(img.dataset.step || '0');
-    if (step < candidates.length) {
-      img.dataset.step = step + 1;
-      img.src = candidates[step];
-    } else {
-      img.style.display = 'none';
-    }
-  }
-
-  // 3대 직업 3고패 자동 선택
   function selectJobCore(jobType) {
     selectedAncients.clear();
     excludedMaterials.clear();
 
     if (jobType === 'am') {
-      selectedAncients.add("frenzy");     // 마력광란
+      selectedAncients.add("frenzy");
     } else if (jobType === 'reaper') {
-      selectedAncients.add("strike_master"); // 강타의 대가
+      selectedAncients.add("strike_master");
     } else if (jobType === 'phantom') {
-      selectedAncients.add("command");   // 전투 통솔
+      selectedAncients.add("command");
     }
 
-    selectedAncients.add("pierce");      // 2순위: 근원관통
-    selectedAncients.add("elem_fire");   // 3순위: 불길의 지배 (기본 화염)
+    selectedAncients.add("pierce");
+    selectedAncients.add("elem_fire");
 
-    // 1, 2, 3 순위 아코디언 열고 4순위 닫기
     [1, 2, 3].forEach(r => document.getElementById(`acc-item-${r}`)?.classList.add("active"));
     document.getElementById("acc-item-4")?.classList.remove("active");
 
@@ -1366,20 +1681,16 @@
     calculateAncientCost();
   }
 
-  // 종결 패시브 (1, 2, 3순위 재료 자동 제외) 선택
   function selectEndgamePassives() {
     selectedAncients.clear();
     excludedMaterials.clear();
 
-    // 4순위 원소창조 & 고대의 기억 선택
     selectedAncients.add("elem_create");
     selectedAncients.add("ancient_mem");
 
-    // 1·2·3순위에서 이미 완성한 것으로 간주하여 해당 재료들을 제외 목록에 자동 추가!
     excludedMaterials.add("원소융합");
     excludedMaterials.add("절대관통");
 
-    // 4순위 아코디언 열기
     document.getElementById("acc-item-4")?.classList.add("active");
     [1, 2, 3].forEach(r => document.getElementById(`acc-item-${r}`)?.classList.remove("active"));
 
@@ -1393,7 +1704,6 @@
     calculateAncientCost();
   }
 
-  
   const MATERIAL_IMAGE_MAP = {
     "마력폭주": "mana_surge",
     "시간왜곡": "time_warp",
@@ -1411,8 +1721,7 @@
     "그림자 침식": "shadow_erosion",
     "그림자침식": "shadow_erosion",
     "타속성 1": "thunder_rage",
-    "타속성 2": "shadow_erosion",
-    "주속성 신화": "flame_power"
+    "타속성 2": "shadow_erosion"
   };
 
   function renderMaterialList() {
@@ -1426,7 +1735,6 @@
     }
     listCard.style.display = "block";
 
-    // 중복 제거된 재료 모으기
     const materialMap = new Map();
     selectedAncients.forEach(ancId => {
       const anc = ANCIENT_LIST.find(a => a.id === ancId);
@@ -1481,20 +1789,14 @@
         <div style="display:flex; align-items:center; gap:4px;">
           <label style="margin:0; font-size:12px;">현재</label>
           <select id="cur_${matName}" onchange="calculateAncientCost()" ${isExcluded ? 'disabled' : ''} style="padding:6px;">
-            <option value="0">0각</option>
-            <option value="1">1각</option>
-            <option value="2">2각</option>
-            <option value="3">3각</option>
+            <option value="0">0각</option><option value="1">1각</option><option value="2">2각</option><option value="3">3각</option>
           </select>
         </div>
 
         <div style="display:flex; align-items:center; gap:4px;">
           <label style="margin:0; font-size:12px;">목표</label>
           <select id="tar_${matName}" onchange="calculateAncientCost()" ${isExcluded ? 'disabled' : ''} style="padding:6px;">
-            <option value="0">0각</option>
-            <option value="1">1각</option>
-            <option value="2">2각</option>
-            <option value="3" selected>3각 (풀각)</option>
+            <option value="0">0각</option><option value="1">1각</option><option value="2">2각</option><option value="3" selected>3각 (풀각)</option>
           </select>
         </div>
 
@@ -1527,7 +1829,6 @@
 
   function calculateAncientCost() {
     let totalStones = 0;
-
     const materialMap = new Map();
     selectedAncients.forEach(ancId => {
       const anc = ANCIENT_LIST.find(a => a.id === ancId);
@@ -1538,9 +1839,7 @@
     });
 
     materialMap.forEach((grade, matName) => {
-      // 제외된 재료는 비용 0 처리!
       if (excludedMaterials.has(matName)) return;
-
       const curEl = document.getElementById("cur_" + matName);
       const tarEl = document.getElementById("tar_" + matName);
       const cur = curEl ? parseInt(curEl.value) : 0;
@@ -1567,7 +1866,112 @@
     document.getElementById("p_weeks_left").innerText = `${weeksLeft}주 (약 ${daysLeft}일)`;
   }
 
-  // ==================== TAB 2 LOGIC ====================
+  // ==================== DATA & LOGIC: 각성 시너지 ====================
+  // 15개 인게임 스크린샷 기반 점수별 시너지 공격력(%) 테이블
+  const SYNERGY_TABLE = [
+    { pts: 70, pct: "700%" },
+    { pts: 100, pct: "1,000%" },
+    { pts: 150, pct: "1,000%" },
+    { pts: 200, pct: "1,500%" },
+    { pts: 250, pct: "1,500%" },
+    { pts: 265, pct: "1,500%" },
+    { pts: 280, pct: "1,800%" },
+    { pts: 295, pct: "2,000%" },
+    { pts: 310, pct: "2,000%" },
+    { pts: 325, pct: "2,000%" },
+    { pts: 340, pct: "2,500%" },
+    { pts: 370, pct: "3,200%" },
+    { pts: 385, pct: "3,700%" },
+    { pts: 400, pct: "4,200%" },
+    { pts: 415, pct: "4,900%" },
+    { pts: 430, pct: "5,600%" },
+    { pts: 445, pct: "6,400%" },
+    { pts: 460, pct: "7,400%" },
+    { pts: 475, pct: "8,500%" },
+    { pts: 490, pct: "9,800%" },
+    { pts: 520, pct: "11,300%" },
+    { pts: 550, pct: "13,000%" },
+    { pts: 580, pct: "14,900%" },
+    { pts: 610, pct: "17,100%" },
+    { pts: 640, pct: "19,700%" },
+    { pts: 670, pct: "22,600%" },
+    { pts: 700, pct: "26,000%" },
+    { pts: 730, pct: "30,000%" },
+    { pts: 760, pct: "34,400%" },
+    { pts: 790, pct: "39,600%" },
+    { pts: 820, pct: "45,500%" },
+    { pts: 850, pct: "52,400%" },
+    { pts: 880, pct: "60,200%" },
+    { pts: 910, pct: "69,300%" },
+    { pts: 940, pct: "79,700%" },
+    { pts: 970, pct: "91,600%" },
+    { pts: 1000, pct: "105,400%" },
+    { pts: 1030, pct: "121,200%" },
+    { pts: 1060, pct: "139,300%" },
+    { pts: 1090, pct: "160,200%" },
+    { pts: 1120, pct: "184,300%" },
+    { pts: 1150, pct: "211,900%" },
+    { pts: 1200, pct: "243,700%" },
+    { pts: 1250, pct: "280,200%" },
+    { pts: 1300, pct: "322,300%" },
+    { pts: 1350, pct: "370,600%" },
+    { pts: 1400, pct: "426,200%" },
+    { pts: 1450, pct: "490,100%" },
+    { pts: 1500, pct: "563,600%" },
+    { pts: 1550, pct: "648,200%" },
+    { pts: 1600, pct: "745,400%" },
+    { pts: 1650, pct: "857,200%" },
+    { pts: 1700, pct: "985,800%" },
+    { pts: 1750, pct: "1,133,700%" },
+    { pts: 1800, pct: "1,303,700%" },
+    { pts: 1850, pct: "1,499,300%" },
+    { pts: 1900, pct: "1,724,200%" },
+    { pts: 1950, pct: "1,982,800%" },
+    { pts: 2000, pct: "2,280,200%" },
+    { pts: 2400, pct: "6,975,300%" },
+    { pts: 2450, pct: "8,021,600%" },
+    { pts: 2500, pct: "9,224,800%" },
+    { pts: 2550, pct: "10,608,500%" },
+    { pts: 2600, pct: "12,199,800%" },
+    { pts: 2650, pct: "14,029,700%" }
+  ];
+
+  function getSynergyAtkPct(points) {
+    if (points < 70) return "0%";
+    let matched = "0%";
+    for (let row of SYNERGY_TABLE) {
+      if (points >= row.pts) matched = row.pct;
+      else break;
+    }
+    return matched;
+  }
+
+  function initSynergyReferenceTable() {
+    const tbody = document.getElementById("synergy_reference_tbody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    const total = SYNERGY_TABLE.length;
+    const perCol = Math.ceil(total / 3);
+
+    for (let i = 0; i < perCol; i++) {
+      const r1 = SYNERGY_TABLE[i];
+      const r2 = SYNERGY_TABLE[i + perCol];
+      const r3 = SYNERGY_TABLE[i + perCol * 2];
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td style="font-weight:700; color:#cbd5e1;">${r1 ? r1.pts + '점' : '-'}</td>
+        <td style="color:#67e8f9;">${r1 ? r1.pct : '-'}</td>
+        <td style="font-weight:700; color:#cbd5e1;">${r2 ? r2.pts + '점' : '-'}</td>
+        <td style="color:#67e8f9;">${r2 ? r2.pct : '-'}</td>
+        <td style="font-weight:700; color:#cbd5e1;">${r3 ? r3.pts + '점' : '-'}</td>
+        <td style="color:#67e8f9;">${r3 ? r3.pct : '-'}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+  }
+
   function calculateSynergyDetailed() {
     const mp = parseInt(document.getElementById("syn_mythic_p").value) || 0;
     const ms = parseInt(document.getElementById("syn_mythic_s").value) || 0;
@@ -1585,9 +1989,13 @@
     document.getElementById("syn_stones_man").innerText = (stoneCost / 10000).toFixed(1) + "만 개";
     document.getElementById("syn_add_points").innerText = "+" + addPoints.toLocaleString() + "점";
     document.getElementById("syn_final_points").innerText = finalPts.toLocaleString() + "점";
+
+    // 현재 공격력% vs 최종 공격력% 표기
+    document.getElementById("syn_cur_atk_pct").innerText = getSynergyAtkPct(curPts);
+    document.getElementById("syn_final_atk_pct").innerText = getSynergyAtkPct(finalPts);
   }
 
-  // ==================== TAB 3 LOGIC (영원 장비 연마) ====================
+  // ==================== DATA & LOGIC: 영원 장비 연마 ====================
   const REFINE_RATES = [
     { lv: 0, s: 1.00, k: 0.00, d: 0.00 },
     { lv: 1, s: 0.90, k: 0.10, d: 0.00 },
@@ -1621,6 +2029,27 @@
       curSel.innerHTML += `<option value="${i}">Lv.${i}</option>`;
       tarSel.innerHTML += `<option value="${i}" ${i === 15 ? "selected" : ""}>Lv.${i}</option>`;
     }
+
+    // 연마 확률표 렌더링
+    const tbody = document.getElementById("refine_rates_tbody");
+    if (tbody) {
+      tbody.innerHTML = "";
+      REFINE_RATES.forEach(r => {
+        const nextLv = r.lv + 1;
+        const sPct = (r.s * 100).toFixed(1) + "%";
+        const kPct = (r.k * 100).toFixed(1) + "%";
+        const dPct = (r.d * 100).toFixed(1) + "%";
+        tbody.innerHTML += `
+          <tr>
+            <td style="font-weight:700;">Lv.${r.lv} ➔ Lv.${nextLv}</td>
+            <td style="color:#34d399; font-weight:700;">${sPct}</td>
+            <td style="color:#cbd5e1;">${kPct}</td>
+            <td style="color:#f43f5e; font-weight:700;">${r.d > 0 ? dPct : '-'}</td>
+            <td style="color:#94a3b8; font-size:12px;">데이터 수집 중 🔒</td>
+          </tr>
+        `;
+      });
+    }
   }
 
   function calculateRefineExpected() {
@@ -1634,14 +2063,10 @@
       return;
     }
 
-    // 마르코프 연쇄(Markov Chain) 기반 1단계 상승 정밀 기댓값 점화식:
-    // U[i]: i 레벨에서 i+1 레벨로 가기 위한 평균 시도 횟수
-    // U[i] = (1 + d_i * U[i-1]) / s_i
     let U = new Array(tar).fill(0);
     for (let i = 0; i < tar; i++) {
       const s = REFINE_RATES[i] ? REFINE_RATES[i].s : 0.01;
       const d = (safeMode || !REFINE_RATES[i]) ? 0 : REFINE_RATES[i].d;
-      
       if (i === 0 || d === 0) {
         U[i] = 1.0 / s;
       } else {
@@ -1669,9 +2094,9 @@
     document.getElementById("ref_prob_range").innerText = `${minProb}% ~ ${maxProb}%`;
   }
 
-    // ==================== TAB 4 LOGIC (영원 장비 연마 - 대낫/오브/장식 옵션 변환) ====================
-  let currentEquipPart = 'scythe'; // 'scythe' | 'orb' | 'accessory'
-  let currentEquipSlot = 'left';   // 'left' | 'right'
+  // ==================== DATA & LOGIC: 영원 장비 옵션 변환 ====================
+  let currentEquipPart = 'scythe';
+  let currentEquipSlot = 'left';
 
   const EQUIP_DATA = {
     scythe: {
@@ -1734,8 +2159,6 @@
 
   function selectEquipPart(part) {
     currentEquipPart = part;
-
-    // 카드 스타일 업데이트
     ['scythe', 'orb', 'accessory'].forEach(p => {
       const card = document.getElementById(`equip_card_${p}`);
       if (card) {
@@ -1749,6 +2172,7 @@
     const resDash = document.getElementById('equip_result_dashboard');
     const accNotice = document.getElementById('equip_accessory_notice');
     const rightNotice = document.getElementById('slot_right_notice');
+    const partNameText = document.getElementById('table_current_part_name');
 
     if (part === 'accessory') {
       if (badge) badge.innerText = "장식 🔒 미구현";
@@ -1756,13 +2180,14 @@
       if (resDash) resDash.style.display = 'none';
       if (rightNotice) rightNotice.style.display = 'none';
       if (accNotice) accNotice.style.display = 'block';
+      if (partNameText) partNameText.innerText = "영원 장식 (미구현)";
       return;
     }
 
     if (accNotice) accNotice.style.display = 'none';
     if (badge) badge.innerText = `${EQUIP_DATA[part].name} 선택됨`;
+    if (partNameText) partNameText.innerText = EQUIP_DATA[part].name;
 
-    // 만약 현재 슬롯이 right(오른쪽)라면 오른쪽 미구현 안내 유지
     if (currentEquipSlot === 'right') {
       if (calcBody) calcBody.style.display = 'none';
       if (resDash) resDash.style.display = 'none';
@@ -1773,11 +2198,10 @@
       if (rightNotice) rightNotice.style.display = 'none';
     }
 
-    // 옵션 라벨 텍스트 변경
     document.getElementById('orb_opt1_title').innerText = EQUIP_DATA[part].opt1_title;
     document.getElementById('orb_opt2_title').innerText = EQUIP_DATA[part].opt2_title;
-
     calculateOrbExpected();
+    renderEquipRateTable();
   }
 
   function selectEquipSlot(slot) {
@@ -1787,7 +2211,6 @@
     const calcBody = document.getElementById('equip_calc_body');
     const resDash = document.getElementById('equip_result_dashboard');
     const rightNotice = document.getElementById('slot_right_notice');
-    const accNotice = document.getElementById('equip_accessory_notice');
 
     if (currentEquipPart === 'accessory') return;
 
@@ -1811,6 +2234,31 @@
       if (resDash) resDash.style.display = 'none';
       if (rightNotice) rightNotice.style.display = 'block';
     }
+  }
+
+  function renderEquipRateTable() {
+    if (currentEquipPart === 'accessory') return;
+    const tierSel = document.getElementById("equip_table_tier_select");
+    const tier = tierSel ? tierSel.value : "신화";
+    const equip = EQUIP_DATA[currentEquipPart];
+    const data = equip.rates[tier];
+    const tbody = document.getElementById("equip_rates_tbody");
+    if (!tbody || !data) return;
+
+    tbody.innerHTML = "";
+    GRADE_ORDER.forEach(g => {
+      const v1 = data.opt1[g];
+      const v2 = data.opt2[g];
+      const p = (data.prob[g] * 100).toFixed(g === "SSS" || g === "SS" ? 3 : 1) + "%";
+      tbody.innerHTML += `
+        <tr>
+          <td><span class="grade-badge ${g === 'SSS' || g === 'SS' ? 'grade-mythic' : 'grade-ancient'}">${g}급</span></td>
+          <td style="color:#38bdf8; font-weight:700;">+${v1.toLocaleString()}%</td>
+          <td style="color:#f43f5e; font-weight:700;">+${v2.toLocaleString()}%</td>
+          <td style="color:#cbd5e1;">${p}</td>
+        </tr>
+      `;
+    });
   }
 
   function getCumulativeProb(probDict, targetGrade) {
@@ -1837,19 +2285,15 @@
 
     const pBoth = p1 * p2;
     const tries = pBoth > 0 ? Math.round(1 / pBoth) : 0;
-    const essenceCost = tries * 2; // 변환 1회당 심연정수 2개
+    const essenceCost = tries * 2;
 
     const val1 = data.opt1[grade1] || 0;
     const val2 = data.opt2[grade2] || 0;
-
-    // 배율 계산: (1 + val1/100) * (1 + val2/100)
     const multiplier = ((1 + val1 / 100) * (1 + val2 / 100)).toFixed(1);
 
     document.getElementById("orb_expected_tries").innerText = tries.toLocaleString() + "회";
-    
-    // 심연정수 소모량 표시
-    const essenceMan = (essenceCost / 10000).toFixed(1);
-    document.getElementById("orb_essence_cost").innerHTML = `🔮 필요 심연정수 기댓값: <strong style="color:#ffffff;">${essenceCost.toLocaleString()}개</strong> <span style="font-size:14.5px; color:#c084fc;">(약 ${essenceMan}만 개)</span>`;
+    const essenceFormatted = formatKoreanNumber(essenceCost);
+    document.getElementById("orb_essence_cost_text").innerHTML = `필요 심연정수 기댓값: <strong style="color:#ffffff;">${essenceCost.toLocaleString()}개</strong> <span style="font-size:14.5px; color:#c084fc;">(약 ${essenceFormatted}개)</span>`;
 
     document.getElementById("orb_combined_prob").innerText = (pBoth * 100).toFixed(4) + "%";
     document.getElementById("orb_val1_detail").innerText = grade1 === "ANY" ? "옵션 미지정 (+0%)" : `+${val1.toLocaleString()}%`;
@@ -1859,18 +2303,78 @@
     document.getElementById("orb_mult").innerText = `약 ${Number(multiplier).toLocaleString()}배`;
   }
 
-  // ==================== TAB 5 LOGIC (가호 & 원혼) ====================
+  // ==================== DATA & LOGIC: 가호 & 원혼 어빌리티 ====================
+  let currentGahoType = 'star';
+
+  const GAHO_CONFIG = {
+    star: {
+      name: "⭐ 별의 가호",
+      baseCost: 100000,
+      stepCost: 100000,
+      prob: 0.00064,
+      slots: 7
+    },
+    moon: {
+      name: "🌙 달의 가호",
+      baseCost: 500000,
+      stepCost: 500000,
+      prob: 0.00064,
+      slots: 7
+    },
+    sun: {
+      name: "☀️ 해의 가호",
+      baseCost: 700000,
+      stepCost: 700000,
+      prob: 0.00064,
+      slots: 7
+    }
+  };
+
+  function selectGahoType(type) {
+    currentGahoType = type;
+    ['star', 'moon', 'sun'].forEach(t => {
+      const card = document.getElementById(`gaho_btn_${t}`);
+      if (card) {
+        if (t === type) card.classList.add('selected');
+        else card.classList.remove('selected');
+      }
+    });
+
+    const badge = document.getElementById("gaho_active_badge");
+    if (badge) badge.innerText = `${GAHO_CONFIG[type].name} 선택됨`;
+    calculateGaho();
+  }
+
   function calculateGaho() {
     const locked = parseInt(document.getElementById("gaho_locked").value);
-    const remain = 7 - locked;
+    const cfg = GAHO_CONFIG[currentGahoType];
+    const remain = cfg.slots - locked;
     document.getElementById("gaho_remain_slots").innerText = remain + "칸";
 
-    const p = 0.00064;
+    const currentCostPerTry = cfg.baseCost + (locked * cfg.stepCost);
+    document.getElementById("gaho_cost_per_try").innerText = (currentCostPerTry / 10000).toFixed(0) + "만 개";
+
+    // 1) 다음 1칸을 띄우는 데 필요한 기댓값
+    const pNext = 1 - Math.pow(1 - cfg.prob, remain);
+    const nextStepTries = pNext > 0 ? Math.round(1 / pNext) : 0;
+    const nextStepDice = nextStepTries * currentCostPerTry;
+
+    // 2) 7칸 올 고대 최종 완성까지 총 누적 기댓값
     let totalTries = 0;
-    for (let i = locked; i < 7; i++) {
-      totalTries += 1 / ((7 - i) * p);
+    let totalDice = 0;
+    for (let i = locked; i < cfg.slots; i++) {
+      const pStep = 1 - Math.pow(1 - cfg.prob, cfg.slots - i);
+      const stepTries = 1 / pStep;
+      const stepCost = cfg.baseCost + (i * cfg.stepCost);
+      totalTries += stepTries;
+      totalDice += stepTries * stepCost;
     }
-    document.getElementById("gaho_expected_trials").innerText = Math.round(totalTries).toLocaleString() + "회";
+
+    document.getElementById("gaho_next_step_tries").innerText = nextStepTries.toLocaleString() + "회";
+    document.getElementById("gaho_next_step_dice").innerText = `(약 ${formatKoreanNumber(nextStepDice)}개 소모)`;
+    document.getElementById("gaho_total_tries").innerText = Math.round(totalTries).toLocaleString() + "회";
+    document.getElementById("gaho_total_dice_formatted").innerHTML = `총 필요 옵션 주사위: <strong style="color:#ffffff;">${formatKoreanNumber(totalDice)}개</strong>`;
+    document.getElementById("gaho_total_dice_raw").innerText = `(실제 기댓값 수치: ${Math.round(totalDice).toLocaleString()}개)`;
   }
 
   function calculateWonhon() {
@@ -1878,22 +2382,44 @@
     const remain = 6 - locked;
     document.getElementById("wonhon_remain_slots").innerText = remain + "칸";
 
-    const p = 0.00019;
+    const costPerTry = 300000 + (locked * 300000);
+    document.getElementById("wonhon_cost_per_try").innerText = (costPerTry / 10000).toFixed(0) + "만 개";
+
+    const p_base = 0.00019;
+
+    // 1) 다음 1칸 달성 기댓값
+    const pNext = 1 - Math.pow(1 - p_base, remain);
+    const nextStepTries = pNext > 0 ? Math.round(1 / pNext) : 0;
+    const nextStepDice = nextStepTries * costPerTry;
+
+    // 2) 6칸 올 고대 최종 완성 총 누적 기댓값
     let totalTries = 0;
+    let totalDice = 0;
     for (let i = locked; i < 6; i++) {
-      totalTries += 1 / ((6 - i) * p);
+      const pStep = 1 - Math.pow(1 - p_base, 6 - i);
+      const stepTries = 1 / pStep;
+      const stepCost = 300000 + (i * 300000);
+      totalTries += stepTries;
+      totalDice += stepTries * stepCost;
     }
-    document.getElementById("wonhon_expected_trials").innerText = Math.round(totalTries).toLocaleString() + "회";
+
+    document.getElementById("wonhon_next_step_tries").innerText = nextStepTries.toLocaleString() + "회";
+    document.getElementById("wonhon_next_step_dice").innerText = `(약 ${formatKoreanNumber(nextStepDice)}개 소모)`;
+    document.getElementById("wonhon_total_tries").innerText = Math.round(totalTries).toLocaleString() + "회";
+    document.getElementById("wonhon_total_dice_formatted").innerHTML = `총 필요 옵션 주사위: <strong style="color:#ffffff;">${formatKoreanNumber(totalDice)}개</strong>`;
+    document.getElementById("wonhon_total_dice_raw").innerText = `(실제 기댓값 수치: ${Math.round(totalDice).toLocaleString()}개)`;
   }
 
   // ==================== INITIALIZATION ====================
   window.onload = function() {
     renderAncientCards();
     calculateAncientCost();
+    initSynergyReferenceTable();
     calculateSynergyDetailed();
     initRefineSelects();
     calculateRefineExpected();
     calculateOrbExpected();
+    renderEquipRateTable();
     calculateGaho();
     calculateWonhon();
   };
