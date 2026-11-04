@@ -18,6 +18,8 @@
     --legend: #f97316;
     --unique: #a855f7;
     --advanced: #3b82f6;
+    --middle: #22c55e;
+    --normal: #b45309;
     --border: #334155;
     --success: #10b981;
     --gold: #fbbf24;
@@ -112,12 +114,37 @@
     box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
   }
 
-  /* Floating Back Button */
-  .floating-back-btn {
+  /* Floating Guide & Back Button Group */
+  .floating-btn-group {
     position: fixed;
     right: 22px;
     bottom: 26px;
     z-index: 9999;
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .floating-guide-btn {
+    background: linear-gradient(135deg, #0284c7 0%, #1e3a8a 100%);
+    color: #ffffff;
+    border: 1.5px solid #38bdf8;
+    border-radius: 30px;
+    padding: 10px 18px;
+    font-size: 13.5px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 12px rgba(56, 189, 248, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+  .floating-guide-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 22px rgba(56, 189, 248, 0.6);
+  }
+  .floating-back-btn-inner {
     background: linear-gradient(135deg, #4f46e5 0%, #312e81 100%);
     color: #ffffff;
     border: 1.5px solid #818cf8;
@@ -127,14 +154,88 @@
     font-weight: 800;
     cursor: pointer;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 12px rgba(99, 102, 241, 0.5);
-    display: none;
+    display: flex;
     align-items: center;
     gap: 8px;
     transition: all 0.2s ease;
   }
-  .floating-back-btn:hover {
-    transform: translateY(-3px) scale(1.03);
+  .floating-back-btn-inner:hover {
+    transform: translateY(-2px) scale(1.03);
     box-shadow: 0 8px 24px rgba(99, 102, 241, 0.6);
+  }
+
+  /* Help Modal Popup */
+  .help-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .help-modal-box {
+    background: #1e293b;
+    border: 1.5px solid #38bdf8;
+    border-radius: 16px;
+    max-width: 520px;
+    width: 100%;
+    padding: 24px 22px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    position: relative;
+    animation: modalFadeIn 0.2s ease;
+  }
+  @keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .help-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+  }
+  .help-modal-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffffff;
+  }
+  .help-modal-close {
+    background: #334155;
+    border: none;
+    color: #cbd5e1;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .help-modal-close:hover {
+    background: #ef4444;
+    color: #ffffff;
+  }
+  .help-modal-body {
+    font-size: 14px;
+    color: #e2e8f0;
+    line-height: 1.75;
+  }
+  .help-modal-body ol, .help-modal-body ul {
+    padding-left: 20px;
+    margin: 8px 0;
+  }
+  .help-modal-body li {
+    margin-bottom: 8px;
+  }
+  .help-modal-body strong {
+    color: #38bdf8;
   }
 
   /* Hub Category Section */
@@ -242,6 +343,8 @@
     margin-bottom: 16px;
     border-bottom: 1px solid var(--border);
     padding-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
   }
   .card-subtitle {
     font-size: 14px;
@@ -258,16 +361,20 @@
     border-radius: 4px;
     display: inline-block;
   }
+  .grade-normal { background: rgba(161, 98, 7, 0.2); color: #f59e0b; border: 1px solid #b45309; }
+  .grade-middle { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
   .grade-advanced { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
-  .grade-unique { background: rgba(168, 85, 247, 0.2); color: var(--unique); border: 1px solid var(--unique); }
-  .grade-legend { background: rgba(249, 115, 22, 0.2); color: var(--legend); border: 1px solid var(--legend); }
-  .grade-mythic { background: rgba(244, 63, 94, 0.2); color: var(--mythic); border: 1px solid var(--mythic); }
-  .grade-ancient { background: rgba(6, 182, 212, 0.2); color: var(--ancient); border: 1px solid var(--ancient); }
+  .grade-unique { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid #a855f7; }
+  .grade-legend { background: rgba(249, 115, 22, 0.2); color: #fb923c; border: 1px solid #f97316; }
+  .grade-mythic { background: rgba(244, 63, 94, 0.2); color: #fda4af; border: 1px solid #f43f5e; }
+  .grade-ancient { background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1px solid #06b6d4; }
+  .grade-eternal { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+  .grade-immortal { background: rgba(244, 63, 94, 0.25); color: #fda4af; border: 1px solid #f43f5e; box-shadow: 0 0 8px rgba(244,63,94,0.3); }
 
   /* Grid & Inputs */
   .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
-  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
 
   label {
     display: block;
@@ -276,7 +383,7 @@
     margin-bottom: 6px;
     font-weight: 600;
   }
-  select, input[type="number"] {
+  select, input[type="number"], input[type="text"] {
     width: 100%;
     background: #0f172a;
     border: 1px solid var(--border);
@@ -287,11 +394,11 @@
     outline: none;
     transition: border 0.2s;
   }
-  select:focus, input[type="number"]:focus {
+  select:focus, input[type="number"]:focus, input[type="text"]:focus {
     border-color: var(--accent);
   }
 
-  /* Ancient Passive Selector Cards */
+  /* Ancient Passive & Equip Selector Cards */
   .ancient-select-card {
     background: #0f172a;
     border: 2px solid var(--border);
@@ -440,8 +547,8 @@
   .accordion-group {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 12px;
+    gap: 10px;
+    margin-top: 10px;
   }
   .accordion-item {
     border: 1.5px solid var(--border);
@@ -458,7 +565,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 18px;
+    padding: 13px 16px;
     cursor: pointer;
     background: #131d33;
     user-select: none;
@@ -470,10 +577,10 @@
   .accordion-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
   .accordion-toggle-icon {
-    font-size: 14px;
+    font-size: 13px;
     color: #94a3b8;
     transition: transform 0.25s ease;
     display: inline-block;
@@ -485,7 +592,7 @@
     color: #38bdf8;
   }
   .accordion-title-text {
-    font-size: 16px;
+    font-size: 15.5px;
     font-weight: 700;
     color: #ffffff;
   }
@@ -500,7 +607,7 @@
     gap: 8px;
   }
   .accordion-count-badge {
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 700;
     padding: 3px 10px;
     border-radius: 12px;
@@ -515,12 +622,171 @@
   }
   .accordion-content {
     display: none;
-    padding: 16px;
+    padding: 14px;
     background: #0b1120;
     border-top: 1px solid var(--border);
   }
   .accordion-item.active .accordion-content {
     display: block;
+  }
+
+  /* Grade-colored accordions for Newbie Section */
+  .accordion-item.acc-mythic { border-left: 4px solid #f43f5e; border-color: rgba(244, 63, 94, 0.45); }
+  .accordion-item.acc-mythic .accordion-header { background: linear-gradient(90deg, rgba(244, 63, 94, 0.12) 0%, #131d33 100%); }
+  .accordion-item.acc-legend { border-left: 4px solid #f97316; border-color: rgba(249, 115, 22, 0.45); }
+  .accordion-item.acc-legend .accordion-header { background: linear-gradient(90deg, rgba(249, 115, 22, 0.12) 0%, #131d33 100%); }
+  .accordion-item.acc-unique { border-left: 4px solid #a855f7; border-color: rgba(168, 85, 247, 0.45); }
+  .accordion-item.acc-unique .accordion-header { background: linear-gradient(90deg, rgba(168, 85, 247, 0.12) 0%, #131d33 100%); }
+  .accordion-item.acc-advanced { border-left: 4px solid #3b82f6; border-color: rgba(59, 130, 246, 0.45); }
+  .accordion-item.acc-advanced .accordion-header { background: linear-gradient(90deg, rgba(59, 130, 246, 0.12) 0%, #131d33 100%); }
+  .accordion-item.acc-middle { border-left: 4px solid #22c55e; border-color: rgba(34, 197, 94, 0.45); }
+  .accordion-item.acc-middle .accordion-header { background: linear-gradient(90deg, rgba(34, 197, 94, 0.12) 0%, #131d33 100%); }
+  .accordion-item.acc-normal { border-left: 4px solid #b45309; border-color: rgba(180, 83, 9, 0.45); }
+  .accordion-item.acc-normal .accordion-header { background: linear-gradient(90deg, rgba(180, 83, 9, 0.12) 0%, #131d33 100%); }
+
+  .acc-scroll-box {
+    max-height: 360px;
+    overflow-y: auto;
+    padding-right: 6px;
+  }
+  .acc-scroll-box::-webkit-scrollbar {
+    width: 6px;
+  }
+  .acc-scroll-box::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+  }
+  .acc-scroll-box::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+  }
+
+  /* Compact Legend Bar */
+  .legend-guide-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: #0f172a;
+    border: 1px solid #334155;
+    padding: 7px 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 11.5px;
+    color: #cbd5e1;
+    align-items: center;
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .legend-item strong {
+    color: #ffffff;
+  }
+
+  /* Search Input Bar */
+  .search-input-wrapper {
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .search-input-wrapper input {
+    padding-left: 36px;
+    background: #0f172a;
+    border: 1.5px solid #334155;
+    font-size: 13.5px;
+    height: 40px;
+  }
+  .search-input-wrapper input:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+  }
+  .search-icon-prefix {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #94a3b8;
+    pointer-events: none;
+  }
+
+  /* Compact Selectable Item Cards */
+  .item-compact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+    gap: 8px;
+  }
+  .item-select-box {
+    background: #1e293b;
+    border: 1.5px solid #334155;
+    border-radius: 10px;
+    padding: 8px 8px 7px 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    user-select: none;
+    min-height: 70px;
+  }
+  .item-select-box:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    background: #172554;
+  }
+  .item-select-box.selected {
+    border-color: #38bdf8;
+    background: rgba(56, 189, 248, 0.15);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+  }
+  .item-select-box.search-match {
+    border-color: #fbbf24;
+    box-shadow: 0 0 12px rgba(251, 191, 36, 0.45);
+  }
+  .item-box-badges {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 9px;
+    line-height: 1;
+  }
+  .mini-tag {
+    padding: 1.5px 3.5px;
+    border-radius: 3px;
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+  }
+  .item-box-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.3;
+    margin-top: 12px;
+    word-break: keep-all;
+  }
+  .item-box-sub {
+    font-size: 10.5px;
+    color: #94a3b8;
+    margin-top: 3px;
+  }
+
+  /* Equipment Inventory Grid */
+  .inv-tier-card {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+  .inv-tier-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
   }
 
   /* Table styling */
@@ -589,7 +855,6 @@
     z-index: 2;
   }
 
-  
   /* Gaho & Item Icon Styling (No Cropping) */
   .gaho-icon-wrapper {
     width: 48px;
@@ -623,6 +888,216 @@
     object-fit: contain;
   }
 
+  /* ==================== RUNE HELPER (BETA) STYLES ==================== */
+  .rune-tier-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    background: #0f172a;
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+  }
+  .rune-tier-tab {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    text-align: center;
+    color: #94a3b8;
+    background: transparent;
+    transition: all 0.2s;
+  }
+  .rune-tier-tab.active-ancient { background: rgba(6, 182, 212, 0.18); color: #67e8f9; border-color: #06b6d4; }
+  .rune-tier-tab.active-eternal { background: rgba(16, 185, 129, 0.18); color: #34d399; border-color: #10b981; }
+  .rune-tier-tab.active-immortal { background: rgba(244, 63, 94, 0.2); color: #fda4af; border-color: #f43f5e; }
+
+  .radio-pill-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .radio-pill {
+    flex: 1;
+    min-width: 90px;
+    background: #0f172a;
+    border: 1.5px solid #334155;
+    color: #cbd5e1;
+    padding: 9px 10px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    user-select: none;
+    transition: all 0.2s;
+  }
+  .radio-pill.selected {
+    border-color: #38bdf8;
+    background: rgba(56, 189, 248, 0.15);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+  }
+
+  /* 인게임 SD 캐릭터 & 룬 슬롯 장착 보드 */
+  .rune-equip-stage {
+    background: radial-gradient(circle at center, #1e1b4b 0%, #090d16 100%);
+    border: 2px solid #334155;
+    border-radius: 16px;
+    padding: 22px 16px;
+    margin-top: 18px;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.7);
+  }
+  .rune-stage-upper {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr 1fr;
+    gap: 14px;
+    align-items: center;
+  }
+  @media (max-width: 720px) {
+    .rune-stage-upper { grid-template-columns: 1fr; }
+  }
+  .rune-col-left, .rune-col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rune-col-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .sd-char-box {
+    width: 170px;
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .sd-char-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.6));
+  }
+
+  /* 네모칸 룬 텍스트 블록 */
+  .rune-slot-block {
+    background: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 10px 12px;
+    min-height: 82px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .rune-slot-block.tier-ancient {
+    border-color: #06b6d4;
+    background: linear-gradient(145deg, rgba(6, 182, 212, 0.22) 0%, #0f172a 100%);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
+  }
+  .rune-slot-block.tier-eternal {
+    border-color: #10b981;
+    background: linear-gradient(145deg, rgba(16, 185, 129, 0.22) 0%, #0f172a 100%);
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+  }
+  .rune-slot-block.tier-immortal {
+    border-color: #f43f5e;
+    background: linear-gradient(145deg, rgba(244, 63, 94, 0.28) 0%, #0f172a 100%);
+    box-shadow: 0 0 14px rgba(244, 63, 94, 0.35);
+  }
+  .rune-slot-part-tag {
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #94a3b8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .rune-slot-name {
+    font-size: 15px;
+    font-weight: 900;
+    color: #ffffff;
+    text-align: center;
+    margin: 4px 0;
+    word-break: keep-all;
+  }
+  .rune-slot-stat {
+    font-size: 11px;
+    color: #fde047;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .rune-weapon-bar {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px dashed #334155;
+  }
+  .rune-weapon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+  }
+  @media (max-width: 640px) {
+    .rune-weapon-grid { grid-template-columns: 1fr; }
+  }
+  .same-rune-badge {
+    display: inline-block;
+    margin-top: 4px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: #7dd3fc;
+    font-size: 11.5px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+
+  /* Clean Rune Multiplier Breakdown */
+  .rune-mult-breakdown-list {
+    max-width: 480px;
+    margin: 14px auto 0 auto;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 12px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+  }
+  .rune-mult-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #cbd5e1;
+    border-bottom: 1px dashed rgba(255,255,255,0.08);
+    padding-bottom: 6px;
+  }
+  .rune-mult-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .rune-mult-row strong {
+    color: #f8fafc;
+    font-size: 15px;
+    font-weight: 800;
+  }
+
   footer {
     text-align: center;
     margin-top: 40px;
@@ -645,9 +1120,9 @@
           onerror="handleAvatarError(this)"
           style="width:80px; height:80px; border-radius:50%; border:3px solid #38bdf8; object-fit:cover; background:#1e293b; box-shadow:0 0 22px rgba(56, 189, 248, 0.6); display:block;">
       </div>
-      <h1 style="margin:0; font-size:26px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">❄️ 소헌키 종합 시뮬레이터 & 계산기</h1>
+      <h1 style="margin:0; font-size:26px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
     </div>
-    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.2.0.0</div>
+    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.2.1.0</div>
   </header>
 
   <!-- Top Mode Switcher (심화 공략 vs 뉴비 공략) -->
@@ -660,11 +1135,28 @@
     </button>
   </div>
 
-  <!-- Floating Back Button (오른쪽 스크롤 추적) -->
-  <button class="floating-back-btn" id="floating_back_btn" onclick="returnToDeepHub()">
-    <span>🔙</span>
-    <span>심화 메뉴로 돌아가기</span>
-  </button>
+  <!-- Floating Guide & Back Button Group (우측 하단 스크롤 추적) -->
+  <div class="floating-btn-group" id="floating_back_btn">
+    <button class="floating-guide-btn" id="floating_guide_btn" onclick="openHelpModal()">
+      <span>💡</span>
+      <span id="floating_guide_text">사용법 보기</span>
+    </button>
+    <button class="floating-back-btn-inner" onclick="handleFloatingBack()">
+      <span>🔙</span>
+      <span id="floating_back_text">심화 메뉴로 돌아가기</span>
+    </button>
+  </div>
+
+  <!-- 사용법 모달 팝업창 -->
+  <div class="help-modal-overlay" id="help_modal_overlay" onclick="closeHelpModal(event)">
+    <div class="help-modal-box" onclick="event.stopPropagation()">
+      <div class="help-modal-header">
+        <span class="help-modal-title" id="help_modal_title">💡 사용법 안내</span>
+        <button class="help-modal-close" onclick="closeHelpModal()">✕</button>
+      </div>
+      <div class="help-modal-body" id="help_modal_body"></div>
+    </div>
+  </div>
 
   <!-- ==================== [MODE 1] 심화 공략 영역 ==================== -->
   <div id="mode_deep_container">
@@ -791,7 +1283,7 @@
             </button>
           </div>
 
-          <!-- 접이식 순위별 아코디언 그룹 (순위당 택1 안내) -->
+          <!-- 접이식 순위별 아코디언 그룹 -->
           <div class="accordion-group">
             <div class="accordion-item" id="acc-item-1">
               <div class="accordion-header" onclick="toggleRankAccordion(1)">
@@ -850,7 +1342,7 @@
           <div id="material-list"></div>
         </div>
 
-        <!-- 파밍 소요 기간 예측 (콤팩트 미니 사이즈로 축소) -->
+        <!-- 파밍 소요 기간 예측 -->
         <div class="card" style="padding: 16px 20px;">
           <div class="card-title" style="font-size: 15.5px; margin-bottom: 12px; padding-bottom: 8px;">
             <span>⏳ 주단위 파밍 소요 기간 예측 (옵션)</span>
@@ -876,7 +1368,7 @@
           </div>
         </div>
 
-        <!-- 등급별 각성석 소모 기준표 (맨 밑 배치) -->
+        <!-- 등급별 각성석 소모 기준표 -->
         <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
           <div class="card-title" style="margin-bottom: 8px;">
             <span style="font-size:17.5px;">📊 등급별 각성석 소모 기준표 (패시브 / 영웅 / 스킬 공통)</span>
@@ -967,7 +1459,7 @@
           </div>
         </div>
 
-        <!-- 각성 시너지 구간별 공격력 기준표 (인게임 스크린샷 15장 종합 표) -->
+        <!-- 각성 시너지 구간별 공격력 기준표 -->
         <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
           <div class="card-title" style="margin-bottom: 8px;">
             <span style="font-size:17.5px;">📊 각성 시너지 점수 총합별 공격력(%) 효과 기준표</span>
@@ -985,9 +1477,7 @@
                   <th>점수 구간</th><th>시너지 공격력(%)</th>
                 </tr>
               </thead>
-              <tbody id="synergy_reference_tbody">
-                <!-- JS dynamically populates the 3-column compact synergy table -->
-              </tbody>
+              <tbody id="synergy_reference_tbody"></tbody>
             </table>
           </div>
         </div>
@@ -1023,7 +1513,7 @@
           </div>
         </div>
 
-        <!-- 영원 장비 연마 공식 확률표 (맨 밑 신설) -->
+        <!-- 영원 장비 연마 공식 확률표 -->
         <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
           <div class="card-title" style="margin-bottom: 8px;">
             <span style="font-size:17.5px;">📊 영원 장비 연마 단계별 공식 확률표</span>
@@ -1039,9 +1529,7 @@
                   <th>단계</th><th>성공 확률</th><th>유지 확률</th><th>하락 확률</th><th>영원의 돌 소모</th>
                 </tr>
               </thead>
-              <tbody id="refine_rates_tbody">
-                <!-- JS dynamically renders Lv.0~Lv.20 table -->
-              </tbody>
+              <tbody id="refine_rates_tbody"></tbody>
             </table>
           </div>
         </div>
@@ -1166,7 +1654,7 @@
           </div>
         </div>
 
-        <!-- 옵션 변환 상세 수치 기준표 (드롭다운으로 등급 선택 가능) -->
+        <!-- 옵션 변환 상세 수치 기준표 -->
         <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
           <div class="card-title" style="margin-bottom: 8px;">
             <span>📊 영원 장비 옵션 등급별 수치 및 등장 확률표</span>
@@ -1190,9 +1678,7 @@
                   <th>등급</th><th>1옵션 수치</th><th>2옵션 수치</th><th>등장 확률</th>
                 </tr>
               </thead>
-              <tbody id="equip_rates_tbody">
-                <!-- JS dynamically renders option rates table -->
-              </tbody>
+              <tbody id="equip_rates_tbody"></tbody>
             </table>
           </div>
         </div>
@@ -1207,7 +1693,7 @@
           </div>
           <p class="card-subtitle">시뮬레이션할 가호 종류를 선택하세요. (잠금 수에 따라 1회당 소모 주사위가 증가합니다)</p>
 
-          <!-- 별 / 달 / 해 가호 선택 버튼 (이미지 아이콘 적용) -->
+          <!-- 별 / 달 / 해 가호 선택 버튼 -->
           <div class="grid-3" style="margin-bottom:18px;">
             <div class="ancient-select-card selected" id="gaho_btn_star" onclick="selectGahoType('star')">
               <div class="ancient-header">
@@ -1286,7 +1772,7 @@
           </div>
         </div>
 
-        <!-- 원혼 어빌리티 (6칸, 해골 위치에 soul.png 적용) -->
+        <!-- 원혼 어빌리티 (6칸) -->
         <div class="card">
           <div class="card-title">
             <div style="display:flex; align-items:center; gap:8px;">
@@ -1331,7 +1817,7 @@
           </div>
         </div>
 
-        <!-- 가호 및 원혼 단계별 주사위 소모 기준표 (맨 밑 배치) -->
+        <!-- 가호 및 원혼 단계별 주사위 소모 기준표 -->
         <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
           <div class="card-title" style="margin-bottom: 8px;">
             <span style="font-size:17.5px;">📊 가호 및 원혼 어빌리티 단계별 잠금 주사위 소모 기준표</span>
@@ -1374,51 +1860,472 @@
     </div>
   </div>
 
-  <!-- ==================== [MODE 2] 🐣 뉴비 공략 영역 ==================== -->
+  <!-- ==================== [MODE 2] NEWBIE SECTION (v.2.1.0) ==================== -->
   <div id="mode_newbie_container" style="display:none;">
-    <div class="card" style="border-left: 4px solid #f59e0b;">
-      <div class="card-title">
-        <span>🐣 뉴비 전용 추천 가이드 & 소환 기댓값 계산기</span>
-        <span class="grade-badge" style="background:#b45309; color:#fde68a; border:1px solid #f59e0b;">🚧 개발 중</span>
-      </div>
-      <p class="card-subtitle">
-        뉴비 유저분들의 빠른 정착을 위한 소환 레벨업 기댓값, 초기 각성석 분배 가이드라인이 준비 중입니다.
-      </p>
+    
+    <!-- 1. 뉴비 공략 메인 허브 (섹션 분리: 소환 계산기 & 룬 착용 도우미) -->
+    <div id="newbie_hub_view">
+      
+      <!-- 섹션 1: 소환 확률 기댓값 & 재화 계산기 -->
+      <div class="hub-section">
+        <div class="hub-section-title" style="border-left-color:#f59e0b;">
+          <span>🎲 소환 확률 기댓값 & 재화 계산기</span>
+        </div>
+        <div class="hub-grid">
+          <div class="hub-card" onclick="openNewbieCalculator('equip')">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#38bdf8;">
+                <img src="images/scythe.png" alt="장비" onerror="this.onerror=null; this.src='images/elem_buffing.png'; this.onerror=function(){this.parentElement.innerHTML='🗡️';};">
+              </div>
+              <div>
+                <span class="hub-card-title">🗡️ 장비 소환</span>
+                <span class="hub-card-desc">대낫/오브(100)·장식(200) | 전 등급 27슬롯 일괄 합성</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
 
-      <div style="text-align:center; padding:50px 20px; background:#0f172a; border-radius:12px; border:1px dashed #78350f;">
-        <div style="font-size:48px; margin-bottom:12px;">🐣🚧</div>
-        <h3 style="font-size:20px; color:#fde68a; margin-bottom:8px;">소환 기댓값 및 뉴비 가이드 준비 중</h3>
-        <p style="font-size:14.5px; color:#cbd5e1; max-width:550px; margin:0 auto 16px auto; line-height:1.6;">
-          장비 소환 / 스킬 소환 / 영웅 소환 레벨별 필요 재화 및 다이아 소모 기댓값 계산기가 곧 업데이트될 예정입니다. 조금만 기다려 주세요!
+          <div class="hub-card" onclick="openNewbieCalculator('passive')">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#a855f7;">
+                <img src="images/ancient_passive.png" alt="패시브" onerror="this.onerror=null; this.src='images/frenzy.jpg'; this.onerror=function(){this.parentElement.innerHTML='📜';};">
+              </div>
+              <div>
+                <span class="hub-card-title">📜 패시브 소환</span>
+                <span class="hub-card-desc">200 다이아 | 등급별 아코디언 & 특정 패시브 10돌파</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+
+          <div class="hub-card" onclick="openNewbieCalculator('skill')">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#fbbf24;">
+                <img src="images/elem_option.png" alt="스킬" onerror="this.onerror=null; this.src='images/elem_light.jpg'; this.onerror=function(){this.parentElement.innerHTML='⚡';};">
+              </div>
+              <div>
+                <span class="hub-card-title">⚡ 스킬 소환</span>
+                <span class="hub-card-desc">200 다이아 | 픽업(0.1%+15장) vs 통상(상시) 비교</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+
+          <div class="hub-card" onclick="openNewbieCalculator('hero')">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#f43f5e;">
+                <img src="images/command.jpg" alt="영웅" onerror="this.onerror=null; this.src='images/strike_master.jpg'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
+              </div>
+              <div>
+                <span class="hub-card-title">🦸 영웅 소환</span>
+                <span class="hub-card-desc">500 다이아 | 신영웅 픽업(0.1%+15장) vs 통상 비교</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+
+          <div class="hub-card" onclick="openNewbieCalculator('spirit')">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#22c55e;">
+                <img src="images/option_dice.png" alt="정령" onerror="this.onerror=null; this.src='images/elem_fusion.jpg'; this.onerror=function(){this.parentElement.innerHTML='🧚';};">
+              </div>
+              <div>
+                <span class="hub-card-title">🧚 정령 소환</span>
+                <span class="hub-card-desc">200 정령석 | 4차 신규 리더(홍련/라이자/릴리스) 반영</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+
+          <div class="hub-card" style="opacity:0.6; cursor:not-allowed;">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#64748b; background:#1e293b;">
+                <span>🃏</span>
+              </div>
+              <div>
+                <span class="hub-card-title">🃏 몬스터 카드 🔒</span>
+                <span class="hub-card-desc">개발 중 (몬스터 정수 및 돌파 데이터 수집 중)</span>
+              </div>
+            </div>
+            <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">준비 중</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 섹션 2: 룬 착용 도우미 (Beta) -->
+      <div class="hub-section">
+        <div class="hub-section-title" style="border-left-color:#ec4899;">
+          <span>💎 룬 착용 & 최고 배율 세팅 도우미</span>
+        </div>
+        <div class="hub-grid">
+          <div class="hub-card" onclick="openRuneHelperView()" style="border-color:rgba(244,63,94,0.45);">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#f43f5e; background:rgba(244,63,94,0.12);">
+                <span>🛡️</span>
+              </div>
+              <div>
+                <span class="hub-card-title">🛡️ 룬 착용 도우미 (Beta)</span>
+                <span class="hub-card-desc">고대·영원·불멸 보유 룬 선택 시 최고 배율 10칸(상의/하의/신발/장식/무기) 자동 배치</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. 뉴비 공략 상세 계산기 화면 (소환 카테고리 선택 시 전환) -->
+    <div id="newbie_calc_view" style="display:none;">
+      <div class="card" style="border-left: 4px solid #f59e0b;">
+        <div class="card-title">
+          <span id="newbie_detail_title">🎲 소환 확률 기댓값 계산기</span>
+          <span class="grade-badge" style="background:#b45309; color:#fde68a; border:1px solid #f59e0b;" id="summon_active_badge">🗡️ 장비 소환</span>
+        </div>
+        <p class="card-subtitle" id="newbie_detail_desc">
+          소환 목표와 보유량을 입력하여 필요한 소환 횟수와 재화를 계산합니다.
         </p>
-        <button onclick="switchMainMode('deep')" style="background:linear-gradient(135deg, #4338ca 0%, #312e81 100%); border:1px solid #6366f1; color:#ffffff; padding:10px 20px; border-radius:8px; font-weight:700; cursor:pointer;">
-          💎 심화 공략 계산기로 바로가기
-        </button>
+
+        <!-- 공통 소환 레벨 선택기 -->
+        <div style="background:#0f172a; padding:14px 18px; border-radius:12px; border:1px solid #334155; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div>
+            <strong style="font-size:15px; color:#ffffff;">📊 현재 소환 레벨 선택</strong>
+            <span style="font-size:12.5px; color:#94a3b8; margin-left:6px;">(레벨이 높을수록 신화/전설 등 상위 확률 증가)</span>
+          </div>
+          <div style="min-width:180px;">
+            <select id="sum_common_level" onchange="onSummonLevelChange()" style="padding:8px 12px; font-weight:700;">
+              <option value="1">소환 레벨 1</option>
+              <option value="2">소환 레벨 2</option>
+              <option value="3">소환 레벨 3</option>
+              <option value="4">소환 레벨 4</option>
+              <option value="5">소환 레벨 5</option>
+              <option value="6">소환 레벨 6</option>
+              <option value="7">소환 레벨 7</option>
+              <option value="8">소환 레벨 8</option>
+              <option value="9">소환 레벨 9</option>
+              <option value="10" selected>소환 레벨 10 (MAX)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="summon_dynamic_body"></div>
+        <div id="summon_result_box"></div>
+
+        <div style="background: rgba(239, 68, 68, 0.1); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 18px; margin-top: 20px;">
+          <div style="font-weight: 800; font-size: 15px; color: #fca5a5; display:flex; align-items:center; gap:6px; margin-bottom: 6px;">
+            ⚠️ <strong>블루 다이아 직접 소환 비효율 경고 & 파밍 권장 팁</strong>
+          </div>
+          <p style="font-size: 13.5px; color: #cbd5e1; margin: 0; line-height: 1.6;">
+            블루 다이아를 사용한 무한 직접 소환은 소모 재화 대비 효율이 극히 떨어집니다. 
+            본 계산기의 소환 기댓값과 횟수는 <strong>목표치 가늠 및 페이스 조절용</strong>으로만 참고하시고, 
+            최대한 <strong>이벤트 상점 교환, 쟁탈전 보상, 마일리지 교환권</strong>을 적극 활용하여 원하는 목표를 달성하시는 것을 강력 권장합니다.
+          </p>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
+          <div class="card-title" style="margin-bottom: 8px;">
+            <span style="font-size:17.5px;" id="summon_rates_table_title">📊 공식 소환 확률표</span>
+            <span class="grade-badge grade-ancient" id="summon_rates_table_badge">Lv.10 기준</span>
+          </div>
+          <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
+            현재 선택된 소환 레벨에 적용되는 공식 레어리티별 및 등급별 등장 확률입니다.
+          </p>
+          <div class="custom-table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>레어리티</th><th>소환 확률</th><th>4등급</th><th>3등급</th><th>2등급</th><th>1등급</th>
+                </tr>
+              </thead>
+              <tbody id="summon_rates_table_tbody"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- 3. 룬 착용 도우미 (Beta) 상세 화면 -->
+    <div id="newbie_rune_view" style="display:none;">
+      <div class="card" style="border-left: 4px solid #f43f5e;">
+        <div class="card-title">
+          <span>🛡️ 룬 착용 도우미 (Beta) - 최고 배율 자동 세팅</span>
+          <div style="display:flex; gap:6px;">
+            <button onclick="selectAllCurrentTierRunes()" style="background:#334155; border:1px solid #475569; color:#e2e8f0; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">현재 등급 전체선택</button>
+            <button onclick="clearAllOwnedRunes()" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">전체 초기화</button>
+          </div>
+        </div>
+        <p class="card-subtitle">
+          내 직업과 주속성을 고르고 보유 중인 룬(고대·영원·불멸)을 클릭하면, 합연산/곱연산과 세트 페널티를 모두 계산하여 최선의 10칸 세팅과 동일 배율 대체 룬을 추천합니다.
+        </p>
+
+        <!-- 상단 직업(택1) / 속성(택1) / 특수 조건 스위치 -->
+        <div class="grid-2" style="margin-bottom:14px;">
+          <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
+            <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 내 직업 선택 (택 1)</label>
+            <div class="radio-pill-group">
+              <div class="radio-pill selected" id="rune_job_reaper" onclick="selectRuneJob('reaper')">🗡️ 대사신 (강타)</div>
+              <div class="radio-pill" id="rune_job_mage" onclick="selectRuneJob('mage')">🧙‍♂️ 아크메이지 (스킬)</div>
+              <div class="radio-pill" id="rune_job_lord" onclick="selectRuneJob('lord')">👑 팬텀 (영웅스킬)</div>
+            </div>
+          </div>
+
+          <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
+            <label style="color:#fbbf24; margin-bottom:8px;">🔥 내 주속성 선택 (택 1)</label>
+            <div class="radio-pill-group">
+              <div class="radio-pill selected" id="rune_elem_fire" onclick="selectRuneElem('fire')">🔥 화염 속성</div>
+              <div class="radio-pill" id="rune_elem_light" onclick="selectRuneElem('light')">⚡ 번개 속성</div>
+              <div class="radio-pill" id="rune_elem_dark" onclick="selectRuneElem('dark')">🌑 어둠 속성</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 엘리시아(과성장) & 루비/출혈 시너지 체크박스 -->
+        <div style="background:#0f172a; padding:10px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:16px; display:flex; flex-wrap:wrap; gap:16px; align-items:center;">
+          <span style="font-size:12.5px; font-weight:800; color:#a5b4fc;">💡 핵심 보유 조건:</span>
+          <label style="margin:0; display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#e2e8f0;">
+            <input type="checkbox" id="rune_cond_elisia" onchange="calculateBestRuneLoadout()" style="width:16px; height:16px; accent-color:#6366f1;">
+            <span>엘리시아 3각 보유 (영원 <strong>과성장</strong> 반지 최고효율 발동)</span>
+          </label>
+          <label style="margin:0; display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#e2e8f0;">
+            <input type="checkbox" id="rune_cond_bleed" onchange="calculateBestRuneLoadout()" style="width:16px; height:16px; accent-color:#6366f1;">
+            <span>크림슨 웨이브 보유 (불멸 <strong>저주 II</strong> 출혈 조건 달성)</span>
+          </label>
+        </div>
+
+        <!-- 등급 선택 탭 (고대 / 영원 / 불멸) -->
+        <div class="rune-tier-tabs">
+          <div class="rune-tier-tab active-ancient" id="rtab_ancient" onclick="switchRuneTierTab('ancient')">🔵 고대 등급 룬</div>
+          <div class="rune-tier-tab" id="rtab_eternal" onclick="switchRuneTierTab('eternal')">🟢 영원 등급 룬</div>
+          <div class="rune-tier-tab" id="rtab_immortal" onclick="switchRuneTierTab('immortal')">🔴 불멸 등급 룬</div>
+        </div>
+
+        <!-- 실시간 룬 검색창 -->
+        <div class="search-input-wrapper">
+          <span class="search-icon-prefix">🔍</span>
+          <input type="text" id="rune_search_input" placeholder="찾으시는 룬 이름이나 옵션(예: 명황, 과성장, 양날검, 마녀)을 검색하세요 (자동 펼침)" oninput="filterRuneCards(this.value)">
+        </div>
+
+        <!-- 부위별 아코디언 (방어구, 반지, 목걸이, 엠블렘, 심연장식, 무기) -->
+        <div id="rune_accordion_container" class="accordion-group"></div>
+      </div>
+
+      <!-- 추천 결과: SD 캐릭터 장착 보드 & 상세 효과/동일 배율 대체 룬 리포트 -->
+      <div class="card" style="border-left: 4px solid #38bdf8;">
+        <div class="card-title">
+          <span>👑 보유 룬 기반 최선의 추천 장착도 (인게임 슬롯 배치)</span>
+          <span class="grade-badge grade-ancient" id="rune_owned_count_badge">총 보유 선택: 0개</span>
+        </div>
+        <p class="card-subtitle">
+          왼쪽 위부터 <strong>[상의 / 하의 / 신발]</strong>, 중앙 아래 <strong>[심연장식]</strong>, 오른쪽 <strong>[반지 / 목걸이 / 엠블렘]</strong>, 최하단 <strong>[무기 3슬롯]</strong>입니다.
+        </p>
+
+        <div class="rune-equip-stage">
+          <div class="rune-stage-upper">
+            <!-- 좌측: 방어구 3칸 (상의 / 하의 / 신발) -->
+            <div class="rune-col-left">
+              <div id="slot_armor_top" class="rune-slot-block"></div>
+              <div id="slot_armor_mid" class="rune-slot-block"></div>
+              <div id="slot_armor_bot" class="rune-slot-block"></div>
+            </div>
+
+            <!-- 중앙: SD 캐릭터 & 심연장식 -->
+            <div class="rune-col-center">
+              <div class="sd-char-box">
+                <img id="sd_char_img" src="images/char.png" alt="SD 캐릭터" onerror="handleSdCharError(this)">
+              </div>
+              <div id="slot_abyss" class="rune-slot-block" style="width:100%; max-width:220px;"></div>
+            </div>
+
+            <!-- 우측: 반지 / 목걸이 / 엠블렘 -->
+            <div class="rune-col-right">
+              <div id="slot_ring" class="rune-slot-block"></div>
+              <div id="slot_neck" class="rune-slot-block"></div>
+              <div id="slot_emblem" class="rune-slot-block"></div>
+            </div>
+          </div>
+
+          <!-- 하단: 무기 3칸 -->
+          <div class="rune-weapon-bar">
+            <div style="font-size:12.5px; font-weight:800; color:#cbd5e1; text-align:center;">🪓 무기 룬 슬롯 (3칸)</div>
+            <div class="rune-weapon-grid">
+              <div id="slot_weap_1" class="rune-slot-block"></div>
+              <div id="slot_weap_2" class="rune-slot-block"></div>
+              <div id="slot_weap_3" class="rune-slot-block"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 깔끔하게 정돈된 종합 배율 & 부위별 줄바꿈 대시보드 -->
+        <div class="result-dashboard" style="margin-top:18px;">
+          <div class="res-label">추천 10칸 세팅 총합 곱연산 배율</div>
+          <div class="res-value" id="rune_grand_total_mult" style="font-size:30px; color:#38bdf8;">1배</div>
+          <div class="rune-mult-breakdown-list" id="rune_mult_breakdown">
+            <div class="rune-mult-row"><span>🧥 방어구 3칸 종합 배율</span><strong>1배</strong></div>
+            <div class="rune-mult-row"><span>💍 반지 + 📿 목걸이 종합 배율</span><strong>1배</strong></div>
+            <div class="rune-mult-row"><span>🛡️ 엠블렘 + 🔯 심연장식 종합 배율</span><strong>1배</strong></div>
+            <div class="rune-mult-row"><span>🪓 무기 3칸 종합 배율</span><strong>1배</strong></div>
+          </div>
+        </div>
+
+        <!-- 슬롯별 상세 효과, 발동 조건 & 똑같은 배율(대체 가능) 룬 리스트 -->
+        <div style="margin-top:22px;">
+          <h3 style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #334155;">
+            📋 장착 슬롯별 상세 효과 · 발동 조건 · 동일 배율 대체 룬
+          </h3>
+          <div id="rune_detail_report_list" style="display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Footer -->
   <footer>
-    소울헌터키우기 네이버 라운지 전용 계산기
+    소울헌터키우기 네이버 라운지 전용 계산기 v.2.1.0 | 제작: 29서버 겨울눈사람
   </footer>
 </div>
 
 <script>
-  // ==================== FORMATTING HELPER ====================
+  // ==================== FORMATTING HELPER (만 / 억 / 조 / 경 / 해 / 자 완벽 지원) ====================
   function formatKoreanNumber(num) {
-    if (num >= 100000000) {
-      const eok = Math.floor(num / 100000000);
-      const man = Math.floor((num % 100000000) / 10000);
-      return man > 0 ? `${eok.toLocaleString()}억 ${man.toLocaleString()}만` : `${eok.toLocaleString()}억`;
-    } else if (num >= 10000) {
-      return `${Math.floor(num / 10000).toLocaleString()}만`;
+    if (!isFinite(num) || num <= 0) return "0";
+    if (num < 10000) return Math.round(num).toLocaleString();
+
+    const units = ["", "만", "억", "조", "경", "해", "자", "양"];
+    let unitIdx = Math.floor(Math.log10(num) / 4);
+    if (unitIdx >= units.length) unitIdx = units.length - 1;
+
+    const topUnitVal = Math.pow(10000, unitIdx);
+    const highPart = Math.floor(num / topUnitVal);
+    const rem = num - (highPart * topUnitVal);
+    const lowPart = Math.floor(rem / Math.pow(10000, unitIdx - 1));
+
+    if (lowPart > 0) {
+      return `${highPart.toLocaleString()}${units[unitIdx]} ${lowPart.toLocaleString()}${units[unitIdx - 1]}`;
     }
-    return Math.round(num).toLocaleString();
+    return `${highPart.toLocaleString()}${units[unitIdx]}`;
+  }
+
+  // SD 캐릭터 이미지 다중 경로 Fallback 처리
+  const sdCharFallbacks = [
+    'images/char.png', 'char.png', 'images/char.PNG', 'char.PNG',
+    'images/character.png', 'avatar.PNG', 'images/avatar.PNG'
+  ];
+  let sdCharIdx = 0;
+  function handleSdCharError(img) {
+    if (sdCharIdx < sdCharFallbacks.length) {
+      img.src = sdCharFallbacks[sdCharIdx++];
+    } else {
+      img.parentElement.innerHTML = '<div style="font-size:64px;">🧙‍♂️</div>';
+    }
+  }
+
+  // ==================== 각 계산기별 사용법 팝업 데이터 & 제어 ====================
+  let currentActiveGuideKey = 'equip';
+
+ const HELP_GUIDE_DATA = {
+    'tab-refine': {
+      title: '🔨 영원 장비 연마 계산기 사용법',
+      html: `<ol>
+        <li><strong>현재 연마 단계</strong>와 달성하고자 하는 <strong>목표 연마 단계</strong>를 선택하세요.</li>
+        <li><strong>하락 방지 체크박스</strong>를 켜거나 끄면, Lv.11 이상 구간의 연쇄 하락 확률까지 마르코프 연쇄 공식으로 계산하여 목표까지 필요한 <strong>수학적 평균 시도 횟수</strong>를 알려줍니다.</li>
+      </ol>`
+    },
+    'tab-orb': {
+      title: '🌌 영원 장비 옵션 변환 계산기 사용법',
+      html: `<ol>
+        <li>상단에서 <strong>영원 대낫</strong> 또는 <strong>영원 오브</strong>를 선택하세요.</li>
+        <li>현재 장비 등급(신화/전설 등)과 1옵션·2옵션의 <strong>목표 등급(SSS~D)</strong>을 설정하면 동시 달성 확률과 <strong>필요한 심연정수 기댓값(1회당 2개)</strong> 및 실질 곱연산 배율을 즉시 산출합니다.</li>
+      </ol>`
+    },
+    'tab-passive': {
+      title: '🔮 고대 패시브 계산기 사용법',
+      html: `<ol>
+        <li>상단의 <strong>직업 추천 버튼(아크메이지/대사신/팬텀)</strong>을 누르면 필수 1~3순위 고패가 자동 선택됩니다.</li>
+        <li>아래 재료 목록에서 이미 완성한 패시브는 우측 <strong>[이미 보유 / 제외]</strong>를 체크하시면 총 필요 각성석에서 즉시 차감됩니다.</li>
+      </ol>`
+    },
+    'tab-synergy': {
+      title: '✨ 각성 시너지 점수 계산기 사용법',
+      html: `<ol>
+        <li>1각성당 시너지 점수가 가장 높은 <strong>미사용 신화(10만 개당 +15점)</strong>, 전설, 특급의 <strong>1각 할 개수</strong>를 입력하세요.</li>
+        <li>현재 내 시너지 총점수를 입력하면 1각 적용 후 <strong>최종 시너지 총점수</strong>와 <strong>시너지 공격력(%) 상승치</strong>를 비교해 줍니다.</li>
+      </ol>`
+    },
+    'tab-ability': {
+      title: '🌙 가호 & 원혼 어빌리티 계산기 사용법',
+      html: `<ol>
+        <li><strong>별 / 달 / 해의 가호</strong> 중 하나를 선택하고, 현재 잠근(완성한) 고대 옵공증 칸 수를 고르세요.</li>
+        <li>당장 <strong>다음 1칸을 띄울 때 필요한 주사위 기댓값</strong>과 <strong>7칸(원혼 6칸) 올 고대 완성 총 누적 기댓값</strong>을 동시에 확인할 수 있습니다.</li>
+      </ol>`
+    },
+    'equip': {
+      title: '🗡️ 장비 소환 기댓값 계산기 사용법',
+      html: `<ol>
+        <li>상단에서 <strong>영원 대낫 / 오브 / 장식</strong> 카드를 클릭하고 <strong>현재 소환 레벨(Lv.1~10)</strong>과 <strong>목표 고대 등급</strong>을 선택하세요.</li>
+        <li>아래 인벤토리 입력창에 현재 보유 중인 <strong>하급~고대 장비 개수</strong>를 입력하면, 4:1 및 2:1 합성 공식으로 자동 일괄 합산하여 목표까지 부족한 순수 뽑기 횟수와 다이아(1만뽑당 500장 환급 반영)를 계산합니다.</li>
+      </ol>`
+    },
+    'passive': {
+      title: '📜 패시브 소환 기댓값 계산기 사용법',
+      html: `<ol>
+        <li>상단에서 <strong>현재 소환 레벨</strong>을 고르고, 등급별 목록에서 목표하는 <strong>패시브 카드</strong>를 클릭하세요.</li>
+        <li>현재 보유 수량(0~70개)을 입력하면 10돌파(70개)까지 필요한 예상 소환 횟수와 다이아(5천뽑당 100장 환급 반영)가 계산됩니다.</li>
+      </ol>`
+    },
+    'skill': {
+      title: '⚡ 스킬 소환 기댓값 계산기 사용법',
+      html: `<ol>
+        <li>검색창이나 목록에서 목표하는 <strong>스킬 카드</strong>를 클릭하고 현재 보유 수량을 입력하세요.</li>
+        <li>신화 스킬은 <strong>[픽업 소환 시(0.1% + 1만뽑당 15장 확정)]</strong>와 <strong>[상시(통상) 소환 시(31종 균등 분배)]</strong>의 소모 다이아 차이를 나란히 비교해 줍니다.</li>
+      </ol>`
+    },
+    'hero': {
+      title: '🦸 영웅 소환 기댓값 계산기 사용법',
+      html: `<ol>
+        <li>목표하는 <strong>영웅 카드</strong>를 클릭하고 현재 보유 수량을 입력하세요.</li>
+        <li>신화 영웅을 픽업 기간에 뽑을 때와 통상 소환으로 뽑을 때의 필요 블루 다이아(1회 500다이아) 차이를 한눈에 확인할 수 있습니다.</li>
+      </ol>`
+    },
+    'spirit': {
+      title: '🧚 정령 소환 기댓값 계산기 사용법',
+      html: `<ol>
+        <li>리더(👑) 또는 서포터(🛡️) <strong>정령 카드</strong>를 클릭하고 현재 보유 수량을 입력하세요.</li>
+        <li>10돌파(70개)까지 필요한 예상 소환 횟수와 <strong>필요 정령석</strong>을 픽업 vs 통상으로 비교해 줍니다. (무속성 노말 정령은 픽업 제외 자동 반영)</li>
+      </ol>`
+    },
+    'rune': {
+      title: '🛡️ 룬 착용 도우미 (Beta) 사용법',
+      html: `<ol>
+        <li>맨 위에서 <strong>내 직업(대사신/아크메이지/팬텀)</strong>과 <strong>내 주속성(화염/번개/어둠)</strong>, 그리고 <strong>엘리시아/출혈 보유 여부</strong>를 선택하세요.</li>
+        <li><strong>[고대 / 영원 / 불멸]</strong> 등급 탭을 눌러 내가 현재 보유하고 있는 룬들을 모두 클릭해 켜주세요. (우측 상단 <strong>'현재 등급 전체선택'</strong>을 누르고 없는 룬만 빼셔도 편합니다!)</li>
+        <li>선택 즉시 아래 SD 캐릭터 장착 보드에 <strong>가장 배율이 높은 최선의 10칸(상의/하의/신발 구분 포함) 조합</strong>이 자동 배치되며, 보유 룬 중 <strong>똑같은 배율로 대체 가능한 룬</strong>과 발동 조건까지 하단에 정리됩니다.</li>
+      </ol>`
+    }
+  };
+
+  function setFloatingGuideContext(key, labelText) {
+    currentActiveGuideKey = key;
+    const txtEl = document.getElementById('floating_guide_text');
+    if (txtEl) txtEl.innerText = labelText + ' 사용법';
+  }
+
+  function openHelpModal() {
+    const info = HELP_GUIDE_DATA[currentActiveGuideKey] || HELP_GUIDE_DATA['equip'];
+    document.getElementById('help_modal_title').innerText = info.title;
+    document.getElementById('help_modal_body').innerHTML = info.html;
+    document.getElementById('help_modal_overlay').style.display = 'flex';
+  }
+
+  function closeHelpModal(e) {
+    document.getElementById('help_modal_overlay').style.display = 'none';
   }
 
   // ==================== GLOBAL NAVIGATION LOGIC ====================
+  let currentMainMode = 'deep'; // 'deep' | 'newbie'
+
   function switchMainMode(mode) {
+    currentMainMode = mode;
     const deepContainer = document.getElementById("mode_deep_container");
     const newbieContainer = document.getElementById("mode_newbie_container");
     const btnDeep = document.getElementById("btn_mode_deep");
@@ -1435,14 +2342,33 @@
       newbieContainer.style.display = "block";
       btnDeep.classList.remove("active");
       btnNewbie.classList.add("active");
-      document.getElementById("floating_back_btn").style.display = "none";
+      returnToNewbieHub();
+    }
+  }
+
+  function handleFloatingBack() {
+    if (currentMainMode === 'deep') {
+      returnToDeepHub();
+    } else {
+      returnToNewbieHub();
     }
   }
 
   function openDeepCalculator(calcTabId) {
     document.getElementById("deep_hub_view").style.display = "none";
     document.getElementById("deep_calc_view").style.display = "block";
-    document.getElementById("floating_back_btn").style.display = "flex";
+    const floatBtn = document.getElementById("floating_back_btn");
+    floatBtn.style.display = "flex";
+    document.getElementById("floating_back_text").innerText = "심화 메뉴로 돌아가기";
+
+    const labelMap = {
+      'tab-refine': '연마 계산기',
+      'tab-orb': '옵션 변환기',
+      'tab-passive': '고대 패시브',
+      'tab-synergy': '각성 시너지',
+      'tab-ability': '어빌리티'
+    };
+    setFloatingGuideContext(calcTabId, labelMap[calcTabId] || '계산기');
 
     document.querySelectorAll('#deep_calc_view .tab-content').forEach(el => el.style.display = 'none');
     const target = document.getElementById(calcTabId);
@@ -1456,10 +2382,6 @@
     document.getElementById("deep_calc_view").style.display = "none";
     document.getElementById("floating_back_btn").style.display = "none";
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function showTab(tabId) {
-    openDeepCalculator(tabId);
   }
 
   // ==================== DATA DEFINITIONS: ANCIENT PASSIVE ====================
@@ -1643,7 +2565,6 @@
     renderMaterialList();
   }
 
-  // 1순위, 2순위, 3순위는 [택 1] (라디오 버튼 방식), 4순위는 [다중 선택 가능]
   function toggleAncient(id) {
     const target = ANCIENT_LIST.find(a => a.id === id);
     if (!target) return;
@@ -1667,16 +2588,9 @@
   }
 
   const avatarFallbacks = [
-    'avatar.PNG',
-    'images/avatar.PNG',
-    'avatar.png',
-    'images/avatar.png',
-    'Avatar.PNG',
-    'images/Avatar.PNG',
-    'Avatar.png',
-    'images/Avatar.png',
-    'avatar.jpg',
-    'images/avatar.jpg'
+    'avatar.PNG', 'images/avatar.PNG', 'avatar.png', 'images/avatar.png',
+    'Avatar.PNG', 'images/Avatar.PNG', 'Avatar.png', 'images/Avatar.png',
+    'avatar.jpg', 'images/avatar.jpg'
   ];
   let avatarIndex = 0;
   function handleAvatarError(img) {
@@ -1691,13 +2605,9 @@
     selectedAncients.clear();
     excludedMaterials.clear();
 
-    if (jobType === 'am') {
-      selectedAncients.add("frenzy");
-    } else if (jobType === 'reaper') {
-      selectedAncients.add("strike_master");
-    } else if (jobType === 'phantom') {
-      selectedAncients.add("command");
-    }
+    if (jobType === 'am') selectedAncients.add("frenzy");
+    else if (jobType === 'reaper') selectedAncients.add("strike_master");
+    else if (jobType === 'phantom') selectedAncients.add("command");
 
     selectedAncients.add("pierce");
     selectedAncients.add("elem_fire");
@@ -1736,6 +2646,7 @@
     "마력폭주": "mana_surge",
     "시간왜곡": "time_warp",
     "강타전문가": "strike_expert",
+    "강타 전문가": "strike_expert",
     "폭발준비": "blast_ready",
     "전투지휘": "battle_command",
     "전술가속": "tactical_haste",
@@ -1743,11 +2654,8 @@
     "절대관통": "absolute_pierce",
     "원소융합": "elem_fusion",
     "불길의 권능": "flame_power",
-    "불길권능": "flame_power",
     "천둥의 격노": "thunder_rage",
-    "천둥격노": "thunder_rage",
     "그림자 침식": "shadow_erosion",
-    "그림자침식": "shadow_erosion",
     "타속성 1": "thunder_rage",
     "타속성 2": "shadow_erosion"
   };
@@ -1784,17 +2692,11 @@
       let gradeKr = "신화";
       let costStr = "115만 개";
       if (val.grade === "advanced") {
-        gradeClass = "grade-advanced";
-        gradeKr = "상급";
-        costStr = "약 3.55만 개(추정)";
+        gradeClass = "grade-advanced"; gradeKr = "상급"; costStr = "약 3.55만 개(추정)";
       } else if (val.grade === "unique") {
-        gradeClass = "grade-unique";
-        gradeKr = "특급";
-        costStr = "8.3만 개";
+        gradeClass = "grade-unique"; gradeKr = "특급"; costStr = "8.3만 개";
       } else if (val.grade === "legend") {
-        gradeClass = "grade-legend";
-        gradeKr = "전설";
-        costStr = "12.5만 개";
+        gradeClass = "grade-legend"; gradeKr = "전설"; costStr = "12.5만 개";
       }
 
       row.innerHTML = `
@@ -1840,17 +2742,13 @@
   }
 
   function toggleExcludeMaterial(matName, checked) {
-    if (checked) {
-      excludedMaterials.add(matName);
-    } else {
-      excludedMaterials.delete(matName);
-    }
+    if (checked) excludedMaterials.add(matName);
+    else excludedMaterials.delete(matName);
     const row = document.getElementById(`row_${matName}`);
     if (row) {
       if (checked) row.classList.add("excluded");
       else row.classList.remove("excluded");
-      const selects = row.querySelectorAll("select");
-      selects.forEach(s => s.disabled = checked);
+      row.querySelectorAll("select").forEach(s => s.disabled = checked);
     }
     calculateAncientCost();
   }
@@ -1861,9 +2759,7 @@
     selectedAncients.forEach(ancId => {
       const anc = ANCIENT_LIST.find(a => a.id === ancId);
       if (!anc) return;
-      anc.materials.forEach(mat => {
-        materialMap.set(mat.name, mat.grade);
-      });
+      anc.materials.forEach(mat => materialMap.set(mat.name, mat.grade));
     });
 
     materialMap.forEach((grade, matName) => {
@@ -1872,7 +2768,6 @@
       const tarEl = document.getElementById("tar_" + matName);
       const cur = curEl ? parseInt(curEl.value) : 0;
       const tar = tarEl ? parseInt(tarEl.value) : 3;
-
       if (tar > cur) {
         totalStones += (AWAKENING_COSTS[grade][tar] - AWAKENING_COSTS[grade][cur]);
       }
@@ -1895,73 +2790,29 @@
   }
 
   // ==================== DATA & LOGIC: 각성 시너지 ====================
-  // 15개 인게임 스크린샷 기반 점수별 시너지 공격력(%) 테이블
   const SYNERGY_TABLE = [
-    { pts: 70, pct: "700%" },
-    { pts: 100, pct: "1,000%" },
-    { pts: 150, pct: "1,000%" },
-    { pts: 200, pct: "1,500%" },
-    { pts: 250, pct: "1,500%" },
-    { pts: 265, pct: "1,500%" },
-    { pts: 280, pct: "1,800%" },
-    { pts: 295, pct: "2,000%" },
-    { pts: 310, pct: "2,000%" },
-    { pts: 325, pct: "2,000%" },
-    { pts: 340, pct: "2,500%" },
-    { pts: 370, pct: "3,200%" },
-    { pts: 385, pct: "3,700%" },
-    { pts: 400, pct: "4,200%" },
-    { pts: 415, pct: "4,900%" },
-    { pts: 430, pct: "5,600%" },
-    { pts: 445, pct: "6,400%" },
-    { pts: 460, pct: "7,400%" },
-    { pts: 475, pct: "8,500%" },
-    { pts: 490, pct: "9,800%" },
-    { pts: 520, pct: "11,300%" },
-    { pts: 550, pct: "13,000%" },
-    { pts: 580, pct: "14,900%" },
-    { pts: 610, pct: "17,100%" },
-    { pts: 640, pct: "19,700%" },
-    { pts: 670, pct: "22,600%" },
-    { pts: 700, pct: "26,000%" },
-    { pts: 730, pct: "30,000%" },
-    { pts: 760, pct: "34,400%" },
-    { pts: 790, pct: "39,600%" },
-    { pts: 820, pct: "45,500%" },
-    { pts: 850, pct: "52,400%" },
-    { pts: 880, pct: "60,200%" },
-    { pts: 910, pct: "69,300%" },
-    { pts: 940, pct: "79,700%" },
-    { pts: 970, pct: "91,600%" },
-    { pts: 1000, pct: "105,400%" },
-    { pts: 1030, pct: "121,200%" },
-    { pts: 1060, pct: "139,300%" },
-    { pts: 1090, pct: "160,200%" },
-    { pts: 1120, pct: "184,300%" },
-    { pts: 1150, pct: "211,900%" },
-    { pts: 1200, pct: "243,700%" },
-    { pts: 1250, pct: "280,200%" },
-    { pts: 1300, pct: "322,300%" },
-    { pts: 1350, pct: "370,600%" },
-    { pts: 1400, pct: "426,200%" },
-    { pts: 1450, pct: "490,100%" },
-    { pts: 1500, pct: "563,600%" },
-    { pts: 1550, pct: "648,200%" },
-    { pts: 1600, pct: "745,400%" },
-    { pts: 1650, pct: "857,200%" },
-    { pts: 1700, pct: "985,800%" },
-    { pts: 1750, pct: "1,133,700%" },
-    { pts: 1800, pct: "1,303,700%" },
-    { pts: 1850, pct: "1,499,300%" },
-    { pts: 1900, pct: "1,724,200%" },
-    { pts: 1950, pct: "1,982,800%" },
-    { pts: 2000, pct: "2,280,200%" },
-    { pts: 2400, pct: "6,975,300%" },
-    { pts: 2450, pct: "8,021,600%" },
-    { pts: 2500, pct: "9,224,800%" },
-    { pts: 2550, pct: "10,608,500%" },
-    { pts: 2600, pct: "12,199,800%" },
-    { pts: 2650, pct: "14,029,700%" }
+    { pts: 70, pct: "700%" }, { pts: 100, pct: "1,000%" }, { pts: 150, pct: "1,000%" },
+    { pts: 200, pct: "1,500%" }, { pts: 250, pct: "1,500%" }, { pts: 265, pct: "1,500%" },
+    { pts: 280, pct: "1,800%" }, { pts: 295, pct: "2,000%" }, { pts: 310, pct: "2,000%" },
+    { pts: 325, pct: "2,000%" }, { pts: 340, pct: "2,500%" }, { pts: 370, pct: "3,200%" },
+    { pts: 385, pct: "3,700%" }, { pts: 400, pct: "4,200%" }, { pts: 415, pct: "4,900%" },
+    { pts: 430, pct: "5,600%" }, { pts: 445, pct: "6,400%" }, { pts: 460, pct: "7,400%" },
+    { pts: 475, pct: "8,500%" }, { pts: 490, pct: "9,800%" }, { pts: 520, pct: "11,300%" },
+    { pts: 550, pct: "13,000%" }, { pts: 580, pct: "14,900%" }, { pts: 610, pct: "17,100%" },
+    { pts: 640, pct: "19,700%" }, { pts: 670, pct: "22,600%" }, { pts: 700, pct: "26,000%" },
+    { pts: 730, pct: "30,000%" }, { pts: 760, pct: "34,400%" }, { pts: 790, pct: "39,600%" },
+    { pts: 820, pct: "45,500%" }, { pts: 850, pct: "52,400%" }, { pts: 880, pct: "60,200%" },
+    { pts: 910, pct: "69,300%" }, { pts: 940, pct: "79,700%" }, { pts: 970, pct: "91,600%" },
+    { pts: 1000, pct: "105,400%" }, { pts: 1030, pct: "121,200%" }, { pts: 1060, pct: "139,300%" },
+    { pts: 1090, pct: "160,200%" }, { pts: 1120, pct: "184,300%" }, { pts: 1150, pct: "211,900%" },
+    { pts: 1200, pct: "243,700%" }, { pts: 1250, pct: "280,200%" }, { pts: 1300, pct: "322,300%" },
+    { pts: 1350, pct: "370,600%" }, { pts: 1400, pct: "426,200%" }, { pts: 1450, pct: "490,100%" },
+    { pts: 1500, pct: "563,600%" }, { pts: 1550, pct: "648,200%" }, { pts: 1600, pct: "745,400%" },
+    { pts: 1650, pct: "857,200%" }, { pts: 1700, pct: "985,800%" }, { pts: 1750, pct: "1,133,700%" },
+    { pts: 1800, pct: "1,303,700%" }, { pts: 1850, pct: "1,499,300%" }, { pts: 1900, pct: "1,724,200%" },
+    { pts: 1950, pct: "1,982,800%" }, { pts: 2000, pct: "2,280,200%" }, { pts: 2400, pct: "6,975,300%" },
+    { pts: 2450, pct: "8,021,600%" }, { pts: 2500, pct: "9,224,800%" }, { pts: 2550, pct: "10,608,500%" },
+    { pts: 2600, pct: "12,199,800%" }, { pts: 2650, pct: "14,029,700%" }
   ];
 
   function getSynergyAtkPct(points) {
@@ -2018,7 +2869,6 @@
     document.getElementById("syn_add_points").innerText = "+" + addPoints.toLocaleString() + "점";
     document.getElementById("syn_final_points").innerText = finalPts.toLocaleString() + "점";
 
-    // 현재 공격력% vs 최종 공격력% 표기
     document.getElementById("syn_cur_atk_pct").innerText = getSynergyAtkPct(curPts);
     document.getElementById("syn_final_atk_pct").innerText = getSynergyAtkPct(finalPts);
   }
@@ -2058,7 +2908,6 @@
       tarSel.innerHTML += `<option value="${i}" ${i === 15 ? "selected" : ""}>Lv.${i}</option>`;
     }
 
-    // 연마 확률표 렌더링
     const tbody = document.getElementById("refine_rates_tbody");
     if (tbody) {
       tbody.innerHTML = "";
@@ -2335,27 +3184,9 @@
   let currentGahoType = 'star';
 
   const GAHO_CONFIG = {
-    star: {
-      name: "⭐ 별의 가호",
-      baseCost: 100000,
-      stepCost: 100000,
-      prob: 0.00064,
-      slots: 7
-    },
-    moon: {
-      name: "🌙 달의 가호",
-      baseCost: 500000,
-      stepCost: 500000,
-      prob: 0.00064,
-      slots: 7
-    },
-    sun: {
-      name: "☀️ 해의 가호",
-      baseCost: 700000,
-      stepCost: 700000,
-      prob: 0.00064,
-      slots: 7
-    }
+    star: { name: "⭐ 별의 가호", baseCost: 100000, stepCost: 100000, prob: 0.00064, slots: 7 },
+    moon: { name: "🌙 달의 가호", baseCost: 500000, stepCost: 500000, prob: 0.00064, slots: 7 },
+    sun: { name: "☀️ 해의 가호", baseCost: 700000, stepCost: 700000, prob: 0.00064, slots: 7 }
   };
 
   function selectGahoType(type) {
@@ -2382,12 +3213,10 @@
     const currentCostPerTry = cfg.baseCost + (locked * cfg.stepCost);
     document.getElementById("gaho_cost_per_try").innerText = (currentCostPerTry / 10000).toFixed(0) + "만 개";
 
-    // 1) 다음 1칸을 띄우는 데 필요한 기댓값
     const pNext = 1 - Math.pow(1 - cfg.prob, remain);
     const nextStepTries = pNext > 0 ? Math.round(1 / pNext) : 0;
     const nextStepDice = nextStepTries * currentCostPerTry;
 
-    // 2) 7칸 올 고대 최종 완성까지 총 누적 기댓값
     let totalTries = 0;
     let totalDice = 0;
     for (let i = locked; i < cfg.slots; i++) {
@@ -2415,12 +3244,10 @@
 
     const p_base = 0.00019;
 
-    // 1) 다음 1칸 달성 기댓값
     const pNext = 1 - Math.pow(1 - p_base, remain);
     const nextStepTries = pNext > 0 ? Math.round(1 / pNext) : 0;
     const nextStepDice = nextStepTries * costPerTry;
 
-    // 2) 6칸 올 고대 최종 완성 총 누적 기댓값
     let totalTries = 0;
     let totalDice = 0;
     for (let i = locked; i < 6; i++) {
@@ -2436,6 +3263,1768 @@
     document.getElementById("wonhon_total_tries").innerText = Math.round(totalTries).toLocaleString() + "회";
     document.getElementById("wonhon_total_dice_formatted").innerHTML = `총 필요 옵션 주사위: <strong style="color:#ffffff;">${formatKoreanNumber(totalDice)}개</strong>`;
     document.getElementById("wonhon_total_dice_raw").innerText = `(실제 기댓값 수치: ${Math.round(totalDice).toLocaleString()}개)`;
+  }
+
+  // ==================== NEWBIE SUMMON CALCULATOR LOGIC (v.2.1.0) ====================
+  let currentNewbieCat = 'equip';
+  let selectedEquipType = 'scythe';
+  let selectedTargetItem = null;
+
+  function openNewbieCalculator(cat) {
+    currentNewbieCat = cat;
+    document.getElementById("newbie_hub_view").style.display = "none";
+    const runeView = document.getElementById("newbie_rune_view");
+    if (runeView) runeView.style.display = "none";
+    document.getElementById("newbie_calc_view").style.display = "block";
+
+    const floatBtn = document.getElementById("floating_back_btn");
+    floatBtn.style.display = "flex";
+    document.getElementById("floating_back_text").innerText = "뉴비 메뉴로 돌아가기";
+
+    const guideNames = { equip: '장비 소환', passive: '패시브 소환', skill: '스킬 소환', hero: '영웅 소환', spirit: '정령 소환' };
+    setFloatingGuideContext(cat, guideNames[cat] || '소환 계산기');
+
+    const titles = {
+      equip: "🗡️ 장비 소환 기댓값 계산기",
+      passive: "📜 패시브 소환 기댓값 계산기",
+      skill: "⚡ 스킬 소환 기댓값 계산기",
+      hero: "🦸 영웅 소환 기댓값 계산기",
+      spirit: "🧚 정령 소환 기댓값 계산기"
+    };
+    const badges = {
+      equip: "🗡️ 장비 (대낫/오브/장식)",
+      passive: "📜 패시브 (200 다이아)",
+      skill: "⚡ 스킬 (200 다이아)",
+      hero: "🦸 영웅 (500 다이아)",
+      spirit: "🧚 정령 (200 정령석)"
+    };
+    document.getElementById("newbie_detail_title").innerText = titles[cat] || "소환 기댓값 계산기";
+    document.getElementById("summon_active_badge").innerText = badges[cat] || "소환";
+
+    renderNewbieCategoryUI();
+    renderSummonRatesTable();
+    window.scrollTo({ top: 100, behavior: 'smooth' });
+  }
+
+  function returnToNewbieHub() {
+    document.getElementById("newbie_hub_view").style.display = "block";
+    document.getElementById("newbie_calc_view").style.display = "none";
+    const runeView = document.getElementById("newbie_rune_view");
+    if (runeView) runeView.style.display = "none";
+    document.getElementById("floating_back_btn").style.display = "none";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // 공식 소환 확률 테이블 (Lv.1 ~ 10)
+  const SUMMON_RATES = {
+    equip: {
+      1: { normal: 0.85, middle: 0.12, advanced: 0.03, unique: 0.00, legend: 0.00, mythic: 0.00 },
+      2: { normal: 0.82, middle: 0.15, advanced: 0.03, unique: 0.00, legend: 0.00, mythic: 0.00 },
+      3: { normal: 0.78, middle: 0.19, advanced: 0.03, unique: 0.00, legend: 0.00, mythic: 0.00 },
+      4: { normal: 0.75, middle: 0.20, advanced: 0.05, unique: 0.00, legend: 0.00, mythic: 0.00 },
+      5: { normal: 0.72, middle: 0.21, advanced: 0.06, unique: 0.01, legend: 0.00, mythic: 0.00 },
+      6: { normal: 0.6645, middle: 0.22, advanced: 0.10, unique: 0.015, legend: 0.0005, mythic: 0.00 },
+      7: { normal: 0.609, middle: 0.24, advanced: 0.12, unique: 0.03, legend: 0.001, mythic: 0.00 },
+      8: { normal: 0.55, middle: 0.26, advanced: 0.14, unique: 0.048, legend: 0.002, mythic: 0.00 },
+      9: { normal: 0.49, middle: 0.28, advanced: 0.165, unique: 0.06, legend: 0.0048, mythic: 0.0002 },
+      10: { normal: 0.4308, middle: 0.29, advanced: 0.189, unique: 0.08, legend: 0.01, mythic: 0.0002 }
+    },
+    passive: {
+      1: { middle: 0.95, advanced: 0.05, unique: 0.00, legend: 0.00, mythic: 0.00 },
+      2: { middle: 0.91, advanced: 0.09, unique: 0.00, legend: 0.00, mythic: 0.00 },
+      3: { middle: 0.86, advanced: 0.14, unique: 0.00, legend: 0.00, mythic: 0.00 },
+      4: { middle: 0.80, advanced: 0.18, unique: 0.02, legend: 0.00, mythic: 0.00 },
+      5: { middle: 0.73, advanced: 0.22, unique: 0.05, legend: 0.00, mythic: 0.00 },
+      6: { middle: 0.689, advanced: 0.24, unique: 0.07, legend: 0.001, mythic: 0.00 },
+      7: { middle: 0.637, advanced: 0.26, unique: 0.10, legend: 0.003, mythic: 0.00 },
+      8: { middle: 0.605, advanced: 0.27, unique: 0.12, legend: 0.005, mythic: 0.00 },
+      9: { middle: 0.572, advanced: 0.28, unique: 0.14, legend: 0.007, mythic: 0.001 },
+      10: { middle: 0.538, advanced: 0.30, unique: 0.15, legend: 0.01, mythic: 0.002 }
+    },
+    skill: {
+      1: { normal: 0.85, middle: 0.12, advanced: 0.03, unique: 0.00, legend: 0.00, mythic: 0.00 },
+      2: { normal: 0.82, middle: 0.15, advanced: 0.03, unique: 0.00, legend: 0.00, mythic: 0.00 },
+      3: { normal: 0.78, middle: 0.19, advanced: 0.03, unique: 0.00, legend: 0.00, mythic: 0.00 },
+      4: { normal: 0.75, middle: 0.20, advanced: 0.05, unique: 0.00, legend: 0.00, mythic: 0.00 },
+      5: { normal: 0.72, middle: 0.21, advanced: 0.06, unique: 0.01, legend: 0.00, mythic: 0.00 },
+      6: { normal: 0.6645, middle: 0.22, advanced: 0.10, unique: 0.015, legend: 0.0005, mythic: 0.00 },
+      7: { normal: 0.609, middle: 0.24, advanced: 0.12, unique: 0.03, legend: 0.001, mythic: 0.00 },
+      8: { normal: 0.55, middle: 0.26, advanced: 0.14, unique: 0.048, legend: 0.002, mythic: 0.00 },
+      9: { normal: 0.49, middle: 0.28, advanced: 0.165, unique: 0.06, legend: 0.0048, mythic: 0.0002 },
+      10: { normal: 0.4308, middle: 0.29, advanced: 0.189, unique: 0.08, legend: 0.01, mythic: 0.0002 }
+    }
+  };
+  SUMMON_RATES.hero = SUMMON_RATES.skill;
+  SUMMON_RATES.spirit = SUMMON_RATES.skill;
+
+  // 전체 패시브 / 스킬(31종) / 영웅(29종) / 정령(30종: 4차 신규 리더 홍련/라이자/릴리스 포함)
+  const SUMMON_ITEMS = {
+    passive: {
+      mythic: [
+        { name: "원소융합", img: "images/elem_fusion.jpg" },
+        { name: "불길의 권능", img: "images/flame_power.jpg" },
+        { name: "천둥의 격노", img: "images/thunder_rage.jpg" },
+        { name: "그림자 침식", img: "images/shadow_erosion.png" },
+        { name: "절대관통", img: "images/absolute_pierce.jpg" }
+      ],
+      legend: [
+        { name: "전술가속", img: "images/tactical_haste.jpg" },
+        { name: "시간왜곡", img: "images/time_warp.jpg" },
+        { name: "폭발준비", img: "images/blast_ready.jpg" },
+        { name: "철갑관통", img: "images/armor_pierce.jpg" }
+      ],
+      unique: [
+        { name: "전투지휘", img: "images/battle_command.jpg" },
+        { name: "마력폭주", img: "images/mana_surge.jpg" }
+      ],
+      advanced: [
+        { name: "강타 전문가", img: "images/strike_expert.png" },
+        { name: "생명의 흐름" }
+      ],
+      middle: [
+        { name: "억센육체" },
+        { name: "단련된 힘" }
+      ]
+    },
+    skill: {
+      mythic: [
+        { name: "원소돌파", attr: "⚪", star: true },
+        { name: "화염 토네이도", attr: "🔥" },
+        { name: "썬더 슬래시", attr: "⚡", prob_proc: true, star: true },
+        { name: "메테오", attr: "🔥" },
+        { name: "사신의 낫", attr: "🌑" },
+        { name: "썬더 스톰", attr: "⚡" },
+        { name: "연쇄 낙뢰", attr: "⚡" },
+        { name: "그림자 포효", attr: "🌑", star: true },
+        { name: "어둠폭발", attr: "🌑", prob_proc: true, star: true },
+        { name: "불벼락", attr: "🔥", star: true },
+        { name: "어둠 방출", attr: "🌑" },
+        { name: "뇌전검무", attr: "⚡", star: true },
+        { name: "심판의 인장", attr: "⚪", star: true },
+        { name: "암흑붕괴", attr: "🌑", star: true },
+        { name: "환영나비", attr: "⚪", star: true },
+        { name: "지옥불베기(불베기)", attr: "🔥", prob_proc: true, star: true },
+        { name: "썬더 익스큐션", attr: "⚡", prob_proc: true },
+        { name: "암영참", attr: "🌑", prob_proc: true },
+        { name: "인페르노 크라운", attr: "🔥", prob_proc: true },
+        { name: "레디언스", attr: "⚪", star: true },
+        { name: "보이드 펄스", attr: "🌑", star: true },
+        { name: "썬더 오빗", attr: "⚡", star: true },
+        { name: "엘리멘탈 차지", attr: "⚪", star: true },
+        { name: "플레어 필라", attr: "🔥", prob_proc: true, star: true },
+        { name: "볼트 스파이럴", attr: "⚡", prob_proc: true, star: true },
+        { name: "블랙 베일", attr: "🌑", star: true },
+        { name: "오버드라이브", attr: "⚪" },
+        { name: "크림슨 웨이브", attr: "⚪" },
+        { name: "플레임 펄스", attr: "🔥", prob_proc: true, star: true, isNew: true },
+        { name: "썬더 펄스", attr: "⚡", prob_proc: true, star: true, isNew: true },
+        { name: "다크 펄스", attr: "🌑", prob_proc: true, star: true, isNew: true }
+      ],
+      legend: [
+        { name: "집중모드", attr: "⚪" },
+        { name: "불의 장막", attr: "🔥" },
+        { name: "뇌전폭풍", attr: "⚡", prob_proc: true },
+        { name: "어둠난무", attr: "🌑" },
+        { name: "플레임 버스트", attr: "🔥" },
+        { name: "번개섬광", attr: "⚡" }
+      ],
+      unique: [
+        { name: "전투태세", attr: "⚪" },
+        { name: "불기둥", attr: "🔥", prob_proc: true },
+        { name: "신속베기", attr: "⚡", prob_proc: true },
+        { name: "어둠낙뢰", attr: "🌑" }
+      ],
+      advanced: [
+        { name: "번개 회오리", attr: "⚡" },
+        { name: "어둠의 참격", attr: "🌑" }
+      ],
+      middle: [
+        { name: "화염참격", attr: "🔥" },
+        { name: "불 회오리", attr: "🔥" }
+      ],
+      normal: [
+        { name: "전류폭발", attr: "⚡" },
+        { name: "천둥의 심판", attr: "⚡" }
+      ]
+    },
+    hero: {
+      mythic: [
+        { name: "시라누이", attr: "⚡" },
+        { name: "아스타로테", attr: "🌑" },
+        { name: "나리타", attr: "🌑", star: true },
+        { name: "프레이야", attr: "⚡", star: true },
+        { name: "리리스", attr: "🌑", star: true },
+        { name: "케인", attr: "🔥" },
+        { name: "백운귀", attr: "⚡", star: true },
+        { name: "백운요", attr: "🔥" },
+        { name: "이블린", attr: "🔥" },
+        { name: "엘리제", attr: "🌑", star: true },
+        { name: "라이카", attr: "⚡" },
+        { name: "플레어", attr: "🔥", star: true },
+        { name: "카엘", attr: "🌑", star: true },
+        { name: "셀렌", attr: "⚡", star: true },
+        { name: "루비", attr: "🔥", star: true },
+        { name: "묵영", attr: "🌑" },
+        { name: "레이나", attr: "🔥" },
+        { name: "일레나", attr: "⚡" },
+        { name: "세리아", attr: "🌑", star: true },
+        { name: "카엔", attr: "🔥", star: true },
+        { name: "엘리시아", attr: "⚡", star: true },
+        { name: "칼리아", attr: "🔥" },
+        { name: "카이렌", attr: "⚡" },
+        { name: "모르반", attr: "🌑" },
+        { name: "솔라리스", attr: "🔥" },
+        { name: "현묵", attr: "⚡", star: true },
+        { name: "이그니스", attr: "🔥", star: true, isNew: true },
+        { name: "제논", attr: "⚡", star: true, isNew: true },
+        { name: "다미안", attr: "🌑", star: true, isNew: true }
+      ],
+      legend: [
+        { name: "아카네", attr: "⚡" },
+        { name: "데미나", attr: "🌑" },
+        { name: "오로라", attr: "🔥" },
+        { name: "엘리", attr: "⚡" },
+        { name: "벨라트릭스", attr: "🌑" },
+        { name: "렌", attr: "🔥" }
+      ],
+      unique: [
+        { name: "페이", attr: "🔥" },
+        { name: "나찰", attr: "🌑", star: true },
+        { name: "바토리", attr: "⚡", star: true },
+        { name: "키르케", attr: "🔥" }
+      ],
+      advanced: [
+        { name: "칸나", attr: "🔥" },
+        { name: "단테", attr: "🌑" }
+      ],
+      middle: [
+        { name: "루시", attr: "🔥" },
+        { name: "크리스", attr: "⚡" }
+      ],
+      normal: [
+        { name: "카이", attr: "🔥" },
+        { name: "샤모스", attr: "⚡" }
+      ]
+    },
+    spirit: {
+      mythic: [
+        { name: "헤스티아", attr: "🔥", role: "🛡️", star: true },
+        { name: "레비나", attr: "⚡", role: "🛡️", star: true },
+        { name: "에레보스", attr: "🌑", role: "🛡️", star: true },
+        { name: "베스타", attr: "🔥", role: "🛡️", star: true },
+        { name: "바즈라", attr: "⚡", role: "🛡️", star: true },
+        { name: "할로우", attr: "🌑", role: "🛡️", star: true },
+        { name: "드라카", attr: "🔥", role: "🛡️", star: true },
+        { name: "유레이", attr: "⚡", role: "🛡️", star: true },
+        { name: "아케론", attr: "🌑", role: "🛡️" },
+        { name: "베인", attr: "🔥", role: "🛡️" },
+        { name: "레이메이", attr: "⚡", role: "🛡️", star: true },
+        { name: "헬라", attr: "🌑", role: "🛡️" },
+        { name: "헤라", attr: "⚪", role: "🛡️", star: true, noPickup: true },
+        { name: "아그니아", attr: "🔥", role: "🛡️" },
+        { name: "세이라", attr: "⚡", role: "🛡️" },
+        { name: "녹스", attr: "🌑", role: "🛡️" },
+        { name: "미라", attr: "⚪", role: "🛡️", noPickup: true },
+        { name: "피라", attr: "🔥", role: "👑", star: true },
+        { name: "루미아", attr: "⚡", role: "👑", star: true },
+        { name: "녹시아", attr: "🌑", role: "👑", star: true },
+        { name: "플레아", attr: "🔥", role: "🛡️", star: true },
+        { name: "엘로아", attr: "⚡", role: "🛡️" },
+        { name: "니벨", attr: "🌑", role: "🛡️", star: true },
+        { name: "아인", attr: "⚪", role: "🛡️", star: true, noPickup: true },
+        { name: "라바나", attr: "🔥", role: "🛡️", star: true, isNew: true },
+        { name: "제피라", attr: "⚡", role: "🛡️", star: true, isNew: true },
+        { name: "모르나", attr: "🌑", role: "🛡️", star: true, isNew: true },
+        { name: "홍련 (4차전용)", attr: "🔥", role: "👑", star: true, isNew: true },
+        { name: "라이자 (4차전용)", attr: "⚡", role: "👑", star: true, isNew: true },
+        { name: "릴리스 (4차전용)", attr: "⚡", role: "👑", star: true, isNew: true }
+      ],
+      legend: [
+        { name: "이그니", attr: "🔥", role: "🛡️" },
+        { name: "라이덴", attr: "⚡", role: "🛡️" },
+        { name: "엄브라", attr: "🌑", role: "🛡️" },
+        { name: "엠버", attr: "🔥", role: "👑/🛡️" },
+        { name: "시온", attr: "⚡", role: "👑/🛡️" },
+        { name: "말파스", attr: "🌑", role: "👑/🛡️" }
+      ],
+      unique: [
+        { name: "스파키", attr: "⚡", role: "👑", star: true },
+        { name: "크로노", attr: "🌑", role: "👑", star: true }
+      ],
+      advanced: [
+        { name: "더스크", attr: "🌑", role: "👑" },
+        { name: "파이로", attr: "🔥", role: "👑", star: true }
+      ],
+      middle: [
+        { name: "플레미", attr: "🔥", role: "👑", star: true },
+        { name: "볼트", attr: "⚡", role: "👑", star: true }
+      ]
+    }
+  };
+
+  function getGradeKrName(g) {
+    const map = { mythic: "신화", legend: "전설", unique: "특급", advanced: "상급", middle: "중급", normal: "하급", ancient: "고대" };
+    return map[g] || g;
+  }
+
+  function getGradeColor(grade) {
+    const map = {
+      mythic: "#f43f5e",
+      legend: "#f97316",
+      unique: "#c084fc",
+      advanced: "#60a5fa",
+      middle: "#4ade80",
+      normal: "#f59e0b"
+    };
+    return map[grade] || "#38bdf8";
+  }
+
+  function onSummonLevelChange() {
+    updateSummonCalculation();
+    renderSummonRatesTable();
+  }
+
+  function toggleNewbieAccordion(accId) {
+    const el = document.getElementById(accId);
+    if (!el) return;
+    el.classList.toggle("active");
+  }
+
+  function selectEquipIconType(type) {
+    selectedEquipType = type;
+    ['scythe', 'orb', 'accessory'].forEach(t => {
+      const card = document.getElementById(`eq_card_${t}`);
+      if (card) {
+        if (t === type) card.classList.add('selected');
+        else card.classList.remove('selected');
+      }
+    });
+
+    const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
+    const curName = nameMap[type] || "대낫";
+
+    const targetSel = document.getElementById('sum_equip_target');
+    if (targetSel) {
+      const prevVal = targetSel.value || "32";
+      targetSel.innerHTML = `
+        <option value="32" ${prevVal === "32" ? "selected" : ""}>고대 ${curName} 1등급 (신화1 32개 분량 / 영원 해금 필수)</option>
+        <option value="16" ${prevVal === "16" ? "selected" : ""}>고대 ${curName} 2등급 (신화1 16개 분량)</option>
+        <option value="8" ${prevVal === "8" ? "selected" : ""}>고대 ${curName} 3등급 (신화1 8개 분량)</option>
+        <option value="4" ${prevVal === "4" ? "selected" : ""}>고대 ${curName} 4등급 (신화1 4개 분량)</option>
+      `;
+    }
+
+    const invTitleEl = document.getElementById('equip_inv_header_title');
+    if (invTitleEl) {
+      invTitleEl.innerText = `🎒 현재 보유 [${curName}] 인벤토리 입력 (전 등급 27슬롯 일괄 합성)`;
+    }
+
+    document.querySelectorAll('.dyn-eq-name').forEach(el => {
+      el.innerText = curName;
+    });
+
+    updateSummonCalculation();
+  }
+
+  function renderNewbieCategoryUI() {
+    const container = document.getElementById('summon_dynamic_body');
+    if (!container) return;
+    selectedTargetItem = null;
+
+    if (currentNewbieCat === 'equip') {
+      renderEquipmentUI(container);
+    } else {
+      renderAccordionUI(container);
+    }
+    updateSummonCalculation();
+  }
+
+  function renderInventoryTierBlock(tierName, pillClass, ids, labels, borderColor, eqKrName) {
+    const inputsHtml = ids.map((id, i) => `
+      <div>
+        <label style="font-size:11px; color:#cbd5e1;"><span class="dyn-eq-name">${eqKrName}</span> ${labels[i]}</label>
+        <input type="number" id="inv_${id}" value="0" min="0" oninput="updateSummonCalculation()" style="padding:6px 8px; font-size:13px;">
+      </div>
+    `).join('');
+
+    return `
+      <div class="inv-tier-card" style="border-left:3px solid ${borderColor};">
+        <div class="inv-tier-header">
+          <span class="grade-badge grade-${pillClass}">${tierName}</span>
+          <span style="font-size:11px; color:#94a3b8;">${pillClass === 'ancient' ? '합성비 2:1' : '합성비 4:1'}</span>
+        </div>
+        <div class="grid-${ids.length}" style="gap:8px;">
+          ${inputsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderEquipmentUI(container) {
+    const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
+    const curName = nameMap[selectedEquipType] || "대낫";
+
+    container.innerHTML = `
+      <div style="margin-bottom:16px;">
+        <label>소환할 장비 종류 선택 (클릭 시 목표 및 비용 자동 전환)</label>
+        <div class="grid-3" style="gap:12px;">
+          <div class="ancient-select-card ${selectedEquipType === 'scythe' ? 'selected' : ''}" id="eq_card_scythe" onclick="selectEquipIconType('scythe')">
+            <div class="ancient-header" style="margin-bottom:4px;">
+              <div class="ancient-title-box">
+                <div class="icon-avatar-wrapper" style="border-color:#f43f5e;">
+                  <span class="icon-avatar-fallback">대낫</span>
+                  <img src="images/scythe.png" alt="대낫" onerror="this.onerror=null; this.src='images/scythe.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
+                </div>
+                <div>
+                  <span class="ancient-name">🗡️ 영원 대낫</span>
+                  <span class="ancient-sub" style="color:#f43f5e;">1회 100 블루 다이아</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ancient-select-card ${selectedEquipType === 'orb' ? 'selected' : ''}" id="eq_card_orb" onclick="selectEquipIconType('orb')">
+            <div class="ancient-header" style="margin-bottom:4px;">
+              <div class="ancient-title-box">
+                <div class="icon-avatar-wrapper" style="border-color:#38bdf8;">
+                  <span class="icon-avatar-fallback">오브</span>
+                  <img src="images/orb.png" alt="오브" onerror="this.onerror=null; this.src='images/orb.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
+                </div>
+                <div>
+                  <span class="ancient-name">🔮 영원 오브</span>
+                  <span class="ancient-sub" style="color:#38bdf8;">1회 100 블루 다이아</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ancient-select-card ${selectedEquipType === 'accessory' ? 'selected' : ''}" id="eq_card_accessory" onclick="selectEquipIconType('accessory')">
+            <div class="ancient-header" style="margin-bottom:4px;">
+              <div class="ancient-title-box">
+                <div class="icon-avatar-wrapper" style="border-color:#fbbf24;">
+                  <span class="icon-avatar-fallback">장식</span>
+                  <img src="images/accessory.png" alt="장식" onerror="this.onerror=null; this.src='images/accessory.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
+                </div>
+                <div>
+                  <span class="ancient-name">💍 영원 장식</span>
+                  <span class="ancient-sub" style="color:#fbbf24;">1회 200 블루 다이아</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <label>최종 목표 고대 등급 선택</label>
+        <select id="sum_equip_target" onchange="updateSummonCalculation()" style="font-weight:700;">
+          <option value="32" selected>고대 ${curName} 1등급 (신화1 32개 분량 / 영원 해금 필수)</option>
+          <option value="16">고대 ${curName} 2등급 (신화1 16개 분량)</option>
+          <option value="8">고대 ${curName} 3등급 (신화1 8개 분량)</option>
+          <option value="4">고대 ${curName} 4등급 (신화1 4개 분량)</option>
+        </select>
+      </div>
+
+      <div class="card" style="padding:16px 18px; margin-bottom:14px; background:#0b1120; border-color:#334155;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+          <div>
+            <strong style="font-size:15px; color:#38bdf8;" id="equip_inv_header_title">🎒 현재 보유 [${curName}] 인벤토리 입력 (전 등급 27슬롯 일괄 합성)</strong>
+          </div>
+          <button onclick="resetEquipInventory()" style="background:#334155; border:none; color:#cbd5e1; padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer;">인벤토리 초기화</button>
+        </div>
+
+        ${renderInventoryTierBlock('고대 등급', 'ancient', ['anc2', 'anc3', 'anc4'], ['2등급', '3등급', '4등급'], '#06b6d4', curName)}
+        ${renderInventoryTierBlock('신화 등급', 'mythic', ['myt1', 'myt2', 'myt3', 'myt4'], ['1등급', '2등급', '3등급', '4등급'], '#f43f5e', curName)}
+        ${renderInventoryTierBlock('전설 등급', 'legend', ['leg1', 'leg2', 'leg3', 'leg4'], ['1등급', '2등급', '3등급', '4등급'], '#f97316', curName)}
+        ${renderInventoryTierBlock('특급 등급', 'unique', ['uni1', 'uni2', 'uni3', 'uni4'], ['1등급', '2등급', '3등급', '4등급'], '#a855f7', curName)}
+        ${renderInventoryTierBlock('상급 등급', 'advanced', ['adv1', 'adv2', 'adv3', 'adv4'], ['1등급', '2등급', '3등급', '4등급'], '#3b82f6', curName)}
+        ${renderInventoryTierBlock('중급 등급', 'middle', ['mid1', 'mid2', 'mid3', 'mid4'], ['1등급', '2등급', '3등급', '4등급'], '#22c55e', curName)}
+        ${renderInventoryTierBlock('하급 등급', 'normal', ['nor1', 'nor2', 'nor3', 'nor4'], ['1등급', '2등급', '3등급', '4등급'], '#b45309', curName)}
+
+        <div style="font-size:13.5px; color:#e2e8f0; margin-top:10px; text-align:right;">
+          현재 인벤토리 자동 일괄 합성 가치: <strong id="inv_total_synthesized_val" style="color:#38bdf8;">신화1 약 0.00개</strong>
+        </div>
+      </div>
+    `;
+  }
+
+  function resetEquipInventory() {
+    const allIds = [
+      'anc2', 'anc3', 'anc4',
+      'myt1', 'myt2', 'myt3', 'myt4',
+      'leg1', 'leg2', 'leg3', 'leg4',
+      'uni1', 'uni2', 'uni3', 'uni4',
+      'adv1', 'adv2', 'adv3', 'adv4',
+      'mid1', 'mid2', 'mid3', 'mid4',
+      'nor1', 'nor2', 'nor3', 'nor4'
+    ];
+    allIds.forEach(id => {
+      const el = document.getElementById('inv_' + id);
+      if (el) el.value = 0;
+    });
+    updateSummonCalculation();
+  }
+
+  function filterNewbieItems(keyword) {
+    const q = keyword.trim().toLowerCase();
+    const boxes = document.querySelectorAll('.item-select-box');
+    boxes.forEach(b => b.classList.remove('search-match'));
+
+    if (!q) return;
+
+    let firstMatchedBox = null;
+    boxes.forEach(box => {
+      const nameAttr = (box.getAttribute('data-item-name') || '').toLowerCase();
+      if (nameAttr.includes(q)) {
+        box.classList.add('search-match');
+        const acc = box.closest('.accordion-item');
+        if (acc && !acc.classList.contains('active')) {
+          acc.classList.add('active');
+        }
+        if (!firstMatchedBox) firstMatchedBox = box;
+      }
+    });
+
+    if (firstMatchedBox) {
+      firstMatchedBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function selectNewbieTargetItem(grade, idx) {
+    const catData = SUMMON_ITEMS[currentNewbieCat] || {};
+    const items = catData[grade] || [];
+    selectedTargetItem = {
+      grade: grade,
+      index: idx,
+      data: items[idx]
+    };
+
+    document.querySelectorAll('.item-select-box').forEach(b => b.classList.remove('selected'));
+    const targetBox = document.getElementById(`box_${grade}_${idx}`);
+    if (targetBox) targetBox.classList.add('selected');
+
+    const labelEl = document.getElementById('newbie_selected_target_label');
+    const barEl = document.getElementById('newbie_selected_target_bar');
+    if (labelEl && selectedTargetItem.data) {
+      const it = selectedTargetItem.data;
+      const gColor = getGradeColor(grade);
+      labelEl.innerHTML = `
+        선택된 목표: 
+        <span class="grade-badge grade-${grade}" style="margin:0 4px;">${getGradeKrName(grade)}</span>
+        <strong style="color:${gColor}; font-size:16px; text-shadow:0 0 10px rgba(0,0,0,0.6);">${it.name} ${it.attr || ''}</strong>
+      `;
+      if (barEl) {
+        barEl.style.borderColor = gColor;
+      }
+    }
+
+    updateSummonCalculation();
+  }
+
+  function renderAccordionUI(container) {
+    const catData = SUMMON_ITEMS[currentNewbieCat] || {};
+    const gradeOrder = [
+      { key: "mythic", name: "신화", cls: "acc-mythic", pill: "grade-mythic" },
+      { key: "legend", name: "전설", cls: "acc-legend", pill: "grade-legend" },
+      { key: "unique", name: "특급", cls: "acc-unique", pill: "grade-unique" },
+      { key: "advanced", name: "상급", cls: "acc-advanced", pill: "grade-advanced" },
+      { key: "middle", name: "중급", cls: "acc-middle", pill: "grade-middle" },
+      { key: "normal", name: "하급", cls: "acc-normal", pill: "grade-normal" }
+    ];
+
+    let accordionsHtml = "";
+    gradeOrder.forEach((g, idx) => {
+      const items = catData[g.key] || [];
+      if (items.length === 0) return;
+
+      const isFirst = (idx === 0);
+      let cardsHtml = "";
+      items.forEach((it, i) => {
+        let badgesHtml = "";
+        if (it.star) badgesHtml += '<span title="실사용 추천" style="font-size:10px;">⭐</span>';
+        if (it.isNew) badgesHtml += '<span class="mini-tag" style="background:#e11d48; color:#fff;">NEW</span>';
+        if (it.prob_proc) badgesHtml += '<span class="mini-tag" style="background:#f59e0b; color:#000;">확률형</span>';
+        if (it.role) badgesHtml += `<span class="mini-tag" style="background:#0284c7; color:#fff;">${it.role}</span>`;
+
+        let thumbHtml = "";
+        if (it.img) {
+          thumbHtml = `<img src="${it.img}" alt="${it.name}" style="width:32px; height:32px; border-radius:6px; object-fit:cover; margin-bottom:3px;" onerror="this.style.display='none';">`;
+        }
+
+        cardsHtml += `
+          <div class="item-select-box" id="box_${g.key}_${i}" data-item-name="${it.name}" onclick="selectNewbieTargetItem('${g.key}', ${i})">
+            <div class="item-box-badges">${badgesHtml}</div>
+            <div style="display:flex; flex-direction:column; align-items:flex-start;">
+              ${thumbHtml}
+              <div class="item-box-name">${it.name} ${it.attr || ''}</div>
+            </div>
+            <div class="item-box-sub">${g.name} ${it.noPickup ? '<span style="color:#f87171;">(픽업불가)</span>' : ''}</div>
+          </div>
+        `;
+      });
+
+      accordionsHtml += `
+        <div class="accordion-item ${g.cls}" id="acc_sum_${g.key}">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('acc_sum_${g.key}')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text"><span class="grade-badge ${g.pill}">${g.name}</span> ${g.name} 등급 목록</span>
+            </div>
+            <div class="accordion-right-info">
+              <span class="accordion-count-badge">${items.length}종</span>
+            </div>
+          </div>
+          <div class="accordion-content">
+            <div class="acc-scroll-box">
+              <div class="item-compact-grid">
+                ${cardsHtml}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    const showLegendAndSearch = (currentNewbieCat !== 'passive');
+
+    const legendHtml = showLegendAndSearch ? `
+      <div class="legend-guide-bar">
+        <span style="font-weight:700; color:#38bdf8;">📌 범례:</span>
+        <span class="legend-item">⭐ <strong>실사용 추천</strong></span>
+        ${currentNewbieCat === 'skill' ? '<span class="legend-item"><span class="mini-tag" style="background:#f59e0b; color:#000;">확률형</span> <strong>타수 확률 발동</strong></span>' : ''}
+        ${currentNewbieCat === 'spirit' ? '<span class="legend-item">👑 <strong>리더</strong> / 🛡️ <strong>서포터</strong></span>' : ''}
+        <span class="legend-item"><span class="mini-tag" style="background:#e11d48; color:#fff;">NEW</span> <strong>신규 출시</strong></span>
+      </div>
+      <div class="search-input-wrapper">
+        <span class="search-icon-prefix">🔍</span>
+        <input type="text" id="newbie_search_input" placeholder="찾으시는 스킬 / 영웅 / 정령 이름을 검색하세요 (자동 펼침 & 이동)" oninput="filterNewbieItems(this.value)">
+      </div>
+    ` : '';
+
+    container.innerHTML = `
+      ${legendHtml}
+
+      <div id="newbie_selected_target_bar" style="background:#0f172a; border:1.5px solid #334155; border-radius:12px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; transition: border-color 0.2s;">
+        <div id="newbie_selected_target_label" style="font-size:15px; color:#ffffff;">
+          선택된 목표: <strong style="color:#f59e0b;">아래 목록에서 카드를 클릭하세요</strong>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <label style="margin:0; font-size:13px; color:#cbd5e1;">현재 보유 수량:</label>
+          <input type="number" id="sum_cur_have_count" value="0" min="0" max="70" oninput="updateSummonCalculation()" style="width:85px; padding:6px 10px; font-weight:700;">
+          <span style="font-size:12.5px; color:#94a3b8;">/ 70개 (10돌파)</span>
+        </div>
+      </div>
+
+      <div class="accordion-group">
+        ${accordionsHtml}
+      </div>
+    `;
+
+    const mythicItems = catData.mythic || [];
+    if (mythicItems.length > 0) {
+      selectNewbieTargetItem('mythic', 0);
+    }
+  }
+
+  function getDrawEquipSynthesisValue(rates) {
+    const avgGradeFactor = 0.175;
+    const val_myt = avgGradeFactor * 1.0;
+    const val_leg = avgGradeFactor * (1 / 256);
+    const val_uni = avgGradeFactor * (1 / 65536);
+    const val_adv = avgGradeFactor * (1 / 16777216);
+    const val_mid = avgGradeFactor * (1 / 4294967296);
+    const val_nor = avgGradeFactor * (1 / 1099511627776);
+
+    const totalVal = ((rates.mythic || 0) * val_myt) +
+                     ((rates.legend || 0) * val_leg) +
+                     ((rates.unique || 0) * val_uni) +
+                     ((rates.advanced || 0) * val_adv) +
+                     ((rates.middle || 0) * val_mid) +
+                     ((rates.normal || 0) * val_nor);
+    return totalVal;
+  }
+
+  function calcOwnedEquipmentValue() {
+    const tierFactors = {
+      anc2: 16.0, anc3: 8.0, anc4: 4.0,
+      myt1: 1.0, myt2: 0.25, myt3: 0.0625, myt4: 0.015625,
+      leg1: 1 / 256, leg2: 1 / 1024, leg3: 1 / 4096, leg4: 1 / 16384,
+      uni1: 1 / 65536, uni2: 1 / 262144, uni3: 1 / 1048576, uni4: 1 / 4194304,
+      adv1: 1 / 16777216, adv2: 1 / 67108864, adv3: 1 / 268435456, adv4: 1 / 1073741824,
+      mid1: 1 / 4294967296, mid2: 1 / 17179869184, mid3: 1 / 68719476736, mid4: 1 / 274877906944,
+      nor1: 1 / 1099511627776, nor2: 1 / 4398046511104, nor3: 1 / 17592186044416, nor4: 1 / 70368744177664
+    };
+    let total = 0;
+    for (let k in tierFactors) {
+      const el = document.getElementById('inv_' + k);
+      if (el) {
+        const cnt = parseInt(el.value) || 0;
+        total += cnt * tierFactors[k];
+      }
+    }
+    return total;
+  }
+
+  function updateSummonCalculation() {
+    const resBox = document.getElementById('summon_result_box');
+    if (!resBox) return;
+
+    const lv = parseInt(document.getElementById('sum_common_level')?.value || '10');
+
+    if (currentNewbieCat === 'equip') {
+      const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
+      const curName = nameMap[selectedEquipType] || "대낫";
+      const targetVal = parseFloat(document.getElementById('sum_equip_target')?.value || '32');
+      const costPerDraw = selectedEquipType === 'accessory' ? 200 : 100;
+
+      const ownedVal = calcOwnedEquipmentValue();
+      const remainVal = Math.max(0, targetVal - ownedVal);
+
+      const labelVal = document.getElementById('inv_total_synthesized_val');
+      if (labelVal) {
+        labelVal.innerHTML = `신화1 약 <strong style="color:#38bdf8;">${ownedVal.toFixed(2)}개</strong> 분량 (목표: ${targetVal}개)`;
+      }
+
+      const rates = (SUMMON_RATES.equip || {})[lv] || SUMMON_RATES.equip[10];
+      const valPerDraw = getDrawEquipSynthesisValue(rates);
+
+      const totalEffectiveDraws = (remainVal > 0 && valPerDraw > 0) ? (remainVal / valPerDraw) : 0;
+      const paidDraws = Math.round(totalEffectiveDraws / 1.05);
+      const expectedDia = paidDraws * costPerDraw;
+
+      const targetGradeMap = { "32": "1등급", "16": "2등급", "8": "3등급", "4": "4등급" };
+      const targetGradeStr = targetGradeMap[String(targetVal)] || "1등급";
+
+      resBox.innerHTML = `
+        <div class="result-dashboard">
+          <div class="res-label">[고대 ${curName} ${targetGradeStr}] 달성까지 예상 유료 소환 기댓값</div>
+          <div class="res-value">${paidDraws.toLocaleString()}회</div>
+          <div style="font-size:18px; font-weight:800; color:#38bdf8; margin-bottom:10px;">
+            💎 필요 블루 다이아: ${formatKoreanNumber(expectedDia)} (${expectedDia.toLocaleString()}개)
+          </div>
+          <div class="res-sub">
+            <span>부족한 순수 가치: <strong>신화1 ${remainVal.toFixed(2)}개 분량</strong></span>
+            <span>|</span>
+            <span>총 소환(환급포함): <strong>${Math.round(totalEffectiveDraws).toLocaleString()}회</strong></span>
+            <span>|</span>
+            <span>1회 비용: <strong>${costPerDraw} 다이아</strong></span>
+          </div>
+        </div>
+      `;
+    } else {
+      if (!selectedTargetItem || !selectedTargetItem.data) return;
+
+      const grade = selectedTargetItem.grade;
+      const it = selectedTargetItem.data;
+      const curCount = parseInt(document.getElementById('sum_cur_have_count')?.value || '0');
+      const remainCount = Math.max(0, 70 - curCount);
+
+      const catData = SUMMON_ITEMS[currentNewbieCat] || {};
+      const itemsInGrade = catData[grade] || [];
+      const totalInGrade = itemsInGrade.length || 1;
+
+      const ratesObj = (SUMMON_RATES[currentNewbieCat] || {})[lv] || {};
+      const gradeProb = ratesObj[grade] || 0;
+
+      const isPickupAvailable = (currentNewbieCat !== 'passive' && grade === 'mythic' && !it.noPickup);
+      const isSkillOrHero = (currentNewbieCat === 'skill' || currentNewbieCat === 'hero');
+
+      const pickupRatePerDraw = isSkillOrHero ? 0.0025 : 0.001;
+      const costPerDraw = currentNewbieCat === 'hero' ? 500 : 200;
+      const resUnitName = currentNewbieCat === 'spirit' ? '정령석' : '블루 다이아';
+
+      const pickupTotalDraws = (isPickupAvailable && remainCount > 0) ? (remainCount / pickupRatePerDraw) : 0;
+      const pickupPaidDraws = Math.round(pickupTotalDraws / 1.02);
+      const pickupCost = pickupPaidDraws * costPerDraw;
+
+      const regularProbPerDraw = gradeProb > 0 ? (gradeProb / totalInGrade) : 0;
+      const regularTotalDraws = (regularProbPerDraw > 0 && remainCount > 0) ? (remainCount / regularProbPerDraw) : 0;
+      const regularPaidDraws = Math.round(regularTotalDraws / 1.02);
+      const regularCost = regularPaidDraws * costPerDraw;
+
+      const gColor = getGradeColor(grade);
+
+      if (!isPickupAvailable && gradeProb === 0) {
+        resBox.innerHTML = `
+          <div class="result-dashboard" style="border-color:#ef4444;">
+            <div class="res-label" style="color:#fca5a5;">⚠️ 현재 선택된 소환 레벨(Lv.${lv})에서는 [${getGradeKrName(grade)}] 등급이 등장하지 않습니다!</div>
+            <div style="font-size:14px; color:#cbd5e1; margin-top:8px;">상단에서 소환 레벨을 높이거나 다른 등급을 선택해 주세요.</div>
+          </div>
+        `;
+        return;
+      }
+
+      if (isPickupAvailable) {
+        const regularText = regularProbPerDraw > 0
+          ? `${regularPaidDraws.toLocaleString()}회`
+          : `Lv.${lv} 등장불가 (0%)`;
+        const regularCostText = regularProbPerDraw > 0
+          ? `예상 소모: ${formatKoreanNumber(regularCost)} ${resUnitName}`
+          : `상시 소환은 Lv.9 이상부터 등장`;
+
+        resBox.innerHTML = `
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:14px; margin-top:16px;">
+            <div class="result-dashboard green" style="margin-top:0;">
+              <div class="res-label">🔥 [${it.name}] 픽업 소환 시 (강력 추천)</div>
+              <div class="res-value" style="font-size:28px;">${pickupPaidDraws.toLocaleString()}회</div>
+              <div style="font-size:16px; font-weight:800; color:#fef08a; margin-bottom:8px;">
+                예상 소모: ${formatKoreanNumber(pickupCost)} ${resUnitName}
+              </div>
+              <div style="font-size:12.5px; color:#cbd5e1;">
+                픽업 0.1% 고정 ${isSkillOrHero ? '+ 1만뽑당 15개 확정 지급 보너스' : ''} + 2% 환급 반영
+              </div>
+            </div>
+
+            <div class="result-dashboard" style="margin-top:0; border-color:#ef4444; background:linear-gradient(135deg, #450a0a 0%, #1e1b4b 100%);">
+              <div class="res-label" style="color:#fca5a5;">📦 상시(통상) 소환 시 (극히 비추천)</div>
+              <div class="res-value" style="font-size:28px; color:#f87171;">${regularText}</div>
+              <div style="font-size:16px; font-weight:800; color:#fca5a5; margin-bottom:8px;">
+                ${regularCostText}
+              </div>
+              <div style="font-size:12.5px; color:#cbd5e1;">
+                신화 ${totalInGrade}종 균등 분배 ${regularProbPerDraw > 0 ? `(픽업 대비 약 ${(regularPaidDraws / Math.max(1, pickupPaidDraws)).toFixed(1)}배 소모)` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        resBox.innerHTML = `
+          <div class="result-dashboard">
+            <div class="res-label">
+              <span class="grade-badge grade-${grade}">${getGradeKrName(grade)}</span> 
+              <strong style="color:${gColor};">${it.name}</strong> 10돌파 달성까지 예상 기댓값
+            </div>
+            <div class="res-value">${regularPaidDraws.toLocaleString()}회</div>
+            <div style="font-size:18px; font-weight:800; color:#38bdf8; margin-bottom:10px;">
+              필요 ${resUnitName}: ${formatKoreanNumber(regularCost)} (${regularCost.toLocaleString()}개)
+            </div>
+            <div class="res-sub">
+              <span>남은 필요 수량: <strong>${remainCount}개 / 70개</strong></span>
+              <span>|</span>
+              <span>동일 등급 풀: <strong>${totalInGrade}종 균등 분배 (단일 ${(regularProbPerDraw * 100).toFixed(4)}%)</strong></span>
+              <span>|</span>
+              <span>환급: <strong>5천뽑당 100장 (2%) 반영</strong></span>
+            </div>
+          </div>
+        `;
+      }
+    }
+  }
+
+  function renderSummonRatesTable() {
+    const tbody = document.getElementById('summon_rates_table_tbody');
+    const badge = document.getElementById('summon_rates_table_badge');
+    const title = document.getElementById('summon_rates_table_title');
+    if (!tbody) return;
+
+    const lv = parseInt(document.getElementById('sum_common_level')?.value || '10');
+    if (badge) badge.innerText = `Lv.${lv} 기준`;
+    if (title) title.innerText = `📊 공식 ${document.getElementById('summon_active_badge')?.innerText || '소환'} 확률표`;
+
+    const rates = (SUMMON_RATES[currentNewbieCat] || {})[lv] || {};
+    tbody.innerHTML = "";
+
+    const isEquip = (currentNewbieCat === 'equip');
+    const rarityOrder = [
+      { key: "mythic", name: "신화", cls: "grade-mythic" },
+      { key: "legend", name: "전설", cls: "grade-legend" },
+      { key: "unique", name: "특급", cls: "grade-unique" },
+      { key: "advanced", name: "상급", cls: "grade-advanced" },
+      { key: "middle", name: "중급", cls: "grade-middle" },
+      { key: "normal", name: "하급", cls: "grade-normal" }
+    ];
+
+    rarityOrder.forEach(r => {
+      const p = rates[r.key];
+      if (p !== undefined) {
+        const pPct = (p * 100).toFixed(p > 0 && p < 0.001 ? 3 : (p > 0 && p < 0.01 ? 2 : 1)) + "%";
+        tbody.innerHTML += `
+          <tr>
+            <td><span class="grade-badge ${r.cls}">${r.name}</span></td>
+            <td style="font-weight:700; color:#ffffff;">${pPct}</td>
+            <td style="color:#94a3b8;">${isEquip ? '40%' : '-'}</td>
+            <td style="color:#94a3b8;">${isEquip ? '30%' : '-'}</td>
+            <td style="color:#94a3b8;">${isEquip ? '20%' : '-'}</td>
+            <td style="color:#94a3b8;">${isEquip ? '10%' : '-'}</td>
+          </tr>
+        `;
+      }
+    });
+  }
+
+  // ==================== RUNE HELPER (BETA) DATABASE & ENGINE ====================
+  let currentRuneTierTab = 'ancient';
+  let currentRuneJob = 'reaper';
+  let currentRuneElem = 'fire';
+  let ownedRunes = new Set();
+
+  const RUNE_DB = [
+    // ==================== [방어구: 고대] ====================
+    { id: "anc_ar_sangsaeng2", tier: "ancient", part: "armor", name: "상생 II", cat: "atk", val: 1000, pair: "anc_ar_sanggeuk2", pairBonus: 15000, desc: "룬 공격력 +1,000% ('상극 II' 함께 장착 시 고대룬 공격력 +30,000%)", cond: "상생 II + 상극 II 세트 장착 권장" },
+    { id: "anc_ar_sanggeuk2", tier: "ancient", part: "armor", name: "상극 II", cat: "atk", val: 1000, pair: "anc_ar_sangsaeng2", pairBonus: 15000, desc: "룬 공격력 +1,000% ('상생 II' 함께 장착 시 고대룬 공격력 +30,000%)", cond: "상생 II + 상극 II 세트 장착 권장" },
+    { id: "anc_ar_gyeokhwa", tier: "ancient", part: "armor", name: "격화", cat: "mult", val: 8000, desc: "적용된 상태이상 3개일 때 추가 피해 +8,000% (곱연산)", cond: "화상/감전/혼돈 상태이상 3종 유지 필수 (루비 각성 시 0티어)" },
+    { id: "anc_ar_mem_top", tier: "ancient", part: "armor", slotPos: "top", name: "영웅의 기억:일격", cat: "job", jobType: "reaper", val: 1000, setGroup: "anc_hero_mem", desc: "상의 장착 시 룬 강타 피해 +1,000%, 3종 세트 시 고대룬 공격력 +1,500,000%", cond: "상의 전용 / 일격+마도+군림 3세트 시 0.5티어" },
+    { id: "anc_ar_mem_mid", tier: "ancient", part: "armor", slotPos: "mid", name: "영웅의 기억:마도", cat: "job", jobType: "mage", val: 1000, setGroup: "anc_hero_mem", desc: "하의 장착 시 룬 스킬 피해 +1,000%, 3종 세트 시 고대룬 공격력 +1,500,000%", cond: "하의 전용 / 일격+마도+군림 3세트 시 0.5티어" },
+    { id: "anc_ar_mem_bot", tier: "ancient", part: "armor", slotPos: "bot", name: "영웅의 기억:군림", cat: "job", jobType: "lord", val: 1000, setGroup: "anc_hero_mem", desc: "신발 장착 시 룬 영웅 스킬 피해 +1,000%, 3종 세트 시 고대룬 공격력 +1,500,000%", cond: "신발 전용 / 일격+마도+군림 3세트 시 0.5티어" },
+    { id: "anc_ar_geomtusa", tier: "ancient", part: "armor", name: "검투사", cat: "atk", val: 9000, desc: "룬 공격력 +9,000%", cond: "아레나 100연승 이상 (소탕 가능)" },
+    { id: "anc_ar_yangnal", tier: "ancient", part: "armor", name: "양날검", cat: "mult", val: 4500, desc: "적에게 입히는 피해 +4,500% (곱연산)", cond: "받는 피해 50% 증가 페널티" },
+    { id: "anc_ar_sasin", tier: "ancient", part: "armor", name: "사신의 낫", cat: "job", jobType: "reaper", val: 8000, desc: "룬 강타 피해량 +8,000% (전직 60렙 기준)", cond: "전직 레벨 60 이상" },
+    { id: "anc_ar_mabeopseo", tier: "ancient", part: "armor", name: "마법의 서", cat: "job", jobType: "mage", val: 8000, desc: "룬 스킬 피해량 +8,000% (전직 60렙 기준)", cond: "전직 레벨 60 이상" },
+    { id: "anc_ar_gunju", tier: "ancient", part: "armor", name: "군주의 혼", cat: "job", jobType: "lord", val: 8000, desc: "룬 영웅 스킬 피해량 +8,000% (전직 60렙 기준)", cond: "전직 레벨 60 이상" },
+    { id: "anc_ar_samwi", tier: "ancient", part: "armor", name: "삼위일체", cat: "job", jobType: "all", val: 3000, desc: "강타/스킬/영웅 스킬 피해량 모두 +3,000%", cond: "조건 없음" },
+    { id: "anc_ar_mugan", tier: "ancient", part: "armor", name: "무간", cat: "atk", val: 6000, desc: "룬 공격력 +6,000%", cond: "시야 범위 감소" },
+    { id: "anc_ar_gihap", tier: "ancient", part: "armor", name: "기합", cat: "atk", val: 6000, desc: "룬 공격력 +6,000%", cond: "채팅창에 '!' 입력 시 24시간 유지 (재접속 시 초기화)" },
+    { id: "anc_ar_jeokil", tier: "ancient", part: "armor", name: "적일", cat: "atk", val: 9000, desc: "주말(토/일) 룬 공격력 +9,000%", cond: "KST 기준 토요일·일요일만 발동" },
+   { id: "anc_ar_jungryeok", tier: "ancient", part: "armor", name: "중력", cat: "atk", val: 4500, desc: "룬 공격력 +4,500%", cond: "이동속도 50% 감소, 텔레포트 봉인" },
+    { id: "anc_ar_sangseung", tier: "ancient", part: "armor", name: "상승기류", cat: "atk", val: 3000, desc: "2초마다 룬 공격력 +300% (최대 3,000%)", cond: "20초 경과 시 풀스택" },
+    { id: "anc_ar_seonbong", tier: "ancient", part: "armor", name: "선봉", cat: "atk", val: 3000, desc: "적 체력 50% 이상일 때 룬 공격력 +3,000%", cond: "적 체력 50% 이하 시 미발동" },
+    { id: "anc_ar_chugyeok", tier: "ancient", part: "armor", name: "추격", cat: "atk", val: 3000, desc: "적 체력 50% 이하일 때 룬 공격력 +3,000%", cond: "적 체력 50% 이상 시 미발동" },
+    { id: "anc_ar_daega", tier: "ancient", part: "armor", name: "대가", cat: "job", jobType: "mage", val: 1500, desc: "룬 스킬 피해량 +1,500%", cond: "모든 스킬 쿨타임 10초 증가 페널티" },
+    { id: "anc_ar_eungchuk", tier: "ancient", part: "armor", name: "응축", cat: "util", val: 300, desc: "강타 게이지 충전효율 +300%", cond: "유틸 룬" },
+    { id: "anc_ar_gihwoe", tier: "ancient", part: "armor", name: "기회", cat: "util", val: 200, desc: "강타 시 10초간 확률형 스킬 발동확률 +70%", cond: "유틸 룬" },
+    { id: "anc_ar_yeokryu", tier: "ancient", part: "armor", name: "역류", cat: "util", val: 100, desc: "피격 시 50% 확률 체력 70% 회복", cond: "생존 유틸 룬" },
+    { id: "anc_ar_jilju", tier: "ancient", part: "armor", name: "질주", cat: "util", val: 100, desc: "텔레포트 시 10초간 이속 +100%", cond: "이속 유틸 룬" },
+
+    // ==================== [방어구: 영원] ====================
+    { id: "ete_ar_gongmyeong", tier: "eternal", part: "armor", name: "공명", cat: "atk", val: 45000, pair: "ete_ar_gongjin", pairMult: 20001, desc: "룬 공격력 +45,000% ('공진' 및 올 영원 장착 시 영원룬 공격력 +1,000,000%)", cond: "공명+공진 세트 및 전 부위 영원 룬 장착 시 0티어" },
+    { id: "ete_ar_gongjin", tier: "eternal", part: "armor", name: "공진", cat: "atk", val: 45000, pair: "ete_ar_gongmyeong", pairMult: 20001, desc: "룬 공격력 +45,000% ('공명' 및 올 영원 장착 시 영원룬 공격력 +1,000,000%)", cond: "공명+공진 세트 및 전 부위 영원 룬 장착 시 0티어" },
+    { id: "ete_ar_myeongwang", tier: "eternal", part: "armor", name: "명왕", cat: "mult", val: 100000, desc: "명계 어딘가를 정찰 완료 시 피해량 +100,000% (곱연산, 1,001배)", cond: "명계 정찰 완료 필수 (불멸 명황 없을 때 1순위 곱연산)" },
+    { id: "ete_ar_jeongbok", tier: "eternal", part: "armor", name: "룬 정복자", cat: "atk", val: 150000, desc: "룬 공격력 총 +150,000% (기본 1만 + 50단계 4만 + 100단계 10만)", cond: "룬 던전 100단계 이상 클리어" },
+    { id: "ete_ar_jeogyeok", tier: "eternal", part: "armor", name: "저격수", cat: "atk", val: 150000, desc: "룬 공격력 +150,000%, 사거리 10배", cond: "이속 50% 감소, 텔레포트 봉인" },
+    { id: "ete_ar_simpan", tier: "eternal", part: "armor", name: "심판", cat: "job", jobType: "reaper", val: 75000, desc: "룬 강타 피해량 총 +75,000% (20강 1.5만 + 23강 6만)", cond: "장착한 심연장비 슬롯 강화 23 이상" },
+    { id: "ete_ar_bijeon", tier: "eternal", part: "armor", name: "비전", cat: "job", jobType: "mage", val: 75000, desc: "룬 스킬 피해량 총 +75,000% (20강 1.5만 + 23강 6만)", cond: "장착한 심연장비 슬롯 강화 23 이상" },
+    { id: "ete_ar_jihwi", tier: "eternal", part: "armor", name: "지휘", cat: "job", jobType: "lord", val: 75000, desc: "룬 영웅 스킬 피해량 총 +75,000% (20강 1.5만 + 23강 6만)", cond: "장착한 심연장비 슬롯 강화 23 이상" },
+    { id: "ete_ar_jeokeung", tier: "eternal", part: "armor", slotPos: "job_auto", name: "적응", cat: "job", jobType: "all", val: 50000, desc: "상의(강타) / 하의(스킬) / 신발(영웅스킬) 피해량 +50,000%", cond: "내 직업에 맞는 방어구 위치(상의/하의/신발) 장착 필수!" },
+    { id: "ete_ar_yangnal", tier: "eternal", part: "armor", name: "양날검", cat: "mult", val: 15000, desc: "적에게 입히는 피해 +15,000% (곱연산, 151배)", cond: "받는 피해 50% 증가" },
+    { id: "ete_ar_gyeokhwa", tier: "eternal", part: "armor", name: "격화", cat: "mult", val: 10000, desc: "상태이상 3개일 때 추가 피해 +10,000% (곱연산, 101배)", cond: "상태이상 3종 유지" },
+    { id: "ete_ar_sangsaeng3", tier: "eternal", part: "armor", name: "상생 III", cat: "atk", val: 4000, pair: "ete_ar_sanggeuk3", pairBonus: 30000, desc: "룬 공격력 +4,000% ('상극 III' 장착 시 영원룬공 +60,000%)", cond: "상생 III + 상극 III 세트" },
+    { id: "ete_ar_sanggeuk3", tier: "eternal", part: "armor", name: "상극 III", cat: "atk", val: 4000, pair: "ete_ar_sangsaeng3", pairBonus: 30000, desc: "룬 공격력 +4,000% ('상생 III' 장착 시 영원룬공 +60,000%)", cond: "상생 III + 상극 III 세트" },
+    { id: "ete_ar_moheom", tier: "eternal", part: "armor", name: "모험가", cat: "atk", val: 45000, desc: "룬 공격력 총 +45,000% (Easy 올클리어 시)", cond: "모험모드 Easy 모든 별 획득" },
+    { id: "ete_ar_sokjeon", tier: "eternal", part: "armor", name: "속전", cat: "atk", val: 30000, desc: "룬 공격력 +30,000%", cond: "스테이지 보스 시간 10초 고정" },
+    { id: "ete_ar_pyeongil", tier: "eternal", part: "armor", name: "평일", cat: "atk", val: 30000, desc: "평일 룬 공격력 총 +30,000%", cond: "KST 기준 평일(월~금) 발동" },
+    { id: "ete_ar_mosaic", tier: "eternal", part: "armor", name: "모자이크", cat: "atk", val: 30000, desc: "룬 공격력 +30,000%", cond: "캐릭터 모자이크 도트 적용" },
+    { id: "ete_ar_mugan", tier: "eternal", part: "armor", name: "무간", cat: "atk", val: 15000, desc: "룬 공격력 +15,000%", cond: "시야 범위 감소" },
+    { id: "ete_ar_gihap", tier: "eternal", part: "armor", name: "기합", cat: "atk", val: 15000, desc: "룬 공격력 +15,000%", cond: "채팅창 '!' 입력" },
+    { id: "ete_ar_geomtusa", tier: "eternal", part: "armor", name: "검투사", cat: "atk", val: 15000, desc: "룬 공격력 +15,000%", cond: "아레나 100연승" },
+    { id: "ete_ar_samwi", tier: "eternal", part: "armor", name: "삼위일체", cat: "job", jobType: "all", val: 15000, desc: "강타/스킬/영웅 스킬 피해 +15,000%", cond: "조건 없음" },
+    { id: "ete_ar_sasin", tier: "eternal", part: "armor", name: "사신의 낫", cat: "job", jobType: "reaper", val: 15000, desc: "룬 강타 피해 +15,000%", cond: "전직 60렙 이상" },
+    { id: "ete_ar_mabeopseo", tier: "eternal", part: "armor", name: "마법의 서", cat: "job", jobType: "mage", val: 15000, desc: "룬 스킬 피해 +15,000%", cond: "전직 60렙 이상" },
+    { id: "ete_ar_gunju", tier: "eternal", part: "armor", name: "군주의 혼", cat: "job", jobType: "lord", val: 15000, desc: "룬 영웅 스킬 피해 +15,000%", cond: "전직 60렙 이상" },
+
+    // ==================== [방어구: 불멸] ====================
+    { id: "imm_ar_star", tier: "immortal", part: "armor", name: "천상의 빛:별", cat: "atk", val: 2000000, setGroup: "imm_heaven", desc: "룬공 +2,000,000% (별/달/해 3세트 시 총 배율 225조 배 종결!)", cond: "별의 가호 30단계 + 별/달/해 3종 동시 장착 필수" },
+    { id: "imm_ar_moon", tier: "immortal", part: "armor", name: "천상의 빛:달", cat: "atk", val: 2000000, setGroup: "imm_heaven", desc: "룬공 +2,000,000% (별/달/해 3세트 시 총 배율 225조 배 종결!)", cond: "달의 가호 20단계 + 별/달/해 3종 동시 장착 필수" },
+    { id: "imm_ar_sun", tier: "immortal", part: "armor", name: "천상의 빛:해", cat: "atk", val: 2000000, setGroup: "imm_heaven", desc: "룬공 +2,000,000% (별/달/해 3세트 시 총 배율 225조 배 종결!)", cond: "해의 가호 10단계 + 별/달/해 3종 동시 장착 필수" },
+    { id: "imm_ar_myeonghwang", tier: "immortal", part: "armor", name: "명황", cat: "mult", val: 5500000, desc: "명계 모든 지역 정찰 시 모든 피해량 +5,500,000% (55,001배 곱연산)", cond: "명계 모든 지역 정찰 완료 필수 (준종결 핵심 코어)" },
+    { id: "imm_ar_mh_scythe", tier: "immortal", part: "armor", name: "명황의 낫", cat: "job", jobType: "reaper", val: 4400000, reqRune: "imm_ar_myeonghwang", desc: "'명황' 장착 시 룬 강타 피해량 +4,400,000% (44,001배)", cond: "반드시 불멸 '명황' 룬과 함께 장착해야 발동!" },
+    { id: "imm_ar_mh_orb", tier: "immortal", part: "armor", name: "명황의 오브", cat: "job", jobType: "mage", val: 4400000, reqRune: "imm_ar_myeonghwang", desc: "'명황' 장착 시 룬 스킬 피해량 +4,400,000% (44,001배)", cond: "반드시 불멸 '명황' 룬과 함께 장착해야 발동!" },
+    { id: "imm_ar_mh_auth", tier: "immortal", part: "armor", name: "명황의 권세", cat: "job", jobType: "lord", val: 4400000, reqRune: "imm_ar_myeonghwang", desc: "'명황' 장착 시 룬 영웅 스킬 피해량 +4,400,000% (44,001배)", cond: "반드시 불멸 '명황' 룬과 함께 장착해야 발동!" },
+    { id: "imm_ar_junggwabujeok", tier: "immortal", part: "armor", name: "중과부적", cat: "atk", val: 2760000, desc: "길드원 1명당 룬공 92,000% (30명 기준 +2,760,000%, 27,601배)", cond: "길드원 30명 풀인원 유지" },
+    { id: "imm_ar_moheom2", tier: "immortal", part: "armor", name: "모험가 II", cat: "atk", val: 2750000, desc: "룬 공격력 총 +2,750,000% (27,501배)", cond: "모험모드 Easy & Hard 모든 별 획득" },
+    { id: "imm_ar_yuhaeng", tier: "immortal", part: "armor", name: "유행", cat: "atk", val: 2750000, desc: "특정 헤어 장착 시 룬 공격력 +2,750,000% (27,501배)", cond: "'심연의 기사 머리' 코스튬 착용 필수" },
+    { id: "imm_ar_seongjwa2", tier: "immortal", part: "armor", name: "성좌 II", cat: "atk", val: 1650000, desc: "별의 가호 40단계 이상 시 룬 공격력 총 +1,650,000% (16,501배)", cond: "별의 가호 40단계 이상" },
+    { id: "imm_ar_retro", tier: "immortal", part: "armor", name: "레트로", cat: "atk", val: 1650000, desc: "룬 공격력 +1,650,000% (16,501배)", cond: "캐릭터 외형 도트 기본 외형 고정" },
+    { id: "imm_ar_gimyeon", tier: "immortal", part: "armor", name: "기면증", cat: "atk", val: 1650000, desc: "기절 5중첩 시 룬 공격력 +1,650,000% (16,501배)", cond: "3초마다 1초 기절 페널티" },
+    { id: "imm_ar_gakseong", tier: "immortal", part: "armor", name: "각성자", cat: "atk", val: 1100000, desc: "룬 공격력 +1,100,000% (11,001배)", cond: "심연장비 각성 중 신화등급 1개 이상" },
+    { id: "imm_ar_jeogyeok", tier: "immortal", part: "armor", name: "저격수", cat: "atk", val: 1100000, desc: "룬 공격력 +1,100,000% (11,001배)", cond: "이속 50% 감소, 텔포 봉인, 사거리 10배" },
+    { id: "imm_ar_mosaic", tier: "immortal", part: "armor", name: "모자이크", cat: "atk", val: 825000, desc: "룬 공격력 +825,000% (8,251배)", cond: "캐릭터 모자이크 적용" },
+    { id: "imm_ar_jeongbok", tier: "immortal", part: "armor", name: "룬 정복자", cat: "atk", val: 825000, desc: "룬 던전 150단계 시 룬 공격력 총 +825,000% (8,251배)", cond: "룬 던전 150단계 이상" },
+    { id: "imm_ar_sokjeon", tier: "immortal", part: "armor", name: "속전", cat: "atk", val: 825000, desc: "룬 공격력 +825,000% (8,251배)", cond: "스테이지 보스 시간 10초 고정" },
+    { id: "imm_ar_jeokeung", tier: "immortal", part: "armor", slotPos: "job_auto", name: "적응", cat: "job", jobType: "all", val: 825000, desc: "상의(강타) / 하의(스킬) / 신발(영웅스킬) 피해량 +825,000% (8,251배)", cond: "내 직업에 맞는 방어구 슬롯 위치에 장착 필수!" },
+    { id: "imm_ar_gihap", tier: "immortal", part: "armor", name: "기합", cat: "atk", val: 550000, desc: "룬 공격력 +550,000% (5,501배)", cond: "채팅창 '!' 입력" },
+    { id: "imm_ar_geomtusa", tier: "immortal", part: "armor", name: "검투사", cat: "atk", val: 550000, desc: "룬 공격력 +550,000% (5,501배)", cond: "아레나 100연승" },
+    { id: "imm_ar_samwi", tier: "immortal", part: "armor", name: "삼위일체", cat: "job", jobType: "all", val: 550000, desc: "강타/스킬/영웅 스킬 피해 +550,000% (5,501배)", cond: "조건 없음" },
+    { id: "imm_ar_yangnal", tier: "immortal", part: "armor", name: "양날검", cat: "mult", val: 550000, desc: "적에게 입히는 피해 +550,000% (곱연산, 5,501배)", cond: "받는 피해 50% 증가" },
+    { id: "imm_ar_gyeokhwa", tier: "immortal", part: "armor", name: "격화", cat: "mult", val: 550000, desc: "상태이상 3개 시 추가 피해 증폭 (곱연산, 5,501배)", cond: "상태이상 3종 적용" },
+
+    // ==================== [반지: 고대 / 영원 / 불멸] ====================
+    { id: "anc_rg_payeol", tier: "ancient", part: "ring", name: "파열", mult: 16, pair: "anc_nk_pamyeol", desc: "기본 공격 시 파열 부여, 파열 적 피해 +1,500% (곱연산, 16배)", cond: "목걸이 '파멸'과 세트 장착 시 0티어" },
+    { id: "anc_rg_yeolsang", tier: "ancient", part: "ring", name: "열상", elem: "fire", mult: 301, desc: "화상 적 공격 시 불 속성 피해 +30,000% (곱연산, 301배)", cond: "화염 속성 전용" },
+    { id: "anc_rg_gwabuha", tier: "ancient", part: "ring", name: "과부하", elem: "light", mult: 301, desc: "감전 적 공격 시 번개 속성 피해 +30,000% (곱연산, 301배)", cond: "번개 속성 전용" },
+    { id: "anc_rg_gongpo", tier: "ancient", part: "ring", name: "공포", elem: "dark", mult: 301, desc: "혼돈 적 공격 시 어둠 속성 피해 +30,000% (곱연산, 301배)", cond: "어둠 속성 전용" },
+    { id: "anc_rg_yeonbal", tier: "ancient", part: "ring", name: "연발", jobType: "mage", mult: 280, desc: "강타 발동 시 장착된 스킬 랜덤 50회 발동", cond: "전직 80렙 이전 스킬 빌드 핵심 룬" },
+    { id: "anc_rg_somo", tier: "ancient", part: "ring", name: "소모", mult: 241, desc: "룬 공격력 증폭 +24,000%", cond: "매 초당 체력 30% 피해" },
+    { id: "anc_rg_eunbit", tier: "ancient", part: "ring", name: "은빛 섬광", mult: 181, desc: "텔포 후 5초간 룬 공격력 +18,000%", cond: "텔레포트 자동사용" },
+    { id: "anc_rg_junbi", tier: "ancient", part: "ring", name: "준비", mult: 181, desc: "장비 슬롯 강화 15 이상 시 룬 공격력 증폭 총 +18,000%", cond: "장비 슬롯 15강 이상" },
+    { id: "anc_rg_geukui", tier: "ancient", part: "ring", name: "마법 극의", jobType: "mage", mult: 151, desc: "10돌파 이상 스킬 피해 +15,000%", cond: "스킬 10돌파 이상" },
+    { id: "anc_rg_myeongjung", tier: "ancient", part: "ring", name: "명중", mult: 121, desc: "스킬 사용 시 룬공 증폭 최대 +12,000%", cond: "10중첩" },
+    { id: "anc_rg_powi", tier: "ancient", part: "ring", name: "포위의기세", mult: 121, desc: "주변 적 1명당 룬공 증폭 1,200% (최대 12,000%)", cond: "보스전 효율 낮음" },
+    { id: "anc_rg_gwaseong", tier: "ancient", part: "ring", name: "과성장", mult: 100, desc: "첫 슬롯 영웅 레벨을 나머지 영웅 레벨 합×40으로 변경", cond: "엘리시아 1번 슬롯 배치" },
+    { id: "anc_rg_danil", tier: "ancient", part: "ring", name: "단일격", jobType: "reaper", mult: 31, desc: "단일 타겟 룬 강타 피해 +3,000%", cond: "단일 적 대상" },
+    { id: "anc_rg_mabeopsa", tier: "ancient", part: "ring", name: "마법사", jobType: "mage", mult: 30, desc: "기본 공격 1회당 다음 확률형 스킬 확정 발동", cond: "확률형 스킬 위주 편성" },
+
+    { id: "ete_rg_gwaseong", tier: "eternal", part: "ring", name: "과성장", mult: 36111, elisiaBonus: 6600000, desc: "첫 슬롯 영웅 레벨을 나머지 합×100으로 변경 (엘리시아+올3각 시 약 660만 배급 효율!)", cond: "엘리시아 1번 슬롯 + 영웅 올 3각 시 마녀 세트 전 최고 존엄!" },
+    { id: "ete_rg_mageom", tier: "eternal", part: "ring", name: "마검의 칼날", mult: 50001, pairReq: "ete_nk_mageom", desc: "모든 피해량 +5,000,000% (50,001배 곱연산)", cond: "⚠️ 목걸이 '마검의 손잡이' 미장착 시 공격력 100 고정 페널티!" },
+    { id: "ete_rg_hongyeom", tier: "eternal", part: "ring", name: "홍염", elem: "fire", mult: 2501, desc: "'열상' 적 공격 시 불 속성 피해 +250,000% (2,501배)", cond: "불벼락 9돌파(열상) 필수" },
+    { id: "ete_rg_chojeondo", tier: "eternal", part: "ring", name: "초전도", elem: "light", mult: 2501, desc: "'과부하' 적 공격 시 번개 속성 피해 +250,000% (2,501배)", cond: "뇌전검무 9돌파(과부하) 필수" },
+    { id: "ete_rg_jeolmang", tier: "eternal", part: "ring", name: "절망", elem: "dark", mult: 2501, desc: "'공포' 적 공격 시 어둠 속성 피해 +250,000% (2,501배)", cond: "암흑붕괴 9돌파(공포) 필수" },
+    { id: "ete_rg_jeolje", tier: "eternal", part: "ring", name: "절제", mult: 5001, desc: "룬 공격력 증폭 +500,000% (5,001배)", cond: "공격속도 10% 고정 페널티 (팬텀/다크로드 추천)" },
+    { id: "ete_rg_tongchal", tier: "eternal", part: "ring", name: "통찰", jobType: "mage", mult: 1501, desc: "3각성 이상 스킬이 입히는 피해 총 +150,000% (1,501배)", cond: "장착 스킬 3각성 이상" },
+    { id: "ete_rg_tongsol", tier: "eternal", part: "ring", name: "통솔", jobType: "lord", mult: 1501, desc: "3각성 이상 영웅이 입히는 피해 총 +150,000% (1,501배)", cond: "장착 영웅 3각성 이상" },
+    { id: "ete_rg_seongjwa", tier: "eternal", part: "ring", name: "성좌", mult: 1501, desc: "별의 가호 30단계 이상 시 룬공 증폭 총 +150,000% (1,501배)", cond: "별의 가호 30단계 이상" },
+    { id: "ete_rg_payeol2", tier: "eternal", part: "ring", name: "파열 II", mult: 126, pair: "ete_nk_pamyeol2", desc: "기본 공격 시 파열 II 부여, 피해 +12,500% (126배)", cond: "목걸이 '파멸 II'와 세트 착용 권장" },
+    { id: "ete_rg_yeolsang", tier: "eternal", part: "ring", name: "열상", elem: "fire", mult: 751, desc: "화상 적 불 속성 피해 +75,000% (751배)", cond: "화염 속성" },
+    { id: "ete_rg_gwabuha", tier: "eternal", part: "ring", name: "과부하", elem: "light", mult: 751, desc: "감전 적 번개 속성 피해 +75,000% (751배)", cond: "번개 속성" },
+    { id: "ete_rg_gongpo", tier: "eternal", part: "ring", name: "공포", elem: "dark", mult: 751, desc: "혼돈 적 어둠 속성 피해 +75,000% (751배)", cond: "어둠 속성" },
+    { id: "ete_rg_danil", tier: "eternal", part: "ring", name: "단일격", jobType: "reaper", mult: 501, desc: "단일 타겟 룬 강타 피해 +50,000%", cond: "단일 타겟" },
+    { id: "ete_rg_somo", tier: "eternal", part: "ring", name: "소모", mult: 501, desc: "룬 공격력 증폭 +50,000%", cond: "초당 10% 피해" },
+
+    { id: "imm_rg_witch", tier: "immortal", part: "ring", name: "마녀의 반지", mult: 250001, pairReq: "imm_nk_witch", desc: "모든 피해량 +25,000,000% (250,001배 곱연산, 세트 시 625억 배!)", cond: "⚠️ 목걸이 '마녀의 펜던트' 미장착 시 방어도무시 100 고정 페널티!" },
+    { id: "imm_rg_daegi", tier: "immortal", part: "ring", name: "대기만성", mult: 161161, desc: "룬공 증폭 16,000% × 모든 피해량 100,000% (총 161,161배)", cond: "전투 10초 경과 시 풀스택 (준종결 1순위 반지)" },
+    { id: "imm_rg_geukyeom", tier: "immortal", part: "ring", name: "극염", elem: "fire", mult: 80001, desc: "3차 전직 버프 최대치일 때 불 속성 피해 +8,000,000% (80,001배)", cond: "화염 속성 + 3차 전직 버프 풀스택" },
+    { id: "imm_rg_geuknoe", tier: "immortal", part: "ring", name: "극뇌", elem: "light", mult: 80001, desc: "3차 전직 버프 최대치일 때 번개 속성 피해 +8,000,000% (80,001배)", cond: "번개 속성 + 3차 전직 버프 풀스택" },
+    { id: "imm_rg_geukam", tier: "immortal", part: "ring", name: "극암", elem: "dark", mult: 80001, desc: "3차 전직 버프 최대치일 때 어둠 속성 피해 +8,000,000% (80,001배)", cond: "어둠 속성 + 3차 전직 버프 풀스택" },
+    { id: "imm_rg_mulyok", tier: "immortal", part: "ring", name: "물욕", mult: 32001, desc: "보물던전 1 90단계 이상 시 룬공 증폭 총 +3,200,000% (32,001배)", cond: "보물던전 1 90단계 이상" },
+    { id: "imm_rg_jeolje", tier: "immortal", part: "ring", name: "절제", mult: 32001, desc: "룬 공격력 증폭 +3,200,000% (32,001배)", cond: "공격속도 10% 고정 페널티" },
+    { id: "imm_rg_hongyeom", tier: "immortal", part: "ring", name: "홍염", elem: "fire", mult: 24001, desc: "'열상' 적 불 속성 피해 +2,400,000% (24,001배)", cond: "불벼락 9돌파 필수" },
+    { id: "imm_rg_chojeondo", tier: "immortal", part: "ring", name: "초전도", elem: "light", mult: 24001, desc: "'과부하' 적 번개 속성 피해 +2,400,000% (24,001배)", cond: "뇌전검무 9돌파 필수" },
+    { id: "imm_rg_jeolmang", tier: "immortal", part: "ring", name: "절망", elem: "dark", mult: 24001, desc: "'공포' 적 어둠 속성 피해 +2,400,000% (24,001배)", cond: "암흑붕괴 9돌파 필수" },
+    { id: "imm_rg_seongjwa", tier: "immortal", part: "ring", name: "성좌", mult: 16001, desc: "별의 가호 30단계 시 룬공 증폭 총 +1,600,000% (16,001배)", cond: "별의 가호 30단계 이상" },
+    { id: "imm_rg_tongchal", tier: "immortal", part: "ring", name: "통찰", jobType: "mage", mult: 16001, desc: "3각성 이상 스킬 피해 총 +1,600,000% (16,001배)", cond: "스킬 3각성 이상" },
+    { id: "imm_rg_tongsol", tier: "immortal", part: "ring", name: "통솔", jobType: "lord", mult: 16001, desc: "3각성 이상 영웅 피해 총 +1,600,000% (16,001배)", cond: "영웅 3각성 이상" },
+
+    // ==================== [목걸이: 고대 / 영원 / 불멸] ====================
+    { id: "anc_nk_pamyeol", tier: "ancient", part: "neck", name: "파멸", mult: 100, pairWithRing: "anc_rg_payeol", pairMult: 15001, desc: "파열 상태 적 공격 시 모든 피해 +1,500,000% (반지 '파열'과 세트 시 15,001배)", cond: "반지 '파열' 장착 필수" },
+    { id: "anc_nk_soin", tier: "ancient", part: "neck", name: "소인", mult: 251, desc: "캐릭터 작아지고 이속 +50%, 룬 공격력 증폭 +25,000% (251배)", cond: "무조건 발동 0티어" },
+    { id: "anc_nk_geoin", tier: "ancient", part: "neck", name: "거인", mult: 251, desc: "캐릭터 커지고 이속 -50%, 룬 공격력 증폭 +25,000% (251배)", cond: "이속 감소 주의" },
+    { id: "anc_nk_wonsoron", tier: "ancient", part: "neck", name: "원소론", jobType: "mage", mult: 181, desc: "4종류 속성 스킬 장착 시 룬 스킬 피해 +18,000%", cond: "4속성(무/화/번/어) 스킬 장착" },
+    { id: "anc_nk_chowol", tier: "ancient", part: "neck", name: "초월자", jobType: "reaper", mult: 181, desc: "대낫 초월 총합 120 이상 시 룬 강타 피해 +18,000%", cond: "대낫 초월 합 120 이상" },
+    { id: "anc_nk_apdo", tier: "ancient", part: "neck", name: "압도적 힘", mult: 151, desc: "룬 공격력 500% 이상 시 룬공 증폭 +15,000%", cond: "룬 공격력 500% 이상" },
+    { id: "anc_nk_hangye", tier: "ancient", part: "neck", name: "한계 돌파", jobType: "lord", mult: 151, desc: "10돌파 이상 영웅 피해 +15,000%", cond: "영웅 10돌파 이상" },
+    { id: "anc_nk_dolgyeok", tier: "ancient", part: "neck", name: "돌격대장", mult: 121, desc: "죽었을 때 5초 부활 및 룬공 +12,000%", cond: "사망 시 5초 단발성" },
+    { id: "anc_nk_eophwa", tier: "ancient", part: "neck", name: "업화", elem: "fire", mult: 81, desc: "불 속성 피해 +8,000% (타 속성 -70%)", cond: "화염 전용" },
+    { id: "anc_nk_cheonbeol", tier: "ancient", part: "neck", name: "천벌", elem: "light", mult: 81, desc: "번개 속성 피해 +8,000% (타 속성 -70%)", cond: "번개 전용" },
+    { id: "anc_nk_yeonok", tier: "ancient", part: "neck", name: "연옥", elem: "dark", mult: 81, desc: "어둠 속성 피해 +8,000% (타 속성 -70%)", cond: "어둠 전용" },
+    { id: "anc_nk_wonso", tier: "ancient", part: "neck", name: "원소 폭발", mult: 61, desc: "속성 스킬 5번 사용 시 해당 속성 피해 +6,000%", cond: "10초 지속" },
+    { id: "anc_nk_yeobaek", tier: "ancient", part: "neck", name: "여백의 힘", jobType: "reaper", mult: 31, desc: "빈 스킬 슬롯 1개당 강타 피해 +1,500%", cond: "빈 슬롯 필요" },
+    { id: "anc_nk_cheonun", tier: "ancient", part: "neck", name: "천운", jobType: "mage", mult: 25, desc: "스킬 발동 시 100% 확률 5회 발동", cond: "타수 유틸" },
+    { id: "anc_nk_yeokjeon", tier: "ancient", part: "neck", name: "역전", mult: 20, desc: "확률형 스킬 실패 시 발동확률 +100%", cond: "확률형 보조" },
+    { id: "anc_nk_donghwa", tier: "ancient", part: "neck", name: "동화", mult: 20, desc: "속성 공격 시 100% 상태이상 부여", cond: "상태이상 유틸" },
+
+    { id: "ete_nk_mageom", tier: "eternal", part: "neck", name: "마검의 손잡이", mult: 5001, pairReq: "ete_rg_mageom", desc: "모든 피해량 +500,000% (5,001배 곱연산, 반지 '마검의 칼날' 페널티 해제)", cond: "⚠️ 반지 '마검의 칼날'과 세트 장착 필수!" },
+    { id: "ete_nk_wanryeok", tier: "eternal", part: "neck", name: "완력", mult: 5001, desc: "룬 공격력 증폭 +500,000% (5,001배)", cond: "영웅 공격속도 70% 감소" },
+    { id: "ete_nk_nanta", tier: "eternal", part: "neck", name: "난타", jobType: "reaper", mult: 5001, desc: "공속 +50%, 룬 강타 피해량 +500,000% (5,001배)", cond: "강타 필요 타수 5배 증가 (과성장 엘리시아 세팅 시 추천)" },
+    { id: "ete_nk_geosin", tier: "eternal", part: "neck", name: "거신병", jobType: "lord", mult: 5001, desc: "첫 슬롯 영웅 3각성 시 영웅 스킬 피해 +500,000% (5,001배)", cond: "첫 슬롯 영웅 3각성 (팬텀 전용)" },
+    { id: "ete_nk_pamyeol2", tier: "eternal", part: "neck", name: "파멸 II", mult: 200, pairWithRing: "ete_rg_payeol2", pairMult: 25001, desc: "파열 II 적 모든 피해 +2,500,000% (25,001배)", cond: "반지 '파열 II'와 세트 착용 필수" },
+    { id: "ete_nk_wolgwang", tier: "eternal", part: "neck", name: "월광", mult: 2501, desc: "달의 가호 30단계 시 룬공 증폭 총 +250,000% (2,501배)", cond: "달의 가호 30단계 이상" },
+    { id: "ete_nk_pokju", tier: "eternal", part: "neck", name: "폭주", mult: 2001, desc: "매초 룬공 증폭 20,000% (최대 +200,000%, 2,001배)", cond: "10초 경과 풀스택" },
+    { id: "ete_nk_jiwon", tier: "eternal", part: "neck", name: "지원", mult: 1501, desc: "길드 일반 기부 시 룬공 증폭 +150,000% (1,501배)", cond: "매일 길드 일반 기부 필수" },
+    { id: "ete_nk_soin", tier: "eternal", part: "neck", name: "소인", mult: 751, desc: "룬 공격력 증폭 +75,000% (751배), 이속 +50%", cond: "조건 없음" },
+    { id: "ete_nk_geoin", tier: "eternal", part: "neck", name: "거인", mult: 751, desc: "룬 공격력 증폭 +75,000% (751배), 이속 -50%", cond: "이속 감소" },
+    { id: "ete_nk_wonsoron", tier: "eternal", part: "neck", name: "원소론", jobType: "mage", mult: 601, desc: "4속성 스킬 장착 시 룬 스킬 피해 +60,000%", cond: "4속성 스킬" },
+    { id: "ete_nk_chowol", tier: "eternal", part: "neck", name: "초월자", jobType: "reaper", mult: 601, desc: "대낫 초월 120 이상 시 강타 피해 +60,000%", cond: "대낫 초월 120" },
+    { id: "ete_nk_wonso", tier: "eternal", part: "neck", name: "원소 폭발", mult: 501, desc: "속성 스킬 5회 시 속성 피해 +50,000%", cond: "10초 지속" },
+    { id: "ete_nk_apdo", tier: "eternal", part: "neck", name: "압도적 힘", mult: 351, desc: "룬공 500% 이상 시 룬공 증폭 +35,000%", cond: "룬공 500% 이상" },
+
+    { id: "imm_nk_witch", tier: "immortal", part: "neck", name: "마녀의 펜던트", mult: 250001, pairReq: "imm_rg_witch", desc: "모든 피해량 +25,000,000% (250,001배 곱연산, 반지 '마녀의 반지'와 세트 시 625억 배!)", cond: "⚠️ 반지 '마녀의 반지' 미장착 시 방무 피해 100 고정 페널티!" },
+    { id: "imm_nk_yonggisa", tier: "immortal", part: "neck", name: "용기사", mult: 160001, desc: "드래곤 탑승 및 승급 3단계 시 모든 피해량 총 +16,000,000% (160,001배)", cond: "드래곤 승급 3단계 이상 (단독 1티어 목걸이)" },
+    { id: "imm_nk_geomap", tier: "immortal", part: "neck", name: "검압", jobType: "reaper", mult: 80001, desc: "강타 필요 타수 3 고정, 룬 강타 피해량 +8,000,000% (80,001배)", cond: "대사신(강타) 전용" },
+    { id: "imm_nk_yeongchang", tier: "immortal", part: "neck", name: "영창", jobType: "mage", mult: 80001, desc: "스킬 7개 이상 장착 시 룬 스킬 피해량 총 +8,000,000% (80,001배)", cond: "아크메이지(스킬 7개 장착) 전용" },
+    { id: "imm_nk_gunjip", tier: "immortal", part: "neck", name: "군집", jobType: "lord", mult: 80001, desc: "영웅 6개 이상 장착 시 룬 영웅 스킬 피해량 총 +8,000,000% (80,001배)", cond: "팬텀(영웅 6명 장착) 전용" },
+    { id: "imm_nk_tamyok", tier: "immortal", part: "neck", name: "탐욕", mult: 32001, desc: "보물던전 2 35단계 이상 시 룬공 증폭 총 +3,200,000% (32,001배)", cond: "보물던전 2 35단계 이상" },
+    { id: "imm_nk_wanryeok", tier: "immortal", part: "neck", name: "완력", mult: 24001, desc: "룬 공격력 증폭 +2,400,000% (24,001배)", cond: "영웅 공속 70% 감소" },
+    { id: "imm_nk_geosin", tier: "immortal", part: "neck", name: "거신병", jobType: "lord", mult: 24001, desc: "첫 슬롯 영웅 3각 시 영웅 스킬 피해 +2,400,000% (24,001배)", cond: "첫 슬롯 영웅 3각성" },
+    { id: "imm_nk_nanta", tier: "immortal", part: "neck", name: "난타", jobType: "reaper", mult: 24001, desc: "강타 필요 타수 5배, 공속 +50%, 룬 강타 피해 +2,400,000% (24,001배)", cond: "강타 타수 5배 페널티 주의" },
+    { id: "imm_nk_geoin", tier: "immortal", part: "neck", name: "거인", mult: 16001, desc: "룬 공격력 증폭 +1,600,000% (16,001배)", cond: "이속 50% 감소" },
+    { id: "imm_nk_soin", tier: "immortal", part: "neck", name: "소인", mult: 16001, desc: "룬 공격력 증폭 +1,600,000% (16,001배)", cond: "이속 50% 증가" },
+    { id: "imm_nk_wolgwang", tier: "immortal", part: "neck", name: "월광", mult: 16001, desc: "달의 가호 30단계 시 룬공 증폭 총 +1,600,000% (16,001배)", cond: "달의 가호 30단계 이상" },
+
+    // ==================== [엠블렘: 고대 / 영원 / 불멸] ====================
+    { id: "anc_em_gogohak", tier: "ancient", part: "emblem", name: "고고학", mult: 601, desc: "고대 장비 12개 이상 보유 시 고대룬 공격력 증폭 +60,000% (601배)", cond: "대낫/오브/장식 고대 등급 총 12개 보유" },
+    { id: "anc_em_chosim", tier: "ancient", part: "emblem", name: "초심", mult: 500, desc: "장착된 패시브 효과 +1,500% 증가 (전 직업 0티어)", cond: "조건 없음" },
+    { id: "anc_em_gwangjang", tier: "ancient", part: "emblem", name: "광장 공포", mult: 406, desc: "고대룬 공증 +45,000% (보스전 1명 기준 40,500%, 406배)", cond: "주변 적 1명당 4,500% 감소 (일반 던전 비추천)" },
+    { id: "anc_em_singyeongji", tier: "ancient", part: "emblem", name: "신의 경지", mult: 301, desc: "전직 60렙 이상 시 고대룬 공증 +30,000% (301배)", cond: "전직 레벨 60 이상" },
+    { id: "anc_em_bunchul", tier: "ancient", part: "emblem", name: "분출", jobType: "mage", mult: 199, desc: "스킬 돌파 10회당 룬 스킬 피해 증폭 +600% (최대 약 19,800%)", cond: "스킬 총 돌파 수 비례" },
+    { id: "anc_em_bijeonseo", tier: "ancient", part: "emblem", name: "비전서", jobType: "mage", mult: 181, desc: "신화 스킬 1칸당 룬 스킬 피해 증폭 +3,000% (6칸 시 18,000%)", cond: "신화 스킬 장착" },
+    { id: "anc_em_dongbanja", tier: "ancient", part: "emblem", name: "동반자", jobType: "lord", mult: 226, desc: "신화 영웅 1칸당 영웅 스킬 피해 증폭 +3,750% (6칸 시 22,500%)", cond: "신화 영웅 장착" },
+    { id: "anc_em_pyochul", tier: "ancient", part: "emblem", name: "표출", jobType: "lord", mult: 181, desc: "영웅 돌파 10회당 영웅 스킬 피해 증폭 +600%", cond: "영웅 총 돌파 수 비례" },
+    { id: "anc_em_mumoham", tier: "ancient", part: "emblem", name: "무모함", mult: 151, desc: "고대룬 공증 +15,000% (151배)", cond: "회복 불가능 페널티" },
+    { id: "anc_em_ganpa", tier: "ancient", part: "emblem", name: "간파", mult: 151, desc: "룬보스 무적 무시, 고대룬 공증 +15,000% (151배)", cond: "룬 던전 돌파용 필수" },
+    { id: "anc_em_gathin", tier: "ancient", part: "emblem", name: "갇힌 운명", jobType: "mage", mult: 200, desc: "강타 봉인, 룬 공격력 증폭 +180,000%", cond: "강타 봉인 페널티" },
+
+    { id: "ete_em_jedan", tier: "eternal", part: "emblem", name: "제단", mult: 1, pairWithAbyss: "ete_ab_jemul", pairMult: 500001, desc: "심연장식 '제물' 장착 시 영원 룬 공격력 증폭 +50,000,000% (500,001배!)", cond: "심연장식 '제물'과 세트 장착 필수 (단독 사용 불가)" },
+    { id: "ete_em_jeongryeong", tier: "eternal", part: "emblem", name: "정령의힘", mult: 22501, desc: "장착된 모든 정령 돌파 25 이상 시 영원룬 공증 +2,250,000% (22,501배)", cond: "장착 정령 전원 25돌파 이상" },
+    { id: "ete_em_jeoljeong", tier: "eternal", part: "emblem", name: "절정", mult: 22501, desc: "레벨 25,000 달성 시 영원룬 공증 누적 총 +2,250,000% (22,501배)", cond: "캐릭터 레벨 22,000 ~ 25,000" },
+    { id: "ete_em_golem", tier: "eternal", part: "emblem", name: "골렘화", mult: 15001, desc: "룬골렘 변신, 영원룬 공증 +1,500,000% (15,001배)", cond: "룬던전 결계석 체력 1 고정 주의" },
+    { id: "ete_em_gwonwi", tier: "eternal", part: "emblem", name: "권위", mult: 11251, desc: "불멸 문장 장착 시 영원룬 공증 누적 총 +1,125,000%", cond: "영원/불멸 문장 장착" },
+    { id: "ete_em_singyeongji", tier: "eternal", part: "emblem", name: "신의 경지", mult: 4501, desc: "전직 60렙 이상 시 고대룬 공증 +450,000%", cond: "전직 60렙 이상" },
+    { id: "ete_em_gogohak", tier: "eternal", part: "emblem", name: "고고학", mult: 4501, desc: "고대 장비 12개 이상 시 고대룬 공증 +450,000%", cond: "고대 장비 12개" },
+    { id: "ete_em_gwangjang", tier: "eternal", part: "emblem", name: "광장 공포", mult: 4051, desc: "고대룬 공증 +450,000% (적 1명당 4.5만 감소)", cond: "보스전 전용" },
+    { id: "ete_em_ganpa", tier: "eternal", part: "emblem", name: "간파", mult: 3001, desc: "룬보스 무적 무시, 고대룬 공증 +300,000%", cond: "룬보스 무적 파훼용" },
+    { id: "ete_em_dongbanja", tier: "eternal", part: "emblem", name: "동반자", jobType: "lord", mult: 3301, desc: "신화 영웅 1칸당 영웅 피해 증폭 +55,000%", cond: "신화 영웅 6칸" },
+    { id: "ete_em_bijeonseo", tier: "eternal", part: "emblem", name: "비전서", jobType: "mage", mult: 2641, desc: "신화 스킬 1칸당 스킬 피해 증폭 +44,000%", cond: "신화 스킬 6칸" },
+    { id: "ete_em_pyochul", tier: "eternal", part: "emblem", name: "표출", jobType: "lord", mult: 1651, desc: "영웅 돌파 10회당 영웅 피해 증폭 +5,500%", cond: "영웅 돌파 비례" },
+    { id: "ete_em_bunchul", tier: "eternal", part: "emblem", name: "분출", jobType: "mage", mult: 1651, desc: "스킬 돌파 10회당 스킬 피해 증폭 +5,500%", cond: "스킬 돌파 비례" },
+
+    { id: "imm_em_day", tier: "immortal", part: "emblem", name: "영원의 순환:낮", mult: 2500001, pairWithAbyss: "imm_ab_night", pairMult: 37500001, desc: "'영원의 순환:밤' 장착 시 영구 지속 모든 피해량 총 +3,750,000,000% (3,750만 배, 세트 140조 배!)", cond: "심연장식 '영원의 순환:밤'과 세트 시 영구 지속" },
+    { id: "imm_em_boseok", tier: "immortal", part: "emblem", name: "보석학", mult: 22500001, desc: "고대 보석 15개 장착 시 불멸 룬 공격력 증폭 총 +2,250,000,000% (2,250만 배!)", cond: "소울커넥트 고대 보석 15개 장착 (단독 1티어)" },
+    { id: "imm_em_samsingi", tier: "immortal", part: "emblem", name: "삼신기", mult: 1500001, desc: "영원 대낫/오브/장식 보유 1개당 불멸룬 공증 5천만% (3개 시 150만 배)", cond: "영원 무기 3종 보유" },
+    { id: "imm_em_wonron", tier: "immortal", part: "emblem", name: "원론", mult: 1200001, desc: "장착 고대 패시브 돌파 40 이상 시 불멸룬 공증 총 +120,000,000% (120만 배)", cond: "고대 패시브 돌파 합 40 이상" },
+    { id: "imm_em_myeongseong", tier: "immortal", part: "emblem", name: "명성", mult: 750001, desc: "불멸 등급 이상 칭호 장착 시 불멸룬 공증 +75,000,000% (75만 배)", cond: "불멸 칭호 장착" },
+    { id: "imm_em_jeoljeong", tier: "immortal", part: "emblem", name: "절정", mult: 450001, desc: "레벨 25,000 달성 시 불멸룬 공증 총 +45,000,000% (45만 배)", cond: "레벨 25,000 달성" },
+    { id: "imm_em_golem", tier: "immortal", part: "emblem", name: "골렘화", mult: 450001, desc: "룬골렘 변신, 불멸룬 공증 +45,000,000% (45만 배)", cond: "룬던전 결계석 체력 1 고정" },
+    { id: "imm_em_jeongryeong", tier: "immortal", part: "emblem", name: "정령의힘", mult: 300001, desc: "모든 정령 돌파 30 이상 시 불멸룬 공증 +30,000,000% (30만 배)", cond: "장착 정령 전원 30돌파" },
+    { id: "imm_em_ganpa", tier: "immortal", part: "emblem", name: "간파", mult: 225001, desc: "룬보스 무적 무시, 불멸룬 공증 +22,500,000% (22.5만 배)", cond: "룬보스 무적 무시" },
+    { id: "imm_em_singyeongji", tier: "immortal", part: "emblem", name: "신의 경지", mult: 150001, desc: "전직 80렙 이상 시 불멸룬 공증 +15,000,000% (15만 배)", cond: "전직 80레벨 이상" },
+    { id: "imm_em_gwangjang", tier: "immortal", part: "emblem", name: "광장 공포", mult: 150001, desc: "불멸룬 공증 +15,000,000% (적 1명당 150만% 감소)", cond: "보스전 전용" },
+
+    // ==================== [심연장식: 고대 / 영원 / 불멸] ====================
+    { id: "anc_ab_gwansok", tier: "ancient", part: "abyss", name: "광속", mult: 161, desc: "이속 10%당 심연장식 룬공 800% (최대 +16,000%, 161배)", cond: "이동속도 200% 이상" },
+    { id: "anc_ab_gwangpung", tier: "ancient", part: "abyss", name: "광풍", mult: 161, desc: "공속 10%당 심연장식 룬공 1,600% (최대 +16,000%, 161배)", cond: "공격속도 100% 이상" },
+    { id: "anc_ab_deungban", tier: "ancient", part: "abyss", name: "등반가", mult: 151, desc: "일반 스테이지 진행 시 심연장식 룬공 +15,000% (151배)", cond: "일반 스테이지만 적용" },
+    { id: "anc_ab_tamheom", tier: "ancient", part: "abyss", name: "탐험가", mult: 151, desc: "던전 진행 시 심연장식 룬공 +15,000% (151배)", cond: "던전에서만 적용" },
+    { id: "anc_ab_myeongpum", tier: "ancient", part: "abyss", name: "명품", mult: 201, desc: "장착 전설 이상 심연장식 1개당 룬공 +5,000% (4개 시 20,000%)", cond: "전설 이상 심연장식 장착" },
+    { id: "anc_ab_gaecheok", tier: "ancient", part: "abyss", name: "개척자", mult: 101, desc: "이계 30회 + 명계 15회 정찰 시 심연장식 룬공 총 +10,000%", cond: "이계/명계 정찰" },
+    { id: "anc_ab_singaho", tier: "ancient", part: "abyss", name: "신의 가호", mult: 101, desc: "수호신 10돌파 및 잠재 200 이상 시 심연장식 룬공 총 +10,000%", cond: "수호신 10돌파" },
+    { id: "anc_ab_jeongryeong", tier: "ancient", part: "abyss", name: "정령 조화", mult: 101, desc: "정령 시너지 300 이상 시 심연장식 룬공 총 +10,000%", cond: "정령 시너지 300점" },
+    { id: "anc_ab_goyang", tier: "ancient", part: "abyss", name: "고양", mult: 101, desc: "심연장식 레벨 20 이상 시 룬공 +10,000%", cond: "심연장식 Lv.20 이상" },
+    { id: "anc_ab_danryeon", tier: "ancient", part: "abyss", name: "단련", mult: 101, desc: "심연장식 룬 공격력 +10,000%", cond: "조건 없음" },
+
+    { id: "ete_ab_jemul", tier: "eternal", part: "abyss", name: "제물", mult: 1, pairWithEmblem: "ete_em_jedan", pairMult: 40001, desc: "엠블렘 '제단' 장착 시 심연장식 룬공 +4,000,000% (40,001배!)", cond: "엠블렘 '제단'과 세트 장착 필수" },
+    { id: "ete_ab_jeoju", tier: "eternal", part: "abyss", name: "저주", mult: 2001, desc: "공격 시 화상/감전/혼돈 부여, 심연장식 룬공 +200,000% (2,001배)", cond: "상태이상 3종 자동 부여 + 딜 상승 1티어" },
+    { id: "ete_ab_jeongbok", tier: "eternal", part: "abyss", name: "정복자", mult: 2001, desc: "스테이지 챕터 400 이상 시 심연장식 룬공 총 +200,000% (2,001배)", cond: "스테이지 400챕터 이상" },
+    { id: "ete_ab_simyeonjohwa", tier: "eternal", part: "abyss", name: "심연 조화", mult: 2001, desc: "심연장식 시너지 30 이상 시 룬공 총 +200,000% (2,001배)", cond: "심연장식 시너지 30 이상" },
+    { id: "ete_ab_gaecheok", tier: "eternal", part: "abyss", name: "개척자", mult: 1001, desc: "이계 30회 + 명계 15회 시 룬공 총 +100,000% (1,001배)", cond: "이계/명계 정찰" },
+    { id: "ete_ab_singaho", tier: "eternal", part: "abyss", name: "신의 가호", mult: 1001, desc: "수호신 10돌 + 잠재 200 시 룬공 총 +100,000% (1,001배)", cond: "수호신 조건" },
+    { id: "ete_ab_jeongryeong", tier: "eternal", part: "abyss", name: "정령 조화", mult: 1001, desc: "정령 시너지 300 이상 시 룬공 총 +100,000% (1,001배)", cond: "정령 시너지 300점" },
+    { id: "ete_ab_simyeonjeongbok", tier: "eternal", part: "abyss", name: "심연 정복자", mult: 1001, desc: "태초의 심연 40단계 시 룬공 총 +100,000% (1,001배)", cond: "태초의 심연 40단계" },
+    { id: "ete_ab_myeongpum", tier: "eternal", part: "abyss", name: "명품", mult: 501, desc: "전설 이상 심연장식 1개당 +12,500% (최대 50,000%)", cond: "심연장식 4부위" },
+    { id: "ete_ab_gwangpung", tier: "eternal", part: "abyss", name: "광풍", mult: 501, desc: "공속 비례 심연장식 룬공 최대 +50,000%", cond: "공속 100% 이상" },
+    { id: "ete_ab_gwansok", tier: "eternal", part: "abyss", name: "광속", mult: 501, desc: "이속 비례 심연장식 룬공 최대 +50,000%", cond: "이속 200% 이상" },
+    { id: "ete_ab_tamheom", tier: "eternal", part: "abyss", name: "탐험가", mult: 301, desc: "던전 진행 시 룬공 +30,000%", cond: "던전 전용" },
+    { id: "ete_ab_deungban", tier: "eternal", part: "abyss", name: "등반가", mult: 301, desc: "스테이지 진행 시 룬공 +30,000%", cond: "스테이지 전용" },
+    { id: "ete_ab_goyang", tier: "eternal", part: "abyss", name: "고양", mult: 201, desc: "심연장식 20렙 이상 시 +20,000%", cond: "Lv.20 이상" },
+    { id: "ete_ab_danryeon", tier: "eternal", part: "abyss", name: "단련", mult: 201, desc: "심연장식 룬공 +20,000%", cond: "조건 없음" },
+
+    { id: "imm_ab_night", tier: "immortal", part: "abyss", name: "영원의 순환:밤", mult: 250001, pairWithEmblem: "imm_em_day", pairMult: 3750001, desc: "'영원의 순환:낮' 장착 시 영구 지속 모든 피해량 총 +375,000,000% (375만 배, 세트 140조 배!)", cond: "엠블렘 '영원의 순환:낮'과 세트 장착 필수" },
+    { id: "imm_ab_gaehwa", tier: "immortal", part: "abyss", name: "개화", mult: 1500001, desc: "룬 획득 후 출석 10일 달성 시 심연장식 룬공 +150,000,000% (150만 배)", cond: "획득 후 10일 출석 (단독 1순위)" },
+    { id: "imm_ab_simyeondolpa", tier: "immortal", part: "abyss", name: "심연 돌파", mult: 1200001, desc: "고대 이상 심연장식 1개당 3천만% (4개 시 +120,000,000%, 120만 배)", cond: "고대 심연장식 4개 장착" },
+    { id: "imm_ab_geukhan", tier: "immortal", part: "abyss", name: "극한의 저력", mult: 1200001, desc: "고대 패시브 각성 합계 6 이상 시 룬공 +120,000,000% (120만 배)", cond: "고대 패시브 각성 합 6 이상" },
+    { id: "imm_ab_jeoju2", tier: "immortal", part: "abyss", name: "저주 II", mult: 1200001, noBleedMult: 400001, desc: "화상/감전/혼돈 부여 + 룬공 4천만% (출혈 부여 시 총 +120,000,000%, 120만 배)", cond: "스킬 '크림슨 웨이브(출혈)' 착용 시 풀배율 발동" },
+    { id: "imm_ab_goldcard", tier: "immortal", part: "abyss", name: "골드 카드", mult: 750001, desc: "신화 몬스터카드 3개 이상 장착 시 룬공 +75,000,000% (75만 배)", cond: "신화 몬스터카드 3개 이상" },
+    { id: "imm_ab_jeongbok", tier: "immortal", part: "abyss", name: "정복자", mult: 300001, desc: "챕터 400 이상 시 룬공 총 +30,000,000% (30만 배)", cond: "스테이지 400챕터 이상" },
+    { id: "imm_ab_simyeonjohwa", tier: "immortal", part: "abyss", name: "심연 조화", mult: 300001, desc: "심연장식 시너지 30 이상 시 총 +30,000,000% (30만 배)", cond: "심연장식 시너지 30" },
+    { id: "imm_ab_singaho", tier: "immortal", part: "abyss", name: "신의 가호", mult: 225001, desc: "수호신 조건 달성 시 총 +22,500,000% (22.5만 배)", cond: "수호신 10돌 + 잠재 200" },
+    { id: "imm_ab_jeongryeong", tier: "immortal", part: "abyss", name: "정령 조화", mult: 225001, desc: "정령 시너지 300 이상 시 총 +22,500,000% (22.5만 배)", cond: "정령 시너지 300점" },
+    { id: "imm_ab_simyeonjeongbok", tier: "immortal", part: "abyss", name: "심연 정복자", mult: 225001, desc: "태초의 심연 40단계 시 총 +22,500,000% (22.5만 배)", cond: "태초의 심연 40단계" },
+    { id: "imm_ab_goyang", tier: "immortal", part: "abyss", name: "고양", mult: 150001, desc: "심연장식 40렙 이상 시 +15,000,000% (15만 배)", cond: "심연장식 Lv.40 이상" },
+    { id: "imm_ab_gwangpung", tier: "immortal", part: "abyss", name: "광풍", mult: 150001, desc: "공속 비례 최대 +15,000,000% (15만 배)", cond: "공속 100% 이상" },
+    { id: "imm_ab_gwansok", tier: "immortal", part: "abyss", name: "광속", mult: 120001, desc: "이속 비례 최대 +12,000,000% (12만 배)", cond: "이속 200% 이상" },
+
+    // ==================== [무기: 고대 / 영원 / 불멸 (3슬롯)] ====================
+    { id: "anc_wp_gwajil", tier: "ancient", part: "weapon", name: "과질량", wCat: "atk", val: 300000, desc: "대낫 크기 3배, 무기 룬 공격력 +300,000%", cond: "조건 없음" },
+    { id: "anc_wp_gwapohwa", tier: "ancient", part: "weapon", name: "과포화", wCat: "atk", val: 300000, desc: "오브 크기 3배, 무기 룬 공격력 +300,000%", cond: "조건 없음" },
+    { id: "anc_wp_gwasiyok", tier: "ancient", part: "weapon", name: "과시욕", wCat: "atk", val: 300000, desc: "장식 크기 3배, 무기 룬 공격력 +300,000%", cond: "조건 없음" },
+    { id: "anc_wp_ilgidang", tier: "ancient", part: "weapon", name: "일기당천", wCat: "atk", val: 300000, desc: "룬 던전 150단계 1인 클리어 시 무기 룬공 +300,000%", cond: "룬던전 150단계 솔로 클리어" },
+    { id: "anc_wp_jangjeon", tier: "ancient", part: "weapon", name: "장전", wCat: "atk", val: 200000, desc: "고대 코어 3개 이상 장착 시 무기 룬공 +200,000%", cond: "소울커넥트 고대 코어 3개" },
+    { id: "anc_wp_sunpung", tier: "ancient", part: "weapon", name: "순풍", wCat: "atk", val: 200000, desc: "무기 룬공 +200,000% (홀수일 텔포쿨감 / 짝수일 이속증가)", cond: "조건 없음" },
+    { id: "anc_wp_jaeryeon", tier: "ancient", part: "weapon", name: "재련", wCat: "atk", val: 100000, desc: "무기 룬 공격력 +100,000%", cond: "조건 없음" },
+    { id: "anc_wp_bunsin", tier: "ancient", part: "weapon", name: "분신", wCat: "atk", val: 100000, desc: "무기 룬 공격력 +100,000%, 영웅 외형 내 캐릭터로 변경", cond: "조건 없음" },
+
+    { id: "ete_wp_byeondeok", tier: "eternal", part: "weapon", name: "변덕", wCat: "atk", val: 1000000, reaperExtra: 2.5, desc: "무기 룬공 +1,000,000%, 강타 50% 확률 피해 5배 / 50% 불발", cond: "대사신(강타) 고효율" },
+    { id: "ete_wp_gwajil", tier: "eternal", part: "weapon", name: "과질량", wCat: "atk", val: 600000, desc: "대낫 크기 3배, 무기 룬공 +600,000%", cond: "조건 없음" },
+    { id: "ete_wp_gwapohwa", tier: "eternal", part: "weapon", name: "과포화", wCat: "atk", val: 600000, desc: "오브 크기 3배, 무기 룬공 +600,000%", cond: "조건 없음" },
+    { id: "ete_wp_gwasiyok", tier: "eternal", part: "weapon", name: "과시욕", wCat: "atk", val: 600000, desc: "장식 크기 3배, 무기 룬공 +600,000%", cond: "조건 없음" },
+    { id: "ete_wp_ilgidang", tier: "eternal", part: "weapon", name: "일기당천", wCat: "atk", val: 600000, desc: "룬던전 150단계 1인 클리어 시 무기 룬공 +600,000%", cond: "룬던전 150단계 솔클" },
+    { id: "ete_wp_jangjeon", tier: "eternal", part: "weapon", name: "장전", wCat: "atk", val: 400000, desc: "고대 코어 3개 이상 시 무기 룬공 +400,000%", cond: "고대 코어 3개" },
+    { id: "ete_wp_sunpung", tier: "eternal", part: "weapon", name: "순풍", wCat: "atk", val: 400000, desc: "무기 룬공 +400,000%", cond: "조건 없음" },
+    { id: "ete_wp_jaeryeon", tier: "eternal", part: "weapon", name: "재련", wCat: "atk", val: 200000, desc: "무기 룬공 +200,000%", cond: "조건 없음" },
+    { id: "ete_wp_bunsin", tier: "eternal", part: "weapon", name: "분신", wCat: "atk", val: 200000, desc: "무기 룬공 +200,000%", cond: "조건 없음" },
+
+    { id: "imm_wp_totem", tier: "immortal", part: "weapon", name: "토테미즘", wCat: "dmg", val: 100000000, desc: "전투 5초 후 토템 소환, 모든 피해량 +100,000,000% (1,000,001배 곱연산)", cond: "전투 시작 5초 후 발동 (종결 0티어)" },
+    { id: "imm_wp_sujip", tier: "immortal", part: "weapon", name: "수집", wCat: "atk", val: 88000000, desc: "불멸 룬 10종마다 무기 룬공 1,100만% (80종 시 +88,000,000%, 880,001배)", cond: "획득 불멸 룬 80종 이상 (전체 89종)" },
+    { id: "imm_wp_wanbyeok", tier: "immortal", part: "weapon", name: "완벽 추구", wCat: "dmg", val: 80000000, desc: "영원 장비 3종 연마 합 35 이상 시 모든 피해량 +80,000,000% (800,001배 곱연산)", cond: "영원 대낫+오브+장식 연마 합계 35 이상" },
+    { id: "imm_wp_geuk_scythe", tier: "immortal", part: "weapon", name: "극련:대낫", wCat: "dmg", val: 27500000, desc: "영원 대낫 연마 15 이상 시 모든 피해량 총 +27,500,000% (275,001배 곱연산)", cond: "영원 대낫 연마 15단계 이상" },
+    { id: "imm_wp_geuk_orb", tier: "immortal", part: "weapon", name: "극련:오브", wCat: "dmg", val: 27500000, desc: "영원 오브 연마 15 이상 시 모든 피해량 총 +27,500,000% (275,001배 곱연산)", cond: "영원 오브 연마 15단계 이상" },
+    { id: "imm_wp_geuk_acc", tier: "immortal", part: "weapon", name: "극련:장식", wCat: "dmg", val: 27500000, desc: "영원 장식 연마 15 이상 시 모든 피해량 총 +27,500,000% (275,001배 곱연산)", cond: "영원 장식 연마 15단계 이상" },
+    { id: "imm_wp_byeondeok", tier: "immortal", part: "weapon", name: "변덕", wCat: "atk", val: 27500000, desc: "무기 룬공 +27,500,000% (275,001배), 강타 50% 5배 / 50% 불발", cond: "사신 기준 1티어 효율" },
+    { id: "imm_wp_gwajil", tier: "immortal", part: "weapon", name: "과질량", wCat: "atk", val: 16500000, desc: "대낫 크기 3배, 무기 룬공 +16,500,000% (165,001배)", cond: "조건 없음" },
+    { id: "imm_wp_gwapohwa", tier: "immortal", part: "weapon", name: "과포화", wCat: "atk", val: 16500000, desc: "오브 크기 3배, 무기 룬공 +16,500,000% (165,001배)", cond: "조건 없음" },
+    { id: "imm_wp_gwasiyok", tier: "immortal", part: "weapon", name: "과시욕", wCat: "atk", val: 16500000, desc: "장식 크기 3배, 무기 룬공 +16,500,000% (165,001배)", cond: "조건 없음" },
+    { id: "imm_wp_ilgidang", tier: "immortal", part: "weapon", name: "일기당천", wCat: "atk", val: 16500000, desc: "룬던전 150단계 1인 클리어 시 무기 룬공 +16,500,000% (165,001배)", cond: "룬던전 150단계 솔클" },
+    { id: "imm_wp_sunpung", tier: "immortal", part: "weapon", name: "순풍", wCat: "atk", val: 11000000, desc: "무기 룬공 +11,000,000% (110,001배)", cond: "조건 없음" },
+    { id: "imm_wp_jangjeon", tier: "immortal", part: "weapon", name: "장전", wCat: "atk", val: 11000000, desc: "고대 코어 3개 장착 시 무기 룬공 +11,000,000% (110,001배)", cond: "고대 코어 3개" },
+    { id: "imm_wp_jaeryeon", tier: "immortal", part: "weapon", name: "재련", wCat: "atk", val: 5500000, desc: "무기 룬공 +5,500,000% (55,001배)", cond: "조건 없음" },
+    { id: "imm_wp_bunsin", tier: "immortal", part: "weapon", name: "분신", wCat: "atk", val: 5500000, desc: "무기 룬공 +5,500,000% (55,001배)", cond: "조건 없음" }
+  ];
+
+  function openRuneHelperView() {
+    document.getElementById("newbie_hub_view").style.display = "none";
+    document.getElementById("newbie_calc_view").style.display = "none";
+    document.getElementById("newbie_rune_view").style.display = "block";
+
+    const floatBtn = document.getElementById("floating_back_btn");
+    floatBtn.style.display = "flex";
+    document.getElementById("floating_back_text").innerText = "뉴비 메뉴로 돌아가기";
+    setFloatingGuideContext('rune', '룬 착용 도우미');
+
+    renderRuneHelperAccordions();
+    calculateBestRuneLoadout();
+    window.scrollTo({ top: 100, behavior: 'smooth' });
+  }
+
+  function selectRuneJob(job) {
+    currentRuneJob = job;
+    ['reaper', 'mage', 'lord'].forEach(j => {
+      document.getElementById('rune_job_' + j)?.classList.toggle('selected', j === job);
+    });
+    calculateBestRuneLoadout();
+  }
+
+  function selectRuneElem(elem) {
+    currentRuneElem = elem;
+    ['fire', 'light', 'dark'].forEach(e => {
+      document.getElementById('rune_elem_' + e)?.classList.toggle('selected', e === elem);
+    });
+    calculateBestRuneLoadout();
+  }
+
+  function switchRuneTierTab(tier) {
+    currentRuneTierTab = tier;
+    ['ancient', 'eternal', 'immortal'].forEach(t => {
+      const btn = document.getElementById('rtab_' + t);
+      if (btn) btn.className = 'rune-tier-tab' + (t === tier ? ' active-' + t : '');
+    });
+    renderRuneHelperAccordions();
+  }
+
+  function toggleRuneOwned(runeId) {
+    if (ownedRunes.has(runeId)) ownedRunes.delete(runeId);
+    else ownedRunes.add(runeId);
+
+    const card = document.getElementById('rcard_' + runeId);
+    if (card) card.classList.toggle('selected', ownedRunes.has(runeId));
+
+    updateRunePartCounts();
+    calculateBestRuneLoadout();
+  }
+
+  function selectAllCurrentTierRunes() {
+    RUNE_DB.filter(r => r.tier === currentRuneTierTab).forEach(r => ownedRunes.add(r.id));
+    renderRuneHelperAccordions();
+    calculateBestRuneLoadout();
+  }
+
+  function clearAllOwnedRunes() {
+    ownedRunes.clear();
+    renderRuneHelperAccordions();
+    calculateBestRuneLoadout();
+  }
+
+  function togglePartRunes(part, selectAll) {
+    RUNE_DB.filter(r => r.tier === currentRuneTierTab && r.part === part).forEach(r => {
+      if (selectAll) ownedRunes.add(r.id);
+      else ownedRunes.delete(r.id);
+    });
+    renderRuneHelperAccordions();
+    calculateBestRuneLoadout();
+  }
+
+  function getRuneTierKr(tier) {
+    if (tier === 'immortal') return '불멸';
+    if (tier === 'eternal') return '영원';
+    return '고대';
+  }
+
+  function getRuneTierBadgeClass(tier) {
+    if (tier === 'immortal') return 'grade-immortal';
+    if (tier === 'eternal') return 'grade-eternal';
+    return 'grade-ancient';
+  }
+
+  function renderRuneHelperAccordions() {
+    const container = document.getElementById('rune_accordion_container');
+    if (!container) return;
+
+    const parts = [
+      { key: 'armor', name: '🧥 방어구 룬 (3슬롯: 상의 / 하의 / 신발)' },
+      { key: 'ring', name: '💍 반지 룬 (1슬롯)' },
+      { key: 'neck', name: '📿 목걸이 룬 (1슬롯)' },
+      { key: 'emblem', name: '🛡️ 엠블렘 룬 (1슬롯)' },
+      { key: 'abyss', name: '🔯 심연장식 룬 (1슬롯)' },
+      { key: 'weapon', name: '🪓 무기 룬 (3슬롯)' }
+    ];
+
+    const accTierClass = currentRuneTierTab === 'immortal' ? 'acc-mythic' : (currentRuneTierTab === 'eternal' ? 'acc-middle' : 'acc-advanced');
+    const tierBadgeCls = getRuneTierBadgeClass(currentRuneTierTab);
+    const tierKr = getRuneTierKr(currentRuneTierTab);
+
+    let html = '';
+    parts.forEach((p, idx) => {
+      const list = RUNE_DB.filter(r => r.tier === currentRuneTierTab && r.part === p.key);
+      const ownedCnt = list.filter(r => ownedRunes.has(r.id)).length;
+
+      const cardsHtml = list.map(r => {
+        const isOwned = ownedRunes.has(r.id);
+        let tagHtml = '';
+        if (r.setGroup || r.pair || r.pairReq || r.pairWithRing || r.pairWithAbyss || r.pairWithEmblem) {
+          tagHtml += `<span class="mini-tag" style="background:#7c3aed; color:#fff;">세트</span>`;
+        }
+        if (r.slotPos && r.slotPos !== 'job_auto') {
+          const posKr = r.slotPos === 'top' ? '상의' : (r.slotPos === 'mid' ? '하의' : '신발');
+          tagHtml += `<span class="mini-tag" style="background:#0284c7; color:#fff;">${posKr}</span>`;
+        } else if (r.slotPos === 'job_auto') {
+          tagHtml += `<span class="mini-tag" style="background:#0284c7; color:#fff;">부위별</span>`;
+        }
+
+        return `
+          <div class="item-select-box ${isOwned ? 'selected' : ''}" id="rcard_${r.id}" data-rune-search="${r.name} ${r.desc} ${r.cond}" onclick="toggleRuneOwned('${r.id}')">
+            <div class="item-box-badges">${tagHtml}</div>
+            <div class="item-box-name">${r.name}</div>
+            <div class="item-box-sub" style="line-height:1.25;">${r.desc.split('(')[0]}</div>
+          </div>
+        `;
+      }).join('');
+
+      html += `
+        <div class="accordion-item ${accTierClass}" id="racc_${p.key}">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('racc_${p.key}')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text"><span class="grade-badge ${tierBadgeCls}">${tierKr}</span> ${p.name}</span>
+            </div>
+            <div class="accordion-right-info" onclick="event.stopPropagation();">
+              <button onclick="togglePartRunes('${p.key}', true)" style="background:#1e293b; border:1px solid #475569; color:#cbd5e1; padding:2px 7px; border-radius:4px; font-size:11px; cursor:pointer;">전체선택</button>
+              <button onclick="togglePartRunes('${p.key}', false)" style="background:#1e293b; border:1px solid #475569; color:#94a3b8; padding:2px 7px; border-radius:4px; font-size:11px; cursor:pointer;">해제</button>
+              <span class="accordion-count-badge ${ownedCnt > 0 ? 'has-selected' : ''}" id="rcnt_${p.key}">${ownedCnt} / ${list.length}</span>
+            </div>
+          </div>
+          <div class="accordion-content">
+            <div class="acc-scroll-box">
+              <div class="item-compact-grid">
+                ${cardsHtml}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+    updateRunePartCounts();
+  }
+
+  function updateRunePartCounts() {
+    ['armor', 'ring', 'neck', 'emblem', 'abyss', 'weapon'].forEach(part => {
+      const list = RUNE_DB.filter(r => r.tier === currentRuneTierTab && r.part === part);
+      const ownedCnt = list.filter(r => ownedRunes.has(r.id)).length;
+      const badge = document.getElementById('rcnt_' + part);
+      if (badge) {
+        badge.innerText = `${ownedCnt} / ${list.length}`;
+        badge.classList.toggle('has-selected', ownedCnt > 0);
+      }
+    });
+    const totalBadge = document.getElementById('rune_owned_count_badge');
+    if (totalBadge) totalBadge.innerText = `총 보유 선택: ${ownedRunes.size}개`;
+  }
+
+  function filterRuneCards(keyword) {
+    const q = keyword.trim().toLowerCase();
+    const boxes = document.querySelectorAll('#rune_accordion_container .item-select-box');
+    boxes.forEach(b => b.classList.remove('search-match'));
+    if (!q) return;
+
+    let firstMatch = null;
+    boxes.forEach(box => {
+      const text = (box.getAttribute('data-rune-search') || '').toLowerCase();
+      if (text.includes(q)) {
+        box.classList.add('search-match');
+        const acc = box.closest('.accordion-item');
+        if (acc && !acc.classList.contains('active')) acc.classList.add('active');
+        if (!firstMatch) firstMatch = box;
+      }
+    });
+    if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function getEffectiveRuneValue(r, currentSetIds) {
+    if (r.jobType && r.jobType !== 'all' && r.jobType !== currentRuneJob) return 0;
+    if (r.elem && r.elem !== currentRuneElem) return 0;
+    if (r.reqRune && !currentSetIds.has(r.reqRune)) return 0;
+    return r.val || r.mult || 0;
+  }
+
+  function evaluateArmorCombo(combo, allOwnedArmor) {
+    const ids = new Set(combo.map(r => r.id));
+
+    let topCnt = 0, midCnt = 0, botCnt = 0;
+    for (let r of combo) {
+      if (r.slotPos === 'top') topCnt++;
+      if (r.slotPos === 'mid') midCnt++;
+      if (r.slotPos === 'bot') botCnt++;
+    }
+    if (topCnt > 1 || midCnt > 1 || botCnt > 1) return -1;
+
+    if (ids.has('imm_ar_star') && ids.has('imm_ar_moon') && ids.has('imm_ar_sun')) {
+      return 300001 * 750000001;
+    }
+
+    if (ids.has('anc_ar_mem_top') && ids.has('anc_ar_mem_mid') && ids.has('anc_ar_mem_bot')) {
+      return 11 * 15000.01;
+    }
+
+    let atkSum = 0;
+    let jobSum = 0;
+    let multProduct = 1;
+    let pairExtraMult = 1;
+
+    for (let r of combo) {
+      const effVal = getEffectiveRuneValue(r, ids);
+      if (r.cat === 'atk') {
+        atkSum += effVal;
+        if (r.pair && ids.has(r.pair)) {
+          if (r.pairMult) pairExtraMult = Math.max(pairExtraMult, r.pairMult);
+          if (r.pairBonus) atkSum += r.pairBonus;
+        }
+      } else if (r.cat === 'job') {
+        jobSum += effVal;
+      } else if (r.cat === 'mult') {
+        multProduct *= (1 + effVal / 100);
+      }
+    }
+
+    return (1 + atkSum / 100) * (1 + jobSum / 100) * multProduct * pairExtraMult;
+  }
+
+  function findBestArmor3(ownedArmor) {
+    if (ownedArmor.length === 0) return { slots: [null, null, null], mult: 1 };
+    if (ownedArmor.length <= 3) {
+      const ordered = assignArmorPositions(ownedArmor);
+      return { slots: ordered, mult: Math.max(1, evaluateArmorCombo(ownedArmor, ownedArmor)) };
+    }
+
+    let bestScore = -1;
+    let bestCombo = [];
+    const n = ownedArmor.length;
+
+    for (let i = 0; i < n - 2; i++) {
+      for (let j = i + 1; j < n - 1; j++) {
+        for (let k = j + 1; k < n; k++) {
+          const c = [ownedArmor[i], ownedArmor[j], ownedArmor[k]];
+          const score = evaluateArmorCombo(c, ownedArmor);
+          if (score > bestScore) {
+            bestScore = score;
+            bestCombo = c;
+          }
+        }
+      }
+    }
+
+    return {
+      slots: assignArmorPositions(bestCombo),
+      mult: Math.max(1, bestScore)
+    };
+  }
+
+  function assignArmorPositions(combo) {
+    const res = [null, null, null];
+    const remaining = [];
+
+    combo.forEach(r => {
+      if (!r) return;
+      if (r.slotPos === 'top' && !res[0]) res[0] = r;
+      else if (r.slotPos === 'mid' && !res[1]) res[1] = r;
+      else if (r.slotPos === 'bot' && !res[2]) res[2] = r;
+      else if (r.slotPos === 'job_auto') {
+        const targetIdx = currentRuneJob === 'reaper' ? 0 : (currentRuneJob === 'mage' ? 1 : 2);
+        if (!res[targetIdx]) res[targetIdx] = r;
+        else remaining.push(r);
+      } else {
+        remaining.push(r);
+      }
+    });
+
+    for (let i = 0; i < 3; i++) {
+      if (!res[i] && remaining.length > 0) {
+        res[i] = remaining.shift();
+      }
+    }
+    return res;
+  }
+
+  function findBestRingAndNeck(ownedRings, ownedNecks) {
+    const hasElisia = document.getElementById('rune_cond_elisia')?.checked;
+    let bestScore = 0;
+    let bestRing = null;
+    let bestNeck = null;
+
+    const rList = ownedRings.length > 0 ? ownedRings : [null];
+    const nList = ownedNecks.length > 0 ? ownedNecks : [null];
+
+    for (let r of rList) {
+      for (let n of nList) {
+        if (r && r.pairReq && (!n || n.id !== r.pairReq)) continue;
+        if (n && n.pairReq && (!r || r.id !== n.pairReq)) continue;
+
+        let rMult = 1;
+        if (r) {
+          if (r.elem && r.elem !== currentRuneElem) rMult = 1;
+          else if (r.jobType && r.jobType !== currentRuneJob) rMult = 1;
+          else if (r.id === 'ete_rg_gwaseong' && hasElisia) rMult = r.elisiaBonus;
+          else rMult = r.mult || 1;
+        }
+
+        let nMult = 1;
+        if (n) {
+          if (n.elem && n.elem !== currentRuneElem) nMult = 1;
+          else if (n.jobType && n.jobType !== currentRuneJob) nMult = 1;
+          else if (n.pairWithRing) {
+            nMult = (r && r.id === n.pairWithRing) ? n.pairMult : 1;
+          } else {
+            nMult = n.mult || 1;
+          }
+        }
+
+        const total = rMult * nMult;
+        if (total > bestScore) {
+          bestScore = total;
+          bestRing = r;
+          bestNeck = n;
+        }
+      }
+    }
+
+    return { ring: bestRing, neck: bestNeck, mult: Math.max(1, bestScore) };
+  }
+
+  function findBestEmblemAndAbyss(ownedEmblems, ownedAbyss) {
+    const hasBleed = document.getElementById('rune_cond_bleed')?.checked;
+    let bestScore = 0;
+    let bestEmblem = null;
+    let bestAbyss = null;
+
+    const eList = ownedEmblems.length > 0 ? ownedEmblems : [null];
+    const aList = ownedAbyss.length > 0 ? ownedAbyss : [null];
+
+    for (let e of eList) {
+      for (let a of aList) {
+        let eMult = 1;
+        if (e) {
+          if (e.jobType && e.jobType !== currentRuneJob) eMult = 1;
+          else if (e.pairWithAbyss && a && a.id === e.pairWithAbyss) eMult = e.pairMult;
+          else eMult = e.mult || 1;
+        }
+
+        let aMult = 1;
+        if (a) {
+          if (a.pairWithEmblem && e && e.id === a.pairWithEmblem) aMult = a.pairMult;
+          else if (a.id === 'imm_ab_jeoju2') aMult = hasBleed ? a.mult : a.noBleedMult;
+          else aMult = a.mult || 1;
+        }
+
+        const total = eMult * aMult;
+        if (total > bestScore) {
+          bestScore = total;
+          bestEmblem = e;
+          bestAbyss = a;
+        }
+      }
+    }
+
+    return { emblem: bestEmblem, abyss: bestAbyss, mult: Math.max(1, bestScore) };
+  }
+
+  function evaluateWeaponCombo(combo) {
+    let atkSum = 0;
+    let dmgProduct = 1;
+    for (let w of combo) {
+      if (!w) continue;
+      if (w.wCat === 'dmg') {
+        dmgProduct *= (1 + w.val / 100);
+      } else {
+        let v = w.val;
+        if (w.reaperExtra && currentRuneJob === 'reaper') v *= 1.25;
+        atkSum += v;
+      }
+    }
+    return (1 + atkSum / 100) * dmgProduct;
+  }
+
+  function findBestWeapon3(ownedWeapons) {
+    if (ownedWeapons.length === 0) return { slots: [null, null, null], mult: 1 };
+    if (ownedWeapons.length <= 3) {
+      const padded = [ownedWeapons[0] || null, ownedWeapons[1] || null, ownedWeapons[2] || null];
+      return { slots: padded, mult: Math.max(1, evaluateWeaponCombo(ownedWeapons)) };
+    }
+
+    let bestScore = -1;
+    let bestCombo = [];
+    const n = ownedWeapons.length;
+
+    for (let i = 0; i < n - 2; i++) {
+      for (let j = i + 1; j < n - 1; j++) {
+        for (let k = j + 1; k < n; k++) {
+          const c = [ownedWeapons[i], ownedWeapons[j], ownedWeapons[k]];
+          const score = evaluateWeaponCombo(c);
+          if (score > bestScore) {
+            bestScore = score;
+            bestCombo = c;
+          }
+        }
+      }
+    }
+    return { slots: bestCombo, mult: Math.max(1, bestScore) };
+  }
+
+  function findSameMultiplierRunes(targetRune, ownedPartList, equippedIds) {
+    if (!targetRune) return [];
+    const targetVal = targetRune.val || targetRune.mult || 0;
+    return ownedPartList.filter(r => {
+      if (r.id === targetRune.id || equippedIds.has(r.id)) return false;
+      if (r.tier !== targetRune.tier) return false;
+      if (r.cat && r.cat !== targetRune.cat) return false;
+      if (r.wCat && r.wCat !== targetRune.wCat) return false;
+      if (r.elem && r.elem !== currentRuneElem) return false;
+      if (r.jobType && r.jobType !== 'all' && r.jobType !== currentRuneJob) return false;
+      const v = r.val || r.mult || 0;
+      return v === targetVal;
+    }).map(r => r.name);
+  }
+
+  function renderSlotBlock(slotElId, partLabel, runeObj) {
+    const el = document.getElementById(slotElId);
+    if (!el) return;
+    if (!runeObj) {
+      el.className = 'rune-slot-block';
+      el.innerHTML = `
+        <div class="rune-slot-part-tag"><span>${partLabel}</span><span>미장착</span></div>
+        <div class="rune-slot-name" style="color:#64748b; font-size:13px;">보유 룬 없음</div>
+        <div class="rune-slot-stat" style="color:#475569;">-</div>
+      `;
+      return;
+    }
+
+    const tierKr = getRuneTierKr(runeObj.tier);
+    const badgeCls = getRuneTierBadgeClass(runeObj.tier);
+    el.className = `rune-slot-block tier-${runeObj.tier}`;
+    el.innerHTML = `
+      <div class="rune-slot-part-tag">
+        <span>${partLabel}</span>
+        <span class="grade-badge ${badgeCls}" style="font-size:10px; padding:1px 5px;">${tierKr}</span>
+      </div>
+      <div class="rune-slot-name">${runeObj.name}</div>
+      <div class="rune-slot-stat">${runeObj.desc.split(',')[0]}</div>
+    `;
+  }
+
+  function calculateBestRuneLoadout() {
+    const ownedList = RUNE_DB.filter(r => ownedRunes.has(r.id));
+    const ownedArmor = ownedList.filter(r => r.part === 'armor');
+    const ownedRings = ownedList.filter(r => r.part === 'ring');
+    const ownedNecks = ownedList.filter(r => r.part === 'neck');
+    const ownedEmblems = ownedList.filter(r => r.part === 'emblem');
+    const ownedAbyss = ownedList.filter(r => r.part === 'abyss');
+    const ownedWeapons = ownedList.filter(r => r.part === 'weapon');
+
+    const bestArmor = findBestArmor3(ownedArmor);
+    const bestAcc = findBestRingAndNeck(ownedRings, ownedNecks);
+    const bestEmbAb = findBestEmblemAndAbyss(ownedEmblems, ownedAbyss);
+    const bestWeap = findBestWeapon3(ownedWeapons);
+
+    renderSlotBlock('slot_armor_top', '🧥 방어구 (상의)', bestArmor.slots[0]);
+    renderSlotBlock('slot_armor_mid', '👖 방어구 (하의)', bestArmor.slots[1]);
+    renderSlotBlock('slot_armor_bot', '🥾 방어구 (신발)', bestArmor.slots[2]);
+    renderSlotBlock('slot_abyss', '🔯 심연장식', bestEmbAb.abyss);
+    renderSlotBlock('slot_ring', '💍 반지', bestAcc.ring);
+    renderSlotBlock('slot_neck', '📿 목걸이', bestAcc.neck);
+    renderSlotBlock('slot_emblem', '🛡️ 엠블렘', bestEmbAb.emblem);
+    renderSlotBlock('slot_weap_1', '🪓 무기 1슬롯', bestWeap.slots[0]);
+    renderSlotBlock('slot_weap_2', '🪓 무기 2슬롯', bestWeap.slots[1]);
+    renderSlotBlock('slot_weap_3', '🪓 무기 3슬롯', bestWeap.slots[2]);
+
+    const grandTotalEl = document.getElementById('rune_grand_total_mult');
+    const breakdownEl = document.getElementById('rune_mult_breakdown');
+
+    const mArmor = Math.round(bestArmor.mult);
+    const mAcc = Math.round(bestAcc.mult);
+    const mEmb = Math.round(bestEmbAb.mult);
+    const mWeap = Math.round(bestWeap.mult);
+
+    const combinedLog10 = Math.log10(Math.max(1, bestArmor.mult))
+                        + Math.log10(Math.max(1, bestAcc.mult))
+                        + Math.log10(Math.max(1, bestEmbAb.mult))
+                        + Math.log10(Math.max(1, bestWeap.mult));
+
+    let grandTotalStr = "1배";
+    if (combinedLog10 === 0) {
+      grandTotalStr = "1배 (보유 룬을 선택하세요)";
+    } else if (combinedLog10 < 32) {
+      grandTotalStr = formatKoreanNumber(Math.pow(10, combinedLog10)) + "배";
+    } else {
+      const exp = Math.floor(combinedLog10);
+      const mantissa = Math.pow(10, combinedLog10 - exp).toFixed(2);
+      grandTotalStr = `약 ${mantissa} × 10^${exp}배`;
+    }
+
+    if (grandTotalEl) grandTotalEl.innerText = grandTotalStr;
+    if (breakdownEl) {
+      breakdownEl.innerHTML = `
+        <div class="rune-mult-row">
+          <span>🧥 방어구 3칸 종합 배율</span>
+          <strong>${formatKoreanNumber(mArmor)}배</strong>
+        </div>
+        <div class="rune-mult-row">
+          <span>💍 반지 + 📿 목걸이 종합 배율</span>
+          <strong>${formatKoreanNumber(mAcc)}배</strong>
+        </div>
+        <div class="rune-mult-row">
+          <span>🛡️ 엠블렘 + 🔯 심연장식 종합 배율</span>
+          <strong>${formatKoreanNumber(mEmb)}배</strong>
+        </div>
+        <div class="rune-mult-row">
+          <span>🪓 무기 3칸 종합 배율</span>
+          <strong>${formatKoreanNumber(mWeap)}배</strong>
+        </div>
+      `;
+    }
+
+    const reportEl = document.getElementById('rune_detail_report_list');
+    if (!reportEl) return;
+
+    const allEquippedSlots = [
+      { label: '방어구 · 상의', rune: bestArmor.slots[0], pool: ownedArmor },
+      { label: '방어구 · 하의', rune: bestArmor.slots[1], pool: ownedArmor },
+      { label: '방어구 · 신발', rune: bestArmor.slots[2], pool: ownedArmor },
+      { label: '반지', rune: bestAcc.ring, pool: ownedRings },
+      { label: '목걸이', rune: bestAcc.neck, pool: ownedNecks },
+      { label: '엠블렘', rune: bestEmbAb.emblem, pool: ownedEmblems },
+      { label: '심연장식', rune: bestEmbAb.abyss, pool: ownedAbyss },
+      { label: '무기 1슬롯', rune: bestWeap.slots[0], pool: ownedWeapons },
+      { label: '무기 2슬롯', rune: bestWeap.slots[1], pool: ownedWeapons },
+      { label: '무기 3슬롯', rune: bestWeap.slots[2], pool: ownedWeapons }
+    ];
+
+    const equippedIds = new Set(allEquippedSlots.filter(s => s.rune).map(s => s.rune.id));
+    let reportHtml = '';
+
+    allEquippedSlots.forEach(item => {
+      if (!item.rune) return;
+      const r = item.rune;
+      const sameRunes = findSameMultiplierRunes(r, item.pool, equippedIds);
+      const sameHtml = sameRunes.length > 0
+        ? `<div style="margin-top:6px;"><span class="same-rune-badge">똑같은 룬 (대체 가능): <strong>${sameRunes.join(', ')}</strong></span></div>`
+        : '';
+
+      reportHtml += `
+        <div style="background:#0f172a; border:1px solid #334155; border-radius:10px; padding:12px 16px; line-height:1.55;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:12px; background:#1e293b; color:#cbd5e1; padding:2px 8px; border-radius:6px; font-weight:700;">${item.label}</span>
+              <span class="grade-badge ${getRuneTierBadgeClass(r.tier)}">${getRuneTierKr(r.tier)}</span>
+              <strong style="font-size:15px; color:#ffffff;">${r.name}</strong>
+            </div>
+            <span style="font-size:12.5px; color:#cbd5e1;">발동 조건: <strong style="color:#f8fafc;">${r.cond}</strong></span>
+          </div>
+          <div style="font-size:13.5px; color:#94a3b8;">효과: <span style="color:#e2e8f0;">${r.desc}</span></div>
+          ${sameHtml}
+        </div>
+      `;
+    });
+
+    if (!reportHtml) {
+      reportHtml = `<div style="text-align:center; padding:24px; color:#94a3b8; background:#0f172a; border-radius:10px; border:1px dashed #334155;">위 목록에서 보유 중인 룬을 클릭해 주세요. (우측 상단 <strong>'현재 등급 전체선택'</strong> 버튼으로 빠르게 테스트해 보실 수 있습니다!)</div>`;
+    }
+    reportEl.innerHTML = reportHtml;
   }
 
   // ==================== INITIALIZATION ====================
