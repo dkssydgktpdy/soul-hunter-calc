@@ -1119,10 +1119,10 @@
         <img id="main-avatar" src="avatar.PNG" alt="겨울눈사람 아바타" 
           onerror="handleAvatarError(this)"
           style="width:80px; height:80px; border-radius:50%; border:3px solid #38bdf8; object-fit:cover; background:#1e293b; box-shadow:0 0 22px rgba(56, 189, 248, 0.6); display:block;">
-      </div>
+      </div>s
       <h1 style="margin:0; font-size:26px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
     </div>
-    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.2.1.0</div>
+    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.2.2.0</div>
   </header>
 
   <!-- Top Mode Switcher (심화 공략 vs 뉴비 공략) -->
@@ -1245,7 +1245,7 @@
               </div>
               <div>
                 <span class="hub-card-title">🌙 가호 & 원혼 어빌리티</span>
-                <span class="hub-card-desc">별/달/해 가호 및 원혼 단계별 잠금 옵션 주사위 계산</span>
+                <span class="hub-card-desc">별/달/해/유성 가호 및 원혼 단계별 잠금 옵션 주사위 계산</span>
               </div>
             </div>
             <div class="hub-card-arrow">➔</div>
@@ -1694,7 +1694,8 @@
           <p class="card-subtitle">시뮬레이션할 가호 종류를 선택하세요. (잠금 수에 따라 1회당 소모 주사위가 증가합니다)</p>
 
           <!-- 별 / 달 / 해 가호 선택 버튼 -->
-          <div class="grid-3" style="margin-bottom:18px;">
+          <!-- 별 / 달 / 해 / 유성 가호 선택 버튼 (4열 배치) -->
+          <div class="grid-4" style="margin-bottom:18px;">
             <div class="ancient-select-card selected" id="gaho_btn_star" onclick="selectGahoType('star')">
               <div class="ancient-header">
                 <div class="ancient-title-box">
@@ -1732,6 +1733,19 @@
                 <span class="grade-badge" style="background:rgba(244,63,94,0.2); color:#f43f5e; border:1px solid #f43f5e;">7칸</span>
               </div>
               <div class="ancient-desc">잠금당 +70만 주사위 증가</div>
+            </div>
+
+            <div class="ancient-select-card" id="gaho_btn_shooting_star" onclick="selectGahoType('shooting_star')">
+              <div class="ancient-header">
+                <div class="ancient-title-box">
+                  <div class="gaho-icon-wrapper" style="border-color:#c084fc; background:rgba(192,132,252,0.12);">
+                    <img src="images/shooting_star.png" alt="유성" onerror="this.onerror=null; this.src='images/shooting_star.jpg'; this.onerror=function(){this.parentElement.innerHTML='☄️';};">
+                  </div>
+                  <div><span class="ancient-name">☄️ 유성의 가호</span><span class="ancient-sub" style="color:#c084fc;">데이터 수집 중 🔒</span></div>
+                </div>
+                <span class="grade-badge" style="background:rgba(192,132,252,0.2); color:#c084fc; border:1px solid #c084fc;">7칸</span>
+              </div>
+              <div class="ancient-desc">확률 동일 / 소모 재화 수집 중</div>
             </div>
           </div>
 
@@ -1847,6 +1861,10 @@
                   <td>70만</td><td>140만</td><td>210만</td><td>280만</td><td>350만</td><td>420만</td><td>490만</td>
                 </tr>
                 <tr>
+                  <td><strong style="color:#c084fc;">☄️ 유성의 가호</strong></td>
+                  <td colspan="7" style="color:#94a3b8;">소모 옵션 주사위 데이터 수집 중 🔒 (등장 확률은 타 가호와 동일)</td>
+                </tr>
+                <tr>
                   <td><strong style="color:#a855f7;">💀 원혼 어빌리티</strong></td>
                   <td>30만</td><td>60만</td><td>90만</td><td>120만</td><td>150만</td><td>180만</td><td>-</td>
                 </tr>
@@ -1875,7 +1893,7 @@
           <div class="hub-card" onclick="openNewbieCalculator('equip')">
             <div class="hub-card-left">
               <div class="hub-card-icon" style="border-color:#38bdf8;">
-                <img src="images/scythe.png" alt="장비" onerror="this.onerror=null; this.src='images/elem_buffing.png'; this.onerror=function(){this.parentElement.innerHTML='🗡️';};">
+                <img src="images/main_equip.png" alt="장비" onerror="this.onerror=null; this.src='images/main_equip.jpg'; this.onerror=function(){this.parentElement.innerHTML='🗡️';};">
               </div>
               <div>
                 <span class="hub-card-title">🗡️ 장비 소환</span>
@@ -1888,7 +1906,7 @@
           <div class="hub-card" onclick="openNewbieCalculator('passive')">
             <div class="hub-card-left">
               <div class="hub-card-icon" style="border-color:#a855f7;">
-                <img src="images/ancient_passive.png" alt="패시브" onerror="this.onerror=null; this.src='images/frenzy.jpg'; this.onerror=function(){this.parentElement.innerHTML='📜';};">
+                <img src="images/main_passive.png" alt="패시브" onerror="this.onerror=null; this.src='images/main_passive.jpg'; this.onerror=function(){this.parentElement.innerHTML='📜';};">
               </div>
               <div>
                 <span class="hub-card-title">📜 패시브 소환</span>
@@ -1901,7 +1919,7 @@
           <div class="hub-card" onclick="openNewbieCalculator('skill')">
             <div class="hub-card-left">
               <div class="hub-card-icon" style="border-color:#fbbf24;">
-                <img src="images/elem_option.png" alt="스킬" onerror="this.onerror=null; this.src='images/elem_light.jpg'; this.onerror=function(){this.parentElement.innerHTML='⚡';};">
+                <img src="images/main_skill.png" alt="스킬" onerror="this.onerror=null; this.src='images/main_skill.jpg'; this.onerror=function(){this.parentElement.innerHTML='⚡';};">
               </div>
               <div>
                 <span class="hub-card-title">⚡ 스킬 소환</span>
@@ -1914,7 +1932,7 @@
           <div class="hub-card" onclick="openNewbieCalculator('hero')">
             <div class="hub-card-left">
               <div class="hub-card-icon" style="border-color:#f43f5e;">
-                <img src="images/command.jpg" alt="영웅" onerror="this.onerror=null; this.src='images/strike_master.jpg'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
+                <img src="images/main_hero.png" alt="영웅" onerror="this.onerror=null; this.src='images/main_hero.jpg'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
               </div>
               <div>
                 <span class="hub-card-title">🦸 영웅 소환</span>
@@ -1927,7 +1945,7 @@
           <div class="hub-card" onclick="openNewbieCalculator('spirit')">
             <div class="hub-card-left">
               <div class="hub-card-icon" style="border-color:#22c55e;">
-                <img src="images/option_dice.png" alt="정령" onerror="this.onerror=null; this.src='images/elem_fusion.jpg'; this.onerror=function(){this.parentElement.innerHTML='🧚';};">
+                <img src="images/main_spirit.png" alt="정령" onerror="this.onerror=null; this.src='images/main_spirit.jpg'; this.onerror=function(){this.parentElement.innerHTML='🧚';};">
               </div>
               <div>
                 <span class="hub-card-title">🧚 정령 소환</span>
@@ -1961,10 +1979,10 @@
           <div class="hub-card" onclick="openRuneHelperView()" style="border-color:rgba(244,63,94,0.45);">
             <div class="hub-card-left">
               <div class="hub-card-icon" style="border-color:#f43f5e; background:rgba(244,63,94,0.12);">
-                <span>🛡️</span>
+                <img src="images/main_rune.png" alt="룬" onerror="this.onerror=null; this.src='images/main_rune.jpg'; this.onerror=function(){this.parentElement.innerHTML='🛡️';};">
               </div>
               <div>
-                <span class="hub-card-title">🛡️ 룬 착용 도우미 (Beta)</span>
+                <span class="hub-card-title">🛡️ 룬 착용 도우미 v.1.0.0</span>
                 <span class="hub-card-desc">고대·영원·불멸 보유 룬 선택 시 최고 배율 10칸(상의/하의/신발/장식/무기) 자동 배치</span>
               </div>
             </div>
@@ -2011,11 +2029,12 @@
         <div id="summon_dynamic_body"></div>
         <div id="summon_result_box"></div>
 
+        <!-- 소환 비효율 경고 & 파밍 권장 팁 배너 (카테고리에 따라 다이아/정령석 동적 변경) -->
         <div style="background: rgba(239, 68, 68, 0.1); border: 1.5px solid #ef4444; border-radius: 12px; padding: 16px 18px; margin-top: 20px;">
-          <div style="font-weight: 800; font-size: 15px; color: #fca5a5; display:flex; align-items:center; gap:6px; margin-bottom: 6px;">
+          <div style="font-weight: 800; font-size: 15px; color: #fca5a5; display:flex; align-items:center; gap:6px; margin-bottom: 6px;" id="summon_warn_banner_title">
             ⚠️ <strong>블루 다이아 직접 소환 비효율 경고 & 파밍 권장 팁</strong>
           </div>
-          <p style="font-size: 13.5px; color: #cbd5e1; margin: 0; line-height: 1.6;">
+          <p style="font-size: 13.5px; color: #cbd5e1; margin: 0; line-height: 1.6;" id="summon_warn_banner_desc">
             블루 다이아를 사용한 무한 직접 소환은 소모 재화 대비 효율이 극히 떨어집니다. 
             본 계산기의 소환 기댓값과 횟수는 <strong>목표치 가늠 및 페이스 조절용</strong>으로만 참고하시고, 
             최대한 <strong>이벤트 상점 교환, 쟁탈전 보상, 마일리지 교환권</strong>을 적극 활용하여 원하는 목표를 달성하시는 것을 강력 권장합니다.
@@ -2048,7 +2067,7 @@
     <div id="newbie_rune_view" style="display:none;">
       <div class="card" style="border-left: 4px solid #f43f5e;">
         <div class="card-title">
-          <span>🛡️ 룬 착용 도우미 (Beta) - 최고 배율 자동 세팅</span>
+          <span>🛡️ 룬 착용 도우미 (v.1.0.0) - 최고 배율 자동 세팅</span>
           <div style="display:flex; gap:6px;">
             <button onclick="selectAllCurrentTierRunes()" style="background:#334155; border:1px solid #475569; color:#e2e8f0; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">현재 등급 전체선택</button>
             <button onclick="clearAllOwnedRunes()" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">전체 초기화</button>
@@ -2181,7 +2200,7 @@
 
   <!-- Footer -->
   <footer>
-    소울헌터키우기 네이버 라운지 전용 계산기 v.2.1.0 | 제작: 29서버 겨울눈사람
+    소울헌터키우기 네이버 라운지 전용 계산기 v.2.2.0 | 제작: 29서버 겨울눈사람
   </footer>
 </div>
 
@@ -2255,7 +2274,7 @@
     'tab-ability': {
       title: '🌙 가호 & 원혼 어빌리티 계산기 사용법',
       html: `<ol>
-        <li><strong>별 / 달 / 해의 가호</strong> 중 하나를 선택하고, 현재 잠근(완성한) 고대 옵공증 칸 수를 고르세요.</li>
+        <li><strong>별 / 달 / 해 / 유성의 가호</strong> 중 하나를 선택하고, 현재 잠근(완성한) 고대 옵공증 칸 수를 고르세요.</li>
         <li>당장 <strong>다음 1칸을 띄울 때 필요한 주사위 기댓값</strong>과 <strong>7칸(원혼 6칸) 올 고대 완성 총 누적 기댓값</strong>을 동시에 확인할 수 있습니다.</li>
       </ol>`
     },
@@ -2270,32 +2289,32 @@
       title: '📜 패시브 소환 기댓값 계산기 사용법',
       html: `<ol>
         <li>상단에서 <strong>현재 소환 레벨</strong>을 고르고, 등급별 목록에서 목표하는 <strong>패시브 카드</strong>를 클릭하세요.</li>
-        <li>현재 보유 수량(0~70개)을 입력하면 10돌파(70개)까지 필요한 예상 소환 횟수와 다이아(5천뽑당 100장 환급 반영)가 계산됩니다.</li>
+        <li>동일 등급 내 등장 확률은 모두 동일하므로, 단순 기댓값만 보실 거라면 <strong>아무 카드나 클릭</strong>하고 보유 수량(0~70개)만 맞추셔도 됩니다!</li>
       </ol>`
     },
     'skill': {
       title: '⚡ 스킬 소환 기댓값 계산기 사용법',
       html: `<ol>
-        <li>검색창이나 목록에서 목표하는 <strong>스킬 카드</strong>를 클릭하고 현재 보유 수량을 입력하세요.</li>
+        <li>검색창이나 목록에서 목표하는 <strong>스킬 카드</strong>를 클릭하고 현재 보유 수량을 입력하세요. (동일 등급 내 확률은 모두 동일하므로 아무 카드나 눌러도 기댓값은 같습니다)</li>
         <li>신화 스킬은 <strong>[픽업 소환 시(0.1% + 1만뽑당 15장 확정)]</strong>와 <strong>[상시(통상) 소환 시(31종 균등 분배)]</strong>의 소모 다이아 차이를 나란히 비교해 줍니다.</li>
       </ol>`
     },
     'hero': {
       title: '🦸 영웅 소환 기댓값 계산기 사용법',
       html: `<ol>
-        <li>목표하는 <strong>영웅 카드</strong>를 클릭하고 현재 보유 수량을 입력하세요.</li>
+        <li>목표하는 <strong>영웅 카드</strong>를 클릭하고 현재 보유 수량을 입력하세요. (동일 등급 내 확률은 모두 동일하므로 아무 카드나 눌러도 기댓값은 같습니다)</li>
         <li>신화 영웅을 픽업 기간에 뽑을 때와 통상 소환으로 뽑을 때의 필요 블루 다이아(1회 500다이아) 차이를 한눈에 확인할 수 있습니다.</li>
       </ol>`
     },
     'spirit': {
       title: '🧚 정령 소환 기댓값 계산기 사용법',
       html: `<ol>
-        <li>리더(👑) 또는 서포터(🛡️) <strong>정령 카드</strong>를 클릭하고 현재 보유 수량을 입력하세요.</li>
-        <li>10돌파(70개)까지 필요한 예상 소환 횟수와 <strong>필요 정령석</strong>을 픽업 vs 통상으로 비교해 줍니다. (무속성 노말 정령은 픽업 제외 자동 반영)</li>
+        <li>리더(👑) 또는 서포터(🛡️) <strong>정령 카드</strong>를 클릭하고 현재 보유 수량을 입력하세요. (무속성 노말 3종을 제외하면 동일 등급 내 확률은 모두 같습니다)</li>
+        <li>10돌파(70개)까지 필요한 예상 소환 횟수와 <strong>필요 정령석</strong>을 픽업 vs 통상으로 비교해 줍니다.</li>
       </ol>`
     },
     'rune': {
-      title: '🛡️ 룬 착용 도우미 (Beta) 사용법',
+      title: '🛡️ 룬 착용 도우미 사용법',
       html: `<ol>
         <li>맨 위에서 <strong>내 직업(대사신/아크메이지/팬텀)</strong>과 <strong>내 주속성(화염/번개/어둠)</strong>, 그리고 <strong>엘리시아/출혈 보유 여부</strong>를 선택하세요.</li>
         <li><strong>[고대 / 영원 / 불멸]</strong> 등급 탭을 눌러 내가 현재 보유하고 있는 룬들을 모두 클릭해 켜주세요. (우측 상단 <strong>'현재 등급 전체선택'</strong>을 누르고 없는 룬만 빼셔도 편합니다!)</li>
@@ -3184,14 +3203,15 @@
   let currentGahoType = 'star';
 
   const GAHO_CONFIG = {
-    star: { name: "⭐ 별의 가호", baseCost: 100000, stepCost: 100000, prob: 0.00064, slots: 7 },
-    moon: { name: "🌙 달의 가호", baseCost: 500000, stepCost: 500000, prob: 0.00064, slots: 7 },
-    sun: { name: "☀️ 해의 가호", baseCost: 700000, stepCost: 700000, prob: 0.00064, slots: 7 }
+    star: { name: "⭐ 별의 가호", baseCost: 100000, stepCost: 100000, prob: 0.00064, slots: 7, isCollecting: false },
+    moon: { name: "🌙 달의 가호", baseCost: 500000, stepCost: 500000, prob: 0.00064, slots: 7, isCollecting: false },
+    sun: { name: "☀️ 해의 가호", baseCost: 700000, stepCost: 700000, prob: 0.00064, slots: 7, isCollecting: false },
+    shooting_star: { name: "☄️ 유성의 가호", baseCost: 0, stepCost: 0, prob: 0.00064, slots: 7, isCollecting: true }
   };
 
   function selectGahoType(type) {
     currentGahoType = type;
-    ['star', 'moon', 'sun'].forEach(t => {
+    ['star', 'moon', 'sun', 'shooting_star'].forEach(t => {
       const card = document.getElementById(`gaho_btn_${t}`);
       if (card) {
         if (t === type) card.classList.add('selected');
@@ -3210,12 +3230,8 @@
     const remain = cfg.slots - locked;
     document.getElementById("gaho_remain_slots").innerText = remain + "칸";
 
-    const currentCostPerTry = cfg.baseCost + (locked * cfg.stepCost);
-    document.getElementById("gaho_cost_per_try").innerText = (currentCostPerTry / 10000).toFixed(0) + "만 개";
-
     const pNext = 1 - Math.pow(1 - cfg.prob, remain);
     const nextStepTries = pNext > 0 ? Math.round(1 / pNext) : 0;
-    const nextStepDice = nextStepTries * currentCostPerTry;
 
     let totalTries = 0;
     let totalDice = 0;
@@ -3228,10 +3244,21 @@
     }
 
     document.getElementById("gaho_next_step_tries").innerText = nextStepTries.toLocaleString() + "회";
-    document.getElementById("gaho_next_step_dice").innerText = `(약 ${formatKoreanNumber(nextStepDice)}개 소모)`;
     document.getElementById("gaho_total_tries").innerText = Math.round(totalTries).toLocaleString() + "회";
-    document.getElementById("gaho_total_dice_formatted").innerHTML = `총 필요 옵션 주사위: <strong style="color:#ffffff;">${formatKoreanNumber(totalDice)}개</strong>`;
-    document.getElementById("gaho_total_dice_raw").innerText = `(실제 기댓값 수치: ${Math.round(totalDice).toLocaleString()}개)`;
+
+    if (cfg.isCollecting) {
+      document.getElementById("gaho_cost_per_try").innerText = "데이터 수집 중 🔒";
+      document.getElementById("gaho_next_step_dice").innerText = "(재화 데이터 수집 중 🔒)";
+      document.getElementById("gaho_total_dice_formatted").innerHTML = `총 필요 옵션 주사위: <strong style="color:#c084fc;">데이터 수집 중 🔒</strong>`;
+      document.getElementById("gaho_total_dice_raw").innerText = `(시도 횟수 기댓값은 별/달/해 가호와 동일합니다)`;
+    } else {
+      const currentCostPerTry = cfg.baseCost + (locked * cfg.stepCost);
+      const nextStepDice = nextStepTries * currentCostPerTry;
+      document.getElementById("gaho_cost_per_try").innerText = (currentCostPerTry / 10000).toFixed(0) + "만 개";
+      document.getElementById("gaho_next_step_dice").innerText = `(약 ${formatKoreanNumber(nextStepDice)}개 소모)`;
+      document.getElementById("gaho_total_dice_formatted").innerHTML = `총 필요 옵션 주사위: <strong style="color:#ffffff;">${formatKoreanNumber(totalDice)}개</strong>`;
+      document.getElementById("gaho_total_dice_raw").innerText = `(실제 기댓값 수치: ${Math.round(totalDice).toLocaleString()}개)`;
+    }
   }
 
   function calculateWonhon() {
@@ -3302,6 +3329,17 @@
     document.getElementById("summon_active_badge").innerText = badges[cat] || "소환";
 
     renderNewbieCategoryUI();
+    const warnTitle = document.getElementById("summon_warn_banner_title");
+    const warnDesc = document.getElementById("summon_warn_banner_desc");
+    if (warnTitle && warnDesc) {
+      if (cat === 'spirit') {
+        warnTitle.innerHTML = `⚠️ <strong>정령 상시(통상) 소환 비효율 경고 & 정령석 투자 팁</strong>`;
+        warnDesc.innerHTML = `<strong>정령석</strong>을 상시(통상) 소환에 소모하는 것은 저격 확률이 극히 낮아 매우 비효율적입니다. 정령석은 반드시 원하는 정령의 <strong>픽업 소환 기간(0.1% 고정)</strong>에 집중 투자하시고, 평소에는 정령 던전 열쇠 파밍과 이벤트 상점 교환권을 적극 활용하시는 것을 강력 권장합니다.`;
+      } else {
+        warnTitle.innerHTML = `⚠️ <strong>블루 다이아 직접 소환 비효율 경고 & 파밍 권장 팁</strong>`;
+        warnDesc.innerHTML = `블루 다이아를 사용한 무한 직접 소환은 소모 재화 대비 효율이 극히 떨어집니다. 본 계산기의 소환 기댓값과 횟수는 <strong>목표치 가늠 및 페이스 조절용</strong>으로만 참고하시고, 최대한 <strong>이벤트 상점 교환, 쟁탈전 보상, 마일리지 교환권</strong>을 적극 활용하여 원하는 목표를 달성하시는 것을 강력 권장합니다.`;
+      }
+    }
     renderSummonRatesTable();
     window.scrollTo({ top: 100, behavior: 'smooth' });
   }
@@ -3673,10 +3711,10 @@
               <div class="ancient-title-box">
                 <div class="icon-avatar-wrapper" style="border-color:#f43f5e;">
                   <span class="icon-avatar-fallback">대낫</span>
-                  <img src="images/scythe.png" alt="대낫" onerror="this.onerror=null; this.src='images/scythe.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
+                  <img src="images/schyte_calc.png" alt="대낫" onerror="this.onerror=null; this.src='images/scythe_calc.png'; this.onerror=function(){this.src='images/schyte_calc.jpg'; this.onerror=function(){this.style.display='none';};};" class="icon-avatar-img">
                 </div>
                 <div>
-                  <span class="ancient-name">🗡️ 영원 대낫</span>
+                  <span class="ancient-name">🗡️ 대낫</span>
                   <span class="ancient-sub" style="color:#f43f5e;">1회 100 블루 다이아</span>
                 </div>
               </div>
@@ -3688,10 +3726,10 @@
               <div class="ancient-title-box">
                 <div class="icon-avatar-wrapper" style="border-color:#38bdf8;">
                   <span class="icon-avatar-fallback">오브</span>
-                  <img src="images/orb.png" alt="오브" onerror="this.onerror=null; this.src='images/orb.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
+                  <img src="images/orb_calc.png" alt="오브" onerror="this.onerror=null; this.src='images/orb_calc.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
                 </div>
                 <div>
-                  <span class="ancient-name">🔮 영원 오브</span>
+                  <span class="ancient-name">🔮 오브</span>
                   <span class="ancient-sub" style="color:#38bdf8;">1회 100 블루 다이아</span>
                 </div>
               </div>
@@ -3703,17 +3741,16 @@
               <div class="ancient-title-box">
                 <div class="icon-avatar-wrapper" style="border-color:#fbbf24;">
                   <span class="icon-avatar-fallback">장식</span>
-                  <img src="images/accessory.png" alt="장식" onerror="this.onerror=null; this.src='images/accessory.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
+                  <img src="images/accessory_calc.png" alt="장식" onerror="this.onerror=null; this.src='images/accessory_calc.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
                 </div>
                 <div>
-                  <span class="ancient-name">💍 영원 장식</span>
+                  <span class="ancient-name">💍 장식</span>
                   <span class="ancient-sub" style="color:#fbbf24;">1회 200 블루 다이아</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
       <div style="margin-bottom:16px;">
         <label>최종 목표 고대 등급 선택</label>
@@ -3903,6 +3940,10 @@
 
     container.innerHTML = `
       ${legendHtml}
+
+      <div style="background:rgba(56, 189, 248, 0.1); border:1px solid rgba(56, 189, 248, 0.35); border-radius:8px; padding:8px 12px; margin-bottom:10px; font-size:12.5px; color:#bae6fd;">
+        💡 <strong>빠른 계산 팁:</strong> 동일 등급 내 모든 대상의 등장 확률은 완전히 똑같습니다! 단순 기댓값만 확인하실 거라면 <strong>해당 등급에서 아무 카드나 클릭</strong>하고 보유 개수만 입력하셔도 됩니다. <span style="color:#94a3b8;">(단, 정령의 무속성 노말 3종만 픽업 불가 예외)</span>
+      </div>
 
       <div id="newbie_selected_target_bar" style="background:#0f172a; border:1.5px solid #334155; border-radius:12px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; transition: border-color 0.2s;">
         <div id="newbie_selected_target_label" style="font-size:15px; color:#ffffff;">
@@ -4159,59 +4200,70 @@
   let ownedRunes = new Set();
 
   const RUNE_DB = [
-    // ==================== [방어구: 고대] ====================
+    // ==================== 1. 방어구 (고대 21종 - 인게임 순서) ====================
+    { id: "anc_ar_eungchuk", tier: "ancient", part: "armor", name: "응축", cat: "util", val: 300, desc: "강타 게이지 충전효율 +300%", cond: "유틸 룬" },
+    { id: "anc_ar_daega", tier: "ancient", part: "armor", name: "대가", cat: "job", jobType: "mage", val: 1500, desc: "룬 스킬 피해량 +1,500%", cond: "모든 스킬 쿨타임 10초 증가 페널티" },
+    { id: "anc_ar_gihwoe", tier: "ancient", part: "armor", name: "기회", cat: "util", val: 200, desc: "강타 시 10초간 확률형 스킬 발동확률 +70%", cond: "유틸 룬" },
+    { id: "anc_ar_yeokryu", tier: "ancient", part: "armor", name: "역류", cat: "util", val: 100, desc: "피격 시 50% 확률 체력 70% 회복", cond: "생존 유틸 룬" },
+    { id: "anc_ar_chugyeok", tier: "ancient", part: "armor", name: "추격", cat: "atk", val: 3000, desc: "적 체력 50% 이하일 때 룬 공격력 +3,000%", cond: "적 체력 50% 이상 시 미발동" },
+    { id: "anc_ar_seonbong", tier: "ancient", part: "armor", name: "선봉", cat: "atk", val: 3000, desc: "적 체력 50% 이상일 때 룬 공격력 +3,000%", cond: "적 체력 50% 이하 시 미발동" },
+    { id: "anc_ar_samwi", tier: "ancient", part: "armor", name: "삼위일체", cat: "job", jobType: "all", val: 3000, desc: "강타/스킬/영웅 스킬 피해량 모두 +3,000%", cond: "조건 없음" },
+    { id: "anc_ar_jilju", tier: "ancient", part: "armor", name: "질주", cat: "util", val: 100, desc: "텔레포트 시 10초간 이속 +100%", cond: "이속 유틸 룬" },
+    { id: "anc_ar_sangseung", tier: "ancient", part: "armor", name: "상승기류", cat: "atk", val: 3000, desc: "2초마다 룬 공격력 +300% (최대 3,000%)", cond: "20초 경과 시 풀스택" },
+    { id: "anc_ar_jungryeok", tier: "ancient", part: "armor", name: "중력", cat: "atk", val: 4500, desc: "룬 공격력 +4,500%", cond: "이동속도 50% 감소, 텔레포트 봉인" },
+    { id: "anc_ar_gyeokhwa", tier: "ancient", part: "armor", name: "격화", cat: "mult", val: 8000, desc: "적용된 상태이상 3개일 때 추가 피해 +8,000% (곱연산)", cond: "화상/감전/혼돈 상태이상 3종 유지 필수 (루비 각성 시 0티어)" },
     { id: "anc_ar_sangsaeng2", tier: "ancient", part: "armor", name: "상생 II", cat: "atk", val: 1000, pair: "anc_ar_sanggeuk2", pairBonus: 15000, desc: "룬 공격력 +1,000% ('상극 II' 함께 장착 시 고대룬 공격력 +30,000%)", cond: "상생 II + 상극 II 세트 장착 권장" },
     { id: "anc_ar_sanggeuk2", tier: "ancient", part: "armor", name: "상극 II", cat: "atk", val: 1000, pair: "anc_ar_sangsaeng2", pairBonus: 15000, desc: "룬 공격력 +1,000% ('상생 II' 함께 장착 시 고대룬 공격력 +30,000%)", cond: "상생 II + 상극 II 세트 장착 권장" },
-    { id: "anc_ar_gyeokhwa", tier: "ancient", part: "armor", name: "격화", cat: "mult", val: 8000, desc: "적용된 상태이상 3개일 때 추가 피해 +8,000% (곱연산)", cond: "화상/감전/혼돈 상태이상 3종 유지 필수 (루비 각성 시 0티어)" },
     { id: "anc_ar_mem_top", tier: "ancient", part: "armor", slotPos: "top", name: "영웅의 기억:일격", cat: "job", jobType: "reaper", val: 1000, setGroup: "anc_hero_mem", desc: "상의 장착 시 룬 강타 피해 +1,000%, 3종 세트 시 고대룬 공격력 +1,500,000%", cond: "상의 전용 / 일격+마도+군림 3세트 시 0.5티어" },
     { id: "anc_ar_mem_mid", tier: "ancient", part: "armor", slotPos: "mid", name: "영웅의 기억:마도", cat: "job", jobType: "mage", val: 1000, setGroup: "anc_hero_mem", desc: "하의 장착 시 룬 스킬 피해 +1,000%, 3종 세트 시 고대룬 공격력 +1,500,000%", cond: "하의 전용 / 일격+마도+군림 3세트 시 0.5티어" },
     { id: "anc_ar_mem_bot", tier: "ancient", part: "armor", slotPos: "bot", name: "영웅의 기억:군림", cat: "job", jobType: "lord", val: 1000, setGroup: "anc_hero_mem", desc: "신발 장착 시 룬 영웅 스킬 피해 +1,000%, 3종 세트 시 고대룬 공격력 +1,500,000%", cond: "신발 전용 / 일격+마도+군림 3세트 시 0.5티어" },
+    { id: "anc_ar_mugan", tier: "ancient", part: "armor", name: "무간", cat: "atk", val: 6000, desc: "룬 공격력 +6,000%", cond: "시야 범위 감소" },
+    { id: "anc_ar_gihap", tier: "ancient", part: "armor", name: "기합", cat: "atk", val: 6000, desc: "룬 공격력 +6,000%", cond: "채팅창에 '!' 입력 시 24시간 유지 (재접속 시 초기화)" },
     { id: "anc_ar_geomtusa", tier: "ancient", part: "armor", name: "검투사", cat: "atk", val: 9000, desc: "룬 공격력 +9,000%", cond: "아레나 100연승 이상 (소탕 가능)" },
     { id: "anc_ar_yangnal", tier: "ancient", part: "armor", name: "양날검", cat: "mult", val: 4500, desc: "적에게 입히는 피해 +4,500% (곱연산)", cond: "받는 피해 50% 증가 페널티" },
+    { id: "anc_ar_jeokil", tier: "ancient", part: "armor", name: "적일", cat: "atk", val: 9000, desc: "주말(토/일) 룬 공격력 +9,000%", cond: "KST 기준 토요일·일요일만 발동" },
     { id: "anc_ar_sasin", tier: "ancient", part: "armor", name: "사신의 낫", cat: "job", jobType: "reaper", val: 8000, desc: "룬 강타 피해량 +8,000% (전직 60렙 기준)", cond: "전직 레벨 60 이상" },
     { id: "anc_ar_mabeopseo", tier: "ancient", part: "armor", name: "마법의 서", cat: "job", jobType: "mage", val: 8000, desc: "룬 스킬 피해량 +8,000% (전직 60렙 기준)", cond: "전직 레벨 60 이상" },
     { id: "anc_ar_gunju", tier: "ancient", part: "armor", name: "군주의 혼", cat: "job", jobType: "lord", val: 8000, desc: "룬 영웅 스킬 피해량 +8,000% (전직 60렙 기준)", cond: "전직 레벨 60 이상" },
-    { id: "anc_ar_samwi", tier: "ancient", part: "armor", name: "삼위일체", cat: "job", jobType: "all", val: 3000, desc: "강타/스킬/영웅 스킬 피해량 모두 +3,000%", cond: "조건 없음" },
-    { id: "anc_ar_mugan", tier: "ancient", part: "armor", name: "무간", cat: "atk", val: 6000, desc: "룬 공격력 +6,000%", cond: "시야 범위 감소" },
-    { id: "anc_ar_gihap", tier: "ancient", part: "armor", name: "기합", cat: "atk", val: 6000, desc: "룬 공격력 +6,000%", cond: "채팅창에 '!' 입력 시 24시간 유지 (재접속 시 초기화)" },
-    { id: "anc_ar_jeokil", tier: "ancient", part: "armor", name: "적일", cat: "atk", val: 9000, desc: "주말(토/일) 룬 공격력 +9,000%", cond: "KST 기준 토요일·일요일만 발동" },
-   { id: "anc_ar_jungryeok", tier: "ancient", part: "armor", name: "중력", cat: "atk", val: 4500, desc: "룬 공격력 +4,500%", cond: "이동속도 50% 감소, 텔레포트 봉인" },
-    { id: "anc_ar_sangseung", tier: "ancient", part: "armor", name: "상승기류", cat: "atk", val: 3000, desc: "2초마다 룬 공격력 +300% (최대 3,000%)", cond: "20초 경과 시 풀스택" },
-    { id: "anc_ar_seonbong", tier: "ancient", part: "armor", name: "선봉", cat: "atk", val: 3000, desc: "적 체력 50% 이상일 때 룬 공격력 +3,000%", cond: "적 체력 50% 이하 시 미발동" },
-    { id: "anc_ar_chugyeok", tier: "ancient", part: "armor", name: "추격", cat: "atk", val: 3000, desc: "적 체력 50% 이하일 때 룬 공격력 +3,000%", cond: "적 체력 50% 이상 시 미발동" },
-    { id: "anc_ar_daega", tier: "ancient", part: "armor", name: "대가", cat: "job", jobType: "mage", val: 1500, desc: "룬 스킬 피해량 +1,500%", cond: "모든 스킬 쿨타임 10초 증가 페널티" },
-    { id: "anc_ar_eungchuk", tier: "ancient", part: "armor", name: "응축", cat: "util", val: 300, desc: "강타 게이지 충전효율 +300%", cond: "유틸 룬" },
-    { id: "anc_ar_gihwoe", tier: "ancient", part: "armor", name: "기회", cat: "util", val: 200, desc: "강타 시 10초간 확률형 스킬 발동확률 +70%", cond: "유틸 룬" },
-    { id: "anc_ar_yeokryu", tier: "ancient", part: "armor", name: "역류", cat: "util", val: 100, desc: "피격 시 50% 확률 체력 70% 회복", cond: "생존 유틸 룬" },
-    { id: "anc_ar_jilju", tier: "ancient", part: "armor", name: "질주", cat: "util", val: 100, desc: "텔레포트 시 10초간 이속 +100%", cond: "이속 유틸 룬" },
 
-    // ==================== [방어구: 영원] ====================
-    { id: "ete_ar_gongmyeong", tier: "eternal", part: "armor", name: "공명", cat: "atk", val: 45000, pair: "ete_ar_gongjin", pairMult: 20001, desc: "룬 공격력 +45,000% ('공진' 및 올 영원 장착 시 영원룬 공격력 +1,000,000%)", cond: "공명+공진 세트 및 전 부위 영원 룬 장착 시 0티어" },
-    { id: "ete_ar_gongjin", tier: "eternal", part: "armor", name: "공진", cat: "atk", val: 45000, pair: "ete_ar_gongmyeong", pairMult: 20001, desc: "룬 공격력 +45,000% ('공명' 및 올 영원 장착 시 영원룬 공격력 +1,000,000%)", cond: "공명+공진 세트 및 전 부위 영원 룬 장착 시 0티어" },
-    { id: "ete_ar_myeongwang", tier: "eternal", part: "armor", name: "명왕", cat: "mult", val: 100000, desc: "명계 어딘가를 정찰 완료 시 피해량 +100,000% (곱연산, 1,001배)", cond: "명계 정찰 완료 필수 (불멸 명황 없을 때 1순위 곱연산)" },
-    { id: "ete_ar_jeongbok", tier: "eternal", part: "armor", name: "룬 정복자", cat: "atk", val: 150000, desc: "룬 공격력 총 +150,000% (기본 1만 + 50단계 4만 + 100단계 10만)", cond: "룬 던전 100단계 이상 클리어" },
-    { id: "ete_ar_jeogyeok", tier: "eternal", part: "armor", name: "저격수", cat: "atk", val: 150000, desc: "룬 공격력 +150,000%, 사거리 10배", cond: "이속 50% 감소, 텔레포트 봉인" },
-    { id: "ete_ar_simpan", tier: "eternal", part: "armor", name: "심판", cat: "job", jobType: "reaper", val: 75000, desc: "룬 강타 피해량 총 +75,000% (20강 1.5만 + 23강 6만)", cond: "장착한 심연장비 슬롯 강화 23 이상" },
-    { id: "ete_ar_bijeon", tier: "eternal", part: "armor", name: "비전", cat: "job", jobType: "mage", val: 75000, desc: "룬 스킬 피해량 총 +75,000% (20강 1.5만 + 23강 6만)", cond: "장착한 심연장비 슬롯 강화 23 이상" },
-    { id: "ete_ar_jihwi", tier: "eternal", part: "armor", name: "지휘", cat: "job", jobType: "lord", val: 75000, desc: "룬 영웅 스킬 피해량 총 +75,000% (20강 1.5만 + 23강 6만)", cond: "장착한 심연장비 슬롯 강화 23 이상" },
-    { id: "ete_ar_jeokeung", tier: "eternal", part: "armor", slotPos: "job_auto", name: "적응", cat: "job", jobType: "all", val: 50000, desc: "상의(강타) / 하의(스킬) / 신발(영웅스킬) 피해량 +50,000%", cond: "내 직업에 맞는 방어구 위치(상의/하의/신발) 장착 필수!" },
-    { id: "ete_ar_yangnal", tier: "eternal", part: "armor", name: "양날검", cat: "mult", val: 15000, desc: "적에게 입히는 피해 +15,000% (곱연산, 151배)", cond: "받는 피해 50% 증가" },
-    { id: "ete_ar_gyeokhwa", tier: "eternal", part: "armor", name: "격화", cat: "mult", val: 10000, desc: "상태이상 3개일 때 추가 피해 +10,000% (곱연산, 101배)", cond: "상태이상 3종 유지" },
-    { id: "ete_ar_sangsaeng3", tier: "eternal", part: "armor", name: "상생 III", cat: "atk", val: 4000, pair: "ete_ar_sanggeuk3", pairBonus: 30000, desc: "룬 공격력 +4,000% ('상극 III' 장착 시 영원룬공 +60,000%)", cond: "상생 III + 상극 III 세트" },
-    { id: "ete_ar_sanggeuk3", tier: "eternal", part: "armor", name: "상극 III", cat: "atk", val: 4000, pair: "ete_ar_sangsaeng3", pairBonus: 30000, desc: "룬 공격력 +4,000% ('상생 III' 장착 시 영원룬공 +60,000%)", cond: "상생 III + 상극 III 세트" },
-    { id: "ete_ar_moheom", tier: "eternal", part: "armor", name: "모험가", cat: "atk", val: 45000, desc: "룬 공격력 총 +45,000% (Easy 올클리어 시)", cond: "모험모드 Easy 모든 별 획득" },
-    { id: "ete_ar_sokjeon", tier: "eternal", part: "armor", name: "속전", cat: "atk", val: 30000, desc: "룬 공격력 +30,000%", cond: "스테이지 보스 시간 10초 고정" },
-    { id: "ete_ar_pyeongil", tier: "eternal", part: "armor", name: "평일", cat: "atk", val: 30000, desc: "평일 룬 공격력 총 +30,000%", cond: "KST 기준 평일(월~금) 발동" },
-    { id: "ete_ar_mosaic", tier: "eternal", part: "armor", name: "모자이크", cat: "atk", val: 30000, desc: "룬 공격력 +30,000%", cond: "캐릭터 모자이크 도트 적용" },
+    // ==================== 1. 방어구 (영원 25종 - 인게임 순서) ====================
     { id: "ete_ar_mugan", tier: "eternal", part: "armor", name: "무간", cat: "atk", val: 15000, desc: "룬 공격력 +15,000%", cond: "시야 범위 감소" },
     { id: "ete_ar_gihap", tier: "eternal", part: "armor", name: "기합", cat: "atk", val: 15000, desc: "룬 공격력 +15,000%", cond: "채팅창 '!' 입력" },
     { id: "ete_ar_geomtusa", tier: "eternal", part: "armor", name: "검투사", cat: "atk", val: 15000, desc: "룬 공격력 +15,000%", cond: "아레나 100연승" },
+    { id: "ete_ar_yangnal", tier: "eternal", part: "armor", name: "양날검", cat: "mult", val: 15000, desc: "적에게 입히는 피해 +15,000% (곱연산, 151배)", cond: "받는 피해 50% 증가" },
     { id: "ete_ar_samwi", tier: "eternal", part: "armor", name: "삼위일체", cat: "job", jobType: "all", val: 15000, desc: "강타/스킬/영웅 스킬 피해 +15,000%", cond: "조건 없음" },
+    { id: "ete_ar_sangsaeng3", tier: "eternal", part: "armor", name: "상생 III", cat: "atk", val: 4000, pair: "ete_ar_sanggeuk3", pairBonus: 30000, desc: "룬 공격력 +4,000% ('상극 III' 장착 시 영원룬공 +60,000%)", cond: "상생 III + 상극 III 세트" },
+    { id: "ete_ar_sanggeuk3", tier: "eternal", part: "armor", name: "상극 III", cat: "atk", val: 4000, pair: "ete_ar_sangsaeng3", pairBonus: 30000, desc: "룬 공격력 +4,000% ('상생 III' 장착 시 영원룬공 +60,000%)", cond: "상생 III + 상극 III 세트" },
+    { id: "ete_ar_gyeokhwa", tier: "eternal", part: "armor", name: "격화", cat: "mult", val: 10000, desc: "상태이상 3개일 때 추가 피해 +10,000% (곱연산, 101배)", cond: "화상/감전/혼돈 상태이상 3종 유지" },
     { id: "ete_ar_sasin", tier: "eternal", part: "armor", name: "사신의 낫", cat: "job", jobType: "reaper", val: 15000, desc: "룬 강타 피해 +15,000%", cond: "전직 60렙 이상" },
     { id: "ete_ar_mabeopseo", tier: "eternal", part: "armor", name: "마법의 서", cat: "job", jobType: "mage", val: 15000, desc: "룬 스킬 피해 +15,000%", cond: "전직 60렙 이상" },
     { id: "ete_ar_gunju", tier: "eternal", part: "armor", name: "군주의 혼", cat: "job", jobType: "lord", val: 15000, desc: "룬 영웅 스킬 피해 +15,000%", cond: "전직 60렙 이상" },
+    { id: "ete_ar_gongmyeong", tier: "eternal", part: "armor", name: "공명", cat: "atk", val: 45000, pair: "ete_ar_gongjin", pairMult: 20001, desc: "룬 공격력 +45,000% ('공진' 및 올 영원 장착 시 영원룬 공격력 +1,000,000%)", cond: "공명+공진 세트 및 전 부위 영원 룬 장착 시 0티어" },
+    { id: "ete_ar_gongjin", tier: "eternal", part: "armor", name: "공진", cat: "atk", val: 45000, pair: "ete_ar_gongmyeong", pairMult: 20001, desc: "룬 공격력 +45,000% ('공명' 및 올 영원 장착 시 영원룬 공격력 +1,000,000%)", cond: "공명+공진 세트 및 전 부위 영원 룬 장착 시 0티어" },
+    { id: "ete_ar_kerberos", tier: "eternal", part: "armor", name: "케르베로스", cat: "atk", val: 15000, desc: "1개 장착 시 룬공 +15,000% (2개 1,000만% / 3개 장착 시 총 배율 약 1억 배)", cond: "동일 룬 중복 장착 특수 세트" },
+    { id: "ete_ar_jeongbok", tier: "eternal", part: "armor", name: "룬 정복자", cat: "atk", val: 150000, desc: "룬 공격력 총 +150,000% (기본 1만 + 50단계 4만 + 100단계 10만)", cond: "룬 던전 100단계 이상 클리어" },
+    { id: "ete_ar_jeogyeok", tier: "eternal", part: "armor", name: "저격수", cat: "atk", val: 150000, desc: "룬 공격력 +150,000%, 사거리 10배", cond: "이속 50% 감소, 텔레포트 봉인" },
+    { id: "ete_ar_myeongwang", tier: "eternal", part: "armor", name: "명왕", cat: "mult", val: 100000, desc: "명계 어딘가를 정찰 완료 시 피해량 +100,000% (곱연산, 1,001배)", cond: "명계 정찰 완료 필수 (불멸 명황 없을 때 1순위 곱연산)" },
+    { id: "ete_ar_sokjeon", tier: "eternal", part: "armor", name: "속전", cat: "atk", val: 30000, desc: "룬 공격력 +30,000%", cond: "스테이지 보스 시간 10초 고정" },
+    { id: "ete_ar_pyeongil", tier: "eternal", part: "armor", name: "평일", cat: "atk", val: 30000, desc: "평일 룬 공격력 총 +30,000%", cond: "KST 기준 평일(월~금) 발동" },
+    { id: "ete_ar_moheom", tier: "eternal", part: "armor", name: "모험가", cat: "atk", val: 45000, desc: "룬 공격력 총 +45,000% (Easy 올클리어 시)", cond: "모험모드 Easy 모든 별 획득" },
+    { id: "ete_ar_jeokeung", tier: "eternal", part: "armor", slotPos: "job_auto", name: "적응", cat: "job", jobType: "all", val: 50000, desc: "상의(강타) / 하의(스킬) / 신발(영웅스킬) 피해량 +50,000%", cond: "내 직업에 맞는 방어구 위치(상의/하의/신발) 장착 필수!" },
+    { id: "ete_ar_mosaic", tier: "eternal", part: "armor", name: "모자이크", cat: "atk", val: 30000, desc: "룬 공격력 +30,000%", cond: "캐릭터 모자이크 도트 적용" },
+    { id: "ete_ar_simpan", tier: "eternal", part: "armor", name: "심판", cat: "job", jobType: "reaper", val: 75000, desc: "룬 강타 피해량 총 +75,000% (20강 1.5만 + 23강 6만)", cond: "장착한 심연장비 슬롯 강화 23 이상" },
+    { id: "ete_ar_bijeon", tier: "eternal", part: "armor", name: "비전", cat: "job", jobType: "mage", val: 75000, desc: "룬 스킬 피해량 총 +75,000% (20강 1.5만 + 23강 6만)", cond: "장착한 심연장비 슬롯 강화 23 이상" },
+    { id: "ete_ar_jihwi", tier: "eternal", part: "armor", name: "지휘", cat: "job", jobType: "lord", val: 75000, desc: "룬 영웅 스킬 피해량 총 +75,000% (20강 1.5만 + 23강 6만)", cond: "장착한 심연장비 슬롯 강화 23 이상" },
 
-    // ==================== [방어구: 불멸] ====================
+    // ==================== 1. 방어구 (불멸 24종 - 인게임 순서) ====================
+    { id: "imm_ar_gihap", tier: "immortal", part: "armor", name: "기합", cat: "atk", val: 550000, desc: "룬 공격력 +550,000% (5,501배)", cond: "채팅창 '!' 입력" },
+    { id: "imm_ar_geomtusa", tier: "immortal", part: "armor", name: "검투사", cat: "atk", val: 550000, desc: "룬 공격력 +550,000% (5,501배)", cond: "아레나 100연승" },
+    { id: "imm_ar_yangnal", tier: "immortal", part: "armor", name: "양날검", cat: "mult", val: 550000, desc: "적에게 입히는 피해 +550,000% (곱연산, 5,501배)", cond: "받는 피해 50% 증가" },
+    { id: "imm_ar_samwi", tier: "immortal", part: "armor", name: "삼위일체", cat: "job", jobType: "all", val: 550000, desc: "강타/스킬/영웅 스킬 피해 +550,000% (5,501배)", cond: "조건 없음" },
+    { id: "imm_ar_gyeokhwa", tier: "immortal", part: "armor", name: "격화", cat: "mult", val: 550000, desc: "상태이상 3개 시 추가 피해 증폭 (곱연산, 5,501배)", cond: "상태이상 3종 적용" },
+    { id: "imm_ar_jeongbok", tier: "immortal", part: "armor", name: "룬 정복자", cat: "atk", val: 825000, desc: "룬 던전 150단계 시 룬 공격력 총 +825,000% (8,251배)", cond: "룬 던전 150단계 이상" },
+    { id: "imm_ar_jeogyeok", tier: "immortal", part: "armor", name: "저격수", cat: "atk", val: 1100000, desc: "룬 공격력 +1,100,000% (11,001배)", cond: "이속 50% 감소, 텔포 봉인, 사거리 10배" },
+    { id: "imm_ar_sokjeon", tier: "immortal", part: "armor", name: "속전", cat: "atk", val: 825000, desc: "룬 공격력 +825,000% (8,251배)", cond: "스테이지 보스 시간 10초 고정" },
+    { id: "imm_ar_jeokeung", tier: "immortal", part: "armor", slotPos: "job_auto", name: "적응", cat: "job", jobType: "all", val: 825000, desc: "상의(강타) / 하의(스킬) / 신발(영웅스킬) 피해량 +825,000% (8,251배)", cond: "내 직업에 맞는 방어구 슬롯 위치에 장착 필수!" },
+    { id: "imm_ar_mosaic", tier: "immortal", part: "armor", name: "모자이크", cat: "atk", val: 825000, desc: "룬 공격력 +825,000% (8,251배)", cond: "캐릭터 모자이크 적용" },
     { id: "imm_ar_star", tier: "immortal", part: "armor", name: "천상의 빛:별", cat: "atk", val: 2000000, setGroup: "imm_heaven", desc: "룬공 +2,000,000% (별/달/해 3세트 시 총 배율 225조 배 종결!)", cond: "별의 가호 30단계 + 별/달/해 3종 동시 장착 필수" },
     { id: "imm_ar_moon", tier: "immortal", part: "armor", name: "천상의 빛:달", cat: "atk", val: 2000000, setGroup: "imm_heaven", desc: "룬공 +2,000,000% (별/달/해 3세트 시 총 배율 225조 배 종결!)", cond: "달의 가호 20단계 + 별/달/해 3종 동시 장착 필수" },
     { id: "imm_ar_sun", tier: "immortal", part: "armor", name: "천상의 빛:해", cat: "atk", val: 2000000, setGroup: "imm_heaven", desc: "룬공 +2,000,000% (별/달/해 3세트 시 총 배율 225조 배 종결!)", cond: "해의 가호 10단계 + 별/달/해 3종 동시 장착 필수" },
@@ -4219,233 +4271,239 @@
     { id: "imm_ar_mh_scythe", tier: "immortal", part: "armor", name: "명황의 낫", cat: "job", jobType: "reaper", val: 4400000, reqRune: "imm_ar_myeonghwang", desc: "'명황' 장착 시 룬 강타 피해량 +4,400,000% (44,001배)", cond: "반드시 불멸 '명황' 룬과 함께 장착해야 발동!" },
     { id: "imm_ar_mh_orb", tier: "immortal", part: "armor", name: "명황의 오브", cat: "job", jobType: "mage", val: 4400000, reqRune: "imm_ar_myeonghwang", desc: "'명황' 장착 시 룬 스킬 피해량 +4,400,000% (44,001배)", cond: "반드시 불멸 '명황' 룬과 함께 장착해야 발동!" },
     { id: "imm_ar_mh_auth", tier: "immortal", part: "armor", name: "명황의 권세", cat: "job", jobType: "lord", val: 4400000, reqRune: "imm_ar_myeonghwang", desc: "'명황' 장착 시 룬 영웅 스킬 피해량 +4,400,000% (44,001배)", cond: "반드시 불멸 '명황' 룬과 함께 장착해야 발동!" },
-    { id: "imm_ar_junggwabujeok", tier: "immortal", part: "armor", name: "중과부적", cat: "atk", val: 2760000, desc: "길드원 1명당 룬공 92,000% (30명 기준 +2,760,000%, 27,601배)", cond: "길드원 30명 풀인원 유지" },
     { id: "imm_ar_moheom2", tier: "immortal", part: "armor", name: "모험가 II", cat: "atk", val: 2750000, desc: "룬 공격력 총 +2,750,000% (27,501배)", cond: "모험모드 Easy & Hard 모든 별 획득" },
     { id: "imm_ar_yuhaeng", tier: "immortal", part: "armor", name: "유행", cat: "atk", val: 2750000, desc: "특정 헤어 장착 시 룬 공격력 +2,750,000% (27,501배)", cond: "'심연의 기사 머리' 코스튬 착용 필수" },
+    { id: "imm_ar_junggwabujeok", tier: "immortal", part: "armor", name: "중과부적", cat: "atk", val: 2760000, desc: "길드원 1명당 룬공 92,000% (30명 기준 +2,760,000%, 27,601배)", cond: "길드원 30명 풀인원 유지" },
+    { id: "imm_ar_gimyeon", tier: "immortal", part: "armor", name: "기면증", cat: "atk", val: 1650000, desc: "기절 5중첩 시 룬 공격력 +1,650,000% (16,501배)", cond: "3초마다 1초 기절 페널티" },
     { id: "imm_ar_seongjwa2", tier: "immortal", part: "armor", name: "성좌 II", cat: "atk", val: 1650000, desc: "별의 가호 40단계 이상 시 룬 공격력 총 +1,650,000% (16,501배)", cond: "별의 가호 40단계 이상" },
     { id: "imm_ar_retro", tier: "immortal", part: "armor", name: "레트로", cat: "atk", val: 1650000, desc: "룬 공격력 +1,650,000% (16,501배)", cond: "캐릭터 외형 도트 기본 외형 고정" },
-    { id: "imm_ar_gimyeon", tier: "immortal", part: "armor", name: "기면증", cat: "atk", val: 1650000, desc: "기절 5중첩 시 룬 공격력 +1,650,000% (16,501배)", cond: "3초마다 1초 기절 페널티" },
     { id: "imm_ar_gakseong", tier: "immortal", part: "armor", name: "각성자", cat: "atk", val: 1100000, desc: "룬 공격력 +1,100,000% (11,001배)", cond: "심연장비 각성 중 신화등급 1개 이상" },
-    { id: "imm_ar_jeogyeok", tier: "immortal", part: "armor", name: "저격수", cat: "atk", val: 1100000, desc: "룬 공격력 +1,100,000% (11,001배)", cond: "이속 50% 감소, 텔포 봉인, 사거리 10배" },
-    { id: "imm_ar_mosaic", tier: "immortal", part: "armor", name: "모자이크", cat: "atk", val: 825000, desc: "룬 공격력 +825,000% (8,251배)", cond: "캐릭터 모자이크 적용" },
-    { id: "imm_ar_jeongbok", tier: "immortal", part: "armor", name: "룬 정복자", cat: "atk", val: 825000, desc: "룬 던전 150단계 시 룬 공격력 총 +825,000% (8,251배)", cond: "룬 던전 150단계 이상" },
-    { id: "imm_ar_sokjeon", tier: "immortal", part: "armor", name: "속전", cat: "atk", val: 825000, desc: "룬 공격력 +825,000% (8,251배)", cond: "스테이지 보스 시간 10초 고정" },
-    { id: "imm_ar_jeokeung", tier: "immortal", part: "armor", slotPos: "job_auto", name: "적응", cat: "job", jobType: "all", val: 825000, desc: "상의(강타) / 하의(스킬) / 신발(영웅스킬) 피해량 +825,000% (8,251배)", cond: "내 직업에 맞는 방어구 슬롯 위치에 장착 필수!" },
-    { id: "imm_ar_gihap", tier: "immortal", part: "armor", name: "기합", cat: "atk", val: 550000, desc: "룬 공격력 +550,000% (5,501배)", cond: "채팅창 '!' 입력" },
-    { id: "imm_ar_geomtusa", tier: "immortal", part: "armor", name: "검투사", cat: "atk", val: 550000, desc: "룬 공격력 +550,000% (5,501배)", cond: "아레나 100연승" },
-    { id: "imm_ar_samwi", tier: "immortal", part: "armor", name: "삼위일체", cat: "job", jobType: "all", val: 550000, desc: "강타/스킬/영웅 스킬 피해 +550,000% (5,501배)", cond: "조건 없음" },
-    { id: "imm_ar_yangnal", tier: "immortal", part: "armor", name: "양날검", cat: "mult", val: 550000, desc: "적에게 입히는 피해 +550,000% (곱연산, 5,501배)", cond: "받는 피해 50% 증가" },
-    { id: "imm_ar_gyeokhwa", tier: "immortal", part: "armor", name: "격화", cat: "mult", val: 550000, desc: "상태이상 3개 시 추가 피해 증폭 (곱연산, 5,501배)", cond: "상태이상 3종 적용" },
 
-    // ==================== [반지: 고대 / 영원 / 불멸] ====================
-    { id: "anc_rg_payeol", tier: "ancient", part: "ring", name: "파열", mult: 16, pair: "anc_nk_pamyeol", desc: "기본 공격 시 파열 부여, 파열 적 피해 +1,500% (곱연산, 16배)", cond: "목걸이 '파멸'과 세트 장착 시 0티어" },
+    // ==================== 2. 반지 (고대 14종 - 인게임 순서) ====================
+    { id: "anc_rg_danil", tier: "ancient", part: "ring", name: "단일격", jobType: "reaper", mult: 31, desc: "단일 타겟 룬 강타 피해 +3,000%", cond: "단일 적 대상" },
+    { id: "anc_rg_mabeopsa", tier: "ancient", part: "ring", name: "마법사", jobType: "mage", mult: 30, desc: "기본 공격 1회당 다음 확률형 스킬 확정 발동", cond: "확률형 스킬 위주 편성" },
+    { id: "anc_rg_myeongjung", tier: "ancient", part: "ring", name: "명중", mult: 121, desc: "스킬 사용 시 룬공 증폭 최대 +12,000%", cond: "10중첩" },
+    { id: "anc_rg_powi", tier: "ancient", part: "ring", name: "포위의기세", mult: 121, desc: "주변 적 1명당 룬공 증폭 1,200% (최대 12,000%)", cond: "보스전 효율 낮음" },
+    { id: "anc_rg_yeonbal", tier: "ancient", part: "ring", name: "연발", jobType: "mage", mult: 280, desc: "강타 발동 시 장착된 스킬 랜덤 50회 발동", cond: "전직 80렙 이전 스킬 빌드 핵심 룬" },
+    { id: "anc_rg_eunbit", tier: "ancient", part: "ring", name: "은빛 섬광", mult: 181, desc: "텔포 후 5초간 룬 공격력 +18,000%", cond: "텔레포트 자동사용" },
+    { id: "anc_rg_junbi", tier: "ancient", part: "ring", name: "준비", mult: 181, desc: "장비 슬롯 강화 15 이상 시 룬 공격력 증폭 총 +18,000%", cond: "장비 슬롯 15강 이상" },
+    { id: "anc_rg_somo", tier: "ancient", part: "ring", name: "소모", mult: 241, desc: "룬 공격력 증폭 +24,000%", cond: "매 초당 체력 30% 피해" },
     { id: "anc_rg_yeolsang", tier: "ancient", part: "ring", name: "열상", elem: "fire", mult: 301, desc: "화상 적 공격 시 불 속성 피해 +30,000% (곱연산, 301배)", cond: "화염 속성 전용" },
     { id: "anc_rg_gwabuha", tier: "ancient", part: "ring", name: "과부하", elem: "light", mult: 301, desc: "감전 적 공격 시 번개 속성 피해 +30,000% (곱연산, 301배)", cond: "번개 속성 전용" },
     { id: "anc_rg_gongpo", tier: "ancient", part: "ring", name: "공포", elem: "dark", mult: 301, desc: "혼돈 적 공격 시 어둠 속성 피해 +30,000% (곱연산, 301배)", cond: "어둠 속성 전용" },
-    { id: "anc_rg_yeonbal", tier: "ancient", part: "ring", name: "연발", jobType: "mage", mult: 280, desc: "강타 발동 시 장착된 스킬 랜덤 50회 발동", cond: "전직 80렙 이전 스킬 빌드 핵심 룬" },
-    { id: "anc_rg_somo", tier: "ancient", part: "ring", name: "소모", mult: 241, desc: "룬 공격력 증폭 +24,000%", cond: "매 초당 체력 30% 피해" },
-    { id: "anc_rg_eunbit", tier: "ancient", part: "ring", name: "은빛 섬광", mult: 181, desc: "텔포 후 5초간 룬 공격력 +18,000%", cond: "텔레포트 자동사용" },
-    { id: "anc_rg_junbi", tier: "ancient", part: "ring", name: "준비", mult: 181, desc: "장비 슬롯 강화 15 이상 시 룬 공격력 증폭 총 +18,000%", cond: "장비 슬롯 15강 이상" },
+    { id: "anc_rg_payeol", tier: "ancient", part: "ring", name: "파열", mult: 16, pair: "anc_nk_pamyeol", desc: "기본 공격 시 파열 부여, 파열 적 피해 +1,500% (곱연산, 16배)", cond: "목걸이 '파멸'과 세트 장착 시 0티어" },
     { id: "anc_rg_geukui", tier: "ancient", part: "ring", name: "마법 극의", jobType: "mage", mult: 151, desc: "10돌파 이상 스킬 피해 +15,000%", cond: "스킬 10돌파 이상" },
-    { id: "anc_rg_myeongjung", tier: "ancient", part: "ring", name: "명중", mult: 121, desc: "스킬 사용 시 룬공 증폭 최대 +12,000%", cond: "10중첩" },
-    { id: "anc_rg_powi", tier: "ancient", part: "ring", name: "포위의기세", mult: 121, desc: "주변 적 1명당 룬공 증폭 1,200% (최대 12,000%)", cond: "보스전 효율 낮음" },
     { id: "anc_rg_gwaseong", tier: "ancient", part: "ring", name: "과성장", mult: 100, desc: "첫 슬롯 영웅 레벨을 나머지 영웅 레벨 합×40으로 변경", cond: "엘리시아 1번 슬롯 배치" },
-    { id: "anc_rg_danil", tier: "ancient", part: "ring", name: "단일격", jobType: "reaper", mult: 31, desc: "단일 타겟 룬 강타 피해 +3,000%", cond: "단일 적 대상" },
-    { id: "anc_rg_mabeopsa", tier: "ancient", part: "ring", name: "마법사", jobType: "mage", mult: 30, desc: "기본 공격 1회당 다음 확률형 스킬 확정 발동", cond: "확률형 스킬 위주 편성" },
 
+    // ==================== 2. 반지 (영원 16종 - 인게임 순서) ====================
+    { id: "ete_rg_danil", tier: "eternal", part: "ring", name: "단일격", jobType: "reaper", mult: 501, desc: "단일 타겟 룬 강타 피해 +50,000%", cond: "단일 타겟" },
+    { id: "ete_rg_eunbit", tier: "eternal", part: "ring", name: "은빛 섬광", mult: 501, desc: "텔포 쿨타임 50% 감소, 텔포 사용 후 5초간 룬 공격력 +50,000% (501배)", cond: "텔레포트 자동사용" },
     { id: "ete_rg_gwaseong", tier: "eternal", part: "ring", name: "과성장", mult: 36111, elisiaBonus: 6600000, desc: "첫 슬롯 영웅 레벨을 나머지 합×100으로 변경 (엘리시아+올3각 시 약 660만 배급 효율!)", cond: "엘리시아 1번 슬롯 + 영웅 올 3각 시 마녀 세트 전 최고 존엄!" },
+    { id: "ete_rg_somo", tier: "eternal", part: "ring", name: "소모", mult: 501, desc: "룬 공격력 증폭 +50,000%", cond: "초당 10% 피해" },
+    { id: "ete_rg_yeolsang", tier: "eternal", part: "ring", name: "열상", elem: "fire", mult: 751, desc: "화상 적 불 속성 피해 +75,000% (751배)", cond: "화염 속성" },
+    { id: "ete_rg_gwabuha", tier: "eternal", part: "ring", name: "과부하", elem: "light", mult: 751, desc: "감전 적 번개 속성 피해 +75,000% (751배)", cond: "번개 속성" },
+    { id: "ete_rg_gongpo", tier: "eternal", part: "ring", name: "공포", elem: "dark", mult: 751, desc: "혼돈 적 어둠 속성 피해 +75,000% (751배)", cond: "어둠 속성" },
+    { id: "ete_rg_payeol2", tier: "eternal", part: "ring", name: "파열 II", mult: 126, pair: "ete_nk_pamyeol2", desc: "기본 공격 시 파열 II 부여, 피해 +12,500% (126배)", cond: "목걸이 '파멸 II'와 세트 착용 권장" },
+    { id: "ete_rg_seongjwa", tier: "eternal", part: "ring", name: "성좌", mult: 1501, desc: "별의 가호 30단계 이상 시 룬공 증폭 총 +150,000% (1,501배)", cond: "별의 가호 30단계 이상" },
+    { id: "ete_rg_tongchal", tier: "eternal", part: "ring", name: "통찰", jobType: "mage", mult: 1501, desc: "3각성 이상 스킬이 입히는 피해 총 +150,000% (1,501배)", cond: "장착 스킬 3각성 이상" },
+    { id: "ete_rg_tongsol", tier: "eternal", part: "ring", name: "통솔", jobType: "lord", mult: 1501, desc: "3각성 이상 영웅이 입히는 피해 총 +150,000% (1,501배)", cond: "장착 영웅 3각성 이상" },
+    { id: "ete_rg_jeolje", tier: "eternal", part: "ring", name: "절제", mult: 5001, desc: "룬 공격력 증폭 +500,000% (5,001배)", cond: "공격속도 10% 고정 페널티 (팬텀/다크로드 추천)" },
     { id: "ete_rg_mageom", tier: "eternal", part: "ring", name: "마검의 칼날", mult: 50001, pairReq: "ete_nk_mageom", desc: "모든 피해량 +5,000,000% (50,001배 곱연산)", cond: "⚠️ 목걸이 '마검의 손잡이' 미장착 시 공격력 100 고정 페널티!" },
     { id: "ete_rg_hongyeom", tier: "eternal", part: "ring", name: "홍염", elem: "fire", mult: 2501, desc: "'열상' 적 공격 시 불 속성 피해 +250,000% (2,501배)", cond: "불벼락 9돌파(열상) 필수" },
     { id: "ete_rg_chojeondo", tier: "eternal", part: "ring", name: "초전도", elem: "light", mult: 2501, desc: "'과부하' 적 공격 시 번개 속성 피해 +250,000% (2,501배)", cond: "뇌전검무 9돌파(과부하) 필수" },
     { id: "ete_rg_jeolmang", tier: "eternal", part: "ring", name: "절망", elem: "dark", mult: 2501, desc: "'공포' 적 공격 시 어둠 속성 피해 +250,000% (2,501배)", cond: "암흑붕괴 9돌파(공포) 필수" },
-    { id: "ete_rg_jeolje", tier: "eternal", part: "ring", name: "절제", mult: 5001, desc: "룬 공격력 증폭 +500,000% (5,001배)", cond: "공격속도 10% 고정 페널티 (팬텀/다크로드 추천)" },
-    { id: "ete_rg_tongchal", tier: "eternal", part: "ring", name: "통찰", jobType: "mage", mult: 1501, desc: "3각성 이상 스킬이 입히는 피해 총 +150,000% (1,501배)", cond: "장착 스킬 3각성 이상" },
-    { id: "ete_rg_tongsol", tier: "eternal", part: "ring", name: "통솔", jobType: "lord", mult: 1501, desc: "3각성 이상 영웅이 입히는 피해 총 +150,000% (1,501배)", cond: "장착 영웅 3각성 이상" },
-    { id: "ete_rg_seongjwa", tier: "eternal", part: "ring", name: "성좌", mult: 1501, desc: "별의 가호 30단계 이상 시 룬공 증폭 총 +150,000% (1,501배)", cond: "별의 가호 30단계 이상" },
-    { id: "ete_rg_payeol2", tier: "eternal", part: "ring", name: "파열 II", mult: 126, pair: "ete_nk_pamyeol2", desc: "기본 공격 시 파열 II 부여, 피해 +12,500% (126배)", cond: "목걸이 '파멸 II'와 세트 착용 권장" },
-    { id: "ete_rg_yeolsang", tier: "eternal", part: "ring", name: "열상", elem: "fire", mult: 751, desc: "화상 적 불 속성 피해 +75,000% (751배)", cond: "화염 속성" },
-    { id: "ete_rg_gwabuha", tier: "eternal", part: "ring", name: "과부하", elem: "light", mult: 751, desc: "감전 적 번개 속성 피해 +75,000% (751배)", cond: "번개 속성" },
-    { id: "ete_rg_gongpo", tier: "eternal", part: "ring", name: "공포", elem: "dark", mult: 751, desc: "혼돈 적 어둠 속성 피해 +75,000% (751배)", cond: "어둠 속성" },
-    { id: "ete_rg_danil", tier: "eternal", part: "ring", name: "단일격", jobType: "reaper", mult: 501, desc: "단일 타겟 룬 강타 피해 +50,000%", cond: "단일 타겟" },
-    { id: "ete_rg_somo", tier: "eternal", part: "ring", name: "소모", mult: 501, desc: "룬 공격력 증폭 +50,000%", cond: "초당 10% 피해" },
 
+    // ==================== 2. 반지 (불멸 13종 - 인게임 순서) ====================
+    { id: "imm_rg_seongjwa", tier: "immortal", part: "ring", name: "성좌", mult: 16001, desc: "별의 가호 30단계 시 룬공 증폭 총 +1,600,000% (16,001배)", cond: "별의 가호 30단계 이상" },
+    { id: "imm_rg_tongchal", tier: "immortal", part: "ring", name: "통찰", jobType: "mage", mult: 16001, desc: "3각성 이상 스킬 피해 총 +1,600,000% (16,001배)", cond: "스킬 3각성 이상" },
+    { id: "imm_rg_tongsol", tier: "immortal", part: "ring", name: "통솔", jobType: "lord", mult: 16001, desc: "3각성 이상 영웅 피해 총 +1,600,000% (16,001배)", cond: "영웅 3각성 이상" },
+    { id: "imm_rg_jeolje", tier: "immortal", part: "ring", name: "절제", mult: 32001, desc: "룬 공격력 증폭 +3,200,000% (32,001배)", cond: "공격속도 10% 고정 페널티" },
+    { id: "imm_rg_hongyeom", tier: "immortal", part: "ring", name: "홍염", elem: "fire", mult: 24001, desc: "'열상' 적 불 속성 피해 +2,400,000% (24,001배)", cond: "불벼락 9돌파 필수" },
+    { id: "imm_rg_chojeondo", tier: "immortal", part: "ring", name: "초전도", elem: "light", mult: 24001, desc: "'과부하' 적 번개 속성 피해 +2,400,000% (24,001배)", cond: "뇌전검무 9돌파 필수" },
+    { id: "imm_rg_jeolmang", tier: "immortal", part: "ring", name: "절망", elem: "dark", mult: 24001, desc: "'공포' 적 어둠 속성 피해 +2,400,000% (24,001배)", cond: "암흑붕괴 9돌파 필수" },
     { id: "imm_rg_witch", tier: "immortal", part: "ring", name: "마녀의 반지", mult: 250001, pairReq: "imm_nk_witch", desc: "모든 피해량 +25,000,000% (250,001배 곱연산, 세트 시 625억 배!)", cond: "⚠️ 목걸이 '마녀의 펜던트' 미장착 시 방어도무시 100 고정 페널티!" },
     { id: "imm_rg_daegi", tier: "immortal", part: "ring", name: "대기만성", mult: 161161, desc: "룬공 증폭 16,000% × 모든 피해량 100,000% (총 161,161배)", cond: "전투 10초 경과 시 풀스택 (준종결 1순위 반지)" },
     { id: "imm_rg_geukyeom", tier: "immortal", part: "ring", name: "극염", elem: "fire", mult: 80001, desc: "3차 전직 버프 최대치일 때 불 속성 피해 +8,000,000% (80,001배)", cond: "화염 속성 + 3차 전직 버프 풀스택" },
     { id: "imm_rg_geuknoe", tier: "immortal", part: "ring", name: "극뇌", elem: "light", mult: 80001, desc: "3차 전직 버프 최대치일 때 번개 속성 피해 +8,000,000% (80,001배)", cond: "번개 속성 + 3차 전직 버프 풀스택" },
     { id: "imm_rg_geukam", tier: "immortal", part: "ring", name: "극암", elem: "dark", mult: 80001, desc: "3차 전직 버프 최대치일 때 어둠 속성 피해 +8,000,000% (80,001배)", cond: "어둠 속성 + 3차 전직 버프 풀스택" },
     { id: "imm_rg_mulyok", tier: "immortal", part: "ring", name: "물욕", mult: 32001, desc: "보물던전 1 90단계 이상 시 룬공 증폭 총 +3,200,000% (32,001배)", cond: "보물던전 1 90단계 이상" },
-    { id: "imm_rg_jeolje", tier: "immortal", part: "ring", name: "절제", mult: 32001, desc: "룬 공격력 증폭 +3,200,000% (32,001배)", cond: "공격속도 10% 고정 페널티" },
-    { id: "imm_rg_hongyeom", tier: "immortal", part: "ring", name: "홍염", elem: "fire", mult: 24001, desc: "'열상' 적 불 속성 피해 +2,400,000% (24,001배)", cond: "불벼락 9돌파 필수" },
-    { id: "imm_rg_chojeondo", tier: "immortal", part: "ring", name: "초전도", elem: "light", mult: 24001, desc: "'과부하' 적 번개 속성 피해 +2,400,000% (24,001배)", cond: "뇌전검무 9돌파 필수" },
-    { id: "imm_rg_jeolmang", tier: "immortal", part: "ring", name: "절망", elem: "dark", mult: 24001, desc: "'공포' 적 어둠 속성 피해 +2,400,000% (24,001배)", cond: "암흑붕괴 9돌파 필수" },
-    { id: "imm_rg_seongjwa", tier: "immortal", part: "ring", name: "성좌", mult: 16001, desc: "별의 가호 30단계 시 룬공 증폭 총 +1,600,000% (16,001배)", cond: "별의 가호 30단계 이상" },
-    { id: "imm_rg_tongchal", tier: "immortal", part: "ring", name: "통찰", jobType: "mage", mult: 16001, desc: "3각성 이상 스킬 피해 총 +1,600,000% (16,001배)", cond: "스킬 3각성 이상" },
-    { id: "imm_rg_tongsol", tier: "immortal", part: "ring", name: "통솔", jobType: "lord", mult: 16001, desc: "3각성 이상 영웅 피해 총 +1,600,000% (16,001배)", cond: "영웅 3각성 이상" },
 
-    // ==================== [목걸이: 고대 / 영원 / 불멸] ====================
-    { id: "anc_nk_pamyeol", tier: "ancient", part: "neck", name: "파멸", mult: 100, pairWithRing: "anc_rg_payeol", pairMult: 15001, desc: "파열 상태 적 공격 시 모든 피해 +1,500,000% (반지 '파열'과 세트 시 15,001배)", cond: "반지 '파열' 장착 필수" },
-    { id: "anc_nk_soin", tier: "ancient", part: "neck", name: "소인", mult: 251, desc: "캐릭터 작아지고 이속 +50%, 룬 공격력 증폭 +25,000% (251배)", cond: "무조건 발동 0티어" },
-    { id: "anc_nk_geoin", tier: "ancient", part: "neck", name: "거인", mult: 251, desc: "캐릭터 커지고 이속 -50%, 룬 공격력 증폭 +25,000% (251배)", cond: "이속 감소 주의" },
-    { id: "anc_nk_wonsoron", tier: "ancient", part: "neck", name: "원소론", jobType: "mage", mult: 181, desc: "4종류 속성 스킬 장착 시 룬 스킬 피해 +18,000%", cond: "4속성(무/화/번/어) 스킬 장착" },
-    { id: "anc_nk_chowol", tier: "ancient", part: "neck", name: "초월자", jobType: "reaper", mult: 181, desc: "대낫 초월 총합 120 이상 시 룬 강타 피해 +18,000%", cond: "대낫 초월 합 120 이상" },
-    { id: "anc_nk_apdo", tier: "ancient", part: "neck", name: "압도적 힘", mult: 151, desc: "룬 공격력 500% 이상 시 룬공 증폭 +15,000%", cond: "룬 공격력 500% 이상" },
-    { id: "anc_nk_hangye", tier: "ancient", part: "neck", name: "한계 돌파", jobType: "lord", mult: 151, desc: "10돌파 이상 영웅 피해 +15,000%", cond: "영웅 10돌파 이상" },
-    { id: "anc_nk_dolgyeok", tier: "ancient", part: "neck", name: "돌격대장", mult: 121, desc: "죽었을 때 5초 부활 및 룬공 +12,000%", cond: "사망 시 5초 단발성" },
+    // ==================== 3. 목걸이 (고대 16종 - 인게임 순서) ====================
+    { id: "anc_nk_yeobaek", tier: "ancient", part: "neck", name: "여백의 힘", jobType: "reaper", mult: 31, desc: "빈 스킬 슬롯 1개당 강타 피해 +1,500%", cond: "빈 슬롯 필요" },
     { id: "anc_nk_eophwa", tier: "ancient", part: "neck", name: "업화", elem: "fire", mult: 81, desc: "불 속성 피해 +8,000% (타 속성 -70%)", cond: "화염 전용" },
     { id: "anc_nk_cheonbeol", tier: "ancient", part: "neck", name: "천벌", elem: "light", mult: 81, desc: "번개 속성 피해 +8,000% (타 속성 -70%)", cond: "번개 전용" },
     { id: "anc_nk_yeonok", tier: "ancient", part: "neck", name: "연옥", elem: "dark", mult: 81, desc: "어둠 속성 피해 +8,000% (타 속성 -70%)", cond: "어둠 전용" },
-    { id: "anc_nk_wonso", tier: "ancient", part: "neck", name: "원소 폭발", mult: 61, desc: "속성 스킬 5번 사용 시 해당 속성 피해 +6,000%", cond: "10초 지속" },
-    { id: "anc_nk_yeobaek", tier: "ancient", part: "neck", name: "여백의 힘", jobType: "reaper", mult: 31, desc: "빈 스킬 슬롯 1개당 강타 피해 +1,500%", cond: "빈 슬롯 필요" },
-    { id: "anc_nk_cheonun", tier: "ancient", part: "neck", name: "천운", jobType: "mage", mult: 25, desc: "스킬 발동 시 100% 확률 5회 발동", cond: "타수 유틸" },
     { id: "anc_nk_yeokjeon", tier: "ancient", part: "neck", name: "역전", mult: 20, desc: "확률형 스킬 실패 시 발동확률 +100%", cond: "확률형 보조" },
     { id: "anc_nk_donghwa", tier: "ancient", part: "neck", name: "동화", mult: 20, desc: "속성 공격 시 100% 상태이상 부여", cond: "상태이상 유틸" },
+    { id: "anc_nk_cheonun", tier: "ancient", part: "neck", name: "천운", jobType: "mage", mult: 25, desc: "스킬 발동 시 100% 확률 5회 발동", cond: "타수 유틸" },
+    { id: "anc_nk_wonso", tier: "ancient", part: "neck", name: "원소 폭발", mult: 61, desc: "속성 스킬 5번 사용 시 해당 속성 피해 +6,000%", cond: "10초 지속" },
+    { id: "anc_nk_dolgyeok", tier: "ancient", part: "neck", name: "돌격대장", mult: 121, desc: "죽었을 때 5초 부활 및 룬공 +12,000%", cond: "사망 시 5초 단발성" },
+    { id: "anc_nk_apdo", tier: "ancient", part: "neck", name: "압도적 힘", mult: 151, desc: "룬 공격력 500% 이상 시 룬공 증폭 +15,000%", cond: "룬 공격력 500% 이상" },
+    { id: "anc_nk_pamyeol", tier: "ancient", part: "neck", name: "파멸", mult: 100, pairWithRing: "anc_rg_payeol", pairMult: 15001, desc: "파열 상태 적 공격 시 모든 피해 +1,500,000% (반지 '파열'과 세트 시 15,001배)", cond: "반지 '파열' 장착 필수" },
+    { id: "anc_nk_geoin", tier: "ancient", part: "neck", name: "거인", mult: 251, desc: "캐릭터 커지고 이속 -50%, 룬 공격력 증폭 +25,000% (251배)", cond: "이속 감소 주의" },
+    { id: "anc_nk_soin", tier: "ancient", part: "neck", name: "소인", mult: 251, desc: "캐릭터 작아지고 이속 +50%, 룬 공격력 증폭 +25,000% (251배)", cond: "무조건 발동 0티어" },
+    { id: "anc_nk_hangye", tier: "ancient", part: "neck", name: "한계 돌파", jobType: "lord", mult: 151, desc: "10돌파 이상 영웅 피해 +15,000%", cond: "영웅 10돌파 이상" },
+    { id: "anc_nk_wonsoron", tier: "ancient", part: "neck", name: "원소론", jobType: "mage", mult: 181, desc: "4종류 속성 스킬 장착 시 룬 스킬 피해 +18,000%", cond: "4속성(무/화/번/어) 스킬 장착" },
+    { id: "anc_nk_chowol", tier: "ancient", part: "neck", name: "초월자", jobType: "reaper", mult: 181, desc: "대낫 초월 총합 120 이상 시 룬 강타 피해 +18,000%", cond: "대낫 초월 합 120 이상" },
 
-    { id: "ete_nk_mageom", tier: "eternal", part: "neck", name: "마검의 손잡이", mult: 5001, pairReq: "ete_rg_mageom", desc: "모든 피해량 +500,000% (5,001배 곱연산, 반지 '마검의 칼날' 페널티 해제)", cond: "⚠️ 반지 '마검의 칼날'과 세트 장착 필수!" },
-    { id: "ete_nk_wanryeok", tier: "eternal", part: "neck", name: "완력", mult: 5001, desc: "룬 공격력 증폭 +500,000% (5,001배)", cond: "영웅 공격속도 70% 감소" },
-    { id: "ete_nk_nanta", tier: "eternal", part: "neck", name: "난타", jobType: "reaper", mult: 5001, desc: "공속 +50%, 룬 강타 피해량 +500,000% (5,001배)", cond: "강타 필요 타수 5배 증가 (과성장 엘리시아 세팅 시 추천)" },
-    { id: "ete_nk_geosin", tier: "eternal", part: "neck", name: "거신병", jobType: "lord", mult: 5001, desc: "첫 슬롯 영웅 3각성 시 영웅 스킬 피해 +500,000% (5,001배)", cond: "첫 슬롯 영웅 3각성 (팬텀 전용)" },
-    { id: "ete_nk_pamyeol2", tier: "eternal", part: "neck", name: "파멸 II", mult: 200, pairWithRing: "ete_rg_payeol2", pairMult: 25001, desc: "파열 II 적 모든 피해 +2,500,000% (25,001배)", cond: "반지 '파열 II'와 세트 착용 필수" },
-    { id: "ete_nk_wolgwang", tier: "eternal", part: "neck", name: "월광", mult: 2501, desc: "달의 가호 30단계 시 룬공 증폭 총 +250,000% (2,501배)", cond: "달의 가호 30단계 이상" },
-    { id: "ete_nk_pokju", tier: "eternal", part: "neck", name: "폭주", mult: 2001, desc: "매초 룬공 증폭 20,000% (최대 +200,000%, 2,001배)", cond: "10초 경과 풀스택" },
-    { id: "ete_nk_jiwon", tier: "eternal", part: "neck", name: "지원", mult: 1501, desc: "길드 일반 기부 시 룬공 증폭 +150,000% (1,501배)", cond: "매일 길드 일반 기부 필수" },
-    { id: "ete_nk_soin", tier: "eternal", part: "neck", name: "소인", mult: 751, desc: "룬 공격력 증폭 +75,000% (751배), 이속 +50%", cond: "조건 없음" },
-    { id: "ete_nk_geoin", tier: "eternal", part: "neck", name: "거인", mult: 751, desc: "룬 공격력 증폭 +75,000% (751배), 이속 -50%", cond: "이속 감소" },
+    // ==================== 3. 목걸이 (영원 17종 - 인게임 순서) ====================
+    { id: "ete_nk_yeobaek", tier: "eternal", part: "neck", name: "여백의 힘", jobType: "reaper", mult: 401, desc: "비어있는 스킬 슬롯 1개당 룬 강타 피해량 +20,000% (2칸 비울 시 40,000%)", cond: "빈 스킬 슬롯 필요 (과성장 세팅 외 비추천)" },
+    { id: "ete_nk_yeokjeon", tier: "eternal", part: "neck", name: "역전", mult: 50, desc: "확률형 스킬 발동 실패할 때마다 해당 스킬 발동 확률 +100% 증가", cond: "확률형 스킬 보정 유틸" },
+    { id: "ete_nk_cheonun", tier: "eternal", part: "neck", name: "천운", jobType: "mage", mult: 70, desc: "스킬 발동 시 100% 확률로 7회 발동", cond: "스킬 다단히트 유틸" },
+    { id: "ete_nk_apdo", tier: "eternal", part: "neck", name: "압도적 힘", mult: 351, desc: "룬공 500% 이상 시 룬공 증폭 +35,000%", cond: "룬공 500% 이상" },
     { id: "ete_nk_wonsoron", tier: "eternal", part: "neck", name: "원소론", jobType: "mage", mult: 601, desc: "4속성 스킬 장착 시 룬 스킬 피해 +60,000%", cond: "4속성 스킬" },
     { id: "ete_nk_chowol", tier: "eternal", part: "neck", name: "초월자", jobType: "reaper", mult: 601, desc: "대낫 초월 120 이상 시 강타 피해 +60,000%", cond: "대낫 초월 120" },
     { id: "ete_nk_wonso", tier: "eternal", part: "neck", name: "원소 폭발", mult: 501, desc: "속성 스킬 5회 시 속성 피해 +50,000%", cond: "10초 지속" },
-    { id: "ete_nk_apdo", tier: "eternal", part: "neck", name: "압도적 힘", mult: 351, desc: "룬공 500% 이상 시 룬공 증폭 +35,000%", cond: "룬공 500% 이상" },
+    { id: "ete_nk_geoin", tier: "eternal", part: "neck", name: "거인", mult: 751, desc: "룬 공격력 증폭 +75,000% (751배), 이속 -50%", cond: "이속 감소" },
+    { id: "ete_nk_soin", tier: "eternal", part: "neck", name: "소인", mult: 751, desc: "룬 공격력 증폭 +75,000% (751배), 이속 +50%", cond: "조건 없음" },
+    { id: "ete_nk_pamyeol2", tier: "eternal", part: "neck", name: "파멸 II", mult: 200, pairWithRing: "ete_rg_payeol2", pairMult: 25001, desc: "파열 II 적 모든 피해 +2,500,000% (25,001배)", cond: "반지 '파열 II'와 세트 착용 필수" },
+    { id: "ete_nk_mageom", tier: "eternal", part: "neck", name: "마검의 손잡이", mult: 5001, pairReq: "ete_rg_mageom", desc: "모든 피해량 +500,000% (5,001배 곱연산, 반지 '마검의 칼날' 페널티 해제)", cond: "⚠️ 반지 '마검의 칼날'과 세트 장착 필수!" },
+    { id: "ete_nk_wolgwang", tier: "eternal", part: "neck", name: "월광", mult: 2501, desc: "달의 가호 30단계 시 룬공 증폭 총 +250,000% (2,501배)", cond: "달의 가호 30단계 이상" },
+    { id: "ete_nk_pokju", tier: "eternal", part: "neck", name: "폭주", mult: 2001, desc: "매초 룬공 증폭 20,000% (최대 +200,000%, 2,001배)", cond: "10초 경과 풀스택" },
+    { id: "ete_nk_jiwon", tier: "eternal", part: "neck", name: "지원", mult: 1501, desc: "길드 일반 기부 시 룬공 증폭 +150,000% (1,501배)", cond: "매일 길드 일반 기부 필수" },
+    { id: "ete_nk_wanryeok", tier: "eternal", part: "neck", name: "완력", mult: 5001, desc: "룬 공격력 증폭 +500,000% (5,001배)", cond: "영웅 공격속도 70% 감소" },
+    { id: "ete_nk_geosin", tier: "eternal", part: "neck", name: "거신병", jobType: "lord", mult: 5001, desc: "첫 슬롯 영웅 3각성 시 영웅 스킬 피해 +500,000% (5,001배)", cond: "첫 슬롯 영웅 3각성 (팬텀 전용)" },
+    { id: "ete_nk_nanta", tier: "eternal", part: "neck", name: "난타", jobType: "reaper", mult: 5001, desc: "공속 +50%, 룬 강타 피해량 +500,000% (5,001배)", cond: "강타 필요 타수 5배 증가 (과성장 엘리시아 세팅 시 추천)" },
 
+    // ==================== 3. 목걸이 (불멸 12종 - 인게임 순서) ====================
+    { id: "imm_nk_geoin", tier: "immortal", part: "neck", name: "거인", mult: 16001, desc: "룬 공격력 증폭 +1,600,000% (16,001배)", cond: "이속 50% 감소" },
+    { id: "imm_nk_soin", tier: "immortal", part: "neck", name: "소인", mult: 16001, desc: "룬 공격력 증폭 +1,600,000% (16,001배)", cond: "이속 50% 증가" },
+    { id: "imm_nk_wolgwang", tier: "immortal", part: "neck", name: "월광", mult: 16001, desc: "달의 가호 30단계 시 룬공 증폭 총 +1,600,000% (16,001배)", cond: "달의 가호 30단계 이상" },
+    { id: "imm_nk_wanryeok", tier: "immortal", part: "neck", name: "완력", mult: 24001, desc: "룬 공격력 증폭 +2,400,000% (24,001배)", cond: "영웅 공속 70% 감소" },
+    { id: "imm_nk_geosin", tier: "immortal", part: "neck", name: "거신병", jobType: "lord", mult: 24001, desc: "첫 슬롯 영웅 3각 시 영웅 스킬 피해 +2,400,000% (24,001배)", cond: "첫 슬롯 영웅 3각성" },
+    { id: "imm_nk_nanta", tier: "immortal", part: "neck", name: "난타", jobType: "reaper", mult: 24001, desc: "강타 필요 타수 5배, 공속 +50%, 룬 강타 피해 +2,400,000% (24,001배)", cond: "강타 타수 5배 페널티 주의" },
     { id: "imm_nk_witch", tier: "immortal", part: "neck", name: "마녀의 펜던트", mult: 250001, pairReq: "imm_rg_witch", desc: "모든 피해량 +25,000,000% (250,001배 곱연산, 반지 '마녀의 반지'와 세트 시 625억 배!)", cond: "⚠️ 반지 '마녀의 반지' 미장착 시 방무 피해 100 고정 페널티!" },
     { id: "imm_nk_yonggisa", tier: "immortal", part: "neck", name: "용기사", mult: 160001, desc: "드래곤 탑승 및 승급 3단계 시 모든 피해량 총 +16,000,000% (160,001배)", cond: "드래곤 승급 3단계 이상 (단독 1티어 목걸이)" },
     { id: "imm_nk_geomap", tier: "immortal", part: "neck", name: "검압", jobType: "reaper", mult: 80001, desc: "강타 필요 타수 3 고정, 룬 강타 피해량 +8,000,000% (80,001배)", cond: "대사신(강타) 전용" },
     { id: "imm_nk_yeongchang", tier: "immortal", part: "neck", name: "영창", jobType: "mage", mult: 80001, desc: "스킬 7개 이상 장착 시 룬 스킬 피해량 총 +8,000,000% (80,001배)", cond: "아크메이지(스킬 7개 장착) 전용" },
     { id: "imm_nk_gunjip", tier: "immortal", part: "neck", name: "군집", jobType: "lord", mult: 80001, desc: "영웅 6개 이상 장착 시 룬 영웅 스킬 피해량 총 +8,000,000% (80,001배)", cond: "팬텀(영웅 6명 장착) 전용" },
     { id: "imm_nk_tamyok", tier: "immortal", part: "neck", name: "탐욕", mult: 32001, desc: "보물던전 2 35단계 이상 시 룬공 증폭 총 +3,200,000% (32,001배)", cond: "보물던전 2 35단계 이상" },
-    { id: "imm_nk_wanryeok", tier: "immortal", part: "neck", name: "완력", mult: 24001, desc: "룬 공격력 증폭 +2,400,000% (24,001배)", cond: "영웅 공속 70% 감소" },
-    { id: "imm_nk_geosin", tier: "immortal", part: "neck", name: "거신병", jobType: "lord", mult: 24001, desc: "첫 슬롯 영웅 3각 시 영웅 스킬 피해 +2,400,000% (24,001배)", cond: "첫 슬롯 영웅 3각성" },
-    { id: "imm_nk_nanta", tier: "immortal", part: "neck", name: "난타", jobType: "reaper", mult: 24001, desc: "강타 필요 타수 5배, 공속 +50%, 룬 강타 피해 +2,400,000% (24,001배)", cond: "강타 타수 5배 페널티 주의" },
-    { id: "imm_nk_geoin", tier: "immortal", part: "neck", name: "거인", mult: 16001, desc: "룬 공격력 증폭 +1,600,000% (16,001배)", cond: "이속 50% 감소" },
-    { id: "imm_nk_soin", tier: "immortal", part: "neck", name: "소인", mult: 16001, desc: "룬 공격력 증폭 +1,600,000% (16,001배)", cond: "이속 50% 증가" },
-    { id: "imm_nk_wolgwang", tier: "immortal", part: "neck", name: "월광", mult: 16001, desc: "달의 가호 30단계 시 룬공 증폭 총 +1,600,000% (16,001배)", cond: "달의 가호 30단계 이상" },
 
-    // ==================== [엠블렘: 고대 / 영원 / 불멸] ====================
-    { id: "anc_em_gogohak", tier: "ancient", part: "emblem", name: "고고학", mult: 601, desc: "고대 장비 12개 이상 보유 시 고대룬 공격력 증폭 +60,000% (601배)", cond: "대낫/오브/장식 고대 등급 총 12개 보유" },
+    // ==================== 4. 엠블렘 (고대 13종 - 인게임 순서) ====================
     { id: "anc_em_chosim", tier: "ancient", part: "emblem", name: "초심", mult: 500, desc: "장착된 패시브 효과 +1,500% 증가 (전 직업 0티어)", cond: "조건 없음" },
-    { id: "anc_em_gwangjang", tier: "ancient", part: "emblem", name: "광장 공포", mult: 406, desc: "고대룬 공증 +45,000% (보스전 1명 기준 40,500%, 406배)", cond: "주변 적 1명당 4,500% 감소 (일반 던전 비추천)" },
-    { id: "anc_em_singyeongji", tier: "ancient", part: "emblem", name: "신의 경지", mult: 301, desc: "전직 60렙 이상 시 고대룬 공증 +30,000% (301배)", cond: "전직 레벨 60 이상" },
-    { id: "anc_em_bunchul", tier: "ancient", part: "emblem", name: "분출", jobType: "mage", mult: 199, desc: "스킬 돌파 10회당 룬 스킬 피해 증폭 +600% (최대 약 19,800%)", cond: "스킬 총 돌파 수 비례" },
-    { id: "anc_em_bijeonseo", tier: "ancient", part: "emblem", name: "비전서", jobType: "mage", mult: 181, desc: "신화 스킬 1칸당 룬 스킬 피해 증폭 +3,000% (6칸 시 18,000%)", cond: "신화 스킬 장착" },
-    { id: "anc_em_dongbanja", tier: "ancient", part: "emblem", name: "동반자", jobType: "lord", mult: 226, desc: "신화 영웅 1칸당 영웅 스킬 피해 증폭 +3,750% (6칸 시 22,500%)", cond: "신화 영웅 장착" },
     { id: "anc_em_pyochul", tier: "ancient", part: "emblem", name: "표출", jobType: "lord", mult: 181, desc: "영웅 돌파 10회당 영웅 스킬 피해 증폭 +600%", cond: "영웅 총 돌파 수 비례" },
+    { id: "anc_em_bunchul", tier: "ancient", part: "emblem", name: "분출", jobType: "mage", mult: 199, desc: "스킬 돌파 10회당 룬 스킬 피해 증폭 +600% (최대 약 19,800%)", cond: "스킬 총 돌파 수 비례" },
+    { id: "anc_em_dongbanja", tier: "ancient", part: "emblem", name: "동반자", jobType: "lord", mult: 226, desc: "신화 영웅 1칸당 영웅 스킬 피해 증폭 +3,750% (6칸 시 22,500%)", cond: "신화 영웅 장착" },
+    { id: "anc_em_bijeonseo", tier: "ancient", part: "emblem", name: "비전서", jobType: "mage", mult: 181, desc: "신화 스킬 1칸당 룬 스킬 피해 증폭 +3,000% (6칸 시 18,000%)", cond: "신화 스킬 장착" },
+    { id: "anc_em_paswae", tier: "ancient", part: "emblem", name: "파쇄", mult: 51, desc: "공격 시 5초간 방어도 무시 2.5% 증가 (최대 20중첩 = +50%)", cond: "방무 보조 유틸" },
+    { id: "anc_em_manaflow", tier: "ancient", part: "emblem", name: "마나의흐름", jobType: "mage", mult: 60, desc: "기본 공격 시 50% 확률로 장착된 스킬 중 랜덤 1회 발동", cond: "평타 기반 스킬 발동 유틸" },
+    { id: "anc_em_gathin", tier: "ancient", part: "emblem", name: "갇힌 운명", jobType: "mage", mult: 200, desc: "강타 봉인, 룬 공격력 증폭 +180,000%", cond: "강타 봉인 페널티" },
+    { id: "anc_em_singyeongji", tier: "ancient", part: "emblem", name: "신의 경지", mult: 301, desc: "전직 60렙 이상 시 고대룬 공증 +30,000% (301배)", cond: "전직 레벨 60 이상" },
+    { id: "anc_em_gogohak", tier: "ancient", part: "emblem", name: "고고학", mult: 601, desc: "고대 장비 12개 이상 보유 시 고대룬 공격력 증폭 +60,000% (601배)", cond: "대낫/오브/장식 고대 등급 총 12개 보유" },
+    { id: "anc_em_gwangjang", tier: "ancient", part: "emblem", name: "광장 공포", mult: 406, desc: "고대룬 공증 +45,000% (보스전 1명 기준 40,500%, 406배)", cond: "주변 적 1명당 4,500% 감소 (일반 던전 비추천)" },
     { id: "anc_em_mumoham", tier: "ancient", part: "emblem", name: "무모함", mult: 151, desc: "고대룬 공증 +15,000% (151배)", cond: "회복 불가능 페널티" },
     { id: "anc_em_ganpa", tier: "ancient", part: "emblem", name: "간파", mult: 151, desc: "룬보스 무적 무시, 고대룬 공증 +15,000% (151배)", cond: "룬 던전 돌파용 필수" },
-    { id: "anc_em_gathin", tier: "ancient", part: "emblem", name: "갇힌 운명", jobType: "mage", mult: 200, desc: "강타 봉인, 룬 공격력 증폭 +180,000%", cond: "강타 봉인 페널티" },
 
-    { id: "ete_em_jedan", tier: "eternal", part: "emblem", name: "제단", mult: 1, pairWithAbyss: "ete_ab_jemul", pairMult: 500001, desc: "심연장식 '제물' 장착 시 영원 룬 공격력 증폭 +50,000,000% (500,001배!)", cond: "심연장식 '제물'과 세트 장착 필수 (단독 사용 불가)" },
-    { id: "ete_em_jeongryeong", tier: "eternal", part: "emblem", name: "정령의힘", mult: 22501, desc: "장착된 모든 정령 돌파 25 이상 시 영원룬 공증 +2,250,000% (22,501배)", cond: "장착 정령 전원 25돌파 이상" },
-    { id: "ete_em_jeoljeong", tier: "eternal", part: "emblem", name: "절정", mult: 22501, desc: "레벨 25,000 달성 시 영원룬 공증 누적 총 +2,250,000% (22,501배)", cond: "캐릭터 레벨 22,000 ~ 25,000" },
-    { id: "ete_em_golem", tier: "eternal", part: "emblem", name: "골렘화", mult: 15001, desc: "룬골렘 변신, 영원룬 공증 +1,500,000% (15,001배)", cond: "룬던전 결계석 체력 1 고정 주의" },
-    { id: "ete_em_gwonwi", tier: "eternal", part: "emblem", name: "권위", mult: 11251, desc: "불멸 문장 장착 시 영원룬 공증 누적 총 +1,125,000%", cond: "영원/불멸 문장 장착" },
+    // ==================== 4. 엠블렘 (영원 13종 - 인게임 순서) ====================
+    { id: "ete_em_pyochul", tier: "eternal", part: "emblem", name: "표출", jobType: "lord", mult: 1651, desc: "영웅 돌파 10회당 영웅 피해 증폭 +5,500%", cond: "영웅 돌파 비례" },
+    { id: "ete_em_bunchul", tier: "eternal", part: "emblem", name: "분출", jobType: "mage", mult: 1651, desc: "스킬 돌파 10회당 스킬 피해 증폭 +5,500%", cond: "스킬 돌파 비례" },
+    { id: "ete_em_dongbanja", tier: "eternal", part: "emblem", name: "동반자", jobType: "lord", mult: 3301, desc: "신화 영웅 1칸당 영웅 피해 증폭 +55,000%", cond: "신화 영웅 6칸" },
+    { id: "ete_em_bijeonseo", tier: "eternal", part: "emblem", name: "비전서", jobType: "mage", mult: 2641, desc: "신화 스킬 1칸당 스킬 피해 증폭 +44,000%", cond: "신화 스킬 6칸" },
     { id: "ete_em_singyeongji", tier: "eternal", part: "emblem", name: "신의 경지", mult: 4501, desc: "전직 60렙 이상 시 고대룬 공증 +450,000%", cond: "전직 60렙 이상" },
     { id: "ete_em_gogohak", tier: "eternal", part: "emblem", name: "고고학", mult: 4501, desc: "고대 장비 12개 이상 시 고대룬 공증 +450,000%", cond: "고대 장비 12개" },
     { id: "ete_em_gwangjang", tier: "eternal", part: "emblem", name: "광장 공포", mult: 4051, desc: "고대룬 공증 +450,000% (적 1명당 4.5만 감소)", cond: "보스전 전용" },
     { id: "ete_em_ganpa", tier: "eternal", part: "emblem", name: "간파", mult: 3001, desc: "룬보스 무적 무시, 고대룬 공증 +300,000%", cond: "룬보스 무적 파훼용" },
-    { id: "ete_em_dongbanja", tier: "eternal", part: "emblem", name: "동반자", jobType: "lord", mult: 3301, desc: "신화 영웅 1칸당 영웅 피해 증폭 +55,000%", cond: "신화 영웅 6칸" },
-    { id: "ete_em_bijeonseo", tier: "eternal", part: "emblem", name: "비전서", jobType: "mage", mult: 2641, desc: "신화 스킬 1칸당 스킬 피해 증폭 +44,000%", cond: "신화 스킬 6칸" },
-    { id: "ete_em_pyochul", tier: "eternal", part: "emblem", name: "표출", jobType: "lord", mult: 1651, desc: "영웅 돌파 10회당 영웅 피해 증폭 +5,500%", cond: "영웅 돌파 비례" },
-    { id: "ete_em_bunchul", tier: "eternal", part: "emblem", name: "분출", jobType: "mage", mult: 1651, desc: "스킬 돌파 10회당 스킬 피해 증폭 +5,500%", cond: "스킬 돌파 비례" },
+    { id: "ete_em_jedan", tier: "eternal", part: "emblem", name: "제단", mult: 1, pairWithAbyss: "ete_ab_jemul", pairMult: 500001, desc: "심연장식 '제물' 장착 시 영원 룬 공격력 증폭 +50,000,000% (500,001배!)", cond: "심연장식 '제물'과 세트 장착 필수 (단독 사용 불가)" },
+    { id: "ete_em_jeongryeong", tier: "eternal", part: "emblem", name: "정령의힘", mult: 22501, desc: "장착된 모든 정령 돌파 25 이상 시 영원룬 공증 +2,250,000% (22,501배)", cond: "장착 정령 전원 25돌파 이상" },
+    { id: "ete_em_gwonwi", tier: "eternal", part: "emblem", name: "권위", mult: 11251, desc: "불멸 문장 장착 시 영원룬 공증 누적 총 +1,125,000%", cond: "영원/불멸 문장 장착" },
+    { id: "ete_em_jeoljeong", tier: "eternal", part: "emblem", name: "절정", mult: 22501, desc: "레벨 25,000 달성 시 영원룬 공증 누적 총 +2,250,000% (22,501배)", cond: "캐릭터 레벨 22,000 ~ 25,000" },
+    { id: "ete_em_golem", tier: "eternal", part: "emblem", name: "골렘화", mult: 15001, desc: "룬골렘 변신, 영원룬 공증 +1,500,000% (15,001배)", cond: "룬던전 결계석 체력 1 고정 주의" },
 
+    // ==================== 4. 엠블렘 (불멸 11종 - 인게임 순서) ====================
+    { id: "imm_em_singyeongji", tier: "immortal", part: "emblem", name: "신의 경지", mult: 150001, desc: "전직 80렙 이상 시 불멸룬 공증 +15,000,000% (15만 배)", cond: "전직 80레벨 이상" },
+    { id: "imm_em_gwangjang", tier: "immortal", part: "emblem", name: "광장 공포", mult: 150001, desc: "불멸룬 공증 +15,000,000% (적 1명당 150만% 감소)", cond: "보스전 전용" },
+    { id: "imm_em_ganpa", tier: "immortal", part: "emblem", name: "간파", mult: 225001, desc: "룬보스 무적 무시, 불멸룬 공증 +22,500,000% (22.5만 배)", cond: "룬보스 무적 무시" },
+    { id: "imm_em_jeongryeong", tier: "immortal", part: "emblem", name: "정령의힘", mult: 300001, desc: "모든 정령 돌파 30 이상 시 불멸룬 공증 +30,000,000% (30만 배)", cond: "장착 정령 전원 30돌파" },
+    { id: "imm_em_jeoljeong", tier: "immortal", part: "emblem", name: "절정", mult: 450001, desc: "레벨 25,000 달성 시 불멸룬 공증 총 +45,000,000% (45만 배)", cond: "레벨 25,000 달성" },
+    { id: "imm_em_golem", tier: "immortal", part: "emblem", name: "골렘화", mult: 450001, desc: "룬골렘 변신, 불멸룬 공증 +45,000,000% (45만 배)", cond: "룬던전 결계석 체력 1 고정" },
     { id: "imm_em_day", tier: "immortal", part: "emblem", name: "영원의 순환:낮", mult: 2500001, pairWithAbyss: "imm_ab_night", pairMult: 37500001, desc: "'영원의 순환:밤' 장착 시 영구 지속 모든 피해량 총 +3,750,000,000% (3,750만 배, 세트 140조 배!)", cond: "심연장식 '영원의 순환:밤'과 세트 시 영구 지속" },
     { id: "imm_em_boseok", tier: "immortal", part: "emblem", name: "보석학", mult: 22500001, desc: "고대 보석 15개 장착 시 불멸 룬 공격력 증폭 총 +2,250,000,000% (2,250만 배!)", cond: "소울커넥트 고대 보석 15개 장착 (단독 1티어)" },
     { id: "imm_em_samsingi", tier: "immortal", part: "emblem", name: "삼신기", mult: 1500001, desc: "영원 대낫/오브/장식 보유 1개당 불멸룬 공증 5천만% (3개 시 150만 배)", cond: "영원 무기 3종 보유" },
     { id: "imm_em_wonron", tier: "immortal", part: "emblem", name: "원론", mult: 1200001, desc: "장착 고대 패시브 돌파 40 이상 시 불멸룬 공증 총 +120,000,000% (120만 배)", cond: "고대 패시브 돌파 합 40 이상" },
     { id: "imm_em_myeongseong", tier: "immortal", part: "emblem", name: "명성", mult: 750001, desc: "불멸 등급 이상 칭호 장착 시 불멸룬 공증 +75,000,000% (75만 배)", cond: "불멸 칭호 장착" },
-    { id: "imm_em_jeoljeong", tier: "immortal", part: "emblem", name: "절정", mult: 450001, desc: "레벨 25,000 달성 시 불멸룬 공증 총 +45,000,000% (45만 배)", cond: "레벨 25,000 달성" },
-    { id: "imm_em_golem", tier: "immortal", part: "emblem", name: "골렘화", mult: 450001, desc: "룬골렘 변신, 불멸룬 공증 +45,000,000% (45만 배)", cond: "룬던전 결계석 체력 1 고정" },
-    { id: "imm_em_jeongryeong", tier: "immortal", part: "emblem", name: "정령의힘", mult: 300001, desc: "모든 정령 돌파 30 이상 시 불멸룬 공증 +30,000,000% (30만 배)", cond: "장착 정령 전원 30돌파" },
-    { id: "imm_em_ganpa", tier: "immortal", part: "emblem", name: "간파", mult: 225001, desc: "룬보스 무적 무시, 불멸룬 공증 +22,500,000% (22.5만 배)", cond: "룬보스 무적 무시" },
-    { id: "imm_em_singyeongji", tier: "immortal", part: "emblem", name: "신의 경지", mult: 150001, desc: "전직 80렙 이상 시 불멸룬 공증 +15,000,000% (15만 배)", cond: "전직 80레벨 이상" },
-    { id: "imm_em_gwangjang", tier: "immortal", part: "emblem", name: "광장 공포", mult: 150001, desc: "불멸룬 공증 +15,000,000% (적 1명당 150만% 감소)", cond: "보스전 전용" },
 
-    // ==================== [심연장식: 고대 / 영원 / 불멸] ====================
-    { id: "anc_ab_gwansok", tier: "ancient", part: "abyss", name: "광속", mult: 161, desc: "이속 10%당 심연장식 룬공 800% (최대 +16,000%, 161배)", cond: "이동속도 200% 이상" },
-    { id: "anc_ab_gwangpung", tier: "ancient", part: "abyss", name: "광풍", mult: 161, desc: "공속 10%당 심연장식 룬공 1,600% (최대 +16,000%, 161배)", cond: "공격속도 100% 이상" },
+    // ==================== 5. 심연장식 (고대 10종 - 인게임 순서) ====================
+    { id: "anc_ab_danryeon", tier: "ancient", part: "abyss", name: "단련", mult: 101, desc: "심연장식 룬 공격력 +10,000%", cond: "조건 없음" },
+    { id: "anc_ab_goyang", tier: "ancient", part: "abyss", name: "고양", mult: 101, desc: "심연장식 레벨 20 이상 시 룬공 +10,000%", cond: "심연장식 Lv.20 이상" },
     { id: "anc_ab_deungban", tier: "ancient", part: "abyss", name: "등반가", mult: 151, desc: "일반 스테이지 진행 시 심연장식 룬공 +15,000% (151배)", cond: "일반 스테이지만 적용" },
     { id: "anc_ab_tamheom", tier: "ancient", part: "abyss", name: "탐험가", mult: 151, desc: "던전 진행 시 심연장식 룬공 +15,000% (151배)", cond: "던전에서만 적용" },
+    { id: "anc_ab_gwansok", tier: "ancient", part: "abyss", name: "광속", mult: 161, desc: "이속 10%당 심연장식 룬공 800% (최대 +16,000%, 161배)", cond: "이동속도 200% 이상" },
+    { id: "anc_ab_gwangpung", tier: "ancient", part: "abyss", name: "광풍", mult: 161, desc: "공속 10%당 심연장식 룬공 1,600% (최대 +16,000%, 161배)", cond: "공격속도 100% 이상" },
     { id: "anc_ab_myeongpum", tier: "ancient", part: "abyss", name: "명품", mult: 201, desc: "장착 전설 이상 심연장식 1개당 룬공 +5,000% (4개 시 20,000%)", cond: "전설 이상 심연장식 장착" },
     { id: "anc_ab_gaecheok", tier: "ancient", part: "abyss", name: "개척자", mult: 101, desc: "이계 30회 + 명계 15회 정찰 시 심연장식 룬공 총 +10,000%", cond: "이계/명계 정찰" },
     { id: "anc_ab_singaho", tier: "ancient", part: "abyss", name: "신의 가호", mult: 101, desc: "수호신 10돌파 및 잠재 200 이상 시 심연장식 룬공 총 +10,000%", cond: "수호신 10돌파" },
     { id: "anc_ab_jeongryeong", tier: "ancient", part: "abyss", name: "정령 조화", mult: 101, desc: "정령 시너지 300 이상 시 심연장식 룬공 총 +10,000%", cond: "정령 시너지 300점" },
-    { id: "anc_ab_goyang", tier: "ancient", part: "abyss", name: "고양", mult: 101, desc: "심연장식 레벨 20 이상 시 룬공 +10,000%", cond: "심연장식 Lv.20 이상" },
-    { id: "anc_ab_danryeon", tier: "ancient", part: "abyss", name: "단련", mult: 101, desc: "심연장식 룬 공격력 +10,000%", cond: "조건 없음" },
 
-    { id: "ete_ab_jemul", tier: "eternal", part: "abyss", name: "제물", mult: 1, pairWithEmblem: "ete_em_jedan", pairMult: 40001, desc: "엠블렘 '제단' 장착 시 심연장식 룬공 +4,000,000% (40,001배!)", cond: "엠블렘 '제단'과 세트 장착 필수" },
-    { id: "ete_ab_jeoju", tier: "eternal", part: "abyss", name: "저주", mult: 2001, desc: "공격 시 화상/감전/혼돈 부여, 심연장식 룬공 +200,000% (2,001배)", cond: "상태이상 3종 자동 부여 + 딜 상승 1티어" },
-    { id: "ete_ab_jeongbok", tier: "eternal", part: "abyss", name: "정복자", mult: 2001, desc: "스테이지 챕터 400 이상 시 심연장식 룬공 총 +200,000% (2,001배)", cond: "스테이지 400챕터 이상" },
-    { id: "ete_ab_simyeonjohwa", tier: "eternal", part: "abyss", name: "심연 조화", mult: 2001, desc: "심연장식 시너지 30 이상 시 룬공 총 +200,000% (2,001배)", cond: "심연장식 시너지 30 이상" },
+    // ==================== 5. 심연장식 (영원 15종 - 인게임 순서) ====================
+    { id: "ete_ab_danryeon", tier: "eternal", part: "abyss", name: "단련", mult: 201, desc: "심연장식 룬공 +20,000%", cond: "조건 없음" },
+    { id: "ete_ab_goyang", tier: "eternal", part: "abyss", name: "고양", mult: 201, desc: "심연장식 20렙 이상 시 +20,000%", cond: "Lv.20 이상" },
+    { id: "ete_ab_deungban", tier: "eternal", part: "abyss", name: "등반가", mult: 301, desc: "스테이지 진행 시 룬공 +30,000%", cond: "스테이지 전용" },
+    { id: "ete_ab_tamheom", tier: "eternal", part: "abyss", name: "탐험가", mult: 301, desc: "던전 진행 시 룬공 +30,000%", cond: "던전 전용" },
+    { id: "ete_ab_gwansok", tier: "eternal", part: "abyss", name: "광속", mult: 501, desc: "이속 비례 심연장식 룬공 최대 +50,000%", cond: "이속 200% 이상" },
+    { id: "ete_ab_gwangpung", tier: "eternal", part: "abyss", name: "광풍", mult: 501, desc: "공속 비례 심연장식 룬공 최대 +50,000%", cond: "공속 100% 이상" },
+    { id: "ete_ab_myeongpum", tier: "eternal", part: "abyss", name: "명품", mult: 501, desc: "전설 이상 심연장식 1개당 +12,500% (최대 50,000%)", cond: "심연장식 4부위" },
     { id: "ete_ab_gaecheok", tier: "eternal", part: "abyss", name: "개척자", mult: 1001, desc: "이계 30회 + 명계 15회 시 룬공 총 +100,000% (1,001배)", cond: "이계/명계 정찰" },
     { id: "ete_ab_singaho", tier: "eternal", part: "abyss", name: "신의 가호", mult: 1001, desc: "수호신 10돌 + 잠재 200 시 룬공 총 +100,000% (1,001배)", cond: "수호신 조건" },
     { id: "ete_ab_jeongryeong", tier: "eternal", part: "abyss", name: "정령 조화", mult: 1001, desc: "정령 시너지 300 이상 시 룬공 총 +100,000% (1,001배)", cond: "정령 시너지 300점" },
     { id: "ete_ab_simyeonjeongbok", tier: "eternal", part: "abyss", name: "심연 정복자", mult: 1001, desc: "태초의 심연 40단계 시 룬공 총 +100,000% (1,001배)", cond: "태초의 심연 40단계" },
-    { id: "ete_ab_myeongpum", tier: "eternal", part: "abyss", name: "명품", mult: 501, desc: "전설 이상 심연장식 1개당 +12,500% (최대 50,000%)", cond: "심연장식 4부위" },
-    { id: "ete_ab_gwangpung", tier: "eternal", part: "abyss", name: "광풍", mult: 501, desc: "공속 비례 심연장식 룬공 최대 +50,000%", cond: "공속 100% 이상" },
-    { id: "ete_ab_gwansok", tier: "eternal", part: "abyss", name: "광속", mult: 501, desc: "이속 비례 심연장식 룬공 최대 +50,000%", cond: "이속 200% 이상" },
-    { id: "ete_ab_tamheom", tier: "eternal", part: "abyss", name: "탐험가", mult: 301, desc: "던전 진행 시 룬공 +30,000%", cond: "던전 전용" },
-    { id: "ete_ab_deungban", tier: "eternal", part: "abyss", name: "등반가", mult: 301, desc: "스테이지 진행 시 룬공 +30,000%", cond: "스테이지 전용" },
-    { id: "ete_ab_goyang", tier: "eternal", part: "abyss", name: "고양", mult: 201, desc: "심연장식 20렙 이상 시 +20,000%", cond: "Lv.20 이상" },
-    { id: "ete_ab_danryeon", tier: "eternal", part: "abyss", name: "단련", mult: 201, desc: "심연장식 룬공 +20,000%", cond: "조건 없음" },
+    { id: "ete_ab_jemul", tier: "eternal", part: "abyss", name: "제물", mult: 1, pairWithEmblem: "ete_em_jedan", pairMult: 40001, desc: "엠블렘 '제단' 장착 시 심연장식 룬공 +4,000,000% (40,001배!)", cond: "엠블렘 '제단'과 세트 장착 필수" },
+    { id: "ete_ab_jeoju", tier: "eternal", part: "abyss", name: "저주", mult: 2001, desc: "공격 시 화상/감전/혼돈 부여, 심연장식 룬공 +200,000% (2,001배)", cond: "상태이상 3종 자동 부여 + 딜 상승 1티어" },
+    { id: "ete_ab_jeongbok", tier: "eternal", part: "abyss", name: "정복자", mult: 2001, desc: "스테이지 챕터 400 이상 시 심연장식 룬공 총 +200,000% (2,001배)", cond: "스테이지 400챕터 이상" },
+    { id: "ete_ab_simyeonjohwa", tier: "eternal", part: "abyss", name: "심연 조화", mult: 2001, desc: "심연장식 시너지 30 이상 시 룬공 총 +200,000% (2,001배)", cond: "심연장식 시너지 30 이상" },
 
+    // ==================== 5. 심연장식 (불멸 14종 - 인게임 순서) ====================
+    { id: "imm_ab_goyang", tier: "immortal", part: "abyss", name: "고양", mult: 150001, desc: "심연장식 40렙 이상 시 +15,000,000% (15만 배)", cond: "심연장식 Lv.40 이상" },
+    { id: "imm_ab_gwansok", tier: "immortal", part: "abyss", name: "광속", mult: 120001, desc: "이속 비례 최대 +12,000,000% (12만 배)", cond: "이속 200% 이상" },
+    { id: "imm_ab_gwangpung", tier: "immortal", part: "abyss", name: "광풍", mult: 150001, desc: "공속 비례 최대 +15,000,000% (15만 배)", cond: "공속 100% 이상" },
+    { id: "imm_ab_singaho", tier: "immortal", part: "abyss", name: "신의 가호", mult: 225001, desc: "수호신 조건 달성 시 총 +22,500,000% (22.5만 배)", cond: "수호신 10돌 + 잠재 200" },
+    { id: "imm_ab_jeongryeong", tier: "immortal", part: "abyss", name: "정령 조화", mult: 225001, desc: "정령 시너지 300 이상 시 총 +22,500,000% (22.5만 배)", cond: "정령 시너지 300점" },
+    { id: "imm_ab_simyeonjeongbok", tier: "immortal", part: "abyss", name: "심연 정복자", mult: 225001, desc: "태초의 심연 40단계 시 총 +22,500,000% (22.5만 배)", cond: "태초의 심연 40단계" },
+    { id: "imm_ab_jeongbok", tier: "immortal", part: "abyss", name: "정복자", mult: 300001, desc: "챕터 400 이상 시 룬공 총 +30,000,000% (30만 배)", cond: "스테이지 400챕터 이상" },
+    { id: "imm_ab_simyeonjohwa", tier: "immortal", part: "abyss", name: "심연 조화", mult: 300001, desc: "심연장식 시너지 30 이상 시 총 +30,000,000% (30만 배)", cond: "심연장식 시너지 30" },
     { id: "imm_ab_night", tier: "immortal", part: "abyss", name: "영원의 순환:밤", mult: 250001, pairWithEmblem: "imm_em_day", pairMult: 3750001, desc: "'영원의 순환:낮' 장착 시 영구 지속 모든 피해량 총 +375,000,000% (375만 배, 세트 140조 배!)", cond: "엠블렘 '영원의 순환:낮'과 세트 장착 필수" },
     { id: "imm_ab_gaehwa", tier: "immortal", part: "abyss", name: "개화", mult: 1500001, desc: "룬 획득 후 출석 10일 달성 시 심연장식 룬공 +150,000,000% (150만 배)", cond: "획득 후 10일 출석 (단독 1순위)" },
     { id: "imm_ab_simyeondolpa", tier: "immortal", part: "abyss", name: "심연 돌파", mult: 1200001, desc: "고대 이상 심연장식 1개당 3천만% (4개 시 +120,000,000%, 120만 배)", cond: "고대 심연장식 4개 장착" },
     { id: "imm_ab_geukhan", tier: "immortal", part: "abyss", name: "극한의 저력", mult: 1200001, desc: "고대 패시브 각성 합계 6 이상 시 룬공 +120,000,000% (120만 배)", cond: "고대 패시브 각성 합 6 이상" },
     { id: "imm_ab_jeoju2", tier: "immortal", part: "abyss", name: "저주 II", mult: 1200001, noBleedMult: 400001, desc: "화상/감전/혼돈 부여 + 룬공 4천만% (출혈 부여 시 총 +120,000,000%, 120만 배)", cond: "스킬 '크림슨 웨이브(출혈)' 착용 시 풀배율 발동" },
     { id: "imm_ab_goldcard", tier: "immortal", part: "abyss", name: "골드 카드", mult: 750001, desc: "신화 몬스터카드 3개 이상 장착 시 룬공 +75,000,000% (75만 배)", cond: "신화 몬스터카드 3개 이상" },
-    { id: "imm_ab_jeongbok", tier: "immortal", part: "abyss", name: "정복자", mult: 300001, desc: "챕터 400 이상 시 룬공 총 +30,000,000% (30만 배)", cond: "스테이지 400챕터 이상" },
-    { id: "imm_ab_simyeonjohwa", tier: "immortal", part: "abyss", name: "심연 조화", mult: 300001, desc: "심연장식 시너지 30 이상 시 총 +30,000,000% (30만 배)", cond: "심연장식 시너지 30" },
-    { id: "imm_ab_singaho", tier: "immortal", part: "abyss", name: "신의 가호", mult: 225001, desc: "수호신 조건 달성 시 총 +22,500,000% (22.5만 배)", cond: "수호신 10돌 + 잠재 200" },
-    { id: "imm_ab_jeongryeong", tier: "immortal", part: "abyss", name: "정령 조화", mult: 225001, desc: "정령 시너지 300 이상 시 총 +22,500,000% (22.5만 배)", cond: "정령 시너지 300점" },
-    { id: "imm_ab_simyeonjeongbok", tier: "immortal", part: "abyss", name: "심연 정복자", mult: 225001, desc: "태초의 심연 40단계 시 총 +22,500,000% (22.5만 배)", cond: "태초의 심연 40단계" },
-    { id: "imm_ab_goyang", tier: "immortal", part: "abyss", name: "고양", mult: 150001, desc: "심연장식 40렙 이상 시 +15,000,000% (15만 배)", cond: "심연장식 Lv.40 이상" },
-    { id: "imm_ab_gwangpung", tier: "immortal", part: "abyss", name: "광풍", mult: 150001, desc: "공속 비례 최대 +15,000,000% (15만 배)", cond: "공속 100% 이상" },
-    { id: "imm_ab_gwansok", tier: "immortal", part: "abyss", name: "광속", mult: 120001, desc: "이속 비례 최대 +12,000,000% (12만 배)", cond: "이속 200% 이상" },
 
-    // ==================== [무기: 고대 / 영원 / 불멸 (3슬롯)] ====================
+    // ==================== 6. 무기 (고대 8종 - 인게임 순서) ====================
+    { id: "anc_wp_jaeryeon", tier: "ancient", part: "weapon", name: "재련", wCat: "atk", val: 100000, desc: "무기 룬 공격력 +100,000%", cond: "조건 없음" },
+    { id: "anc_wp_bunsin", tier: "ancient", part: "weapon", name: "분신", wCat: "atk", val: 100000, desc: "무기 룬 공격력 +100,000%, 영웅 외형 내 캐릭터로 변경", cond: "조건 없음" },
+    { id: "anc_wp_sunpung", tier: "ancient", part: "weapon", name: "순풍", wCat: "atk", val: 200000, desc: "무기 룬공 +200,000% (홀수일 텔포쿨감 / 짝수일 이속증가)", cond: "조건 없음" },
+    { id: "anc_wp_jangjeon", tier: "ancient", part: "weapon", name: "장전", wCat: "atk", val: 200000, desc: "고대 코어 3개 이상 장착 시 무기 룬공 +200,000%", cond: "소울커넥트 고대 코어 3개" },
     { id: "anc_wp_gwajil", tier: "ancient", part: "weapon", name: "과질량", wCat: "atk", val: 300000, desc: "대낫 크기 3배, 무기 룬 공격력 +300,000%", cond: "조건 없음" },
     { id: "anc_wp_gwapohwa", tier: "ancient", part: "weapon", name: "과포화", wCat: "atk", val: 300000, desc: "오브 크기 3배, 무기 룬 공격력 +300,000%", cond: "조건 없음" },
     { id: "anc_wp_gwasiyok", tier: "ancient", part: "weapon", name: "과시욕", wCat: "atk", val: 300000, desc: "장식 크기 3배, 무기 룬 공격력 +300,000%", cond: "조건 없음" },
     { id: "anc_wp_ilgidang", tier: "ancient", part: "weapon", name: "일기당천", wCat: "atk", val: 300000, desc: "룬 던전 150단계 1인 클리어 시 무기 룬공 +300,000%", cond: "룬던전 150단계 솔로 클리어" },
-    { id: "anc_wp_jangjeon", tier: "ancient", part: "weapon", name: "장전", wCat: "atk", val: 200000, desc: "고대 코어 3개 이상 장착 시 무기 룬공 +200,000%", cond: "소울커넥트 고대 코어 3개" },
-    { id: "anc_wp_sunpung", tier: "ancient", part: "weapon", name: "순풍", wCat: "atk", val: 200000, desc: "무기 룬공 +200,000% (홀수일 텔포쿨감 / 짝수일 이속증가)", cond: "조건 없음" },
-    { id: "anc_wp_jaeryeon", tier: "ancient", part: "weapon", name: "재련", wCat: "atk", val: 100000, desc: "무기 룬 공격력 +100,000%", cond: "조건 없음" },
-    { id: "anc_wp_bunsin", tier: "ancient", part: "weapon", name: "분신", wCat: "atk", val: 100000, desc: "무기 룬 공격력 +100,000%, 영웅 외형 내 캐릭터로 변경", cond: "조건 없음" },
 
-    { id: "ete_wp_byeondeok", tier: "eternal", part: "weapon", name: "변덕", wCat: "atk", val: 1000000, reaperExtra: 2.5, desc: "무기 룬공 +1,000,000%, 강타 50% 확률 피해 5배 / 50% 불발", cond: "대사신(강타) 고효율" },
+    // ==================== 6. 무기 (영원 9종 - 인게임 순서) ====================
+    { id: "ete_wp_jaeryeon", tier: "eternal", part: "weapon", name: "재련", wCat: "atk", val: 200000, desc: "무기 룬공 +200,000%", cond: "조건 없음" },
+    { id: "ete_wp_bunsin", tier: "eternal", part: "weapon", name: "분신", wCat: "atk", val: 200000, desc: "무기 룬공 +200,000%", cond: "조건 없음" },
+    { id: "ete_wp_sunpung", tier: "eternal", part: "weapon", name: "순풍", wCat: "atk", val: 400000, desc: "무기 룬공 +400,000%", cond: "조건 없음" },
+    { id: "ete_wp_jangjeon", tier: "eternal", part: "weapon", name: "장전", wCat: "atk", val: 400000, desc: "고대 코어 3개 이상 시 무기 룬공 +400,000%", cond: "고대 코어 3개" },
     { id: "ete_wp_gwajil", tier: "eternal", part: "weapon", name: "과질량", wCat: "atk", val: 600000, desc: "대낫 크기 3배, 무기 룬공 +600,000%", cond: "조건 없음" },
     { id: "ete_wp_gwapohwa", tier: "eternal", part: "weapon", name: "과포화", wCat: "atk", val: 600000, desc: "오브 크기 3배, 무기 룬공 +600,000%", cond: "조건 없음" },
     { id: "ete_wp_gwasiyok", tier: "eternal", part: "weapon", name: "과시욕", wCat: "atk", val: 600000, desc: "장식 크기 3배, 무기 룬공 +600,000%", cond: "조건 없음" },
     { id: "ete_wp_ilgidang", tier: "eternal", part: "weapon", name: "일기당천", wCat: "atk", val: 600000, desc: "룬던전 150단계 1인 클리어 시 무기 룬공 +600,000%", cond: "룬던전 150단계 솔클" },
-    { id: "ete_wp_jangjeon", tier: "eternal", part: "weapon", name: "장전", wCat: "atk", val: 400000, desc: "고대 코어 3개 이상 시 무기 룬공 +400,000%", cond: "고대 코어 3개" },
-    { id: "ete_wp_sunpung", tier: "eternal", part: "weapon", name: "순풍", wCat: "atk", val: 400000, desc: "무기 룬공 +400,000%", cond: "조건 없음" },
-    { id: "ete_wp_jaeryeon", tier: "eternal", part: "weapon", name: "재련", wCat: "atk", val: 200000, desc: "무기 룬공 +200,000%", cond: "조건 없음" },
-    { id: "ete_wp_bunsin", tier: "eternal", part: "weapon", name: "분신", wCat: "atk", val: 200000, desc: "무기 룬공 +200,000%", cond: "조건 없음" },
+    { id: "ete_wp_byeondeok", tier: "eternal", part: "weapon", name: "변덕", wCat: "atk", val: 1000000, reaperExtra: 2.5, desc: "무기 룬공 +1,000,000%, 강타 50% 확률 피해 5배 / 50% 불발", cond: "대사신(강타) 고효율" },
 
-    { id: "imm_wp_totem", tier: "immortal", part: "weapon", name: "토테미즘", wCat: "dmg", val: 100000000, desc: "전투 5초 후 토템 소환, 모든 피해량 +100,000,000% (1,000,001배 곱연산)", cond: "전투 시작 5초 후 발동 (종결 0티어)" },
-    { id: "imm_wp_sujip", tier: "immortal", part: "weapon", name: "수집", wCat: "atk", val: 88000000, desc: "불멸 룬 10종마다 무기 룬공 1,100만% (80종 시 +88,000,000%, 880,001배)", cond: "획득 불멸 룬 80종 이상 (전체 89종)" },
-    { id: "imm_wp_wanbyeok", tier: "immortal", part: "weapon", name: "완벽 추구", wCat: "dmg", val: 80000000, desc: "영원 장비 3종 연마 합 35 이상 시 모든 피해량 +80,000,000% (800,001배 곱연산)", cond: "영원 대낫+오브+장식 연마 합계 35 이상" },
-    { id: "imm_wp_geuk_scythe", tier: "immortal", part: "weapon", name: "극련:대낫", wCat: "dmg", val: 27500000, desc: "영원 대낫 연마 15 이상 시 모든 피해량 총 +27,500,000% (275,001배 곱연산)", cond: "영원 대낫 연마 15단계 이상" },
-    { id: "imm_wp_geuk_orb", tier: "immortal", part: "weapon", name: "극련:오브", wCat: "dmg", val: 27500000, desc: "영원 오브 연마 15 이상 시 모든 피해량 총 +27,500,000% (275,001배 곱연산)", cond: "영원 오브 연마 15단계 이상" },
-    { id: "imm_wp_geuk_acc", tier: "immortal", part: "weapon", name: "극련:장식", wCat: "dmg", val: 27500000, desc: "영원 장식 연마 15 이상 시 모든 피해량 총 +27,500,000% (275,001배 곱연산)", cond: "영원 장식 연마 15단계 이상" },
-    { id: "imm_wp_byeondeok", tier: "immortal", part: "weapon", name: "변덕", wCat: "atk", val: 27500000, desc: "무기 룬공 +27,500,000% (275,001배), 강타 50% 5배 / 50% 불발", cond: "사신 기준 1티어 효율" },
+    // ==================== 6. 무기 (불멸 15종 - 인게임 순서) ====================
+    { id: "imm_wp_jaeryeon", tier: "immortal", part: "weapon", name: "재련", wCat: "atk", val: 5500000, desc: "무기 룬공 +5,500,000% (55,001배)", cond: "조건 없음" },
+    { id: "imm_wp_bunsin", tier: "immortal", part: "weapon", name: "분신", wCat: "atk", val: 5500000, desc: "무기 룬공 +5,500,000% (55,001배)", cond: "조건 없음" },
+    { id: "imm_wp_sunpung", tier: "immortal", part: "weapon", name: "순풍", wCat: "atk", val: 11000000, desc: "무기 룬공 +11,000,000% (110,001배)", cond: "조건 없음" },
+    { id: "imm_wp_jangjeon", tier: "immortal", part: "weapon", name: "장전", wCat: "atk", val: 11000000, desc: "고대 코어 3개 장착 시 무기 룬공 +11,000,000% (110,001배)", cond: "고대 코어 3개" },
     { id: "imm_wp_gwajil", tier: "immortal", part: "weapon", name: "과질량", wCat: "atk", val: 16500000, desc: "대낫 크기 3배, 무기 룬공 +16,500,000% (165,001배)", cond: "조건 없음" },
     { id: "imm_wp_gwapohwa", tier: "immortal", part: "weapon", name: "과포화", wCat: "atk", val: 16500000, desc: "오브 크기 3배, 무기 룬공 +16,500,000% (165,001배)", cond: "조건 없음" },
     { id: "imm_wp_gwasiyok", tier: "immortal", part: "weapon", name: "과시욕", wCat: "atk", val: 16500000, desc: "장식 크기 3배, 무기 룬공 +16,500,000% (165,001배)", cond: "조건 없음" },
     { id: "imm_wp_ilgidang", tier: "immortal", part: "weapon", name: "일기당천", wCat: "atk", val: 16500000, desc: "룬던전 150단계 1인 클리어 시 무기 룬공 +16,500,000% (165,001배)", cond: "룬던전 150단계 솔클" },
-    { id: "imm_wp_sunpung", tier: "immortal", part: "weapon", name: "순풍", wCat: "atk", val: 11000000, desc: "무기 룬공 +11,000,000% (110,001배)", cond: "조건 없음" },
-    { id: "imm_wp_jangjeon", tier: "immortal", part: "weapon", name: "장전", wCat: "atk", val: 11000000, desc: "고대 코어 3개 장착 시 무기 룬공 +11,000,000% (110,001배)", cond: "고대 코어 3개" },
-    { id: "imm_wp_jaeryeon", tier: "immortal", part: "weapon", name: "재련", wCat: "atk", val: 5500000, desc: "무기 룬공 +5,500,000% (55,001배)", cond: "조건 없음" },
-    { id: "imm_wp_bunsin", tier: "immortal", part: "weapon", name: "분신", wCat: "atk", val: 5500000, desc: "무기 룬공 +5,500,000% (55,001배)", cond: "조건 없음" }
+    { id: "imm_wp_byeondeok", tier: "immortal", part: "weapon", name: "변덕", wCat: "atk", val: 27500000, desc: "무기 룬공 +27,500,000% (275,001배), 강타 50% 5배 / 50% 불발", cond: "사신 기준 1티어 효율" },
+    { id: "imm_wp_sujip", tier: "immortal", part: "weapon", name: "수집", wCat: "atk", val: 88000000, desc: "불멸 룬 10종마다 무기 룬공 1,100만% (80종 시 +88,000,000%, 880,001배)", cond: "획득 불멸 룬 80종 이상 (전체 89종)" },
+    { id: "imm_wp_geuk_scythe", tier: "immortal", part: "weapon", name: "극련:대낫", wCat: "dmg", val: 27500000, desc: "영원 대낫 연마 15 이상 시 모든 피해량 총 +27,500,000% (275,001배 곱연산)", cond: "영원 대낫 연마 15단계 이상" },
+    { id: "imm_wp_geuk_orb", tier: "immortal", part: "weapon", name: "극련:오브", wCat: "dmg", val: 27500000, desc: "영원 오브 연마 15 이상 시 모든 피해량 총 +27,500,000% (275,001배 곱연산)", cond: "영원 오브 연마 15단계 이상" },
+    { id: "imm_wp_geuk_acc", tier: "immortal", part: "weapon", name: "극련:장식", wCat: "dmg", val: 27500000, desc: "영원 장식 연마 15 이상 시 모든 피해량 총 +27,500,000% (275,001배 곱연산)", cond: "영원 장식 연마 15단계 이상" },
+    { id: "imm_wp_totem", tier: "immortal", part: "weapon", name: "토테미즘", wCat: "dmg", val: 100000000, desc: "전투 5초 후 토템 소환, 모든 피해량 +100,000,000% (1,000,001배 곱연산)", cond: "전투 시작 5초 후 발동 (종결 0티어)" },
+    { id: "imm_wp_wanbyeok", tier: "immortal", part: "weapon", name: "완벽 추구", wCat: "dmg", val: 80000000, desc: "영원 장비 3종 연마 합 35 이상 시 모든 피해량 +80,000,000% (800,001배 곱연산)", cond: "영원 대낫+오브+장식 연마 합계 35 이상" }
   ];
 
   function openRuneHelperView() {
@@ -4550,7 +4608,7 @@
     const tierKr = getRuneTierKr(currentRuneTierTab);
 
     let html = '';
-    parts.forEach((p, idx) => {
+    parts.forEach((p) => {
       const list = RUNE_DB.filter(r => r.tier === currentRuneTierTab && r.part === p.key);
       const ownedCnt = list.filter(r => ownedRunes.has(r.id)).length;
 
@@ -4688,30 +4746,69 @@
 
   function findBestArmor3(ownedArmor) {
     if (ownedArmor.length === 0) return { slots: [null, null, null], mult: 1 };
-    if (ownedArmor.length <= 3) {
-      const ordered = assignArmorPositions(ownedArmor);
-      return { slots: ordered, mult: Math.max(1, evaluateArmorCombo(ownedArmor, ownedArmor)) };
-    }
 
     let bestScore = -1;
     let bestCombo = [];
-    const n = ownedArmor.length;
 
-    for (let i = 0; i < n - 2; i++) {
-      for (let j = i + 1; j < n - 1; j++) {
-        for (let k = j + 1; k < n; k++) {
-          const c = [ownedArmor[i], ownedArmor[j], ownedArmor[k]];
-          const score = evaluateArmorCombo(c, ownedArmor);
-          if (score > bestScore) {
-            bestScore = score;
-            bestCombo = c;
+    // 1) 일반 조합 탐색 (보유 룬이 3개 이하일 때와 3개 이상일 때 모두 처리)
+    if (ownedArmor.length <= 3) {
+      bestScore = Math.max(1, evaluateArmorCombo(ownedArmor, ownedArmor));
+      bestCombo = assignArmorPositions(ownedArmor);
+    } else {
+      const n = ownedArmor.length;
+      for (let i = 0; i < n - 2; i++) {
+        for (let j = i + 1; j < n - 1; j++) {
+          for (let k = j + 1; k < n; k++) {
+            const c = [ownedArmor[i], ownedArmor[j], ownedArmor[k]];
+            const score = evaluateArmorCombo(c, ownedArmor);
+            if (score > bestScore) {
+              bestScore = score;
+              bestCombo = assignArmorPositions(c);
+            }
           }
         }
       }
     }
 
+    // 2) 영원 '케르베로스' 특수 세트 비교:
+    // 케르베로스를 보유 중이고, 보유한 '영원 등급 방어구 룬'이 총 3개 이상이면 케르베로스 3칸(100,251,151배) 발동 가능!
+    const hasKerberos = ownedArmor.some(r => r.id === 'ete_ar_kerberos');
+    const eternalArmorCount = ownedArmor.filter(r => r.tier === 'eternal').length;
+
+    if (hasKerberos && eternalArmorCount >= 3) {
+      const kerberos3Score = 100251151; // 룬공 10,015,000%(100,151배) * 영원룬공 100,000%(1,001배) = 100,251,151배
+      if (kerberos3Score > bestScore) {
+        const kerberosRune = ownedArmor.find(r => r.id === 'ete_ar_kerberos');
+        bestScore = kerberos3Score;
+        bestCombo = [
+          { ...kerberosRune, name: "케르베로스 (1/3)", desc: "케르베로스 3세트 장착 (총 배율 1억 25만 배)", cond: "영원 방어구 룬 3종 이상 보유 조건 충족" },
+          { ...kerberosRune, name: "케르베로스 (2/3)", desc: "케르베로스 3세트 장착 (룬공 +10,015,000%)", cond: "상의·하의·신발 3칸 동시 장착" },
+          { ...kerberosRune, name: "케르베로스 (3/3)", desc: "케르베로스 3세트 장착 (영원룬공 +100,000%)", cond: "상의·하의·신발 3칸 동시 장착" }
+        ];
+      }
+    } else if (hasKerberos && eternalArmorCount === 2) {
+      // 영원 방어구 룬이 2개뿐일 때 케르베로스 2세트(10,015,000% = 100,151배) 비교
+      const otherRunes = ownedArmor.filter(r => r.id !== 'ete_ar_kerberos');
+      const thirdRune = otherRunes.find(r => r.tier !== 'eternal') || null;
+      let thirdMult = 1;
+      if (thirdRune) {
+        const v = getEffectiveRuneValue(thirdRune, new Set());
+        if (thirdRune.cat === 'job' || thirdRune.cat === 'mult') thirdMult = (1 + v / 100);
+      }
+      const kerberos2Score = 100151 * thirdMult;
+      if (kerberos2Score > bestScore) {
+        const kerberosRune = ownedArmor.find(r => r.id === 'ete_ar_kerberos');
+        bestScore = kerberos2Score;
+        bestCombo = [
+          { ...kerberosRune, name: "케르베로스 (1/2)", desc: "케르베로스 2세트 장착 (룬공 +10,015,000%)", cond: "영원 방어구 2종 보유" },
+          { ...kerberosRune, name: "케르베로스 (2/2)", desc: "케르베로스 2세트 장착 (100,151배)", cond: "영원 방어구 2종 보유" },
+          thirdRune
+        ];
+      }
+    }
+
     return {
-      slots: assignArmorPositions(bestCombo),
+      slots: bestCombo,
       mult: Math.max(1, bestScore)
     };
   }
