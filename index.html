@@ -40,26 +40,81 @@
     margin: 0 auto;
   }
 
-  /* Header */
+  /* Header (Winter Snow & Aurora Theme) */
   header {
     text-align: center;
-    padding: 26px 18px;
-    background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+    padding: 30px 18px 28px 18px;
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.22) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.25) 0%, transparent 50%),
+      linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #091526 100%);
+    border: 1.5px solid rgba(125, 211, 252, 0.45);
+    border-radius: 18px;
     margin-bottom: 22px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.6), 0 0 22px rgba(56, 189, 248, 0.2), inset 0 1px 15px rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  /* 하단 눈/서리 빛 맺힘 효과 */
+  header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(186, 230, 253, 0.8), #38bdf8, rgba(186, 230, 253, 0.8), transparent);
+    box-shadow: 0 0 12px #38bdf8;
+  }
+  .header-content {
+    position: relative;
+    z-index: 2;
+  }
+  /* 떨어지는 눈송이 애니메이션 컨테이너 */
+  .snow-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .snowflake {
+    position: absolute;
+    top: -20px;
+    color: #ffffff;
+    user-select: none;
+    pointer-events: none;
+    animation-name: snowfall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    text-shadow: 0 0 8px rgba(186, 230, 253, 0.9);
+  }
+  @keyframes snowfall {
+    0% {
+      transform: translateY(-10px) translateX(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(90px) translateX(14px) rotate(180deg);
+    }
+    100% {
+      transform: translateY(200px) translateX(-10px) rotate(360deg);
+    }
   }
   .header-badge {
     display: inline-block;
-    background: rgba(99, 102, 241, 0.2);
-    border: 1px solid #6366f1;
-    color: #a5b4fc;
+    background: rgba(56, 189, 248, 0.18);
+    border: 1px solid rgba(125, 211, 252, 0.6);
+    color: #e0f2fe;
     font-size: 13px;
     font-weight: 700;
-    padding: 4px 14px;
+    padding: 4px 15px;
     border-radius: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+    backdrop-filter: blur(4px);
   }
   h1 {
     font-size: 26px;
@@ -70,10 +125,11 @@
   }
   .author-tag {
     font-size: 14.5px;
-    color: var(--text-secondary);
+    color: #cbd5e1;
   }
   .author-tag strong {
-    color: #38bdf8;
+    color: #7dd3fc;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
   }
 
   /* Top Mode Switcher */
@@ -1097,6 +1153,162 @@
     font-size: 15px;
     font-weight: 800;
   }
+  /* ==================== SOUL CONNECT HELPER STYLES ==================== */
+  /* 등급별 빛나는 네온 오브 (이모티콘 대체) */
+  .neon-orb {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 6px;
+    margin-top: -2px;
+  }
+  .orb-ancient  { background: radial-gradient(circle at 30% 30%, #e0f2fe, #06b6d4); box-shadow: 0 0 8px #22d3ee; }
+  .orb-mythic   { background: radial-gradient(circle at 30% 30%, #ffe4e6, #f43f5e); box-shadow: 0 0 8px #fb7185; }
+  .orb-legend   { background: radial-gradient(circle at 30% 30%, #ffedd5, #f97316); box-shadow: 0 0 8px #fb923c; }
+  .orb-unique   { background: radial-gradient(circle at 30% 30%, #f3e8ff, #a855f7); box-shadow: 0 0 8px #c084fc; }
+  .orb-advanced { background: radial-gradient(circle at 30% 30%, #dbeafe, #3b82f6); box-shadow: 0 0 8px #60a5fa; }
+  .orb-eternal  { background: radial-gradient(circle at 30% 30%, #d1fae5, #10b981); box-shadow: 0 0 8px #34d399; }
+
+  /* 소울커넥트 전용 타이틀 네온 고리 코어 이펙트 (🪐 이모티콘 대체) */
+  .sc-title-fx {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #e9d5ff 0%, #9333ea 55%, transparent 70%);
+    box-shadow: 0 0 12px #a855f7, inset 0 0 6px #ffffff;
+    position: relative;
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-top: -3px;
+  }
+  .sc-title-fx::after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 10px;
+    border: 2px solid #38bdf8;
+    border-radius: 50%;
+    transform: rotate(-22deg);
+    box-shadow: 0 0 8px #38bdf8;
+  }
+  .connect-tier-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    background: #0f172a;
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    flex-wrap: wrap;
+  }
+  .connect-tier-tab {
+    flex: 1;
+    min-width: 78px;
+    padding: 9px 6px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 13.5px;
+    font-weight: 800;
+    cursor: pointer;
+    text-align: center;
+    color: #94a3b8;
+    background: transparent;
+    transition: all 0.2s;
+  }
+  .connect-tier-tab.active-ancient { background: rgba(6, 182, 212, 0.2); color: #67e8f9; border-color: #06b6d4; }
+  .connect-tier-tab.active-mythic { background: rgba(244, 63, 94, 0.2); color: #fda4af; border-color: #f43f5e; }
+  .connect-tier-tab.active-legend { background: rgba(249, 115, 22, 0.2); color: #fb923c; border-color: #f97316; }
+  .connect-tier-tab.active-unique { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid #a855f7; }
+  .connect-tier-tab.active-advanced { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
+
+  /* 인게임 6슬롯 육각형 보드 */
+  .connect-hex-stage {
+    background: radial-gradient(circle at center, #1e1b4b 0%, #070a12 100%);
+    border: 2px solid #334155;
+    border-radius: 18px;
+    padding: 24px 16px;
+    margin-top: 16px;
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+  }
+  .connect-hex-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+  .connect-hex-row.mid-row {
+    justify-content: space-around;
+    max-width: 860px;
+    margin: 16px auto;
+  }
+  .connect-center-emblem {
+    width: 155px;
+    height: 155px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .connect-center-emblem img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 22px rgba(168, 85, 247, 0.7));
+  }
+
+  /* 각 슬롯 카드 (육각 코어 아이콘 + 우측 요약 효과) */
+  .connect-slot-card {
+    background: rgba(15, 23, 42, 0.92);
+    border: 2px solid #334155;
+    border-radius: 14px;
+    padding: 12px 14px;
+    width: 265px;
+    min-height: 112px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+    transition: all 0.2s;
+  }
+  .connect-slot-card.locked-slot {
+    opacity: 0.45;
+    border-style: dashed;
+    border-color: #475569;
+    background: #090d16;
+  }
+  .connect-slot-card.tier-ancient { border-color: #06b6d4; box-shadow: 0 0 15px rgba(6, 182, 212, 0.3); }
+  .connect-slot-card.tier-mythic { border-color: #f43f5e; box-shadow: 0 0 15px rgba(244, 63, 94, 0.3); }
+  .connect-slot-card.tier-legend { border-color: #f97316; box-shadow: 0 0 12px rgba(249, 115, 22, 0.25); }
+  .connect-slot-card.tier-unique { border-color: #a855f7; }
+  .connect-slot-card.tier-advanced { border-color: #3b82f6; }
+
+  .core-hex-badge {
+    width: 38px;
+    height: 38px;
+    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+    color: #ffffff;
+    flex-shrink: 0;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+  }
+  .core-color-1 { background: linear-gradient(135deg, #2563eb, #1d4ed8); } /* 파랑 */
+  .core-color-2 { background: linear-gradient(135deg, #eab308, #b45309); } /* 노랑 */
+  .core-color-3 { background: linear-gradient(135deg, #ef4444, #991b1b); } /* 빨강 */
+  .core-color-4 { background: linear-gradient(135deg, #22c55e, #15803d); } /* 초록 */
+  .core-color-5 { background: linear-gradient(135deg, #ec4899, #9d174d); } /* 핑크 */
+  .core-color-6 { background: linear-gradient(135deg, #a855f7, #581c87); } /* 보라 */
 
   footer {
     text-align: center;
@@ -1112,17 +1324,36 @@
 
 <div class="container">
   <!-- Header -->
+  <!-- Header (Winter Snowfall Effect) -->
   <header>
-    <div class="header-badge">소울 헌터 키우기 네이버 라운지 전용 툴</div>
-    <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:10px; flex-wrap:wrap;">
-      <div style="position:relative; width:80px; height:80px; flex-shrink:0;">
-        <img id="main-avatar" src="avatar.PNG" alt="겨울눈사람 아바타" 
-          onerror="handleAvatarError(this)"
-          style="width:80px; height:80px; border-radius:50%; border:3px solid #38bdf8; object-fit:cover; background:#1e293b; box-shadow:0 0 22px rgba(56, 189, 248, 0.6); display:block;">
-      </div>
-      <h1 style="margin:0; font-size:26px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
+    <!-- 배경 눈 내리는 이펙트 레이어 -->
+    <div class="snow-container" aria-hidden="true">
+      <span class="snowflake" style="left: 5%;  font-size: 14px; opacity: 0.75; animation-duration: 7s;   animation-delay: 0s;">❄</span>
+      <span class="snowflake" style="left: 14%; font-size: 9px;  opacity: 0.55; animation-duration: 5.5s; animation-delay: 2s;">•</span>
+      <span class="snowflake" style="left: 23%; font-size: 18px; opacity: 0.65; animation-duration: 8.5s; animation-delay: 1s;">❅</span>
+      <span class="snowflake" style="left: 34%; font-size: 11px; opacity: 0.8;  animation-duration: 6s;   animation-delay: 3.5s;">•</span>
+      <span class="snowflake" style="left: 45%; font-size: 15px; opacity: 0.5;  animation-duration: 7.8s; animation-delay: 0.5s;">❄</span>
+      <span class="snowflake" style="left: 54%; font-size: 10px; opacity: 0.7;  animation-duration: 5.2s; animation-delay: 4s;">•</span>
+      <span class="snowflake" style="left: 65%; font-size: 17px; opacity: 0.65; animation-duration: 8.2s; animation-delay: 1.8s;">❆</span>
+      <span class="snowflake" style="left: 74%; font-size: 12px; opacity: 0.85; animation-duration: 6.4s; animation-delay: 2.7s;">•</span>
+      <span class="snowflake" style="left: 83%; font-size: 16px; opacity: 0.6;  animation-duration: 7.4s; animation-delay: 0.8s;">❅</span>
+      <span class="snowflake" style="left: 91%; font-size: 10px; opacity: 0.75; animation-duration: 5.8s; animation-delay: 3.1s;">•</span>
+      <span class="snowflake" style="left: 96%; font-size: 14px; opacity: 0.5;  animation-duration: 6.9s; animation-delay: 1.2s;">❄</span>
     </div>
-    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.2.2.1</div>
+
+    <!-- 배너 전면 콘텐츠 -->
+    <div class="header-content">
+      <div class="header-badge">소울 헌터 키우기 네이버 라운지 전용 툴</div>
+      <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:10px; flex-wrap:wrap;">
+        <div style="position:relative; width:82px; height:82px; flex-shrink:0;">
+          <img id="main-avatar" src="avatar.PNG" alt="겨울눈사람 아바타" 
+            onerror="handleAvatarError(this)"
+            style="width:82px; height:82px; border-radius:50%; border:3px solid #7dd3fc; object-fit:cover; background:#1e293b; box-shadow:0 0 24px rgba(56, 189, 248, 0.75), inset 0 0 10px rgba(255,255,255,0.4); display:block;">
+        </div>
+        <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
+      </div>
+      <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.2.3.0</div>
+    </div>
   </header>
 
   <!-- Top Mode Switcher (심화 공략 vs 뉴비 공략) -->
@@ -1246,6 +1477,27 @@
               <div>
                 <span class="hub-card-title">🌙 가호 & 원혼 어빌리티</span>
                 <span class="hub-card-desc">별/달/해/유성 가호 및 원혼 단계별 잠금 옵션 주사위 계산</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 섹션 4: 소울커넥트 코어 세팅 도우미 -->
+      <div class="hub-section">
+        <div class="hub-section-title" style="border-left-color:#a855f7;">
+          <span><span class="sc-title-fx"></span>소울커넥트 코어 세팅 & 배율 도우미</span>
+        </div>
+        <div class="hub-grid">
+          <div class="hub-card" onclick="openDeepCalculator('tab-connect')" style="border-color:rgba(168,85,247,0.45);">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#a855f7; background:rgba(168,85,247,0.12);">
+                <img src="images/core_helper_main.png" alt="소울커넥트" onerror="this.onerror=null; this.src='images/core_helper_main.jpg'; this.onerror=function(){this.style.display='none';};">
+              </div>
+              <div>
+                <span class="hub-card-title">소울커넥트 코어 선택 도우미 v.1.0.0</span>
+                <span class="hub-card-desc">스테이지별 해금 슬롯(3~6칸) & 상급~고대 보유 코어(중복 합연산 포함) 최고 배율 배치</span>
               </div>
             </div>
             <div class="hub-card-arrow">➔</div>
@@ -1874,6 +2126,140 @@
         </div>
 
       </div>
+      
+      <!-- ==================== 6. 소울커넥트 코어 선택 도우미 ==================== -->
+      <div id="tab-connect" class="tab-content" style="display:none;">
+        <div class="card" style="border-left: 4px solid #a855f7;">
+          <div class="card-title">
+            <span><span class="sc-title-fx"></span>소울커넥트 코어 선택 도우미 (v.1.0.0)</span>
+            <div style="display:flex; gap:6px;">
+              <button onclick="selectAllCurrentTierCores()" style="background:#334155; border:1px solid #475569; color:#e2e8f0; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">현재 등급 전체선택</button>
+              <button onclick="clearAllOwnedCores()" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">전체 초기화</button>
+            </div>
+          </div>
+          <p class="card-subtitle">
+            현재 진행 스테이지(해금 슬롯 수)와 내 직업·속성을 고르고 보유 중인 코어를 모두 선택하세요. (※ 보석 자체 공격력 수치는 제외하고 코어의 포인트(P) 최대 해금 효과 기준으로 정밀 계산합니다.)
+          </p>
+
+          <!-- 1. 스테이지 진행도 (해금 슬롯 수 선택) -->
+          <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:12px;">
+            <label style="color:#c084fc; margin-bottom:8px;">🚩 현재 스테이지 진행도 선택 (시계방향 1~6번 슬롯 해금 조건)</label>
+            <div class="grid-4" style="gap:8px;">
+              <div class="radio-pill" id="sc_stage_3" onclick="selectConnectStage(3)">220-1 이상 ~ 400-1 미만<br><small style="color:#38bdf8;">(1·2·3번 3슬롯 오픈)</small></div>
+              <div class="radio-pill" id="sc_stage_4" onclick="selectConnectStage(4)">400-1 이상 ~ 600-1 미만<br><small style="color:#38bdf8;">(1~4번 4슬롯 오픈)</small></div>
+              <div class="radio-pill" id="sc_stage_5" onclick="selectConnectStage(5)">600-1 이상 ~ 800-1 미만<br><small style="color:#38bdf8;">(1~5번 5슬롯 오픈)</small></div>
+              <div class="radio-pill selected" id="sc_stage_6" onclick="selectConnectStage(6)">800-1 스테이지 이상<br><small style="color:#34d399;">(1~6번 6슬롯 전체 오픈)</small></div>
+            </div>
+          </div>
+
+          <!-- 2. 직업 & 속성 선택 -->
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
+              <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 내 직업 선택 (택 1)</label>
+              <div class="radio-pill-group">
+                <div class="radio-pill selected" id="sc_job_reaper" onclick="selectConnectJob('reaper')">🗡️ 대사신 (강타)</div>
+                <div class="radio-pill" id="sc_job_mage" onclick="selectConnectJob('mage')">🧙‍♂️ 미스틱/아크메이지 (스킬)</div>
+                <div class="radio-pill" id="sc_job_lord" onclick="selectConnectJob('lord')">👑 팬텀 (영웅스킬)</div>
+              </div>
+            </div>
+
+            <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
+              <label style="color:#fbbf24; margin-bottom:8px;">🔥 내 주속성 선택 (택 1)</label>
+              <div class="radio-pill-group">
+                <div class="radio-pill selected" id="sc_elem_fire" onclick="selectConnectElem('fire')">🔥 불 속성</div>
+                <div class="radio-pill" id="sc_elem_light" onclick="selectConnectElem('light')">⚡ 번개 속성</div>
+                <div class="radio-pill" id="sc_elem_dark" onclick="selectConnectElem('dark')">🌑 어둠 속성</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2-1. 전직 특성 : 각성기 봉인 여부 체크 (기본 체크 ON) -->
+          <div style="background:#131d33; padding:10px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+            <label style="margin:0; display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-size:13.5px; color:#f8fafc;">
+              <input type="checkbox" id="sc_cond_awk_seal" checked onchange="onAwkSealChange()" style="width:17px; height:17px; accent-color:#a855f7;">
+              <span>🔒 <strong>전직 특성 [각성기 봉인] 사용 중</strong> <small style="color:#cbd5e1;">(체크 시 코어4 '전직 : 각성기'는 고유 효과가 무효화되어 깡공증 잡코어로 계산됩니다)</small></span>
+            </label>
+            <span style="font-size:11.5px; color:#fbbf24;">* 대부분의 유저가 사용하는 필수 특성 (기본 체크)</span>
+          </div>
+
+          <!-- 보석 수치 제외 및 고대 코어 중복 메커니즘 안내 배너 -->
+          <div style="background:rgba(168, 85, 247, 0.1); border:1px solid rgba(168, 85, 247, 0.35); border-radius:8px; padding:9px 14px; margin-bottom:14px; font-size:12.5px; color:#e9d5ff; line-height:1.55;">
+            📌 <strong>계산 기준 안내:</strong> 세공 보석 자체의 스탯 수치는 계산에서 제외하며, 각 코어 등급의 최대 포인트(상급 12P / 특급 16P / 전설 20P / 신화 28P / 고대 32P) 해금 효과를 기준으로 계산합니다.<br>
+            💡 <strong>고대 코어 중복 장착 자동 판별:</strong> 고대 코어(32P)는 코어 공격력 증폭(+546,000%)이 압도적이어서, 다른 번호에 유효 코어가 없을 경우 <strong>같은 번호의 고대 코어를 중복 장착(공격력·증폭 합연산 4배 상승)</strong>하는 것이 하위 신화/전설 코어를 끼는 것보다 더 강력할 수 있습니다. 카드 우측 상단 <strong>[+중복]</strong> 버튼으로 2개 보유를 표시하면 도우미가 이를 자동으로 비교해 최적의 배치를 찾아줍니다!
+          </div>
+
+          <!-- 3. 코어 등급 선택 탭 (전 등급 네온 오브 적용) -->
+          <div class="connect-tier-tabs">
+            <div class="connect-tier-tab active-ancient" id="sctab_ancient" onclick="switchConnectTierTab('ancient')">
+              <span class="neon-orb orb-ancient"></span>고대 코어 (32P)
+            </div>
+            <div class="connect-tier-tab" id="sctab_mythic" onclick="switchConnectTierTab('mythic')">
+              <span class="neon-orb orb-mythic"></span>신화 코어 (28P)
+            </div>
+            <div class="connect-tier-tab" id="sctab_legend" onclick="switchConnectTierTab('legend')">
+              <span class="neon-orb orb-legend"></span>전설 코어 (20P)
+            </div>
+            <div class="connect-tier-tab" id="sctab_unique" onclick="switchConnectTierTab('unique')">
+              <span class="neon-orb orb-unique"></span>특급 코어 (16P)
+            </div>
+            <div class="connect-tier-tab" id="sctab_advanced" onclick="switchConnectTierTab('advanced')">
+              <span class="neon-orb orb-advanced"></span>상급 코어 (12P)
+            </div>
+          </div>
+
+          <!-- 4. 코어 1 ~ 코어 6 아코디언 목록 -->
+          <div id="connect_accordion_container" class="accordion-group"></div>
+        </div>
+
+        <!-- 추천 결과: 시계방향 6슬롯 육각형 보드 & 코어 효과 요약 -->
+        <div class="card" style="border-left: 4px solid #06b6d4;">
+          <div class="card-title">
+            <span>👑 소울커넥트 최고 배율 추천 배치도 (시계방향 1~6번 슬롯)</span>
+            <span class="grade-badge grade-ancient" id="connect_owned_count_badge">총 보유 선택: 0개</span>
+          </div>
+          <p class="card-subtitle">
+            슬롯 해금 순서는 시계방향으로 <strong>[1번(우상단) ➔ 2번(우중단) ➔ 3번(우하단) ➔ 4번(좌하단, 400-1) ➔ 5번(좌중단, 600-1) ➔ 6번(좌상단, 800-1)]</strong>입니다.
+          </p>
+
+          <div class="connect-hex-stage">
+            <!-- 상단 열: 6번 슬롯(좌상단) & 1번 슬롯(우상단) -->
+            <div class="connect-hex-row">
+              <div id="sc_slot_6" class="connect-slot-card"></div>
+              <div id="sc_slot_1" class="connect-slot-card"></div>
+            </div>
+
+            <!-- 중단 열: 5번 슬롯(좌중단) & 중앙 문양(이모티콘 제거, 순수 이미지) & 2번 슬롯(우중단) -->
+            <div class="connect-hex-row mid-row">
+              <div id="sc_slot_5" class="connect-slot-card"></div>
+              <div class="connect-center-emblem">
+                <img src="images/core_helper_main.png" alt="" onerror="this.onerror=null; this.src='images/core_helper_main.jpg'; this.onerror=function(){this.style.display='none';};">
+              </div>
+              <div id="sc_slot_2" class="connect-slot-card"></div>
+            </div>
+
+            <!-- 하단 열: 4번 슬롯(좌하단) & 3번 슬롯(우하단) -->
+            <div class="connect-hex-row">
+              <div id="sc_slot_4" class="connect-slot-card"></div>
+              <div id="sc_slot_3" class="connect-slot-card"></div>
+            </div>
+          </div>
+
+          <!-- 종합 배율 대시보드 -->
+          <div class="result-dashboard" style="margin-top:18px;">
+            <div class="res-label">추천 코어 세팅 총합 대미지 배율 (보석 자체 스탯 제외)</div>
+            <div class="res-value" id="sc_grand_total_mult" style="font-size:30px; color:#38bdf8;">1배</div>
+            <div class="rune-mult-breakdown-list" id="sc_mult_breakdown"></div>
+          </div>
+
+          <!-- 슬롯별 상세 해금 효과 리스트 -->
+          <div style="margin-top:22px;">
+            <h3 style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #334155;">
+              📋 장착 슬롯별 포인트(P) 해금 효과 상세 리포트
+            </h3>
+            <div id="sc_detail_report_list" style="display:flex; flex-direction:column; gap:8px;"></div>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -2248,7 +2634,7 @@
 
   <!-- Footer -->
   <footer>
-    소울헌터키우기 네이버 라운지 전용 계산기 v.2.2.1 | 제작: 29서버 겨울눈사람
+    소울헌터키우기 네이버 라운지 전용 계산기 v.2.3.0 | 제작: 29서버 겨울눈사람
   </footer>
 </div>
 
@@ -2433,13 +2819,19 @@
       'tab-orb': '옵션 변환기',
       'tab-passive': '고대 패시브',
       'tab-synergy': '각성 시너지',
-      'tab-ability': '어빌리티'
+      'tab-ability': '어빌리티',
+      'tab-connect': '소울커넥트 도우미'
     };
     setFloatingGuideContext(calcTabId, labelMap[calcTabId] || '계산기');
 
     document.querySelectorAll('#deep_calc_view .tab-content').forEach(el => el.style.display = 'none');
     const target = document.getElementById(calcTabId);
     if (target) target.style.display = 'block';
+
+    if (calcTabId === 'tab-connect') {
+      renderConnectAccordions();
+      calculateBestConnectLoadout();
+    }
 
     window.scrollTo({ top: 120, behavior: 'smooth' });
   }
@@ -5225,6 +5617,543 @@
       reportHtml = `<div style="text-align:center; padding:24px; color:#94a3b8; background:#0f172a; border-radius:10px; border:1px dashed #334155;">위 목록에서 보유 중인 룬을 클릭해 주세요. (우측 상단 <strong>'현재 등급 전체선택'</strong> 버튼으로 빠르게 테스트해 보실 수 있습니다!)</div>`;
     }
     reportEl.innerHTML = reportHtml;
+  }
+
+// ==================== SOUL CONNECT HELPER (v.1.0.0) ENGINE ====================
+  HELP_GUIDE_DATA['tab-connect'] = {
+    title: '🪐 소울커넥트 코어 선택 도우미 사용법',
+    html: `<ol>
+      <li>맨 위에서 <strong>현재 스테이지 진행도(220-1 ~ 800-1 이상)</strong>를 선택하면 해금된 슬롯 수(3~6칸)가 설정됩니다.</li>
+      <li><strong>내 직업</strong>과 <strong>내 주속성</strong>을 선택하고, <strong>[고대 / 신화 / 전설 / 특급 / 상급]</strong> 탭을 눌러 보유 중인 코어를 모두 클릭하세요. (동일 코어를 2개 이상 보유해 중복 장착까지 고려하려면 카드 우측 상단의 <strong>[+중복]</strong> 버튼을 누르시면 됩니다!)</li>
+      <li>도우미가 <strong>유효 신화 vs 잡 고대</strong>, <strong>하크확(코어5) + 하크피(코어6) 세트 시너지</strong>, 그리고 <strong>고대 코어 중복 장착(합연산 4배 증폭)</strong>까지 모두 계산해 가장 높은 배율 조합을 시계방향 1~6번 슬롯에 배치해 줍니다.</li>
+    </ol>`
+  };
+
+  let currentConnectTierTab = 'ancient';
+  let currentConnectStageSlots = 6; // 3 (220-1), 4 (400-1), 5 (600-1), 6 (800-1)
+  let currentConnectJob = 'reaper'; // 'reaper' | 'mage' | 'lord'
+  let currentConnectElem = 'fire';  // 'fire' | 'light' | 'dark'
+  let ownedCoresMap = new Map();
+
+  const CORE_GROUPS_META = [
+    { num: 1, colorName: "파란색", title: "코어 1 (스킬 계열 : 소울 강타 / 소울 스킬 / 소울 영웅 스킬)", accCls: "acc-advanced", badgeCls: "grade-advanced" },
+    { num: 2, colorName: "노란색", title: "코어 2 (속성 피해 : 불 / 번개 / 어둠)", accCls: "acc-normal", badgeCls: "grade-normal" },
+    { num: 3, colorName: "빨간색", title: "코어 3 (수호신 : 표식 / 변신 / 도감)", accCls: "acc-mythic", badgeCls: "grade-mythic" },
+    { num: 4, colorName: "초록색", title: "코어 4 (전직/직업 : 각성기 / 대사신 / 미스틱 / 팬텀 / 레벨)", accCls: "acc-middle", badgeCls: "grade-middle" },
+    { num: 5, colorName: "핑크색", title: "코어 5 (보스/확률 : 승급전 / 보스전 / 하이퍼 크리티컬 확률)", accCls: "acc-mythic", badgeCls: "grade-mythic" },
+    { num: 6, colorName: "보라색", title: "코어 6 (던전/피해 : 스테이지 / 던전 / 하이퍼 크리티컬 피해)", accCls: "acc-unique", badgeCls: "grade-unique" }
+  ];
+
+  const CORE_TYPES_DB = [
+    // 코어 1 (파랑)
+    { id: "c1_strike", num: 1, name: "소울 강타", jobReq: "reaper", p12: 300, p16: 1800, p20: 21000, unit: "소울 강타 피해량", cond: "대사신(강타) 유효 코어" },
+    { id: "c1_skill", num: 1, name: "소울 스킬", jobReq: "mage", p12: 300, p16: 1800, p20: 21000, unit: "소울 스킬 피해량", cond: "아크메이지(스킬) 유효 코어" },
+    { id: "c1_hero", num: 1, name: "소울 영웅 스킬", jobReq: "lord", p12: 300, p16: 1800, p20: 21000, unit: "소울 영웅 스킬 피해량", cond: "팬텀(영웅스킬) 유효 코어" },
+
+    // 코어 2 (노랑)
+    { id: "c2_fire", num: 2, name: "속성 : 불", elemReq: "fire", p12: 200, p16: 1200, p20: 14000, unit: "모든 불 속성 피해(곱연산)", cond: "불 속성 유효 코어" },
+    { id: "c2_light", num: 2, name: "속성 : 번개", elemReq: "light", p12: 200, p16: 1200, p20: 14000, unit: "모든 번개 속성 피해(곱연산)", cond: "번개 속성 유효 코어" },
+    { id: "c2_dark", num: 2, name: "속성 : 어둠", elemReq: "dark", p12: 200, p16: 1200, p20: 14000, unit: "모든 어둠 속성 피해(곱연산)", cond: "어둠 속성 유효 코어" },
+
+    // 코어 3 (빨강)
+    { id: "c3_mark", num: 3, name: "수호신 : 표식", isMark: true, p12: 0, p16: 0, p20: 120000, unit: "표식당 피해 증폭(표식+5, 최대+1000)", cond: "표식 수호신/정령 전용 (현재 비주류)" },
+    { id: "c3_trans", num: 3, name: "수호신 : 변신", p12: 100, p16: 600, p20: 7000, unit: "변신 시 피해량 증폭", cond: "수호신 변신 시 적용 (총 77배)" },
+    { id: "c3_book", num: 3, name: "수호신 : 도감", p12: 300, p16: 1800, p20: 21000, unit: "모든 피해량(곱연산)", cond: "수호신 도감 100% 5개 이상 달성 (코어3 1티어 종결!)" },
+
+    // 코어 4 (초록)
+    { id: "c4_awk", num: 4, name: "전직 : 각성기", isAwkSkill: true, p12: 50, p16: 300, p20: 3500, unit: "각성기 피해량(곱연산)", cond: "각성기 스킬에만 적용 (총 38.5배)" },
+    { id: "c4_reaper", num: 4, name: "전직 : 대사신", jobReq: "reaper", p12: 200, p16: 1200, p20: 14000, unit: "대사신 크리티컬 피해량(곱연산)", cond: "대사신 전용 유효 코어 (총 154배)" },
+    { id: "c4_mystic", num: 4, name: "전직 : 미스틱", jobReq: "mage", p12: 200, p16: 1200, p20: 14000, unit: "미스틱 크리티컬 피해량(곱연산)", cond: "미스틱/아크메이지 전용 유효 코어 (총 154배)" },
+    { id: "c4_phantom", num: 4, name: "전직 : 팬텀", jobReq: "lord", p12: 200, p16: 1200, p20: 14000, unit: "팬텀 크리티컬 피해량(곱연산)", cond: "팬텀/다크로드 전용 유효 코어 (총 154배)" },
+    { id: "c4_level", num: 4, name: "전직 : 레벨", p12: 300, p16: 1800, p20: 21000, unit: "모든 피해량(곱연산)", cond: "3차 전직 달성 시 전 직업 유효 (코어4 1티어 종결!)" },
+
+    // 코어 5 (핑크)
+    { id: "c5_promo", num: 5, name: "콘텐츠 : 승급전", p12: 300, p16: 1800, p20: 21000, unit: "모든 피해량(곱연산)", cond: "고대급 소울헌터 1단계 클리어 (총 231배)" },
+    { id: "c5_boss", num: 5, name: "콘텐츠 : 보스전", p12: 500, p16: 3000, p20: 35000, unit: "모든 피해량(곱연산)", cond: "하데스 10단계 클리어 (단독 385배 고효율!)" },
+    { id: "c5_hcrit_rate", num: 5, name: "하이퍼 크리티컬 확률", isHyperRate: true, p12: 15, p16: 35, p20: 50, unit: "하이퍼 크리티컬 확률(%)", cond: "⚠️ 코어6 '하이퍼 크리티컬 피해'와 세트 장착 시 최종 종결!" },
+
+    // 코어 6 (보라)
+    { id: "c6_stage", num: 6, name: "콘텐츠 : 스테이지", p12: 200, p16: 1200, p20: 14000, unit: "모든 피해량(곱연산)", cond: "스테이지 350챕터 도달 (총 154배)" },
+    { id: "c6_dungeon", num: 6, name: "콘텐츠 : 던전", p12: 300, p16: 1800, p20: 21000, unit: "모든 피해량(곱연산)", cond: "룬 던전 154단계 클리어 (단독 231배)" },
+    { id: "c6_hcrit_dmg", num: 6, name: "하이퍼 크리티컬 피해", isHyperDmg: true, p12: 2500, p16: 90000, p20: 12250000, unit: "하이퍼 크리티컬 피해(%)", cond: "⚠️ 코어5 '하이퍼 크리티컬 확률' 미장착 시 하크확 0%로 무효!" }
+  ];
+
+  const CORE_TIER_META = {
+    advanced: { kr: "상급", maxCap: 10, maxP: 12, atkPct: 200, ampPct: 0, badge: "grade-advanced" },
+    unique:   { kr: "특급", maxCap: 12, maxP: 16, atkPct: 500, ampPct: 0, badge: "grade-unique" },
+    legend:   { kr: "전설", maxCap: 14, maxP: 20, atkPct: 1000, ampPct: 0, badge: "grade-legend" },
+    mythic:   { kr: "신화", maxCap: 17, maxP: 28, atkPct: 1000, ampPct: 6000, badge: "grade-mythic" },
+    ancient:  { kr: "고대", maxCap: 20, maxP: 32, atkPct: 1000, ampPct: 546000, badge: "grade-ancient" }
+  };
+
+  function selectConnectStage(slots) {
+    currentConnectStageSlots = slots;
+    [3, 4, 5, 6].forEach(s => {
+      document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === slots);
+    });
+    calculateBestConnectLoadout();
+  }
+
+  function selectConnectJob(job) {
+    currentConnectJob = job;
+    ['reaper', 'mage', 'lord'].forEach(j => {
+      document.getElementById('sc_job_' + j)?.classList.toggle('selected', j === job);
+    });
+    renderConnectAccordions();
+    calculateBestConnectLoadout();
+  }
+
+  function selectConnectElem(elem) {
+    currentConnectElem = elem;
+    ['fire', 'light', 'dark'].forEach(e => {
+      document.getElementById('sc_elem_' + e)?.classList.toggle('selected', e === elem);
+    });
+    renderConnectAccordions();
+    calculateBestConnectLoadout();
+  }
+
+  function switchConnectTierTab(tier) {
+    currentConnectTierTab = tier;
+    ['ancient', 'mythic', 'legend', 'unique', 'advanced'].forEach(t => {
+      const btn = document.getElementById('sctab_' + t);
+      if (btn) btn.className = 'connect-tier-tab' + (t === tier ? ' active-' + t : '');
+    });
+    renderConnectAccordions();
+  }
+
+  function toggleCoreOwned(tier, coreId) {
+    const key = `${tier}__${coreId}`;
+    const cur = ownedCoresMap.get(key) || 0;
+    if (cur > 0) ownedCoresMap.delete(key);
+    else ownedCoresMap.set(key, 1);
+
+    renderConnectAccordions();
+    calculateBestConnectLoadout();
+  }
+
+  function addCoreDuplicate(event, tier, coreId) {
+    event.stopPropagation();
+    const key = `${tier}__${coreId}`;
+    const cur = ownedCoresMap.get(key) || 0;
+    const next = cur >= 2 ? 1 : 2;
+    ownedCoresMap.set(key, next);
+
+    renderConnectAccordions();
+    calculateBestConnectLoadout();
+  }
+
+  function selectAllCurrentTierCores() {
+    CORE_TYPES_DB.forEach(c => {
+      const key = `${currentConnectTierTab}__${c.id}`;
+      if (!ownedCoresMap.has(key)) ownedCoresMap.set(key, 1);
+    });
+    renderConnectAccordions();
+    calculateBestConnectLoadout();
+  }
+
+  function clearAllOwnedCores() {
+    ownedCoresMap.clear();
+    renderConnectAccordions();
+    calculateBestConnectLoadout();
+  }
+
+  function toggleGroupCores(coreNum, selectAll) {
+    CORE_TYPES_DB.filter(c => c.num === coreNum).forEach(c => {
+      const key = `${currentConnectTierTab}__${c.id}`;
+      if (selectAll) ownedCoresMap.set(key, 1);
+      else ownedCoresMap.delete(key);
+    });
+    renderConnectAccordions();
+    calculateBestConnectLoadout();
+  }
+
+  function getCoreThemeSummary(c, tier) {
+    if (c.isHyperRate) {
+      const rate = tier === 'advanced' ? 15 : (tier === 'unique' ? 50 : 100);
+      return `하크확 총 +${rate}%`;
+    }
+    if (c.isHyperDmg) {
+      const dmg = tier === 'advanced' ? 2500 : (tier === 'unique' ? 92500 : 12342500);
+      return `하크피 총 +${formatKoreanNumber(dmg)}%`;
+    }
+    const sumPct = tier === 'advanced' ? c.p12 : (tier === 'unique' ? (c.p12 + c.p16) : (c.p12 + c.p16 + c.p20));
+    return `${c.unit} +${sumPct.toLocaleString()}%`;
+  }
+
+  function renderConnectAccordions() {
+    const container = document.getElementById('connect_accordion_container');
+    if (!container) return;
+
+    const openIds = new Set();
+    container.querySelectorAll('.accordion-item.active').forEach(el => openIds.add(el.id));
+
+    const tMeta = CORE_TIER_META[currentConnectTierTab];
+    let html = '';
+
+    CORE_GROUPS_META.forEach(g => {
+      const list = CORE_TYPES_DB.filter(c => c.num === g.num);
+      let ownedInGroup = 0;
+
+      const cardsHtml = list.map(c => {
+        const key = `${currentConnectTierTab}__${c.id}`;
+        const cnt = ownedCoresMap.get(key) || 0;
+        if (cnt > 0) ownedInGroup += cnt;
+
+        const isValidForUser = isCoreValidForUser(c);
+        const validBadge = isValidForUser
+          ? `<span class="mini-tag" style="background:#059669; color:#fff;">유효</span>`
+          : `<span class="mini-tag" style="background:#475569; color:#cbd5e1;">${c.isAwkSkill ? '각성기봉인(잡)' : '타직업/속성'}</span>`;
+
+        const dupBtn = cnt > 0
+          ? `<span onclick="addCoreDuplicate(event, '${currentConnectTierTab}', '${c.id}')" class="mini-tag" style="background:${cnt >= 2 ? '#e11d48' : '#334155'}; color:#fff; cursor:pointer;" title="동일 코어 2개 중복 보유 설정">${cnt >= 2 ? '2개보유' : '+중복'}</span>`
+          : '';
+
+        return `
+          <div class="item-select-box ${cnt > 0 ? 'selected' : ''}" onclick="toggleCoreOwned('${currentConnectTierTab}', '${c.id}')">
+            <div class="item-box-badges">${dupBtn}${validBadge}</div>
+            <div style="display:flex; align-items:center; gap:6px; margin-top:12px;">
+              <div class="core-hex-badge core-color-${g.num}" style="width:22px; height:22px; font-size:10px;">${g.num}</div>
+              <div class="item-box-name" style="margin-top:0;">${c.name}</div>
+            </div>
+            <div class="item-box-sub" style="margin-top:4px; color:#cbd5e1;">[${tMeta.maxP}P] ${getCoreThemeSummary(c, currentConnectTierTab)}</div>
+          </div>
+        `;
+      }).join('');
+
+      const accId = `scacc_${g.num}`;
+      const isOpen = openIds.has(accId);
+
+      html += `
+        <div class="accordion-item ${g.accCls} ${isOpen ? 'active' : ''}" id="${accId}">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('${accId}')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text">
+                <span class="grade-badge ${tMeta.badge}">${tMeta.kr} ${tMeta.maxP}P</span>
+                <span class="grade-badge ${g.badgeCls}" style="margin-left:4px;">${g.colorName}</span>
+                ${g.title}
+              </span>
+            </div>
+            <div class="accordion-right-info" onclick="event.stopPropagation();">
+              <button onclick="toggleGroupCores(${g.num}, true)" style="background:#1e293b; border:1px solid #475569; color:#cbd5e1; padding:2px 7px; border-radius:4px; font-size:11px; cursor:pointer;">전체선택</button>
+              <button onclick="toggleGroupCores(${g.num}, false)" style="background:#1e293b; border:1px solid #475569; color:#94a3b8; padding:2px 7px; border-radius:4px; font-size:11px; cursor:pointer;">해제</button>
+              <span class="accordion-count-badge ${ownedInGroup > 0 ? 'has-selected' : ''}">${ownedInGroup}개 선택</span>
+            </div>
+          </div>
+          <div class="accordion-content">
+            <div class="item-compact-grid">
+              ${cardsHtml}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+
+    let totalOwned = 0;
+    ownedCoresMap.forEach(v => totalOwned += v);
+    const badge = document.getElementById('connect_owned_count_badge');
+    if (badge) badge.innerText = `총 보유 선택: ${totalOwned}개`;
+  }
+
+  // 코어가 현재 유저 설정(직업/속성/각성기 봉인)에서 유효 코어인지 판별하는 공통 함수
+  function isCoreValidForUser(coreDef) {
+    if (coreDef.jobReq && coreDef.jobReq !== currentConnectJob) return false;
+    if (coreDef.elemReq && coreDef.elemReq !== currentConnectElem) return false;
+    if (coreDef.isAwkSkill) {
+      const isSealed = document.getElementById('sc_cond_awk_seal')?.checked ?? true;
+      if (isSealed) return false; // 각성기 봉인 중이면 고유 효과 무효(잡코어)!
+    }
+    return true;
+  }
+
+  function onAwkSealChange() {
+    renderConnectAccordions();
+    calculateBestConnectLoadout();
+  }
+
+  function getCoreThemeMultiplier(coreDef, tier, hasHyperRateInCombo, totalHyperRatePct) {
+    // 직업, 속성 불일치 또는 각성기 봉인 상태면 고유 피해량 무효 (1배 = 깡공증 잡코어)
+    if (!isCoreValidForUser(coreDef)) return 1;
+
+    if (coreDef.isHyperRate) return 1;
+    if (coreDef.isHyperDmg) {
+      if (!hasHyperRateInCombo || totalHyperRatePct <= 0) return 1;
+      const dmgPct = tier === 'advanced' ? 2500 : (tier === 'unique' ? 92500 : 12342500);
+      return 1 + (dmgPct / 100) * Math.min(1, totalHyperRatePct / 100);
+    }
+    if (coreDef.isMark) {
+      return tier === 'advanced' ? 2 : (tier === 'unique' ? 10 : 30);
+    }
+    if (coreDef.isAwkSkill) {
+      const sumPct = tier === 'advanced' ? 50 : (tier === 'unique' ? 350 : 3850);
+      return sumPct / 100;
+    }
+
+    const sumPct = tier === 'advanced'
+      ? coreDef.p12
+      : (tier === 'unique' ? (coreDef.p12 + coreDef.p16) : (coreDef.p12 + coreDef.p16 + coreDef.p20));
+    return Math.max(1, sumPct / 100);
+  }
+
+  function evaluateConnectCombo(combo) {
+    let totalHyperRatePct = 0;
+    let hasHyperRate = false;
+
+    for (let item of combo) {
+      if (item.core.isHyperRate) {
+        hasHyperRate = true;
+        const r = item.tier === 'advanced' ? 15 : (item.tier === 'unique' ? 50 : 100);
+        totalHyperRatePct += r;
+      }
+    }
+
+    const groups = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
+    for (let item of combo) {
+      groups[item.core.num].push(item);
+    }
+
+    let totalLog10 = 0;
+    const groupMults = {};
+
+    for (let num = 1; num <= 6; num++) {
+      const gList = groups[num];
+      if (gList.length === 0) {
+        groupMults[num] = 1;
+        continue;
+      }
+
+      let sumAtkPct = 0;
+      let sumAmpPct = 0;
+      const themePctByCoreId = {};
+      let hyperDmgMult = 1;
+
+      for (let inst of gList) {
+        const tMeta = CORE_TIER_META[inst.tier];
+        sumAtkPct += tMeta.atkPct;
+        sumAmpPct += tMeta.ampPct;
+
+        const c = inst.core;
+        if (c.isHyperDmg) {
+          const hm = getCoreThemeMultiplier(c, inst.tier, hasHyperRate, totalHyperRatePct);
+          hyperDmgMult = Math.max(hyperDmgMult, hm);
+        } else {
+          const tm = getCoreThemeMultiplier(c, inst.tier, hasHyperRate, totalHyperRatePct);
+          if (tm > 1) {
+            themePctByCoreId[c.id] = (themePctByCoreId[c.id] || 0) + tm;
+          }
+        }
+      }
+
+      const atkMult = sumAtkPct > 0 ? (sumAtkPct / 100) : 1;
+      const ampMult = sumAmpPct > 0 ? (sumAmpPct / 100) : 1;
+
+      let themeTotalMult = hyperDmgMult;
+      for (let cid in themePctByCoreId) {
+        themeTotalMult *= themePctByCoreId[cid];
+      }
+
+      const gMult = atkMult * ampMult * themeTotalMult;
+      groupMults[num] = gMult;
+      totalLog10 += Math.log10(Math.max(1, gMult));
+    }
+
+    return { totalLog10, groupMults };
+  }
+
+  function getSingleInstanceScore(inst) {
+    const res = evaluateConnectCombo([inst]);
+    return res.groupMults[inst.core.num] || 1;
+  }
+
+  function calculateBestConnectLoadout() {
+    const allInstances = [];
+    ownedCoresMap.forEach((cnt, key) => {
+      const [tier, coreId] = key.split('__');
+      const coreDef = CORE_TYPES_DB.find(c => c.id === coreId);
+      if (!coreDef) return;
+      for (let i = 0; i < cnt; i++) {
+        allInstances.push({
+          uid: `${key}__${i}`,
+          tier: tier,
+          core: coreDef,
+          copyIndex: i + 1
+        });
+      }
+    });
+
+    const candidatePool = [];
+    for (let num = 1; num <= 6; num++) {
+      const inGroup = allInstances.filter(inst => inst.core.num === num);
+      inGroup.sort((a, b) => getSingleInstanceScore(b) - getSingleInstanceScore(a));
+      const topInGroup = inGroup.slice(0, 4);
+      inGroup.forEach(inst => {
+        if ((inst.core.isHyperRate || inst.core.isHyperDmg) && !topInGroup.includes(inst)) {
+          topInGroup.push(inst);
+        }
+      });
+      candidatePool.push(...topInGroup);
+    }
+
+    const K = Math.min(currentConnectStageSlots, candidatePool.length);
+    let bestCombo = [];
+    let bestEval = { totalLog10: 0, groupMults: { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1 } };
+
+    if (K > 0) {
+      let bestLog = -1;
+      function dfs(startIdx, picked) {
+        if (picked.length === K) {
+          const ev = evaluateConnectCombo(picked);
+          if (ev.totalLog10 > bestLog) {
+            bestLog = ev.totalLog10;
+            bestCombo = [...picked];
+            bestEval = ev;
+          }
+          return;
+        }
+        for (let i = startIdx; i <= candidatePool.length - (K - picked.length); i++) {
+          picked.push(candidatePool[i]);
+          dfs(i + 1, picked);
+          picked.pop();
+        }
+      }
+      dfs(0, []);
+    }
+
+    bestCombo.sort((a, b) => a.core.num - b.core.num);
+
+    const unlockReqText = { 1: "기본 오픈(220-1)", 2: "기본 오픈(220-1)", 3: "기본 오픈(220-1)", 4: "400-1 해금", 5: "600-1 해금", 6: "800-1 해금" };
+
+    for (let s = 1; s <= 6; s++) {
+      const slotEl = document.getElementById(`sc_slot_${s}`);
+      if (!slotEl) continue;
+
+      if (s > currentConnectStageSlots) {
+        slotEl.className = 'connect-slot-card locked-slot';
+        slotEl.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; font-weight:800;">
+            <span>${s}번 슬롯</span><span>🔒 잠김</span>
+          </div>
+          <div style="text-align:center; font-size:13.5px; font-weight:800; color:#94a3b8; margin:8px 0;">
+            스테이지 ${unlockReqText[s]} 필요
+          </div>
+          <div style="text-align:center; font-size:11px; color:#475569;">미개방 슬롯</div>
+        `;
+        continue;
+      }
+
+      const inst = bestCombo[s - 1] || null;
+      if (!inst) {
+        slotEl.className = 'connect-slot-card';
+        slotEl.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8; font-weight:800;">
+            <span>${s}번 슬롯 (${unlockReqText[s]})</span><span>빈 슬롯</span>
+          </div>
+          <div style="text-align:center; font-size:13.5px; font-weight:800; color:#64748b; margin:8px 0;">
+            보유 코어를 선택하세요
+          </div>
+          <div style="text-align:center; font-size:11px; color:#475569;">-</div>
+        `;
+        continue;
+      }
+
+      const tMeta = CORE_TIER_META[inst.tier];
+      const c = inst.core;
+      // ✅ 첫 번째 isValid 위치 (각성기 봉인 조건까지 완벽 반영!)
+      const isValid = isCoreValidForUser(c);
+      const dupCountInCombo = bestCombo.filter(x => x.core.num === c.num).length;
+
+      slotEl.className = `connect-slot-card tier-${inst.tier}`;
+      slotEl.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:11px; font-weight:800; color:#94a3b8;">${s}번 슬롯</span>
+          <div style="display:flex; gap:4px;">
+            ${dupCountInCombo >= 2 ? '<span class="mini-tag" style="background:#e11d48; color:#fff;">코어중복 합연산</span>' : ''}
+            <span class="grade-badge ${tMeta.badge}" style="font-size:10.5px; padding:1px 6px;">${tMeta.kr} ${tMeta.maxP}P</span>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; margin:6px 0;">
+          <div class="core-hex-badge core-color-${c.num}">코어${c.num}</div>
+          <div style="text-align:left;">
+            <div style="font-size:14.5px; font-weight:900; color:#ffffff; line-height:1.2;">${c.name}</div>
+            <div style="font-size:11px; color:${isValid ? '#34d399' : '#f87171'}; font-weight:700; margin-top:2px;">
+              ${isValid ? '✅ 유효 코어 발동' : '⚠️ 잡코어 (공격력·증폭만 적용)'}
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11px; color:#fde047; background:rgba(0,0,0,0.35); padding:4px 8px; border-radius:6px; text-align:center; font-weight:700;">
+          🔗${tMeta.maxCap}/${tMeta.maxCap} · 🅿️${tMeta.maxP}/${tMeta.maxP} | ${getCoreThemeSummary(c, inst.tier)}
+        </div>
+      `;
+    }
+
+    const grandEl = document.getElementById('sc_grand_total_mult');
+    const breakEl = document.getElementById('sc_mult_breakdown');
+
+    if (grandEl) {
+      if (bestEval.totalLog10 <= 0) {
+        grandEl.innerText = "1배 (보유 코어를 선택하세요)";
+      } else if (bestEval.totalLog10 < 32) {
+        grandEl.innerText = formatKoreanNumber(Math.pow(10, bestEval.totalLog10)) + "배";
+      } else {
+        const exp = Math.floor(bestEval.totalLog10);
+        const man = Math.pow(10, bestEval.totalLog10 - exp).toFixed(2);
+        grandEl.innerText = `약 ${man} × 10^${exp}배`;
+      }
+    }
+
+    if (breakEl) {
+      let bHtml = '';
+      for (let num = 1; num <= 6; num++) {
+        const m = Math.round(bestEval.groupMults[num] || 1);
+        const cntInNum = bestCombo.filter(x => x.core.num === num).length;
+        const cntLabel = cntInNum >= 2 ? ` <span style="color:#fda4af; font-size:12px;">(${cntInNum}개 중복 합연산 적용!)</span>` : (cntInNum === 0 ? ` <span style="color:#64748b; font-size:12px;">(미장착)</span>` : '');
+        bHtml += `
+          <div class="rune-mult-row">
+            <span><strong>코어 ${num}</strong> (${CORE_GROUPS_META[num - 1].colorName}) 배율${cntLabel}</span>
+            <strong style="color:${m > 1 ? '#38bdf8' : '#64748b'};">${formatKoreanNumber(m)}배</strong>
+          </div>
+        `;
+      }
+      breakEl.innerHTML = bHtml;
+    }
+
+    const reportEl = document.getElementById('sc_detail_report_list');
+    if (!reportEl) return;
+
+    if (bestCombo.length === 0) {
+      reportEl.innerHTML = `<div style="text-align:center; padding:24px; color:#94a3b8; background:#0f172a; border-radius:10px; border:1px dashed #334155;">위 아코디언 목록에서 보유 중인 코어를 클릭해 주세요. (우측 상단 <strong>'현재 등급 전체선택'</strong> 버튼으로 빠르게 테스트해 보실 수 있습니다!)</div>`;
+      return;
+    }
+
+    let rHtml = '';
+    bestCombo.forEach((inst, idx) => {
+      const sNum = idx + 1;
+      const tMeta = CORE_TIER_META[inst.tier];
+      const c = inst.core;
+      // ✅ 두 번째 isValid 위치 (각성기 봉인 조건까지 완벽 반영!)
+      const isValid = isCoreValidForUser(c);
+      const ampStr = tMeta.ampPct > 0 ? ` / 코어${c.num} 공격력 증폭 +${tMeta.ampPct.toLocaleString()}%` : '';
+
+      rHtml += `
+        <div style="background:#0f172a; border:1px solid #334155; border-radius:10px; padding:12px 16px; line-height:1.55;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:12px; background:#1e293b; color:#cbd5e1; padding:2px 8px; border-radius:6px; font-weight:700;">${sNum}번 슬롯 · 코어${c.num}</span>
+              <span class="grade-badge ${tMeta.badge}">${tMeta.kr} (${tMeta.maxP}P)</span>
+              <strong style="font-size:15px; color:#ffffff;">${c.name}</strong>
+            </div>
+            <span style="font-size:12.5px; color:#cbd5e1;">상태: <strong style="color:${isValid ? '#34d399' : '#fbbf24'};">${isValid ? c.cond : (c.isAwkSkill ? '각성기 봉인 상태 (깡공증 잡코어 용도)' : '타 직업/속성 잡코어 (깡공증 용도)')}</strong></span>
+          </div>
+          <div style="font-size:13px; color:#94a3b8;">
+            • 기본/증폭 해금: <span style="color:#e2e8f0;">코어${c.num} 공격력 총 +${tMeta.atkPct.toLocaleString()}%${ampStr}</span><br>
+            • 고유 테마 효과: <span style="color:${isValid ? '#38bdf8' : '#64748b'}; font-weight:700;">${getCoreThemeSummary(c, inst.tier)} ${isValid ? '' : '(각성기 봉인 또는 직업/속성 불일치로 미적용)'}</span>
+          </div>
+        </div>
+      `;
+    });
+    reportEl.innerHTML = rHtml;
   }
 
   // ==================== INITIALIZATION ====================
