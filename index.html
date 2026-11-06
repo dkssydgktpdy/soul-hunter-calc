@@ -2173,13 +2173,23 @@
             </div>
           </div>
 
-          <!-- 2-1. 전직 특성 : 각성기 봉인 여부 체크 (기본 체크 ON) -->
-          <div style="background:#131d33; padding:10px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-            <label style="margin:0; display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-size:13.5px; color:#f8fafc;">
-              <input type="checkbox" id="sc_cond_awk_seal" checked onchange="onAwkSealChange()" style="width:17px; height:17px; accent-color:#a855f7;">
-              <span>🔒 <strong>전직 특성 [각성기 봉인] 사용 중</strong> <small style="color:#cbd5e1;">(체크 시 코어4 '전직 : 각성기'는 고유 효과가 무효화되어 깡공증 잡코어로 계산됩니다)</small></span>
-            </label>
-            <span style="font-size:11.5px; color:#fbbf24;">* 대부분의 유저가 사용하는 필수 특성 (기본 체크)</span>
+          <!-- 2-1. 실전 메타 조건 스위치 2종 (각성기 봉인 & 적운영 미사용 - 기본 체크 ON) -->
+          <div style="background:#131d33; padding:10px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:12px; display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+              <label style="margin:0; display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-size:13.5px; color:#f8fafc;">
+                <input type="checkbox" id="sc_cond_awk_seal" checked onchange="onAwkSealChange()" style="width:17px; height:17px; accent-color:#a855f7;">
+                <span>🔒 <strong>전직 특성 [각성기 봉인] 사용 중</strong> <small style="color:#cbd5e1;">(체크 시 코어4 '전직 : 각성기'를 잡코어로 처리)</small></span>
+              </label>
+              <span style="font-size:11.5px; color:#fbbf24;">* 기본 체크 권장</span>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; border-top:1px dashed #1e293b; padding-top:6px;">
+              <label style="margin:0; display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-size:13.5px; color:#f8fafc;">
+                <input type="checkbox" id="sc_cond_no_mark" checked onchange="onAwkSealChange()" style="width:17px; height:17px; accent-color:#ef4444;">
+                <span>🚫 <strong>적운영(표식 수호신) 안 씀 / 변신 수호신(오멘 등) 사용 중</strong> <small style="color:#cbd5e1;">(체크 시 코어3 '수호신 : 표식'을 잡코어로 제외)</small></span>
+              </label>
+              <span style="font-size:11.5px; color:#38bdf8;">* 적운영 사용 시에만 체크 해제</span>
+            </div>
           </div>
 
           <!-- 보석 수치 제외 및 고대 코어 중복 메커니즘 안내 배너 -->
@@ -5800,9 +5810,14 @@
         if (cnt > 0) ownedInGroup += cnt;
 
         const isValidForUser = isCoreValidForUser(c);
+        
+        let invalidReason = '타직업/속성';
+        if (c.isAwkSkill) invalidReason = '각성기봉인(잡)';
+        else if (c.isMark) invalidReason = '적운영미사용(잡)';
+
         const validBadge = isValidForUser
           ? `<span class="mini-tag" style="background:#059669; color:#fff;">유효</span>`
-          : `<span class="mini-tag" style="background:#475569; color:#cbd5e1;">${c.isAwkSkill ? '각성기봉인(잡)' : '타직업/속성'}</span>`;
+          : `<span class="mini-tag" style="background:#475569; color:#cbd5e1;">${invalidReason}</span>`;
 
         const dupBtn = cnt > 0
           ? `<span onclick="addCoreDuplicate(event, '${currentConnectTierTab}', '${c.id}')" class="mini-tag" style="background:${cnt >= 2 ? '#e11d48' : '#334155'}; color:#fff; cursor:pointer;" title="동일 코어 2개 중복 보유 설정">${cnt >= 2 ? '2개보유' : '+중복'}</span>`
@@ -5857,13 +5872,17 @@
     if (badge) badge.innerText = `총 보유 선택: ${totalOwned}개`;
   }
 
-  // 코어가 현재 유저 설정(직업/속성/각성기 봉인)에서 유효 코어인지 판별하는 공통 함수
+  // 코어가 현재 유저 설정(직업/속성/각성기 봉인/적운영 미사용)에서 유효 코어인지 판별하는 공통 함수
   function isCoreValidForUser(coreDef) {
     if (coreDef.jobReq && coreDef.jobReq !== currentConnectJob) return false;
     if (coreDef.elemReq && coreDef.elemReq !== currentConnectElem) return false;
     if (coreDef.isAwkSkill) {
       const isSealed = document.getElementById('sc_cond_awk_seal')?.checked ?? true;
-      if (isSealed) return false; // 각성기 봉인 중이면 고유 효과 무효(잡코어)!
+      if (isSealed) return false; // 각성기 봉인 중이면 잡코어!
+    }
+    if (coreDef.isMark) {
+      const noMark = document.getElementById('sc_cond_no_mark')?.checked ?? true;
+      if (noMark) return false; // 적운영 안 쓰면(변신 수호신 사용 시) 표식 코어는 잡코어!
     }
     return true;
   }
@@ -5874,23 +5893,30 @@
   }
 
   function getCoreThemeMultiplier(coreDef, tier, hasHyperRateInCombo, totalHyperRatePct) {
-    // 직업, 속성 불일치 또는 각성기 봉인 상태면 고유 피해량 무효 (1배 = 깡공증 잡코어)
+    // 직업, 속성 불일치, 각성기 봉인, 적운영 미사용 상태면 고유 피해량 무효 (1배 = 깡공증 잡코어)
     if (!isCoreValidForUser(coreDef)) return 1;
 
-    if (coreDef.isHyperRate) return 1;
+    if (coreDef.isHyperRate) {
+      // 하크확은 코어6 하크피와 함께 세트로 들어갈 때 핵심 시너지를 냄
+      return 1;
+    }
     if (coreDef.isHyperDmg) {
+      // 코어5 하이퍼 크리티컬 확률이 없으면 하크확 0%이므로 무효(1배)!
       if (!hasHyperRateInCombo || totalHyperRatePct <= 0) return 1;
-      const dmgPct = tier === 'advanced' ? 2500 : (tier === 'unique' ? 92500 : 12342500);
-      return 1 + (dmgPct / 100) * Math.min(1, totalHyperRatePct / 100);
+      // 붉양님 표 기준: 하크피 총 12,342,500% -> 123,425배 (하크확 비례 적용)
+      const dmgMult = tier === 'advanced' ? 25 : (tier === 'unique' ? 925 : 123425);
+      return Math.max(1, dmgMult * Math.min(1, totalHyperRatePct / 100));
     }
     if (coreDef.isMark) {
-      return tier === 'advanced' ? 2 : (tier === 'unique' ? 10 : 30);
+      // 적운영(표식 수호신) 사용 시: 붉양님 표 기준 1,200,000배 (표식 1000개 중첩)
+      return tier === 'advanced' ? 5 : (tier === 'unique' ? 1000 : 1200000);
     }
     if (coreDef.isAwkSkill) {
       const sumPct = tier === 'advanced' ? 50 : (tier === 'unique' ? 350 : 3850);
       return sumPct / 100;
     }
 
+    // getCoreThemeMultiplier 함수 맨 아래 부분 (coreDef.p16 확인!)
     const sumPct = tier === 'advanced'
       ? coreDef.p12
       : (tier === 'unique' ? (coreDef.p12 + coreDef.p16) : (coreDef.p12 + coreDef.p16 + coreDef.p20));
@@ -5900,12 +5926,16 @@
   function evaluateConnectCombo(combo) {
     let totalHyperRatePct = 0;
     let hasHyperRate = false;
+    let hasHyperDmg = false;
 
     for (let item of combo) {
       if (item.core.isHyperRate) {
         hasHyperRate = true;
         const r = item.tier === 'advanced' ? 15 : (item.tier === 'unique' ? 50 : 100);
         totalHyperRatePct += r;
+      }
+      if (item.core.isHyperDmg) {
+        hasHyperDmg = true;
       }
     }
 
@@ -5939,7 +5969,16 @@
           const hm = getCoreThemeMultiplier(c, inst.tier, hasHyperRate, totalHyperRatePct);
           hyperDmgMult = Math.max(hyperDmgMult, hm);
         } else {
-          const tm = getCoreThemeMultiplier(c, inst.tier, hasHyperRate, totalHyperRatePct);
+          // 오타 방지: c.p12 + c.p16 + c.p20 정상 합산
+          let tm = 1;
+          if (isCoreValidForUser(c) && !c.isHyperRate) {
+            if (c.isMark) tm = inst.tier === 'advanced' ? 5 : (inst.tier === 'unique' ? 1000 : 1200000);
+            else if (c.isAwkSkill) tm = (inst.tier === 'advanced' ? 50 : (inst.tier === 'unique' ? 350 : 3850)) / 100;
+            else {
+              const sPct = inst.tier === 'advanced' ? c.p12 : (inst.tier === 'unique' ? (c.p12 + c.p16) : (c.p12 + c.p16 + c.p20));
+              tm = Math.max(1, sPct / 100);
+            }
+          }
           if (tm > 1) {
             themePctByCoreId[c.id] = (themePctByCoreId[c.id] || 0) + tm;
           }
@@ -5949,12 +5988,20 @@
       const atkMult = sumAtkPct > 0 ? (sumAtkPct / 100) : 1;
       const ampMult = sumAmpPct > 0 ? (sumAmpPct / 100) : 1;
 
+      // 코어6에서 고대 스테이지(154배) + 전설 하크피(123,425배)를 동시에 끼면 두 테마가 곱연산으로 함께 터짐!
       let themeTotalMult = hyperDmgMult;
       for (let cid in themePctByCoreId) {
         themeTotalMult *= themePctByCoreId[cid];
       }
 
-      const gMult = atkMult * ampMult * themeTotalMult;
+      // 추가로 하이퍼 크리티컬 확률 + 피해 세트가 모두 완성된 경우, 인게임 하크피(1,234만%)의 압도적 실전 가치를 보정하여
+      // 하위 등급(전설/신화)이라도 하크확+하크피 세트가 일반 전설 코어(보스전 385배 등)에 밀리지 않도록 세트 시너지 부여
+      let hyperSetSynergy = 1;
+      if (num === 6 && hasHyperRate && hasHyperDmg && hyperDmgMult > 1) {
+        hyperSetSynergy = 500; // 하크확 100% + 하크피 1,234만% 세트 완성 시 실전 최우선 가중치
+      }
+
+      const gMult = atkMult * ampMult * themeTotalMult * hyperSetSynergy;
       groupMults[num] = gMult;
       totalLog10 += Math.log10(Math.max(1, gMult));
     }
