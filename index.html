@@ -1122,7 +1122,7 @@
       </div>
       <h1 style="margin:0; font-size:26px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
     </div>
-    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.2.2.0</div>
+    <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.2.2.1</div>
   </header>
 
   <!-- Top Mode Switcher (심화 공략 vs 뉴비 공략) -->
@@ -1982,7 +1982,7 @@
                 <img src="images/main_rune.png" alt="룬" onerror="this.onerror=null; this.src='images/main_rune.jpg'; this.onerror=function(){this.parentElement.innerHTML='🛡️';};">
               </div>
               <div>
-                <span class="hub-card-title">🛡️ 룬 착용 도우미 v.1.0.0</span>
+                <span class="hub-card-title">🛡️ 룬 착용 도우미 v.1.0.1</span>
                 <span class="hub-card-desc">고대·영원·불멸 보유 룬 선택 시 최고 배율 10칸(상의/하의/신발/장식/무기) 자동 배치</span>
               </div>
             </div>
@@ -2067,7 +2067,7 @@
     <div id="newbie_rune_view" style="display:none;">
       <div class="card" style="border-left: 4px solid #f43f5e;">
         <div class="card-title">
-          <span>🛡️ 룬 착용 도우미 (v.1.0.0) - 최고 배율 자동 세팅</span>
+          <span>🛡️ 룬 착용 도우미 (v.1.0.1) - 최고 배율 자동 세팅</span>
           <div style="display:flex; gap:6px;">
             <button onclick="selectAllCurrentTierRunes()" style="background:#334155; border:1px solid #475569; color:#e2e8f0; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">현재 등급 전체선택</button>
             <button onclick="clearAllOwnedRunes()" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">전체 초기화</button>
@@ -2098,17 +2098,65 @@
           </div>
         </div>
 
-        <!-- 엘리시아(과성장) & 루비/출혈 시너지 체크박스 -->
-        <div style="background:#0f172a; padding:10px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:16px; display:flex; flex-wrap:wrap; gap:16px; align-items:center;">
-          <span style="font-size:12.5px; font-weight:800; color:#a5b4fc;">💡 핵심 보유 조건:</span>
-          <label style="margin:0; display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#e2e8f0;">
-            <input type="checkbox" id="rune_cond_elisia" onchange="calculateBestRuneLoadout()" style="width:16px; height:16px; accent-color:#6366f1;">
-            <span>엘리시아 3각 보유 (영원 <strong>과성장</strong> 반지 최고효율 발동)</span>
-          </label>
-          <label style="margin:0; display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#e2e8f0;">
-            <input type="checkbox" id="rune_cond_bleed" onchange="calculateBestRuneLoadout()" style="width:16px; height:16px; accent-color:#6366f1;">
-            <span>크림슨 웨이브 보유 (불멸 <strong>저주 II</strong> 출혈 조건 달성)</span>
-          </label>
+        <!-- 엘리시아(과성장 졸업 조건) & 고대 심연장식 개수 & 출혈 시너지 설정 -->
+        <div style="background:#0f172a; padding:12px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:16px;">
+          <div style="font-size:13px; font-weight:800; color:#38bdf8; margin-bottom:10px;">
+            💡 핵심 룬 발동 & 과성장 졸업 조건 설정
+          </div>
+
+          <div class="grid-3" style="gap:10px; margin-bottom:10px;">
+            <div style="background:#1e293b; padding:8px 12px; border-radius:8px; border:1px solid #334155;">
+              <label style="font-size:12px; color:#e2e8f0; margin-bottom:4px;">🦸 엘리시아(영웅) 각성 단계</label>
+              <select id="rune_elisia_awk" onchange="calculateBestRuneLoadout()" style="padding:6px 8px; font-size:13px;">
+                <option value="-1" selected>미보유 (과성장 미사용)</option>
+                <option value="0">명함 / 0각성</option>
+                <option value="1">1각성</option>
+                <option value="2">2각성</option>
+                <option value="3">3각성 (풀각)</option>
+              </select>
+            </div>
+
+            <div style="background:#1e293b; padding:8px 12px; border-radius:8px; border:1px solid #334155;">
+              <label style="font-size:12px; color:#e2e8f0; margin-bottom:4px;">⚡ 오버드라이브(스킬) 각성 단계</label>
+              <select id="rune_overdrive_awk" onchange="calculateBestRuneLoadout()" style="padding:6px 8px; font-size:13px;">
+                <option value="-1" selected>미보유</option>
+                <option value="0">명함 / 0각성</option>
+                <option value="1">1각성</option>
+                <option value="2">2각성</option>
+                <option value="3">3각성 (풀각)</option>
+              </select>
+            </div>
+
+            <div style="background:#1e293b; padding:8px 12px; border-radius:8px; border:1px solid #334155;">
+              <label style="font-size:12px; color:#e2e8f0; margin-bottom:4px;">🔯 고대 이상 심연장식 장착 수</label>
+              <select id="rune_ancient_abyss_cnt" onchange="calculateBestRuneLoadout()" style="padding:6px 8px; font-size:13px;">
+                <option value="0" selected>0개 (고대 미보유)</option>
+                <option value="1">1개 장착 (+3,000만%)</option>
+                <option value="2">2개 장착 (+6,000만%)</option>
+                <option value="3">3개 장착 (+9,000만%)</option>
+                <option value="4">4개 모두 고대 (+1억 2,000만%)</option>
+              </select>
+              <div style="font-size:11px; color:#94a3b8; margin-top:4px; line-height:1.35;">
+                * 룬이 아닌 심연장비 하단 <strong>해·별·달·숲 장식</strong> (태초의 심연 파편 소환)
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center; background:#131d33; padding:8px 12px; border-radius:8px; border:1px solid #1e293b;">
+            <label style="margin:0; display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#e2e8f0;">
+              <input type="checkbox" id="rune_cond_solaris9" onchange="calculateBestRuneLoadout()" style="width:16px; height:16px; accent-color:#6366f1;">
+              <span>🔥 <strong>솔라리스(영웅) 9돌파 이상</strong> 보유</span>
+            </label>
+
+            <label style="margin:0; display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; color:#e2e8f0;">
+              <input type="checkbox" id="rune_cond_bleed" onchange="calculateBestRuneLoadout()" style="width:16px; height:16px; accent-color:#6366f1;">
+              <span>🩸 <strong>크림슨 웨이브(출혈 스킬)</strong> 보유 <small style="color:#94a3b8;">(불멸 저주 II 최대 배율 조건)</small></span>
+            </label>
+
+            <span style="font-size:11.5px; color:#fbbf24; margin-left:auto;">
+              💡 <strong>과성장 졸업:</strong> [오버드라이브 각성 > 엘리시아 각성] + [솔라리스 9돌↑] 달성 시 마마(마녀 세트)가 과성장을 이깁니다!
+            </span>
+          </div>
         </div>
 
         <!-- 등급 선택 탭 (고대 / 영원 / 불멸) -->
@@ -2200,7 +2248,7 @@
 
   <!-- Footer -->
   <footer>
-    소울헌터키우기 네이버 라운지 전용 계산기 v.2.2.0 | 제작: 29서버 겨울눈사람
+    소울헌터키우기 네이버 라운지 전용 계산기 v.2.2.1 | 제작: 29서버 겨울눈사람
   </footer>
 </div>
 
@@ -4462,7 +4510,7 @@
     { id: "imm_ab_simyeonjohwa", tier: "immortal", part: "abyss", name: "심연 조화", mult: 300001, desc: "심연장식 시너지 30 이상 시 총 +30,000,000% (30만 배)", cond: "심연장식 시너지 30" },
     { id: "imm_ab_night", tier: "immortal", part: "abyss", name: "영원의 순환:밤", mult: 250001, pairWithEmblem: "imm_em_day", pairMult: 3750001, desc: "'영원의 순환:낮' 장착 시 영구 지속 모든 피해량 총 +375,000,000% (375만 배, 세트 140조 배!)", cond: "엠블렘 '영원의 순환:낮'과 세트 장착 필수" },
     { id: "imm_ab_gaehwa", tier: "immortal", part: "abyss", name: "개화", mult: 1500001, desc: "룬 획득 후 출석 10일 달성 시 심연장식 룬공 +150,000,000% (150만 배)", cond: "획득 후 10일 출석 (단독 1순위)" },
-    { id: "imm_ab_simyeondolpa", tier: "immortal", part: "abyss", name: "심연 돌파", mult: 1200001, desc: "고대 이상 심연장식 1개당 3천만% (4개 시 +120,000,000%, 120만 배)", cond: "고대 심연장식 4개 장착" },
+    { id: "imm_ab_simyeondolpa", tier: "immortal", part: "abyss", name: "심연 돌파", mult: 1200001, desc: "고대 이상 심연장식(해/별/달/숲) 1개당 3천만% (4개 시 +120,000,000%, 120만 배)", cond: "심연장비 하단 해·별·달·숲 장식(태초의 심연 파편 소환) 고대 등급 개수 비례" },
     { id: "imm_ab_geukhan", tier: "immortal", part: "abyss", name: "극한의 저력", mult: 1200001, desc: "고대 패시브 각성 합계 6 이상 시 룬공 +120,000,000% (120만 배)", cond: "고대 패시브 각성 합 6 이상" },
     { id: "imm_ab_jeoju2", tier: "immortal", part: "abyss", name: "저주 II", mult: 1200001, noBleedMult: 400001, desc: "화상/감전/혼돈 부여 + 룬공 4천만% (출혈 부여 시 총 +120,000,000%, 120만 배)", cond: "스킬 '크림슨 웨이브(출혈)' 착용 시 풀배율 발동" },
     { id: "imm_ab_goldcard", tier: "immortal", part: "abyss", name: "골드 카드", mult: 750001, desc: "신화 몬스터카드 3개 이상 장착 시 룬공 +75,000,000% (75만 배)", cond: "신화 몬스터카드 3개 이상" },
@@ -4840,8 +4888,15 @@
   }
 
   function findBestRingAndNeck(ownedRings, ownedNecks) {
-    const hasElisia = document.getElementById('rune_cond_elisia')?.checked;
-    let bestScore = 0;
+    const elisiaAwk = parseInt(document.getElementById('rune_elisia_awk')?.value ?? '-1');
+    const overdriveAwk = parseInt(document.getElementById('rune_overdrive_awk')?.value ?? '-1');
+    const hasSolaris9 = document.getElementById('rune_cond_solaris9')?.checked || false;
+
+    const hasElisia = (elisiaAwk >= 0);
+    // 과성장 졸업 조건: (오버드라이브 각성 > 엘리시아 각성) AND (솔라리스 9돌파 이상)
+    const isOvergrowthGraduated = (overdriveAwk > elisiaAwk) && hasSolaris9;
+
+    let bestScore = -1;
     let bestRing = null;
     let bestNeck = null;
 
@@ -4855,10 +4910,25 @@
 
         let rMult = 1;
         if (r) {
-          if (r.elem && r.elem !== currentRuneElem) rMult = 1;
-          else if (r.jobType && r.jobType !== currentRuneJob) rMult = 1;
-          else if (r.id === 'ete_rg_gwaseong' && hasElisia) rMult = r.elisiaBonus;
-          else rMult = r.mult || 1;
+          if (r.elem && r.elem !== currentRuneElem) {
+            rMult = 1;
+          } else if (r.jobType && r.jobType !== currentRuneJob) {
+            rMult = 1;
+          } else if (r.id === 'ete_rg_gwaseong') {
+            if (!hasElisia) {
+              rMult = 1; // 엘리시아 미보유 시 과성장 미적용
+            } else if (!isOvergrowthGraduated) {
+              // 아직 과성장 졸업 전이면 마마(625억 배)보다 과성장 세팅이 우선되도록 초고배율 부여
+              rMult = 500000000 * (1 + elisiaAwk * 0.2);
+            } else {
+              // 과성장 졸업 조건 달성 시: 마마(625억 배)가 1순위가 되도록 원래 실효 배율 적용
+              rMult = 180000;
+            }
+          } else if (r.id === 'anc_rg_gwaseong') {
+            rMult = hasElisia ? (isOvergrowthGraduated ? 100 : 5000) : 1;
+          } else {
+            rMult = r.mult || 1;
+          }
         }
 
         let nMult = 1;
@@ -4875,18 +4945,28 @@
         const total = rMult * nMult;
         if (total > bestScore) {
           bestScore = total;
-          bestRing = r;
-          bestNeck = n;
+          bestRing = r ? { ...r } : null;
+          bestNeck = n ? { ...n } : null;
+
+          if (bestRing && bestRing.id === 'ete_rg_gwaseong') {
+            if (!isOvergrowthGraduated) {
+              bestRing.cond = `현재 과성장 현역 구간 (오버드라이브 각성 > 엘리시아 각성 & 솔라리스 9돌 달성 전까지 마마보다 강력!)`;
+            } else {
+              bestRing.cond = `과성장 졸업 조건 달성됨 (마녀의 반지+펜던트 세트가 있다면 마마 착용 권장)`;
+            }
+          }
         }
       }
     }
 
-    return { ring: bestRing, neck: bestNeck, mult: Math.max(1, bestScore) };
+    return { ring: bestRing, neck: bestNeck, mult: Math.max(1, Math.round(bestScore)) };
   }
 
   function findBestEmblemAndAbyss(ownedEmblems, ownedAbyss) {
-    const hasBleed = document.getElementById('rune_cond_bleed')?.checked;
-    let bestScore = 0;
+    const hasBleed = document.getElementById('rune_cond_bleed')?.checked || false;
+    const ancientAbyssCnt = parseInt(document.getElementById('rune_ancient_abyss_cnt')?.value ?? '0');
+
+    let bestScore = -1;
     let bestEmblem = null;
     let bestAbyss = null;
 
@@ -4904,21 +4984,36 @@
 
         let aMult = 1;
         if (a) {
-          if (a.pairWithEmblem && e && e.id === a.pairWithEmblem) aMult = a.pairMult;
-          else if (a.id === 'imm_ab_jeoju2') aMult = hasBleed ? a.mult : a.noBleedMult;
-          else aMult = a.mult || 1;
+          if (a.pairWithEmblem && e && e.id === a.pairWithEmblem) {
+            aMult = a.pairMult;
+          } else if (a.id === 'imm_ab_jeoju2') {
+            aMult = hasBleed ? a.mult : a.noBleedMult;
+          } else if (a.id === 'imm_ab_simyeondolpa') {
+            // 고대 이상 심연장식(해/별/달/숲) 장착 개수(0~4개)당 +3,000만% (30만 배씩 증가)
+            aMult = ancientAbyssCnt > 0 ? (1 + ancientAbyssCnt * 300000) : 1;
+          } else {
+            aMult = a.mult || 1;
+          }
         }
 
         const total = eMult * aMult;
         if (total > bestScore) {
           bestScore = total;
-          bestEmblem = e;
-          bestAbyss = a;
+          bestEmblem = e ? { ...e } : null;
+          bestAbyss = a ? { ...a } : null;
+
+          if (bestAbyss && bestAbyss.id === 'imm_ab_simyeondolpa') {
+            bestAbyss.desc = `고대 심연장식(해·별·달·숲) ${ancientAbyssCnt}개 장착 적용 ➔ 심연장식 룬공 +${(ancientAbyssCnt * 30000000).toLocaleString()}% (${(1 + ancientAbyssCnt * 300000).toLocaleString()}배)`;
+          } else if (bestAbyss && bestAbyss.id === 'imm_ab_jeoju2') {
+            bestAbyss.desc = hasBleed
+              ? `크림슨 웨이브(출혈) 적용 ➔ 심연장식 룬공 총 +120,000,000% (1,200,001배)`
+              : `출혈 미적용 기본 발동 ➔ 심연장식 룬공 +40,000,000% (400,001배)`;
+          }
         }
       }
     }
 
-    return { emblem: bestEmblem, abyss: bestAbyss, mult: Math.max(1, bestScore) };
+    return { emblem: bestEmblem, abyss: bestAbyss, mult: Math.max(1, Math.round(bestScore)) };
   }
 
   function evaluateWeaponCombo(combo) {
@@ -4965,7 +5060,16 @@
 
   function findSameMultiplierRunes(targetRune, ownedPartList, equippedIds) {
     if (!targetRune) return [];
-    const targetVal = targetRune.val || targetRune.mult || 0;
+    const hasBleed = document.getElementById('rune_cond_bleed')?.checked || false;
+    const ancientAbyssCnt = parseInt(document.getElementById('rune_ancient_abyss_cnt')?.value ?? '0');
+
+    function getRealRuneMult(r) {
+      if (r.id === 'imm_ab_jeoju2') return hasBleed ? r.mult : r.noBleedMult;
+      if (r.id === 'imm_ab_simyeondolpa') return ancientAbyssCnt > 0 ? (1 + ancientAbyssCnt * 300000) : 1;
+      return r.val || r.mult || 0;
+    }
+
+    const targetVal = getRealRuneMult(targetRune);
     return ownedPartList.filter(r => {
       if (r.id === targetRune.id || equippedIds.has(r.id)) return false;
       if (r.tier !== targetRune.tier) return false;
@@ -4973,8 +5077,7 @@
       if (r.wCat && r.wCat !== targetRune.wCat) return false;
       if (r.elem && r.elem !== currentRuneElem) return false;
       if (r.jobType && r.jobType !== 'all' && r.jobType !== currentRuneJob) return false;
-      const v = r.val || r.mult || 0;
-      return v === targetVal;
+      return getRealRuneMult(r) === targetVal;
     }).map(r => r.name);
   }
 
