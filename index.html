@@ -4336,7 +4336,7 @@
         { name: "환영나비", attr: "⚪", star: true, img: "images/butter.png" },
         { name: "지옥불베기(불베기)", attr: "🔥", prob_proc: true, star: true, img: "images/hell.png" },
         { name: "썬더 익스큐션", attr: "⚡", prob_proc: true, img: "images/thunder_ex.png" },
-        { name: "암영참", attr: "🌑", prob_proc: true },
+        { name: "암영참", attr: "🌑", prob_proc: true, img: "images/ahm.png" },
         { name: "인페르노 크라운", attr: "🔥", prob_proc: true },
         { name: "레디언스", attr: "⚪", star: true },
         { name: "보이드 펄스", attr: "🌑", star: true, img: "images/void.png" },
@@ -6956,7 +6956,8 @@
     "플레임 펄스": "flame_p",
     "썬더 펄스": "thunder_p",
     "다크 펄스": "dark_pu",
-    "썬더 익스큐션": "thunder_ex"
+    "썬더 익스큐션": "thunder_ex",
+    "암영참": "ahm"
   };
 
   const HERO_ICON_MAP = {
@@ -6975,14 +6976,52 @@
     const tagBg = styleType === 'fix' ? '#e11d48' : (styleType === 'future' ? '#ca8a04' : '#0284c7');
 
     const imgHtml = fileKey
-      ? `<img src="images/${fileKey}.png" alt="${name}" onerror="this.onerror=null; this.src='images/${fileKey}.jpg'; this.onerror=function(){this.style.display='none';};">`
+      ? `<img src="images/${fileKey}.png" alt="${name}" onerror="this.onerror=null; this.src='images/${fileKey}.PNG'; this.onerror=function(){this.src='images/${fileKey}.jpg'; this.onerror=function(){this.parentElement.innerHTML='⭐';};};">`
       : `<span>${isSkill ? '⚡' : '🦸'}</span>`;
+
+    // 🔥 특수 시너지 짝꿍 아이콘 (+ 표시) 자동 생성:
+    // 1) 루비 -> + [고대/영원/불멸 격화 룬]
+    // 2) 솔라리스 -> + [오버드라이브 3각 스킬 아이콘]
+    // 3) 엘리시아 (과성장 언급 시) -> + [과성장 반지 룬]
+    let comboPartnerHtml = '';
+    if (!isSkill && name === '루비') {
+      comboPartnerHtml = `
+        <span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span>
+        <div style="width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg, #06b6d4 0%, #10b981 50%, #f43f5e 100%); padding:1.5px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;" title="고대 / 영원 / 불멸 방어구 격화 룬과 세트 사용">
+          <div style="width:100%; height:100%; background:#0f172a; border-radius:8.5px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1;">
+            <span style="font-size:8.5px; color:#67e8f9; font-weight:800;">고·영·불</span>
+            <span style="font-size:11px; color:#ffffff; font-weight:900;">격화룬</span>
+          </div>
+        </div>
+      `;
+    } else if (!isSkill && name === '솔라리스') {
+      comboPartnerHtml = `
+        <span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span>
+        <div class="build-slot-thumb" style="border-color:#f59e0b; position:relative;" title="오버드라이브 스킬 3각성과 세트 사용">
+          <img src="images/overdrive.png" alt="오버드라이브" onerror="this.onerror=null; this.src='images/overdrive.PNG'; this.onerror=function(){this.src='images/overdrive.jpg'; this.onerror=function(){this.parentElement.innerHTML='⚡';};};">
+          <span style="position:absolute; bottom:0; right:0; background:rgba(225,29,72,0.92); color:#fff; font-size:8.5px; font-weight:900; padding:0px 3px; border-radius:3px;">3각</span>
+        </div>
+      `;
+    } else if (!isSkill && name === '엘리시아' && (noteText.includes('과성장') || tagText.includes('1번'))) {
+      comboPartnerHtml = `
+        <span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span>
+        <div style="width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg, #06b6d4 0%, #10b981 100%); padding:1.5px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;" title="고대 / 영원 반지 과성장 룬과 세트 사용">
+          <div style="width:100%; height:100%; background:#0f172a; border-radius:8.5px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1;">
+            <span style="font-size:8.5px; color:#34d399; font-weight:800;">고대·영원</span>
+            <span style="font-size:11px; color:#ffffff; font-weight:900;">과성장</span>
+          </div>
+        </div>
+      `;
+    }
 
     return `
       <div class="build-slot-item ${cls}">
         <span class="build-slot-tag" style="background:${tagBg}; color:#fff;">${tagText}</span>
-        <div class="build-slot-thumb">${imgHtml}</div>
-        <div class="build-slot-name">${name}</div>
+        <div style="display:flex; align-items:center; justify-content:center;">
+          <div class="build-slot-thumb">${imgHtml}</div>
+          ${comboPartnerHtml}
+        </div>
+        <div class="build-slot-name">${name}${!isSkill && name==='루비' ? ' <small style="color:#67e8f9;">(+격화)</small>' : (!isSkill && name==='솔라리스' ? ' <small style="color:#fde047;">(+오버3각)</small>' : '')}</div>
         <div class="build-slot-note">${noteText}</div>
       </div>
     `;
