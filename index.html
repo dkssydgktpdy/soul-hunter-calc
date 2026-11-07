@@ -421,7 +421,7 @@
   .grade-middle { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
   .grade-advanced { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
   .grade-unique { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid #a855f7; }
-  .grade-legend { background: rgba(249, 115, 22, 0.2); color: #fb923c; border: 1px solid #f97316; }
+  .grade-legend { background: rgba(234, 179, 8, 0.2); color: #fde047; border: 1px solid #eab308; }
   .grade-mythic { background: rgba(244, 63, 94, 0.2); color: #fda4af; border: 1px solid #f43f5e; }
   .grade-ancient { background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1px solid #06b6d4; }
   .grade-eternal { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
@@ -1737,11 +1737,24 @@
           <span>🐣 직업별 · 전직 차수별 (초기 ~ 4차) 세팅 가이드</span>
         </div>
         <div class="hub-grid">
-          <div class="hub-card" onclick="openBuildGuideDetail('skill')" style="border-color:rgba(251,191,36,0.45);">
+          <!-- 1. 극초반 가이드 (첫 번째로 이동 및 텍스트 수정) -->
+          <div class="hub-card" onclick="openBuildGuideDetail('early')" style="border-color:rgba(234,179,8,0.45);">
             <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#fbbf24; background:rgba(251,191,36,0.12);">
-                <img src="images/main_skill.png" alt="스킬" onerror="this.onerror=null; this.src='images/thunder_orb.png'; this.onerror=function(){this.parentElement.innerHTML='⚡';};">
+              <div class="hub-card-icon" style="border-color:#eab308; background:rgba(234,179,8,0.12);">
+                <img src="images/chick.png" alt="극초반" onerror="this.onerror=null; this.parentElement.innerHTML='🐣';">
               </div>
+              <div>
+                <span class="hub-card-title">🐣 극초반 스킬/영웅 가이드</span>
+                <span class="hub-card-desc">Lv.5,000 이후 (스킬 4➔5칸 & 영웅 3➔4칸 해금 필수 빌드)</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+
+          <!-- 2. 직업별 스킬 세팅 가이드 (두 번째로 이동) -->
+          <div class="hub-card" onclick="openBuildGuideDetail('skill')">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#fbbf24;">⚡</div>
               <div>
                 <span class="hub-card-title">⚡ 직업별 스킬 세팅 가이드</span>
                 <span class="hub-card-desc">사신/앜메/닼로 & 불/번개/어둠 초기~4차 슬롯별 정석 스킬 트리</span>
@@ -1750,6 +1763,7 @@
             <div class="hub-card-arrow">➔</div>
           </div>
 
+          <!-- 3. 직업별 영웅 세팅 가이드 -->
           <div class="hub-card" onclick="openBuildGuideDetail('hero')" style="border-color:rgba(244,63,94,0.45);">
             <div class="hub-card-left">
               <div class="hub-card-icon" style="border-color:#f43f5e; background:rgba(244,63,94,0.12);">
@@ -4299,14 +4313,18 @@
         { name: "절대관통", img: "images/absolute_pierce.jpg" }
       ],
       legend: [
-        { name: "전술가속", img: "images/tactical_haste.jpg" },
-        { name: "시간왜곡", img: "images/time_warp.jpg" },
-        { name: "폭발준비", img: "images/blast_ready.jpg" },
-        { name: "철갑관통", img: "images/armor_pierce.jpg" }
+        { name: "집중모드", attr: "⚪", img: "images/concentration.png" },
+        { name: "불의 장막", attr: "🔥" },
+        { name: "뇌전폭풍", attr: "⚡", prob_proc: true },
+        { name: "어둠난무", attr: "🌑" },
+        { name: "플레임 버스트", attr: "🔥" },
+        { name: "번개섬광", attr: "⚡" }
       ],
       unique: [
-        { name: "전투지휘", img: "images/battle_command.jpg" },
-        { name: "마력폭주", img: "images/mana_surge.jpg" }
+        { name: "전투태세", attr: "⚪", img: "images/combat_ready.png" },
+        { name: "불기둥", attr: "🔥", prob_proc: true, img: "images/firetor.png" },
+        { name: "신속베기", attr: "⚡", prob_proc: true, img: "images/rapidslash.png" },
+        { name: "어둠낙뢰", attr: "🌑" }
       ],
       advanced: [
         { name: "강타 전문가", img: "images/strike_expert.png" },
@@ -4410,10 +4428,10 @@
         { name: "제논", attr: "⚡", star: true, isNew: true, img: "images/xenon.png" },
         { name: "다미안", attr: "🌑", star: true, isNew: true, img: "images/damian.png" }
       ],
-      legend: [
+     legend: [
         { name: "아카네", attr: "⚡" },
         { name: "데미나", attr: "🌑" },
-        { name: "오로라", attr: "🔥" },
+        { name: "오로라", attr: "🔥", img: "images/orora.png" },
         { name: "엘리", attr: "⚡" },
         { name: "벨라트릭스", attr: "🌑" },
         { name: "렌", attr: "🔥" }
@@ -4501,12 +4519,13 @@
   function getGradeColor(grade) {
     const map = {
       mythic: "#f43f5e",
-      legend: "#f97316",
-      unique: "#c084fc",
-      advanced: "#60a5fa",
+      legend: "#eab308", // 노란색으로 변경
+      unique: "#a855f7", // 보라색으로 변경
+      advanced: "#3b82f6",
       middle: "#4ade80",
       normal: "#f59e0b"
     };
+
     return map[grade] || "#38bdf8";
   }
 
@@ -6935,7 +6954,11 @@
   let guideJob = 'reaper';
   let guideElem = 'fire';
 
-  const SKILL_ICON_MAP = {
+ const SKILL_ICON_MAP = {
+    "전투태세": "combat_ready",
+    "집중모드": "concentration",
+    "불기둥": "firetor",
+    "신속베기": "rapidslash",
     "원소돌파": "elem_break",
     "그림자 포효": "shadow_roar",
     "불벼락": "fire_light",
@@ -6961,6 +6984,7 @@
   };
 
   const HERO_ICON_MAP = {
+    "오로라": "orora",
     "나찰": "nachal", "바토리": "batory", "나리타": "narita", "프레이야": "preiya",
     "리리스": "riris", "백운귀": "backgui", "이블린": "evelyn", "엘리제": "elize",
     "라이카": "ryca", "플레어": "plare", "카엘": "kael", "셀렌": "selen",
@@ -7027,7 +7051,7 @@
     `;
   }
 
-  function openBuildGuideDetail(type) {
+ function openBuildGuideDetail(type) {
     currentGuideType = type;
     document.getElementById("guides_hub_view").style.display = "none";
     document.getElementById("guides_detail_view").style.display = "block";
@@ -7037,7 +7061,11 @@
     document.getElementById("floating_back_text").innerText = "가이드 목록으로 돌아가기";
 
     const selectorEl = document.getElementById("guide_job_elem_selector");
-    if (type === 'transition') {
+    if (type === 'early') {
+      selectorEl.style.display = "none";
+      document.getElementById("guide_view_title").innerText = "🐣 5,000렙 이후 극초반 스킬 & 영웅 세팅";
+      document.getElementById("guide_view_badge").innerText = "Lv.5,000+ 입문";
+    } else if (type === 'transition') {
       selectorEl.style.display = "none";
       document.getElementById("guide_view_title").innerText = "🔄 사신 ➔ 아크메이지(미스틱) 전환 완벽 가이드";
       document.getElementById("guide_view_badge").innerText = "직업 전환 타이밍";
@@ -7055,6 +7083,7 @@
     window.scrollTo({ top: 100, behavior: 'smooth' });
   }
 
+
   function selectGuideJob(j) {
     guideJob = j;
     ['reaper', 'mage', 'lord'].forEach(k => document.getElementById('g_job_' + k)?.classList.toggle('selected', k === j));
@@ -7071,6 +7100,62 @@
     const body = document.getElementById("guide_dynamic_body");
     if (!body) return;
 
+      if (currentGuideType === 'early') {
+    body.innerHTML = `
+      <div class="stage-build-card" style="border-left-color:#f59e0b;">
+        <div class="stage-build-header">
+          <span class="stage-build-title">⚡ 극초반 스킬 세팅 (기본 4슬롯 ➔ 5슬롯 확장)</span>
+          <span class="grade-badge grade-ancient">Lv.5,000+ 입문</span>
+        </div>
+        <div style="font-size:12.5px; font-weight:800; color:#cbd5e1; margin-bottom:6px;">📌 기본 4슬롯 필수 장착:</div>
+        <div class="build-slot-grid">
+          ${makeGuideSlotHtml("전투태세", "특급 필수", "공격력/치명 버프", true, 'fix')}
+          ${makeGuideSlotHtml("집중모드", "전설 필수", "치명타 피해 증가", true, 'fix')}
+          ${makeGuideSlotHtml("불기둥", "특급 딜링", "확률형 공격 발동", true, 'flex')}
+          ${makeGuideSlotHtml("신속베기", "특급 딜링", "타수 지원 발동", true, 'flex')}
+        </div>
+        <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:16px 0 6px 0;">📌 5번째 슬롯 확장 시 (스킬 소환 레벨 8 달성):</div>
+        <div class="build-slot-grid">
+          <div class="build-slot-item future-4th" style="grid-column: span 2; display:flex; align-items:center; flex-direction:row; padding:12px 16px; gap:16px;">
+            <div style="font-size:32px;">🔮</div>
+            <div style="text-align:left;">
+              <span class="build-slot-tag" style="background:#ca8a04; color:#fff;">소환 Lv.8 달성</span>
+              <div style="font-size:14px; font-weight:800; color:#fda4af; margin:4px 0;">신화 스킬 택 1</div>
+              <div style="font-size:11.5px; color:#94a3b8;">소환 레벨 8 달성 시 획득하는 신화 스킬 중 1개 장착</div>
+            </div>
+          </div>
+        </div>
+        <div class="build-tip-box" style="margin-top:14px; border-color:#ef4444; background:rgba(239, 68, 68, 0.1); color:#fca5a5;">
+          ⚠️ <strong>극초반 사용 금지 스킬:</strong><br>
+          • <strong>불벼락류</strong> 및 <strong>그림자 포효</strong>는 최소 9돌파(디버프 해금) 전까지 기여도가 전혀 없으므로 <strong>절대 장착하지 마세요!</strong>
+        </div>
+      </div>
+
+      <div class="stage-build-card" style="border-left-color:#eab308; margin-top:20px;">
+        <div class="stage-build-header">
+          <span class="stage-build-title">🦸 극초반 영웅 세팅 (기본 3슬롯 ➔ 4슬롯 확장)</span>
+          <span class="grade-badge grade-ancient">Lv.5,000+ 입문</span>
+        </div>
+        <div style="font-size:12.5px; font-weight:800; color:#cbd5e1; margin-bottom:6px;">📌 기본 3슬롯 필수 장착:</div>
+        <div class="build-slot-grid">
+          ${makeGuideSlotHtml("오로라", "전설 1티어", "핵심 초반 딜러", false, 'fix')}
+          ${makeGuideSlotHtml("바토리", "특급 감전", "번개 감전 부여", false, 'fix')}
+          ${makeGuideSlotHtml("나찰", "특급 혼돈", "어둠 혼돈 부여", false, 'fix')}
+        </div>
+        <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:16px 0 6px 0;">📌 4번째 슬롯 확장 시 (영웅 소환 레벨 8 달성):</div>
+        <div class="build-slot-grid">
+          ${makeGuideSlotHtml("셀렌", "★1티어 추천", "소환 Lv.8 획득 시 채택", false, 'fix')}
+          ${makeGuideSlotHtml("엘리시아", "★1티어 추천", "소환 Lv.8 획득 시 채택", false, 'fix')}
+          <div class="build-slot-item future-4th" style="justify-content:center;">
+            <span class="build-slot-tag" style="background:#ca8a04; color:#fff;">기타 신화</span>
+            <div style="font-size:13px; font-weight:800; color:#fda4af; margin:10px 0 4px 0;">신화 영웅 택 1</div>
+            <div style="font-size:11px; color:#94a3b8;">소환 Lv.8 획득 영웅</div>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
     const elemDebuffSkill = guideElem === 'fire' ? '불벼락' : (guideElem === 'light' ? '뇌전검무' : '암흑붕괴');
     const elemPulseSkill = guideElem === 'fire' ? '플레임 펄스' : (guideElem === 'light' ? '썬더 펄스' : '다크 펄스');
     const mage2ndDeal = guideElem === 'fire' ? '인페르노 크라운' : (guideElem === 'light' ? '썬더 익스큐션' : '암영참');
@@ -7205,67 +7290,73 @@
       }
 
       body.innerHTML = `
-        <!-- 1. 초기 ~ 1차 전직 -->
-        <div class="stage-build-card">
-          <div class="stage-build-header">
-            <span class="stage-build-title">🌱 초기 ~ 1차 전직 스킬 세팅</span>
-            <span class="grade-badge grade-ancient">전 직업 공통 5슬롯</span>
+      <!-- 아코디언 그룹 시작 (active 클래스 제거로 전체 접힘 기본값) -->
+      <div class="accordion-group">
+        
+        <!-- 1. 1차 전직 -->
+        <div class="accordion-item acc-advanced" id="g_acc_s1">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_s1')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text"><span class="grade-badge grade-advanced">1차 전직</span> 5,000렙 이후 본격 세팅</span>
+            </div>
+            <span class="accordion-count-badge">5슬롯</span>
           </div>
-          <div style="font-size:12.5px; font-weight:800; color:#fda4af; margin-bottom:6px;">📌 고정 3자리:</div>
-          <div class="build-slot-grid">${stage1Fixed}</div>
-          <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin-bottom:6px;">📌 나머지 2자리 선택 후보 (돌파 높은 순 2개 착용 / 오버드라이브 최우선 돌파):</div>
-          <div class="build-slot-grid">${stage1FlexPool}</div>
-          <div class="build-tip-box">
-            • <strong>고정 3자리:</strong> 직업 필수 스킬(<strong>${jobOnlySkill}</strong>) + 주속성 디버프(<strong>${elemDebuffSkill}</strong>) + <strong>그림자 포효</strong>를 고정합니다.<br>
-            • <strong>나머지 2자리:</strong> 위 후보 5종 중 현재 돌파가 높은 것을 끼우되, <strong>오버드라이브(★1순위), 환영나비, 엘리멘탈 차지</strong> 위주로 돌파를 올립니다.<br>
-            • <strong>신화 미보유 초보 팁:</strong> 신화가 없을 땐 하급~전설 중 한 속성을 정해 끼우다가 신화급이 나올 때마다 변경하세요.
+          <div class="accordion-content">
+            <div style="font-size:12.5px; font-weight:800; color:#fda4af; margin-bottom:6px;">📌 고정 3자리:</div>
+            <div class="build-slot-grid">${stage1Fixed}</div>
+            <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:16px 0 6px 0;">📌 나머지 2자리 선택 후보 (오버드라이브 최우선):</div>
+            <div class="build-slot-grid">${stage1FlexPool}</div>
           </div>
         </div>
 
         <!-- 2. 2차 전직 -->
-        <div class="stage-build-card" style="border-left-color:#a855f7;">
-          <div class="stage-build-header">
-            <span class="stage-build-title">🥈 2차 전직 스킬 세팅 & 3차 대비 필수 육성</span>
-            <span class="grade-badge grade-unique">${stage2SlotCntText}</span>
+        <div class="accordion-item acc-unique" id="g_acc_s2">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_s2')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text"><span class="grade-badge grade-unique">2차 전직</span> 2차 전직 세팅 & 3차 대비 육성</span>
+            </div>
+            <span class="accordion-count-badge">${stage2SlotCntText}</span>
           </div>
-          <div class="build-slot-grid">${stage2MainSlots}</div>
-          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:10px 0 6px 0;">➕ 2차 구간부터 미리 돌파·각성하며 키우기 시작할 스킬:</div>
-          <div class="build-slot-grid">${stage2PrepIcons}</div>
-          <div class="build-tip-box">
-            • ${guideJob === 'mage' ? `<strong>아크메이지(스킬 +1):</strong> 2차 주속성 스킬(<strong>${mage2ndDeal}</strong>) 또는 3차 스킬(<strong>${mage3rdDeal}</strong>)을 착용하고 3차까지 돌파·각성하며 존버합니다.` : `<strong>사신 & 다크로드:</strong> 1차와 동일하게 5슬롯을 가져갑니다.`}<br>
-            • <strong>3차 종결 준비:</strong> 3차 종결에 필수인 <strong>[크림슨 웨이브]</strong>와 주속성 보유효과 각성 스킬인 <strong>[${elemPulseSkill}]</strong>도 함께 돌파해 두세요!
+          <div class="accordion-content">
+            <div class="build-slot-grid">${stage2MainSlots}</div>
+            <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:16px 0 6px 0;">➕ 미리 육성할 스킬:</div>
+            <div class="build-slot-grid">${stage2PrepIcons}</div>
           </div>
         </div>
 
-        <!-- 3. 3차 전직 (35렙) -->
-        <div class="stage-build-card" style="border-left-color:#f43f5e;">
-          <div class="stage-build-header">
-            <span class="stage-build-title">🥉 3차 전직 (Lv.35 달성) 종결 스킬 세팅</span>
-            <span class="grade-badge grade-mythic">${stage3CntText}</span>
+        <!-- 3. 3차 전직 -->
+        <div class="accordion-item acc-mythic" id="g_acc_s3">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_s3')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text"><span class="grade-badge grade-mythic">3차 전직</span> 3차 전직 (Lv.35 달성) 종결 세팅</span>
+            </div>
+            <span class="accordion-count-badge">${stage3CntText}</span>
           </div>
-          <div class="build-slot-grid">${stage3Slots}</div>
-          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:10px 0 6px 0;">➕ 전 직업 공통 필수 (장착 안 해도 적용되는 3차 보유효과 풀각성):</div>
-          <div class="build-slot-grid">
-            ${makeGuideSlotHtml(elemPulseSkill, '3차 보유효과', '주속성 맞춰 풀각성(3각) 필수!', true, 'future')}
-          </div>
-          <div class="build-tip-box">
-            • ${guideJob === 'mage' ? `<strong>미스틱(7슬롯):</strong> 불속성은 <strong>[그림자 포효]</strong>, 번개/어둠 속성은 포효를 빼고 <strong>[환영나비]</strong>를 추가합니다. (오버드라이브/엘차보다 환영나비나 심판의 인장 돌파가 더 높으면 변경)` : (guideJob === 'reaper' ? `<strong>소울리퍼(6슬롯):</strong> <strong>[${elemDebuffSkill} + 썬더 오빗 + 엘리멘탈 차지 + 오버드라이브 + 그림자 포효 + 크림슨 웨이브]</strong> 6칸 고정!` : `<strong>오버로드(5슬롯):</strong> <strong>[보이드 펄스 + 크림슨 웨이브 + 오버드라이브 + 환영나비 + ${elemDebuffSkill}]</strong> ➔ 최종 종결은 ${elemDebuffSkill} 대신 <strong>[엘리멘탈 차지]</strong>!`)}
+          <div class="accordion-content">
+            <div class="build-slot-grid">${stage3Slots}</div>
           </div>
         </div>
 
         <!-- 4. 4차 전직 -->
-        <div class="stage-build-card" style="border-left-color:#eab308;">
-          <div class="stage-build-header">
-            <span class="stage-build-title">👑 4차 전직 (그림리퍼 / 슈프림 / 소울이터) 스킬 세팅</span>
-            <span class="grade-badge grade-legend">${stage3CntText} (슬롯 수 변화 없음)</span>
+        <div class="accordion-item acc-legend" id="g_acc_s4">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_s4')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text"><span class="grade-badge grade-legend">4차 전직</span> 4차 전직 (그림리퍼 / 슈프림 / 소울이터) 세팅</span>
+            </div>
+            <span class="accordion-count-badge">최종 종결</span>
           </div>
-          <div class="build-slot-grid">${stage4Slots}</div>
-          <div class="build-tip-box">
-            • 4차 전직은 슬롯 개수 변화가 없으며, ${guideJob === 'mage' ? `추후 <strong>4차 전용 메인딜 스킬</strong>이 출시되면 기존의 3차 메인딜(<strong>${mage3rdDeal}</strong>)을 4차 전용 스킬로 교체해 주시면 됩니다.` : `3차 종결 스킬 구성을 그대로 유지합니다.`}
+          <div class="accordion-content">
+            <div class="build-slot-grid">${stage4Slots}</div>
           </div>
         </div>
-      `;
-      return;
+
+      </div>
+    `;
+    return;
     }
 
     // 3) 직업별 영웅 세팅 가이드 (추가 육성 영웅 아이콘 카드 전부 포함!)
@@ -7355,70 +7446,57 @@
       ].join('');
 
       body.innerHTML = `
-        <!-- 1. 1차 전직 이전 -->
-        <div class="stage-build-card">
-          <div class="stage-build-header">
-            <span class="stage-build-title">🌱 1차 전직 이전 (초기 구간) 영웅 세팅</span>
-            <span class="grade-badge grade-ancient">전 직업 공통 4슬롯</span>
+      <!-- 아코디언 그룹 시작 (active 클래스 제거로 전체 접힘 기본값) -->
+      <div class="accordion-group">
+
+        <!-- 1. 1차 전직 이후 -->
+        <div class="accordion-item acc-advanced" id="g_acc_h1">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_h1')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text"><span class="grade-badge grade-advanced">1차 전직</span> 1차 전직 이후 본격 세팅</span>
+            </div>
+            <span class="accordion-count-badge">${hStage1CntText}</span>
           </div>
-          <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin-bottom:6px;">📌 초기 장착 영웅 (직업 고정 + 특급 상태이상 요원):</div>
-          <div class="build-slot-grid">${hStage0Slots}</div>
-          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:10px 0 6px 0;">➕ 천천히 수집하며 키워둘 핵심 신화 영웅:</div>
-          <div class="build-slot-grid">${hStage0GrowPool}</div>
-          <div class="build-tip-box">
-            • 1차 이전에는 직업별 필수인 <strong>[${jobOnlyHero}]</strong>을 고정하고, 신화 돌파 전까지는 특급 영웅인 <strong>[바토리(감전), 나찰(혼돈)]</strong>을 상태이상으로 채택하며 천천히 <strong>엘리시아, 루비, ${elemDebuffHero}</strong>를 키웁니다.
+          <div class="accordion-content">
+            <div class="build-slot-grid">${hStage1Slots.join('')}</div>
           </div>
         </div>
 
-        <!-- 2. 1차 전직 이후 -->
-        <div class="stage-build-card" style="border-left-color:#3b82f6;">
-          <div class="stage-build-header">
-            <span class="stage-build-title">🥇 1차 전직 이후 영웅 세팅 & 3차 대비 육성</span>
-            <span class="grade-badge grade-advanced">${hStage1CntText}</span>
+        <!-- 2. 2차 전직 -->
+        <div class="accordion-item acc-unique" id="g_acc_h2">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_h2')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text"><span class="grade-badge grade-unique">2차 전직</span> 2차 전직 영웅 세팅 (과성장 vs 솔라리스)</span>
+            </div>
+            <span class="accordion-count-badge">${hStage1CntText}</span>
           </div>
-          <div class="build-slot-grid">${hStage1Slots.join('')}</div>
-          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:10px 0 6px 0;">➕ 3차 전직을 위해 이때부터 함께 돌파를 키워둘 영웅:</div>
-          <div class="build-slot-grid">${hStage1PrepIcons}</div>
-          <div class="build-tip-box">
-            • <strong>나리타 3각 우선 채택:</strong> 나리타 3각성은 현 메타 필수이므로 우선순위로 채택합니다. ${guideJob === 'lord' ? `(다크로드는 영웅 +1이라 여기에 <strong>[백운귀]</strong>가 추가됩니다!)` : ''}<br>
-            • <strong>미리 키우기:</strong> 3차 전직 때 쓰기 위해 <strong>[솔라리스, 현묵, ${elemNewHero}]</strong>${guideJob === 'lord' ? ` 및 3차 오버로드 메인딜인 <strong>[${lord3rdDealHero}]</strong>` : ''}를 같이 키워두세요.
-          </div>
-        </div>
-
-        <!-- 3. 2차 전직 (과성장 vs 노과성장 분기) -->
-        <div class="stage-build-card" style="border-left-color:#a855f7;">
-          <div class="stage-build-header">
-            <span class="stage-build-title">🥈 2차 전직 영웅 세팅 (과성장 트리 vs 솔라리스 트리)</span>
-            <span class="grade-badge grade-unique">${hStage1CntText}</span>
-          </div>
-          <div style="font-size:12.5px; font-weight:800; color:#f43f5e; margin-bottom:6px;">🅰️ [과성장 룬 + 엘리시아 트리] (엘리시아가 많이 컸을 때):</div>
-          <div class="build-slot-grid">${hStage2TreeA}</div>
-          <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:10px 0 6px 0;">🅱️ [노과성장 + 솔라리스 트리] (엘리시아 안 키우고 오버드라이브 각성 올릴 때):</div>
-          <div class="build-slot-grid">${hStage2TreeB}</div>
-          <div class="build-tip-box">
-            • 엘리시아가 많이 컸다면 <strong>과성장 룬 + 엘리시아 + ${jobOnlyHero} + 격화 룬 & 루비(또는 ${elemDebuffHero})</strong>를 쓰고, 과성장 트리를 안 탄다면 <strong>솔라리스 채택 + 스킬 오버드라이브 각성</strong>을 올리시면 됩니다.
+          <div class="accordion-content">
+            <div style="font-size:12.5px; font-weight:800; color:#f43f5e; margin-bottom:6px;">🅰️ [과성장 룬 + 엘리시아 트리]:</div>
+            <div class="build-slot-grid">${hStage2TreeA}</div>
+            <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:16px 0 6px 0;">🅱️ [노과성장 + 솔라리스 트리]:</div>
+            <div class="build-slot-grid">${hStage2TreeB}</div>
           </div>
         </div>
 
-        <!-- 4. 3차(35렙) ~ 4차 전직 종결 -->
-        <div class="stage-build-card" style="border-left-color:#f43f5e;">
-          <div class="stage-build-header">
-            <span class="stage-build-title">👑 3차 전직 (Lv.35) ~ 4차 전직 종결 영웅 세팅</span>
-            <span class="grade-badge grade-mythic">${hStage3CntText} (4차 슬롯 변화 없음)</span>
+        <!-- 3. 3차 ~ 4차 전직 -->
+        <div class="accordion-item acc-mythic" id="g_acc_h3">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_h3')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text"><span class="grade-badge grade-mythic">3~4차 전직</span> 3차 전직 (Lv.35) ~ 4차 전직 종결 영웅 세팅</span>
+            </div>
+            <span class="accordion-count-badge">${hStage3CntText}</span>
           </div>
-          <div style="font-size:12.5px; font-weight:800; color:#fda4af; margin-bottom:6px;">📌 3차 ~ 4차 주력 장착 슬롯:</div>
-          <div class="build-slot-grid">${hStage3Slots}</div>
-          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:10px 0 6px 0;">🔄 조건 달성 시 교체 투입할 종결 영웅 & 공통 보유효과 각성:</div>
-          <div class="build-slot-grid">${hStage3SwitchIcons}</div>
-          <div class="build-tip-box">
-            • <strong>🔥 디버프 영웅 교체 기준 (${elemDebuffHero} vs ${elemNewHero}):</strong><br>
-              &nbsp;&nbsp;- 각성 시너지 조건을 먼저 맞춰야 하며, <strong>[${elemDebuffHero} 풀돌(0각) &lt; ${elemNewHero} 1각]</strong> / <strong>[${elemDebuffHero} 1각 &gt; ${elemNewHero} 2각]</strong> 입니다.<br>
-              &nbsp;&nbsp;- 각성 시너지를 맞춘 이후 고각성에서는 최종적으로 <strong>[${elemNewHero}]</strong>로 변경합니다!<br>
-            • <strong>⚡ 과성장 졸업 교체:</strong> 스킬 <strong>[오버드라이브 3각]</strong> 달성 시 <strong>엘리시아 ➔ 솔라리스</strong>로 변경합니다.<br>
-            • <strong>🌟 공통 필수:</strong> <strong>[현묵]</strong>은 슬롯에 끼지 않더라도 <strong>보유효과 각성</strong>을 반드시 챙겨주세요!
+          <div class="accordion-content">
+            <div class="build-slot-grid">${hStage3Slots}</div>
           </div>
         </div>
-      `;
+
+      </div>
+    `;
+    return;
     }
   }
 
