@@ -1623,7 +1623,8 @@
 <div class="container">
   <!-- Header (Winter Snowfall Effect + Shout-out + v.3.0.0) -->
   <!-- Header (Winter Snowfall Effect + Right-side Special Thanks Avatars) -->
-  <header>
+  <!-- Header에 onclick 및 cursor:pointer 추가 -->
+  <header onclick="resetToHome()" style="cursor: pointer;" title="클릭 시 메인 홈으로 이동">
     <div class="snow-container" aria-hidden="true">
       <span class="snowflake" style="left: 5%;  font-size: 14px; opacity: 0.75; animation-duration: 7s;   animation-delay: 0s;">❄</span>
       <span class="snowflake" style="left: 14%; font-size: 9px;  opacity: 0.55; animation-duration: 5.5s; animation-delay: 2s;">•</span>
@@ -6836,7 +6837,28 @@
     switchMainMode(currentMainMode);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+// 배너 클릭 시 첫 메인 홈 화면으로 리셋 복귀
+  function resetToHome() {
+    // 1. 첫 번째 기본 모드('helpers')로 전환
+    switchMainMode('helpers');
+    
+    // 2. 혹시 열려있던 계산기 상세 뷰나 가이드 상세 뷰 닫기
+    document.getElementById("deep_calc_view").style.display = "none";
+    document.getElementById("newbie_calc_view").style.display = "none";
+    document.getElementById("newbie_rune_view").style.display = "none";
+    const earlyView = document.getElementById("newbie_early_build_view");
+    if (earlyView) earlyView.style.display = "none";
+    const guideDetail = document.getElementById("guides_detail_view");
+    if (guideDetail) guideDetail.style.display = "none";
+    
+    // 3. 플로팅 뒤로가기 버튼 숨김
+    const floatBtn = document.getElementById("floating_back_btn");
+    if (floatBtn) floatBtn.style.display = "none";
 
+    // 4. 페이지 최상단으로 스크롤 이동
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
   // 2. 달(Month) 기준 상단 배너(<header>) 전용 계절 이펙트 (전체 배경 GPU 부하 0%!)
   function getAutoSeasonByMonth() {
     const month = new Date().getMonth() + 1;
