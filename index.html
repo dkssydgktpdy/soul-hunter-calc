@@ -1310,6 +1310,283 @@
   .core-color-5 { background: linear-gradient(135deg, #ec4899, #9d174d); } /* 핑크 */
   .core-color-6 { background: linear-gradient(135deg, #a855f7, #581c87); } /* 보라 */
 
+ /* ==================== v.3.0.0 SAVE WIDGET & GUIDE & THANKS STYLES (CLEANED) ==================== */
+  /* 1. 우측 상단 로컬 저장 플로팅 위젯 */
+  .top-right-floating-widget {
+    position: fixed;
+    top: 14px;
+    right: 16px;
+    z-index: 9998;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid #334155;
+    border-radius: 14px;
+    padding: 8px 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 165px;
+    transition: border-color 0.25s;
+  }
+  .top-right-floating-widget.saved-flash {
+    border-color: #10b981;
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.45);
+  }
+  .save-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: #94a3b8;
+  }
+  .save-status-row.active {
+    color: #34d399;
+  }
+  .save-btn-row {
+    display: flex;
+    gap: 5px;
+  }
+  .mini-save-btn {
+    flex: 1;
+    background: #1e293b;
+    border: 1px solid #475569;
+    color: #e2e8f0;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mini-save-btn:hover {
+    background: #6366f1;
+    border-color: #818cf8;
+    color: #ffffff;
+  }
+  @media (max-width: 768px) {
+    .top-right-floating-widget {
+      position: static;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+    .mode-switcher {
+      flex-direction: column;
+      gap: 6px;
+    }
+  }
+
+  /* 2. 메인 배너 직하단 공식 공략 링크 바 */
+  .lounge-link-banner {
+    background: linear-gradient(90deg, rgba(30, 27, 75, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+    border: 1.5px solid #6366f1;
+    border-radius: 12px;
+    padding: 11px 18px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+  }
+  .lounge-link-banner a {
+    color: #38bdf8;
+    font-weight: 800;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(56, 189, 248, 0.12);
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    transition: all 0.2s;
+  }
+  .lounge-link-banner a:hover {
+    background: #38bdf8;
+    color: #0f172a;
+  }
+
+  /* 3. 뉴비 직업별 세팅 가이드 전용 카드 & 슬롯 UI */
+  .stage-build-card {
+    background: #0f172a;
+    border: 1.5px solid #334155;
+    border-left: 4px solid #38bdf8;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+  .stage-build-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1e293b;
+  }
+  .stage-build-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+  }
+  .build-slot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .build-slot-item {
+    background: #1e293b;
+    border: 1.5px solid #475569;
+    border-radius: 10px;
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+  }
+  .build-slot-item.core-fix {
+    border-color: #f43f5e;
+    background: linear-gradient(145deg, rgba(244, 63, 94, 0.16) 0%, #1e293b 100%);
+  }
+  .build-slot-item.flex-pick {
+    border-color: #38bdf8;
+    background: linear-gradient(145deg, rgba(56, 189, 248, 0.14) 0%, #1e293b 100%);
+  }
+  .build-slot-item.future-4th {
+    border-color: #eab308;
+    border-style: dashed;
+    background: linear-gradient(145deg, rgba(234, 179, 8, 0.18) 0%, #1e293b 100%);
+  }
+  .build-slot-thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: #0f172a;
+    border: 1.5px solid #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 6px;
+    font-size: 20px;
+  }
+  .build-slot-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .build-slot-tag {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 1.5px 6px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+  }
+  .build-slot-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.25;
+  }
+  .build-slot-note {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+  .build-tip-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #cbd5e1;
+    line-height: 1.6;
+  }
+  .build-tip-box strong {
+    color: #fde047;
+  }
+
+  /* 4. 배너 우측 Special Thanks 프로필 카드 */
+  .header-inner-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .header-main-left {
+    flex: 1;
+    min-width: 280px;
+    text-align: center;
+  }
+  .header-thanks-box {
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(125, 211, 252, 0.35);
+    border-radius: 14px;
+    padding: 10px 14px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .thanks-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: #fde047;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .thanks-avatars-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .thanks-person {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .thanks-person img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid #38bdf8;
+    object-fit: cover;
+    background: #1e293b;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.45);
+    transition: transform 0.2s;
+  }
+  .thanks-person:hover img {
+    transform: scale(1.1);
+    border-color: #fde047;
+  }
+  .thanks-person span {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #e2e8f0;
+  }
+  @media (max-width: 768px) {
+    .header-inner-layout {
+      flex-direction: column;
+      justify-content: center;
+    }
+    .header-thanks-box {
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+
   footer {
     text-align: center;
     margin-top: 40px;
@@ -1322,11 +1599,22 @@
 </head>
 <body>
 
+<!-- 우측 상단 스크롤 추적: 자동/수동 로컬 저장 플로팅 위젯 -->
+<div class="top-right-floating-widget" id="floating_save_widget">
+  <div class="save-status-row" id="save_status_indicator">
+    <span>💾 자동 저장 대기</span>
+    <span id="save_time_label" style="font-size:10px; font-weight:normal;">로컬</span>
+  </div>
+  <div class="save-btn-row">
+    <button class="mini-save-btn" onclick="saveUserSettings(true)">💾 수동저장</button>
+    <button class="mini-save-btn" onclick="resetAllSavedSettings()" style="color:#fca5a5;">🔄 초기화</button>
+  </div>
+</div>
+
 <div class="container">
-  <!-- Header -->
-  <!-- Header (Winter Snowfall Effect) -->
+  <!-- Header (Winter Snowfall Effect + Shout-out + v.3.0.0) -->
+  <!-- Header (Winter Snowfall Effect + Right-side Special Thanks Avatars) -->
   <header>
-    <!-- 배경 눈 내리는 이펙트 레이어 -->
     <div class="snow-container" aria-hidden="true">
       <span class="snowflake" style="left: 5%;  font-size: 14px; opacity: 0.75; animation-duration: 7s;   animation-delay: 0s;">❄</span>
       <span class="snowflake" style="left: 14%; font-size: 9px;  opacity: 0.55; animation-duration: 5.5s; animation-delay: 2s;">•</span>
@@ -1341,28 +1629,64 @@
       <span class="snowflake" style="left: 96%; font-size: 14px; opacity: 0.5;  animation-duration: 6.9s; animation-delay: 1.2s;">❄</span>
     </div>
 
-    <!-- 배너 전면 콘텐츠 -->
-    <div class="header-content">
-      <div class="header-badge">소울 헌터 키우기 네이버 라운지 전용 툴</div>
-      <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:10px; flex-wrap:wrap;">
-        <div style="position:relative; width:82px; height:82px; flex-shrink:0;">
-          <img id="main-avatar" src="avatar.PNG" alt="겨울눈사람 아바타" 
-            onerror="handleAvatarError(this)"
-            style="width:82px; height:82px; border-radius:50%; border:3px solid #7dd3fc; object-fit:cover; background:#1e293b; box-shadow:0 0 24px rgba(56, 189, 248, 0.75), inset 0 0 10px rgba(255,255,255,0.4); display:block;">
+    <div class="header-content header-inner-layout">
+      <!-- 중앙(좌측) 메인 타이틀 & 겨울눈사람 아바타 -->
+      <div class="header-main-left">
+        <div class="header-badge">소울 헌터 키우기 네이버 라운지 전용 툴</div>
+        <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:10px; flex-wrap:wrap;">
+          <div style="position:relative; width:82px; height:82px; flex-shrink:0;">
+            <img id="main-avatar" src="avatar.PNG" alt="겨울눈사람 아바타" 
+              onerror="handleAvatarError(this)"
+              style="width:82px; height:82px; border-radius:50%; border:3px solid #7dd3fc; object-fit:cover; background:#1e293b; box-shadow:0 0 24px rgba(56, 189, 248, 0.75), inset 0 0 10px rgba(255,255,255,0.4); display:block;">
+          </div>
+          <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
         </div>
-        <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
+        <div class="author-tag">
+          기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.3.0.0</strong>
+        </div>
       </div>
-      <div class="author-tag">기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 v.2.3.0</div>
+
+      <!-- 우측 Special Thanks 크레딧 박스 (북선생, 붉양, 쿠모링) -->
+      <div class="header-thanks-box">
+        <div class="thanks-title">✨ Special Thanks (공략 데이터 제공)</div>
+        <div class="thanks-avatars-row">
+          <div class="thanks-person">
+            <img src="images/book.png" alt="북선생" onerror="this.onerror=null; this.style.display='none';">
+            <span>북선생</span>
+          </div>
+          <div class="thanks-person">
+            <img src="images/yang.png" alt="붉양" onerror="this.onerror=null; this.style.display='none';">
+            <span>붉양</span>
+          </div>
+          <div class="thanks-person">
+            <img src="images/cumo.png" alt="쿠모링" onerror="this.onerror=null; this.style.display='none';">
+            <span>쿠모링</span>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- Top Mode Switcher (심화 공략 vs 뉴비 공략) -->
+  <!-- 메인 배너 직하단: 붉양님 종합공략 모음집 하이퍼링크 바 -->
+  <div class="lounge-link-banner">
+    <div style="font-size:13.5px; color:#e2e8f0;">
+      📌 <strong>인게임 전 분야 상세 공략 데이터가 궁금하시다면?</strong> (특성/장비/룬/직업별 원문 공략)
+    </div>
+    <a href="https://naver.me/xZKXssRU" target="_blank" rel="noopener noreferrer">
+      📚 붉양님의 종합공략 모음집 바로가기 ➔
+    </a>
+  </div>
+
+  <!-- Top Mode Switcher (v.3.0.0 3대 메인 탭) -->
   <div class="mode-switcher">
-    <button class="mode-btn active" id="btn_mode_deep" onclick="switchMainMode('deep')">
-      <span>💎 심화 공략 (스펙업 계산기)</span>
+    <button class="mode-btn active" id="btn_mode_helpers" onclick="switchMainMode('helpers')">
+      <span>🛠️ 세팅 도우미 모음</span>
     </button>
-    <button class="mode-btn newbie" id="btn_mode_newbie" onclick="switchMainMode('newbie')">
-      <span>🐣 뉴비 공략 (가이드 & 소환)</span>
+    <button class="mode-btn newbie" id="btn_mode_guides" onclick="switchMainMode('guides')">
+      <span>🐣 뉴비 직업별 세팅 가이드</span>
+    </button>
+    <button class="mode-btn" id="btn_mode_calcs" onclick="switchMainMode('calcs')">
+      <span>🎲 확률 기댓값 & 재화 계산기</span>
     </button>
   </div>
 
@@ -1388,6 +1712,125 @@
       <div class="help-modal-body" id="help_modal_body"></div>
     </div>
   </div>
+
+  <!-- ==================== [NEW MODE] 🐣 뉴비 직업별 세팅 가이드 영역 ==================== -->
+  <div id="mode_guides_container" style="display:none;">
+    
+    <!-- 뉴비 가이드 메인 허브 -->
+    <div id="guides_hub_view">
+      <!-- 고대 패시브 선행 투자 강력 권장 안내 & 하이퍼링크 배너 -->
+      <div class="card" style="border-left: 4px solid #a855f7; background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); padding: 20px 22px; margin-bottom: 22px;">
+        <div style="font-size:16.5px; font-weight:800; color:#f8fafc; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+          <span>🔮</span>
+          <span>잠깐! 스킬·영웅을 각성하기 전에 [고대 패시브]를 먼저 맞추셨나요?</span>
+        </div>
+        <p style="font-size:13.5px; color:#cbd5e1; margin-bottom:12px; line-height:1.65;">
+          스킬과 영웅 각성에 각성석을 먼저 쓰기보다, <strong>고대 패시브(1~3순위)</strong>를 최우선으로 제작하는 것이 <strong>각성석 재화를 가장 많이 아끼면서 압도적으로 빠르게 강해질 수 있는 핵심 루트</strong>입니다! 아직 고대 패시브 순서를 모르신다면 아래 공략글을 꼭 먼저 확인해 보세요.
+        </p>
+        <a href="https://naver.me/FNtUSE2n" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; background:#6366f1; color:#ffffff; font-weight:800; font-size:13.5px; padding:8px 16px; border-radius:8px; text-decoration:none; box-shadow:0 4px 12px rgba(99,102,241,0.4);">
+          📖 겨울눈사람의 효율적인 고대 패시브 & 각성 가이드 보러가기 ➔
+        </a>
+      </div>
+
+      <div class="hub-section">
+        <div class="hub-section-title" style="border-left-color:#f59e0b;">
+          <span>🐣 직업별 · 전직 차수별 (초기 ~ 4차) 세팅 가이드</span>
+        </div>
+        <div class="hub-grid">
+          <div class="hub-card" onclick="openBuildGuideDetail('skill')" style="border-color:rgba(251,191,36,0.45);">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#fbbf24; background:rgba(251,191,36,0.12);">
+                <img src="images/main_skill.png" alt="스킬" onerror="this.onerror=null; this.src='images/thunder_orb.png'; this.onerror=function(){this.parentElement.innerHTML='⚡';};">
+              </div>
+              <div>
+                <span class="hub-card-title">⚡ 직업별 스킬 세팅 가이드</span>
+                <span class="hub-card-desc">사신/앜메/닼로 & 불/번개/어둠 초기~4차 슬롯별 정석 스킬 트리</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+
+          <div class="hub-card" onclick="openBuildGuideDetail('hero')" style="border-color:rgba(244,63,94,0.45);">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#f43f5e; background:rgba(244,63,94,0.12);">
+                <img src="images/main_hero.png" alt="영웅" onerror="this.onerror=null; this.src='images/elisia.png'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
+              </div>
+              <div>
+                <span class="hub-card-title">🦸 직업별 영웅 세팅 가이드</span>
+                <span class="hub-card-desc">과성장(엘리시아) vs 솔라리스 분기 & 플레어류↔이그니스류 교체 기준</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+
+          <div class="hub-card" onclick="openBuildGuideDetail('transition')" style="border-color:rgba(56,189,248,0.45);">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#38bdf8; background:rgba(56,189,248,0.12);">
+                <span style="font-size:24px;">🔄</span>
+              </div>
+              <div>
+                <span class="hub-card-title">🔄 사신 ➔ 아크메이지 전환 가이드</span>
+                <span class="hub-card-desc">언제 사신에서 미스틱(앜메)으로 넘어가야 할까? 핵심 전환 타이밍 & 준비물</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+
+          <div class="hub-card" style="opacity:0.6; cursor:not-allowed;">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#64748b; background:#1e293b;">
+                <img src="images/main_passive.png" alt="패시브" onerror="this.onerror=null; this.parentElement.innerHTML='📜';">
+              </div>
+              <div>
+                <span class="hub-card-title">📜 패시브 & 정령 세팅 가이드 🔒</span>
+                <span class="hub-card-desc">현재 개발 중입니다 (추후 업데이트 예정)</span>
+              </div>
+            </div>
+            <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">개발 중</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 뉴비 가이드 상세 화면 (스킬 / 영웅 / 전환 가이드) -->
+    <div id="guides_detail_view" style="display:none;">
+      <div class="card" style="border-left: 4px solid #f59e0b;">
+        <div class="card-title">
+          <span id="guide_view_title">⚡ 직업별 스킬 세팅 가이드</span>
+          <span class="grade-badge" style="background:#b45309; color:#fde68a; border:1px solid #f59e0b;" id="guide_view_badge">초기 ~ 4차 전직</span>
+        </div>
+        <p class="card-subtitle" id="guide_view_subtitle">
+          내 직업과 주속성을 선택하면 전직 차수별 슬롯 수에 맞춘 최적의 편성과 육성 우선순위를 확인할 수 있습니다.
+        </p>
+
+        <!-- 직업 & 속성 라디오 선택 바 (스킬/영웅 가이드 시 노출) -->
+        <div class="grid-2" id="guide_job_elem_selector" style="margin-bottom:18px;">
+          <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
+            <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 직업 계열 선택 (택 1)</label>
+            <div class="radio-pill-group">
+              <div class="radio-pill selected" id="g_job_reaper" onclick="selectGuideJob('reaper')">🗡️ 사신 (소울/그림리퍼)</div>
+              <div class="radio-pill" id="g_job_mage" onclick="selectGuideJob('mage')">🧙‍♂️ 아크메이지 (미스틱/슈프림)</div>
+              <div class="radio-pill" id="g_job_lord" onclick="selectGuideJob('lord')">👑 다크로드 (오버로드/소울이터)</div>
+            </div>
+          </div>
+
+          <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
+            <label style="color:#fbbf24; margin-bottom:8px;">🔥 주속성 선택 (택 1)</label>
+            <div class="radio-pill-group">
+              <div class="radio-pill selected" id="g_elem_fire" onclick="selectGuideElem('fire')">🔥 불 속성</div>
+              <div class="radio-pill" id="g_elem_light" onclick="selectGuideElem('light')">⚡ 번개 속성</div>
+              <div class="radio-pill" id="g_elem_dark" onclick="selectGuideElem('dark')">🌑 어둠 속성</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 가이드 본문 동적 렌더링 영역 -->
+        <div id="guide_dynamic_body"></div>
+      </div>
+    </div>
+
+  </div>
+
 
   <!-- ==================== [MODE 1] 심화 공략 영역 ==================== -->
   <div id="mode_deep_container">
@@ -2644,7 +3087,7 @@
 
   <!-- Footer -->
   <footer>
-    소울헌터키우기 네이버 라운지 전용 계산기 v.2.3.0 | 제작: 29서버 겨울눈사람
+    소울헌터키우기 네이버 라운지 전용 계산기 v.3.0.0 | 제작: 29서버 겨울눈사람
   </footer>
 </div>
 
@@ -3876,37 +4319,37 @@
     },
     skill: {
       mythic: [
-        { name: "원소돌파", attr: "⚪", star: true },
+        { name: "원소돌파", attr: "⚪", star: true, img: "images/elem_break.png" },
         { name: "화염 토네이도", attr: "🔥" },
         { name: "썬더 슬래시", attr: "⚡", prob_proc: true, star: true },
         { name: "메테오", attr: "🔥" },
         { name: "사신의 낫", attr: "🌑" },
         { name: "썬더 스톰", attr: "⚡" },
         { name: "연쇄 낙뢰", attr: "⚡" },
-        { name: "그림자 포효", attr: "🌑", star: true },
+        { name: "그림자 포효", attr: "🌑", star: true, img: "images/shadow_roar.png" },
         { name: "어둠폭발", attr: "🌑", prob_proc: true, star: true },
-        { name: "불벼락", attr: "🔥", star: true },
-        { name: "어둠 방출", attr: "🌑" },
-        { name: "뇌전검무", attr: "⚡", star: true },
-        { name: "심판의 인장", attr: "⚪", star: true },
-        { name: "암흑붕괴", attr: "🌑", star: true },
-        { name: "환영나비", attr: "⚪", star: true },
-        { name: "지옥불베기(불베기)", attr: "🔥", prob_proc: true, star: true },
-        { name: "썬더 익스큐션", attr: "⚡", prob_proc: true },
+        { name: "불벼락", attr: "🔥", star: true, img: "images/fire_light.png" },
+        { name: "어둠 방출", attr: "🌑", img: "images/dark_en.png" },
+        { name: "뇌전검무", attr: "⚡", star: true, img: "images/light_sword.png" },
+        { name: "심판의 인장", attr: "⚪", star: true, img: "images/judge.png" },
+        { name: "암흑붕괴", attr: "🌑", star: true, img: "images/dark_des.png" },
+        { name: "환영나비", attr: "⚪", star: true, img: "images/butter.png" },
+        { name: "지옥불베기(불베기)", attr: "🔥", prob_proc: true, star: true, img: "images/hell.png" },
+        { name: "썬더 익스큐션", attr: "⚡", prob_proc: true, img: "images/thunder_ex.png" },
         { name: "암영참", attr: "🌑", prob_proc: true },
         { name: "인페르노 크라운", attr: "🔥", prob_proc: true },
         { name: "레디언스", attr: "⚪", star: true },
-        { name: "보이드 펄스", attr: "🌑", star: true },
-        { name: "썬더 오빗", attr: "⚡", star: true },
-        { name: "엘리멘탈 차지", attr: "⚪", star: true },
-        { name: "플레어 필라", attr: "🔥", prob_proc: true, star: true },
-        { name: "볼트 스파이럴", attr: "⚡", prob_proc: true, star: true },
-        { name: "블랙 베일", attr: "🌑", star: true },
-        { name: "오버드라이브", attr: "⚪" },
-        { name: "크림슨 웨이브", attr: "⚪" },
-        { name: "플레임 펄스", attr: "🔥", prob_proc: true, star: true, isNew: true },
-        { name: "썬더 펄스", attr: "⚡", prob_proc: true, star: true, isNew: true },
-        { name: "다크 펄스", attr: "🌑", prob_proc: true, star: true, isNew: true }
+        { name: "보이드 펄스", attr: "🌑", star: true, img: "images/void.png" },
+        { name: "썬더 오빗", attr: "⚡", star: true, img: "images/thunder_orb.png" },
+        { name: "엘리멘탈 차지", attr: "⚪", star: true, img: "images/elem_ch.png" },
+        { name: "플레어 필라", attr: "🔥", prob_proc: true, star: true, img: "images/flare_p.png" },
+        { name: "볼트 스파이럴", attr: "⚡", prob_proc: true, star: true, img: "images/volt_sp.png" },
+        { name: "블랙 베일", attr: "🌑", star: true, img: "images/black_v.png" },
+        { name: "오버드라이브", attr: "⚪", star: true, img: "images/overdrive.png" },
+        { name: "크림슨 웨이브", attr: "⚪", star: true, img: "images/wave.png" },
+        { name: "플레임 펄스", attr: "🔥", prob_proc: true, star: true, isNew: true, img: "images/flame_p.png" },
+        { name: "썬더 펄스", attr: "⚡", prob_proc: true, star: true, isNew: true, img: "images/thunder_p.png" },
+        { name: "다크 펄스", attr: "🌑", prob_proc: true, star: true, isNew: true, img: "images/dark_pu.png" }
       ],
       legend: [
         { name: "집중모드", attr: "⚪" },
@@ -3939,33 +4382,33 @@
       mythic: [
         { name: "시라누이", attr: "⚡" },
         { name: "아스타로테", attr: "🌑" },
-        { name: "나리타", attr: "🌑", star: true },
-        { name: "프레이야", attr: "⚡", star: true },
-        { name: "리리스", attr: "🌑", star: true },
+        { name: "나리타", attr: "🌑", star: true, img: "images/narita.png" },
+        { name: "프레이야", attr: "⚡", star: true, img: "images/preiya.png" },
+        { name: "리리스", attr: "🌑", star: true, img: "images/riris.png" },
         { name: "케인", attr: "🔥" },
-        { name: "백운귀", attr: "⚡", star: true },
+        { name: "백운귀", attr: "⚡", star: true, img: "images/backgui.png" },
         { name: "백운요", attr: "🔥" },
-        { name: "이블린", attr: "🔥" },
-        { name: "엘리제", attr: "🌑", star: true },
-        { name: "라이카", attr: "⚡" },
-        { name: "플레어", attr: "🔥", star: true },
-        { name: "카엘", attr: "🌑", star: true },
-        { name: "셀렌", attr: "⚡", star: true },
-        { name: "루비", attr: "🔥", star: true },
+        { name: "이블린", attr: "🔥", img: "images/evelyn.png" },
+        { name: "엘리제", attr: "🌑", star: true, img: "images/elize.png" },
+        { name: "라이카", attr: "⚡", img: "images/ryca.png" },
+        { name: "플레어", attr: "🔥", star: true, img: "images/plare.png" },
+        { name: "카엘", attr: "🌑", star: true, img: "images/kael.png" },
+        { name: "셀렌", attr: "⚡", star: true, img: "images/selen.png" },
+        { name: "루비", attr: "🔥", star: true, img: "images/ruby.png" },
         { name: "묵영", attr: "🌑" },
         { name: "레이나", attr: "🔥" },
         { name: "일레나", attr: "⚡" },
-        { name: "세리아", attr: "🌑", star: true },
-        { name: "카엔", attr: "🔥", star: true },
-        { name: "엘리시아", attr: "⚡", star: true },
-        { name: "칼리아", attr: "🔥" },
-        { name: "카이렌", attr: "⚡" },
-        { name: "모르반", attr: "🌑" },
-        { name: "솔라리스", attr: "🔥" },
-        { name: "현묵", attr: "⚡", star: true },
-        { name: "이그니스", attr: "🔥", star: true, isNew: true },
-        { name: "제논", attr: "⚡", star: true, isNew: true },
-        { name: "다미안", attr: "🌑", star: true, isNew: true }
+        { name: "세리아", attr: "🌑", star: true, img: "images/serya.png" },
+        { name: "카엔", attr: "🔥", star: true, img: "images/kaen.png" },
+        { name: "엘리시아", attr: "⚡", star: true, img: "images/elisia.png" },
+        { name: "칼리아", attr: "🔥", star: true, img: "images/kalia.png" },
+        { name: "카이렌", attr: "⚡", star: true, img: "images/kairen.png" },
+        { name: "모르반", attr: "🌑", star: true, img: "images/morban.png" },
+        { name: "솔라리스", attr: "🔥", star: true, img: "images/solaris.png" },
+        { name: "현묵", attr: "⚡", star: true, img: "images/hyunmuk.png" },
+        { name: "이그니스", attr: "🔥", star: true, isNew: true, img: "images/ignis.png" },
+        { name: "제논", attr: "⚡", star: true, isNew: true, img: "images/xenon.png" },
+        { name: "다미안", attr: "🌑", star: true, isNew: true, img: "images/damian.png" }
       ],
       legend: [
         { name: "아카네", attr: "⚡" },
@@ -3977,8 +4420,8 @@
       ],
       unique: [
         { name: "페이", attr: "🔥" },
-        { name: "나찰", attr: "🌑", star: true },
-        { name: "바토리", attr: "⚡", star: true },
+        { name: "나찰", attr: "🌑", star: true, img: "images/nachal.png" },
+        { name: "바토리", attr: "⚡", star: true, img: "images/batory.png" },
         { name: "키르케", attr: "🔥" }
       ],
       advanced: [
@@ -4335,7 +4778,7 @@
 
         let thumbHtml = "";
         if (it.img) {
-          thumbHtml = `<img src="${it.img}" alt="${it.name}" style="width:32px; height:32px; border-radius:6px; object-fit:cover; margin-bottom:3px;" onerror="this.style.display='none';">`;
+        thumbHtml = `<img src="${it.img}" alt="${it.name}" style="width:32px; height:32px; border-radius:6px; object-fit:cover; margin-bottom:3px;" onerror="this.onerror=null; this.src=this.src.replace('.png','.jpg'); this.onerror=function(){this.style.display='none';};">`;
         }
 
         cardsHtml += `
@@ -6203,19 +6646,778 @@
     reportEl.innerHTML = rHtml;
   }
 
-  // ==================== INITIALIZATION ====================
-  window.onload = function() {
+  // ==================== v.3.0.0 MASTER ENGINE (ZERO-GPU BANNER WEATHER & INSTANT 3-TAB INIT) ====================
+
+  // 1. 상단 3대 메인 탭 스위처 (고유 클래스/인덱스 즉시 제어)
+  function switchMainMode(mode) {
+    currentMainMode = mode;
+    const deepContainer = document.getElementById("mode_deep_container");
+    const newbieContainer = document.getElementById("mode_newbie_container");
+    const guidesContainer = document.getElementById("mode_guides_container");
+
+    document.getElementById("btn_mode_helpers")?.classList.toggle("active", mode === 'helpers');
+    document.getElementById("btn_mode_guides")?.classList.toggle("active", mode === 'guides');
+    document.getElementById("btn_mode_calcs")?.classList.toggle("active", mode === 'calcs');
+
+    const deepHub = document.getElementById("deep_hub_view");
+    const deepSections = deepHub ? Array.from(deepHub.children).filter(el => el.classList.contains("hub-section")) : [];
+    const newbieHub = document.getElementById("newbie_hub_view");
+    const newbieSections = newbieHub ? Array.from(newbieHub.children).filter(el => el.classList.contains("hub-section")) : [];
+
+    const floatBtn = document.getElementById("floating_back_btn");
+    if (floatBtn) floatBtn.style.display = "none";
+
+    if (mode === 'helpers') {
+      // [탭 1: 세팅 도우미 모음] -> 소울커넥트 도우미 + 룬 착용 도우미만 즉시 노출!
+      if (guidesContainer) guidesContainer.style.display = "none";
+      if (deepContainer) deepContainer.style.display = "block";
+      if (newbieContainer) newbieContainer.style.display = "block";
+
+      if (deepHub) deepHub.style.display = "block";
+      document.getElementById("deep_calc_view").style.display = "none";
+      if (newbieHub) newbieHub.style.display = "block";
+      document.getElementById("newbie_calc_view").style.display = "none";
+      document.getElementById("newbie_rune_view").style.display = "none";
+
+      // 심화 허브에서는 마지막 섹션(소울커넥트)만 켜고 나머지 계산기 섹션은 전부 숨김
+      deepSections.forEach((sec, idx) => {
+        const isConnectSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')");
+        sec.style.display = isConnectSec ? "block" : "none";
+      });
+      // 뉴비 허브에서는 룬 도우미 섹션만 켜고 소환 계산기 섹션은 숨김
+      newbieSections.forEach((sec) => {
+        const isRuneSec = sec.innerHTML.includes("openRuneHelperView()");
+        sec.style.display = isRuneSec ? "block" : "none";
+      });
+    } else if (mode === 'guides') {
+      // [탭 2: 뉴비 직업별 세팅 가이드]
+      if (deepContainer) deepContainer.style.display = "none";
+      if (newbieContainer) newbieContainer.style.display = "none";
+      if (guidesContainer) guidesContainer.style.display = "block";
+      document.getElementById("guides_hub_view").style.display = "block";
+      document.getElementById("guides_detail_view").style.display = "none";
+    } else if (mode === 'calcs') {
+      // [탭 3: 확률 기댓값 & 재화 계산기] -> 심화 계산기 3섹션 + 소환 계산기 1섹션 노출
+      if (guidesContainer) guidesContainer.style.display = "none";
+      if (deepContainer) deepContainer.style.display = "block";
+      if (newbieContainer) newbieContainer.style.display = "block";
+
+      if (deepHub) deepHub.style.display = "block";
+      document.getElementById("deep_calc_view").style.display = "none";
+      if (newbieHub) newbieHub.style.display = "block";
+      document.getElementById("newbie_calc_view").style.display = "none";
+      document.getElementById("newbie_rune_view").style.display = "none";
+
+      deepSections.forEach((sec) => {
+        const isConnectSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')");
+        sec.style.display = !isConnectSec ? "block" : "none";
+      });
+      newbieSections.forEach((sec) => {
+        const isRuneSec = sec.innerHTML.includes("openRuneHelperView()");
+        sec.style.display = !isRuneSec ? "block" : "none";
+      });
+    }
+  }
+
+  // 상세 뷰 진입 시 반대편 허브 숨김 보정
+  const _origOpenDeepCalc = openDeepCalculator;
+  openDeepCalculator = function(calcTabId) {
+    document.getElementById("mode_newbie_container").style.display = "none";
+    document.getElementById("mode_guides_container").style.display = "none";
+    _origOpenDeepCalc(calcTabId);
+    document.getElementById("floating_back_text").innerText = "이전 메뉴로 돌아가기";
+  };
+
+  const _origOpenNewbieCalc = openNewbieCalculator;
+  openNewbieCalculator = function(cat) {
+    document.getElementById("mode_deep_container").style.display = "none";
+    document.getElementById("mode_guides_container").style.display = "none";
+    _origOpenNewbieCalc(cat);
+    document.getElementById("floating_back_text").innerText = "이전 메뉴로 돌아가기";
+  };
+
+  const _origOpenRuneHelper = openRuneHelperView;
+  openRuneHelperView = function() {
+    document.getElementById("mode_deep_container").style.display = "none";
+    document.getElementById("mode_guides_container").style.display = "none";
+    _origOpenRuneHelper();
+    document.getElementById("floating_back_text").innerText = "도우미 메뉴로 돌아가기";
+  };
+
+  handleFloatingBack = function() {
+    switchMainMode(currentMainMode);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // 2. 달(Month) 기준 상단 배너(<header>) 전용 계절 이펙트 (전체 배경 GPU 부하 0%!)
+  function getAutoSeasonByMonth() {
+    const month = new Date().getMonth() + 1;
+    if (month >= 3 && month <= 5) return 'spring';
+    if (month >= 6 && month <= 8) return 'summer';
+    if (month >= 9 && month <= 10) return 'autumn';
+    return 'winter';
+  }
+
+  let currentSeason = getAutoSeasonByMonth();
+
+  function setSeasonTheme(season) {
+    currentSeason = season || getAutoSeasonByMonth();
+
+    // 전체 화면 배경 레이어는 GPU 절약을 위해 완전히 끔!
+    const globalBg = document.getElementById('global_season_bg');
+    if (globalBg) {
+      globalBg.innerHTML = '';
+      globalBg.style.display = 'none';
+    }
+
+    // 오직 상단 <header> 배너 안의 .snow-container 에만 가볍게 계절 이펙트 적용!
+    const headerSnowBox = document.querySelector('header .snow-container');
+    const headerEl = document.querySelector('header');
+    if (!headerSnowBox || !headerEl) return;
+
+    const leftPositions = [6, 15, 25, 36, 47, 58, 69, 80, 90];
+    let html = '';
+
+    if (currentSeason === 'winter') {
+      headerEl.style.borderColor = 'rgba(125, 211, 252, 0.45)';
+      const syms = ['❄', '•', '❅', '•', '❄', '•', '❆', '•', '❅'];
+      leftPositions.forEach((left, i) => {
+        const size = (i % 2 === 0) ? 15 : 10;
+        const dur = (5.5 + (i % 4) * 0.8).toFixed(1);
+        const delay = (i * 0.5).toFixed(1);
+        html += `<span class="snowflake" style="left:${left}%; font-size:${size}px; opacity:0.7; animation-duration:${dur}s; animation-delay:${delay}s;">${syms[i]}</span>`;
+      });
+    } else if (currentSeason === 'spring') {
+      headerEl.style.borderColor = 'rgba(244, 114, 182, 0.45)';
+      const syms = ['🌸', '💮', '🌸', '•', '🌸', '💮', '🌸', '•', '🌸'];
+      leftPositions.forEach((left, i) => {
+        const size = (i % 2 === 0) ? 14 : 11;
+        const dur = (6 + (i % 3) * 0.9).toFixed(1);
+        const delay = (i * 0.5).toFixed(1);
+        html += `<span class="snowflake" style="left:${left}%; font-size:${size}px; opacity:0.75; animation-duration:${dur}s; animation-delay:${delay}s;">${syms[i]}</span>`;
+      });
+    } else if (currentSeason === 'autumn') {
+      headerEl.style.borderColor = 'rgba(251, 146, 60, 0.45)';
+      const syms = ['🍂', '🍁', '🍂', '🍃', '🍁', '🍂', '🍁', '🍃', '🍂'];
+      leftPositions.forEach((left, i) => {
+        const size = (i % 2 === 0) ? 15 : 12;
+        const dur = (6.2 + (i % 3) * 0.8).toFixed(1);
+        const delay = (i * 0.5).toFixed(1);
+        html += `<span class="snowflake" style="left:${left}%; font-size:${size}px; opacity:0.75; animation-duration:${dur}s; animation-delay:${delay}s;">${syms[i]}</span>`;
+      });
+    } else if (currentSeason === 'summer') {
+      headerEl.style.borderColor = 'rgba(56, 189, 248, 0.55)';
+      const syms = ['✨', '•', '☀️', '•', '✨', '•', '🫧', '•', '✨'];
+      leftPositions.forEach((left, i) => {
+        const size = (i % 2 === 0) ? 14 : 10;
+        const dur = (5.5 + (i % 3) * 0.8).toFixed(1);
+        const delay = (i * 0.5).toFixed(1);
+        html += `<span class="snowflake" style="left:${left}%; font-size:${size}px; opacity:0.65; animation-duration:${dur}s; animation-delay:${delay}s;">${syms[i]}</span>`;
+      });
+    }
+
+    headerSnowBox.innerHTML = html;
+  }
+
+  // 3. 브라우저 로컬 스토리지 자동/수동 저장 엔진
+  const STORAGE_KEY = 'shk_calc_v300_state';
+  let isRestoringState = false;
+  let saveDebounceTimer = null;
+
+  function triggerAutoSave() {
+    if (isRestoringState) return;
+    if (saveDebounceTimer) clearTimeout(saveDebounceTimer);
+    saveDebounceTimer = setTimeout(() => saveUserSettings(false), 250);
+  }
+
+  function saveUserSettings(isManual) {
+    if (isRestoringState) return;
+    try {
+      const inputsData = {};
+      document.querySelectorAll('input[id], select[id]').forEach(el => {
+        if (el.id === 'newbie_search_input' || el.id === 'rune_search_input') return;
+        if (el.type === 'checkbox') inputsData[el.id] = el.checked;
+        else inputsData[el.id] = el.value;
+      });
+
+      const state = {
+        selectedAncients: Array.from(selectedAncients),
+        excludedMaterials: Array.from(excludedMaterials),
+        ownedRunes: Array.from(ownedRunes),
+        currentRuneJob,
+        currentRuneElem,
+        ownedCoresEntries: typeof ownedCoresMap !== 'undefined' ? Array.from(ownedCoresMap.entries()) : [],
+        currentConnectStageSlots: typeof currentConnectStageSlots !== 'undefined' ? currentConnectStageSlots : 6,
+        currentConnectJob: typeof currentConnectJob !== 'undefined' ? currentConnectJob : 'reaper',
+        currentConnectElem: typeof currentConnectElem !== 'undefined' ? currentConnectElem : 'fire',
+        inputs: inputsData
+      };
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+      const widget = document.getElementById('floating_save_widget');
+      const statusRow = document.getElementById('save_status_indicator');
+      const timeLabel = document.getElementById('save_time_label');
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+
+      if (statusRow) {
+        statusRow.classList.add('active');
+        statusRow.firstElementChild.innerText = isManual ? '✅ 수동 저장 완료!' : '✅ 자동 저장됨';
+      }
+      if (timeLabel) timeLabel.innerText = timeStr;
+      if (widget && isManual) {
+        widget.classList.add('saved-flash');
+        setTimeout(() => widget.classList.remove('saved-flash'), 700);
+      }
+    } catch (e) {}
+  }
+
+  function loadUserSettings() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      isRestoringState = true;
+      const state = JSON.parse(raw);
+
+      if (state.selectedAncients) selectedAncients = new Set(state.selectedAncients);
+      if (state.excludedMaterials) excludedMaterials = new Set(state.excludedMaterials);
+      if (state.ownedRunes) ownedRunes = new Set(state.ownedRunes);
+
+      if (state.currentRuneJob) {
+        currentRuneJob = state.currentRuneJob;
+        ['reaper', 'mage', 'lord'].forEach(j => document.getElementById('rune_job_' + j)?.classList.toggle('selected', j === currentRuneJob));
+      }
+      if (state.currentRuneElem) {
+        currentRuneElem = state.currentRuneElem;
+        ['fire', 'light', 'dark'].forEach(e => document.getElementById('rune_elem_' + e)?.classList.toggle('selected', e === currentRuneElem));
+      }
+
+      if (typeof ownedCoresMap !== 'undefined' && state.ownedCoresEntries) {
+        ownedCoresMap = new Map(state.ownedCoresEntries);
+      }
+      if (state.currentConnectStageSlots) {
+        currentConnectStageSlots = state.currentConnectStageSlots;
+        [3, 4, 5, 6].forEach(s => document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === currentConnectStageSlots));
+      }
+      if (state.currentConnectJob) {
+        currentConnectJob = state.currentConnectJob;
+        ['reaper', 'mage', 'lord'].forEach(j => document.getElementById('sc_job_' + j)?.classList.toggle('selected', j === currentConnectJob));
+      }
+      if (state.currentConnectElem) {
+        currentConnectElem = state.currentConnectElem;
+        ['fire', 'light', 'dark'].forEach(e => document.getElementById('sc_elem_' + e)?.classList.toggle('selected', e === currentConnectElem));
+      }
+
+      if (state.inputs) {
+        Object.keys(state.inputs).forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            if (el.type === 'checkbox') el.checked = Boolean(state.inputs[id]);
+            else el.value = state.inputs[id];
+          }
+        });
+      }
+      isRestoringState = false;
+    } catch (e) {
+      isRestoringState = false;
+    }
+  }
+
+  function resetAllSavedSettings() {
+    if (!confirm('저장된 모든 세팅(룬, 코어, 인벤토리 등)을 초기화하시겠습니까?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+
+  // 4. 뉴비 직업별 세팅 가이드 (스킬 / 영웅 / 사신➔앜메 전환 가이드)
+  let currentGuideType = 'skill';
+  let guideJob = 'reaper';
+  let guideElem = 'fire';
+
+  const SKILL_ICON_MAP = {
+    "원소돌파": "elem_break",
+    "그림자 포효": "shadow_roar",
+    "불벼락": "fire_light",
+    "어둠 방출": "dark_en",
+    "뇌전검무": "light_sword",
+    "심판의 인장": "judge",
+    "암흑붕괴": "dark_des",
+    "환영나비": "butter",
+    "지옥불베기": "hell",
+    "보이드 펄스": "void",
+    "썬더 오빗": "thunder_orb",
+    "엘리멘탈 차지": "elem_ch",
+    "플레어 필라": "flare_p",
+    "볼트 스파이럴": "volt_sp",
+    "블랙 베일": "black_v",
+    "오버드라이브": "overdrive",
+    "크림슨 웨이브": "wave",
+    "플레임 펄스": "flame_p",
+    "썬더 펄스": "thunder_p",
+    "다크 펄스": "dark_pu",
+    "썬더 익스큐션": "thunder_ex"
+  };
+
+  const HERO_ICON_MAP = {
+    "나찰": "nachal", "바토리": "batory", "나리타": "narita", "프레이야": "preiya",
+    "리리스": "riris", "백운귀": "backgui", "이블린": "evelyn", "엘리제": "elize",
+    "라이카": "ryca", "플레어": "plare", "카엘": "kael", "셀렌": "selen",
+    "루비": "ruby", "세리아": "serya", "카엔": "kaen", "엘리시아": "elisia",
+    "칼리아": "kalia", "카이렌": "kairen", "모르반": "morban", "솔라리스": "solaris",
+    "현묵": "hyunmuk", "이그니스": "ignis", "제논": "xenon", "다미안": "damian"
+  };
+
+  function makeGuideSlotHtml(name, tagText, noteText, isSkill, styleType) {
+    const map = isSkill ? SKILL_ICON_MAP : HERO_ICON_MAP;
+    const fileKey = map[name] || null;
+    const cls = styleType === 'fix' ? 'core-fix' : (styleType === 'future' ? 'future-4th' : 'flex-pick');
+    const tagBg = styleType === 'fix' ? '#e11d48' : (styleType === 'future' ? '#ca8a04' : '#0284c7');
+
+    const imgHtml = fileKey
+      ? `<img src="images/${fileKey}.png" alt="${name}" onerror="this.onerror=null; this.src='images/${fileKey}.jpg'; this.onerror=function(){this.style.display='none';};">`
+      : `<span>${isSkill ? '⚡' : '🦸'}</span>`;
+
+    return `
+      <div class="build-slot-item ${cls}">
+        <span class="build-slot-tag" style="background:${tagBg}; color:#fff;">${tagText}</span>
+        <div class="build-slot-thumb">${imgHtml}</div>
+        <div class="build-slot-name">${name}</div>
+        <div class="build-slot-note">${noteText}</div>
+      </div>
+    `;
+  }
+
+  function openBuildGuideDetail(type) {
+    currentGuideType = type;
+    document.getElementById("guides_hub_view").style.display = "none";
+    document.getElementById("guides_detail_view").style.display = "block";
+
+    const floatBtn = document.getElementById("floating_back_btn");
+    floatBtn.style.display = "flex";
+    document.getElementById("floating_back_text").innerText = "가이드 목록으로 돌아가기";
+
+    const selectorEl = document.getElementById("guide_job_elem_selector");
+    if (type === 'transition') {
+      selectorEl.style.display = "none";
+      document.getElementById("guide_view_title").innerText = "🔄 사신 ➔ 아크메이지(미스틱) 전환 완벽 가이드";
+      document.getElementById("guide_view_badge").innerText = "직업 전환 타이밍";
+    } else if (type === 'skill') {
+      selectorEl.style.display = "grid";
+      document.getElementById("guide_view_title").innerText = "⚡ 직업별 · 전직 차수별 스킬 세팅 가이드";
+      document.getElementById("guide_view_badge").innerText = "초기 ~ 4차 스킬 편성";
+    } else {
+      selectorEl.style.display = "grid";
+      document.getElementById("guide_view_title").innerText = "🦸 직업별 · 전직 차수별 영웅 세팅 가이드";
+      document.getElementById("guide_view_badge").innerText = "초기 ~ 4차 영웅 편성";
+    }
+
+    renderBuildGuideContent();
+    window.scrollTo({ top: 100, behavior: 'smooth' });
+  }
+
+  function selectGuideJob(j) {
+    guideJob = j;
+    ['reaper', 'mage', 'lord'].forEach(k => document.getElementById('g_job_' + k)?.classList.toggle('selected', k === j));
+    renderBuildGuideContent();
+  }
+
+  function selectGuideElem(e) {
+    guideElem = e;
+    ['fire', 'light', 'dark'].forEach(k => document.getElementById('g_elem_' + k)?.classList.toggle('selected', k === e));
+    renderBuildGuideContent();
+  }
+
+  function renderBuildGuideContent() {
+    const body = document.getElementById("guide_dynamic_body");
+    if (!body) return;
+
+    const elemDebuffSkill = guideElem === 'fire' ? '불벼락' : (guideElem === 'light' ? '뇌전검무' : '암흑붕괴');
+    const elemPulseSkill = guideElem === 'fire' ? '플레임 펄스' : (guideElem === 'light' ? '썬더 펄스' : '다크 펄스');
+    const mage2ndDeal = guideElem === 'fire' ? '인페르노 크라운' : (guideElem === 'light' ? '썬더 익스큐션' : '암영참');
+    const mage3rdDeal = guideElem === 'fire' ? '플레어 필라' : (guideElem === 'light' ? '볼트 스파이럴' : '블랙 베일');
+
+    const jobOnlySkill = guideJob === 'reaper' ? '썬더 오빗' : (guideJob === 'mage' ? '지옥불베기' : '보이드 펄스');
+    const jobOnlyHero = guideJob === 'reaper' ? '셀렌' : (guideJob === 'mage' ? '카엔' : '카엘');
+    const elemDebuffHero = guideElem === 'fire' ? '플레어' : (guideElem === 'light' ? '프레이야' : '엘리제');
+    const elemNewHero = guideElem === 'fire' ? '이그니스' : (guideElem === 'light' ? '제논' : '다미안');
+    const lord3rdDealHero = guideElem === 'fire' ? '칼리아' : (guideElem === 'light' ? '카이렌' : '모르반');
+
+    // 1) 사신 ➔ 아크메이지 전환 가이드
+    if (currentGuideType === 'transition') {
+      body.innerHTML = `
+        <div class="stage-build-card" style="border-left-color:#38bdf8;">
+          <div class="stage-build-header">
+            <span class="stage-build-title">📌 왜 초반에는 사신으로 시작해서 아크메이지(미스틱)로 넘어가나요?</span>
+            <span class="grade-badge grade-ancient">핵심 로드맵</span>
+          </div>
+          <div class="build-tip-box" style="margin-bottom:14px;">
+            • 초반~중반 구간에서는 고대 패시브(강타의 대가 최저 비용)와 기본 강타 메커니즘 덕분에 <strong>사신(대사신)</strong>의 가성비와 성장 속도가 매우 뛰어납니다.<br>
+            • 하지만 2차·3차 전직 이후 전용 메인딜 스킬과 스킬 돌파 효율이 폭발하는 시점부터는 <strong>아크메이지(미스틱/제네시스)</strong>의 고점이 훨씬 높아지므로 준비물을 모아서 한 번에 넘어가는 것이 정석입니다.
+          </div>
+
+          <h4 style="color:#fde047; font-size:15px; margin-bottom:10px;">✅ 사신으로 키우면서 그대로 겹쳐서 쓰는 공용 스킬 & 영웅 (미리 키워두기)</h4>
+          <div class="build-slot-grid">
+            ${makeGuideSlotHtml(elemDebuffSkill, '공용 필수', '주속성 9돌 디버프', true, 'fix')}
+            ${makeGuideSlotHtml('그림자 포효', '공용 필수', '9돌~2각 공용 디버프', true, 'fix')}
+            ${makeGuideSlotHtml('오버드라이브', '공용 1순위', '전 직업 최우선 돌파', true, 'fix')}
+            ${makeGuideSlotHtml('엘리멘탈 차지', '공용 필수', '3차 전직 핵심 버프', true, 'fix')}
+            ${makeGuideSlotHtml('크림슨 웨이브', '공용 필수', '3차 저주II 출혈용', true, 'fix')}
+            ${makeGuideSlotHtml('엘리시아', '공용 영웅', '과성장 핵심 버퍼', false, 'fix')}
+            ${makeGuideSlotHtml('나리타', '공용 영웅', '3각성 상시 501배', false, 'fix')}
+            ${makeGuideSlotHtml(elemDebuffHero, '공용 영웅', '주속성 9돌 디버퍼', false, 'fix')}
+            ${makeGuideSlotHtml('솔라리스', '공용 영웅', '9돌 모피증 / 과성장졸업', false, 'fix')}
+          </div>
+
+          <h4 style="color:#f43f5e; font-size:15px; margin:16px 0 10px 0;">🔥 언제 아크메이지로 넘어가면 될까? (픽업/이벤트 몰아서 풀돌 타이밍!)</h4>
+          <div class="build-slot-grid">
+            ${makeGuideSlotHtml('지옥불베기', '앜메 전용버프', '픽업 시 몰아서 풀돌!', true, 'flex')}
+            ${makeGuideSlotHtml(mage3rdDeal, '앜메 3차주력', '3차 메인딜 풀돌/각성!', true, 'flex')}
+            ${makeGuideSlotHtml(mage2ndDeal, '앜메 2차주력', '2차 딜스킬 (선택)', true, 'flex')}
+            ${makeGuideSlotHtml('카엔', '앜메 전용영웅', '픽업 시 몰아서 풀돌!', false, 'flex')}
+          </div>
+          <div class="build-tip-box">
+            💡 <strong>핵심 전환 전략:</strong><br>
+            1. 사신으로 플레이하는 동안에는 사신과 겹치는 <strong>공용 스킬(포효, 오버드라이브, 엘차, 불벼락류, 크림슨)</strong>과 <strong>공용 영웅(엘리시아, 나리타, 플레어류, 솔라리스)</strong>을 그대로 키우며 다이아와 소환권을 아껴둡니다.<br>
+            2. 그러다가 <strong>로테이션 픽업이나 커스텀 이벤트 픽업</strong>이 열렸을 때, 아껴둔 재화를 한 번에 몰아서 아크메이지 전용 스킬인 <strong>[지옥불베기] + [${mage3rdDeal}(주속성 메인딜)]</strong>과 전용 영웅 <strong>[카엔]</strong>을 단숨에 <strong>풀돌파(10돌) 및 각성</strong>시키면 딜 공백 없이 즉시 아크메이지로 넘어올 수 있습니다!
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // 2) 직업별 스킬 세팅 가이드
+    if (currentGuideType === 'skill') {
+      const stage1Fixed = [
+        makeGuideSlotHtml(jobOnlySkill, '직업 필수고정', guideJob==='reaper'?'강타 피해 증가':(guideJob==='mage'?'스킬 피해 증가':'영웅스킬 피해 증가'), true, 'fix'),
+        makeGuideSlotHtml(elemDebuffSkill, '주속성 고정', '최소 9돌파 필수', true, 'fix'),
+        makeGuideSlotHtml('그림자 포효', '공용 고정', '최소 9돌파 필수', true, 'fix')
+      ].join('');
+
+      const stage1FlexPool = [
+        makeGuideSlotHtml('오버드라이브', '★1순위 돌파', '나머지 2칸 중 최우선', true, 'flex'),
+        makeGuideSlotHtml('환영나비', '우선 돌파', '돌파 높은 순 선택', true, 'flex'),
+        makeGuideSlotHtml('엘리멘탈 차지', '우선 돌파', '돌파 높은 순 선택', true, 'flex'),
+        makeGuideSlotHtml('심판의 인장', '국밥 버프', '돌파 높은 순 선택', true, 'flex'),
+        makeGuideSlotHtml('원소돌파', '1각↑ 유효', '돌파 높은 순 선택', true, 'flex')
+      ].join('');
+
+      let stage2MainSlots = stage1Fixed + makeGuideSlotHtml('오버드라이브', '주력 버프', '고돌파 착용', true, 'flex') + makeGuideSlotHtml('환영나비', '주력 버프', '엘차/심판/원소 택1', true, 'flex');
+      let stage2SlotCntText = '5슬롯';
+      if (guideJob === 'mage') {
+        stage2SlotCntText = '6슬롯 (아크메이지 스킬 +1)';
+        stage2MainSlots += makeGuideSlotHtml(mage3rdDeal, '앜메 +1슬롯', `또는 ${mage2ndDeal} 착용 존버`, true, 'flex');
+      }
+
+      const stage2PrepIcons = [
+        makeGuideSlotHtml('크림슨 웨이브', '3차 출혈준비', '3차 종결 필수! 미리 육성', true, 'future'),
+        makeGuideSlotHtml(elemPulseSkill, '보유효과 준비', '주속성 보유효과 각성용', true, 'future'),
+        ...(guideJob === 'mage' ? [makeGuideSlotHtml(mage2ndDeal, '2차 주속성딜', '또는 3차 필라류 존버', true, 'flex')] : [])
+      ].join('');
+
+      let stage3Slots = '';
+      let stage4Slots = '';
+      let stage3CntText = '';
+
+      if (guideJob === 'mage') {
+        stage3CntText = '7슬롯 (미스틱 스킬 +1 추가)';
+        const fourthSkill = guideElem === 'fire' ? '그림자 포효' : '환영나비';
+        const fourthNote = guideElem === 'fire' ? '불속성 고정 채택' : '비불속성: 포효 빼고 나비!';
+        stage3Slots = [
+          makeGuideSlotHtml(mage3rdDeal, '3차 메인딜', '주속성 메인 딜링기', true, 'fix'),
+          makeGuideSlotHtml('지옥불베기', '직업 고정', '스킬 피해 버프', true, 'fix'),
+          makeGuideSlotHtml(elemDebuffSkill, '주속성 고정', '속성 상태이상 디버프', true, 'fix'),
+          makeGuideSlotHtml(fourthSkill, '속성별 분기', fourthNote, true, 'fix'),
+          makeGuideSlotHtml('엘리멘탈 차지', '고정 버프', '나비/인장이 고돌파면 대체', true, 'fix'),
+          makeGuideSlotHtml('오버드라이브', '고정 버프', '나비/인장이 고돌파면 대체', true, 'fix'),
+          makeGuideSlotHtml('크림슨 웨이브', '출혈 고정', '불멸 저주II 출혈 조건', true, 'fix')
+        ].join('');
+
+        stage4Slots = [
+          makeGuideSlotHtml('4차 전용 딜스킬', '출시 시 교체!', `추후 출시 시 ${mage3rdDeal} 대체`, true, 'future'),
+          makeGuideSlotHtml('지옥불베기', '직업 고정', '스킬 피해 버프', true, 'fix'),
+          makeGuideSlotHtml(elemDebuffSkill, '주속성 고정', '속성 상태이상 디버프', true, 'fix'),
+          makeGuideSlotHtml(fourthSkill, '속성별 분기', fourthNote, true, 'fix'),
+          makeGuideSlotHtml('엘리멘탈 차지', '고정 버프', '3차 핵심 버프', true, 'fix'),
+          makeGuideSlotHtml('오버드라이브', '고정 버프', '과성장 졸업 핵심', true, 'fix'),
+          makeGuideSlotHtml('크림슨 웨이브', '출혈 고정', '불멸 저주II 출혈 조건', true, 'fix')
+        ].join('');
+      } else if (guideJob === 'reaper') {
+        stage3CntText = '6슬롯 (소울리퍼 스킬 +1 추가)';
+        stage3Slots = [
+          makeGuideSlotHtml('썬더 오빗', '사신 고정', '강타 피해량 버프', true, 'fix'),
+          makeGuideSlotHtml(elemDebuffSkill, '주속성 고정', '주속성 상태이상 스킬', true, 'fix'),
+          makeGuideSlotHtml('엘리멘탈 차지', '고정 버프', '3차 전직 핵심 버프', true, 'fix'),
+          makeGuideSlotHtml('오버드라이브', '고정 버프', '최우선 돌파/각성 버프', true, 'fix'),
+          makeGuideSlotHtml('그림자 포효', '고정 디버프', '2각 시 혼돈 부여', true, 'fix'),
+          makeGuideSlotHtml('크림슨 웨이브', '출혈 고정', '불멸 저주II 출혈 조건', true, 'fix')
+        ].join('');
+        stage4Slots = stage3Slots;
+      } else {
+        stage3CntText = '5슬롯 (오버로드 스킬 슬롯 동일)';
+        stage3Slots = [
+          makeGuideSlotHtml('보이드 펄스', '닼로 고정', '영웅스킬 피해 버프', true, 'fix'),
+          makeGuideSlotHtml('크림슨 웨이브', '출혈 고정', '불멸 저주II 출혈 조건', true, 'fix'),
+          makeGuideSlotHtml('오버드라이브', '고정 버프', '최우선 돌파/각성 버프', true, 'fix'),
+          makeGuideSlotHtml('환영나비', '고정 버프', '상태이상 조건부 버프', true, 'fix'),
+          makeGuideSlotHtml('엘리멘탈 차지', '최종 종결', `전환 전엔 [${elemDebuffSkill}] 사용`, true, 'flex')
+        ].join('');
+        stage4Slots = stage3Slots;
+      }
+
+      body.innerHTML = `
+        <!-- 1. 초기 ~ 1차 전직 -->
+        <div class="stage-build-card">
+          <div class="stage-build-header">
+            <span class="stage-build-title">🌱 초기 ~ 1차 전직 스킬 세팅</span>
+            <span class="grade-badge grade-ancient">전 직업 공통 5슬롯</span>
+          </div>
+          <div style="font-size:12.5px; font-weight:800; color:#fda4af; margin-bottom:6px;">📌 고정 3자리:</div>
+          <div class="build-slot-grid">${stage1Fixed}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin-bottom:6px;">📌 나머지 2자리 선택 후보 (돌파 높은 순 2개 착용 / 오버드라이브 최우선 돌파):</div>
+          <div class="build-slot-grid">${stage1FlexPool}</div>
+          <div class="build-tip-box">
+            • <strong>고정 3자리:</strong> 직업 필수 스킬(<strong>${jobOnlySkill}</strong>) + 주속성 디버프(<strong>${elemDebuffSkill}</strong>) + <strong>그림자 포효</strong>를 고정합니다.<br>
+            • <strong>나머지 2자리:</strong> 위 후보 5종 중 현재 돌파가 높은 것을 끼우되, <strong>오버드라이브(★1순위), 환영나비, 엘리멘탈 차지</strong> 위주로 돌파를 올립니다.<br>
+            • <strong>신화 미보유 초보 팁:</strong> 신화가 없을 땐 하급~전설 중 한 속성을 정해 끼우다가 신화급이 나올 때마다 변경하세요.
+          </div>
+        </div>
+
+        <!-- 2. 2차 전직 -->
+        <div class="stage-build-card" style="border-left-color:#a855f7;">
+          <div class="stage-build-header">
+            <span class="stage-build-title">🥈 2차 전직 스킬 세팅 & 3차 대비 필수 육성</span>
+            <span class="grade-badge grade-unique">${stage2SlotCntText}</span>
+          </div>
+          <div class="build-slot-grid">${stage2MainSlots}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:10px 0 6px 0;">➕ 2차 구간부터 미리 돌파·각성하며 키우기 시작할 스킬:</div>
+          <div class="build-slot-grid">${stage2PrepIcons}</div>
+          <div class="build-tip-box">
+            • ${guideJob === 'mage' ? `<strong>아크메이지(스킬 +1):</strong> 2차 주속성 스킬(<strong>${mage2ndDeal}</strong>) 또는 3차 스킬(<strong>${mage3rdDeal}</strong>)을 착용하고 3차까지 돌파·각성하며 존버합니다.` : `<strong>사신 & 다크로드:</strong> 1차와 동일하게 5슬롯을 가져갑니다.`}<br>
+            • <strong>3차 종결 준비:</strong> 3차 종결에 필수인 <strong>[크림슨 웨이브]</strong>와 주속성 보유효과 각성 스킬인 <strong>[${elemPulseSkill}]</strong>도 함께 돌파해 두세요!
+          </div>
+        </div>
+
+        <!-- 3. 3차 전직 (35렙) -->
+        <div class="stage-build-card" style="border-left-color:#f43f5e;">
+          <div class="stage-build-header">
+            <span class="stage-build-title">🥉 3차 전직 (Lv.35 달성) 종결 스킬 세팅</span>
+            <span class="grade-badge grade-mythic">${stage3CntText}</span>
+          </div>
+          <div class="build-slot-grid">${stage3Slots}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:10px 0 6px 0;">➕ 전 직업 공통 필수 (장착 안 해도 적용되는 3차 보유효과 풀각성):</div>
+          <div class="build-slot-grid">
+            ${makeGuideSlotHtml(elemPulseSkill, '3차 보유효과', '주속성 맞춰 풀각성(3각) 필수!', true, 'future')}
+          </div>
+          <div class="build-tip-box">
+            • ${guideJob === 'mage' ? `<strong>미스틱(7슬롯):</strong> 불속성은 <strong>[그림자 포효]</strong>, 번개/어둠 속성은 포효를 빼고 <strong>[환영나비]</strong>를 추가합니다. (오버드라이브/엘차보다 환영나비나 심판의 인장 돌파가 더 높으면 변경)` : (guideJob === 'reaper' ? `<strong>소울리퍼(6슬롯):</strong> <strong>[${elemDebuffSkill} + 썬더 오빗 + 엘리멘탈 차지 + 오버드라이브 + 그림자 포효 + 크림슨 웨이브]</strong> 6칸 고정!` : `<strong>오버로드(5슬롯):</strong> <strong>[보이드 펄스 + 크림슨 웨이브 + 오버드라이브 + 환영나비 + ${elemDebuffSkill}]</strong> ➔ 최종 종결은 ${elemDebuffSkill} 대신 <strong>[엘리멘탈 차지]</strong>!`)}
+          </div>
+        </div>
+
+        <!-- 4. 4차 전직 -->
+        <div class="stage-build-card" style="border-left-color:#eab308;">
+          <div class="stage-build-header">
+            <span class="stage-build-title">👑 4차 전직 (그림리퍼 / 슈프림 / 소울이터) 스킬 세팅</span>
+            <span class="grade-badge grade-legend">${stage3CntText} (슬롯 수 변화 없음)</span>
+          </div>
+          <div class="build-slot-grid">${stage4Slots}</div>
+          <div class="build-tip-box">
+            • 4차 전직은 슬롯 개수 변화가 없으며, ${guideJob === 'mage' ? `추후 <strong>4차 전용 메인딜 스킬</strong>이 출시되면 기존의 3차 메인딜(<strong>${mage3rdDeal}</strong>)을 4차 전용 스킬로 교체해 주시면 됩니다.` : `3차 종결 스킬 구성을 그대로 유지합니다.`}
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // 3) 직업별 영웅 세팅 가이드 (추가 육성 영웅 아이콘 카드 전부 포함!)
+    if (currentGuideType === 'hero') {
+      const hStage0Slots = [
+        makeGuideSlotHtml(jobOnlyHero, '직업 필수고정', guideJob==='reaper'?'강타 버프 + 감전':(guideJob==='mage'?'스킬 피해 버프':'영웅스킬 버프'), false, 'fix'),
+        makeGuideSlotHtml('바토리', '특급 상태이상', '신화 전 감전 요원', false, 'flex'),
+        makeGuideSlotHtml('나찰', '특급 상태이상', '신화 전 혼돈/타수 요원', false, 'flex')
+      ].join('');
+
+      const hStage0GrowPool = [
+        makeGuideSlotHtml('엘리시아', '천천히 육성', '향후 과성장 핵심 버퍼', false, 'future'),
+        makeGuideSlotHtml('루비', '천천히 육성', '화상 + 3상태이상 디버프', false, 'future'),
+        makeGuideSlotHtml(elemDebuffHero, '천천히 육성', '주속성 9돌 디버퍼', false, 'future')
+      ].join('');
+
+      let hStage1Slots = [
+        makeGuideSlotHtml(jobOnlyHero, '직업 필수고정', '최우선 육성', false, 'fix'),
+        makeGuideSlotHtml('나리타', '★3각 최우선', '3각성 시 상시 501배', false, 'fix'),
+        makeGuideSlotHtml(elemDebuffHero, '주속성 디버프', '9돌파 이상 권장', false, 'flex'),
+        makeGuideSlotHtml('루비', '화상/디버프', '또는 엘리시아 채택', false, 'flex')
+      ];
+      let hStage1CntText = '4슬롯';
+      if (guideJob === 'lord') {
+        hStage1CntText = '5슬롯 (다크로드 영웅 +1)';
+        hStage1Slots.splice(1, 0, makeGuideSlotHtml('백운귀', '닼로 +1슬롯', '최소 3각성 필수 버퍼', false, 'fix'));
+      }
+
+      const hStage1PrepIcons = [
+        makeGuideSlotHtml('솔라리스', '3차 대비 육성', '9돌 모피증 / 과성장졸업', false, 'future'),
+        makeGuideSlotHtml('현묵', '보유효과 육성', '보유효과 각성 필수', false, 'future'),
+        makeGuideSlotHtml(elemNewHero, '3차 디버퍼 육성', '고각성 시 플레어류 대체', false, 'future'),
+        ...(guideJob === 'lord' ? [makeGuideSlotHtml(lord3rdDealHero, '오버로드 메인딜', '3차 주력 딜러 미리 육성!', false, 'future')] : [])
+      ].join('');
+
+      const hStage2TreeA = [
+        makeGuideSlotHtml('엘리시아', '🅰️ 1번슬롯 고정', '과성장 룬과 함께 채택', false, 'fix'),
+        makeGuideSlotHtml(jobOnlyHero, '직업 필수고정', '셀렌/카엔/카엘', false, 'fix'),
+        ...(guideJob === 'lord' ? [makeGuideSlotHtml('백운귀', '닼로 고정', '3각성 버퍼', false, 'fix')] : []),
+        makeGuideSlotHtml('나리타', '3각 필수', '상시 501배', false, 'fix'),
+        makeGuideSlotHtml('루비', '격화룬 세트', `또는 ${elemDebuffHero} 채택`, false, 'flex')
+      ].join('');
+
+      const hStage2TreeB = [
+        makeGuideSlotHtml('솔라리스', '🅱️ 노과성장 채택', '오버드라이브 각성과 함께!', false, 'flex'),
+        makeGuideSlotHtml(jobOnlyHero, '직업 필수고정', '셀렌/카엔/카엘', false, 'fix'),
+        ...(guideJob === 'lord' ? [makeGuideSlotHtml('백운귀', '닼로 고정', '3각성 버퍼', false, 'fix')] : []),
+        makeGuideSlotHtml('나리타', '3각 필수', '상시 501배', false, 'fix'),
+        makeGuideSlotHtml(elemDebuffHero, '주속성 디버프', '플레어/프레이야/엘리제', false, 'flex')
+      ].join('');
+
+      let hStage3Slots = '';
+      let hStage3CntText = '';
+      if (guideJob === 'reaper') {
+        hStage3CntText = '5슬롯 (소울리퍼 영웅 +1 추가)';
+        hStage3Slots = [
+          makeGuideSlotHtml('엘리시아', '1번슬롯 고정', '오버드라이브 3각 시 ➔ 솔라리스', false, 'fix'),
+          makeGuideSlotHtml('셀렌', '사신 고정', '강타 전용 버퍼', false, 'fix'),
+          makeGuideSlotHtml(elemDebuffHero, '주속성 디버퍼', `시너지 후 ➔ ${elemNewHero} 변경`, false, 'flex'),
+          makeGuideSlotHtml('나리타', '고정 버퍼', '3각성 필수', false, 'fix'),
+          makeGuideSlotHtml('루비', '디버프 고정', '3상태이상 유지', false, 'fix')
+        ].join('');
+      } else if (guideJob === 'mage') {
+        hStage3CntText = '4슬롯 (미스틱 영웅 슬롯 동일)';
+        hStage3Slots = [
+          makeGuideSlotHtml('엘리시아', '1번슬롯 고정', '오버드라이브 3각 시 ➔ 솔라리스', false, 'fix'),
+          makeGuideSlotHtml('카엔', '앜메 고정', '스킬 전용 버퍼', false, 'fix'),
+          makeGuideSlotHtml(elemDebuffHero, '주속성 디버퍼', `시너지 후 ➔ ${elemNewHero} 변경`, false, 'flex'),
+          makeGuideSlotHtml('나리타', '고정 버퍼', '3각성 필수', false, 'fix')
+        ].join('');
+      } else {
+        hStage3CntText = '6슬롯 (오버로드 영웅 +1 추가)';
+        hStage3Slots = [
+          makeGuideSlotHtml(lord3rdDealHero, '3차 메인딜!', '오버로드 주력 딜러 채택', false, 'fix'),
+          makeGuideSlotHtml('백운귀', '닼로 고정', '3각성 필수', false, 'fix'),
+          makeGuideSlotHtml(elemDebuffHero, '주속성 디버퍼', `시너지 후 ➔ ${elemNewHero} 변경`, false, 'flex'),
+          makeGuideSlotHtml('카엘', '닼로 고정', '영웅스킬 버퍼', false, 'fix'),
+          makeGuideSlotHtml('나리타', '고정 버퍼', '3각성 필수', false, 'fix'),
+          makeGuideSlotHtml('솔라리스', '과성장 졸업시', '전환 전엔 1번 엘리시아', false, 'flex')
+        ].join('');
+      }
+
+      const hStage3SwitchIcons = [
+        makeGuideSlotHtml(elemNewHero, '고각성 교체픽', `${elemDebuffHero} 풀돌 < ${elemNewHero} 1각`, false, 'future'),
+        makeGuideSlotHtml('솔라리스', '과성장 졸업픽', '오버드라이브 3각 시 엘리시아 대체', false, 'future'),
+        makeGuideSlotHtml('현묵', '★공통 보유효과', '슬롯 미장착이어도 각성 필수!', false, 'future')
+      ].join('');
+
+      body.innerHTML = `
+        <!-- 1. 1차 전직 이전 -->
+        <div class="stage-build-card">
+          <div class="stage-build-header">
+            <span class="stage-build-title">🌱 1차 전직 이전 (초기 구간) 영웅 세팅</span>
+            <span class="grade-badge grade-ancient">전 직업 공통 4슬롯</span>
+          </div>
+          <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin-bottom:6px;">📌 초기 장착 영웅 (직업 고정 + 특급 상태이상 요원):</div>
+          <div class="build-slot-grid">${hStage0Slots}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:10px 0 6px 0;">➕ 천천히 수집하며 키워둘 핵심 신화 영웅:</div>
+          <div class="build-slot-grid">${hStage0GrowPool}</div>
+          <div class="build-tip-box">
+            • 1차 이전에는 직업별 필수인 <strong>[${jobOnlyHero}]</strong>을 고정하고, 신화 돌파 전까지는 특급 영웅인 <strong>[바토리(감전), 나찰(혼돈)]</strong>을 상태이상으로 채택하며 천천히 <strong>엘리시아, 루비, ${elemDebuffHero}</strong>를 키웁니다.
+          </div>
+        </div>
+
+        <!-- 2. 1차 전직 이후 -->
+        <div class="stage-build-card" style="border-left-color:#3b82f6;">
+          <div class="stage-build-header">
+            <span class="stage-build-title">🥇 1차 전직 이후 영웅 세팅 & 3차 대비 육성</span>
+            <span class="grade-badge grade-advanced">${hStage1CntText}</span>
+          </div>
+          <div class="build-slot-grid">${hStage1Slots.join('')}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:10px 0 6px 0;">➕ 3차 전직을 위해 이때부터 함께 돌파를 키워둘 영웅:</div>
+          <div class="build-slot-grid">${hStage1PrepIcons}</div>
+          <div class="build-tip-box">
+            • <strong>나리타 3각 우선 채택:</strong> 나리타 3각성은 현 메타 필수이므로 우선순위로 채택합니다. ${guideJob === 'lord' ? `(다크로드는 영웅 +1이라 여기에 <strong>[백운귀]</strong>가 추가됩니다!)` : ''}<br>
+            • <strong>미리 키우기:</strong> 3차 전직 때 쓰기 위해 <strong>[솔라리스, 현묵, ${elemNewHero}]</strong>${guideJob === 'lord' ? ` 및 3차 오버로드 메인딜인 <strong>[${lord3rdDealHero}]</strong>` : ''}를 같이 키워두세요.
+          </div>
+        </div>
+
+        <!-- 3. 2차 전직 (과성장 vs 노과성장 분기) -->
+        <div class="stage-build-card" style="border-left-color:#a855f7;">
+          <div class="stage-build-header">
+            <span class="stage-build-title">🥈 2차 전직 영웅 세팅 (과성장 트리 vs 솔라리스 트리)</span>
+            <span class="grade-badge grade-unique">${hStage1CntText}</span>
+          </div>
+          <div style="font-size:12.5px; font-weight:800; color:#f43f5e; margin-bottom:6px;">🅰️ [과성장 룬 + 엘리시아 트리] (엘리시아가 많이 컸을 때):</div>
+          <div class="build-slot-grid">${hStage2TreeA}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:10px 0 6px 0;">🅱️ [노과성장 + 솔라리스 트리] (엘리시아 안 키우고 오버드라이브 각성 올릴 때):</div>
+          <div class="build-slot-grid">${hStage2TreeB}</div>
+          <div class="build-tip-box">
+            • 엘리시아가 많이 컸다면 <strong>과성장 룬 + 엘리시아 + ${jobOnlyHero} + 격화 룬 & 루비(또는 ${elemDebuffHero})</strong>를 쓰고, 과성장 트리를 안 탄다면 <strong>솔라리스 채택 + 스킬 오버드라이브 각성</strong>을 올리시면 됩니다.
+          </div>
+        </div>
+
+        <!-- 4. 3차(35렙) ~ 4차 전직 종결 -->
+        <div class="stage-build-card" style="border-left-color:#f43f5e;">
+          <div class="stage-build-header">
+            <span class="stage-build-title">👑 3차 전직 (Lv.35) ~ 4차 전직 종결 영웅 세팅</span>
+            <span class="grade-badge grade-mythic">${hStage3CntText} (4차 슬롯 변화 없음)</span>
+          </div>
+          <div style="font-size:12.5px; font-weight:800; color:#fda4af; margin-bottom:6px;">📌 3차 ~ 4차 주력 장착 슬롯:</div>
+          <div class="build-slot-grid">${hStage3Slots}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:10px 0 6px 0;">🔄 조건 달성 시 교체 투입할 종결 영웅 & 공통 보유효과 각성:</div>
+          <div class="build-slot-grid">${hStage3SwitchIcons}</div>
+          <div class="build-tip-box">
+            • <strong>🔥 디버프 영웅 교체 기준 (${elemDebuffHero} vs ${elemNewHero}):</strong><br>
+              &nbsp;&nbsp;- 각성 시너지 조건을 먼저 맞춰야 하며, <strong>[${elemDebuffHero} 풀돌(0각) &lt; ${elemNewHero} 1각]</strong> / <strong>[${elemDebuffHero} 1각 &gt; ${elemNewHero} 2각]</strong> 입니다.<br>
+              &nbsp;&nbsp;- 각성 시너지를 맞춘 이후 고각성에서는 최종적으로 <strong>[${elemNewHero}]</strong>로 변경합니다!<br>
+            • <strong>⚡ 과성장 졸업 교체:</strong> 스킬 <strong>[오버드라이브 3각]</strong> 달성 시 <strong>엘리시아 ➔ 솔라리스</strong>로 변경합니다.<br>
+            • <strong>🌟 공통 필수:</strong> <strong>[현묵]</strong>은 슬롯에 끼지 않더라도 <strong>보유효과 각성</strong>을 반드시 챙겨주세요!
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  // ==================== INITIALIZATION (DOM 즉시 실행으로 깜빡임 0%!) ====================
+  function initAppV300() {
+    if (window._v300Initialized) return;
+    window._v300Initialized = true;
+
+    // 1. 이미지 로딩을 기다리지 않고 즉시 [탭 1: 세팅 도우미 모음]으로 화면 정렬!
+    switchMainMode('helpers');
+    setSeasonTheme(getAutoSeasonByMonth());
+
+    // 2. 각 계산기 초기 렌더링 및 로컬 저장값 복원
     renderAncientCards();
-    calculateAncientCost();
     initSynergyReferenceTable();
-    calculateSynergyDetailed();
     initRefineSelects();
+    renderEquipRateTable();
+    loadUserSettings();
+
+    calculateAncientCost();
+    calculateSynergyDetailed();
     calculateRefineExpected();
     calculateOrbExpected();
-    renderEquipRateTable();
     calculateGaho();
     calculateWonhon();
-  };
+
+    // 3. 자동 저장 이벤트 연결
+    document.addEventListener('change', triggerAutoSave);
+    document.addEventListener('input', triggerAutoSave);
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.ancient-select-card, .item-select-box, .radio-pill, .exclude-btn')) {
+        triggerAutoSave();
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initAppV300);
+  window.onload = initAppV300;
 </script>
 
 </body>
