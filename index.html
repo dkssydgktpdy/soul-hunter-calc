@@ -2962,22 +2962,22 @@
           </div>
         </div>
 
-        <!-- 엘리시아(과성장 졸업 조건) & 고대 심연장식 개수 & 출혈 시너지 설정 (이미지 확대 버전) -->
-        <div style="background:#0f172a; padding:16px 18px; border-radius:14px; border:1px solid #334155; margin-bottom:18px;">
+        <!-- 엘리시아(과성장 졸업 조건) & 고대 심연장식 개수 & 출혈 시너지 설정 -->
+        <div style="background:#0f172a; padding:18px 20px; border-radius:14px; border:1px solid #334155; margin-bottom:18px;">
           <div style="font-size:15px; font-weight:800; color:#38bdf8; margin-bottom:14px; display:flex; align-items:center; gap:6px;">
             <span style="font-size:18px;">💡</span>
             <span>핵심 룬 발동 & 과성장 졸업 조건 설정</span>
           </div>
 
-          <!-- 상단 3개 카드 (엘리시아, 오버드라이브, 심연장식) -->
-          <div class="grid-3" style="gap:10px; margin-bottom:10px;">
+          <!-- 1행: 상단 3개 카드 (엘리시아, 오버드라이브, 심연장식) -->
+          <div class="grid-3" style="gap:12px; margin-bottom:12px;">
             <!-- 1. 엘리시아 -->
-            <div style="background:#1e293b; padding:12px; border-radius:12px; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between;">
+            <div style="background:#1e293b; padding:12px 14px; border-radius:12px; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between;">
               <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                <img src="images/elisia.png" alt="엘리시아" style="width:40px; height:40px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/elisia.PNG'; this.onerror=function(){this.style.display='none';};">
+                <img src="images/elisia.png" alt="엘리시아" style="width:36px; height:36px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/elisia.PNG'; this.onerror=function(){this.style.display='none';};">
                 <span style="font-size:13.5px; font-weight:800; color:#ffffff; line-height:1.3;">엘리시아(영웅)<br>각성 단계</span>
               </div>
-              <select id="rune_elisia_awk" onchange="calculateBestRuneLoadout()" style="padding:8px 10px; font-size:13.5px; border-radius:8px;">
+              <select id="rune_elisia_awk" onchange="calculateBestRuneLoadout()" style="padding:8px 10px; font-size:13.5px; border-radius:8px; width:100%;">
                 <option value="-1" selected>미보유 (과성장 미사용)</option>
                 <option value="0">명함 / 0각성</option>
                 <option value="1">1각성</option>
@@ -2987,12 +2987,12 @@
             </div>
 
             <!-- 2. 오버드라이브 -->
-            <div style="background:#1e293b; padding:12px; border-radius:12px; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between;">
+            <div style="background:#1e293b; padding:12px 14px; border-radius:12px; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between;">
               <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                <img src="images/overdrive.png" alt="오버드라이브" style="width:40px; height:40px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/overdrive.PNG'; this.onerror=function(){this.style.display='none';};">
+                <img src="images/overdrive.png" alt="오버드라이브" style="width:36px; height:36px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/overdrive.PNG'; this.onerror=function(){this.style.display='none';};">
                 <span style="font-size:13.5px; font-weight:800; color:#ffffff; line-height:1.3;">오버드라이브(스킬)<br>각성 단계</span>
               </div>
-              <select id="rune_overdrive_awk" onchange="calculateBestRuneLoadout()" style="padding:8px 10px; font-size:13.5px; border-radius:8px;">
+              <select id="rune_overdrive_awk" onchange="calculateBestRuneLoadout()" style="padding:8px 10px; font-size:13.5px; border-radius:8px; width:100%;">
                 <option value="-1" selected>미보유</option>
                 <option value="0">명함 / 0각성</option>
                 <option value="1">1각성</option>
@@ -3002,15 +3002,15 @@
             </div>
 
             <!-- 3. 심연장식 -->
-            <div style="background:#1e293b; padding:12px; border-radius:12px; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between;">
+            <div style="background:#1e293b; padding:12px 14px; border-radius:12px; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between;">
               <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                <img src="images/simyeon_acc.png" alt="심연장식" style="width:40px; height:40px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/simyeon_acc.jpg'; this.onerror=function(){this.style.display='none';};">
+                <img src="images/simyeon_acc.png" alt="심연장식" style="width:36px; height:36px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/simyeon_acc.jpg'; this.onerror=function(){this.style.display='none';};">
                 <div>
                   <span style="font-size:13.5px; font-weight:800; color:#ffffff; display:block; line-height:1.3;">고대 이상 심연장식</span>
                   <span style="font-size:11px; color:#94a3b8;">해·별·달·숲 장착 수</span>
                 </div>
               </div>
-              <select id="rune_ancient_abyss_cnt" onchange="calculateBestRuneLoadout()" style="padding:8px 10px; font-size:13.5px; border-radius:8px;">
+              <select id="rune_ancient_abyss_cnt" onchange="calculateBestRuneLoadout()" style="padding:8px 10px; font-size:13.5px; border-radius:8px; width:100%;">
                 <option value="0" selected>0개 (고대 미보유)</option>
                 <option value="1">1개 장착 (+3,000만%)</option>
                 <option value="2">2개 장착 (+6,000만%)</option>
@@ -3020,51 +3020,51 @@
             </div>
           </div>
 
-          <!-- 하단 2개 카드 (솔라리스 & 크림슨 웨이브) -->
-          <div class="grid-2" style="gap:10px; margin-bottom:12px;">
+          <!-- 2행: 하단 2개 카드 (솔라리스 & 크림슨 웨이브) -->
+          <div class="grid-2" style="gap:12px; margin-bottom:14px;">
             <!-- 4. 솔라리스 -->
-            <div style="background:#1e293b; padding:12px; border-radius:12px; border:1px solid #334155;">
+            <div style="background:#1e293b; padding:12px 14px; border-radius:12px; border:1px solid #334155;">
               <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
                 <div style="display:flex; align-items:center; gap:10px;">
-                  <img src="images/solaris.png" alt="솔라리스" style="width:40px; height:40px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/solaris.PNG'; this.onerror=function(){this.style.display='none';};">
+                  <img src="images/solaris.png" alt="솔라리스" style="width:36px; height:36px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/solaris.PNG'; this.onerror=function(){this.style.display='none';};">
                   <div>
                     <span style="font-size:13.5px; font-weight:800; color:#ffffff; display:block;">솔라리스(영웅) 9돌파 여부</span>
                     <span style="font-size:11px; color:#94a3b8;">영웅 9돌파 달성 시 모피증</span>
                   </div>
                 </div>
-                <span style="font-size:11.5px; font-weight:700; color:#fde047; background:rgba(253, 224, 71, 0.12); border:1px solid rgba(253, 224, 71, 0.35); padding:2px 8px; border-radius:6px;">과성장 졸업 조건</span>
+                <span style="font-size:11px; font-weight:700; color:#fde047; background:rgba(253, 224, 71, 0.12); border:1px solid rgba(253, 224, 71, 0.35); padding:2px 8px; border-radius:6px;">과성장 졸업 조건</span>
               </div>
-              <select id="rune_cond_solaris9" onchange="calculateBestRuneLoadout()" style="padding:8px 10px; font-size:13.5px; border-radius:8px;">
+              <select id="rune_cond_solaris9" onchange="calculateBestRuneLoadout()" style="padding:8px 10px; font-size:13.5px; border-radius:8px; width:100%;">
                 <option value="0" selected>9돌 미만 (과성장 졸업 미달성)</option>
                 <option value="1">9돌 이상 (과성장 졸업 조건 달성)</option>
               </select>
             </div>
 
             <!-- 5. 크림슨 웨이브 -->
-            <div style="background:#1e293b; padding:12px; border-radius:12px; border:1px solid #334155;">
+            <div style="background:#1e293b; padding:12px 14px; border-radius:12px; border:1px solid #334155;">
               <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
                 <div style="display:flex; align-items:center; gap:10px;">
-                  <img src="images/wave.png" alt="크림슨 웨이브" style="width:40px; height:40px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/wave.PNG'; this.onerror=function(){this.style.display='none';};">
+                  <img src="images/wave.png" alt="크림슨 웨이브" style="width:36px; height:36px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/wave.PNG'; this.onerror=function(){this.style.display='none';};">
                   <div>
-                    <span style="font-size:13.5px; font-weight:800; color:#ffffff; display:block;">크림슨 웨이브(출혈 스킬) 보유</span>
+                    <span style="font-size:13.5px; font-weight:800; color:#ffffff; display:block;">크림슨 웨이브(출혈 스킬🩸) 보유</span>
                     <span style="font-size:11px; color:#94a3b8;">출혈 디버프 상시 부여</span>
                   </div>
                 </div>
-                <span style="font-size:11.5px; font-weight:700; color:#fca5a5; background:rgba(244, 63, 94, 0.15); border:1px solid rgba(244, 63, 94, 0.35); padding:2px 8px; border-radius:6px;">불멸 저주 II 조건</span>
+                <span style="font-size:11px; font-weight:700; color:#fca5a5; background:rgba(244, 63, 94, 0.15); border:1px solid rgba(244, 63, 94, 0.35); padding:2px 8px; border-radius:6px;">불멸 저주 II 조건</span>
               </div>
-              <select id="rune_cond_bleed" onchange="calculateBestRuneLoadout()" style="padding:8px 10px; font-size:13.5px; border-radius:8px;">
-                <option value="0">미보유 (출혈 미적용)</option>
-                <option value="1" selected>보유 (출혈 상시 발동 / 풀배율)</option>
+              <select id="rune_cond_bleed" onchange="calculateBestRuneLoadout()" style="padding:8px 10px; font-size:13.5px; border-radius:8px; width:100%;">
+                <option value="0" selected>미보유 (출혈 미적용)</option>
+                <option value="1">보유 (출혈 상시 발동 / 풀배율)</option>
               </select>
             </div>
           </div>
 
-          <!-- 대폭 키운 과성장 졸업 안내 배너 -->
-          <div style="background:linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(15, 23, 42, 0.95) 100%); border:1.5px solid #f59e0b; padding:12px 16px; border-radius:10px; display:flex; align-items:center; gap:10px; box-shadow:0 4px 14px rgba(245, 158, 11, 0.2);">
-            <span style="font-size:22px; flex-shrink:0;">👑</span>
-            <div style="font-size:13.5px; color:#fef08a; line-height:1.6;">
+          <!-- 3행: 카드 아래 전체 너비로 시원하게 배치되는 과성장 졸업 안내 박스 -->
+          <div style="background:linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(15, 23, 42, 0.95) 100%); border:1.5px solid #f59e0b; padding:13px 18px; border-radius:10px; display:flex; align-items:center; gap:12px; box-shadow:0 4px 14px rgba(245, 158, 11, 0.2); width:100%;">
+            <span style="font-size:24px; flex-shrink:0;">👑</span>
+            <div style="font-size:13.5px; color:#fef08a; line-height:1.65;">
               <strong>과성장 졸업 조건 안내:</strong> 
-              <span style="color:#ffffff;">[오버드라이브 각성 > 엘리시아 각성]</span> 조건과 
+              <span style="color:#ffffff;">[오버드라이브 각성 &gt; 엘리시아 각성]</span> 조건과 
               <span style="color:#ffffff;">[솔라리스 9돌파↑]</span>를 모두 달성하면 
               <strong>마마(마녀의 반지 + 펜던트 625억 배 세트)</strong>가 엘리시아 과성장 세팅을 역전하여 최고 배율로 추천됩니다!
             </div>
@@ -3160,11 +3160,11 @@
 
 <!-- Footer -->
   <footer>
-    소울헌터키우기 네이버 라운지 전용 계산기 v.3.0.0 | 제작: 29서버 겨울눈사람
+    소울헌터키우기 네이버 라운지 전용 계산기 v.3.0.0 | 제작: 29서버 겨울눈사람[cite: 14]
     
-    <!-- 실시간 방문자 카운터 배지 (조그맣게 표시) -->
-    <div style="margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fdkssydgktpdy.github.io%2Fsoul-hunter-calc&count_bg=%2338BDF8&title_bg=%231E293B&icon=&icon_color=%23E7E7E7&title=VISITS&edge_flat=true" 
+    <!-- 안정적인 방문자 카운터 배지 -->
+    <div style="margin-top: 10px; display: flex; align-items: center; justify-content: center;">
+      <img src="https://komarev.com/ghpvc/?username=dkssydgktpdy-shk&label=VISITS&color=38bdf8&style=flat-square" 
            alt="방문자 수" 
            style="height: 20px; border-radius: 4px;" />
     </div>
@@ -7001,8 +7001,15 @@
         Object.keys(state.inputs).forEach(id => {
           const el = document.getElementById(id);
           if (el) {
-            if (el.type === 'checkbox') el.checked = Boolean(state.inputs[id]);
-            else el.value = state.inputs[id];
+            if (id === 'rune_cond_solaris9' || id === 'rune_cond_bleed') {
+              // 체크박스 boolean 값(true/false)이나 텍스트("1"/"0") 모두 정상 인식하도록 보정
+              const val = state.inputs[id];
+              el.value = (val === true || val === '1' || val === 1) ? '1' : '0';
+            } else if (el.type === 'checkbox') {
+              el.checked = Boolean(state.inputs[id]);
+            } else {
+              el.value = state.inputs[id];
+            }
           }
         });
       }
