@@ -7525,6 +7525,22 @@
         ['fire', 'light', 'dark'].forEach(e => document.getElementById('sc_elem_' + e)?.classList.toggle('selected', e === currentConnectElem));
       }
 
+      // 5. 장비 인벤토리 및 선택된 부위 복원 추가
+      if (state.selectedEquipType) {
+        selectedEquipType = state.selectedEquipType;
+        selectEquipIconType(selectedEquipType); // 부위 카드 선택 상태 동기화
+      }
+      if (state.equipInventories) {
+        equipInventories = state.equipInventories;
+        // 현재 선택된 장비의 인벤토리 값을 화면 인풋창에 다시 꽂아넣기
+        const curInv = equipInventories[selectedEquipType] || {};
+        INVENTORY_SLOT_SEQUENCE.forEach(id => {
+          const el = document.getElementById('inv_' + id);
+          if (el) el.value = curInv[id] !== undefined ? curInv[id] : 0;
+        });
+        updateSummonCalculation(); // 수치 반영 후 값 재계산
+      }
+
       if (state.inputs) {
         Object.keys(state.inputs).forEach(id => {
           const el = document.getElementById(id);
@@ -7546,6 +7562,14 @@
       isRestoringState = false;
     }
   }
+
+  // DOM이 로드된 직후에 반드시 실행!
+window.addEventListener('DOMContentLoaded', () => {
+  initRefineSelects();
+  initSynergyReferenceTable();
+  loadUserSettings(); // 👈 여기서 저장된 데이터를 불러와야 합니다!
+  setSeasonTheme();
+});
 
   function resetAllSavedSettings() {
     if (!confirm('저장된 모든 세팅(룬, 코어, 인벤토리 등)을 초기화하시겠습니까?')) return;
