@@ -6266,7 +6266,7 @@
     };
   }
 
-  // 개별 룬의 조건 달성 여부 및 등급별 체급 가중치가 반영된 수치 계산
+  // 개별 룬의 조건 달성 여부 및 수치 계산
   function getEffectiveRuneValue(r, currentSetIds) {
     if (!r) return 0;
     if (r.jobType && r.jobType !== 'all' && r.jobType !== currentRuneJob) return 0;
@@ -6275,7 +6275,6 @@
 
     const ctx = getUserRuneSpecContext();
 
-    // 1. 페널티 룬 제외 옵션
     if (ctx.noPenalty) {
       const penaltyIds = new Set([
         'anc_ar_daega', 'anc_ar_jungryeok', 'ete_ar_jeogyeok', 'imm_ar_jeogyeok',
@@ -6288,18 +6287,15 @@
       if (penaltyIds.has(r.id)) return 0;
     }
 
-    // 2. 전직 레벨 조건
     if (['anc_ar_sasin', 'anc_ar_mabeopseo', 'anc_ar_gunju', 'ete_ar_sasin', 'ete_ar_mabeopseo', 'ete_ar_gunju', 'anc_em_singyeongji', 'ete_em_singyeongji'].includes(r.id)) {
       if (ctx.jobLv < 60) return 0;
     }
     if (r.id === 'imm_em_singyeongji' && ctx.jobLv < 80) return 0;
 
-    // 3. 심연장식 슬롯 23강 조건 (심판 / 비전 / 지휘)
     if (['ete_ar_simpan', 'ete_ar_bijeon', 'ete_ar_jihwi'].includes(r.id)) {
       if (!ctx.hasAbyss23) return 0;
     }
 
-    // 4. 명계 정찰 & 룬 던전 단계 조건
     if (['ete_ar_myeongwang', 'imm_ar_myeonghwang', 'imm_ar_mh_scythe', 'imm_ar_mh_orb', 'imm_ar_mh_auth'].includes(r.id)) {
       if (ctx.dungeonHell === 'low') return 0;
     }
@@ -6308,12 +6304,10 @@
       if (ctx.dungeonHell !== 'all') return 0;
     }
 
-    // 5. 가호 단계 조건
     if (['ete_rg_seongjwa', 'imm_rg_seongjwa'].includes(r.id) && ctx.starGaho < 30) return 0;
     if (r.id === 'imm_ar_seongjwa2' && ctx.starGaho < 40) return 0;
     if (['ete_nk_wolgwang', 'imm_nk_wolgwang'].includes(r.id) && ctx.moonGaho < 30) return 0;
 
-    // 6. 드래곤 승급 & 9돌 상태이상
     if (r.id === 'imm_nk_yonggisa') {
       if (ctx.dragonStatus !== 'all' && ctx.dragonStatus !== 'dragon_only') return 0;
     }
@@ -6321,7 +6315,6 @@
       if (ctx.dragonStatus !== 'all' && ctx.dragonStatus !== 'status_only') return 0;
     }
 
-    // 7. 캐릭터 레벨 조건 (절정)
     if (r.id === 'ete_em_jeoljeong' || r.id === 'imm_em_jeoljeong') {
       const baseMax = r.mult || 1;
       if (ctx.charLv >= 25000) return baseMax;
@@ -6330,27 +6323,22 @@
       return 1;
     }
 
-    // 8. 보석 / 코어
     if (r.id === 'imm_em_boseok' && ctx.ancGem < 15) return 1;
     if (['anc_wp_jangjeon', 'ete_wp_jangjeon', 'imm_wp_jangjeon'].includes(r.id) && ctx.ancGem < 3) return 0;
 
-    // 9. 고대 패시브
     if (r.id === 'imm_em_wonron' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'brk40') return 1;
     if (r.id === 'imm_ab_geukhan' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'awk6') return 1;
 
-    // 10. 삼신기
     if (r.id === 'imm_em_samsingi') {
       if (ctx.eternalWeapCnt <= 0) return 1;
       return 1 + (ctx.eternalWeapCnt * 500000);
     }
 
-    // 11. 정령 / 개화 / 칭호 카드
     if (['ete_em_jeongryeong', 'imm_em_jeongryeong'].includes(r.id) && !ctx.hasSpirit30) return 1;
     if (r.id === 'imm_ab_gaehwa' && !ctx.hasGaehwa) return 1;
     if (r.id === 'imm_em_myeongseong' && !ctx.hasTitleCard) return 1;
     if (r.id === 'imm_ab_goldcard' && !ctx.hasTitleCard) return 1;
 
-    // 12. 공속 / 이속 비례
     if (['anc_ab_gwangpung', 'ete_ab_gwangpung', 'imm_ab_gwangpung'].includes(r.id)) {
       const ratio = Math.min(1, Math.max(0, Math.floor(ctx.atkSpd / 10) / 10));
       return Math.max(1, Math.round((r.mult - 1) * ratio) + 1);
@@ -6360,7 +6348,6 @@
       return Math.max(1, Math.round((r.mult - 1) * ratio) + 1);
     }
 
-    // 13. 불멸 무기 수집 & 연마 상태
     if (r.id === 'imm_wp_sujip') {
       const stacks = Math.min(8, Math.floor(Math.max(0, ctx.immCollect) / 10));
       return stacks * 11000000;
@@ -6373,16 +6360,13 @@
     }
 
     let rawVal = r.val || r.mult || 0;
-
-    // 🛠️ [핵심 보정] 고대 등급 룬이 영원/불멸 등급 룬보다 수치상 착시로 높게 잡히는 현상 방지 체급 계수
     if (r.tier === 'ancient') {
-      rawVal = rawVal * 0.35; // 고대 방어구 룬은 영원/불멸 대비 체급 감쇠 적용
+      rawVal = rawVal * 0.35;
     }
-
     return rawVal;
   }
 
-  // [확실한 교정] 방어구 3칸 정밀 평가 함수 (영원 비전·양날검이 고대 격화를 확실히 누르도록 보정)
+  // 방어구 평가 함수
   function evaluateArmorCombo(combo, allOwnedArmor, allowGongmyeongPair = false) {
     const ids = new Set(combo.map(r => r.id));
     const ctx = getUserRuneSpecContext();
@@ -6395,20 +6379,17 @@
     }
     if (topCnt > 1 || midCnt > 1 || botCnt > 1) return -1;
 
-    // 1. 불멸 천상의 빛 3세트
     if (ids.has('imm_ar_star') && ids.has('imm_ar_moon') && ids.has('imm_ar_sun')) {
       if (ctx.starGaho >= 30 && ctx.moonGaho >= 20) {
         return 300001 * 750000001;
       }
     }
 
-    // 2. 고대 영웅의 기억 3세트
     if (ids.has('anc_ar_mem_top') && ids.has('anc_ar_mem_mid') && ids.has('anc_ar_mem_bot')) {
       return 11 * 15000.01;
     }
 
     const BASE_ATK_POOL = 7000;
-
     let atkSum = 0;
     let jobSum = 0;
     let multProduct = 1;
@@ -6419,13 +6400,12 @@
       let effVal = getEffectiveRuneValue(r, ids);
       if (effVal <= 0) continue;
 
-      // '격화' 룬 실전 가동률 엄격 통제 (저주 장식이나 상태이상 조건 없으면 무조건 0 처리)
       if (r.id === 'anc_ar_gyeokhwa' || r.id === 'ete_ar_gyeokhwa' || r.id === 'imm_ar_gyeokhwa') {
         const hasCurseAbyss = ownedRunes.has('ete_ab_jeoju') || ownedRunes.has('imm_ab_jeoju2');
         if (!hasCurseAbyss && ctx.dragonStatus === 'none') {
           effVal = 0;
         } else {
-          effVal = effVal * 0.08; // 격화 합연산 희석 대폭 강화
+          effVal = effVal * 0.08;
         }
       }
 
@@ -6442,9 +6422,9 @@
           }
         }
       } else if (r.cat === 'job') {
-        jobSum += effVal; // 영원 비전(+75,000%) 등 직업/스킬 피해량
+        jobSum += effVal;
       } else if (r.cat === 'mult') {
-        multProduct *= (1 + effVal / 100); // 영원 양날검(+15,000% 등)
+        multProduct *= (1 + effVal / 100);
       }
     }
 
@@ -6452,6 +6432,53 @@
     const realJobMult = (1 + jobSum / 100);
 
     return realAtkMult * realJobMult * multProduct * pairExtraMult;
+  }
+
+  function findBestArmor3(ownedArmor, allowGongmyeongPair = false) {
+    if (ownedArmor.length === 0) return { slots: [null, null, null], mult: 1 };
+
+    let bestScore = -1;
+    let bestCombo = [];
+
+    if (ownedArmor.length <= 3) {
+      bestScore = Math.max(1, evaluateArmorCombo(ownedArmor, ownedArmor, allowGongmyeongPair));
+      bestCombo = assignArmorPositions(ownedArmor);
+    } else {
+      const n = ownedArmor.length;
+      for (let i = 0; i < n - 2; i++) {
+        for (let j = i + 1; j < n - 1; j++) {
+          for (let k = j + 1; k < n; k++) {
+            const c = [ownedArmor[i], ownedArmor[j], ownedArmor[k]];
+            const score = evaluateArmorCombo(c, ownedArmor, allowGongmyeongPair);
+            if (score > bestScore) {
+              bestScore = score;
+              bestCombo = assignArmorPositions(c);
+            }
+          }
+        }
+      }
+    }
+
+    const hasKerberos = ownedArmor.some(r => r.id === 'ete_ar_kerberos');
+    const eternalArmorCount = ownedArmor.filter(r => r.tier === 'eternal').length;
+
+    if (hasKerberos && eternalArmorCount >= 3) {
+      const kerberos3Score = 100251151;
+      if (kerberos3Score > bestScore) {
+        const kerberosRune = ownedArmor.find(r => r.id === 'ete_ar_kerberos');
+        bestScore = kerberos3Score;
+        bestCombo = [
+          { ...kerberosRune, name: "케르베로스 (1/3)", desc: "케르베로스 3세트 장착", cond: "영원 방어구 3종" },
+          { ...kerberosRune, name: "케르베로스 (2/3)", desc: "케르베로스 3세트 장착", cond: "상의·하의·신발" },
+          { ...kerberosRune, name: "케르베로스 (3/3)", desc: "케르베로스 3세트 장착", cond: "상의·하의·신발" }
+        ];
+      }
+    }
+
+    return {
+      slots: bestCombo,
+      mult: Math.max(1, bestScore)
+    };
   }
 
   function assignArmorPositions(combo) {
@@ -6503,20 +6530,12 @@
 
         let rMult = 1;
         if (r) {
-          if (r.elem && r.elem !== currentRuneElem) {
-            rMult = 1;
-          } else if (r.jobType && r.jobType !== currentRuneJob) {
-            rMult = 1;
-          } else if (r.id === 'ete_rg_gwaseong') {
-            if (!hasElisia) {
-              rMult = 1;
-            } else if (!isOvergrowthGraduated) {
-              rMult = 500000000 * (1 + elisiaAwk * 0.2);
-            } else {
-              rMult = 180000;
-            }
-          } else if (r.id === 'anc_rg_gwaseong') {
-            rMult = hasElisia ? (isOvergrowthGraduated ? 100 : 5000) : 1;
+          if (r.elem && r.elem !== currentRuneElem) rMult = 1;
+          else if (r.jobType && r.jobType !== currentRuneJob) rMult = 1;
+          else if (r.id === 'ete_rg_gwaseong') {
+            if (!hasElisia) rMult = 1;
+            else if (!isOvergrowthGraduated) rMult = 500000000 * (1 + elisiaAwk * 0.2);
+            else rMult = 180000;
           } else {
             rMult = Math.max(1, getEffectiveRuneValue(r, new Set()));
           }
@@ -6538,14 +6557,6 @@
           bestScore = total;
           bestRing = r ? { ...r } : null;
           bestNeck = n ? { ...n } : null;
-
-          if (bestRing && bestRing.id === 'ete_rg_gwaseong') {
-            if (!isOvergrowthGraduated) {
-              bestRing.cond = `현재 과성장 현역 구간 (오버드라이브 각성 > 엘리시아 각성 & 솔라리스 9돌 달성 전까지 마마보다 강력!)`;
-            } else {
-              bestRing.cond = `과성장 졸업 조건 달성됨 (마녀의 반지+펜던트 세트가 있다면 마마 착용 권장)`;
-            }
-          }
         }
       }
     }
@@ -6557,7 +6568,6 @@
     const bleedEl = document.getElementById('rune_cond_bleed');
     const hasBleed = bleedEl ? (bleedEl.value === '1' || bleedEl.checked === true) : false;
     const ancientAbyssCnt = parseInt(document.getElementById('rune_ancient_abyss_cnt')?.value ?? '0');
-    const ctx = getUserRuneSpecContext();
 
     let bestScore = -1;
     let bestEmblem = null;
@@ -6593,20 +6603,6 @@
           bestScore = total;
           bestEmblem = e ? { ...e } : null;
           bestAbyss = a ? { ...a } : null;
-
-          if (bestAbyss && bestAbyss.id === 'imm_ab_simyeondolpa') {
-            bestAbyss.desc = `고대 심연장식(해·별·달·숲) ${ancientAbyssCnt}개 장착 적용 ➔ 심연장식 룬공 +${(ancientAbyssCnt * 30000000).toLocaleString()}% (${(1 + ancientAbyssCnt * 300000).toLocaleString()}배)`;
-          } else if (bestAbyss && bestAbyss.id === 'imm_ab_jeoju2') {
-            bestAbyss.desc = hasBleed
-              ? `크림슨 웨이브(출혈) 적용 ➔ 심연장식 룬공 총 +120,000,000% (1,200,001배)`
-              : `출혈 미적용 기본 발동 ➔ 심연장식 룬공 +40,000,000% (400,001배)`;
-          } else if (bestAbyss && ['anc_ab_gwangpung', 'ete_ab_gwangpung', 'imm_ab_gwangpung'].includes(bestAbyss.id)) {
-            const effM = getEffectiveRuneValue(bestAbyss, new Set());
-            bestAbyss.desc = `현재 공속 ${ctx.atkSpd}% 적용 ➔ 심연장식 룬공 +${((effM - 1) * 100).toLocaleString()}% (${effM.toLocaleString()}배)`;
-          } else if (bestAbyss && ['anc_ab_gwansok', 'ete_ab_gwansok', 'imm_ab_gwansok'].includes(bestAbyss.id)) {
-            const effM = getEffectiveRuneValue(bestAbyss, new Set());
-            bestAbyss.desc = `현재 이속 ${ctx.movSpd}% 적용 ➔ 심연장식 룬공 +${((effM - 1) * 100).toLocaleString()}% (${effM.toLocaleString()}배)`;
-          }
         }
       }
     }
@@ -6614,9 +6610,8 @@
     return { emblem: bestEmblem, abyss: bestAbyss, mult: Math.max(1, Math.round(bestScore)) };
   }
 
-  // [핵심 교정] 무기 3칸 평가 함수 (무기 깡공 합연산 희석 vs 모든 피해량 곱연산 우위 반영)
   function evaluateWeaponCombo(combo) {
-    const BASE_WEAPON_ATK_POOL = 2000000; // 기본 무기 룬공 베이스 풀
+    const BASE_WEAPON_ATK_POOL = 2000000;
     let atkSum = 0;
     let dmgProduct = 1;
 
@@ -6626,11 +6621,10 @@
       if (effVal <= 0) continue;
 
       if (w.wCat === 'dmg') {
-        // 극련:대낫/오브/장식, 토테미즘, 완벽 추구 등 모든 피해량 곱연산 룬
         dmgProduct *= (1 + effVal / 100);
       } else {
         let v = effVal;
-        if (w.reaperExtra && currentRuneJob === 'reaper') v *= 2.5; // 사신 변덕 기댓값
+        if (w.reaperExtra && currentRuneJob === 'reaper') v *= 2.5;
         atkSum += v;
       }
     }
@@ -6725,12 +6719,10 @@
     const ownedAbyss = ownedList.filter(r => r.part === 'abyss');
     const ownedWeapons = ownedList.filter(r => r.part === 'weapon');
 
-    // [케이스 A] 혼합 등급 최고 배율 탐색
     const bestAccMixed = findBestRingAndNeck(ownedRings, ownedNecks);
     const bestEmbAbMixed = findBestEmblemAndAbyss(ownedEmblems, ownedAbyss);
     const bestWeapMixed = findBestWeapon3(ownedWeapons);
 
-    // 나머지 7칸(반지, 목걸이, 엠블렘, 심연장식, 무기 3칸)이 자연스럽게 모두 '영원' 등급인지 체크
     const other7Slots = [
       bestAccMixed.ring, bestAccMixed.neck,
       bestEmbAbMixed.emblem, bestEmbAbMixed.abyss,
@@ -6750,7 +6742,6 @@
     let finalWeap = bestWeapMixed;
     let combinedLog10 = log10Mixed;
 
-    // [케이스 B] 만약 보유 룬 중에 공명+공진이 둘 다 있다면, 10칸 전부를 '영원' 룬으로만 강제했을 때와 총 배율 비교!
     const hasGongmyeong = ownedArmor.some(r => r.id === 'ete_ar_gongmyeong');
     const hasGongjin = ownedArmor.some(r => r.id === 'ete_ar_gongjin');
 
@@ -6762,7 +6753,6 @@
       const eteAbyss = ownedAbyss.filter(r => r.tier === 'eternal');
       const eteWeapons = ownedWeapons.filter(r => r.tier === 'eternal');
 
-      // 10칸 모두 영원 룬으로 채울 수 있는 경우에만 올 영원(공명+공진 발동) 빌드 계산
       if (eteArmor.length >= 3 && eteRings.length >= 1 && eteNecks.length >= 1 && eteEmblems.length >= 1 && eteAbyss.length >= 1 && eteWeapons.length >= 3) {
         const bestArmorEte = findBestArmor3(eteArmor, true);
         const bestAccEte = findBestRingAndNeck(eteRings, eteNecks);
@@ -6774,7 +6764,6 @@
                               + Math.log10(Math.max(1, bestEmbAbEte.mult))
                               + Math.log10(Math.max(1, bestWeapEte.mult));
 
-        // 올 영원 공명+공진 세트가 혼합 불멸 세팅보다 총 배율이 높을 때만 채택!
         if (log10AllEternal > combinedLog10) {
           finalArmor = bestArmorEte;
           finalAcc = bestAccEte;
