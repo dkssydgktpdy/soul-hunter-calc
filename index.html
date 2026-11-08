@@ -3416,10 +3416,10 @@
                   <input type="checkbox" id="rc_chk_no_penalty" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="width:15px; height:15px; accent-color:#ef4444;">
                   <span>🚫 <strong>페널티 룬 제외 (기면증/절제/저격수/골렘화/완력 등)</strong></span>
                 </label>
-                <div style="display:inline-flex; align-items:center; gap:5px; margin-left:auto;">
-                  <span>📚 불멸룬 도감 수(수집):</span>
-                  <input type="number" id="rc_imm_collect" value="80" min="0" max="95" step="10" oninput="calculateBestRuneLoadout(); triggerAutoSave();" style="width:60px; padding:3px 6px; font-size:12px; text-align:center;">
-                  <span>종</span>
+                <div style="display:inline-flex; align-items:center; gap:6px; margin-left:auto; background:rgba(56, 189, 248, 0.1); border:1px solid rgba(56, 189, 248, 0.3); padding:4px 10px; border-radius:6px;">
+                  <span>📚 보유한 불멸룬 도감 수:</span>
+                  <strong id="rc_imm_collect_display" style="color:#38bdf8; font-size:13.5px;">0</strong>
+                  <span>종 (자동 카운팅)</span>
                 </div>
               </div>
 
@@ -6242,8 +6242,11 @@
     if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  // 유저가 상단에서 설정한 상세 스펙 조건을 읽어오는 헬퍼
+  // 유저가 상단에서 설정한 상세 스펙 조건을 읽어오는 헬퍼 (불멸 도감 수는 보유한 불멸 룬 체크 개수로 자동 연동)
   function getUserRuneSpecContext() {
+    // [자동 연동] 현재 소유(체크)된 불멸 룬의 총 개수를 실시간으로 계산
+    const realImmortalCount = RUNE_DB.filter(r => r.tier === 'immortal' && ownedRunes.has(r.id)).length;
+
     return {
       atkSpd: parseFloat(document.getElementById('rc_atk_spd')?.value ?? '100'),
       movSpd: parseFloat(document.getElementById('rc_mov_spd')?.value ?? '200'),
@@ -6262,8 +6265,30 @@
       hasSpirit30: document.getElementById('rc_chk_spirit30')?.checked ?? true,
       hasTitleCard: document.getElementById('rc_chk_title_card')?.checked ?? true,
       noPenalty: document.getElementById('rc_chk_no_penalty')?.checked ?? false,
-      immCollect: parseInt(document.getElementById('rc_imm_collect')?.value ?? '80')
+      immCollect: realImmortalCount // 👈 수동 입력 대신 자동 카운팅된 불멸 룬 보유 개수 적용!
     };
+  }
+
+  function updateRunePartCounts() {
+    ['armor', 'ring', 'neck', 'emblem', 'abyss', 'weapon'].forEach(part => {
+      const list = RUNE_DB.filter(r => r.tier === currentRuneTierTab && r.part === part);
+      const ownedCnt = list.filter(r => ownedRunes.has(r.id)).length;
+      const badge = document.getElementById('rcnt_' + part);
+      if (badge) {
+        badge.innerText = `${ownedCnt} / ${list.length}`;
+        badge.classList.toggle('has-selected', ownedCnt > 0);
+      }
+    });
+
+    const totalBadge = document.getElementById('rune_owned_count_badge');
+    if (totalBadge) totalBadge.innerText = `총 보유 선택: ${ownedRunes.size}개`;
+
+    // 💡 [추가] 하단 상세 조건 패널에 현재 보유한 불멸 룬 개수 실시간 반영
+    const immDisplayEl = document.getElementById('rc_imm_collect_display');
+    if (immDisplayEl) {
+      const currentImmCount = RUNE_DB.filter(r => r.tier === 'immortal' && ownedRunes.has(r.id)).length;
+      immDisplayEl.innerText = currentImmCount;
+    }
   }
 
   // 개별 룬의 조건 달성 여부 및 수치 계산
