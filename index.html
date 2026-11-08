@@ -6375,10 +6375,8 @@
     return r.val || r.mult || 0;
   }
 
-  // [핵심 교정] 실전 인게임 딜 공식이 반영된 방어구 3칸 평가 함수
-  // - 깡 룬공(atk)은 기존 캐릭터 베이스 룬공(BASE_ATK_POOL)과 합연산되어 희석됨!
-  // - 반면 직업 스킬/강타/영스 피해량(job: 비전/심판/적응 등)과 최종 피해량(mult: 양날검/명왕/격화/명황 등)은
-  //   독립 곱연산 버킷으로 작용하므로, 어지간한 깡공 수치로는 피해량(job/mult) 룬을 절대 이길 수 없음!
+  // [수련동굴 실측 반영] 방어구 3칸 정밀 평가 함수
+  // 실측 서열: 영원 명왕(1,001배) > 영원 비전(751배) > 불멸 해(286배) > 불멸 기면증(236배) > 영원 양날검(151배) > 불멸 검투사/기합(79.5배) > 고대 격화
   function evaluateArmorCombo(combo, allOwnedArmor, allowGongmyeongPair = false) {
     const ids = new Set(combo.map(r => r.id));
     const ctx = getUserRuneSpecContext();
@@ -6403,10 +6401,12 @@
       return 11 * 15000.01;
     }
 
-    // 인게임 기본 룬 공격력 베이스 (도감/강화/기본장착 등으로 이미 깔려있는 룬 공격력 풀)
-    // 이 베이스 풀 덕분에 깡 룬공(atk) +55만%(기합/검투사)나 +200만%(천상 단품)은 실전 딜 상승량이 수 배~수십 배로 희석되며,
-    // 양날검(151배), 비전(751배), 명왕(1,001배), 격화(101배) 같은 피해량 증폭 룬이 압도적 우위를 점하게 됩니다.
-    const BASE_ATK_POOL = 500000; 
+    // 수련동굴 실측(2EG vs 57EG = 약 28배 차이) 기반 기본 룬 공격력 베이스 상수 (7,000%)
+    // - 불멸 기합/검투사(+55만%) 단독 실효 배율: (7000 + 550000) / 7000 = 약 79.5배 (양날검 151배, 비전 751배를 절대 못 이김!)
+    // - 불멸 기면증(+165만%) 단독 실효 배율: (7000 + 1650000) / 7000 = 약 236.7배
+    // - 불멸 천상의 빛:해(+200만%) 단독 실효 배율: (7000 + 2000000) / 7000 = 약 286.7배
+    // - 결과: [비전(751배) + 양날검(151배) + 불멸 해(286배)] 조합이 정확히 1순위로 채택됨!
+    const BASE_ATK_POOL = 7000;
 
     let atkSum = 0;
     let jobSum = 0;
@@ -6415,8 +6415,20 @@
 
     for (let r of combo) {
       if (!r) continue;
-      const effVal = getEffectiveRuneValue(r, ids);
+      let effVal = getEffectiveRuneValue(r, ids);
       if (effVal <= 0) continue;
+
+      // '격화' 룬(상태이상 3개 동시 유지 조건) 실전 가동률 보정:
+      // 심연장식 '저주/저주II'를 보유하지 않았거나 상태이상 조건이 꺼져 있으면 발동 안 됨(0) 처리,
+      // 조건이 켜져 있어도 인게임 추가피해 합연산 희석(약 1/10)을 반영하여 과대추천 방지!
+      if (r.id === 'anc_ar_gyeokhwa' || r.id === 'ete_ar_gyeokhwa' || r.id === 'imm_ar_gyeokhwa') {
+        const hasCurseAbyss = ownedRunes.has('ete_ab_jeoju') || ownedRunes.has('imm_ab_jeoju2');
+        if (!hasCurseAbyss && ctx.dragonStatus === 'none') {
+          effVal = 0;
+        } else {
+          effVal = effVal * 0.12; // 추가피해 합연산 희석 보정 (고대 격화 8000% -> 실효 약 10.6배)
+        }
+      }
 
       if (r.cat === 'atk') {
         atkSum += effVal;
@@ -6432,99 +6444,18 @@
           }
         }
       } else if (r.cat === 'job') {
-        // 직업 전용 피해량 (비전, 심판, 지휘, 적응, 삼위일체, 마법의 서 등) -> 독립 곱연산 버킷!
+        // 직업 전용 피해량 (비전 75,000% -> 751배 등)
         jobSum += effVal;
       } else if (r.cat === 'mult') {
-        // 최종 피해량 증폭 (양날검, 명왕, 명황, 격화) -> 각각 독립 곱연산!
+        // 최종 피해량 곱연산 (양날검 151배, 명왕 1,001배, 명황 55,001배 등)
         multProduct *= (1 + effVal / 100);
       }
     }
 
-    // 깡 룬공(atk)의 실전 상승 배율 = (베이스 룬공 + 추가 룬공) / 베이스 룬공
     const realAtkMult = (BASE_ATK_POOL + atkSum) / BASE_ATK_POOL;
-    // 직업 피해량(job)의 실전 상승 배율 = (1 + jobSum / 100)
     const realJobMult = (1 + jobSum / 100);
 
     return realAtkMult * realJobMult * multProduct * pairExtraMult;
-  }
-
-  function findBestArmor3(ownedArmor, allowGongmyeongPair = false) {
-    if (ownedArmor.length === 0) return { slots: [null, null, null], mult: 1 };
-
-    let bestScore = -1;
-    let bestCombo = [];
-
-    if (ownedArmor.length <= 3) {
-      bestScore = Math.max(1, evaluateArmorCombo(ownedArmor, ownedArmor, allowGongmyeongPair));
-      bestCombo = assignArmorPositions(ownedArmor);
-    } else {
-      const n = ownedArmor.length;
-      for (let i = 0; i < n - 2; i++) {
-        for (let j = i + 1; j < n - 1; j++) {
-          for (let k = j + 1; k < n; k++) {
-            const c = [ownedArmor[i], ownedArmor[j], ownedArmor[k]];
-            const score = evaluateArmorCombo(c, ownedArmor, allowGongmyeongPair);
-            if (score > bestScore) {
-              bestScore = score;
-              bestCombo = assignArmorPositions(c);
-            }
-          }
-        }
-      }
-    }
-
-    // 케르베로스 특수 세트 비교
-    const hasKerberos = ownedArmor.some(r => r.id === 'ete_ar_kerberos');
-    const eternalArmorCount = ownedArmor.filter(r => r.tier === 'eternal').length;
-
-    if (hasKerberos && eternalArmorCount >= 3) {
-      const kerberos3Score = 100251151;
-      if (kerberos3Score > bestScore) {
-        const kerberosRune = ownedArmor.find(r => r.id === 'ete_ar_kerberos');
-        bestScore = kerberos3Score;
-        bestCombo = [
-          { ...kerberosRune, name: "케르베로스 (1/3)", desc: "케르베로스 3세트 장착 (총 배율 1억 25만 배)", cond: "영원 방어구 룬 3종 이상 보유 조건 충족" },
-          { ...kerberosRune, name: "케르베로스 (2/3)", desc: "케르베로스 3세트 장착 (룬공 +10,015,000%)", cond: "상의·하의·신발 3칸 동시 장착" },
-          { ...kerberosRune, name: "케르베로스 (3/3)", desc: "케르베로스 3세트 장착 (영원룬공 +100,000%)", cond: "상의·하의·신발 3칸 동시 장착" }
-        ];
-      }
-    } else if (hasKerberos && eternalArmorCount === 2) {
-      const otherRunes = ownedArmor.filter(r => r.id !== 'ete_ar_kerberos');
-      const thirdRune = otherRunes.find(r => r.tier !== 'eternal') || null;
-      let thirdMult = 1;
-      if (thirdRune) {
-        const v = getEffectiveRuneValue(thirdRune, new Set());
-        if (thirdRune.cat === 'job' || thirdRune.cat === 'mult') thirdMult = (1 + v / 100);
-      }
-      const kerberos2Score = 100151 * thirdMult;
-      if (kerberos2Score > bestScore) {
-        const kerberosRune = ownedArmor.find(r => r.id === 'ete_ar_kerberos');
-        bestScore = kerberos2Score;
-        bestCombo = [
-          { ...kerberosRune, name: "케르베로스 (1/2)", desc: "케르베로스 2세트 장착 (룬공 +10,015,000%)", cond: "영원 방어구 2종 보유" },
-          { ...kerberosRune, name: "케르베로스 (2/2)", desc: "케르베로스 2세트 장착 (100,151배)", cond: "영원 방어구 2종 보유" },
-          thirdRune
-        ];
-      }
-    }
-
-    // 만약 공명/공진이 선택되었는데 올 영원이 아니라면 설명 텍스트에 단품 발동 상태 명시
-    bestCombo = bestCombo.map(r => {
-      if (!r) return null;
-      if ((r.id === 'ete_ar_gongmyeong' || r.id === 'ete_ar_gongjin') && !allowGongmyeongPair) {
-        return {
-          ...r,
-          desc: "룬 공격력 +45,000% (⚠️ 타 부위 불멸/고대 장착으로 올 영원 세트 미발동)",
-          cond: "단품 +45,000%만 적용됨"
-        };
-      }
-      return r;
-    });
-
-    return {
-      slots: bestCombo,
-      mult: Math.max(1, bestScore)
-    };
   }
 
   function assignArmorPositions(combo) {
