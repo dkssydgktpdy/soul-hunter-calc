@@ -141,6 +141,74 @@
     text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
   }
 
+  /* 직업 선택기 전용 라디오 버튼 스타일 (이미지 아이콘 포함) */
+  .job-pill-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: #0f172a;
+    border: 1.5px solid #334155;
+    color: #cbd5e1;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+  }
+  .job-pill-btn img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .job-pill-btn.selected {
+    border-color: #38bdf8;
+    background: rgba(56, 189, 248, 0.15);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+  }
+
+  /* 주속성 전용 입체 네온 구체(Orb) CSS (이모티콘 대체) */
+  .elem-orb {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+  }
+  /* 화염: 붉은 보석 + 타오르는 앰버 하이라이트 */
+  .orb-fire {
+    background: radial-gradient(circle at 35% 35%, #fef08a 0%, #f97316 45%, #b91c1c 80%, #450a0a 100%);
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.75), inset 0 0 4px #ffffff;
+    border: 1px solid rgba(254, 240, 138, 0.6);
+  }
+  /* 번개: 시원한 일렉트릭 블루 스파크 */
+  .orb-light {
+    background: radial-gradient(circle at 35% 35%, #ffffff 0%, #38bdf8 45%, #0284c7 75%, #082f49 100%);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.8), inset 0 0 4px #ffffff;
+    border: 1px solid rgba(186, 230, 253, 0.7);
+  }
+  /* 어둠: 신비로운 바이올렛 섀도우 */
+  .orb-dark {
+    background: radial-gradient(circle at 35% 35%, #f5d0fe 0%, #a855f7 50%, #581c87 80%, #1e1b4b 100%);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.75), inset 0 0 4px #ffffff;
+    border: 1px solid rgba(245, 208, 254, 0.6);
+  }
+
+  /* 카카오톡 노란색 로고 아이콘 */
+  .kakao-icon-img {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
   /* Top Mode Switcher */
   .mode-switcher {
     display: flex;
@@ -1677,13 +1745,42 @@
     </div>
   </header>
 
-  <!-- 메인 배너 직하단: 붉양님 종합공략 모음집 하이퍼링크 바 -->
-  <div class="lounge-link-banner">
+  <!-- 메인 배너 직하단: 붉양님 종합공략 모음집 링크 바 -->
+  <div class="lounge-link-banner" style="margin-bottom: 10px;">
     <div style="font-size:13.5px; color:#e2e8f0;">
       📌 <strong>인게임 전 분야 상세 공략 데이터가 궁금하시다면?</strong> (특성/장비/룬/직업별 원문 공략)
     </div>
     <a href="https://naver.me/xZKXssRU" target="_blank" rel="noopener noreferrer">
       📚 붉양님의 종합공략 모음집 바로가기 ➔
+    </a>
+  </div>
+
+ <!-- 공략 모음집 바로 밑: 소헌키 추천 오픈채팅 링크 2종 (우측 입장하기 + 카톡 아이콘 연동) -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; margin-bottom: 20px;">
+    <!-- 1. 정보 소통 공유방 -->
+    <a href="https://open.kakao.com/o/gUIl1N4h" target="_blank" rel="noopener noreferrer" 
+       style="background: #1e293b; border: 1.5px solid #6366f1; padding: 12px 16px; border-radius: 12px; text-decoration: none; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.25);">
+      <div>
+        <div style="font-size: 14px; font-weight: 800; color: #f8fafc; line-height: 1.3;">소울 헌터 키우기 정보 소통 공유방</div>
+        <div style="font-size: 11.5px; color: #cbd5e1; margin-top: 3px;">정보 소통 굇수들이 모인 심화 공략방!</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+        <span style="font-size: 12px; font-weight: 800; color: #a5b4fc; background: rgba(99, 102, 241, 0.22); padding: 5px 9px; border-radius: 6px; white-space: nowrap;">입장하기 ➔</span>
+        <img src="images/kakaotalk.png" alt="카카오톡" style="width: 28px; height: 28px; border-radius: 7px; object-fit: cover; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" onerror="this.onerror=null; this.src='kakaotalk.png';">
+      </div>
+    </a>
+
+    <!-- 2. 소헌키 친목방 -->
+    <a href="https://open.kakao.com/o/gVV38UUi" target="_blank" rel="noopener noreferrer" 
+       style="background: #1e293b; border: 1.5px solid #475569; padding: 12px 16px; border-radius: 12px; text-decoration: none; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.25);">
+      <div>
+        <div style="font-size: 14px; font-weight: 800; color: #f8fafc; line-height: 1.3;">소헌키 친목방</div>
+        <div style="font-size: 11.5px; color: #94a3b8; margin-top: 3px;">정보도 얻고 자유롭게 친목도 나누고 싶다면?</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+        <span style="font-size: 12px; font-weight: 800; color: #38bdf8; background: rgba(56, 189, 248, 0.18); padding: 5px 9px; border-radius: 6px; white-space: nowrap;">입장하기 ➔</span>
+        <img src="images/kakaotalk.png" alt="카카오톡" style="width: 28px; height: 28px; border-radius: 7px; object-fit: cover; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" onerror="this.onerror=null; this.src='kakaotalk.png';">
+      </div>
     </a>
   </div>
 
@@ -1723,96 +1820,123 @@
     </div>
   </div>
 
-  <!-- ==================== [NEW MODE] 🐣 뉴비 직업별 세팅 가이드 영역 ==================== -->
+  <!-- ==================== [MODE 2] 🐣 뉴비 직업별 세팅 가이드 영역 (누락 태그 복구) ==================== -->
   <div id="mode_guides_container" style="display:none;">
     
     <!-- 뉴비 가이드 메인 허브 -->
     <div id="guides_hub_view">
-      <!-- 고대 패시브 선행 투자 강력 권장 안내 & 하이퍼링크 배너 -->
-      <div class="card" style="border-left: 4px solid #a855f7; background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); padding: 20px 22px; margin-bottom: 22px;">
-        <div style="font-size:16.5px; font-weight:800; color:#f8fafc; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
-          <span>🔮</span>
-          <span>잠깐! 스킬·영웅을 각성하기 전에 [고대 패시브]를 먼저 맞추셨나요?</span>
-        </div>
-        <p style="font-size:13.5px; color:#cbd5e1; margin-bottom:12px; line-height:1.65;">
-          스킬과 영웅 각성에 각성석을 먼저 쓰기보다, <strong>고대 패시브(1~3순위)</strong>를 최우선으로 제작하는 것이 <strong>각성석 재화를 가장 많이 아끼면서 압도적으로 빠르게 강해질 수 있는 핵심 루트</strong>입니다! 아직 고대 패시브 순서를 모르신다면 아래 공략글을 꼭 먼저 확인해 보세요.
-        </p>
-        <a href="https://naver.me/FNtUSE2n" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; background:#6366f1; color:#ffffff; font-weight:800; font-size:13.5px; padding:8px 16px; border-radius:8px; text-decoration:none; box-shadow:0 4px 12px rgba(99,102,241,0.4);">
-          📖 겨울눈사람의 효율적인 고대 패시브 & 각성 가이드 보러가기 ➔
-        </a>
-      </div>
 
-      <div class="hub-section">
-        <div class="hub-section-title" style="border-left-color:#f59e0b;">
-          <span>🐣 직업별 · 전직 차수별 (초기 ~ 4차) 세팅 가이드</span>
+      <!-- 1. [뉴비 필수 코스] 아코디언 (기본 열림: active) -->
+      <div class="accordion-item active" id="acc_guide_newbie" style="margin-bottom: 16px; border-left: 4px solid #eab308;">
+        <div class="accordion-header" onclick="toggleNewbieAccordion('acc_guide_newbie')">
+          <div class="accordion-left">
+            <span class="accordion-toggle-icon">▶</span>
+            <span class="accordion-title-text" style="color: #fef08a;">🐣 5,000렙 달성 뉴비 필수 코스 (스킬 4➔5칸 & 영웅 3➔4칸 해금)</span>
+          </div>
+          <div class="accordion-right-info">
+            <span class="accordion-count-badge has-selected">추천 입문</span>
+          </div>
         </div>
-        <div class="hub-grid">
-          <!-- 1. 극초반 가이드 (첫 번째로 이동 및 텍스트 수정) -->
-          <div class="hub-card" onclick="openBuildGuideDetail('early')" style="border-color:rgba(234,179,8,0.45);">
+        <div class="accordion-content" style="padding: 14px;">
+          <div class="hub-card" onclick="openBuildGuideDetail('early')">
             <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#eab308; background:rgba(234,179,8,0.12);">
+              <div class="hub-card-icon" style="border-color:#eab308; background:#0f172a;">
                 <img src="images/chick.png" alt="극초반" onerror="this.onerror=null; this.parentElement.innerHTML='🐣';">
               </div>
               <div>
-                <span class="hub-card-title">🐣 극초반 스킬/영웅 가이드</span>
-                <span class="hub-card-desc">Lv.5,000 이후 (스킬 4➔5칸 & 영웅 3➔4칸 해금 필수 빌드)</span>
+                <span class="hub-card-title">🐣 극초반 스킬 & 영웅 추천 빌드 가이드</span>
+                <span class="hub-card-desc">5,000레벨 이후 슬롯 확장 시 무엇부터 끼고 올려야 할지 모른다면 무조건 여기부터 확인하세요!</span>
               </div>
             </div>
             <div class="hub-card-arrow">➔</div>
           </div>
+        </div>
+      </div>
 
-          <!-- 2. 직업별 스킬 세팅 가이드 (두 번째로 이동) -->
-          <div class="hub-card" onclick="openBuildGuideDetail('skill')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#fbbf24;">
-                <img src="images/hell.png" alt="스킬" onerror="this.onerror=null; this.src='images/hell.jpg'; this.onerror=function(){this.parentElement.innerHTML='⚡';};">
-              </div>
-              <div>
-                <span class="hub-card-title"> 직업별 스킬 세팅 가이드</span>
-                <span class="hub-card-desc">사신/앜메/닼로 & 불/번개/어둠 초기~4차 슬롯별 정석 스킬 트리</span>
-              </div>
+      <!-- 2. [심화 세팅 가이드] 아코디언 (기본 닫힘 / 열었을 때 고대 패시브 링크박스가 안쪽 최상단에 노출) -->
+      <div class="accordion-item" id="acc_guide_deep" style="margin-bottom: 24px; border-left: 4px solid #38bdf8;">
+        <div class="accordion-header" onclick="toggleNewbieAccordion('acc_guide_deep')">
+          <div class="accordion-left">
+            <span class="accordion-toggle-icon">▶</span>
+            <span class="accordion-title-text">⚔️ 직업별 · 전직 차수별 (초기 ~ 4차) 심화 세팅 가이드</span>
+          </div>
+          <div class="accordion-right-info">
+            <span class="accordion-count-badge">4개 가이드</span>
+          </div>
+        </div>
+        <div class="accordion-content" style="padding: 14px;">
+          
+          <!-- 아코디언 안쪽 최상단: 고대 패시브 권장 배너 박스 -->
+          <div class="card" style="border-left: 4px solid #a855f7; background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); padding: 16px 18px; margin: 0 0 16px 0;">
+            <div style="font-size:15.5px; font-weight:800; color:#f8fafc; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+              <span>🔮</span>
+              <span>잠깐! 심화 세팅(스킬·영웅 각성) 전에 [고대 패시브]를 먼저 맞추셨나요?</span>
             </div>
-            <div class="hub-card-arrow">➔</div>
+            <p style="font-size:13px; color:#cbd5e1; margin-bottom:10px; line-height:1.6;">
+              스킬과 영웅 각성에 각성석을 먼저 쓰기보다, <strong>고대 패시브(1~3순위)</strong>를 최우선 제작하는 것이 재화를 가장 아끼며 빠르게 강해지는 정석 루트입니다.
+            </p>
+            <a href="https://naver.me/FNtUSE2n" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; background:#6366f1; color:#ffffff; font-weight:800; font-size:13px; padding:7px 14px; border-radius:8px; text-decoration:none;">
+              📖 겨울눈사람의 효율적인 고대 패시브 & 각성 가이드 보러가기 ➔
+            </a>
           </div>
 
-          <!-- 3. 직업별 영웅 세팅 가이드 -->
-          <div class="hub-card" onclick="openBuildGuideDetail('hero')" style="border-color:rgba(244,63,94,0.45);">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#f43f5e; background:rgba(244,63,94,0.12);">
-                <img src="images/elisia.png" alt="영웅" onerror="this.onerror=null; this.src='images/elisia.png'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
+          <!-- 심화 가이드 4종 카드 그리드 -->
+          <div class="hub-grid">
+            <!-- 1. 직업별 스킬 세팅 가이드 -->
+            <div class="hub-card" onclick="openBuildGuideDetail('skill')">
+              <div class="hub-card-left">
+                <div class="hub-card-icon" style="border-color:#fbbf24;">
+                  <img src="images/hell.png" alt="스킬" onerror="this.onerror=null; this.src='images/hell.jpg'; this.onerror=function(){this.parentElement.innerHTML='⚡';};">
+                </div>
+                <div>
+                  <span class="hub-card-title">직업별 스킬 세팅 가이드</span>
+                  <span class="hub-card-desc">사신/앜메/닼로 & 불/번개/어둠 초기~4차 슬롯별 정석 스킬 트리</span>
+                </div>
               </div>
-              <div>
-                <span class="hub-card-title"> 직업별 영웅 세팅 가이드</span>
-                <span class="hub-card-desc">과성장(엘리시아) vs 솔라리스 분기 & 플레어류↔이그니스류 교체 기준</span>
-              </div>
+              <div class="hub-card-arrow">➔</div>
             </div>
-            <div class="hub-card-arrow">➔</div>
-          </div>
 
-          <div class="hub-card" onclick="openBuildGuideDetail('transition')" style="border-color:rgba(56,189,248,0.45);">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#38bdf8; background:rgba(56,189,248,0.12);">
-                <span style="font-size:24px;">🔄</span>
+            <!-- 2. 직업별 영웅 세팅 가이드 -->
+            <div class="hub-card" onclick="openBuildGuideDetail('hero')" style="border-color:rgba(244,63,94,0.45);">
+              <div class="hub-card-left">
+                <div class="hub-card-icon" style="border-color:#f43f5e; background:rgba(244,63,94,0.12);">
+                  <img src="images/elisia.png" alt="영웅" onerror="this.onerror=null; this.src='images/elisia.PNG'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
+                </div>
+                <div>
+                  <span class="hub-card-title">직업별 영웅 세팅 가이드</span>
+                  <span class="hub-card-desc">과성장(엘리시아) vs 솔라리스 분기 & 플레어류↔이그니스류 교체 기준</span>
+                </div>
               </div>
-              <div>
-                <span class="hub-card-title">🔄 사신 ➔ 아크메이지 전환 가이드</span>
-                <span class="hub-card-desc">언제 사신에서 미스틱(앜메)으로 넘어가야 할까? 핵심 전환 타이밍 & 준비물</span>
-              </div>
+              <div class="hub-card-arrow">➔</div>
             </div>
-            <div class="hub-card-arrow">➔</div>
-          </div>
 
-          <div class="hub-card" style="opacity:0.6; cursor:not-allowed;">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#64748b; background:#1e293b;">
-                <img src="images/main_passive.png" alt="패시브" onerror="this.onerror=null; this.parentElement.innerHTML='📜';">
+            <!-- 3. 사신 -> 아크메이지 전환 가이드 -->
+            <div class="hub-card" onclick="openBuildGuideDetail('transition')" style="border-color:rgba(56,189,248,0.45);">
+              <div class="hub-card-left">
+                <div class="hub-card-icon" style="border-color:#38bdf8; background:rgba(56,189,248,0.12);">
+                  <span style="font-size:24px;">🔄</span>
+                </div>
+                <div>
+                  <span class="hub-card-title">🔄 사신 ➔ 아크메이지 전환 가이드</span>
+                  <span class="hub-card-desc">언제 사신에서 미스틱(앜메)으로 넘어가야 할까? 핵심 전환 타이밍 & 준비물</span>
+                </div>
               </div>
-              <div>
-                <span class="hub-card-title">📜 패시브 & 정령 세팅 가이드 🔒</span>
-                <span class="hub-card-desc">현재 개발 중입니다 (추후 업데이트 예정)</span>
-              </div>
+              <div class="hub-card-arrow">➔</div>
             </div>
-            <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">개발 중</span>
+
+            <!-- 4. 패시브 & 정령 세팅 (준비 중) -->
+            <div class="hub-card" style="opacity:0.6; cursor:not-allowed;">
+              <div class="hub-card-left">
+                <div class="hub-card-icon" style="border-color:#64748b; background:#1e293b;">
+                  <img src="images/main_passive.png" alt="패시브" onerror="this.onerror=null; this.parentElement.innerHTML='📜';">
+                </div>
+                <div>
+                  <span class="hub-card-title">📜 패시브 & 정령 세팅 가이드 🔒</span>
+                  <span class="hub-card-desc">현재 개발 중입니다 (추후 업데이트 예정)</span>
+                </div>
+              </div>
+              <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">개발 중</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1829,23 +1953,41 @@
           내 직업과 주속성을 선택하면 전직 차수별 슬롯 수에 맞춘 최적의 편성과 육성 우선순위를 확인할 수 있습니다.
         </p>
 
-        <!-- 직업 & 속성 라디오 선택 바 (스킬/영웅 가이드 시 노출) -->
+        <!-- 직업 & 속성 라디오 선택 바 (문양 이미지 + 입체 구체 적용) -->
         <div class="grid-2" id="guide_job_elem_selector" style="margin-bottom:18px;">
           <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
             <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 직업 계열 선택 (택 1)</label>
             <div class="radio-pill-group">
-              <div class="radio-pill selected" id="g_job_reaper" onclick="selectGuideJob('reaper')">🗡️ 사신 (소울/그림리퍼)</div>
-              <div class="radio-pill" id="g_job_mage" onclick="selectGuideJob('mage')">🧙‍♂️ 아크메이지 (미스틱/슈프림)</div>
-              <div class="radio-pill" id="g_job_lord" onclick="selectGuideJob('lord')">👑 다크로드 (오버로드/소울이터)</div>
+              <div class="radio-pill job-pill-btn selected" id="g_job_reaper" onclick="selectGuideJob('reaper')">
+                <img src="images/reaper.png" alt="사신" onerror="this.onerror=null; this.src='reaper.png';">
+                <span>사신 (소울/그림리퍼)</span>
+              </div>
+              <div class="radio-pill job-pill-btn" id="g_job_mage" onclick="selectGuideJob('mage')">
+                <img src="images/mystic.png" alt="아크메이지" onerror="this.onerror=null; this.src='mystic.png';">
+                <span>아크메이지 (미스틱/슈프림)</span>
+              </div>
+              <div class="radio-pill job-pill-btn" id="g_job_lord" onclick="selectGuideJob('lord')">
+                <img src="images/overload.png" alt="다크로드" onerror="this.onerror=null; this.src='overload.png';">
+                <span>다크로드 (오버로드/소울이터)</span>
+              </div>
             </div>
           </div>
 
           <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
             <label style="color:#fbbf24; margin-bottom:8px;">🔥 주속성 선택 (택 1)</label>
             <div class="radio-pill-group">
-              <div class="radio-pill selected" id="g_elem_fire" onclick="selectGuideElem('fire')">🔥 불 속성</div>
-              <div class="radio-pill" id="g_elem_light" onclick="selectGuideElem('light')">⚡ 번개 속성</div>
-              <div class="radio-pill" id="g_elem_dark" onclick="selectGuideElem('dark')">🌑 어둠 속성</div>
+              <div class="radio-pill job-pill-btn selected" id="g_elem_fire" onclick="selectGuideElem('fire')">
+                <span class="elem-orb orb-fire"></span>
+                <span>화염 속성</span>
+              </div>
+              <div class="radio-pill job-pill-btn" id="g_elem_light" onclick="selectGuideElem('light')">
+                <span class="elem-orb orb-light"></span>
+                <span>번개 속성</span>
+              </div>
+              <div class="radio-pill job-pill-btn" id="g_elem_dark" onclick="selectGuideElem('dark')">
+                <span class="elem-orb orb-dark"></span>
+                <span>어둠 속성</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1856,7 +1998,7 @@
     </div>
 
   </div>
-
+  <!-- ==================== [MODE 2 끝] ==================== -->
 
   <!-- ==================== [MODE 1] 심화 공략 영역 ==================== -->
   <div id="mode_deep_container">
@@ -1864,96 +2006,120 @@
     <!-- 심화 공략 메인 허브 (선택 화면) -->
     <div id="deep_hub_view">
       
-      <!-- 섹션 1: 영원무기 관련 기댓값 계산기 -->
+      <!-- 섹션 1: 영원무기 관련 기댓값 계산기 (기본 닫힘) -->
       <div class="hub-section">
-        <div class="hub-section-title">
-          <span>⚔️ 영원무기 관련 기댓값 계산기</span>
-        </div>
-        <div class="hub-grid">
-          <div class="hub-card" onclick="openDeepCalculator('tab-refine')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#38bdf8;">
-                <img src="images/elem_buffing.png" alt="연마" onerror="this.onerror=null; this.src='images/scythe.png'; this.onerror=function(){this.parentElement.innerHTML='🔨';};">
-              </div>
-              <div>
-                <span class="hub-card-title">🔨 영원 장비 연마</span>
-                <span class="hub-card-desc">Lv.0 ~ 20 마르코프 연쇄 정밀 연마 시뮬레이터</span>
-              </div>
+        <div class="accordion-item" id="acc_calc_weapon" style="border-left: 4px solid #38bdf8;">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_weapon')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text">⚔️ 영원무기 관련 기댓값 계산기</span>
             </div>
-            <div class="hub-card-arrow">➔</div>
+            <div class="accordion-right-info"><span class="accordion-count-badge">2개 계산기</span></div>
           </div>
-
-          <div class="hub-card" onclick="openDeepCalculator('tab-orb')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#f43f5e;">
-                <img src="images/elem_option.png" alt="옵션변환" onerror="this.onerror=null; this.src='images/elem_create.jpg'; this.onerror=function(){this.parentElement.innerHTML='🌌';};">
+          <div class="accordion-content" style="padding: 14px;">
+            <div class="hub-grid">
+              <div class="hub-card" onclick="openDeepCalculator('tab-refine')">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#38bdf8;">
+                    <img src="images/elem_buffing.png" alt="연마" onerror="this.onerror=null; this.src='images/scythe.png'; this.onerror=function(){this.parentElement.innerHTML='🔨';};">
+                  </div>
+                  <div>
+                    <span class="hub-card-title">🔨 영원 장비 연마</span>
+                    <span class="hub-card-desc">Lv.0 ~ 20 마르코프 연쇄 정밀 연마 시뮬레이터</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow">➔</div>
               </div>
-              <div>
-                <span class="hub-card-title">🌌 영원 장비 옵션 변환</span>
-                <span class="hub-card-desc">대낫/오브 SSS·SS 1·2옵션 곱연산 & 심연정수 기댓값</span>
+
+              <div class="hub-card" onclick="openDeepCalculator('tab-orb')">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#f43f5e;">
+                    <img src="images/elem_option.png" alt="옵션변환" onerror="this.onerror=null; this.src='images/elem_create.jpg'; this.onerror=function(){this.parentElement.innerHTML='🌌';};">
+                  </div>
+                  <div>
+                    <span class="hub-card-title">🌌 영원 장비 옵션 변환</span>
+                    <span class="hub-card-desc">대낫/오브 SSS·SS 1·2옵션 곱연산 & 심연정수 기댓값</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow">➔</div>
               </div>
             </div>
-            <div class="hub-card-arrow">➔</div>
           </div>
         </div>
       </div>
 
-      <!-- 섹션 2: 각성석 사용 관련 계산기 -->
+      <!-- 섹션 2: 고대 패시브 & 각성석 관련 계산기 (기본 닫힘) -->
       <div class="hub-section">
-        <div class="hub-section-title">
-          <span>🔮 각성석 사용 관련 계산기</span>
-        </div>
-        <div class="hub-grid">
-          <div class="hub-card" onclick="openDeepCalculator('tab-passive')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#a855f7;">
-                <img src="images/ancient_passive.png" alt="고패" onerror="this.onerror=null; this.src='images/frenzy.jpg'; this.onerror=function(){this.parentElement.innerHTML='🔮';};">
-              </div>
-              <div>
-                <span class="hub-card-title">🔮 고대 패시브</span>
-                <span class="hub-card-desc">직업별 3고패 자동선택, 종결 합성 & 주간 파밍 예측</span>
-              </div>
+        <div class="accordion-item" id="acc_calc_awakening" style="border-left: 4px solid #a855f7;">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_awakening')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text">🔮 고대 패시브 & 각성석 관련 계산기</span>
             </div>
-            <div class="hub-card-arrow">➔</div>
+            <div class="accordion-right-info"><span class="accordion-count-badge">2개 계산기</span></div>
           </div>
-
-          <div class="hub-card" onclick="openDeepCalculator('tab-synergy')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#f59e0b;">
-                <img src="images/synergy.png" alt="각성시너지" onerror="this.onerror=null; this.src='images/command.jpg'; this.onerror=function(){this.parentElement.innerHTML='✨';};">
+          <div class="accordion-content" style="padding: 14px;">
+            <div class="hub-grid">
+              <div class="hub-card" onclick="openDeepCalculator('tab-passive')">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#a855f7;">
+                    <img src="images/ancient_passive.png" alt="고패" onerror="this.onerror=null; this.src='images/frenzy.jpg'; this.onerror=function(){this.parentElement.innerHTML='🔮';};">
+                  </div>
+                  <div>
+                    <span class="hub-card-title">🔮 고대 패시브</span>
+                    <span class="hub-card-desc">직업별 3고패 자동선택, 종결 합성 & 주간 파밍 예측</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow">➔</div>
               </div>
-              <div>
-                <span class="hub-card-title">✨ 각성 시너지 점수 계산기</span>
-                <span class="hub-card-desc">미사용 1각시 시너지 점수 및 공격력(%) 계산</span>
+
+              <div class="hub-card" onclick="openDeepCalculator('tab-synergy')">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#f59e0b;">
+                    <img src="images/synergy.png" alt="각성시너지" onerror="this.onerror=null; this.src='images/command.jpg'; this.onerror=function(){this.parentElement.innerHTML='✨';};">
+                  </div>
+                  <div>
+                    <span class="hub-card-title">✨ 각성 시너지 점수 계산기</span>
+                    <span class="hub-card-desc">미사용 1각시 시너지 점수 및 공격력(%) 계산</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow">➔</div>
               </div>
             </div>
-            <div class="hub-card-arrow">➔</div>
           </div>
         </div>
       </div>
 
-      <!-- 섹션 3: 어빌리티 기댓값 및 재화 계산기 -->
+      <!-- 섹션 3: 어빌리티 기댓값 및 재화 계산기 (기본 닫힘) -->
       <div class="hub-section">
-        <div class="hub-section-title">
-          <span>🌙 어빌리티 기댓값 및 재화 계산기</span>
-        </div>
-        <div class="hub-grid">
-          <div class="hub-card" onclick="openDeepCalculator('tab-ability')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#22c55e;">
-                <img src="images/option_dice.png" alt="어빌" onerror="this.onerror=null; this.src='images/elem_light.jpg'; this.onerror=function(){this.parentElement.innerHTML='🌙';};">
-              </div>
-              <div>
-                <span class="hub-card-title">🌙 가호 & 원혼 어빌리티</span>
-                <span class="hub-card-desc">별/달/해/유성 가호 및 원혼 단계별 잠금 옵션 주사위 계산</span>
+        <div class="accordion-item" id="acc_calc_ability" style="border-left: 4px solid #22c55e;">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_ability')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text">🌙 어빌리티 기댓값 및 재화 계산기</span>
+            </div>
+            <div class="accordion-right-info"><span class="accordion-count-badge">1개 계산기</span></div>
+          </div>
+          <div class="accordion-content" style="padding: 14px;">
+            <div class="hub-grid">
+              <div class="hub-card" onclick="openDeepCalculator('tab-ability')">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#22c55e;">
+                    <img src="images/option_dice.png" alt="어빌" onerror="this.onerror=null; this.src='images/elem_light.jpg'; this.onerror=function(){this.parentElement.innerHTML='🌙';};">
+                  </div>
+                  <div>
+                    <span class="hub-card-title">🌙 가호 & 원혼 어빌리티</span>
+                    <span class="hub-card-desc">별/달/해/유성 가호 및 원혼 단계별 잠금 옵션 주사위 계산</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow">➔</div>
               </div>
             </div>
-            <div class="hub-card-arrow">➔</div>
           </div>
         </div>
       </div>
 
-      <!-- 섹션 4: 소울커넥트 코어 세팅 도우미 -->
+      <!-- 섹션 4: 소울커넥트 코어 세팅 도우미 (세팅 도우미 모드 전용) -->
       <div class="hub-section">
         <div class="hub-section-title" style="border-left-color:#a855f7;">
           <span><span class="sc-title-fx"></span>소울커넥트 코어 세팅 & 배율 도우미</span>
@@ -2621,23 +2787,41 @@
             </div>
           </div>
 
-          <!-- 2. 직업 & 속성 선택 -->
+          <!-- 2. 직업 & 속성 선택 (문양 이미지 + 입체 구체 적용) -->
           <div class="grid-2" style="margin-bottom:14px;">
             <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
               <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 내 직업 선택 (택 1)</label>
               <div class="radio-pill-group">
-                <div class="radio-pill selected" id="sc_job_reaper" onclick="selectConnectJob('reaper')">🗡️ 대사신 (강타)</div>
-                <div class="radio-pill" id="sc_job_mage" onclick="selectConnectJob('mage')">🧙‍♂️ 미스틱/아크메이지 (스킬)</div>
-                <div class="radio-pill" id="sc_job_lord" onclick="selectConnectJob('lord')">👑 팬텀 (영웅스킬)</div>
+                <div class="radio-pill job-pill-btn selected" id="sc_job_reaper" onclick="selectConnectJob('reaper')">
+                  <img src="images/reaper.png" alt="대사신" onerror="this.onerror=null; this.src='reaper.png';">
+                  <span>대사신 (강타)</span>
+                </div>
+                <div class="radio-pill job-pill-btn" id="sc_job_mage" onclick="selectConnectJob('mage')">
+                  <img src="images/mystic.png" alt="아크메이지" onerror="this.onerror=null; this.src='mystic.png';">
+                  <span>아크메이지 (스킬)</span>
+                </div>
+                <div class="radio-pill job-pill-btn" id="sc_job_lord" onclick="selectConnectJob('lord')">
+                  <img src="images/overload.png" alt="팬텀" onerror="this.onerror=null; this.src='overload.png';">
+                  <span>팬텀 (영웅스킬)</span>
+                </div>
               </div>
             </div>
 
             <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
               <label style="color:#fbbf24; margin-bottom:8px;">🔥 내 주속성 선택 (택 1)</label>
               <div class="radio-pill-group">
-                <div class="radio-pill selected" id="sc_elem_fire" onclick="selectConnectElem('fire')">🔥 불 속성</div>
-                <div class="radio-pill" id="sc_elem_light" onclick="selectConnectElem('light')">⚡ 번개 속성</div>
-                <div class="radio-pill" id="sc_elem_dark" onclick="selectConnectElem('dark')">🌑 어둠 속성</div>
+                <div class="radio-pill job-pill-btn selected" id="sc_elem_fire" onclick="selectConnectElem('fire')">
+                  <span class="elem-orb orb-fire"></span>
+                  <span>화염 속성</span>
+                </div>
+                <div class="radio-pill job-pill-btn" id="sc_elem_light" onclick="selectConnectElem('light')">
+                  <span class="elem-orb orb-light"></span>
+                  <span>번개 속성</span>
+                </div>
+                <div class="radio-pill job-pill-btn" id="sc_elem_dark" onclick="selectConnectElem('dark')">
+                  <span class="elem-orb orb-dark"></span>
+                  <span>어둠 속성</span>
+                </div>
               </div>
             </div>
           </div>
@@ -2746,91 +2930,98 @@
   <!-- ==================== [MODE 2] NEWBIE SECTION (v.2.1.0) ==================== -->
   <div id="mode_newbie_container" style="display:none;">
     
-    <!-- 1. 뉴비 공략 메인 허브 (섹션 분리: 소환 계산기 & 룬 착용 도우미) -->
+    <!-- 누락되었던 newbie_hub_view 태그 복구 -->
     <div id="newbie_hub_view">
-      
-      <!-- 섹션 1: 소환 확률 기댓값 & 재화 계산기 -->
+      <!-- 섹션 1: 소환 확률 기댓값 & 재화 계산기 (기본 닫힘) -->
       <div class="hub-section">
-        <div class="hub-section-title" style="border-left-color:#f59e0b;">
-          <span>🎲 소환 확률 기댓값 & 재화 계산기</span>
-        </div>
-        <div class="hub-grid">
-          <div class="hub-card" onclick="openNewbieCalculator('equip')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#38bdf8;">
-                <img src="images/main_equip.png" alt="장비" onerror="this.onerror=null; this.src='images/main_equip.jpg'; this.onerror=function(){this.parentElement.innerHTML='🗡️';};">
-              </div>
-              <div>
-                <span class="hub-card-title">🗡️ 장비 소환</span>
-                <span class="hub-card-desc">대낫/오브(100)·장식(200) | 전 등급 27슬롯 일괄 합성</span>
-              </div>
+        <div class="accordion-item" id="acc_calc_summon" style="border-left: 4px solid #f59e0b;">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_summon')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text">🎲 소환 확률 기댓값 & 재화 계산기</span>
             </div>
-            <div class="hub-card-arrow">➔</div>
+            <div class="accordion-right-info"><span class="accordion-count-badge">5개 소환 계산기</span></div>
           </div>
-
-          <div class="hub-card" onclick="openNewbieCalculator('passive')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#a855f7;">
-                <img src="images/main_passive.png" alt="패시브" onerror="this.onerror=null; this.src='images/main_passive.jpg'; this.onerror=function(){this.parentElement.innerHTML='📜';};">
+          <div class="accordion-content" style="padding: 14px;">
+            <div class="hub-grid">
+              <div class="hub-card" onclick="openNewbieCalculator('equip')">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#38bdf8;">
+                    <img src="images/main_equip.png" alt="장비" onerror="this.onerror=null; this.src='images/main_equip.jpg'; this.onerror=function(){this.parentElement.innerHTML='🗡️';};">
+                  </div>
+                  <div>
+                    <span class="hub-card-title">🗡️ 장비 소환</span>
+                    <span class="hub-card-desc">대낫/오브(100)·장식(200) | 전 등급 27슬롯 일괄 합성</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow">➔</div>
               </div>
-              <div>
-                <span class="hub-card-title">📜 패시브 소환</span>
-                <span class="hub-card-desc">200 다이아 | 등급별 아코디언 & 특정 패시브 10돌파</span>
+
+              <div class="hub-card" onclick="openNewbieCalculator('passive')">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#a855f7;">
+                    <img src="images/main_passive.png" alt="패시브" onerror="this.onerror=null; this.src='images/main_passive.jpg'; this.onerror=function(){this.parentElement.innerHTML='📜';};">
+                  </div>
+                  <div>
+                    <span class="hub-card-title">📜 패시브 소환</span>
+                    <span class="hub-card-desc">200 다이아 | 등급별 아코디언 & 특정 패시브 10돌파</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow">➔</div>
+              </div>
+
+              <div class="hub-card" onclick="openNewbieCalculator('skill')">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#fbbf24;">
+                    <img src="images/main_skill.png" alt="스킬" onerror="this.onerror=null; this.src='images/main_skill.jpg'; this.onerror=function(){this.parentElement.innerHTML='⚡';};">
+                  </div>
+                  <div>
+                    <span class="hub-card-title">⚡ 스킬 소환</span>
+                    <span class="hub-card-desc">200 다이아 | 픽업(0.1%+15장) vs 통상(상시) 비교</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow">➔</div>
+              </div>
+
+              <div class="hub-card" onclick="openNewbieCalculator('hero')">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#f43f5e;">
+                    <img src="images/main_hero.png" alt="영웅" onerror="this.onerror=null; this.src='images/main_hero.jpg'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
+                  </div>
+                  <div>
+                    <span class="hub-card-title">🦸 영웅 소환</span>
+                    <span class="hub-card-desc">500 다이아 | 신영웅 픽업(0.1%+15장) vs 통상 비교</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow">➔</div>
+              </div>
+
+              <div class="hub-card" onclick="openNewbieCalculator('spirit')">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#22c55e;">
+                    <img src="images/main_spirit.png" alt="정령" onerror="this.onerror=null; this.src='images/main_spirit.jpg'; this.onerror=function(){this.parentElement.innerHTML='🧚';};">
+                  </div>
+                  <div>
+                    <span class="hub-card-title">🧚 정령 소환</span>
+                    <span class="hub-card-desc">200 정령석 | 4차 신규 리더(홍련/라이자/릴리스) 반영</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow">➔</div>
+              </div>
+
+              <div class="hub-card" style="opacity:0.6; cursor:not-allowed;">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#64748b; background:#1e293b;">
+                    <span>🃏</span>
+                  </div>
+                  <div>
+                    <span class="hub-card-title">🃏 몬스터 카드 🔒</span>
+                    <span class="hub-card-desc">개발 중 (몬스터 정수 및 돌파 데이터 수집 중)</span>
+                  </div>
+                </div>
+                <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">준비 중</span>
               </div>
             </div>
-            <div class="hub-card-arrow">➔</div>
-          </div>
-
-          <div class="hub-card" onclick="openNewbieCalculator('skill')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#fbbf24;">
-                <img src="images/main_skill.png" alt="스킬" onerror="this.onerror=null; this.src='images/main_skill.jpg'; this.onerror=function(){this.parentElement.innerHTML='⚡';};">
-              </div>
-              <div>
-                <span class="hub-card-title">⚡ 스킬 소환</span>
-                <span class="hub-card-desc">200 다이아 | 픽업(0.1%+15장) vs 통상(상시) 비교</span>
-              </div>
-            </div>
-            <div class="hub-card-arrow">➔</div>
-          </div>
-
-          <div class="hub-card" onclick="openNewbieCalculator('hero')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#f43f5e;">
-                <img src="images/main_hero.png" alt="영웅" onerror="this.onerror=null; this.src='images/main_hero.jpg'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
-              </div>
-              <div>
-                <span class="hub-card-title">🦸 영웅 소환</span>
-                <span class="hub-card-desc">500 다이아 | 신영웅 픽업(0.1%+15장) vs 통상 비교</span>
-              </div>
-            </div>
-            <div class="hub-card-arrow">➔</div>
-          </div>
-
-          <div class="hub-card" onclick="openNewbieCalculator('spirit')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#22c55e;">
-                <img src="images/main_spirit.png" alt="정령" onerror="this.onerror=null; this.src='images/main_spirit.jpg'; this.onerror=function(){this.parentElement.innerHTML='🧚';};">
-              </div>
-              <div>
-                <span class="hub-card-title">🧚 정령 소환</span>
-                <span class="hub-card-desc">200 정령석 | 4차 신규 리더(홍련/라이자/릴리스) 반영</span>
-              </div>
-            </div>
-            <div class="hub-card-arrow">➔</div>
-          </div>
-
-          <div class="hub-card" style="opacity:0.6; cursor:not-allowed;">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#64748b; background:#1e293b;">
-                <span>🃏</span>
-              </div>
-              <div>
-                <span class="hub-card-title">🃏 몬스터 카드 🔒</span>
-                <span class="hub-card-desc">개발 중 (몬스터 정수 및 돌파 데이터 수집 중)</span>
-              </div>
-            </div>
-            <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">준비 중</span>
           </div>
         </div>
       </div>
@@ -2855,7 +3046,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- 2. 뉴비 공략 상세 계산기 화면 (소환 카테고리 선택 시 전환) -->
@@ -2942,23 +3132,41 @@
           내 직업과 주속성을 고르고 보유 중인 룬(고대·영원·불멸)을 클릭하면, 합연산/곱연산과 세트 페널티를 모두 계산하여 최선의 10칸 세팅과 동일 배율 대체 룬을 추천합니다.
         </p>
 
-        <!-- 상단 직업(택1) / 속성(택1) / 특수 조건 스위치 -->
+        <!-- 상단 직업(택1) / 속성(택1) (문양 이미지 + 입체 구체 적용) -->
         <div class="grid-2" style="margin-bottom:14px;">
           <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
             <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 내 직업 선택 (택 1)</label>
             <div class="radio-pill-group">
-              <div class="radio-pill selected" id="rune_job_reaper" onclick="selectRuneJob('reaper')">🗡️ 대사신 (강타)</div>
-              <div class="radio-pill" id="rune_job_mage" onclick="selectRuneJob('mage')">🧙‍♂️ 아크메이지 (스킬)</div>
-              <div class="radio-pill" id="rune_job_lord" onclick="selectRuneJob('lord')">👑 팬텀 (영웅스킬)</div>
+              <div class="radio-pill job-pill-btn selected" id="rune_job_reaper" onclick="selectRuneJob('reaper')">
+                <img src="images/reaper.png" alt="대사신" onerror="this.onerror=null; this.src='reaper.png';">
+                <span>대사신 (강타)</span>
+              </div>
+              <div class="radio-pill job-pill-btn" id="rune_job_mage" onclick="selectRuneJob('mage')">
+                <img src="images/mystic.png" alt="아크메이지" onerror="this.onerror=null; this.src='mystic.png';">
+                <span>아크메이지 (스킬)</span>
+              </div>
+              <div class="radio-pill job-pill-btn" id="rune_job_lord" onclick="selectRuneJob('lord')">
+                <img src="images/overload.png" alt="팬텀" onerror="this.onerror=null; this.src='overload.png';">
+                <span>팬텀 (영웅스킬)</span>
+              </div>
             </div>
           </div>
 
           <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
             <label style="color:#fbbf24; margin-bottom:8px;">🔥 내 주속성 선택 (택 1)</label>
             <div class="radio-pill-group">
-              <div class="radio-pill selected" id="rune_elem_fire" onclick="selectRuneElem('fire')">🔥 화염 속성</div>
-              <div class="radio-pill" id="rune_elem_light" onclick="selectRuneElem('light')">⚡ 번개 속성</div>
-              <div class="radio-pill" id="rune_elem_dark" onclick="selectRuneElem('dark')">🌑 어둠 속성</div>
+              <div class="radio-pill job-pill-btn selected" id="rune_elem_fire" onclick="selectRuneElem('fire')">
+                <span class="elem-orb orb-fire"></span>
+                <span>화염 속성</span>
+              </div>
+              <div class="radio-pill job-pill-btn" id="rune_elem_light" onclick="selectRuneElem('light')">
+                <span class="elem-orb orb-light"></span>
+                <span>번개 속성</span>
+              </div>
+              <div class="radio-pill job-pill-btn" id="rune_elem_dark" onclick="selectRuneElem('dark')">
+                <span class="elem-orb orb-dark"></span>
+                <span>어둠 속성</span>
+              </div>
             </div>
           </div>
         </div>
@@ -3161,12 +3369,12 @@
 
 <!-- Footer -->
   <footer>
-    소울헌터키우기 네이버 라운지 전용 계산기 v.3.0.0 | 제작: 29서버 겨울눈사람[cite: 14]
+    소울헌터키우기 네이버 라운지 전용 계산기 v.3.0.0 | 제작: 29서버 겨울눈사람
     
-    <!-- 실시간 웹 카운터 (즉시 카운트 연동) -->
-    <div style="margin-top: 10px; display: flex; align-items: center; justify-content: center;">
-      <img src="https://api.visitorbadge.io/api/visitors?path=dkssydgktpdy.github.io.soul-hunter-calc&label=VISITS&labelColor=%231e293b&countColor=%2338bdf8&style=flat" 
-           alt="방문자 수" 
+    <!-- Daily(오늘) / Total(누적) 분리 방문자 카운터 -->
+    <div style="margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <img src="https://api.visitorbadge.io/api/combined?path=dkssydgktpdy.github.io.soul-hunter-calc&label=VISITORS&labelColor=%231e293b&countColor=%2338bdf8&style=flat" 
+           alt="방문자 수 (Daily / Total)" 
            style="height: 20px; border-radius: 4px;" />
     </div>
   </footer>
@@ -3298,7 +3506,45 @@
   function openHelpModal() {
     const info = HELP_GUIDE_DATA[currentActiveGuideKey] || HELP_GUIDE_DATA['equip'];
     document.getElementById('help_modal_title').innerText = info.title;
-    document.getElementById('help_modal_body').innerHTML = info.html;
+    
+    // 카카오톡 오픈채팅방 링크 2종 배너 (실제 카카오톡 아이콘 적용)
+    const kakaoBannerHtml = `
+      <div style="margin-top: 18px; padding-top: 14px; border-top: 1px dashed #334155;">
+        <div style="font-size: 13.5px; font-weight: 800; color: #fbbf24; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+          <img src="images/kakaotalk.png" alt="카카오톡" class="kakao-icon-img" style="width:18px; height:18px;" onerror="this.onerror=null; this.src='kakaotalk.png';">
+          <span>소헌키 추천 오픈채팅방 바로가기</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <!-- 1. 소울 헌터 키우기 정보 소통 공유방 -->
+          <a href="https://open.kakao.com/o/gUIl1N4h" target="_blank" rel="noopener noreferrer" 
+             style="background: #1e293b; border: 1.5px solid #6366f1; padding: 10px 14px; border-radius: 10px; text-decoration: none; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <img src="images/kakaotalk.png" alt="카카오톡" class="kakao-icon-img" onerror="this.onerror=null; this.src='kakaotalk.png';">
+              <div>
+                <div style="font-size: 13.5px; font-weight: 800; color: #f8fafc;">소울 헌터 키우기 정보 소통 공유방</div>
+                <div style="font-size: 11.5px; color: #cbd5e1;">정보 소통 굇수들이 모인 심화 공략방!</div>
+              </div>
+            </div>
+            <span style="font-size: 12px; font-weight: 800; color: #a5b4fc; background: rgba(99, 102, 241, 0.15); padding: 4px 8px; border-radius: 6px;">입장하기 ➔</span>
+          </a>
+
+          <!-- 2. 소헌키 친목방 -->
+          <a href="https://open.kakao.com/o/gVV38UUi" target="_blank" rel="noopener noreferrer" 
+             style="background: #1e293b; border: 1.5px solid #475569; padding: 10px 14px; border-radius: 10px; text-decoration: none; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <img src="images/kakaotalk.png" alt="카카오톡" class="kakao-icon-img" onerror="this.onerror=null; this.src='kakaotalk.png';">
+              <div>
+                <div style="font-size: 13.5px; font-weight: 800; color: #f8fafc;">소헌키 친목방</div>
+                <div style="font-size: 11.5px; color: #94a3b8;">정보도 얻고 자유롭게 친목도 나누고 싶다면?</div>
+              </div>
+            </div>
+            <span style="font-size: 12px; font-weight: 800; color: #38bdf8; background: rgba(56, 189, 248, 0.12); padding: 4px 8px; border-radius: 6px;">입장하기 ➔</span>
+          </a>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('help_modal_body').innerHTML = info.html + kakaoBannerHtml;
     document.getElementById('help_modal_overlay').style.display = 'flex';
   }
 
@@ -7163,6 +7409,7 @@
       selectorEl.style.display = "none";
       document.getElementById("guide_view_title").innerText = "🐣 5,000렙 이후 극초반 스킬 & 영웅 세팅";
       document.getElementById("guide_view_badge").innerText = "Lv.5,000+ 입문";
+      document.getElementById("guide_view_subtitle").innerText = "캐릭터 5,000레벨 달성 후 해금되는 스킬 5번째 칸과 영웅 4번째 칸의 정석 세팅 빌드 및 극초반 공략입니다.";
     } else if (type === 'transition') {
       selectorEl.style.display = "none";
       document.getElementById("guide_view_title").innerText = "🔄 사신 ➔ 아크메이지(미스틱) 전환 완벽 가이드";
