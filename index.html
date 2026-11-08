@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-T45D3S1C5N"></script>
+
 <script>
+
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
@@ -1720,7 +1723,7 @@
           <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
         </div>
         <div class="author-tag">
-          기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.3.1.0</strong>
+          기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.3.2.0</strong>
         </div>
       </div>
 
@@ -3369,7 +3372,7 @@
 
 <!-- Footer -->
   <footer>
-    소울헌터키우기 네이버 라운지 전용 계산기 v.3.1.0 | 제작: 29서버 겨울눈사람
+    소울헌터키우기 네이버 라운지 전용 계산기 v.3.2.0 | 제작: 29서버 겨울눈사람
     
     <!-- Daily(오늘) / Total(누적) 분리 방문자 카운터 -->
     <div style="margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
@@ -4900,27 +4903,7 @@
     updateSummonCalculation();
   }
 
-  function renderInventoryTierBlock(tierName, pillClass, ids, labels, borderColor, eqKrName) {
-    const inputsHtml = ids.map((id, i) => `
-      <div>
-        <label style="font-size:11px; color:#cbd5e1;"><span class="dyn-eq-name">${eqKrName}</span> ${labels[i]}</label>
-        <input type="number" id="inv_${id}" value="0" min="0" oninput="updateSummonCalculation()" style="padding:6px 8px; font-size:13px;">
-      </div>
-    `).join('');
-
-    return `
-      <div class="inv-tier-card" style="border-left:3px solid ${borderColor};">
-        <div class="inv-tier-header">
-          <span class="grade-badge grade-${pillClass}">${tierName}</span>
-          <span style="font-size:11px; color:#94a3b8;">${pillClass === 'ancient' ? '합성비 2:1' : '합성비 4:1'}</span>
-        </div>
-        <div class="grid-${ids.length}" style="gap:8px;">
-          ${inputsHtml}
-        </div>
-      </div>
-    `;
-  }
-
+// ==================== [장비 인벤토리 & 자동 TAB 입력 엔진] ====================
   // 장비별(대낫/오브/장식) 독립 인벤토리 저장소
   let equipInventories = {
     scythe: {},
@@ -4928,24 +4911,106 @@
     accessory: {}
   };
 
-  // 1) 인게임과 일치하는 4-3-2-1 등급 인풋 렌더링
+  // 인게임 슬롯 전체 순서 (위에서 아래로, 4 -> 3 -> 2 -> 1등급 순)
+  const INVENTORY_SLOT_SEQUENCE = [
+    'anc4', 'anc3', 'anc2',
+    'myt4', 'myt3', 'myt2', 'myt1',
+    'leg4', 'leg3', 'leg2', 'leg1',
+    'uni4', 'uni3', 'uni2', 'uni1',
+    'adv4', 'adv3', 'adv2', 'adv1',
+    'mid4', 'mid3', 'mid2', 'mid1',
+    'nor4', 'nor3', 'nor2', 'nor1'
+  ];
+
+  // 1) 은행 앱 방식: 숫자 1자리 입력 시 즉시 저장 & 다음 칸 자동 점프
+  function handleAutoTabSlot(inputEl, slotId, maxVal) {
+    let valStr = inputEl.value.replace(/[^0-9]/g, '');
+    if (valStr.length > 1) valStr = valStr.slice(-1); // 마지막 입력된 숫자 1개만 유지
+
+    let num = parseInt(valStr);
+    if (isNaN(num)) num = 0;
+    if (num > maxVal) num = maxVal; // 고대는 1 초과 방지, 그 외 등급은 3 초과 방지
+
+    inputEl.value = num;
+
+    // 현재 장비 타입(대낫/오브/장식)에 실시간 기록
+    if (!equipInventories[selectedEquipType]) equipInventories[selectedEquipType] = {};
+    equipInventories[selectedEquipType][slotId] = num;
+
+    updateSummonCalculation();
+    triggerAutoSave();
+
+    // 다음 칸으로 자동 포커스 이동 (자동 Tab)
+    const currentIdx = INVENTORY_SLOT_SEQUENCE.indexOf(slotId);
+    if (currentIdx !== -1 && currentIdx < INVENTORY_SLOT_SEQUENCE.length - 1) {
+      const nextId = INVENTORY_SLOT_SEQUENCE[currentIdx + 1];
+      const nextInput = document.getElementById('inv_' + nextId);
+      if (nextInput) {
+        nextInput.focus();
+        nextInput.select();
+      }
+    }
+  }
+
+  // 2) Backspace 및 좌우 방향키로 이전/다음 칸 이동
+  function handleSlotKeyNav(event, slotId) {
+    const currentIdx = INVENTORY_SLOT_SEQUENCE.indexOf(slotId);
+    if (currentIdx === -1) return;
+
+    if (event.key === 'Backspace' && (event.target.value === '0' || event.target.value === '')) {
+      // 이미 0이거나 비어있을 때 Backspace 누르면 이전 칸으로 이동
+      if (currentIdx > 0) {
+        event.preventDefault();
+        const prevId = INVENTORY_SLOT_SEQUENCE[currentIdx - 1];
+        const prevInput = document.getElementById('inv_' + prevId);
+        if (prevInput) {
+          prevInput.focus();
+          prevInput.select();
+        }
+      }
+    } else if (event.key === 'ArrowLeft') {
+      if (currentIdx > 0) {
+        event.preventDefault();
+        const prevInput = document.getElementById('inv_' + INVENTORY_SLOT_SEQUENCE[currentIdx - 1]);
+        if (prevInput) { prevInput.focus(); prevInput.select(); }
+      }
+    } else if (event.key === 'ArrowRight') {
+      if (currentIdx < INVENTORY_SLOT_SEQUENCE.length - 1) {
+        event.preventDefault();
+        const nextInput = document.getElementById('inv_' + INVENTORY_SLOT_SEQUENCE[currentIdx + 1]);
+        if (nextInput) { nextInput.focus(); nextInput.select(); }
+      }
+    }
+  }
+
+  // 3) 등급별 4-3-2-1 슬롯 렌더링
   function renderInventoryTierBlock(tierName, pillClass, ids, labels, borderColor, eqKrName) {
     const curInv = equipInventories[selectedEquipType] || {};
     const inputsHtml = ids.map((id, i) => {
       const val = curInv[id] !== undefined ? curInv[id] : 0;
+      const maxVal = id.startsWith('anc') ? 1 : 3; // 고대는 최대 1, 그 외 등급은 최대 3
       return `
         <div>
           <label style="font-size:11px; color:#cbd5e1;"><span class="dyn-eq-name">${eqKrName}</span> ${labels[i]}</label>
-          <input type="number" id="inv_${id}" value="${val}" min="0" oninput="onEquipInventoryInput('${id}', this.value)" style="padding:6px 8px; font-size:13px;">
+          <input type="text" 
+                 inputmode="numeric"
+                 class="auto-tab-slot"
+                 id="inv_${id}" 
+                 value="${val}" 
+                 maxlength="1"
+                 onfocus="this.select()"
+                 onkeydown="handleSlotKeyNav(event, '${id}')"
+                 oninput="handleAutoTabSlot(this, '${id}', ${maxVal})" 
+                 style="padding:9px 0; font-size:16px; font-weight:800; text-align:center; letter-spacing:1px; background:#0f172a; border:1.5px solid #334155; border-radius:8px; color:#ffffff; width:100%; box-shadow:inset 0 1px 3px rgba(0,0,0,0.5);">
         </div>
       `;
     }).join('');
 
     return `
-      <div class="inv-tier-card" style="border-left:3px solid ${borderColor};">
-        <div class="inv-tier-header">
+      <div class="inv-tier-card" style="border-left:3px solid ${borderColor}; margin-bottom:10px;">
+        <div class="inv-tier-header" style="display:flex; justify-content:space-between; margin-bottom:6px;">
           <span class="grade-badge grade-${pillClass}">${tierName}</span>
-          <span style="font-size:11px; color:#94a3b8;">${pillClass === 'ancient' ? '합성비 2:1' : '합성비 4:1'}</span>
+          <span style="font-size:11px; color:#94a3b8;">${pillClass === 'ancient' ? '합성비 2:1 (0~1)' : '합성비 4:1 (0~3)'}</span>
         </div>
         <div class="grid-${ids.length}" style="gap:8px;">
           ${inputsHtml}
@@ -4954,33 +5019,25 @@
     `;
   }
 
-  // 2) 인벤토리 수치 입력 시 현재 장비 타입에 실시간 기록 & 자동 저장
-  function onEquipInventoryInput(slotId, val) {
-    if (!equipInventories[selectedEquipType]) equipInventories[selectedEquipType] = {};
-    equipInventories[selectedEquipType][slotId] = parseInt(val) || 0;
-    updateSummonCalculation();
-    triggerAutoSave();
-  }
-
-  // 3) 장비 소환 계산기 UI 빌드 (4 ➔ 3 ➔ 2 ➔ 1 순서 배치)
+  // 4) 장비 소환 계산기 전체 UI 빌드 (드롭다운 바로 밑 설명글 포함)
   function renderEquipmentUI(container) {
     const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
     const curName = nameMap[selectedEquipType] || "대낫";
 
     container.innerHTML = `
       <div style="margin-bottom:16px;">
-        <label>소환할 장비 종류 선택 (클릭 시 목표 및 비용 자동 전환)</label>
+        <label>소환할 장비 종류 선택</label>
         <div class="grid-3" style="gap:12px;">
           <div class="ancient-select-card ${selectedEquipType === 'scythe' ? 'selected' : ''}" id="eq_card_scythe" onclick="selectEquipIconType('scythe')">
             <div class="ancient-header" style="margin-bottom:4px;">
               <div class="ancient-title-box">
                 <div class="icon-avatar-wrapper" style="border-color:#f43f5e;">
-                  <span class="icon-avatar-fallback"></span>
+                  <span class="icon-avatar-fallback">대낫</span>
                   <img src="images/schyte_calc.png" alt="대낫" onerror="this.onerror=null; this.src='images/scythe_calc.png'; this.onerror=function(){this.src='images/schyte_calc.jpg'; this.onerror=function(){this.style.display='none';};};" class="icon-avatar-img">
                 </div>
                 <div>
                   <span class="ancient-name">🗡️ 대낫</span>
-                  <span class="ancient-sub" style="color:#f43f5e;">1회 100 블루 다이아</span>
+                  <span class="ancient-sub" style="color:#f43f5e;">1회 100 다이아</span>
                 </div>
               </div>
             </div>
@@ -4995,7 +5052,7 @@
                 </div>
                 <div>
                   <span class="ancient-name">🔮 오브</span>
-                  <span class="ancient-sub" style="color:#38bdf8;">1회 100 블루 다이아</span>
+                  <span class="ancient-sub" style="color:#38bdf8;">1회 100 다이아</span>
                 </div>
               </div>
             </div>
@@ -5010,14 +5067,15 @@
                 </div>
                 <div>
                   <span class="ancient-name">💍 장식</span>
-                  <span class="ancient-sub" style="color:#fbbf24;">1회 200 블루 다이아</span>
+                  <span class="ancient-sub" style="color:#fbbf24;">1회 200 다이아</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-      <div style="margin-bottom:16px;">
+      <div style="margin-bottom:12px;">
         <label>최종 목표 고대 등급 선택</label>
         <select id="sum_equip_target" onchange="updateSummonCalculation()" style="font-weight:700;">
           <option value="32" selected>고대 ${curName} 1등급 (신화1 32개 분량 / 영원 해금 필수)</option>
@@ -5027,15 +5085,29 @@
         </select>
       </div>
 
+      <!-- 드롭다운 메뉴 바로 밑: 상세 사용법 및 입력 안내 설명글 -->
+      <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 10px; padding: 11px 16px; margin-bottom: 16px; line-height: 1.6; box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.08);">
+        <div style="font-size: 13.5px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+          <span>⚡</span>
+          <span>인벤토리 연속 입력 안내 (비밀번호 방식 자동 이동)</span>
+        </div>
+        <div style="font-size: 12.5px; color: #cbd5e1;">
+          • 인게임 장비 창에 보이는 순서 그대로 <strong>4등급 ➔ 3등급 ➔ 2등급 ➔ 1등급</strong> 순으로 배열되어 있습니다.<br>
+          • 첫 칸을 누르고 키패드로 숫자(0~3)를 연속으로 치시면 <strong>자동으로 다음 칸으로 커서가 넘어갑니다.</strong> (클릭/탭 불필요)<br>
+          • 잘못 입력했을 때는 <strong>Backspace(지우기)</strong> 또는 <strong>← 방향키</strong>를 누르면 이전 칸으로 돌아갑니다.<br>
+          • 대낫, 오브, 장식에 입력한 모든 수치는 <strong>실시간으로 각각 안전하게 자동 저장</strong>됩니다.
+        </div>
+      </div>
+
       <div class="card" style="padding:16px 18px; margin-bottom:14px; background:#0b1120; border-color:#334155;">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
           <div>
-            <strong style="font-size:15px; color:#38bdf8;" id="equip_inv_header_title">🎒 현재 보유 [${curName}] 인벤토리 입력 (전 등급 27슬롯 일괄 합성)</strong>
+            <strong style="font-size:15px; color:#38bdf8;" id="equip_inv_header_title">🎒 현재 보유 [${curName}] 인벤토리 입력 (4 ➔ 1등급 순)</strong>
           </div>
-          <button onclick="resetEquipInventory()" style="background:#334155; border:none; color:#cbd5e1; padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer;">인벤토리 초기화</button>
+          <button onclick="resetEquipInventory()" style="background:#334155; border:none; color:#cbd5e1; padding:5px 12px; border-radius:8px; font-size:12px; cursor:pointer;">인벤토리 초기화</button>
         </div>
 
-        <!-- 4 -> 3 -> 2 -> 1 순서로 완벽 배치 -->
+        <!-- 4 -> 3 -> 2 -> 1 순서 배치 -->
         ${renderInventoryTierBlock('고대 등급', 'ancient', ['anc4', 'anc3', 'anc2'], ['4등급', '3등급', '2등급'], '#06b6d4', curName)}
         ${renderInventoryTierBlock('신화 등급', 'mythic', ['myt4', 'myt3', 'myt2', 'myt1'], ['4등급', '3등급', '2등급', '1등급'], '#f43f5e', curName)}
         ${renderInventoryTierBlock('전설 등급', 'legend', ['leg4', 'leg3', 'leg2', 'leg1'], ['4등급', '3등급', '2등급', '1등급'], '#f97316', curName)}
@@ -5051,7 +5123,7 @@
     `;
   }
 
-  // 4) 장비 부위(대낫/오브/장식) 클릭 전환 시 값 보존 및 스위칭
+  // 5) 장비 부위(대낫/오브/장식) 클릭 전환 시 값 보존 및 스위칭
   function selectEquipIconType(type) {
     selectedEquipType = type;
     ['scythe', 'orb', 'accessory'].forEach(t => {
@@ -5075,23 +5147,14 @@
 
     const invTitleEl = document.getElementById('equip_inv_header_title');
     if (invTitleEl) {
-      invTitleEl.innerText = `🎒 현재 보유 [${curName}] 인벤토리 입력 (전 등급 27슬롯 일괄 합성)`;
+      invTitleEl.innerText = `🎒 현재 보유 [${curName}] 인벤토리 입력 (4 ➔ 1등급 순)`;
     }
 
     document.querySelectorAll('.dyn-eq-name').forEach(el => el.innerText = curName);
 
     // 전환된 장비 부위의 저장된 데이터로 화면 인풋 즉시 채우기
     const curInv = equipInventories[selectedEquipType] || {};
-    const allSlotIds = [
-      'anc4', 'anc3', 'anc2',
-      'myt4', 'myt3', 'myt2', 'myt1',
-      'leg4', 'leg3', 'leg2', 'leg1',
-      'uni4', 'uni3', 'uni2', 'uni1',
-      'adv4', 'adv3', 'adv2', 'adv1',
-      'mid4', 'mid3', 'mid2', 'mid1',
-      'nor4', 'nor3', 'nor2', 'nor1'
-    ];
-    allSlotIds.forEach(id => {
+    INVENTORY_SLOT_SEQUENCE.forEach(id => {
       const el = document.getElementById('inv_' + id);
       if (el) el.value = curInv[id] !== undefined ? curInv[id] : 0;
     });
@@ -5100,21 +5163,12 @@
     triggerAutoSave();
   }
 
-  // 5) 인벤토리 초기화
+  // 6) 인벤토리 초기화
   function resetEquipInventory() {
     const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
     if (!confirm(`현재 [${nameMap[selectedEquipType]}] 인벤토리 수치를 초기화하시겠습니까?`)) return;
     equipInventories[selectedEquipType] = {};
-    const allSlotIds = [
-      'anc4', 'anc3', 'anc2',
-      'myt4', 'myt3', 'myt2', 'myt1',
-      'leg4', 'leg3', 'leg2', 'leg1',
-      'uni4', 'uni3', 'uni2', 'uni1',
-      'adv4', 'adv3', 'adv2', 'adv1',
-      'mid4', 'mid3', 'mid2', 'mid1',
-      'nor4', 'nor3', 'nor2', 'nor1'
-    ];
-    allSlotIds.forEach(id => {
+    INVENTORY_SLOT_SEQUENCE.forEach(id => {
       const el = document.getElementById('inv_' + id);
       if (el) el.value = 0;
     });
@@ -5122,7 +5176,7 @@
     triggerAutoSave();
   }
 
-  // 6) 가치 계산기 (4:1, 2:1 합성비 적용)
+  // 7) 가치 계산기 (4:1, 2:1 합성비 적용)
   function calcOwnedEquipmentValue() {
     const tierFactors = {
       anc2: 16.0, anc3: 8.0, anc4: 4.0,
@@ -5140,23 +5194,6 @@
       total += cnt * tierFactors[k];
     }
     return total;
-  }
-
-  function resetEquipInventory() {
-    const allIds = [
-      'anc2', 'anc3', 'anc4',
-      'myt1', 'myt2', 'myt3', 'myt4',
-      'leg1', 'leg2', 'leg3', 'leg4',
-      'uni1', 'uni2', 'uni3', 'uni4',
-      'adv1', 'adv2', 'adv3', 'adv4',
-      'mid1', 'mid2', 'mid3', 'mid4',
-      'nor1', 'nor2', 'nor3', 'nor4'
-    ];
-    allIds.forEach(id => {
-      const el = document.getElementById('inv_' + id);
-      if (el) el.value = 0;
-    });
-    updateSummonCalculation();
   }
 
   function filterNewbieItems(keyword) {
