@@ -4921,6 +4921,48 @@
     `;
   }
 
+  // 장비별(대낫/오브/장식) 독립 인벤토리 저장소
+  let equipInventories = {
+    scythe: {},
+    orb: {},
+    accessory: {}
+  };
+
+  // 1) 인게임과 일치하는 4-3-2-1 등급 인풋 렌더링
+  function renderInventoryTierBlock(tierName, pillClass, ids, labels, borderColor, eqKrName) {
+    const curInv = equipInventories[selectedEquipType] || {};
+    const inputsHtml = ids.map((id, i) => {
+      const val = curInv[id] !== undefined ? curInv[id] : 0;
+      return `
+        <div>
+          <label style="font-size:11px; color:#cbd5e1;"><span class="dyn-eq-name">${eqKrName}</span> ${labels[i]}</label>
+          <input type="number" id="inv_${id}" value="${val}" min="0" oninput="onEquipInventoryInput('${id}', this.value)" style="padding:6px 8px; font-size:13px;">
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="inv-tier-card" style="border-left:3px solid ${borderColor};">
+        <div class="inv-tier-header">
+          <span class="grade-badge grade-${pillClass}">${tierName}</span>
+          <span style="font-size:11px; color:#94a3b8;">${pillClass === 'ancient' ? '합성비 2:1' : '합성비 4:1'}</span>
+        </div>
+        <div class="grid-${ids.length}" style="gap:8px;">
+          ${inputsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  // 2) 인벤토리 수치 입력 시 현재 장비 타입에 실시간 기록 & 자동 저장
+  function onEquipInventoryInput(slotId, val) {
+    if (!equipInventories[selectedEquipType]) equipInventories[selectedEquipType] = {};
+    equipInventories[selectedEquipType][slotId] = parseInt(val) || 0;
+    updateSummonCalculation();
+    triggerAutoSave();
+  }
+
+  // 3) 장비 소환 계산기 UI 빌드 (4 ➔ 3 ➔ 2 ➔ 1 순서 배치)
   function renderEquipmentUI(container) {
     const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
     const curName = nameMap[selectedEquipType] || "대낫";
@@ -4993,19 +5035,111 @@
           <button onclick="resetEquipInventory()" style="background:#334155; border:none; color:#cbd5e1; padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer;">인벤토리 초기화</button>
         </div>
 
-        ${renderInventoryTierBlock('고대 등급', 'ancient', ['anc2', 'anc3', 'anc4'], ['2등급', '3등급', '4등급'], '#06b6d4', curName)}
-        ${renderInventoryTierBlock('신화 등급', 'mythic', ['myt1', 'myt2', 'myt3', 'myt4'], ['1등급', '2등급', '3등급', '4등급'], '#f43f5e', curName)}
-        ${renderInventoryTierBlock('전설 등급', 'legend', ['leg1', 'leg2', 'leg3', 'leg4'], ['1등급', '2등급', '3등급', '4등급'], '#f97316', curName)}
-        ${renderInventoryTierBlock('특급 등급', 'unique', ['uni1', 'uni2', 'uni3', 'uni4'], ['1등급', '2등급', '3등급', '4등급'], '#a855f7', curName)}
-        ${renderInventoryTierBlock('상급 등급', 'advanced', ['adv1', 'adv2', 'adv3', 'adv4'], ['1등급', '2등급', '3등급', '4등급'], '#3b82f6', curName)}
-        ${renderInventoryTierBlock('중급 등급', 'middle', ['mid1', 'mid2', 'mid3', 'mid4'], ['1등급', '2등급', '3등급', '4등급'], '#22c55e', curName)}
-        ${renderInventoryTierBlock('하급 등급', 'normal', ['nor1', 'nor2', 'nor3', 'nor4'], ['1등급', '2등급', '3등급', '4등급'], '#b45309', curName)}
+        <!-- 4 -> 3 -> 2 -> 1 순서로 완벽 배치 -->
+        ${renderInventoryTierBlock('고대 등급', 'ancient', ['anc4', 'anc3', 'anc2'], ['4등급', '3등급', '2등급'], '#06b6d4', curName)}
+        ${renderInventoryTierBlock('신화 등급', 'mythic', ['myt4', 'myt3', 'myt2', 'myt1'], ['4등급', '3등급', '2등급', '1등급'], '#f43f5e', curName)}
+        ${renderInventoryTierBlock('전설 등급', 'legend', ['leg4', 'leg3', 'leg2', 'leg1'], ['4등급', '3등급', '2등급', '1등급'], '#f97316', curName)}
+        ${renderInventoryTierBlock('특급 등급', 'unique', ['uni4', 'uni3', 'uni2', 'uni1'], ['4등급', '3등급', '2등급', '1등급'], '#a855f7', curName)}
+        ${renderInventoryTierBlock('상급 등급', 'advanced', ['adv4', 'adv3', 'adv2', 'adv1'], ['4등급', '3등급', '2등급', '1등급'], '#3b82f6', curName)}
+        ${renderInventoryTierBlock('중급 등급', 'middle', ['mid4', 'mid3', 'mid2', 'mid1'], ['4등급', '3등급', '2등급', '1등급'], '#22c55e', curName)}
+        ${renderInventoryTierBlock('하급 등급', 'normal', ['nor4', 'nor3', 'nor2', 'nor1'], ['4등급', '3등급', '2등급', '1등급'], '#b45309', curName)}
 
         <div style="font-size:13.5px; color:#e2e8f0; margin-top:10px; text-align:right;">
           현재 인벤토리 자동 일괄 합성 가치: <strong id="inv_total_synthesized_val" style="color:#38bdf8;">신화1 약 0.00개</strong>
         </div>
       </div>
     `;
+  }
+
+  // 4) 장비 부위(대낫/오브/장식) 클릭 전환 시 값 보존 및 스위칭
+  function selectEquipIconType(type) {
+    selectedEquipType = type;
+    ['scythe', 'orb', 'accessory'].forEach(t => {
+      const card = document.getElementById(`eq_card_${t}`);
+      if (card) card.classList.toggle('selected', t === type);
+    });
+
+    const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
+    const curName = nameMap[type] || "대낫";
+
+    const targetSel = document.getElementById('sum_equip_target');
+    if (targetSel) {
+      const prevVal = targetSel.value || "32";
+      targetSel.innerHTML = `
+        <option value="32" ${prevVal === "32" ? "selected" : ""}>고대 ${curName} 1등급 (신화1 32개 분량 / 영원 해금 필수)</option>
+        <option value="16" ${prevVal === "16" ? "selected" : ""}>고대 ${curName} 2등급 (신화1 16개 분량)</option>
+        <option value="8" ${prevVal === "8" ? "selected" : ""}>고대 ${curName} 3등급 (신화1 8개 분량)</option>
+        <option value="4" ${prevVal === "4" ? "selected" : ""}>고대 ${curName} 4등급 (신화1 4개 분량)</option>
+      `;
+    }
+
+    const invTitleEl = document.getElementById('equip_inv_header_title');
+    if (invTitleEl) {
+      invTitleEl.innerText = `🎒 현재 보유 [${curName}] 인벤토리 입력 (전 등급 27슬롯 일괄 합성)`;
+    }
+
+    document.querySelectorAll('.dyn-eq-name').forEach(el => el.innerText = curName);
+
+    // 전환된 장비 부위의 저장된 데이터로 화면 인풋 즉시 채우기
+    const curInv = equipInventories[selectedEquipType] || {};
+    const allSlotIds = [
+      'anc4', 'anc3', 'anc2',
+      'myt4', 'myt3', 'myt2', 'myt1',
+      'leg4', 'leg3', 'leg2', 'leg1',
+      'uni4', 'uni3', 'uni2', 'uni1',
+      'adv4', 'adv3', 'adv2', 'adv1',
+      'mid4', 'mid3', 'mid2', 'mid1',
+      'nor4', 'nor3', 'nor2', 'nor1'
+    ];
+    allSlotIds.forEach(id => {
+      const el = document.getElementById('inv_' + id);
+      if (el) el.value = curInv[id] !== undefined ? curInv[id] : 0;
+    });
+
+    updateSummonCalculation();
+    triggerAutoSave();
+  }
+
+  // 5) 인벤토리 초기화
+  function resetEquipInventory() {
+    const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
+    if (!confirm(`현재 [${nameMap[selectedEquipType]}] 인벤토리 수치를 초기화하시겠습니까?`)) return;
+    equipInventories[selectedEquipType] = {};
+    const allSlotIds = [
+      'anc4', 'anc3', 'anc2',
+      'myt4', 'myt3', 'myt2', 'myt1',
+      'leg4', 'leg3', 'leg2', 'leg1',
+      'uni4', 'uni3', 'uni2', 'uni1',
+      'adv4', 'adv3', 'adv2', 'adv1',
+      'mid4', 'mid3', 'mid2', 'mid1',
+      'nor4', 'nor3', 'nor2', 'nor1'
+    ];
+    allSlotIds.forEach(id => {
+      const el = document.getElementById('inv_' + id);
+      if (el) el.value = 0;
+    });
+    updateSummonCalculation();
+    triggerAutoSave();
+  }
+
+  // 6) 가치 계산기 (4:1, 2:1 합성비 적용)
+  function calcOwnedEquipmentValue() {
+    const tierFactors = {
+      anc2: 16.0, anc3: 8.0, anc4: 4.0,
+      myt1: 1.0, myt2: 0.25, myt3: 0.0625, myt4: 0.015625,
+      leg1: 1 / 256, leg2: 1 / 1024, leg3: 1 / 4096, leg4: 1 / 16384,
+      uni1: 1 / 65536, uni2: 1 / 262144, uni3: 1 / 1048576, uni4: 1 / 4194304,
+      adv1: 1 / 16777216, adv2: 1 / 67108864, adv3: 1 / 268435456, adv4: 1 / 1073741824,
+      mid1: 1 / 4294967296, mid2: 1 / 17179869184, mid3: 1 / 68719476736, mid4: 1 / 274877906944,
+      nor1: 1 / 1099511627776, nor2: 1 / 4398046511104, nor3: 1 / 17592186044416, nor4: 1 / 70368744177664
+    };
+    let total = 0;
+    const curInv = equipInventories[selectedEquipType] || {};
+    for (let k in tierFactors) {
+      const cnt = curInv[k] !== undefined ? curInv[k] : (parseInt(document.getElementById('inv_' + k)?.value) || 0);
+      total += cnt * tierFactors[k];
+    }
+    return total;
   }
 
   function resetEquipInventory() {
@@ -7192,6 +7326,8 @@
       const inputsData = {};
       document.querySelectorAll('input[id], select[id]').forEach(el => {
         if (el.id === 'newbie_search_input' || el.id === 'rune_search_input') return;
+        // inv_ 계열은 equipInventories 객체로 따로 정밀 저장하므로 제외
+        if (el.id.startsWith('inv_')) return;
         if (el.type === 'checkbox') inputsData[el.id] = el.checked;
         else inputsData[el.id] = el.value;
       });
@@ -7206,6 +7342,8 @@
         currentConnectStageSlots: typeof currentConnectStageSlots !== 'undefined' ? currentConnectStageSlots : 6,
         currentConnectJob: typeof currentConnectJob !== 'undefined' ? currentConnectJob : 'reaper',
         currentConnectElem: typeof currentConnectElem !== 'undefined' ? currentConnectElem : 'fire',
+        selectedEquipType,
+        equipInventories,
         inputs: inputsData
       };
 
@@ -7228,6 +7366,91 @@
       }
     } catch (e) {}
   }
+
+  function loadUserSettings() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      isRestoringState = true;
+      const state = JSON.parse(raw);
+
+      if (state.selectedAncients) selectedAncients = new Set(state.selectedAncients);
+      if (state.excludedMaterials) excludedMaterials = new Set(state.excludedMaterials);
+      if (state.ownedRunes) ownedRunes = new Set(state.ownedRunes);
+
+      if (state.currentRuneJob) {
+        currentRuneJob = state.currentRuneJob;
+        ['reaper', 'mage', 'lord'].forEach(j => document.getElementById('rune_job_' + j)?.classList.toggle('selected', j === currentRuneJob));
+      }
+      if (state.currentRuneElem) {
+        currentRuneElem = state.currentRuneElem;
+        ['fire', 'light', 'dark'].forEach(e => document.getElementById('rune_elem_' + e)?.classList.toggle('selected', e === currentRuneElem));
+      }
+
+      if (typeof ownedCoresMap !== 'undefined' && state.ownedCoresEntries) {
+        ownedCoresMap = new Map(state.ownedCoresEntries);
+      }
+      if (state.currentConnectStageSlots) {
+        currentConnectStageSlots = state.currentConnectStageSlots;
+        [3, 4, 5, 6].forEach(s => document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === currentConnectStageSlots));
+      }
+      if (state.currentConnectJob) {
+        currentConnectJob = state.currentConnectJob;
+        ['reaper', 'mage', 'lord'].forEach(j => document.getElementById('sc_job_' + j)?.classList.toggle('selected', j === currentConnectJob));
+      }
+      if (state.currentConnectElem) {
+        currentConnectElem = state.currentConnectElem;
+        ['fire', 'light', 'dark'].forEach(e => document.getElementById('sc_elem_' + e)?.classList.toggle('selected', e === currentConnectElem));
+      }
+
+      // 장비 인벤토리 복원
+      if (state.equipInventories) {
+        equipInventories = state.equipInventories;
+      }
+      if (state.selectedEquipType) {
+        selectedEquipType = state.selectedEquipType;
+      }
+
+      if (state.inputs) {
+        Object.keys(state.inputs).forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            if (id === 'rune_cond_solaris9' || id === 'rune_cond_bleed') {
+              const val = state.inputs[id];
+              el.value = (val === true || val === '1' || val === 1) ? '1' : '0';
+            } else if (el.type === 'checkbox') {
+              el.checked = Boolean(state.inputs[id]);
+            } else {
+              el.value = state.inputs[id];
+            }
+          }
+        });
+      }
+
+      isRestoringState = false;
+
+      // 복원된 수치 바탕으로 전 계산기 재계산 트리거
+      if (typeof calculateAncientCost === 'function') calculateAncientCost();
+      if (typeof calculateSynergyDetailed === 'function') calculateSynergyDetailed();
+      if (typeof calculateRefineExpected === 'function') calculateRefineExpected();
+      if (typeof calculateOrbExpected === 'function') calculateOrbExpected();
+      if (typeof calculateGaho === 'function') calculateGaho();
+      if (typeof calculateWonhon === 'function') calculateWonhon();
+      if (typeof updateSummonCalculation === 'function') updateSummonCalculation();
+      if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+      if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
+    } catch (e) {
+      isRestoringState = false;
+    }
+  }
+
+  // 💡 [전역 자동 저장 리스너]: 화면 내 어떤 input/select를 건드려도 누락 없이 실시간 자동 저장
+  document.addEventListener('input', function(e) {
+    if (!isRestoringState) triggerAutoSave();
+  });
+  document.addEventListener('change', function(e) {
+    if (!isRestoringState) triggerAutoSave();
+  });
 
   function loadUserSettings() {
     try {
