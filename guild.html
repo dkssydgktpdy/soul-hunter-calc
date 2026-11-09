@@ -217,10 +217,9 @@
       <span id="sync_time_text" style="color:#94a3b8; font-size:11.5px;">(최근 동기화: 확인 중)</span>
     </div>
     <!-- 주차 선택 드롭다운 추가 -->
+    <!-- 자동으로 최신 주차가 맨 위에 선택되는 드롭다운 -->
     <select id="season_select" onchange="onSeasonChange(this.value)" style="border-color:#38bdf8; font-weight:bold; color:#38bdf8; padding:6px 10px;">
-      <option value="0">📅 11월 1주차 (현재 주차)</option>
-      <!-- 다음 주차가 오면 아래 주석 풀고 gid 입력 -->
-      <!-- <option value="시트_GID_입력">📅 11월 2주차</option> -->
+      <option value="">주차 불러오는 중...</option>
     </select>
     <div style="display:flex; align-items:center; gap:8px;">
       <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; color:#fde047; font-weight:700;">
@@ -267,16 +266,29 @@
 </div>
 
 <script>
-    // 구글 스프레드시트 기본 게시 URL (pub?output=csv 앞단)
-  const GOOGLE_SHEET_BASE_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRT8ZVq51rjA4Rk-I9dOB9-CaD90GEm-fxalAiT5vdbnoKLLHHhynOUd3WHeoHq1j5sMnaZ-i-mljve/pub?output=csv";
+  // 스프레드시트 키
+  const SPREADSHEET_ID = "1k5IvfxaEFlI6BKYIbHnbKIY71lxBlVN4i1UU7S1LTeY";
 
-  // 현재 선택된 주차의 시트 gid (기본 첫 번째 탭은 0)
-  let currentSheetGid = "0";
+  // 등록된 주차 시트 목록 (새 주차가 추가되면 맨 위에 { name: "11월 3주차 (최신)", sheetName: "11월 3주차" } 형태로 추가)
+  let availableSeasons = [
+    { name: "11월 2주차 (최신)", sheetName: "11월 2주차" },
+    { name: "11월 1주차", sheetName: "11월 1주차" }
+  ];
+  let currentSelectedSheet = availableSeasons[0].sheetName; // 항상 최신 주차 탭이 기본 선택
 
-  // 주차 변경 이벤트 함수
-  function onSeasonChange(gid) {
-    currentSheetGid = gid;
-    fetchSheetData(true); // 선택 즉시 해당 주차 시트 데이터 다시 동기화
+  // 주차 드롭다운 UI 렌더링
+  function initSeasonDropdown() {
+    const selectEl = document.getElementById("season_select");
+    if (!selectEl) return;
+    selectEl.innerHTML = availableSeasons.map((s, idx) => 
+      `<option value="${s.sheetName}" ${idx === 0 ? 'selected' : ''}>📅 ${s.name}</option>`
+    ).join('');
+  }
+
+  // 주차 변경 이벤트
+  function onSeasonChange(sheetName) {
+    currentSelectedSheet = sheetName;
+    fetchSheetData(true);
   }
 
   function getStoneRewardByRank(rank) {
@@ -311,24 +323,32 @@
     const dot = document.getElementById("sync_live_dot");
     try {
       if (dot) dot.style.background = "#f59e0b";
-      const fetchUrl = `${GOOGLE_SHEET_BASE_URL}&gid=${currentSheetGid}&_t=${Date.now()}`;
-      const response = await fetch(fetchUrl);
-      if (!response.ok) throw new Error("시트 응답 오류");
+      
+      const targetUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(currentSelectedSheet)}&_t=${Date.now()}`;
+      const response = await fetch(targetUrl);
+      if (!response.ok) throw new Error("시트 응답 오류: " + response.status);
       const csvText = await response.text();
+      
       parseMultiColumnSheetCSV(csvText);
 
       const now = new Date();
       const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
       document.getElementById("sync_time_text").innerText = `(최근 동기화: ${timeStr})`;
       if (dot) dot.style.background = "#10b981";
-      if (statusText) statusText.innerText = "구글 시트 연동 성공 (최신 상태)";
-      if (isManual) alert("구글 스프레드시트의 최신 데이터를 성공적으로 불러왔습니다!");
+      if (statusText) statusText.innerText = `[${currentSelectedSheet}] 연동 성공`;
+      if (isManual) alert(`[${currentSelectedSheet}] 최신 데이터를 성공적으로 불러왔습니다!`);
     } catch (err) {
       console.error(err);
       if (dot) dot.style.background = "#ef4444";
-      if (statusText) statusText.innerText = "연동 실패 (캐시 확인 필요)";
+      if (statusText) statusText.innerText = "연동 실패 (시트 웹게시 상태 확인)";
     }
   }
+
+  // 초기 실행 이벤트
+  window.addEventListener("DOMContentLoaded", () => {
+    initSeasonDropdown();
+    fetchSheetData();
+  });
 
   // 6개 구역 3열씩 나열된 CSV 정밀 파서 (점수 및 순위 자동 산출)
   function parseMultiColumnSheetCSV(csvText) {
