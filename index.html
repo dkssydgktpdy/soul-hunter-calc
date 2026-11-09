@@ -2951,6 +2951,8 @@
       </div>
 
     </div>
+  </div> <!-- 👈 [필수 추가!] 여기에 </div> 가 하나 꼭 있어야 mode_deep_container가 닫힙니다! -->
+
   <!-- ==================== [MODE 2] NEWBIE SECTION (v.2.1.0) ==================== -->
   <div id="mode_newbie_container" style="display:none;">
     
@@ -3049,6 +3051,7 @@
           </div>
         </div>
       </div>
+    </div> <!-- 👈 [필수 추가!] 여기에 </div> 를 추가해서 newbie_hub_view 를 닫아주세요! -->
 
     <!-- 2. 뉴비 공략 상세 계산기 화면 (소환 카테고리 선택 시 전환) -->
     <div id="newbie_calc_view" style="display:none;">
@@ -3525,16 +3528,16 @@
 
 </div>
     </div>
-  </div> <!-- 👈 누락되어 있던 mode_newbie_container 닫는 태그 완벽 복구! -->
+  </div> <!-- mode_newbie_container 닫기 -->
 
-  <!-- Footer (이제 모든 탭에서 항상 하단에 정상 노출됩니다!) -->
+  <!-- Footer (모든 탭 하단 고정 노출 + 실시간 방문자 카운터 정상 작동) -->
   <footer>
     <div style="margin-bottom: 12px;">
       소울헌터키우기 네이버 라운지 전용 계산기 v.3.2.0 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
-      <!-- 업그레이드된 길보길 전용 분석 네온 버튼 -->
+      <!-- 길보길 전용 분석 네온 버튼 -->
       <button onclick="location.href='guild.html'" 
         style="background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 1.5px solid #6366f1; color: #e0e7ff; padding: 7px 15px; border-radius: 20px; font-size: 12.5px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25); transition: all 0.2s ease;"
         onmouseover="this.style.borderColor='#38bdf8'; this.style.color='#ffffff'; this.style.boxShadow='0 0 15px rgba(56, 189, 248, 0.45)'; this.style.transform='translateY(-2px)';"
@@ -3544,10 +3547,10 @@
         <span>⚔️ 길보길 전용 쟁탈전 분석실</span>
       </button>
 
-      <!-- 방문자 수 카운터 배지 (Daily / Total) -->
-      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fdkssydgktpdy.github.io%2Fsoul-hunter-calc%2F&count_bg=%2338BDF8&title_bg=%231E293B&icon=&icon_color=%23E7E7E7&title=방문자+(Daily+%2F+Total)&edge_flat=false" 
-           alt="방문자 수 (Daily / Total)" 
-           onerror="this.style.display='none';"
+      <!-- 실시간 방문자 수 카운터 배지 (폐쇄된 seeyoufarm 대신 정상 작동하는 VBrd/Komarev 배지 + 폴백 적용) -->
+      <img src="https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fdkssydgktpdy.github.io%2Fsoul-hunter-calc%2F&label=VISITS+(TODAY+%2F+TOTAL)&labelColor=%231e293b&countColor=%2338bdf8&style=flat" 
+           alt="실시간 방문자 수" 
+           onerror="this.onerror=null; this.src='https://komarev.com/ghpvc/?username=dkssydgktpdy-soul-hunter-calc&label=TOTAL+VIEWS&color=0284c7&style=flat';"
            style="height: 22px; border-radius: 4px; vertical-align: middle;" />
     </div>
   </footer>
