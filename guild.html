@@ -155,11 +155,11 @@
     }
     .rank-badge {
       display: inline-block;
-      width: 26px;
-      height: 26px;
-      line-height: 26px;
+      width: 32px;
+      height: 24px;
+      line-height: 24px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 800;
     }
     .rank-1 { background: #eab308; color: #000; box-shadow: 0 0 8px #eab308; }
@@ -205,7 +205,7 @@
   <div class="header-bar">
     <div>
       <h1 style="font-size:20px; color:var(--accent); margin-bottom:2px;">⚔️ 이계 쟁탈전 길드 분석 (길보길 전용)</h1>
-      <span style="font-size:12.5px; color:#94a3b8;">구글 시트 실시간 자동 연동 & 구역별 눈치싸움 리더보드</span>
+      <span style="font-size:12.5px; color:#94a3b8;">구글 시트 실시간 자동 연동 & 구역별 1~50위 실시간 리더보드</span>
     </div>
     <a href="index.html" class="btn-home">🏠 메인 계산기로 돌아가기</a>
   </div>
@@ -216,6 +216,12 @@
       <strong id="sync_status_text" style="color:#ffffff;">구글 스프레드시트 실시간 연동 중</strong>
       <span id="sync_time_text" style="color:#94a3b8; font-size:11.5px;">(최근 동기화: 확인 중)</span>
     </div>
+    <!-- 주차 선택 드롭다운 추가 -->
+    <select id="season_select" onchange="onSeasonChange(this.value)" style="border-color:#38bdf8; font-weight:bold; color:#38bdf8; padding:6px 10px;">
+      <option value="0">📅 11월 1주차 (현재 주차)</option>
+      <!-- 다음 주차가 오면 아래 주석 풀고 gid 입력 -->
+      <!-- <option value="시트_GID_입력">📅 11월 2주차</option> -->
+    </select>
     <div style="display:flex; align-items:center; gap:8px;">
       <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; color:#fde047; font-weight:700;">
         <input type="checkbox" id="chk_auto_refresh" onchange="toggleAutoRefresh(this.checked)" style="accent-color:#f59e0b; width:15px; height:15px;">
@@ -255,14 +261,23 @@
     <!-- 전체 카드 뷰 -->
     <div id="guildCardContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px;"></div>
 
-    <!-- 구역별 리더보드 테이블 -->
+    <!-- 구역별 리더보드 테이블 (1~50위) -->
     <div id="zoneLeaderboardContainer" style="display: none;"></div>
   </div>
 </div>
 
 <script>
-  // 사용자 발행 CSV URL
-  const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRT8ZVq51rjA4Rk-I9dOB9-CaD90GEm-fxalAiT5vdbnoKLLHHhynOUd3WHeoHq1j5sMnaZ-i-mljve/pub?output=csv";
+    // 구글 스프레드시트 기본 게시 URL (pub?output=csv 앞단)
+  const GOOGLE_SHEET_BASE_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRT8ZVq51rjA4Rk-I9dOB9-CaD90GEm-fxalAiT5vdbnoKLLHHhynOUd3WHeoHq1j5sMnaZ-i-mljve/pub?output=csv";
+
+  // 현재 선택된 주차의 시트 gid (기본 첫 번째 탭은 0)
+  let currentSheetGid = "0";
+
+  // 주차 변경 이벤트 함수
+  function onSeasonChange(gid) {
+    currentSheetGid = gid;
+    fetchSheetData(true); // 선택 즉시 해당 주차 시트 데이터 다시 동기화
+  }
 
   function getStoneRewardByRank(rank) {
     if (rank === 1) return 300000;
@@ -278,12 +293,12 @@
   }
 
   const ZONE_CONFIG = {
-    fire:   { name: "불꽃", title: "🔥 불꽃구역 실시간 랭킹 리더보드", color: "var(--fire)" },
-    ice:    { name: "빙하", title: "❄️ 빙하구역 실시간 랭킹 리더보드", color: "var(--ice)" },
-    heaven: { name: "천상", title: "⚡ 천상구역 실시간 랭킹 리더보드", color: "var(--heaven)" },
-    grass:  { name: "초원", title: "🌱 초원구역 실시간 랭킹 리더보드", color: "var(--grass)" },
-    dark:   { name: "암흑", title: "🌑 암흑구역 실시간 랭킹 리더보드", color: "var(--dark)" },
-    abyss:  { name: "절대", title: "👑 절대구역 실시간 랭킹 리더보드", color: "var(--abyss)" }
+    fire:   { name: "불꽃", title: "🔥 불꽃구역 실시간 1~50위 리더보드", color: "var(--fire)" },
+    ice:    { name: "빙하", title: "❄️ 빙하구역 실시간 1~50위 리더보드", color: "var(--ice)" },
+    heaven: { name: "천상", title: "⚡ 천상구역 실시간 1~50위 리더보드", color: "var(--heaven)" },
+    grass:  { name: "초원", title: "🌱 초원구역 실시간 1~50위 리더보드", color: "var(--grass)" },
+    dark:   { name: "암흑", title: "🌑 암흑구역 실시간 1~50위 리더보드", color: "var(--dark)" },
+    abyss:  { name: "절대", title: "👑 절대구역 실시간 1~50위 리더보드", color: "var(--abyss)" }
   };
 
   let currentActiveTab = 'all';
@@ -296,7 +311,8 @@
     const dot = document.getElementById("sync_live_dot");
     try {
       if (dot) dot.style.background = "#f59e0b";
-      const response = await fetch(`${GOOGLE_SHEET_CSV_URL}&_t=${Date.now()}`);
+      const fetchUrl = `${GOOGLE_SHEET_BASE_URL}&gid=${currentSheetGid}&_t=${Date.now()}`;
+      const response = await fetch(fetchUrl);
       if (!response.ok) throw new Error("시트 응답 오류");
       const csvText = await response.text();
       parseMultiColumnSheetCSV(csvText);
@@ -311,81 +327,84 @@
       console.error(err);
       if (dot) dot.style.background = "#ef4444";
       if (statusText) statusText.innerText = "연동 실패 (캐시 확인 필요)";
-      const cached = localStorage.getItem("guild_db_cache_v2");
-      if (cached) {
-        const data = JSON.parse(cached);
-        guildDatabase = data.guildDatabase;
-        zoneRankings = data.zoneRankings;
-        renderCurrentView();
-      }
     }
   }
 
-  // 구역별_실시간순위 가로 나열 CSV 파서
+  // 6개 구역 3열씩 나열된 CSV 정밀 파서 (점수 및 순위 자동 산출)
   function parseMultiColumnSheetCSV(csvText) {
     const lines = csvText.trim().split("\n");
-    if (lines.length < 3) return;
+    if (lines.length < 2) return;
 
-    // 초기화
     zoneRankings = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
     const tempGuildMap = new Map();
 
     const zoneKeys = ["fire", "ice", "heaven", "grass", "dark", "abyss"];
 
-    // 2행(데이터 시작행)부터 파싱
-    for (let r = 2; r < lines.length; r++) {
-      // CSV 파싱 정규식
+    // 헤더 행 탐색 (순위, 길드명, 점수가 포함된 행)
+    let startRow = 2;
+    for (let r = 0; r < Math.min(5, lines.length); r++) {
+      if (lines[r].includes("순위") || lines[r].includes("길드명")) {
+        startRow = r + 1;
+        break;
+      }
+    }
+
+    for (let r = startRow; r < lines.length; r++) {
+      // 쉼표 분할 (큰따옴표 쉼표 보존)
       const cols = lines[r].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
 
-      // 6개 구역 순회 (구역당 4열 간격: 불꽃 0,1,2 / 빙하 4,5,6 / 천상 8,9,10 / 초원 12,13,14 / 암흑 16,17,18 / 절대 20,21,22)
+      // 6개 구역 순회 (구역당 4열 간격: 0,1,2 / 4,5,6 / 8,9,10 / 12,13,14 / 16,17,18 / 20,21,22)
       zoneKeys.forEach((zk, zIdx) => {
         const baseCol = zIdx * 4;
         const rankStr = cols[baseCol] || "";
         const nameStr = cols[baseCol + 1] || "";
         const scoreStr = cols[baseCol + 2] || "";
 
-        if (nameStr && scoreStr) {
+        if (nameStr && nameStr !== "" && nameStr !== "-") {
           const rankMatch = rankStr.match(/(\d+)/);
-          const rank = rankMatch ? parseInt(rankMatch[1]) : (zoneRankings[zk].length + 1);
-          const score = parseInt(scoreStr.replace(/[^0-9]/g, '')) || 0;
-          const stones = getStoneRewardByRank(rank);
+          const rawScore = parseInt(scoreStr.replace(/[^0-9]/g, ''));
+          const score = isNaN(rawScore) ? 0 : rawScore;
 
-          const recordItem = {
+          // 순위가 없으면 리스트 순서대로 임시 지정
+          const currentRank = rankMatch ? parseInt(rankMatch[1]) : (zoneRankings[zk].length + 1);
+
+          zoneRankings[zk].push({
             guildName: nameStr,
-            rank: rank,
+            rank: currentRank,
             score: score,
-            stones: stones,
+            zoneKey: zk,
             zone: ZONE_CONFIG[zk].name
-          };
-
-          zoneRankings[zk].push(recordItem);
-
-          // 전체 집계용 맵
-          if (!tempGuildMap.has(nameStr)) {
-            tempGuildMap.set(nameStr, {
-              name: nameStr,
-              totalScore: 0,
-              totalStones: 0,
-              count: 0,
-              records: []
-            });
-          }
-          const gInfo = tempGuildMap.get(nameStr);
-          gInfo.totalScore += score;
-          gInfo.totalStones += stones;
-          gInfo.count += 1;
-          gInfo.records.push(recordItem);
+          });
         }
       });
     }
 
-    // 구역별 점수 내림차순(또는 순위 오름차순) 정렬 보장
+    // 각 구역별 점수 내림차순 자동 정렬 및 순위/각성석 재부여 (시트에서 순서 안 맞아도 자동 교정)
     zoneKeys.forEach(zk => {
-      zoneRankings[zk].sort((a,b) => a.rank - b.rank);
+      zoneRankings[zk].sort((a,b) => b.score - a.score);
+      zoneRankings[zk].forEach((item, idx) => {
+        item.rank = idx + 1;
+        item.stones = getStoneRewardByRank(item.rank);
+
+        // 전체 길드 집계 맵에 반영
+        if (!tempGuildMap.has(item.guildName)) {
+          tempGuildMap.set(item.guildName, {
+            name: item.guildName,
+            totalScore: 0,
+            totalStones: 0,
+            count: 0,
+            records: []
+          });
+        }
+        const gInfo = tempGuildMap.get(item.guildName);
+        gInfo.totalScore += item.score;
+        gInfo.totalStones += item.stones;
+        gInfo.count += 1;
+        gInfo.records.push(item);
+      });
     });
 
     guildDatabase = Array.from(tempGuildMap.values());
-    localStorage.setItem("guild_db_cache_v2", JSON.stringify({ guildDatabase, zoneRankings }));
     renderCurrentView();
   }
 
@@ -411,7 +430,7 @@
       const cfg = ZONE_CONFIG[tabKey];
       mainCard.style.borderLeftColor = cfg.color;
       document.getElementById("view_title").innerText = cfg.title;
-      document.getElementById("view_subtitle").innerHTML = `<span style="color:#f43f5e; font-weight:bold;">1~5위 점령 보너스(50%~20%) 획득 구간</span> (점수 실시간 비교 후 빈집 공략)`;
+      document.getElementById("view_subtitle").innerHTML = `<span style="color:#f43f5e; font-weight:bold;">1~5위 점령 보너스(50%~20%) 획득 구간</span> (실시간 점수 확인 후 빈집 집중 공략)`;
       searchBox.style.display = "none";
       cardContainer.style.display = "none";
       zoneContainer.style.display = "block";
@@ -466,7 +485,7 @@
 
     const ranking = zoneRankings[tabKey] || [];
     if (ranking.length === 0) {
-      container.innerHTML = `<div style="text-align:center; padding:40px; color:#94a3b8;">해당 구역의 랭킹 데이터가 없습니다.</div>`;
+      container.innerHTML = `<div style="text-align:center; padding:40px; color:#94a3b8;">해당 구역의 등록된 순위 데이터가 없습니다.</div>`;
       return;
     }
 
@@ -482,7 +501,7 @@
 
       return `
         <tr style="${rowStyle}">
-          <td><span class="rank-badge ${rankBadgeCls}">${item.rank}</span></td>
+          <td><span class="rank-badge ${rankBadgeCls}">${item.rank}위</span></td>
           <td style="font-size:14.5px; color:${isTop5 ? '#ffffff' : '#cbd5e1'};">${item.guildName}</td>
           <td style="color:#38bdf8; font-weight:700;">${item.score.toLocaleString()}점</td>
           <td style="color:${isTop5 ? '#34d399' : '#94a3b8'};">${item.stones.toLocaleString()}개</td>
@@ -496,7 +515,7 @@
         <table class="custom-table">
           <thead>
             <tr>
-              <th style="width:70px;">순위</th>
+              <th style="width:75px;">순위</th>
               <th>길드명</th>
               <th>획득 점수</th>
               <th>예상 각성석</th>
