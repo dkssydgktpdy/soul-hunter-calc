@@ -269,12 +269,8 @@
   // 스프레드시트 키
   const SPREADSHEET_ID = "1k5IvfxaEFlI6BKYIbHnbKIY71lxBlVN4i1UU7S1LTeY";
 
-  // 등록된 주차 시트 목록 (새 주차가 추가되면 맨 위에 { name: "11월 3주차 (최신)", sheetName: "11월 3주차" } 형태로 추가)
-  let availableSeasons = [
-    { name: "11월 2주차 (최신)", sheetName: "11월 2주차" },
-    { name: "11월 1주차", sheetName: "11월 1주차" }
-  ];
-  let currentSelectedSheet = availableSeasons[0].sheetName; // 항상 최신 주차 탭이 기본 선택
+  let currentSelectedSheet = "";
+  let availableSeasons = [];
 
   // 주차 드롭다운 UI 렌더링
   function initSeasonDropdown() {
@@ -318,37 +314,75 @@
   let zoneRankings = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
   let autoRefreshTimer = null;
 
-  async function fetchSheetData(isManual = false) {
-    const statusText = document.getElementById("sync_status_text");
-    const dot = document.getElementById("sync_live_dot");
-    try {
-      if (dot) dot.style.background = "#f59e0b";
-      
-      const targetUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(currentSelectedSheet)}&_t=${Date.now()}`;
-      const response = await fetch(targetUrl);
-      if (!response.ok) throw new Error("시트 응답 오류: " + response.status);
-      const csvText = await response.text();
-      
-      parseMultiColumnSheetCSV(csvText);
+  async function autoDetectSheetSeasons() {
+    const selectEl = document.getElementById("season_select");
+    if (selectEl) selectEl.innerHTML = `<option value="">탭 목록 자동 검색 중...</option>`;
 
-      const now = new Date();
-      const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
-      document.getElementById("sync_time_text").innerText = `(최근 동기화: ${timeStr})`;
-      if (dot) dot.style.background = "#10b981";
-      if (statusText) statusText.innerText = `[${currentSelectedSheet}] 연동 성공`;
-      if (isManual) alert(`[${currentSelectedSheet}] 최신 데이터를 성공적으로 불러왔습니다!`);
-    } catch (err) {
-      console.error(err);
-      if (dot) dot.style.background = "#ef4444";
-      if (statusText) statusText.innerText = "연동 실패 (시트 웹게시 상태 확인)";
+    try {
+      const res = await fetch(`https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/htmlview?_t=${Date.now()}`);
+      if (!res.ok) throw new Error("시트 메타데이터 로드 실패");
+      const htmlText = await res.text();
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlText, "text/html");
+      const tabElements = doc.querySelectorAll("#sheet-menu li a");
+
+      let tabNames = [];
+      tabElements.forEach(el => {
+        const name = el.innerText.trim();
+        if (name && (name.includes("주차") || name.includes("주"))) {
+          tabNames.push(name);
+        }
+      });
+
+      if (tabNames.length === 0) {
+        const matches = htmlText.match(/class="sheet-button[^"]*"[^>]*><a[^>]*>([^<]+)<\/a>/g);
+        if (matches) {
+          matches.forEach(m => {
+            const cleanName = m.replace(/<[^>]+>/g, '').trim();
+            if (cleanName && cleanName.includes("주차")) tabNames.push(cleanName);
+          });
+        }
+      }
+
+      if (tabNames.length > 0) {
+        tabNames.reverse();
+        availableSeasons = tabNames.map((name, idx) => ({
+          name: idx === 0 ? `${name} (최신)` : name,
+          sheetName: name
+        }));
+      } else {
+        availableSeasons = [
+          { name: "11월 2주차 (최신)", sheetName: "11월 2주차" },
+          { name: "11월 1주차", sheetName: "11월 1주차" }
+        ];
+      }
+    } catch (e) {
+      console.warn("자동 탭 감지 폴백 사용:", e);
+      availableSeasons = [
+        { name: "11월 2주차 (최신)", sheetName: "11월 2주차" },
+        { name: "11월 1주차", sheetName: "11월 1주차" }
+      ];
     }
+
+    currentSelectedSheet = availableSeasons[0].sheetName;
+    renderSeasonDropdown();
+    fetchSheetData();
+  }
+
+  function renderSeasonDropdown() {
+    const selectEl = document.getElementById("season_select");
+    if (!selectEl) return;
+    selectEl.innerHTML = availableSeasons.map((s, idx) => 
+      `<option value="${s.sheetName}" ${idx === 0 ? 'selected' : ''}>📅 ${s.name}</option>`
+    ).join('');
   }
 
   // 초기 실행 이벤트
-  window.addEventListener("DOMContentLoaded", () => {
-    initSeasonDropdown();
-    fetchSheetData();
-  });
+  function onSeasonChange(sheetName) {
+    currentSelectedSheet = sheetName;
+    fetchSheetData(true);
+  }
 
   // 6개 구역 3열씩 나열된 CSV 정밀 파서 (점수 및 순위 자동 산출)
   function parseMultiColumnSheetCSV(csvText) {
@@ -587,7 +621,7 @@
   }
 
   window.addEventListener("DOMContentLoaded", () => {
-    fetchSheetData();
+    autoDetectSheetSeasons();
   });
 </script>
 
