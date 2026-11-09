@@ -194,16 +194,31 @@
 </head>
 <body>
 
-  <!-- guild.html 자체 보안 잠금 화면 (인증 전에는 본문이 안 보임) -->
-  <div id="gate_lock_overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#0b1120; z-index:999999; display:flex; align-items:center; justify-content:center; padding:16px;">
-    <div style="background:#1e293b; border:2px solid #f43f5e; border-radius:16px; max-width:380px; width:100%; padding:26px 22px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.8);">
-      <div style="font-size:32px; margin-bottom:10px;">🔒</div>
-      <h3 style="color:#fda4af; font-size:18px; font-weight:800; margin-bottom:8px;">이계 쟁탈전 길드 분석</h3>
-      <p style="color:#94a3b8; font-size:13px; margin-bottom:18px; line-height:1.5;">대외비 길드 분석 대시보드입니다.<br>접근 비밀번호를 입력해주세요.</p>
-      <input type="password" id="gate_password_input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter') verifyGatePassword()" style="width:100%; text-align:center; padding:10px; font-size:15px; font-weight:bold; background:#0f172a; border:1.5px solid #334155; border-radius:8px; color:#fff; margin-bottom:14px; outline:none;">
-      <div style="display:flex; gap:8px;">
-        <button onclick="location.href='index.html'" style="flex:1; background:#334155; border:none; padding:10px; border-radius:8px; color:#cbd5e1; font-weight:bold; cursor:pointer;">홈으로</button>
-        <button onclick="verifyGatePassword()" style="flex:1; background:#e11d48; border:none; padding:10px; border-radius:8px; color:#fff; font-weight:bold; cursor:pointer;">입장하기</button>
+  <!-- guild.html 자체 보안 잠금 화면 (비밀번호 모를 때 공략툴 복귀 버튼 완비!) -->
+  <div id="gate_lock_overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(11, 17, 32, 0.96); backdrop-filter:blur(8px); z-index:999999; display:flex; align-items:center; justify-content:center; padding:16px;">
+    <div style="background:#1e293b; border:2px solid #f43f5e; border-radius:18px; max-width:400px; width:100%; padding:28px 24px; text-align:center; box-shadow:0 15px 45px rgba(0,0,0,0.85);">
+      <div style="font-size:36px; margin-bottom:10px;">🔒</div>
+      <h3 style="color:#fda4af; font-size:19px; font-weight:800; margin-bottom:8px;">길보길 전용 쟁탈전 분석실</h3>
+      <p style="color:#cbd5e1; font-size:13.5px; margin-bottom:20px; line-height:1.55;">
+        길드원 전용 대외비 분석 대시보드입니다.<br>길드 공지방에 안내된 비밀번호를 입력해주세요.
+      </p>
+
+      <input type="password" id="gate_password_input" placeholder="비밀번호를 입력하세요" onkeydown="if(event.key==='Enter') verifyGatePassword()" 
+        style="width:100%; text-align:center; padding:12px; font-size:15px; font-weight:bold; background:#0f172a; border:1.5px solid #475569; border-radius:10px; color:#fff; margin-bottom:12px; outline:none;">
+
+      <button onclick="verifyGatePassword()" 
+        style="width:100%; background:linear-gradient(135deg, #e11d48 0%, #be123c 100%); border:1px solid #fb7185; padding:12px; border-radius:10px; color:#fff; font-size:14.5px; font-weight:800; cursor:pointer; margin-bottom:14px; box-shadow:0 4px 14px rgba(225, 29, 72, 0.4);">
+        🔓 분석실 입장하기
+      </button>
+
+      <!-- 일반 유저용: 시뮬레이터 & 공략툴로 돌아가는 직관적 안내 및 버튼 -->
+      <div style="border-top:1px dashed #334155; padding-top:14px; margin-top:4px;">
+        <div style="font-size:12px; color:#94a3b8; margin-bottom:8px;">비밀번호가 없으신가요?</div>
+        <button onclick="location.href='index.html'" 
+          style="width:100%; background:linear-gradient(135deg, #0284c7 0%, #1e3a8a 100%); border:1.5px solid #38bdf8; padding:11px; border-radius:10px; color:#ffffff; font-size:13.5px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 4px 12px rgba(56, 189, 248, 0.25);">
+          <span>🔙</span>
+          <span>소헌키 시뮬레이터 & 공략툴로 돌아가기</span>
+        </button>
       </div>
     </div>
   </div>

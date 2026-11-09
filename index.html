@@ -3521,20 +3521,34 @@
     </div>
 
   </div>
+</div>
 
-<!-- Footer -->
+</div>
+    </div>
+  </div> <!-- 👈 누락되어 있던 mode_newbie_container 닫는 태그 완벽 복구! -->
+
+  <!-- Footer (이제 모든 탭에서 항상 하단에 정상 노출됩니다!) -->
   <footer>
-    소울헌터키우기 네이버 라운지 전용 계산기 v.3.2.0 | 제작: 29서버 겨울눈사람
+    <div style="margin-bottom: 12px;">
+      소울헌터키우기 네이버 라운지 전용 계산기 v.3.2.0 | 제작: <strong>29서버 겨울눈사람</strong>
+    </div>
     
-    <div style="margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; min-height: 28px;">
-      <!-- 길보길 전용 진입 시크릿 버튼 (왼쪽 구석에 작게 배치) -->
-      <button onclick="location.href='guild.html'" style="position: absolute; left: 0; background: rgba(30, 41, 59, 0.7); border: 1.5px solid #475569; color: #94a3b8; padding: 5px 11px; border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer;" title="길보길 전용 분석">📊 길보길 분석</button>
-      
-      <!-- 방문자 수 카운터 배지 (Daily / Total 정상 복구) -->
+    <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
+      <!-- 업그레이드된 길보길 전용 분석 네온 버튼 -->
+      <button onclick="location.href='guild.html'" 
+        style="background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 1.5px solid #6366f1; color: #e0e7ff; padding: 7px 15px; border-radius: 20px; font-size: 12.5px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25); transition: all 0.2s ease;"
+        onmouseover="this.style.borderColor='#38bdf8'; this.style.color='#ffffff'; this.style.boxShadow='0 0 15px rgba(56, 189, 248, 0.45)'; this.style.transform='translateY(-2px)';"
+        onmouseout="this.style.borderColor='#6366f1'; this.style.color='#e0e7ff'; this.style.boxShadow='0 4px 12px rgba(99, 102, 241, 0.25)'; this.style.transform='translateY(0)';"
+        title="길보길 길드 전용 이계 쟁탈전 실시간 분석실">
+        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#38bdf8; box-shadow:0 0 8px #38bdf8;"></span>
+        <span>⚔️ 길보길 전용 쟁탈전 분석실</span>
+      </button>
+
+      <!-- 방문자 수 카운터 배지 (Daily / Total) -->
       <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fdkssydgktpdy.github.io%2Fsoul-hunter-calc%2F&count_bg=%2338BDF8&title_bg=%231E293B&icon=&icon_color=%23E7E7E7&title=방문자+(Daily+%2F+Total)&edge_flat=false" 
            alt="방문자 수 (Daily / Total)" 
            onerror="this.style.display='none';"
-           style="height: 20px; border-radius: 4px;" />
+           style="height: 22px; border-radius: 4px; vertical-align: middle;" />
     </div>
   </footer>
 
