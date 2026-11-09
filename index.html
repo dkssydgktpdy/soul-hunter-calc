@@ -2951,27 +2951,6 @@
       </div>
 
     </div>
-  </div>
-
-
-  <!-- 길보길 전용 비밀번호 인증 모달창 -->
-  <div class="help-modal-overlay" id="guild_password_modal" onclick="closeGuildModal(event)">
-    <div class="help-modal-box" onclick="event.stopPropagation()" style="text-align:center; max-width:400px; border-color:#f43f5e;">
-      <div class="help-modal-header" style="border-bottom-color:#334155;">
-        <span class="help-modal-title" style="color:#fda4af;">🔒 보안 인증 (길보길 전용)</span>
-        <button class="help-modal-close" onclick="closeGuildModal()">✕</button>
-      </div>
-      <div class="help-modal-body" style="padding: 10px 0;">
-        <p style="margin-bottom:14px; color:#cbd5e1; font-size:14px;">대외비 길드 분석 데이터입니다.<br>부여받은 비밀번호를 입력해주세요.</p>
-        <input type="password" id="guild_password_input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter') verifyGuildPassword()" style="text-align:center; margin-bottom:14px; background:#0f172a; color:#fff; font-weight:bold;">
-        <div style="display:flex; gap:8px;">
-          <button onclick="closeGuildModal()" style="flex:1; background:#334155; border:none; padding:10px; border-radius:8px; color:#cbd5e1; font-weight:bold; cursor:pointer;">취소</button>
-          <button onclick="verifyGuildPassword()" style="flex:1; background:#e11d48; border:none; padding:10px; border-radius:8px; color:#fff; font-weight:bold; cursor:pointer;">확인</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- ==================== [MODE 2] NEWBIE SECTION (v.2.1.0) ==================== -->
   <div id="mode_newbie_container" style="display:none;">
     
@@ -3070,28 +3049,6 @@
           </div>
         </div>
       </div>
-
-      <!-- 섹션 2: 룬 착용 도우미 (Beta) -->
-      <div class="hub-section">
-        <div class="hub-section-title" style="border-left-color:#ec4899;">
-          <span>💎 룬 착용 & 최고 배율 세팅 도우미</span>
-        </div>
-        <div class="hub-grid">
-          <div class="hub-card" onclick="openRuneHelperView()" style="border-color:rgba(244,63,94,0.45);">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#f43f5e; background:rgba(244,63,94,0.12);">
-                <img src="images/main_rune.png" alt="룬" onerror="this.onerror=null; this.src='images/main_rune.jpg'; this.onerror=function(){this.parentElement.innerHTML='🛡️';};">
-              </div>
-              <div>
-                <span class="hub-card-title">🛡️ 룬 착용 도우미 v.1.0.1</span>
-                <span class="hub-card-desc">고대·영원·불멸 보유 룬 선택 시 최고 배율 10칸(상의/하의/신발/장식/무기) 자동 배치</span>
-              </div>
-            </div>
-            <div class="hub-card-arrow">➔</div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- 2. 뉴비 공략 상세 계산기 화면 (소환 카테고리 선택 시 전환) -->
     <div id="newbie_calc_view" style="display:none;">
@@ -3569,14 +3526,18 @@
   <footer>
     소울헌터키우기 네이버 라운지 전용 계산기 v.3.2.0 | 제작: 29서버 겨울눈사람
     
-    <div style="margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; position: relative;">
+    <div style="margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; min-height: 28px;">
       <!-- 길보길 전용 진입 시크릿 버튼 (왼쪽 구석에 작게 배치) -->
-      <button onclick="openGuildModal()" style="position: absolute; left: 0; background: rgba(30, 41, 59, 0.7); border: 1.5px solid #475569; color: #94a3b8; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#38bdf8'; this.style.color='#38bdf8';" onmouseout="this.style.borderColor='#475569'; this.style.color='#94a3b8';" title="길보길 전용 분석">📊 길보길 분석</button>
-      <img src="https://api.visitorbadge.io/api/combined?path=dkssydgktpdy.github.io.soul-hunter-calc&label=VISITORS&labelColor=%231e293b&countColor=%2338bdf8&style=flat" 
+      <button onclick="location.href='guild.html'" style="position: absolute; left: 0; background: rgba(30, 41, 59, 0.7); border: 1.5px solid #475569; color: #94a3b8; padding: 5px 11px; border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer;" title="길보길 전용 분석">📊 길보길 분석</button>
+      
+      <!-- 방문자 수 카운터 배지 (Daily / Total 정상 복구) -->
+      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fdkssydgktpdy.github.io%2Fsoul-hunter-calc%2F&count_bg=%2338BDF8&title_bg=%231E293B&icon=&icon_color=%23E7E7E7&title=방문자+(Daily+%2F+Total)&edge_flat=false" 
            alt="방문자 수 (Daily / Total)" 
+           onerror="this.style.display='none';"
            style="height: 20px; border-radius: 4px;" />
     </div>
   </footer>
+
 <script>
   // ==================== FORMATTING HELPER (만 / 억 / 조 / 경 / 해 / 자 완벽 지원) ====================
   function formatKoreanNumber(num) {
@@ -3777,11 +3738,7 @@
   }
 
   function handleFloatingBack() {
-    // 쟁탈전 대시보드가 열려있을 때 뒤로가기 처리
-    if (document.getElementById("tab-guild-analysis")?.style.display === "block") {
-      document.getElementById("tab-guild-analysis").style.display = "none";
-      returnToDeepHub();
-    } else if (currentMainMode === 'deep') {
+    if (currentMainMode === 'deep') {
       returnToDeepHub();
     } else {
       returnToNewbieHub();
@@ -7524,6 +7481,7 @@
   // ==================== v.3.0.0 MASTER ENGINE (ZERO-GPU BANNER WEATHER & INSTANT 3-TAB INIT) ====================
 
   // 1. 상단 3대 메인 탭 스위처 (고유 클래스/인덱스 즉시 제어)
+  // 1. 상단 3대 메인 탭 스위처 (소울커넥트 + 룬 도우미 동시 인식 패치 완료!)
   function switchMainMode(mode) {
     currentMainMode = mode;
     const deepContainer = document.getElementById("mode_deep_container");
@@ -7543,26 +7501,21 @@
     if (floatBtn) floatBtn.style.display = "none";
 
     if (mode === 'helpers') {
-      // [탭 1: 세팅 도우미 모음] -> 소울커넥트 도우미 + 룬 착용 도우미만 즉시 노출!
+      // [탭 1: 세팅 도우미 모음] -> 소울커넥트 도우미 + 룬 착용 도우미 2개만 정확히 노출!
       if (guidesContainer) guidesContainer.style.display = "none";
       if (deepContainer) deepContainer.style.display = "block";
-      if (newbieContainer) newbieContainer.style.display = "block";
+      if (newbieContainer) newbieContainer.style.display = "none";
 
       if (deepHub) deepHub.style.display = "block";
       document.getElementById("deep_calc_view").style.display = "none";
-      if (newbieHub) newbieHub.style.display = "block";
+      if (newbieHub) newbieHub.style.display = "none";
       document.getElementById("newbie_calc_view").style.display = "none";
       document.getElementById("newbie_rune_view").style.display = "none";
 
-      // 심화 허브에서는 마지막 섹션(소울커넥트)만 켜고 나머지 계산기 섹션은 전부 숨김
-      deepSections.forEach((sec, idx) => {
-        const isConnectSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')");
-        sec.style.display = isConnectSec ? "block" : "none";
-      });
-      // 뉴비 허브에서는 룬 도우미 섹션만 켜고 소환 계산기 섹션은 숨김
-      newbieSections.forEach((sec) => {
-        const isRuneSec = sec.innerHTML.includes("openRuneHelperView()");
-        sec.style.display = isRuneSec ? "block" : "none";
+      // deep_hub_view 안에서 소울커넥트 도우미와 룬 착용 도우미 섹션만 켜고 나머지 계산기 섹션은 숨김!
+      deepSections.forEach((sec) => {
+        const isHelperSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')") || sec.innerHTML.includes("openRuneHelperView()");
+        sec.style.display = isHelperSec ? "block" : "none";
       });
     } else if (mode === 'guides') {
       // [탭 2: 뉴비 직업별 세팅 가이드]
@@ -7572,7 +7525,7 @@
       document.getElementById("guides_hub_view").style.display = "block";
       document.getElementById("guides_detail_view").style.display = "none";
     } else if (mode === 'calcs') {
-      // [탭 3: 확률 기댓값 & 재화 계산기] -> 심화 계산기 3섹션 + 소환 계산기 1섹션 노출
+      // [탭 3: 확률 기댓값 & 재화 계산기] -> 심화 계산기 3섹션(연마/고패/어빌) + 소환 계산기 섹션만 노출!
       if (guidesContainer) guidesContainer.style.display = "none";
       if (deepContainer) deepContainer.style.display = "block";
       if (newbieContainer) newbieContainer.style.display = "block";
@@ -7583,10 +7536,12 @@
       document.getElementById("newbie_calc_view").style.display = "none";
       document.getElementById("newbie_rune_view").style.display = "none";
 
+      // deep_hub_view 안에서 도우미(소울커넥트, 룬 도우미)는 숨기고 순수 계산기 섹션만 노출!
       deepSections.forEach((sec) => {
-        const isConnectSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')");
-        sec.style.display = !isConnectSec ? "block" : "none";
+        const isHelperSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')") || sec.innerHTML.includes("openRuneHelperView()");
+        sec.style.display = !isHelperSec ? "block" : "none";
       });
+      // newbie_hub_view 안에서 소환 계산기 섹션만 노출!
       newbieSections.forEach((sec) => {
         const isRuneSec = sec.innerHTML.includes("openRuneHelperView()");
         sec.style.display = !isRuneSec ? "block" : "none";
@@ -7615,6 +7570,7 @@
   openRuneHelperView = function() {
     document.getElementById("mode_deep_container").style.display = "none";
     document.getElementById("mode_guides_container").style.display = "none";
+    document.getElementById("mode_newbie_container").style.display = "block";
     _origOpenRuneHelper();
     document.getElementById("floating_back_text").innerText = "도우미 메뉴로 돌아가기";
   };
@@ -7623,6 +7579,8 @@
     switchMainMode(currentMainMode);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+
 // 배너 클릭 시 첫 메인 홈 화면으로 리셋 복귀
   function resetToHome() {
     // 1. 첫 번째 기본 모드('helpers')로 전환
@@ -8592,42 +8550,6 @@ window.addEventListener('DOMContentLoaded', () => {
         triggerAutoSave();
       }
     });
-  }
-
- // ==================== 🛡️ 이계 쟁탈전 길드 분석 엔진 ====================
-  function openGuildModal() {
-    document.getElementById("guild_password_modal").style.display = "flex";
-    const pwInput = document.getElementById("guild_password_input");
-    if (pwInput) {
-      pwInput.value = "";
-      pwInput.focus();
-    }
-  }
-
-  function closeGuildModal(e) {
-    if (e && e.target !== e.currentTarget && e.type === 'click') return;
-    document.getElementById("guild_password_modal").style.display = "none";
-  }
-
-  function verifyGuildPassword() {
-    const inputEl = document.getElementById("guild_password_input");
-    const inputPw = inputEl ? inputEl.value.trim() : "";
-    const CORRECT_PW = "guildboss";
-
-    if (inputPw === CORRECT_PW) {
-      sessionStorage.setItem("guild_auth", "true");
-      // 입력창 비우고 모달 닫기
-      inputEl.value = "";
-      document.getElementById("guild_password_modal").style.display = "none";
-      // guild.html로 이동
-      window.location.href = "guild.html";
-    } else {
-      alert("비밀번호가 일치하지 않습니다.");
-      if (inputEl) {
-        inputEl.value = "";
-        inputEl.focus();
-      }
-    }
   }
 
   document.addEventListener('DOMContentLoaded', initAppV300);

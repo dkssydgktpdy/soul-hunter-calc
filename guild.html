@@ -155,7 +155,7 @@
     }
     .rank-badge {
       display: inline-block;
-      width: 32px;
+      width: 38px;
       height: 24px;
       line-height: 24px;
       border-radius: 6px;
@@ -191,100 +191,132 @@
       outline: none;
     }
   </style>
-
-  <script>
-    if (sessionStorage.getItem("guild_auth") !== "true") {
-      alert("보안 인증이 필요합니다.");
-      window.location.href = "index.html";
-    }
-  </script>
 </head>
 <body>
 
-<div class="container">
-  <div class="header-bar">
-    <div>
-      <h1 style="font-size:20px; color:var(--accent); margin-bottom:2px;">⚔️ 이계 쟁탈전 길드 분석 (길보길 전용)</h1>
-      <span style="font-size:12.5px; color:#94a3b8;">구글 시트 실시간 자동 연동 & 구역별 1~50위 실시간 리더보드</span>
-    </div>
-    <a href="index.html" class="btn-home">🏠 메인 계산기로 돌아가기</a>
-  </div>
-
-  <div class="sync-status-bar">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span id="sync_live_dot" style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
-      <strong id="sync_status_text" style="color:#ffffff;">구글 스프레드시트 실시간 연동 중</strong>
-      <span id="sync_time_text" style="color:#94a3b8; font-size:11.5px;">(최근 동기화: 확인 중)</span>
-    </div>
-    <!-- 주차 선택 드롭다운 추가 -->
-    <!-- 자동으로 최신 주차가 맨 위에 선택되는 드롭다운 -->
-    <select id="season_select" onchange="onSeasonChange(this.value)" style="border-color:#38bdf8; font-weight:bold; color:#38bdf8; padding:6px 10px;">
-      <option value="">주차 불러오는 중...</option>
-    </select>
-    <div style="display:flex; align-items:center; gap:8px;">
-      <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; color:#fde047; font-weight:700;">
-        <input type="checkbox" id="chk_auto_refresh" onchange="toggleAutoRefresh(this.checked)" style="accent-color:#f59e0b; width:15px; height:15px;">
-        <span>⚡ 5초 자동 갱신 (마감 눈치싸움 모드)</span>
-      </label>
-      <button onclick="fetchSheetData(true)" class="action-btn" style="background:#0284c7;">🔄 지금 동기화</button>
+  <!-- guild.html 자체 보안 잠금 화면 (인증 전에는 본문이 안 보임) -->
+  <div id="gate_lock_overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#0b1120; z-index:999999; display:flex; align-items:center; justify-content:center; padding:16px;">
+    <div style="background:#1e293b; border:2px solid #f43f5e; border-radius:16px; max-width:380px; width:100%; padding:26px 22px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.8);">
+      <div style="font-size:32px; margin-bottom:10px;">🔒</div>
+      <h3 style="color:#fda4af; font-size:18px; font-weight:800; margin-bottom:8px;">이계 쟁탈전 길드 분석</h3>
+      <p style="color:#94a3b8; font-size:13px; margin-bottom:18px; line-height:1.5;">대외비 길드 분석 대시보드입니다.<br>접근 비밀번호를 입력해주세요.</p>
+      <input type="password" id="gate_password_input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter') verifyGatePassword()" style="width:100%; text-align:center; padding:10px; font-size:15px; font-weight:bold; background:#0f172a; border:1.5px solid #334155; border-radius:8px; color:#fff; margin-bottom:14px; outline:none;">
+      <div style="display:flex; gap:8px;">
+        <button onclick="location.href='index.html'" style="flex:1; background:#334155; border:none; padding:10px; border-radius:8px; color:#cbd5e1; font-weight:bold; cursor:pointer;">홈으로</button>
+        <button onclick="verifyGatePassword()" style="flex:1; background:#e11d48; border:none; padding:10px; border-radius:8px; color:#fff; font-weight:bold; cursor:pointer;">입장하기</button>
+      </div>
     </div>
   </div>
 
-  <div class="zone-tabs-bar">
-    <div class="zone-tab-btn active" id="tab_all" onclick="switchZoneView('all')">🌐 전체 종합 순위</div>
-    <div class="zone-tab-btn tab-fire" id="tab_fire" onclick="switchZoneView('fire')">🔥 불꽃구역</div>
-    <div class="zone-tab-btn tab-ice" id="tab_ice" onclick="switchZoneView('ice')">❄️ 빙하구역</div>
-    <div class="zone-tab-btn tab-heaven" id="tab_heaven" onclick="switchZoneView('heaven')">⚡ 천상구역</div>
-    <div class="zone-tab-btn tab-grass" id="tab_grass" onclick="switchZoneView('grass')">🌱 초원구역</div>
-    <div class="zone-tab-btn tab-dark" id="tab_dark" onclick="switchZoneView('dark')">🌑 암흑구역</div>
-    <div class="zone-tab-btn tab-abyss" id="tab_abyss" onclick="switchZoneView('abyss')">👑 절대구역</div>
-  </div>
-
-  <div class="card" id="main_viewer_card" style="border-left: 4px solid var(--accent);">
-    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+  <div class="container">
+    <div class="header-bar">
       <div>
-        <h2 id="view_title" style="font-size:17.5px; font-weight:800; color:#fff;">🌐 길드 전체 종합 순위</h2>
-        <span id="view_subtitle" style="font-size:12.5px; color:#cbd5e1;">총 누적 점수 및 각성석 획득량 기준 정렬</span>
+        <h1 style="font-size:20px; color:var(--accent); margin-bottom:2px;">⚔️ 이계 쟁탈전 길드 분석 (길보길 전용)</h1>
+        <span style="font-size:12.5px; color:#94a3b8;">구글 시트 실시간 자동 연동 & 구역별 1~50위 실시간 리더보드</span>
       </div>
-      <div id="zone_search_box" style="display:flex; gap:8px;">
-        <input type="text" id="guildSearchInput" placeholder="길드명 검색..." onkeyup="filterGuildCards()">
-        <select id="guildSortSelect" onchange="sortAndRenderAllView()">
-          <option value="total">총 점수 높은 순</option>
-          <option value="stones">누적 각성석 많은 순</option>
-          <option value="count">출현 구역 많은 순</option>
-          <option value="name">길드명 가나다순</option>
-        </select>
+      <a href="index.html" class="btn-home">🏠 메인 계산기로 돌아가기</a>
+    </div>
+
+    <div class="sync-status-bar">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span id="sync_live_dot" style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
+        <strong id="sync_status_text" style="color:#ffffff;">구글 스프레드시트 실시간 연동 중</strong>
+        <span id="sync_time_text" style="color:#94a3b8; font-size:11.5px;">(최근 동기화: 대기 중)</span>
+      </div>
+      <select id="season_select" onchange="onSeasonChange(this.value)" style="border-color:#38bdf8; font-weight:bold; color:#38bdf8; padding:6px 10px;">
+        <option value="">주차 불러오는 중...</option>
+      </select>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; color:#fde047; font-weight:700;">
+          <input type="checkbox" id="chk_auto_refresh" onchange="toggleAutoRefresh(this.checked)" style="accent-color:#f59e0b; width:15px; height:15px;">
+          <span>⚡ 5초 자동 갱신 (마감 눈치싸움 모드)</span>
+        </label>
+        <button onclick="fetchSheetData(true)" class="action-btn" style="background:#0284c7;">🔄 지금 동기화</button>
       </div>
     </div>
 
-    <!-- 전체 카드 뷰 -->
-    <div id="guildCardContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px;"></div>
+    <div class="zone-tabs-bar">
+      <div class="zone-tab-btn active" id="tab_all" onclick="switchZoneView('all')">🌐 전체 종합 순위</div>
+      <div class="zone-tab-btn tab-fire" id="tab_fire" onclick="switchZoneView('fire')">🔥 불꽃구역</div>
+      <div class="zone-tab-btn tab-ice" id="tab_ice" onclick="switchZoneView('ice')">❄️ 빙하구역</div>
+      <div class="zone-tab-btn tab-heaven" id="tab_heaven" onclick="switchZoneView('heaven')">⚡ 천상구역</div>
+      <div class="zone-tab-btn tab-grass" id="tab_grass" onclick="switchZoneView('grass')">🌱 초원구역</div>
+      <div class="zone-tab-btn tab-dark" id="tab_dark" onclick="switchZoneView('dark')">🌑 암흑구역</div>
+      <div class="zone-tab-btn tab-abyss" id="tab_abyss" onclick="switchZoneView('abyss')">👑 절대구역</div>
+    </div>
 
-    <!-- 구역별 리더보드 테이블 (1~50위) -->
-    <div id="zoneLeaderboardContainer" style="display: none;"></div>
+    <div class="card" id="main_viewer_card" style="border-left: 4px solid var(--accent);">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+        <div>
+          <h2 id="view_title" style="font-size:17.5px; font-weight:800; color:#fff;">🌐 길드 전체 종합 순위</h2>
+          <span id="view_subtitle" style="font-size:12.5px; color:#cbd5e1;">총 누적 점수 및 각성석 획득량 기준 정렬</span>
+        </div>
+        <div id="zone_search_box" style="display:flex; gap:8px;">
+          <input type="text" id="guildSearchInput" placeholder="길드명 검색..." onkeyup="filterGuildCards()">
+          <select id="guildSortSelect" onchange="sortAndRenderAllView()">
+            <option value="total">총 점수 높은 순</option>
+            <option value="stones">누적 각성석 많은 순</option>
+            <option value="count">출현 구역 많은 순</option>
+            <option value="name">길드명 가나다순</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 전체 카드 뷰 -->
+      <div id="guildCardContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px;"></div>
+
+      <!-- 구역별 리더보드 테이블 (1~50위) -->
+      <div id="zoneLeaderboardContainer" style="display: none;"></div>
+    </div>
   </div>
-</div>
 
 <script>
-  // 스프레드시트 키
+  const GATE_PASSWORD = "guildboss";
   const SPREADSHEET_ID = "1k5IvfxaEFlI6BKYIbHnbKIY71lxBlVN4i1UU7S1LTeY";
 
   let currentSelectedSheet = "";
   let availableSeasons = [];
+  let currentActiveTab = 'all';
+  let guildDatabase = [];
+  let zoneRankings = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
+  let autoRefreshTimer = null;
 
-  // 주차 드롭다운 UI 렌더링
-  function initSeasonDropdown() {
-    const selectEl = document.getElementById("season_select");
-    if (!selectEl) return;
-    selectEl.innerHTML = availableSeasons.map((s, idx) => 
-      `<option value="${s.sheetName}" ${idx === 0 ? 'selected' : ''}>📅 ${s.name}</option>`
-    ).join('');
+  const ZONE_CONFIG = {
+    fire:   { name: "불꽃", title: "🔥 불꽃구역 실시간 1~50위 리더보드", color: "var(--fire)" },
+    ice:    { name: "빙하", title: "❄️ 빙하구역 실시간 1~50위 리더보드", color: "var(--ice)" },
+    heaven: { name: "천상", title: "⚡ 천상구역 실시간 1~50위 리더보드", color: "var(--heaven)" },
+    grass:  { name: "초원", title: "🌱 초원구역 실시간 1~50위 리더보드", color: "var(--grass)" },
+    dark:   { name: "암흑", title: "🌑 암흑구역 실시간 1~50위 리더보드", color: "var(--dark)" },
+    abyss:  { name: "절대", title: "👑 절대구역 실시간 1~50위 리더보드", color: "var(--abyss)" }
+  };
+
+  function checkGateAuth() {
+    const isAuthed = sessionStorage.getItem("guild_auth_passed");
+    const overlay = document.getElementById("gate_lock_overlay");
+    if (isAuthed === "true") {
+      if (overlay) overlay.style.display = "none";
+      autoDetectSheetSeasons();
+    } else {
+      if (overlay) overlay.style.display = "flex";
+      const pwInput = document.getElementById("gate_password_input");
+      if (pwInput) setTimeout(() => pwInput.focus(), 100);
+    }
   }
 
-  // 주차 변경 이벤트
-  function onSeasonChange(sheetName) {
-    currentSelectedSheet = sheetName;
-    fetchSheetData(true);
+  function verifyGatePassword() {
+    const inputEl = document.getElementById("gate_password_input");
+    const val = inputEl ? inputEl.value.trim() : "";
+    if (val === GATE_PASSWORD) {
+      sessionStorage.setItem("guild_auth_passed", "true");
+      document.getElementById("gate_lock_overlay").style.display = "none";
+      autoDetectSheetSeasons();
+    } else {
+      alert("비밀번호가 일치하지 않습니다.");
+      if (inputEl) {
+        inputEl.value = "";
+        inputEl.focus();
+      }
+    }
   }
 
   function getStoneRewardByRank(rank) {
@@ -299,20 +331,6 @@
     if (rank <= 50) return 20000;
     return 0;
   }
-
-  const ZONE_CONFIG = {
-    fire:   { name: "불꽃", title: "🔥 불꽃구역 실시간 1~50위 리더보드", color: "var(--fire)" },
-    ice:    { name: "빙하", title: "❄️ 빙하구역 실시간 1~50위 리더보드", color: "var(--ice)" },
-    heaven: { name: "천상", title: "⚡ 천상구역 실시간 1~50위 리더보드", color: "var(--heaven)" },
-    grass:  { name: "초원", title: "🌱 초원구역 실시간 1~50위 리더보드", color: "var(--grass)" },
-    dark:   { name: "암흑", title: "🌑 암흑구역 실시간 1~50위 리더보드", color: "var(--dark)" },
-    abyss:  { name: "절대", title: "👑 절대구역 실시간 1~50위 리더보드", color: "var(--abyss)" }
-  };
-
-  let currentActiveTab = 'all';
-  let guildDatabase = [];
-  let zoneRankings = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
-  let autoRefreshTimer = null;
 
   async function autoDetectSheetSeasons() {
     const selectEl = document.getElementById("season_select");
@@ -358,7 +376,6 @@
         ];
       }
     } catch (e) {
-      console.warn("자동 탭 감지 폴백 사용:", e);
       availableSeasons = [
         { name: "11월 2주차 (최신)", sheetName: "11월 2주차" },
         { name: "11월 1주차", sheetName: "11월 1주차" }
@@ -367,7 +384,7 @@
 
     currentSelectedSheet = availableSeasons[0].sheetName;
     renderSeasonDropdown();
-    fetchSheetData();
+    fetchSheetData(false);
   }
 
   function renderSeasonDropdown() {
@@ -378,23 +395,57 @@
     ).join('');
   }
 
-  // 초기 실행 이벤트
   function onSeasonChange(sheetName) {
     currentSelectedSheet = sheetName;
     fetchSheetData(true);
   }
 
-  // 6개 구역 3열씩 나열된 CSV 정밀 파서 (점수 및 순위 자동 산출)
+  // 구글 시트 실시간 CSV 데이터 패치 함수 (정상 복구!)
+  async function fetchSheetData(isManual) {
+    const statusText = document.getElementById("sync_status_text");
+    const timeText = document.getElementById("sync_time_text");
+    const liveDot = document.getElementById("sync_live_dot");
+
+    if (isManual && statusText) {
+      statusText.innerText = "데이터 동기화 중...";
+    }
+
+    try {
+      const sheetParam = currentSelectedSheet ? `&sheet=${encodeURIComponent(currentSelectedSheet)}` : "";
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv${sheetParam}&_t=${Date.now()}`;
+
+      const response = await fetch(csvUrl);
+      if (!response.ok) throw new Error("네트워크 응답 오류");
+      const csvText = await response.text();
+
+      parseMultiColumnSheetCSV(csvText);
+
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+      if (statusText) statusText.innerText = `[${currentSelectedSheet || '기본 시트'}] 실시간 연동 완료`;
+      if (timeText) timeText.innerText = `(최근 동기화: ${timeStr})`;
+      if (liveDot) {
+        liveDot.style.background = "#10b981";
+        liveDot.style.boxShadow = "0 0 8px #10b981";
+      }
+    } catch (err) {
+      console.error("Sheet Sync Error:", err);
+      if (statusText) statusText.innerText = "시트 데이터 로드 실패 (공유 권한 또는 시트명 확인)";
+      if (liveDot) {
+        liveDot.style.background = "#ef4444";
+        liveDot.style.boxShadow = "0 0 8px #ef4444";
+      }
+    }
+  }
+
   function parseMultiColumnSheetCSV(csvText) {
     const lines = csvText.trim().split("\n");
     if (lines.length < 2) return;
 
     zoneRankings = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
     const tempGuildMap = new Map();
-
     const zoneKeys = ["fire", "ice", "heaven", "grass", "dark", "abyss"];
 
-    // 헤더 행 탐색 (순위, 길드명, 점수가 포함된 행)
     let startRow = 2;
     for (let r = 0; r < Math.min(5, lines.length); r++) {
       if (lines[r].includes("순위") || lines[r].includes("길드명")) {
@@ -404,10 +455,8 @@
     }
 
     for (let r = startRow; r < lines.length; r++) {
-      // 쉼표 분할 (큰따옴표 쉼표 보존)
       const cols = lines[r].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
 
-      // 6개 구역 순회 (구역당 4열 간격: 0,1,2 / 4,5,6 / 8,9,10 / 12,13,14 / 16,17,18 / 20,21,22)
       zoneKeys.forEach((zk, zIdx) => {
         const baseCol = zIdx * 4;
         const rankStr = cols[baseCol] || "";
@@ -418,8 +467,6 @@
           const rankMatch = rankStr.match(/(\d+)/);
           const rawScore = parseInt(scoreStr.replace(/[^0-9]/g, ''));
           const score = isNaN(rawScore) ? 0 : rawScore;
-
-          // 순위가 없으면 리스트 순서대로 임시 지정
           const currentRank = rankMatch ? parseInt(rankMatch[1]) : (zoneRankings[zk].length + 1);
 
           zoneRankings[zk].push({
@@ -433,14 +480,12 @@
       });
     }
 
-    // 각 구역별 점수 내림차순 자동 정렬 및 순위/각성석 재부여 (시트에서 순서 안 맞아도 자동 교정)
     zoneKeys.forEach(zk => {
       zoneRankings[zk].sort((a,b) => b.score - a.score);
       zoneRankings[zk].forEach((item, idx) => {
         item.rank = idx + 1;
         item.stones = getStoneRewardByRank(item.rank);
 
-        // 전체 길드 집계 맵에 반영
         if (!tempGuildMap.has(item.guildName)) {
           tempGuildMap.set(item.guildName, {
             name: item.guildName,
@@ -613,15 +658,15 @@
       autoRefreshTimer = null;
     }
     if (isOn) {
-      fetchSheetData();
+      fetchSheetData(true);
       autoRefreshTimer = setInterval(() => {
-        fetchSheetData();
+        fetchSheetData(false);
       }, 5000);
     }
   }
 
   window.addEventListener("DOMContentLoaded", () => {
-    autoDetectSheetSeasons();
+    checkGateAuth();
   });
 </script>
 
