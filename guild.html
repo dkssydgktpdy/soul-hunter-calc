@@ -1,0 +1,37 @@
+<script>
+  if (sessionStorage.getItem("guild_auth") !== "true") {
+    alert("보안 인증이 필요합니다.");
+    window.location.href = "index.html";
+  }
+</script>
+
+<!-- ==================== 7. 이계 쟁탈전 분석 대시보드 탭 ==================== -->
+      <div id="tab-guild-analysis" class="tab-content" style="display:none;">
+        <div class="card" style="border-left: 4px solid #38bdf8;">
+          <div class="card-title">
+            <span>⚔️ 이계 쟁탈전 길드 분석 대시보드 (길보길 전용)</span>
+            <div style="display: flex; gap: 8px;">
+              <button onclick="openGuildImportModal()" style="background:#10b981; border:none; color:#fff; padding:6px 12px; border-radius:8px; font-size:12.5px; cursor:pointer; font-weight:700;">📥 엑셀 데이터 붙여넣기</button>
+              <button onclick="copyGuildTSV()" style="background:#0284c7; border:none; color:#fff; padding:6px 12px; border-radius:8px; font-size:12.5px; cursor:pointer; font-weight:700;">📋 엑셀 양식 복사</button>
+            </div>
+          </div>
+          <p class="card-subtitle" style="margin-top: 4px;">
+            구역별 데이터 비교 및 획득 각성석 자동 계산 대시보드<br>
+            <span style="color:#f43f5e; font-size:12.5px; font-weight:bold;">※ 1~5위는 점령 보너스(50%~20%)가 가산된 각성석입니다. (51위 이하는 제외)</span>
+          </p>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; background: #1e293b; padding: 14px; border-radius: 10px; border: 1px solid #334155;">
+            <input type="text" id="guildSearchInput" placeholder="길드명 검색..." onkeyup="filterGuildCards()" style="flex: 1; min-width: 200px;">
+            <select id="guildSortSelect" onchange="sortGuildCards()" style="width:auto;">
+              <option value="total">총 점수 높은 순</option>
+              <option value="stones">누적 각성석 많은 순</option>
+              <option value="count">출현 구역 많은 순</option>
+              <option value="name">길드명 가나다순</option>
+            </select>
+          </div>
+
+          <div id="guildCardContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
