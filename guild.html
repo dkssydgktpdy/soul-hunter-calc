@@ -8,10 +8,17 @@
     :root {
       --bg-main: #0b1120;
       --bg-card: #1e293b;
+      --bg-inner: #0f172a;
       --border: #334155;
       --accent: #38bdf8;
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
+      --fire: #f97316;
+      --ice: #38bdf8;
+      --heaven: #fbbf24;
+      --grass: #22c55e;
+      --dark: #a855f7;
+      --abyss: #f43f5e;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -32,10 +39,10 @@
       flex-wrap: wrap;
       gap: 12px;
       background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-      border: 1.5px solid #38bdf8;
+      border: 1.5px solid var(--accent);
       border-radius: 14px;
       padding: 16px 20px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2);
     }
     .btn-home {
@@ -53,39 +60,141 @@
     }
     .btn-home:hover {
       background: #475569;
-      color: #38bdf8;
+      color: var(--accent);
     }
     .card {
       background: var(--bg-card);
       border: 1.5px solid var(--border);
       border-radius: 14px;
-      padding: 22px;
+      padding: 20px;
       margin-bottom: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     .action-btn {
       border: none;
       color: #fff;
-      padding: 8px 14px;
+      padding: 7px 13px;
       border-radius: 8px;
-      font-size: 13px;
+      font-size: 12.5px;
       cursor: pointer;
       font-weight: 700;
-      transition: opacity 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
     }
-    .action-btn:hover { opacity: 0.9; }
+    .action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
     input[type="text"], select, textarea {
-      background: #0f172a;
+      background: var(--bg-inner);
       border: 1px solid var(--border);
       color: #ffffff;
-      padding: 10px 12px;
+      padding: 9px 12px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 13.5px;
       outline: none;
     }
     input[type="text"]:focus, select:focus, textarea:focus {
       border-color: var(--accent);
     }
+
+    /* 구역 필터 탭 바 */
+    .zone-tabs-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .zone-tab-btn {
+      background: var(--bg-inner);
+      border: 1.5px solid var(--border);
+      color: var(--text-secondary);
+      padding: 10px 8px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .zone-tab-btn:hover {
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+    .zone-tab-btn.active {
+      background: #172554;
+      border-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+    }
+    .zone-tab-btn.tab-fire.active { border-color: var(--fire); box-shadow: 0 0 12px rgba(249, 115, 22, 0.4); }
+    .zone-tab-btn.tab-ice.active { border-color: var(--ice); box-shadow: 0 0 12px rgba(56, 189, 248, 0.4); }
+    .zone-tab-btn.tab-heaven.active { border-color: var(--heaven); box-shadow: 0 0 12px rgba(251, 191, 36, 0.4); }
+    .zone-tab-btn.tab-grass.active { border-color: var(--grass); box-shadow: 0 0 12px rgba(34, 197, 94, 0.4); }
+    .zone-tab-btn.tab-dark.active { border-color: var(--dark); box-shadow: 0 0 12px rgba(168, 85, 247, 0.4); }
+    .zone-tab-btn.tab-abyss.active { border-color: var(--abyss); box-shadow: 0 0 12px rgba(244, 63, 94, 0.4); }
+
+    /* 리더보드 테이블 */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-inner);
+    }
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      text-align: center;
+    }
+    .custom-table th {
+      background: #131d33;
+      color: #93c5fd;
+      font-weight: 800;
+      padding: 11px 12px;
+      border-bottom: 2px solid #1e3a8a;
+    }
+    .custom-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+    }
+    .custom-table tr:hover {
+      background: rgba(56, 189, 248, 0.06);
+    }
+    .rank-badge {
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .rank-1 { background: #eab308; color: #000; box-shadow: 0 0 8px #eab308; }
+    .rank-2 { background: #94a3b8; color: #000; }
+    .rank-3 { background: #b45309; color: #fff; }
+    .rank-top5 { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #0284c7; }
+
+    /* 동기화 상태 바 */
+    .sync-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      font-size: 12.5px;
+    }
+
+    /* 모달 */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -99,7 +208,7 @@
     }
     .modal-box {
       background: #1e293b;
-      border: 1.5px solid #38bdf8;
+      border: 1.5px solid var(--accent);
       border-radius: 16px;
       max-width: 600px;
       width: 100%;
@@ -118,61 +227,89 @@
 <body>
 
 <div class="container">
+  <!-- 상단 네비게이션 헤더 -->
   <div class="header-bar">
     <div>
-      <h1 style="font-size:20px; color:#38bdf8; margin-bottom:2px;">⚔️ 이계 쟁탈전 길드 분석 (길보길 전용)</h1>
-      <span style="font-size:12.5px; color:#94a3b8;">구역별 데이터 비교 및 획득 각성석 자동 계산 대시보드</span>
+      <h1 style="font-size:20px; color:var(--accent); margin-bottom:2px;">⚔️ 이계 쟁탈전 길드 분석 (길보길 전용)</h1>
+      <span style="font-size:12.5px; color:#94a3b8;">구글 시트 실시간 자동 동기화 & 구역별 눈치싸움 리더보드</span>
     </div>
     <a href="index.html" class="btn-home">🏠 메인 계산기로 돌아가기</a>
   </div>
 
-  <div class="card" style="border-left: 4px solid #38bdf8;">
-    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-      <div style="display:flex; align-items:center; gap:8px;">
-        <span style="font-size:17px; font-weight:800; color:#fff;">📊 구역별 데이터 분석 대시보드</span>
-        <span id="data_source_badge" style="font-size:11px; padding:2px 8px; border-radius:6px; background:#0284c7; color:#fff; font-weight:bold;">기본 마스터 데이터</span>
+  <!-- 실시간 시트 동기화 & 마감 자동새로고침 컨트롤러 -->
+  <div class="sync-status-bar">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span id="sync_live_dot" style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
+      <strong id="sync_status_text" style="color:#ffffff;">구글 스프레드시트 실시간 연동 중</strong>
+      <span id="sync_time_text" style="color:#94a3b8; font-size:11.5px;">(최근 동기화: 확인 중)</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; color:#fde047; font-weight:700;">
+        <input type="checkbox" id="chk_auto_refresh" onchange="toggleAutoRefresh(this.checked)" style="accent-color:#f59e0b; width:15px; height:15px;">
+        <span>⚡ 5초 자동 갱신 (마감 눈치싸움 모드)</span>
+      </label>
+      <button onclick="fetchSheetData(true)" class="action-btn" style="background:#0284c7;">🔄 지금 동기화</button>
+      <button onclick="openGuildImportModal()" class="action-btn" style="background:#334155;">📥 수동 붙여넣기</button>
+    </div>
+  </div>
+
+  <!-- 구역별 선택 탭 바 (6개 구역 + 전체 종합) -->
+  <div class="zone-tabs-bar">
+    <div class="zone-tab-btn active" id="tab_all" onclick="switchZoneView('all')">🌐 전체 종합 순위</div>
+    <div class="zone-tab-btn tab-fire" id="tab_fire" onclick="switchZoneView('fire')">🔥 불꽃구역</div>
+    <div class="zone-tab-btn tab-ice" id="tab_ice" onclick="switchZoneView('ice')">❄️ 빙하구역</div>
+    <div class="zone-tab-btn tab-heaven" id="tab_heaven" onclick="switchZoneView('heaven')">☁️ 천상구역</div>
+    <div class="zone-tab-btn tab-grass" id="tab_grass" onclick="switchZoneView('grass')">🌱 초원구역</div>
+    <div class="zone-tab-btn tab-dark" id="tab_dark" onclick="switchZoneView('dark')">🌑 암흑구역</div>
+    <div class="zone-tab-btn tab-abyss" id="tab_abyss" onclick="switchZoneView('abyss')">⚡ 절대구역</div>
+  </div>
+
+  <!-- 메인 뷰어 카드 -->
+  <div class="card" id="main_viewer_card" style="border-left: 4px solid var(--accent);">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+      <div>
+        <h2 id="view_title" style="font-size:17.5px; font-weight:800; color:#fff;">🌐 70개 길드 전체 종합 순위</h2>
+        <span id="view_subtitle" style="font-size:12.5px; color:#cbd5e1;">총 누적 점수 및 각성석 획득량 기준 정렬</span>
       </div>
-      <div style="display: flex; gap: 8px;">
-        <button onclick="openGuildImportModal()" class="action-btn" style="background:#10b981;">📥 엑셀 데이터 붙여넣기</button>
-        <button onclick="copyGuildTSV()" class="action-btn" style="background:#0284c7;">📋 엑셀 양식 복사</button>
-        <button onclick="resetToMasterData()" class="action-btn" style="background:#475569;" title="초기 70개 길드 데이터로 복구">🔄 초기화</button>
+      <div id="zone_search_box" style="display:flex; gap:8px;">
+        <input type="text" id="guildSearchInput" placeholder="길드명 검색..." onkeyup="filterGuildCards()">
+        <select id="guildSortSelect" onchange="sortAndRenderAllView()">
+          <option value="total">총 점수 높은 순</option>
+          <option value="stones">누적 각성석 많은 순</option>
+          <option value="count">출현 구역 많은 순</option>
+          <option value="name">길드명 가나다순</option>
+        </select>
       </div>
     </div>
-    
-    <p style="font-size:13px; color:#cbd5e1; margin-bottom:16px;">
-      <span style="color:#f43f5e; font-weight:bold;">※ 1~5위는 점령 보너스가 가산된 각성석입니다. (51위 이하는 제외)</span>
-    </p>
 
-    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; background: #0f172a; padding: 12px; border-radius: 10px; border: 1px solid #334155;">
-      <input type="text" id="guildSearchInput" placeholder="길드명 검색..." onkeyup="filterGuildCards()" style="flex: 1; min-width: 200px;">
-      <select id="guildSortSelect" onchange="sortGuildCards()" style="width:auto;">
-        <option value="total">총 점수 높은 순</option>
-        <option value="stones">누적 각성석 많은 순</option>
-        <option value="count">출현 구역 많은 순</option>
-        <option value="name">길드명 가나다순</option>
-      </select>
-    </div>
+    <!-- 1) 전체 종합 카드 뷰 컨테이너 -->
+    <div id="guildCardContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px;"></div>
 
-    <div id="guildCardContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;"></div>
+    <!-- 2) 특정 구역 실시간 리더보드 테이블 컨테이너 -->
+    <div id="zoneLeaderboardContainer" style="display: none;"></div>
   </div>
 </div>
 
+<!-- 수동 엑셀 데이터 붙여넣기 모달 (비상용 백업) -->
 <div class="modal-overlay" id="guild_import_modal">
   <div class="modal-box">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <strong style="font-size:16px; color:#38bdf8;">📥 엑셀 데이터 붙여넣기</strong>
+      <strong style="font-size:16px; color:var(--accent);">📥 엑셀/CSV 데이터 수동 붙여넣기</strong>
       <button onclick="closeGuildImportModal()" style="background:none; border:none; color:#cbd5e1; font-size:18px; cursor:pointer;">✕</button>
     </div>
-    <p style="font-size:12.5px; color:#94a3b8; margin-bottom:10px;">엑셀에서 [구역, 순위, 길드명, 점수] 영역을 복사해서 붙여넣어 주세요.<br>반영 시 기존 데이터에 덮어씌워지며 브라우저에 자동 저장됩니다.</p>
-    <textarea id="guild_tsv_input" placeholder="엑셀 데이터 붙여넣기 (Ctrl + V)..." style="width:100%; height:200px; font-size:12px; margin-bottom:14px; resize:none;"></textarea>
+    <p style="font-size:12.5px; color:#94a3b8; margin-bottom:10px;">스프레드시트가 열리지 않을 때 엑셀 매트릭스 표(길드명, 불꽃, 빙하, ...)를 복사해 붙여넣어 임시 반영할 수 있습니다.</p>
+    <textarea id="guild_tsv_input" placeholder="스프레드시트 표 영역 복사 후 붙여넣기 (Ctrl + V)..." style="width:100%; height:200px; font-size:12px; margin-bottom:14px; resize:none;"></textarea>
     <div style="display:flex; gap:8px;">
       <button onclick="closeGuildImportModal()" class="action-btn" style="flex:1; background:#334155;">취소</button>
-      <button onclick="processGuildTSVData()" class="action-btn" style="flex:1; background:#10b981;">데이터 반영 및 저장</button>
+      <button onclick="processManualTSVData()" class="action-btn" style="flex:1; background:#10b981;">임시 반영</button>
     </div>
   </div>
 </div>
 
 <script>
+  // 구글 시트 게시 CSV URL (사용자 발행 링크)
+  const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRT8ZVq51rjA4Rk-I9dOB9-CaD90GEm-fxalAiT5vdbnoKLLHHhynOUd3WHeoHq1j5sMnaZ-i-mljve/pub?output=csv";
+
   // 정확한 각성석 보상 지급표
   function getStoneRewardByRank(rank) {
     if (rank === 1) return 300000;
@@ -187,89 +324,72 @@
     return 0;
   }
 
-  // 총 70개 길드 원본 마스터 데이터
-  const DEFAULT_MASTER_RAW = [
-    { name: "무림", zones: { "불꽃": "9위 (960,145)", "빙하": "10위 (902,913)", "천상": "10위 (885,336)", "초원": "9위 (931,339)", "암흑": "18위 (795,852)", "절대": "16위 (834,993)" }, total: 5310578 },
-    { name: "천사", zones: { "천상": "1위 (4,955,346)", "불꽃": "23위 (698,904)" }, total: 5654250 },
-    { name: "TEAM", zones: { "초원": "5위 (1,426,515)", "암흑": "14위 (808,455)", "절대": "15위 (843,318)", "천상": "15위 (717,194)", "불꽃": "15위 (742,563)", "빙하": "13위 (724,623)" }, total: 5262668 },
-    { name: "영웅", zones: { "절대": "1위 (5,084,141)" }, total: 5084141 },
-    { name: "기부랑길보필수", zones: { "천상": "3위 (4,443,773)", "암흑": "30위 (497,019)" }, total: 4940792 },
-    { name: "탑팀", zones: { "절대": "2위 (4,930,974)" }, total: 4930974 },
-    { name: "빠꼬미", zones: { "불꽃": "7위 (985,868)", "초원": "10위 (918,713)", "암흑": "15위 (803,169)", "절대": "19위 (784,300)", "빙하": "16위 (673,652)", "천상": "19위 (674,769)" }, total: 4840471 },
-    { name: "파멸", zones: { "불꽃": "6위 (2,000,135)", "암흑": "6위 (2,000,135)", "빙하": "12위 (766,925)" }, total: 4767195 },
-    { name: "우리끼리", zones: { "불꽃": "17위 (736,274)", "암흑": "16위 (798,568)", "천상": "14위 (737,577)", "빙하": "14위 (720,773)", "절대": "18위 (802,519)", "초원": "11위 (895,557)" }, total: 4691268 },
-    { name: "AKUMA", zones: { "천상": "2위 (4,567,707)" }, total: 4567707 },
-    { name: "루미엘", zones: { "암흑": "1위 (3,810,390)", "초원": "20위 (606,016)" }, total: 4416406 },
-    { name: "미인", zones: { "불꽃": "1위 (4,407,182)" }, total: 4407182 },
-    { name: "메인", zones: { "빙하": "1위 (4,317,697)" }, total: 4317697 },
-    { name: "호랑이", zones: { "초원": "1위 (4,275,141)" }, total: 4275141 },
-    { name: "Ryujin", zones: { "불꽃": "8위 (966,512)", "빙하": "11위 (871,431)", "초원": "12위 (851,925)", "천상": "20위 (781,172)", "암흑": "20위 (781,172)" }, total: 4252212 },
-    { name: "씨야", zones: { "불꽃": "16위 (741,509)", "암흑": "17위 (797,242)", "빙하": "15위 (693,900)", "천상": "9위 (1,078,975)", "절대": "17위 (831,641)" }, total: 4143267 },
-    { name: "Twilight", zones: { "불꽃": "22위 (701,703)", "절대": "14위 (876,162)", "천상": "12위 (829,776)", "초원": "13위 (832,263)", "암흑": "12위 (899,299)" }, total: 4139203 },
-    { name: "독식", zones: { "불꽃": "2위 (3,515,857)", "초원": "21위 (603,370)" }, total: 4119227 },
-    { name: "ZERO", zones: { "절대": "3위 (4,108,761)" }, total: 4108761 },
-    { name: "PEMULA", zones: { "절대": "10위 (1,110,747)", "불꽃": "10위 (936,402)", "빙하": "18위 (669,918)", "천상": "21위 (661,956)", "초원": "18위 (636,993)" }, total: 4016016 },
-    { name: "조폭", zones: { "천상": "4위 (3,876,786)" }, total: 3876786 },
-    { name: "TOP", zones: { "빙하": "2위 (3,826,602)" }, total: 3826602 },
-    { name: "형제", zones: { "불꽃": "11위 (927,532)", "초원": "17위 (652,068)", "암흑": "13위 (816,603)", "천상": "17위 (679,923)", "빙하": "19위 (653,916)" }, total: 3730042 },
-    { name: "둠둠", zones: { "암흑": "2위 (3,719,270)" }, total: 3719270 },
-    { name: "다크니스", zones: { "암흑": "3위 (3,706,573)" }, total: 3706573 },
-    { name: "DK", zones: { "천상": "5위 (3,692,150)" }, total: 3692150 },
-    { name: "매력", zones: { "빙하": "3위 (3,547,436)" }, total: 3547436 },
-    { name: "동물농장", zones: { "절대": "4위 (3,451,420)" }, total: 3451420 },
-    { name: "날개", zones: { "초원": "2위 (3,432,502)" }, total: 3432502 },
-    { name: "하늘", zones: { "불꽃": "3위 (3,355,206)" }, total: 3355206 },
-    { name: "무결", zones: { "초원": "3위 (3,217,367)" }, total: 3217367 },
-    { name: "방콕아재", zones: { "빙하": "12위 (824,954)", "천상": "21위 (764,859)", "불꽃": "12위 (824,954)", "암흑": "21위 (764,859)" }, total: 3179626 },
-    { name: "이름없는", zones: { "암흑": "4위 (3,018,581)" }, total: 3018581 },
-    { name: "바보", zones: { "천상": "6위 (2,985,028)" }, total: 2985028 },
-    { name: "수수", zones: { "초원": "12위 (1,010,514)", "천상": "13위 (824,332)", "절대": "12위 (1,010,514)" }, total: 2845360 },
-    { name: "김용준", zones: { "천상": "7위 (2,680,750)" }, total: 2680750 },
-    { name: "학살", zones: { "천상": "8위 (2,647,987)" }, total: 2647987 },
-    { name: "Crimson", zones: { "초원": "8위 (988,626)", "불꽃": "21위 (704,487)", "천상": "11위 (845,090)" }, total: 2538203 },
-    { name: "귀멸", zones: { "절대": "5위 (2,427,097)" }, total: 2427097 },
-    { name: "백호", zones: { "암흑": "5위 (2,406,946)" }, total: 2406946 },
-    { name: "Daisy", zones: { "빙하": "4위 (2,326,551)" }, total: 2326551 },
-    { name: "돌맹이", zones: { "암흑": "19위 (786,858)", "불꽃": "14위 (760,545)", "초원": "14위 (760,545)" }, total: 2307948 },
-    { name: "프미나", zones: { "빙하": "5위 (2,300,315)" }, total: 2300315 },
-    { name: "나와바리", zones: { "절대": "6위 (2,216,734)" }, total: 2216734 },
-    { name: "헌터", zones: { "불꽃": "4위 (2,077,909)" }, total: 2077909 },
-    { name: "치지직", zones: { "암흑": "7위 (1,948,565)" }, total: 1948565 },
-    { name: "cachu", zones: { "불꽃": "5위 (1,922,366)" }, total: 1922366 },
-    { name: "흙수저", zones: { "절대": "7위 (1,833,672)" }, total: 1833672 },
-    { name: "SukaRoti", zones: { "빙하": "7위 (1,827,266)" }, total: 1827266 },
-    { name: "초심", zones: { "빙하": "6위 (2,103,669)", "불꽃": "14위 (758,195)", "천상": "18위 (678,634)" }, total: 3540498 },
-    { name: "Zoo", zones: { "불꽃": "13위 (810,084)", "초원": "15위 (740,993)" }, total: 1551077 },
-    { name: "정상", zones: { "암흑": "8위 (1,517,237)" }, total: 1517237 },
-    { name: "버스", zones: { "암흑": "9위 (1,419,285)" }, total: 1419285 },
-    { name: "카르텔", zones: { "초원": "5위 (1,409,266)" }, total: 1409266 },
-    { name: "소울문", zones: { "절대": "8위 (1,406,370)" }, total: 1406370 },
-    { name: "Abyssal", zones: { "불꽃": "6위 (1,353,862)" }, total: 1353862 },
-    { name: "서울", zones: { "초원": "6위 (1,344,009)" }, total: 1344009 },
-    { name: "TheOrder", zones: { "빙하": "21위 (630,736)", "불꽃": "24위 (682,036)" }, total: 1312772 },
-    { name: "베리", zones: { "절대": "9위 (1,222,960)" }, total: 1222960 },
-    { name: "Ranker", zones: { "초원": "7위 (1,202,585)" }, total: 1202585 },
-    { name: "milkyway", zones: { "빙하": "8위 (1,186,367)" }, total: 1186367 },
-    { name: "부처", zones: { "절대": "11위 (1,098,840)" }, total: 1098840 },
-    { name: "던전", zones: { "빙하": "9위 (1,091,817)" }, total: 1091817 },
-    { name: "KOROSU", zones: { "절대": "13위 (923,565)" }, total: 923565 },
-    { name: "성공", zones: { "불꽃": "18위 (732,830)" }, total: 732830 },
-    { name: "타도반똥", zones: { "불꽃": "20위 (716,325)" }, total: 716325 },
-    { name: "NOOB", zones: { "천상": "16위 (693,014)" }, total: 693014 },
-    { name: "가나디", zones: { "빙하": "20위 (645,740)" }, total: 645740 },
-    { name: "매일", zones: { "초원": "19위 (609,407)" }, total: 609407 },
-    { name: "데모", zones: { "절대": "20위 (771,213)" }, total: 771213 }
-  ];
+  const ZONE_CONFIG = {
+    fire:   { name: "불꽃", title: "🔥 불꽃구역 실시간 랭킹 리더보드", color: "var(--fire)" },
+    ice:    { name: "빙하", title: "❄️ 빙하구역 실시간 랭킹 리더보드", color: "var(--ice)" },
+    heaven: { name: "천상", title: "☁️ 천상구역 실시간 랭킹 리더보드", color: "var(--heaven)" },
+    grass:  { name: "초원", title: "🌱 초원구역 실시간 랭킹 리더보드", color: "var(--grass)" },
+    dark:   { name: "암흑", title: "🌑 암흑구역 실시간 랭킹 리더보드", color: "var(--dark)" },
+    abyss:  { name: "절대", title: "⚡ 절대구역 실시간 랭킹 리더보드", color: "var(--abyss)" }
+  };
 
-  // 원본 객체 형식을 화면 표시에 맞는 구조로 변환
-  function parseMasterRawData(rawList) {
-    return rawList.map(item => {
-      let totalStones = 0;
-      let count = 0;
+  let currentActiveTab = 'all';
+  let guildDatabase = [];
+  let autoRefreshTimer = null;
+
+  // 구글 스프레드시트 실시간 fetch 로더
+  async function fetchSheetData(isManual = false) {
+    const statusText = document.getElementById("sync_status_text");
+    const dot = document.getElementById("sync_live_dot");
+    try {
+      if (dot) dot.style.background = "#f59e0b";
+      // 캐시 방지 타임스탬프 파라미터 부착
+      const response = await fetch(`${GOOGLE_SHEET_CSV_URL}&_t=${Date.now()}`);
+      if (!response.ok) throw new Error("시트 응답 오류");
+      const csvText = await response.text();
+      parseSheetMatrixCSV(csvText);
+
+      const now = new Date();
+      const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+      document.getElementById("sync_time_text").innerText = `(최근 동기화: ${timeStr})`;
+      if (dot) dot.style.background = "#10b981";
+      if (statusText) statusText.innerText = "구글 시트 연동 성공 (최신 상태)";
+      if (isManual) alert("구글 스프레드시트의 최신 데이터를 성공적으로 불러왔습니다!");
+    } catch (err) {
+      console.error(err);
+      if (dot) dot.style.background = "#ef4444";
+      if (statusText) statusText.innerText = "연동 실패 (캐시 데이터 사용)";
+      // 네트워크 에러 시 로컬 캐시 폴백
+      const cached = localStorage.getItem("guild_db_cache");
+      if (cached) {
+        guildDatabase = JSON.parse(cached);
+        renderCurrentView();
+      }
+    }
+  }
+
+  // 매트릭스 CSV 파서 (길드명, 불꽃, 빙하, 천상, 초원, 암흑, 절대)
+  function parseSheetMatrixCSV(csvText) {
+    const lines = csvText.trim().split("\n");
+    if (lines.length < 2) return;
+
+    const parsedGuilds = [];
+    // 0행 헤더 건너뛰고 1행부터 파싱
+    for (let i = 1; i < lines.length; i++) {
+      // 큰따옴표 쉼표 처리용 정규식 분할
+      const cols = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+      if (cols.length < 1 || !cols[0]) continue;
+
+      const guildName = cols[0];
+      const zoneNames = ["불꽃", "빙하", "천상", "초원", "암흑", "절대"];
       const records = [];
+      let totalScore = 0;
+      let totalStones = 0;
 
-      for (let zone in item.zones) {
-        const valStr = item.zones[zone]; // 예: "9위 (960,145)"
+      for (let z = 0; z < 6; z++) {
+        const valStr = cols[z + 1] || "";
+        if (!valStr || valStr === "-" || valStr === "") continue;
+
         const rankMatch = valStr.match(/(\d+)위/);
         const scoreMatch = valStr.match(/\(([\d,]+)\)/);
 
@@ -277,152 +397,221 @@
         const score = scoreMatch ? parseInt(scoreMatch[1].replace(/,/g, '')) : 0;
         const stones = getStoneRewardByRank(rank);
 
+        totalScore += score;
         totalStones += stones;
-        count++;
-        records.push({ zone, rank, score, stones });
+        records.push({ zone: zoneNames[z], rank, score, stones });
       }
 
-      return {
-        name: item.name,
-        totalScore: item.total,
-        totalStones: totalStones,
-        count: count,
-        records: records
-      };
-    });
-  }
-
-  let guildDatabase = [];
-
-  function openGuildImportModal() {
-    document.getElementById("guild_import_modal").style.display = "flex";
-    document.getElementById("guild_tsv_input").focus();
-  }
-
-  function closeGuildImportModal() {
-    document.getElementById("guild_import_modal").style.display = "none";
-  }
-
-  function copyGuildTSV() {
-    const sample = "구역\t순위\t길드명\t점수\n1구역\t1\t길보길\t1250000\n1구역\t2\t상대길드\t980000";
-    navigator.clipboard.writeText(sample).then(() => {
-      alert("엑셀 기본 서식이 클립보드에 복사되었습니다. 엑셀에 붙여넣어 편집 후 사용하세요.");
-    });
-  }
-
-  function resetToMasterData() {
-    if (!confirm("엑셀로 등록한 데이터를 초기화하고 기본 70개 길드 마스터 데이터로 되돌리시겠습니까?")) return;
-    localStorage.removeItem("guild_db_cache");
-    guildDatabase = parseMasterRawData(DEFAULT_MASTER_RAW);
-    document.getElementById("data_source_badge").innerText = "기본 마스터 데이터 (70개)";
-    document.getElementById("data_source_badge").style.background = "#0284c7";
-    sortGuildCards();
-  }
-
-  // 엑셀 붙여넣기 시 덮어쓰고 로컬스토리지에 영구 저장
-  function processGuildTSVData() {
-    const raw = document.getElementById("guild_tsv_input").value.trim();
-    if (!raw) {
-      alert("데이터를 입력해 주세요.");
-      return;
+      parsedGuilds.push({
+        name: guildName,
+        totalScore,
+        totalStones,
+        count: records.length,
+        records
+      });
     }
 
-    const rows = raw.split("\n");
-    const tempMap = new Map();
-
-    rows.forEach(row => {
-      const cols = row.split("\t").map(c => c.trim());
-      if (cols.length < 4) return;
-      const zone = cols[0];
-      const rank = parseInt(cols[1].replace(/[^0-9]/g, ''));
-      const name = cols[2];
-      const score = parseInt(cols[3].replace(/[^0-9]/g, ''));
-
-      if (!name || isNaN(rank) || isNaN(score)) return;
-
-      if (!tempMap.has(name)) {
-        tempMap.set(name, { name: name, totalScore: 0, totalStones: 0, count: 0, records: [] });
-      }
-      const item = tempMap.get(name);
-      const stones = getStoneRewardByRank(rank);
-      item.totalScore += score;
-      item.totalStones += stones;
-      item.count += 1;
-      item.records.push({ zone, rank, score, stones });
-    });
-
-    if (tempMap.size === 0) {
-      alert("올바른 엑셀 형식이 아닙니다. [구역, 순위, 길드명, 점수] 형태로 복사했는지 확인해 주세요.");
-      return;
-    }
-
-    guildDatabase = Array.from(tempMap.values());
+    guildDatabase = parsedGuilds;
     localStorage.setItem("guild_db_cache", JSON.stringify(guildDatabase));
-    document.getElementById("data_source_badge").innerText = "사용자 엑셀 데이터 반영됨";
-    document.getElementById("data_source_badge").style.background = "#10b981";
-    document.getElementById("guild_tsv_input").value = "";
-    closeGuildImportModal();
-    sortGuildCards();
-    alert("데이터가 성공적으로 덮어씌워졌으며 자동 저장되었습니다.");
+    renderCurrentView();
   }
 
-  function renderGuildCards(list) {
-    const container = document.getElementById("guildCardContainer");
-    if (!container) return;
+  // 탭 전환 (전체 vs 특정 구역)
+  function switchZoneView(tabKey) {
+    currentActiveTab = tabKey;
+    document.querySelectorAll('.zone-tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`tab_${tabKey}`).classList.add('active');
 
-    if (list.length === 0) {
-      container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#94a3b8; background:#0f172a; border-radius:12px; border:1px dashed #334155;">등록된 길드 데이터가 없습니다.</div>`;
-      return;
+    const cardContainer = document.getElementById("guildCardContainer");
+    const zoneContainer = document.getElementById("zoneLeaderboardContainer");
+    const searchBox = document.getElementById("zone_search_box");
+    const mainCard = document.getElementById("main_viewer_card");
+
+    if (tabKey === 'all') {
+      mainCard.style.borderLeftColor = "var(--accent)";
+      document.getElementById("view_title").innerText = "🌐 70개 길드 전체 종합 순위";
+      document.getElementById("view_subtitle").innerText = "총 누적 점수 및 각성석 획득량 기준 정렬";
+      searchBox.style.display = "flex";
+      cardContainer.style.display = "grid";
+      zoneContainer.style.display = "none";
+      sortAndRenderAllView();
+    } else {
+      const cfg = ZONE_CONFIG[tabKey];
+      mainCard.style.borderLeftColor = cfg.color;
+      document.getElementById("view_title").innerText = cfg.title;
+      document.getElementById("view_subtitle").innerHTML = `<span style="color:#f43f5e; font-weight:bold;">1~5위 점령 보너스(50%~20%) 획득 구간</span> (점수 실시간 비교 후 빈집 공략)`;
+      searchBox.style.display = "none";
+      cardContainer.style.display = "none";
+      zoneContainer.style.display = "block";
+      renderZoneLeaderboard(cfg.name);
     }
-
-    container.innerHTML = list.map(g => `
-      <div style="background:#0f172a; border:1.5px solid #334155; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
-        <div style="border-bottom:1px solid #1e293b; padding-bottom:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
-          <strong style="font-size:16px; color:#38bdf8;">${g.name}</strong>
-          <span style="font-size:11.5px; background:rgba(56, 189, 248, 0.15); color:#7dd3fc; border:1px solid #0284c7; padding:2px 8px; border-radius:6px; font-weight:bold;">${g.count}개 구역 출현</span>
-        </div>
-        <div style="font-size:13.5px; margin-bottom:12px;">
-          <div>총 누적 점수: <strong style="color:#ffffff;">${g.totalScore.toLocaleString()}점</strong></div>
-          <div style="margin-top:2px;">예상 총 각성석: <strong style="color:#34d399;">${g.totalStones.toLocaleString()}개</strong></div>
-        </div>
-        <div style="background:#1e293b; border-radius:8px; padding:8px 10px; font-size:12px; color:#cbd5e1; max-height:120px; overflow-y:auto;">
-          ${g.records.map(r => `<div>• <strong>${r.zone}</strong>: ${r.rank}위 (${r.score.toLocaleString()}점 / 각성석 ${r.stones.toLocaleString()}개)</div>`).join('')}
-        </div>
-      </div>
-    `).join('');
   }
 
-  function sortGuildCards() {
+  function renderCurrentView() {
+    if (currentActiveTab === 'all') {
+      sortAndRenderAllView();
+    } else {
+      renderZoneLeaderboard(ZONE_CONFIG[currentActiveTab].name);
+    }
+  }
+
+  // 1) 전체 종합 뷰어 렌더링
+  function sortAndRenderAllView() {
     const sortType = document.getElementById("guildSortSelect").value;
     let list = [...guildDatabase];
     if (sortType === 'total') list.sort((a,b) => b.totalScore - a.totalScore);
     else if (sortType === 'stones') list.sort((a,b) => b.totalStones - a.totalStones);
     else if (sortType === 'count') list.sort((a,b) => b.count - a.count);
     else if (sortType === 'name') list.sort((a,b) => a.name.localeCompare(b.name));
-    renderGuildCards(list);
+
+    const container = document.getElementById("guildCardContainer");
+    if (!container) return;
+
+    if (list.length === 0) {
+      container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#94a3b8; background:#0f172a; border-radius:12px; border:1px dashed #334155;">등록된 길드 데이터가 없습니다. 상단 [🔄 지금 동기화]를 눌러주세요.</div>`;
+      return;
+    }
+
+    container.innerHTML = list.map(g => `
+      <div style="background:#0f172a; border:1.5px solid #334155; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+        <div style="border-bottom:1px solid #1e293b; padding-bottom:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+          <strong style="font-size:16px; color:#38bdf8;">${g.name}</strong>
+          <span style="font-size:11.5px; background:rgba(56, 189, 248, 0.15); color:#7dd3fc; border:1px solid #0284c7; padding:2px 8px; border-radius:6px; font-weight:bold;">${g.count}개 구역 출현</span>
+        </div>
+        <div style="font-size:13.5px; margin-bottom:10px;">
+          <div>총 누적 점수: <strong style="color:#ffffff;">${g.totalScore.toLocaleString()}점</strong></div>
+          <div style="margin-top:2px;">예상 총 각성석: <strong style="color:#34d399;">${g.totalStones.toLocaleString()}개</strong></div>
+        </div>
+        <div style="background:#1e293b; border-radius:8px; padding:8px 10px; font-size:12px; color:#cbd5e1; max-height:120px; overflow-y:auto;">
+          ${g.records.map(r => `<div>• <strong>${r.zone}구역</strong>: ${r.rank}위 (${r.score.toLocaleString()}점 / 각성석 ${r.stones.toLocaleString()}개)</div>`).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // 2) 특정 구역 1~50위 실시간 리더보드 렌더링
+  function renderZoneLeaderboard(zoneName) {
+    const container = document.getElementById("zoneLeaderboardContainer");
+    if (!container) return;
+
+    // 해당 구역에 참가한 길드 추출
+    const zoneRanking = [];
+    guildDatabase.forEach(g => {
+      const rec = g.records.find(r => r.zone === zoneName);
+      if (rec) {
+        zoneRanking.push({
+          guildName: g.name,
+          rank: rec.rank,
+          score: rec.score,
+          stones: rec.stones
+        });
+      }
+    });
+
+    // 순위 오름차순 (1위 -> 50위)
+    zoneRanking.sort((a,b) => a.rank - b.rank);
+
+    if (zoneRanking.length === 0) {
+      container.innerHTML = `<div style="text-align:center; padding:40px; color:#94a3b8;">해당 구역의 등록된 순위 데이터가 없습니다.</div>`;
+      return;
+    }
+
+    let rowsHtml = zoneRanking.map(item => {
+      let rankBadgeCls = "rank-top5";
+      if (item.rank === 1) rankBadgeCls = "rank-1";
+      else if (item.rank === 2) rankBadgeCls = "rank-2";
+      else if (item.rank === 3) rankBadgeCls = "rank-3";
+      else if (item.rank > 5) rankBadgeCls = "";
+
+      const isTop5 = item.rank <= 5;
+      const rowStyle = isTop5 ? "background: rgba(56, 189, 248, 0.08); font-weight: bold;" : "";
+
+      return `
+        <tr style="${rowStyle}">
+          <td><span class="rank-badge ${rankBadgeCls}">${item.rank}</span></td>
+          <td style="font-size:14.5px; color:${isTop5 ? '#ffffff' : '#cbd5e1'};">${item.guildName}</td>
+          <td style="color:#38bdf8; font-weight:700;">${item.score.toLocaleString()}점</td>
+          <td style="color:${isTop5 ? '#34d399' : '#94a3b8'};">${item.stones.toLocaleString()}개</td>
+          <td style="font-size:12px;">${isTop5 ? '<span style="color:#fde047; border:1px solid #eab308; padding:2px 6px; border-radius:4px;">보너스 획득</span>' : '-'}</td>
+        </tr>
+      `;
+    }).join('');
+
+    container.innerHTML = `
+      <div class="table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width:70px;">순위</th>
+              <th>길드명</th>
+              <th>획득 점수</th>
+              <th>예상 각성석</th>
+              <th style="width:110px;">점령 보너스</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    `;
   }
 
   function filterGuildCards() {
     const q = document.getElementById("guildSearchInput").value.trim().toLowerCase();
     const filtered = guildDatabase.filter(g => g.name.toLowerCase().includes(q));
-    renderGuildCards(filtered);
+    const container = document.getElementById("guildCardContainer");
+    if (!container) return;
+
+    container.innerHTML = filtered.map(g => `
+      <div style="background:#0f172a; border:1.5px solid #334155; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+        <div style="border-bottom:1px solid #1e293b; padding-bottom:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+          <strong style="font-size:16px; color:#38bdf8;">${g.name}</strong>
+          <span style="font-size:11.5px; background:rgba(56, 189, 248, 0.15); color:#7dd3fc; border:1px solid #0284c7; padding:2px 8px; border-radius:6px; font-weight:bold;">${g.count}개 구역 출현</span>
+        </div>
+        <div style="font-size:13.5px; margin-bottom:10px;">
+          <div>총 누적 점수: <strong style="color:#ffffff;">${g.totalScore.toLocaleString()}점</strong></div>
+          <div style="margin-top:2px;">예상 총 각성석: <strong style="color:#34d399;">${g.totalStones.toLocaleString()}개</strong></div>
+        </div>
+        <div style="background:#1e293b; border-radius:8px; padding:8px 10px; font-size:12px; color:#cbd5e1; max-height:120px; overflow-y:auto;">
+          ${g.records.map(r => `<div>• <strong>${r.zone}구역</strong>: ${r.rank}위 (${r.score.toLocaleString()}점 / 각성석 ${r.stones.toLocaleString()}개)</div>`).join('')}
+        </div>
+      </div>
+    `).join('');
   }
 
-  // 로컬스토리지 우선 확인 ➔ 없으면 기본 마스터 데이터 로드
-  window.addEventListener("DOMContentLoaded", () => {
-    const cached = localStorage.getItem("guild_db_cache");
-    if (cached) {
-      try {
-        guildDatabase = JSON.parse(cached);
-        document.getElementById("data_source_badge").innerText = "사용자 엑셀 데이터 반영됨";
-        document.getElementById("data_source_badge").style.background = "#10b981";
-      } catch (e) {
-        guildDatabase = parseMasterRawData(DEFAULT_MASTER_RAW);
-      }
-    } else {
-      guildDatabase = parseMasterRawData(DEFAULT_MASTER_RAW);
+  // 5초 자동 새로고침 타이머 제어 (마감 직전 11시 50~55분 눈치싸움 모드)
+  function toggleAutoRefresh(isOn) {
+    if (autoRefreshTimer) {
+      clearInterval(autoRefreshTimer);
+      autoRefreshTimer = null;
     }
-    sortGuildCards();
+    if (isOn) {
+      fetchSheetData();
+      autoRefreshTimer = setInterval(() => {
+        fetchSheetData();
+      }, 5000);
+    }
+  }
+
+  function openGuildImportModal() {
+    document.getElementById("guild_import_modal").style.display = "flex";
+  }
+  function closeGuildImportModal() {
+    document.getElementById("guild_import_modal").style.display = "none";
+  }
+
+  function processManualTSVData() {
+    const raw = document.getElementById("guild_tsv_input").value.trim();
+    if (!raw) return;
+    parseSheetMatrixCSV(raw);
+    closeGuildImportModal();
+    alert("수동 데이터가 임시 반영되었습니다.");
+  }
+
+  // 초기 로드 시 구글 시트 데이터 자동 fetch
+  window.addEventListener("DOMContentLoaded", () => {
+    fetchSheetData();
   });
 </script>
 
