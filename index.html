@@ -16,6 +16,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>소헌키 종합 시뮬레이터 & 각성석·확률 계산기 - 29서버 겨울눈사람</title>
+
 <style>
   :root {
     --bg-main: #0b1120;
@@ -1675,6 +1676,114 @@
     font-size: 14px;
     color: var(--text-secondary);
   }
+
+  /* ==================== 전직 특성 16단계 네온 테두리 & 보드 스타일 ==================== */
+  .trait-tier-badge {
+    font-size: 10.5px; font-weight: 900; padding: 2px 7px; border-radius: 5px; display: inline-block; letter-spacing: -0.3px;
+  }
+  .tt-normal   { border: 2px solid #8c6239; background: rgba(140,98,57,0.18); color: #d6a87c; }
+  .tt-middle   { border: 2px solid #2e9e44; background: rgba(46,158,68,0.18); color: #69db7c; }
+  .tt-advanced { border: 2px solid #2b72b8; background: rgba(43,114,184,0.18); color: #74c0fc; }
+  .tt-unique   { border: 2px solid #7b3eb8; background: rgba(123,62,184,0.2); color: #d0bfff; box-shadow: 0 0 8px rgba(123,62,184,0.35); }
+  .tt-legend   { border: 2px solid #e2c044; background: rgba(226,192,68,0.2); color: #fff3bf; box-shadow: 0 0 10px rgba(226,192,68,0.4); }
+  .tt-mythic   { border: 2px solid #e05a2b; background: rgba(224,90,43,0.22); color: #ffc9b5; box-shadow: 0 0 12px rgba(224,90,43,0.5); }
+  .tt-ancient  { border: 2px solid #1ecbe1; background: rgba(30,203,225,0.22); color: #99e9f2; box-shadow: 0 0 14px rgba(30,203,225,0.55); }
+  .tt-eternal  { border: 2px solid #1db978; background: radial-gradient(circle at top right, rgba(29,185,120,0.35), #0f172a 75%); color: #63e6be; box-shadow: 0 0 16px rgba(29,185,120,0.65), inset 0 0 8px rgba(29,185,120,0.35); }
+  .tt-immortal { border: 2px solid #d82b68; background: radial-gradient(circle at top right, rgba(216,43,104,0.38), #0f172a 75%); color: #faa2c1; box-shadow: 0 0 16px rgba(216,43,104,0.7), inset 0 0 8px rgba(216,43,104,0.4); }
+  
+  /* 10. 천상: 화사한 핑크-퍼플 */
+  .tt-heaven   { border: 2px solid #e879f9; background: radial-gradient(circle at top right, rgba(217,70,239,0.38), #230f2e 78%); color: #f5d0fe; box-shadow: 0 0 18px rgba(217,70,239,0.75), inset 0 0 10px rgba(232,121,249,0.45); }
+  /* 11. 절대: 보라빛이 도는 짙은 인디고-블루 */
+  .tt-abyss    { border: 2px solid #6366f1; background: linear-gradient(135deg, rgba(67,56,202,0.65) 0%, rgba(30,58,138,0.75) 55%, #0f172a 100%); color: #c7d2fe; box-shadow: 0 0 20px rgba(99,102,241,0.85), inset 0 0 12px rgba(59,130,246,0.55); }
+  /* 12. 기원 (절대 다음 1번째): 칠흑 같은 검은색 + 차가운 은색(실버) 테두리 */
+  .tt-origin   { border: 2px solid #94a3b8; background: radial-gradient(circle at top left, rgba(148,163,184,0.3) 0%, #05070b 75%); color: #e2e8f0; box-shadow: 0 0 18px rgba(148,163,184,0.75), inset 0 0 12px rgba(255,255,255,0.25); }
+  /* 13. 태초 (절대 다음 2번째): 하늘색 + 초록색 + 파란색 + 빨간색 멀티컬러 오로라 */
+  .tt-primordial { border: 2px solid #2dd4bf; background: linear-gradient(135deg, rgba(56,189,248,0.4) 0%, rgba(16,185,129,0.38) 38%, rgba(37,99,235,0.38) 70%, rgba(244,63,94,0.42) 100%); color: #ccfbf1; box-shadow: 0 0 20px rgba(45,212,191,0.8), 0 0 10px rgba(244,63,94,0.5), inset 0 0 12px rgba(56,189,248,0.45); }
+  /* 14. 영겁 (절대 다음 3번째): 주황색 + 빨간색 이글거리는 불꽃 (신화보다 짙고 화려한 마그마 파이어) */
+  .tt-kalpa    { border: 2px solid #fb923c; background: radial-gradient(circle at bottom, rgba(220,38,38,0.55) 0%, rgba(234,88,12,0.45) 50%, #1c0704 90%); color: #ffedd5; box-shadow: 0 0 22px rgba(249,115,22,0.95), 0 0 10px rgba(220,38,38,0.8), inset 0 0 14px rgba(251,146,60,0.6); }
+  /* 15. 초월 (절대 다음 4번째): 깊은 남색 우주색(Deep Space Navy) + 푸른 별빛 */
+  .tt-transcend { border: 2px solid #38bdf8; background: radial-gradient(circle at center, rgba(30,64,175,0.6) 0%, rgba(15,23,42,0.92) 65%, #030614 100%); color: #bae6fd; box-shadow: 0 0 22px rgba(37,99,235,0.95), inset 0 0 16px rgba(56,189,248,0.55); }
+  /* 16. 무한 (절대 다음 5번째): 특급(진보라) + 천상(밝은보라)이 섞인 성운 보라색 */
+  .tt-infinite { border: 2px solid #c084fc; background: linear-gradient(135deg, rgba(109,40,217,0.58) 0%, rgba(192,132,252,0.38) 55%, #17092b 100%); color: #f3e8ff; box-shadow: 0 0 22px rgba(168,85,247,0.95), inset 0 0 14px rgba(216,180,254,0.55); }
+  /* 17. 태양 (절대 다음 6번째): 강렬하게 타오르는 황금 태양빛(Solar Gold) */
+  .tt-solar    { border: 2px solid #facc15; background: radial-gradient(circle at center, rgba(250,204,21,0.5) 0%, rgba(202,138,4,0.38) 55%, #1f1404 95%); color: #fef08a; box-shadow: 0 0 24px rgba(250,204,21,0.95), 0 0 12px rgba(245,158,11,0.8), inset 0 0 15px rgba(254,240,138,0.65); }
+  /* 18. 창세 (절대 다음 7번째 최종): 눈부신 은색 + 순백색(White Silver) 후광 */
+  .tt-genesis  { border: 2px solid #ffffff; background: linear-gradient(135deg, rgba(255,255,255,0.42) 0%, rgba(203,213,225,0.3) 50%, #0f172a 100%); color: #ffffff; box-shadow: 0 0 26px rgba(255,255,255,0.95), 0 0 12px rgba(226,232,240,0.85), inset 0 0 16px rgba(255,255,255,0.75); }
+  
+  
+  .trait-slots-stage {
+    background: radial-gradient(circle at center, #251429 0%, #090d16 100%);
+    border: 2px solid #475569;
+    border-radius: 16px;
+    padding: 22px 16px;
+    margin: 14px 0;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.85);
+  }
+  .trait-5slots-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+  }
+  .trait-slot-box {
+    width: 280px;
+    min-height: 138px;
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .trait-slot-box.locked {
+    border: 2px dashed #475569;
+    background: rgba(15,23,42,0.6);
+    opacity: 0.55;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .spec-3rd-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 8px;
+  }
+  .spec-3rd-cell {
+    background: #0f172a;
+    border: 1.5px solid #334155;
+    border-radius: 10px;
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 12.5px;
+    color: #94a3b8;
+    position: relative;
+    transition: all 0.2s;
+  }
+  /* 주력 고점 채택 (황금색 네온) */
+  .spec-3rd-cell.recommended {
+    border: 2px solid #fbbf24;
+    background: linear-gradient(145deg, rgba(251,191,36,0.22) 0%, #1e1b4b 100%);
+    color: #ffffff;
+    font-weight: 800;
+    box-shadow: 0 0 15px rgba(251,191,36,0.4);
+  }
+  /* 비석치기 비교용 서브 채택 (시안 블루 네온) */
+  .spec-3rd-cell.compare-pick {
+    border: 2px solid #38bdf8;
+    background: linear-gradient(145deg, rgba(56,189,248,0.22) 0%, #0f172a 100%);
+    color: #e0f2fe;
+    font-weight: 800;
+    box-shadow: 0 0 15px rgba(56,189,248,0.4);
+  }
+  /* 레벨 미달성 잠금 행 */
+  .spec-3rd-row-locked .spec-3rd-cell {
+    background: #090d16;
+    border: 1.5px dashed #334155;
+    color: #475569;
+    opacity: 0.45;
+  }
+
 </style>
 </head>
 <body>
@@ -1723,7 +1832,7 @@
           <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
         </div>
         <div class="author-tag">
-          기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.3.2.0</strong>
+          기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.3.3.1</strong>
         </div>
       </div>
 
@@ -1793,7 +1902,7 @@
       <span>🛠️ 세팅 도우미 모음</span>
     </button>
     <button class="mode-btn newbie" id="btn_mode_guides" onclick="switchMainMode('guides')">
-      <span>🐣 뉴비 직업별 세팅 가이드</span>
+      <span>⚔️ 직업별 세팅 가이드</span>
     </button>
     <button class="mode-btn" id="btn_mode_calcs" onclick="switchMainMode('calcs')">
       <span>🎲 확률 기댓값 & 재화 계산기</span>
@@ -1823,48 +1932,63 @@
     </div>
   </div>
 
-  <!-- ==================== [MODE 2] 🐣 뉴비 직업별 세팅 가이드 영역 (누락 태그 복구) ==================== -->
+  <!-- ==================== [MODE 2] ⚔️ 직업별 세팅 가이드 영역 ==================== -->
   <div id="mode_guides_container" style="display:none;">
     
-    <!-- 뉴비 가이드 메인 허브 -->
+    <!-- 직업별 세팅 가이드 메인 허브 -->
     <div id="guides_hub_view">
 
-      <!-- 1. [뉴비 필수 코스] 아코디언 (기본 열림: active) -->
+      <!-- 1. [뉴비 필수 코스 & 직업 전환] 아코디언 (기본 열림) -->
       <div class="accordion-item active" id="acc_guide_newbie" style="margin-bottom: 16px; border-left: 4px solid #eab308;">
         <div class="accordion-header" onclick="toggleNewbieAccordion('acc_guide_newbie')">
           <div class="accordion-left">
             <span class="accordion-toggle-icon">▶</span>
-            <span class="accordion-title-text" style="color: #fef08a;">🐣 5,000렙 달성 뉴비 필수 코스 (스킬 4➔5칸 & 영웅 3➔4칸 해금)</span>
+            <span class="accordion-title-text" style="color: #fef08a;">🐣 5,000렙 달성 뉴비 필수 코스 & 사신➔앜메 전환 가이드</span>
           </div>
           <div class="accordion-right-info">
-            <span class="accordion-count-badge has-selected">추천 입문</span>
+            <span class="accordion-count-badge has-selected">필독 입문</span>
           </div>
         </div>
         <div class="accordion-content" style="padding: 14px;">
-          <div class="hub-card" onclick="openBuildGuideDetail('early')">
-            <div class="hub-card-left">
-              <div class="hub-card-icon" style="border-color:#eab308; background:#0f172a;">
-                <img src="images/chick.png" alt="극초반" onerror="this.onerror=null; this.parentElement.innerHTML='🐣';">
+          <div class="hub-grid">
+            <div class="hub-card" onclick="openSpecialGuideDetail('early')">
+              <div class="hub-card-left">
+                <div class="hub-card-icon" style="border-color:#eab308; background:#0f172a;">
+                  <img src="images/chick.png" alt="극초반" onerror="this.onerror=null; this.parentElement.innerHTML='🐣';">
+                </div>
+                <div>
+                  <span class="hub-card-title">🐣 극초반 스킬 & 영웅 추천 빌드</span>
+                  <span class="hub-card-desc">5,000레벨 달성 후(스킬 4➔5칸 & 영웅 3➔4칸) 무엇부터 껴야 할지 모른다면 여기부터!</span>
+                </div>
               </div>
-              <div>
-                <span class="hub-card-title">🐣 극초반 스킬 & 영웅 추천 빌드 가이드</span>
-                <span class="hub-card-desc">5,000레벨 이후 슬롯 확장 시 무엇부터 끼고 올려야 할지 모른다면 무조건 여기부터 확인하세요!</span>
-              </div>
+              <div class="hub-card-arrow">➔</div>
             </div>
-            <div class="hub-card-arrow">➔</div>
+
+            <div class="hub-card" onclick="openSpecialGuideDetail('transition')" style="border-color:rgba(56,189,248,0.45);">
+              <div class="hub-card-left">
+                <div class="hub-card-icon" style="border-color:#38bdf8; background:rgba(56,189,248,0.12);">
+                  <span style="font-size:24px;">🔄</span>
+                </div>
+                <div>
+                  <span class="hub-card-title">🔄 사신 ➔ 아크메이지 전환 가이드</span>
+                  <span class="hub-card-desc">왜 1차 60레벨 전까지는 사신으로 키울까? 미스틱(앜메) 전환 타이밍 & 필수 준비물</span>
+                </div>
+              </div>
+              <div class="hub-card-arrow">➔</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- 2. [심화 세팅 가이드] 아코디언 (기본 닫힘 / 열었을 때 고대 패시브 링크박스가 안쪽 최상단에 노출) -->
+      <!-- 2. [직업별 세팅 & 전직 특성 가이드] 아코디언 (기본 닫힘으로 변경!) -->
       <div class="accordion-item" id="acc_guide_deep" style="margin-bottom: 24px; border-left: 4px solid #38bdf8;">
         <div class="accordion-header" onclick="toggleNewbieAccordion('acc_guide_deep')">
           <div class="accordion-left">
             <span class="accordion-toggle-icon">▶</span>
-            <span class="accordion-title-text">⚔️ 직업별 · 전직 차수별 (초기 ~ 4차) 심화 세팅 가이드</span>
+            <span class="accordion-title-text">⚔️ 직업별 세팅 가이드 (스킬 · 영웅 · 정령 · 전직 특성)</span>
           </div>
           <div class="accordion-right-info">
-            <span class="accordion-count-badge">4개 가이드</span>
+            <span class="accordion-count-badge has-selected">3대 직업 선택</span>
           </div>
         </div>
         <div class="accordion-content" style="padding: 14px;">
@@ -1883,115 +2007,116 @@
             </a>
           </div>
 
-          <!-- 심화 가이드 4종 카드 그리드 -->
+          <!-- 3대 직업 선택 카드 그리드 (직업 이미지 적용) -->
           <div class="hub-grid">
-            <!-- 1. 직업별 스킬 세팅 가이드 -->
-            <div class="hub-card" onclick="openBuildGuideDetail('skill')">
-              <div class="hub-card-left">
-                <div class="hub-card-icon" style="border-color:#fbbf24;">
-                  <img src="images/hell.png" alt="스킬" onerror="this.onerror=null; this.src='images/hell.jpg'; this.onerror=function(){this.parentElement.innerHTML='⚡';};">
-                </div>
-                <div>
-                  <span class="hub-card-title">직업별 스킬 세팅 가이드</span>
-                  <span class="hub-card-desc">사신/앜메/닼로 & 불/번개/어둠 초기~4차 슬롯별 정석 스킬 트리</span>
-                </div>
-              </div>
-              <div class="hub-card-arrow">➔</div>
-            </div>
-
-            <!-- 2. 직업별 영웅 세팅 가이드 -->
-            <div class="hub-card" onclick="openBuildGuideDetail('hero')" style="border-color:rgba(244,63,94,0.45);">
+            <!-- 1. 사신 -->
+            <div class="hub-card" onclick="openJobHubDetail('reaper')" style="border-color:rgba(244,63,94,0.5);">
               <div class="hub-card-left">
                 <div class="hub-card-icon" style="border-color:#f43f5e; background:rgba(244,63,94,0.12);">
-                  <img src="images/elisia.png" alt="영웅" onerror="this.onerror=null; this.src='images/elisia.PNG'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
+                  <img src="images/reaper.png" alt="사신" onerror="this.onerror=null; this.src='reaper.png';">
                 </div>
                 <div>
-                  <span class="hub-card-title">직업별 영웅 세팅 가이드</span>
-                  <span class="hub-card-desc">과성장(엘리시아) vs 솔라리스 분기 & 플레어류↔이그니스류 교체 기준</span>
+                  <span class="hub-card-title">사신 (대사신 / 소울리퍼 / 그림리퍼)</span>
+                  <span class="hub-card-desc">강타 특화 | 스킬 · 영웅 · 정령 세팅 & 1~4차 전직 특성 추천</span>
                 </div>
               </div>
               <div class="hub-card-arrow">➔</div>
             </div>
 
-            <!-- 3. 사신 -> 아크메이지 전환 가이드 -->
-            <div class="hub-card" onclick="openBuildGuideDetail('transition')" style="border-color:rgba(56,189,248,0.45);">
+            <!-- 2. 아크메이지 -->
+            <div class="hub-card" onclick="openJobHubDetail('mage')" style="border-color:rgba(56,189,248,0.5);">
               <div class="hub-card-left">
                 <div class="hub-card-icon" style="border-color:#38bdf8; background:rgba(56,189,248,0.12);">
-                  <span style="font-size:24px;">🔄</span>
+                  <img src="images/mystic.png" alt="아크메이지" onerror="this.onerror=null; this.src='mystic.png';">
                 </div>
                 <div>
-                  <span class="hub-card-title">🔄 사신 ➔ 아크메이지 전환 가이드</span>
-                  <span class="hub-card-desc">언제 사신에서 미스틱(앜메)으로 넘어가야 할까? 핵심 전환 타이밍 & 준비물</span>
+                  <span class="hub-card-title">아크메이지 (미스틱 / 제네시스 / 슈프림)</span>
+                  <span class="hub-card-desc">스킬 특화 | 스킬 · 영웅 · 정령 세팅 & 1~4차 전직 특성 추천</span>
                 </div>
               </div>
               <div class="hub-card-arrow">➔</div>
             </div>
 
-            <!-- 4. 패시브 & 정령 세팅 (준비 중) -->
-            <div class="hub-card" style="opacity:0.6; cursor:not-allowed;">
+            <!-- 3. 오버로드(다크로드) -->
+            <div class="hub-card" onclick="openJobHubDetail('lord')" style="border-color:rgba(168,85,247,0.5);">
               <div class="hub-card-left">
-                <div class="hub-card-icon" style="border-color:#64748b; background:#1e293b;">
-                  <img src="images/main_passive.png" alt="패시브" onerror="this.onerror=null; this.parentElement.innerHTML='📜';">
+                <div class="hub-card-icon" style="border-color:#a855f7; background:rgba(168,85,247,0.12);">
+                  <img src="images/overload.png" alt="다크로드" onerror="this.onerror=null; this.src='overload.png';">
                 </div>
                 <div>
-                  <span class="hub-card-title">📜 패시브 & 정령 세팅 가이드 🔒</span>
-                  <span class="hub-card-desc">현재 개발 중입니다 (추후 업데이트 예정)</span>
+                  <span class="hub-card-title">오버로드 (다크로드 / 오버로드 / 소울이터)</span>
+                  <span class="hub-card-desc">영웅스킬 특화 | 스킬 · 영웅 · 정령 세팅 & 1~4차 전직 특성 추천</span>
                 </div>
               </div>
-              <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">개발 중</span>
+              <div class="hub-card-arrow">➔</div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
 
-    <!-- 뉴비 가이드 상세 화면 (스킬 / 영웅 / 전환 가이드) -->
+    <!-- 직업별 가이드 상세 화면 -->
     <div id="guides_detail_view" style="display:none;">
       <div class="card" style="border-left: 4px solid #f59e0b;">
         <div class="card-title">
-          <span id="guide_view_title">⚡ 직업별 스킬 세팅 가이드</span>
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <img id="guide_job_header_icon" src="images/reaper.png" alt="" style="width:28px; height:28px; object-fit:contain; display:none;" onerror="this.style.display='none';">
+            <span id="guide_view_title">⚔️ 직업별 세팅 가이드</span>
+          </div>
           <span class="grade-badge" style="background:#b45309; color:#fde68a; border:1px solid #f59e0b;" id="guide_view_badge">초기 ~ 4차 전직</span>
         </div>
         <p class="card-subtitle" id="guide_view_subtitle">
-          내 직업과 주속성을 선택하면 전직 차수별 슬롯 수에 맞춘 최적의 편성과 육성 우선순위를 확인할 수 있습니다.
+          주속성과 원하는 가이드 탭(스킬 / 영웅 / 정령 / 전직 특성)을 선택하세요.
         </p>
 
-        <!-- 직업 & 속성 라디오 선택 바 (문양 이미지 + 입체 구체 적용) -->
-        <div class="grid-2" id="guide_job_elem_selector" style="margin-bottom:18px;">
-          <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
-            <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 직업 계열 선택 (택 1)</label>
-            <div class="radio-pill-group">
-              <div class="radio-pill job-pill-btn selected" id="g_job_reaper" onclick="selectGuideJob('reaper')">
-                <img src="images/reaper.png" alt="사신" onerror="this.onerror=null; this.src='reaper.png';">
-                <span>사신 (소울/그림리퍼)</span>
+        <!-- 직업 내부 컨트롤러: 주속성 선택 + [스킬 / 영웅 / 정령 / 전직 특성] 4대 탭 -->
+        <div id="guide_job_inner_controls">
+          <!-- 상단 빠른 직업 전환 바 & 주속성 선택 -->
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div style="background:#0b1120; padding:10px 14px; border-radius:10px; border:1px solid #334155;">
+              <label style="color:#38bdf8; margin-bottom:6px; font-size:12px;">⚔️ 현재 선택된 직업 (클릭 시 즉시 전환)</label>
+              <div class="radio-pill-group">
+                <div class="radio-pill job-pill-btn selected" id="g_job_reaper" onclick="selectGuideJob('reaper')" style="padding:6px 8px; font-size:12.5px;">
+                  <img src="images/reaper.png" alt="사신" onerror="this.onerror=null; this.src='reaper.png';">
+                  <span>사신</span>
+                </div>
+                <div class="radio-pill job-pill-btn" id="g_job_mage" onclick="selectGuideJob('mage')" style="padding:6px 8px; font-size:12.5px;">
+                  <img src="images/mystic.png" alt="아크메이지" onerror="this.onerror=null; this.src='mystic.png';">
+                  <span>아크메이지</span>
+                </div>
+                <div class="radio-pill job-pill-btn" id="g_job_lord" onclick="selectGuideJob('lord')" style="padding:6px 8px; font-size:12.5px;">
+                  <img src="images/overload.png" alt="오버로드" onerror="this.onerror=null; this.src='overload.png';">
+                  <span>오버로드</span>
+                </div>
               </div>
-              <div class="radio-pill job-pill-btn" id="g_job_mage" onclick="selectGuideJob('mage')">
-                <img src="images/mystic.png" alt="아크메이지" onerror="this.onerror=null; this.src='mystic.png';">
-                <span>아크메이지 (미스틱/슈프림)</span>
-              </div>
-              <div class="radio-pill job-pill-btn" id="g_job_lord" onclick="selectGuideJob('lord')">
-                <img src="images/overload.png" alt="다크로드" onerror="this.onerror=null; this.src='overload.png';">
-                <span>다크로드 (오버로드/소울이터)</span>
+            </div>
+
+            <div style="background:#0b1120; padding:10px 14px; border-radius:10px; border:1px solid #334155;">
+              <label style="color:#fbbf24; margin-bottom:6px; font-size:12px;">🔥 내 주속성 선택 (택 1)</label>
+              <div class="radio-pill-group">
+                <div class="radio-pill job-pill-btn selected" id="g_elem_fire" onclick="selectGuideElem('fire')" style="padding:6px 8px; font-size:12.5px;">
+                  <span class="elem-orb orb-fire"></span>
+                  <span>화염 속성</span>
+                </div>
+                <div class="radio-pill job-pill-btn" id="g_elem_light" onclick="selectGuideElem('light')" style="padding:6px 8px; font-size:12.5px;">
+                  <span class="elem-orb orb-light"></span>
+                  <span>번개 속성</span>
+                </div>
+                <div class="radio-pill job-pill-btn" id="g_elem_dark" onclick="selectGuideElem('dark')" style="padding:6px 8px; font-size:12.5px;">
+                  <span class="elem-orb orb-dark"></span>
+                  <span>어둠 속성</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
-            <label style="color:#fbbf24; margin-bottom:8px;">🔥 주속성 선택 (택 1)</label>
-            <div class="radio-pill-group">
-              <div class="radio-pill job-pill-btn selected" id="g_elem_fire" onclick="selectGuideElem('fire')">
-                <span class="elem-orb orb-fire"></span>
-                <span>화염 속성</span>
-              </div>
-              <div class="radio-pill job-pill-btn" id="g_elem_light" onclick="selectGuideElem('light')">
-                <span class="elem-orb orb-light"></span>
-                <span>번개 속성</span>
-              </div>
-              <div class="radio-pill job-pill-btn" id="g_elem_dark" onclick="selectGuideElem('dark')">
-                <span class="elem-orb orb-dark"></span>
-                <span>어둠 속성</span>
-              </div>
-            </div>
+          <!-- 직업 내부 4대 서브 탭 (스킬 / 영웅 / 정령 / 전직 특성) -->
+          <div class="rune-tier-tabs" style="margin-bottom:18px;">
+            <div class="rune-tier-tab active-ancient" id="gsub_skill" onclick="switchJobSubGuide('skill')">⚡ 스킬 세팅 가이드</div>
+            <div class="rune-tier-tab" id="gsub_hero" onclick="switchJobSubGuide('hero')">🦸 영웅 세팅 가이드</div>
+            <div class="rune-tier-tab" id="gsub_spirit" onclick="switchJobSubGuide('spirit')">🧚 정령 세팅 가이드</div>
+            <div class="rune-tier-tab" id="gsub_trait" onclick="switchJobSubGuide('trait')">🌟 전직 특성 가이드 (1~4차)</div>
           </div>
         </div>
 
@@ -3533,7 +3658,7 @@
   <!-- Footer (모든 탭 하단 고정 노출 + 실시간 방문자 카운터 정상 작동) -->
   <footer>
     <div style="margin-bottom: 12px;">
-      소울헌터키우기 네이버 라운지 전용 계산기 v.3.2.0 | 제작: <strong>29서버 겨울눈사람</strong>
+      소울헌터키우기 네이버 라운지 전용 계산기 v.3.3.1 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
@@ -4914,7 +5039,7 @@
         { name: "현묵", attr: "⚡", star: true, img: "images/hyunmuk.png" },
         { name: "이그니스", attr: "🔥", star: true, isNew: true, img: "images/ignis.png" },
         { name: "제논", attr: "⚡", star: true, isNew: true, img: "images/xenon.png" },
-        { name: "다미안", attr: "🌑", star: true, isNew: true, img: "images/darmian.png" }
+        { name: "다미안", attr: "🌑", star: true, isNew: true, img: "images/damian.png" }
       ],
      legend: [
         { name: "아카네", attr: "⚡" },
@@ -6114,6 +6239,7 @@
     renderRuneHelperAccordions();
   }
 
+  // ⚡ [렉 완벽 해결] 개별 룬 클릭 시 아코디언 전체를 다시 그리지 않고 해당 카드만 즉시 토글!
   function toggleRuneOwned(runeId) {
     if (ownedRunes.has(runeId)) ownedRunes.delete(runeId);
     else ownedRunes.add(runeId);
@@ -6123,27 +6249,34 @@
 
     updateRunePartCounts();
     calculateBestRuneLoadout();
+    triggerAutoSave();
   }
 
   function selectAllCurrentTierRunes() {
     RUNE_DB.filter(r => r.tier === currentRuneTierTab).forEach(r => ownedRunes.add(r.id));
     renderRuneHelperAccordions();
     calculateBestRuneLoadout();
+    triggerAutoSave();
   }
 
   function clearAllOwnedRunes() {
     ownedRunes.clear();
     renderRuneHelperAccordions();
     calculateBestRuneLoadout();
+    triggerAutoSave();
   }
 
+  // 📂 [아코디언 닫힘 버그 해결] 부위별 전체선택/해제 시 열려 있던 아코디언 상태 유지 & DOM 직접 갱신!
   function togglePartRunes(part, selectAll) {
     RUNE_DB.filter(r => r.tier === currentRuneTierTab && r.part === part).forEach(r => {
       if (selectAll) ownedRunes.add(r.id);
       else ownedRunes.delete(r.id);
+      const card = document.getElementById('rcard_' + r.id);
+      if (card) card.classList.toggle('selected', selectAll);
     });
-    renderRuneHelperAccordions();
+    updateRunePartCounts();
     calculateBestRuneLoadout();
+    triggerAutoSave();
   }
 
   function getRuneTierKr(tier) {
@@ -6161,6 +6294,10 @@
   function renderRuneHelperAccordions() {
     const container = document.getElementById('rune_accordion_container');
     if (!container) return;
+
+    // 현재 열려있는 아코디언 ID 기억 (닫힘 방지!)
+    const openIds = new Set();
+    container.querySelectorAll('.accordion-item.active').forEach(el => openIds.add(el.id));
 
     const parts = [
       { key: 'armor', name: '🧥 방어구 룬 (3슬롯: 상의 / 하의 / 신발)' },
@@ -6202,9 +6339,12 @@
         `;
       }).join('');
 
+      const accId = `racc_${p.key}`;
+      const isOpen = openIds.has(accId);
+
       html += `
-        <div class="accordion-item ${accTierClass}" id="racc_${p.key}">
-          <div class="accordion-header" onclick="toggleNewbieAccordion('racc_${p.key}')">
+        <div class="accordion-item ${accTierClass} ${isOpen ? 'active' : ''}" id="${accId}">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('${accId}')">
             <div class="accordion-left">
               <span class="accordion-toggle-icon">▶</span>
               <span class="accordion-title-text"><span class="grade-badge ${tierBadgeCls}">${tierKr}</span> ${p.name}</span>
@@ -6240,8 +6380,15 @@
         badge.classList.toggle('has-selected', ownedCnt > 0);
       }
     });
+
     const totalBadge = document.getElementById('rune_owned_count_badge');
     if (totalBadge) totalBadge.innerText = `총 보유 선택: ${ownedRunes.size}개`;
+
+    const immDisplayEl = document.getElementById('rc_imm_collect_display');
+    if (immDisplayEl) {
+      const currentImmCount = RUNE_DB.filter(r => r.tier === 'immortal' && ownedRunes.has(r.id)).length;
+      immDisplayEl.innerText = currentImmCount;
+    }
   }
 
   function filterRuneCards(keyword) {
@@ -6263,11 +6410,8 @@
     if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  // 유저가 상단에서 설정한 상세 스펙 조건을 읽어오는 헬퍼 (불멸 도감 수는 보유한 불멸 룬 체크 개수로 자동 연동)
   function getUserRuneSpecContext() {
-    // [자동 연동] 현재 소유(체크)된 불멸 룬의 총 개수를 실시간으로 계산
     const realImmortalCount = RUNE_DB.filter(r => r.tier === 'immortal' && ownedRunes.has(r.id)).length;
-
     return {
       atkSpd: parseFloat(document.getElementById('rc_atk_spd')?.value ?? '100'),
       movSpd: parseFloat(document.getElementById('rc_mov_spd')?.value ?? '200'),
@@ -6286,33 +6430,10 @@
       hasSpirit30: document.getElementById('rc_chk_spirit30')?.checked ?? true,
       hasTitleCard: document.getElementById('rc_chk_title_card')?.checked ?? true,
       noPenalty: document.getElementById('rc_chk_no_penalty')?.checked ?? false,
-      immCollect: realImmortalCount // 👈 수동 입력 대신 자동 카운팅된 불멸 룬 보유 개수 적용!
+      immCollect: realImmortalCount
     };
   }
 
-  function updateRunePartCounts() {
-    ['armor', 'ring', 'neck', 'emblem', 'abyss', 'weapon'].forEach(part => {
-      const list = RUNE_DB.filter(r => r.tier === currentRuneTierTab && r.part === part);
-      const ownedCnt = list.filter(r => ownedRunes.has(r.id)).length;
-      const badge = document.getElementById('rcnt_' + part);
-      if (badge) {
-        badge.innerText = `${ownedCnt} / ${list.length}`;
-        badge.classList.toggle('has-selected', ownedCnt > 0);
-      }
-    });
-
-    const totalBadge = document.getElementById('rune_owned_count_badge');
-    if (totalBadge) totalBadge.innerText = `총 보유 선택: ${ownedRunes.size}개`;
-
-    // 💡 [추가] 하단 상세 조건 패널에 현재 보유한 불멸 룬 개수 실시간 반영
-    const immDisplayEl = document.getElementById('rc_imm_collect_display');
-    if (immDisplayEl) {
-      const currentImmCount = RUNE_DB.filter(r => r.tier === 'immortal' && ownedRunes.has(r.id)).length;
-      immDisplayEl.innerText = currentImmCount;
-    }
-  }
-
-  // 개별 룬의 조건 달성 여부 및 수치 계산
   function getEffectiveRuneValue(r, currentSetIds) {
     if (!r) return 0;
     if (r.jobType && r.jobType !== 'all' && r.jobType !== currentRuneJob) return 0;
@@ -6412,7 +6533,6 @@
     return rawVal;
   }
 
-  // 방어구 평가 함수
   function evaluateArmorCombo(combo, allOwnedArmor, allowGongmyeongPair = false) {
     const ids = new Set(combo.map(r => r.id));
     const ctx = getUserRuneSpecContext();
@@ -6797,7 +6917,7 @@
       const eteNecks = ownedNecks.filter(r => r.tier === 'eternal');
       const eteEmblems = ownedEmblems.filter(r => r.tier === 'eternal');
       const eteAbyss = ownedAbyss.filter(r => r.tier === 'eternal');
-      const eteWeapons = ownedWeapons.filter(r => r.tier === 'eternal');
+      const eteWeapons = ownedWeapons.filter(r => r.tier === 'weapon');
 
       if (eteArmor.length >= 3 && eteRings.length >= 1 && eteNecks.length >= 1 && eteEmblems.length >= 1 && eteAbyss.length >= 1 && eteWeapons.length >= 3) {
         const bestArmorEte = findBestArmor3(eteArmor, true);
@@ -6921,7 +7041,7 @@
     reportEl.innerHTML = reportHtml;
   }
 
-// ==================== SOUL CONNECT HELPER (v.1.0.0) ENGINE ====================
+  // ==================== SOUL CONNECT HELPER (v.1.0.0) ENGINE ====================
   HELP_GUIDE_DATA['tab-connect'] = {
     title: '🪐 소울커넥트 코어 선택 도우미 사용법',
     html: `<ol>
@@ -6932,9 +7052,9 @@
   };
 
   let currentConnectTierTab = 'ancient';
-  let currentConnectStageSlots = 6; // 3 (220-1), 4 (400-1), 5 (600-1), 6 (800-1)
-  let currentConnectJob = 'reaper'; // 'reaper' | 'mage' | 'lord'
-  let currentConnectElem = 'fire';  // 'fire' | 'light' | 'dark'
+  let currentConnectStageSlots = 6;
+  let currentConnectJob = 'reaper';
+  let currentConnectElem = 'fire';
   let ownedCoresMap = new Map();
 
   const CORE_GROUPS_META = [
@@ -6947,34 +7067,28 @@
   ];
 
   const CORE_TYPES_DB = [
-    // 코어 1 (파랑)
     { id: "c1_strike", num: 1, name: "소울 강타", jobReq: "reaper", p12: 300, p16: 1800, p20: 21000, unit: "소울 강타 피해량", cond: "대사신(강타) 유효 코어" },
     { id: "c1_skill", num: 1, name: "소울 스킬", jobReq: "mage", p12: 300, p16: 1800, p20: 21000, unit: "소울 스킬 피해량", cond: "아크메이지(스킬) 유효 코어" },
     { id: "c1_hero", num: 1, name: "소울 영웅 스킬", jobReq: "lord", p12: 300, p16: 1800, p20: 21000, unit: "소울 영웅 스킬 피해량", cond: "팬텀(영웅스킬) 유효 코어" },
 
-    // 코어 2 (노랑)
     { id: "c2_fire", num: 2, name: "속성 : 불", elemReq: "fire", p12: 200, p16: 1200, p20: 14000, unit: "모든 불 속성 피해(곱연산)", cond: "불 속성 유효 코어" },
     { id: "c2_light", num: 2, name: "속성 : 번개", elemReq: "light", p12: 200, p16: 1200, p20: 14000, unit: "모든 번개 속성 피해(곱연산)", cond: "번개 속성 유효 코어" },
     { id: "c2_dark", num: 2, name: "속성 : 어둠", elemReq: "dark", p12: 200, p16: 1200, p20: 14000, unit: "모든 어둠 속성 피해(곱연산)", cond: "어둠 속성 유효 코어" },
 
-    // 코어 3 (빨강)
     { id: "c3_mark", num: 3, name: "수호신 : 표식", isMark: true, p12: 0, p16: 0, p20: 120000, unit: "표식당 피해 증폭(표식+5, 최대+1000)", cond: "표식 수호신/정령 전용 (현재 비주류)" },
     { id: "c3_trans", num: 3, name: "수호신 : 변신", p12: 100, p16: 600, p20: 7000, unit: "변신 시 피해량 증폭", cond: "수호신 변신 시 적용 (총 77배)" },
     { id: "c3_book", num: 3, name: "수호신 : 도감", p12: 300, p16: 1800, p20: 21000, unit: "모든 피해량(곱연산)", cond: "수호신 도감 100% 5개 이상 달성 (코어3 1티어 종결!)" },
 
-    // 코어 4 (초록)
     { id: "c4_awk", num: 4, name: "전직 : 각성기", isAwkSkill: true, p12: 50, p16: 300, p20: 3500, unit: "각성기 피해량(곱연산)", cond: "각성기 스킬에만 적용 (총 38.5배)" },
     { id: "c4_reaper", num: 4, name: "전직 : 대사신", jobReq: "reaper", p12: 200, p16: 1200, p20: 14000, unit: "대사신 크리티컬 피해량(곱연산)", cond: "대사신 전용 유효 코어 (총 154배)" },
     { id: "c4_mystic", num: 4, name: "전직 : 미스틱", jobReq: "mage", p12: 200, p16: 1200, p20: 14000, unit: "미스틱 크리티컬 피해량(곱연산)", cond: "미스틱/아크메이지 전용 유효 코어 (총 154배)" },
     { id: "c4_phantom", num: 4, name: "전직 : 팬텀", jobReq: "lord", p12: 200, p16: 1200, p20: 14000, unit: "팬텀 크리티컬 피해량(곱연산)", cond: "팬텀/다크로드 전용 유효 코어 (총 154배)" },
     { id: "c4_level", num: 4, name: "전직 : 레벨", p12: 300, p16: 1800, p20: 21000, unit: "모든 피해량(곱연산)", cond: "3차 전직 달성 시 전 직업 유효 (코어4 1티어 종결!)" },
 
-    // 코어 5 (핑크)
     { id: "c5_promo", num: 5, name: "콘텐츠 : 승급전", p12: 300, p16: 1800, p20: 21000, unit: "모든 피해량(곱연산)", cond: "고대급 소울헌터 1단계 클리어 (총 231배)" },
     { id: "c5_boss", num: 5, name: "콘텐츠 : 보스전", p12: 500, p16: 3000, p20: 35000, unit: "모든 피해량(곱연산)", cond: "하데스 10단계 클리어 (단독 385배 고효율!)" },
     { id: "c5_hcrit_rate", num: 5, name: "하이퍼 크리티컬 확률", isHyperRate: true, p12: 15, p16: 35, p20: 50, unit: "하이퍼 크리티컬 확률(%)", cond: "⚠️ 코어6 '하이퍼 크리티컬 피해'와 세트 장착 시 최종 종결!" },
 
-    // 코어 6 (보라)
     { id: "c6_stage", num: 6, name: "콘텐츠 : 스테이지", p12: 200, p16: 1200, p20: 14000, unit: "모든 피해량(곱연산)", cond: "스테이지 350챕터 도달 (총 154배)" },
     { id: "c6_dungeon", num: 6, name: "콘텐츠 : 던전", p12: 300, p16: 1800, p20: 21000, unit: "모든 피해량(곱연산)", cond: "룬 던전 154단계 클리어 (단독 231배)" },
     { id: "c6_hcrit_dmg", num: 6, name: "하이퍼 크리티컬 피해", isHyperDmg: true, p12: 2500, p16: 90000, p20: 12250000, unit: "하이퍼 크리티컬 피해(%)", cond: "⚠️ 코어5 '하이퍼 크리티컬 확률' 미장착 시 하크확 0%로 무효!" }
@@ -6994,6 +7108,7 @@
       document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === slots);
     });
     calculateBestConnectLoadout();
+    triggerAutoSave();
   }
 
   function selectConnectJob(job) {
@@ -7003,6 +7118,7 @@
     });
     renderConnectAccordions();
     calculateBestConnectLoadout();
+    triggerAutoSave();
   }
 
   function selectConnectElem(elem) {
@@ -7012,6 +7128,7 @@
     });
     renderConnectAccordions();
     calculateBestConnectLoadout();
+    triggerAutoSave();
   }
 
   function switchConnectTierTab(tier) {
@@ -7023,6 +7140,7 @@
     renderConnectAccordions();
   }
 
+  // ⚡ [렉 해결] 코어 선택 시 아코디언 열림 유지 & 경량 업데이트
   function toggleCoreOwned(tier, coreId) {
     const key = `${tier}__${coreId}`;
     const cur = ownedCoresMap.get(key) || 0;
@@ -7031,6 +7149,7 @@
 
     renderConnectAccordions();
     calculateBestConnectLoadout();
+    triggerAutoSave();
   }
 
   function addCoreDuplicate(event, tier, coreId) {
@@ -7042,6 +7161,7 @@
 
     renderConnectAccordions();
     calculateBestConnectLoadout();
+    triggerAutoSave();
   }
 
   function selectAllCurrentTierCores() {
@@ -7051,12 +7171,14 @@
     });
     renderConnectAccordions();
     calculateBestConnectLoadout();
+    triggerAutoSave();
   }
 
   function clearAllOwnedCores() {
     ownedCoresMap.clear();
     renderConnectAccordions();
     calculateBestConnectLoadout();
+    triggerAutoSave();
   }
 
   function toggleGroupCores(coreNum, selectAll) {
@@ -7067,6 +7189,7 @@
     });
     renderConnectAccordions();
     calculateBestConnectLoadout();
+    triggerAutoSave();
   }
 
   function getCoreThemeSummary(c, tier) {
@@ -7164,17 +7287,16 @@
     if (badge) badge.innerText = `총 보유 선택: ${totalOwned}개`;
   }
 
-  // 코어가 현재 유저 설정(직업/속성/각성기 봉인/적운영 미사용)에서 유효 코어인지 판별하는 공통 함수
   function isCoreValidForUser(coreDef) {
     if (coreDef.jobReq && coreDef.jobReq !== currentConnectJob) return false;
     if (coreDef.elemReq && coreDef.elemReq !== currentConnectElem) return false;
     if (coreDef.isAwkSkill) {
       const isSealed = document.getElementById('sc_cond_awk_seal')?.checked ?? true;
-      if (isSealed) return false; // 각성기 봉인 중이면 잡코어!
+      if (isSealed) return false;
     }
     if (coreDef.isMark) {
       const noMark = document.getElementById('sc_cond_no_mark')?.checked ?? true;
-      if (noMark) return false; // 적운영 안 쓰면(변신 수호신 사용 시) 표식 코어는 잡코어!
+      if (noMark) return false;
     }
     return true;
   }
@@ -7182,36 +7304,27 @@
   function onAwkSealChange() {
     renderConnectAccordions();
     calculateBestConnectLoadout();
+    triggerAutoSave();
   }
 
   function getCoreThemeMultiplier(coreDef, tier, hasHyperRateInCombo, totalHyperRatePct) {
-    // 직업, 속성 불일치, 각성기 봉인, 적운영 미사용 상태면 고유 피해량 무효 (1배 = 깡공증 잡코어)
     if (!isCoreValidForUser(coreDef)) return 1;
-
-    if (coreDef.isHyperRate) {
-      // 하크확은 코어6 하크피와 함께 세트로 들어갈 때 핵심 시너지를 냄
-      return 1;
-    }
+    if (coreDef.isHyperRate) return 1;
     if (coreDef.isHyperDmg) {
-      // 코어5 하이퍼 크리티컬 확률이 없으면 하크확 0%이므로 무효(1배)!
       if (!hasHyperRateInCombo || totalHyperRatePct <= 0) return 1;
-      // 붉양님 표 기준: 하크피 총 12,342,500% -> 123,425배 (하크확 비례 적용)
       const dmgMult = tier === 'advanced' ? 25 : (tier === 'unique' ? 925 : 123425);
       return Math.max(1, dmgMult * Math.min(1, totalHyperRatePct / 100));
     }
     if (coreDef.isMark) {
-      // 적운영(표식 수호신) 사용 시: 붉양님 표 기준 1,200,000배 (표식 1000개 중첩)
       return tier === 'advanced' ? 5 : (tier === 'unique' ? 1000 : 1200000);
     }
     if (coreDef.isAwkSkill) {
       const sumPct = tier === 'advanced' ? 50 : (tier === 'unique' ? 350 : 3850);
       return sumPct / 100;
     }
-
-    // getCoreThemeMultiplier 함수 맨 아래 부분 (coreDef.p16 확인!)
     const sumPct = tier === 'advanced'
       ? coreDef.p12
-      : (tier === 'unique' ? (coreDef.p12 + coreDef.p16) : (coreDef.p12 + coreDef.p16 + coreDef.p20));
+      : (tier === 'unique' ? (coreDef.p12 + coreDef.p16) : (coreDef.p12 + c.p16 + coreDef.p20));
     return Math.max(1, sumPct / 100);
   }
 
@@ -7258,10 +7371,11 @@
 
         const c = inst.core;
         if (c.isHyperDmg) {
-          const hm = getCoreThemeMultiplier(c, inst.tier, hasHyperRate, totalHyperRatePct);
-          hyperDmgMult = Math.max(hyperDmgMult, hm);
+          if (hasHyperRate && totalHyperRatePct > 0) {
+            const dmgMult = inst.tier === 'advanced' ? 25 : (inst.tier === 'unique' ? 925 : 123425);
+            hyperDmgMult = Math.max(hyperDmgMult, Math.max(1, dmgMult * Math.min(1, totalHyperRatePct / 100)));
+          }
         } else {
-          // 오타 방지: c.p12 + c.p16 + c.p20 정상 합산
           let tm = 1;
           if (isCoreValidForUser(c) && !c.isHyperRate) {
             if (c.isMark) tm = inst.tier === 'advanced' ? 5 : (inst.tier === 'unique' ? 1000 : 1200000);
@@ -7280,17 +7394,14 @@
       const atkMult = sumAtkPct > 0 ? (sumAtkPct / 100) : 1;
       const ampMult = sumAmpPct > 0 ? (sumAmpPct / 100) : 1;
 
-      // 코어6에서 고대 스테이지(154배) + 전설 하크피(123,425배)를 동시에 끼면 두 테마가 곱연산으로 함께 터짐!
       let themeTotalMult = hyperDmgMult;
       for (let cid in themePctByCoreId) {
         themeTotalMult *= themePctByCoreId[cid];
       }
 
-      // 추가로 하이퍼 크리티컬 확률 + 피해 세트가 모두 완성된 경우, 인게임 하크피(1,234만%)의 압도적 실전 가치를 보정하여
-      // 하위 등급(전설/신화)이라도 하크확+하크피 세트가 일반 전설 코어(보스전 385배 등)에 밀리지 않도록 세트 시너지 부여
       let hyperSetSynergy = 1;
       if (num === 6 && hasHyperRate && hasHyperDmg && hyperDmgMult > 1) {
-        hyperSetSynergy = 500; // 하크확 100% + 하크피 1,234만% 세트 완성 시 실전 최우선 가중치
+        hyperSetSynergy = 500;
       }
 
       const gMult = atkMult * ampMult * themeTotalMult * hyperSetSynergy;
@@ -7399,7 +7510,6 @@
 
       const tMeta = CORE_TIER_META[inst.tier];
       const c = inst.core;
-      // ✅ 첫 번째 isValid 위치 (각성기 봉인 조건까지 완벽 반영!)
       const isValid = isCoreValidForUser(c);
       const dupCountInCombo = bestCombo.filter(x => x.core.num === c.num).length;
 
@@ -7471,7 +7581,6 @@
       const sNum = idx + 1;
       const tMeta = CORE_TIER_META[inst.tier];
       const c = inst.core;
-      // ✅ 두 번째 isValid 위치 (각성기 봉인 조건까지 완벽 반영!)
       const isValid = isCoreValidForUser(c);
       const ampStr = tMeta.ampPct > 0 ? ` / 코어${c.num} 공격력 증폭 +${tMeta.ampPct.toLocaleString()}%` : '';
 
@@ -7495,10 +7604,7 @@
     reportEl.innerHTML = rHtml;
   }
 
-  // ==================== v.3.0.0 MASTER ENGINE (ZERO-GPU BANNER WEATHER & INSTANT 3-TAB INIT) ====================
-
-  // 1. 상단 3대 메인 탭 스위처 (고유 클래스/인덱스 즉시 제어)
-  // 1. 상단 3대 메인 탭 스위처 (소울커넥트 + 룬 도우미 동시 인식 패치 완료!)
+  // ==================== v.3.3.0 MASTER ENGINE & TRAIT SIMULATOR ====================
   function switchMainMode(mode) {
     currentMainMode = mode;
     const deepContainer = document.getElementById("mode_deep_container");
@@ -7518,7 +7624,6 @@
     if (floatBtn) floatBtn.style.display = "none";
 
     if (mode === 'helpers') {
-      // [탭 1: 세팅 도우미 모음] -> 소울커넥트 도우미 + 룬 착용 도우미 2개만 정확히 노출!
       if (guidesContainer) guidesContainer.style.display = "none";
       if (deepContainer) deepContainer.style.display = "block";
       if (newbieContainer) newbieContainer.style.display = "none";
@@ -7529,20 +7634,17 @@
       document.getElementById("newbie_calc_view").style.display = "none";
       document.getElementById("newbie_rune_view").style.display = "none";
 
-      // deep_hub_view 안에서 소울커넥트 도우미와 룬 착용 도우미 섹션만 켜고 나머지 계산기 섹션은 숨김!
       deepSections.forEach((sec) => {
         const isHelperSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')") || sec.innerHTML.includes("openRuneHelperView()");
         sec.style.display = isHelperSec ? "block" : "none";
       });
     } else if (mode === 'guides') {
-      // [탭 2: 뉴비 직업별 세팅 가이드]
       if (deepContainer) deepContainer.style.display = "none";
       if (newbieContainer) newbieContainer.style.display = "none";
       if (guidesContainer) guidesContainer.style.display = "block";
       document.getElementById("guides_hub_view").style.display = "block";
       document.getElementById("guides_detail_view").style.display = "none";
     } else if (mode === 'calcs') {
-      // [탭 3: 확률 기댓값 & 재화 계산기] -> 심화 계산기 3섹션(연마/고패/어빌) + 소환 계산기 섹션만 노출!
       if (guidesContainer) guidesContainer.style.display = "none";
       if (deepContainer) deepContainer.style.display = "block";
       if (newbieContainer) newbieContainer.style.display = "block";
@@ -7553,12 +7655,10 @@
       document.getElementById("newbie_calc_view").style.display = "none";
       document.getElementById("newbie_rune_view").style.display = "none";
 
-      // deep_hub_view 안에서 도우미(소울커넥트, 룬 도우미)는 숨기고 순수 계산기 섹션만 노출!
       deepSections.forEach((sec) => {
         const isHelperSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')") || sec.innerHTML.includes("openRuneHelperView()");
         sec.style.display = !isHelperSec ? "block" : "none";
       });
-      // newbie_hub_view 안에서 소환 계산기 섹션만 노출!
       newbieSections.forEach((sec) => {
         const isRuneSec = sec.innerHTML.includes("openRuneHelperView()");
         sec.style.display = !isRuneSec ? "block" : "none";
@@ -7566,7 +7666,6 @@
     }
   }
 
-  // 상세 뷰 진입 시 반대편 허브 숨김 보정
   const _origOpenDeepCalc = openDeepCalculator;
   openDeepCalculator = function(calcTabId) {
     document.getElementById("mode_newbie_container").style.display = "none";
@@ -7597,30 +7696,18 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-
-// 배너 클릭 시 첫 메인 홈 화면으로 리셋 복귀
   function resetToHome() {
-    // 1. 첫 번째 기본 모드('helpers')로 전환
     switchMainMode('helpers');
-    
-    // 2. 혹시 열려있던 계산기 상세 뷰나 가이드 상세 뷰 닫기
     document.getElementById("deep_calc_view").style.display = "none";
     document.getElementById("newbie_calc_view").style.display = "none";
     document.getElementById("newbie_rune_view").style.display = "none";
-    const earlyView = document.getElementById("newbie_early_build_view");
-    if (earlyView) earlyView.style.display = "none";
     const guideDetail = document.getElementById("guides_detail_view");
     if (guideDetail) guideDetail.style.display = "none";
-    
-    // 3. 플로팅 뒤로가기 버튼 숨김
     const floatBtn = document.getElementById("floating_back_btn");
     if (floatBtn) floatBtn.style.display = "none";
-
-    // 4. 페이지 최상단으로 스크롤 이동
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // 2. 달(Month) 기준 상단 배너(<header>) 전용 계절 이펙트 (전체 배경 GPU 부하 0%!)
   function getAutoSeasonByMonth() {
     const month = new Date().getMonth() + 1;
     if (month >= 3 && month <= 5) return 'spring';
@@ -7633,15 +7720,6 @@
 
   function setSeasonTheme(season) {
     currentSeason = season || getAutoSeasonByMonth();
-
-    // 전체 화면 배경 레이어는 GPU 절약을 위해 완전히 끔!
-    const globalBg = document.getElementById('global_season_bg');
-    if (globalBg) {
-      globalBg.innerHTML = '';
-      globalBg.style.display = 'none';
-    }
-
-    // 오직 상단 <header> 배너 안의 .snow-container 에만 가볍게 계절 이펙트 적용!
     const headerSnowBox = document.querySelector('header .snow-container');
     const headerEl = document.querySelector('header');
     if (!headerSnowBox || !headerEl) return;
@@ -7686,11 +7764,10 @@
         html += `<span class="snowflake" style="left:${left}%; font-size:${size}px; opacity:0.65; animation-duration:${dur}s; animation-delay:${delay}s;">${syms[i]}</span>`;
       });
     }
-
     headerSnowBox.innerHTML = html;
   }
 
-  // 3. 브라우저 로컬 스토리지 자동/수동 저장 엔진
+  // ⚡ [렉 완벽 해결] 자동 저장 디바운스(800ms) 및 유휴 시간 비동기 처리
   const STORAGE_KEY = 'shk_calc_v300_state';
   let isRestoringState = false;
   let saveDebounceTimer = null;
@@ -7698,7 +7775,13 @@
   function triggerAutoSave() {
     if (isRestoringState) return;
     if (saveDebounceTimer) clearTimeout(saveDebounceTimer);
-    saveDebounceTimer = setTimeout(() => saveUserSettings(false), 250);
+    saveDebounceTimer = setTimeout(() => {
+      if (window.requestIdleCallback) {
+        requestIdleCallback(() => saveUserSettings(false));
+      } else {
+        saveUserSettings(false);
+      }
+    }, 800);
   }
 
   function saveUserSettings(isManual) {
@@ -7707,7 +7790,6 @@
       const inputsData = {};
       document.querySelectorAll('input[id], select[id]').forEach(el => {
         if (el.id === 'newbie_search_input' || el.id === 'rune_search_input') return;
-        // inv_ 계열은 equipInventories 객체로 따로 정밀 저장하므로 제외
         if (el.id.startsWith('inv_')) return;
         if (el.type === 'checkbox') inputsData[el.id] = el.checked;
         else inputsData[el.id] = el.value;
@@ -7784,12 +7866,12 @@
         ['fire', 'light', 'dark'].forEach(e => document.getElementById('sc_elem_' + e)?.classList.toggle('selected', e === currentConnectElem));
       }
 
-      // 장비 인벤토리 복원
       if (state.equipInventories) {
         equipInventories = state.equipInventories;
       }
       if (state.selectedEquipType) {
         selectedEquipType = state.selectedEquipType;
+        selectEquipIconType(selectedEquipType);
       }
 
       if (state.inputs) {
@@ -7807,113 +7889,11 @@
           }
         });
       }
-
-      isRestoringState = false;
-
-      // 복원된 수치 바탕으로 전 계산기 재계산 트리거
-      if (typeof calculateAncientCost === 'function') calculateAncientCost();
-      if (typeof calculateSynergyDetailed === 'function') calculateSynergyDetailed();
-      if (typeof calculateRefineExpected === 'function') calculateRefineExpected();
-      if (typeof calculateOrbExpected === 'function') calculateOrbExpected();
-      if (typeof calculateGaho === 'function') calculateGaho();
-      if (typeof calculateWonhon === 'function') calculateWonhon();
-      if (typeof updateSummonCalculation === 'function') updateSummonCalculation();
-      if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
-      if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
-    } catch (e) {
-      isRestoringState = false;
-    }
-  }
-
-  // 💡 [전역 자동 저장 리스너]: 화면 내 어떤 input/select를 건드려도 누락 없이 실시간 자동 저장
-  document.addEventListener('input', function(e) {
-    if (!isRestoringState) triggerAutoSave();
-  });
-  document.addEventListener('change', function(e) {
-    if (!isRestoringState) triggerAutoSave();
-  });
-
-  function loadUserSettings() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      isRestoringState = true;
-      const state = JSON.parse(raw);
-
-      if (state.selectedAncients) selectedAncients = new Set(state.selectedAncients);
-      if (state.excludedMaterials) excludedMaterials = new Set(state.excludedMaterials);
-      if (state.ownedRunes) ownedRunes = new Set(state.ownedRunes);
-
-      if (state.currentRuneJob) {
-        currentRuneJob = state.currentRuneJob;
-        ['reaper', 'mage', 'lord'].forEach(j => document.getElementById('rune_job_' + j)?.classList.toggle('selected', j === currentRuneJob));
-      }
-      if (state.currentRuneElem) {
-        currentRuneElem = state.currentRuneElem;
-        ['fire', 'light', 'dark'].forEach(e => document.getElementById('rune_elem_' + e)?.classList.toggle('selected', e === currentRuneElem));
-      }
-
-      if (typeof ownedCoresMap !== 'undefined' && state.ownedCoresEntries) {
-        ownedCoresMap = new Map(state.ownedCoresEntries);
-      }
-      if (state.currentConnectStageSlots) {
-        currentConnectStageSlots = state.currentConnectStageSlots;
-        [3, 4, 5, 6].forEach(s => document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === currentConnectStageSlots));
-      }
-      if (state.currentConnectJob) {
-        currentConnectJob = state.currentConnectJob;
-        ['reaper', 'mage', 'lord'].forEach(j => document.getElementById('sc_job_' + j)?.classList.toggle('selected', j === currentConnectJob));
-      }
-      if (state.currentConnectElem) {
-        currentConnectElem = state.currentConnectElem;
-        ['fire', 'light', 'dark'].forEach(e => document.getElementById('sc_elem_' + e)?.classList.toggle('selected', e === currentConnectElem));
-      }
-
-      // 5. 장비 인벤토리 및 선택된 부위 복원 추가
-      if (state.selectedEquipType) {
-        selectedEquipType = state.selectedEquipType;
-        selectEquipIconType(selectedEquipType); // 부위 카드 선택 상태 동기화
-      }
-      if (state.equipInventories) {
-        equipInventories = state.equipInventories;
-        // 현재 선택된 장비의 인벤토리 값을 화면 인풋창에 다시 꽂아넣기
-        const curInv = equipInventories[selectedEquipType] || {};
-        INVENTORY_SLOT_SEQUENCE.forEach(id => {
-          const el = document.getElementById('inv_' + id);
-          if (el) el.value = curInv[id] !== undefined ? curInv[id] : 0;
-        });
-        updateSummonCalculation(); // 수치 반영 후 값 재계산
-      }
-
-      if (state.inputs) {
-        Object.keys(state.inputs).forEach(id => {
-          const el = document.getElementById(id);
-          if (el) {
-            if (id === 'rune_cond_solaris9' || id === 'rune_cond_bleed') {
-              // 체크박스 boolean 값(true/false)이나 텍스트("1"/"0") 모두 정상 인식하도록 보정
-              const val = state.inputs[id];
-              el.value = (val === true || val === '1' || val === 1) ? '1' : '0';
-            } else if (el.type === 'checkbox') {
-              el.checked = Boolean(state.inputs[id]);
-            } else {
-              el.value = state.inputs[id];
-            }
-          }
-        });
-      }
       isRestoringState = false;
     } catch (e) {
       isRestoringState = false;
     }
   }
-
-  // DOM이 로드된 직후에 반드시 실행!
-window.addEventListener('DOMContentLoaded', () => {
-  initRefineSelects();
-  initSynergyReferenceTable();
-  loadUserSettings(); // 👈 여기서 저장된 데이터를 불러와야 합니다!
-  setSeasonTheme();
-});
 
   function resetAllSavedSettings() {
     if (!confirm('저장된 모든 세팅(룬, 코어, 인벤토리 등)을 초기화하시겠습니까?')) return;
@@ -7921,48 +7901,40 @@ window.addEventListener('DOMContentLoaded', () => {
     location.reload();
   }
 
-  // 4. 뉴비 직업별 세팅 가이드 (스킬 / 영웅 / 사신➔앜메 전환 가이드)
-  let currentGuideType = 'skill';
-  let guideJob = 'reaper';
-  let guideElem = 'fire';
+  // ==================== 4. 직업별 세팅 가이드 (스킬 / 영웅 / 정령 / 1~4차 전직 특성) ====================
+  let currentGuideType = 'skill'; // 'early' | 'transition' | 'skill' | 'hero' | 'spirit' | 'trait'
+  let guideJob = 'reaper';        // 'reaper' | 'mage' | 'lord'
+  let guideElem = 'fire';         // 'fire' | 'light' | 'dark'
 
- const SKILL_ICON_MAP = {
-    "전투태세": "combat_ready",
-    "집중모드": "concentration",
-    "불기둥": "firetor",
-    "신속베기": "rapidslash",
-    "원소돌파": "elem_break",
-    "그림자 포효": "shadow_roar",
-    "불벼락": "fire_light",
-    "어둠 방출": "dark_en",
-    "뇌전검무": "light_sword",
-    "심판의 인장": "judge",
-    "암흑붕괴": "dark_des",
-    "환영나비": "butter",
-    "지옥불베기": "hell",
-    "보이드 펄스": "void",
-    "썬더 오빗": "thunder_orb",
-    "엘리멘탈 차지": "elem_ch",
-    "플레어 필라": "flare_p",
-    "볼트 스파이럴": "volt_sp",
-    "블랙 베일": "black_v",
-    "오버드라이브": "overdrive",
-    "크림슨 웨이브": "wave",
-    "플레임 펄스": "flame_p",
-    "썬더 펄스": "thunder_p",
-    "다크 펄스": "dark_pu",
-    "썬더 익스큐션": "thunder_ex",
-    "암영참": "ahm"
+  // 전직 특성 시뮬레이터 전용 상태값
+  let currentTraitTabStep = 1;    // 1 (1차) | 2 (2차) | 3 (3차) | 4 (4차)
+  let currentTrait1stLv = 80;     // 1차 전직 레벨
+  let currentTrait3rdLv = 40;     // 3차 전직 레벨 (0, 10, 15, 20, 30, 40)
+  let traitUseOvergrowth = true;  // 엘리시아 + 과성장 조합 사용 여부
+  let traitContentMode = 'stage';
+
+  const JOB_NAMES_FULL = {
+    reaper: { title: "사신 (대사신 / 소울리퍼 / 그림리퍼)", icon: "images/reaper.png", color: "#f43f5e", c1: "사신", c2: "대사신", c3: "소울리퍼", c4: "그림리퍼" },
+    mage:   { title: "아크메이지 (미스틱 / 제네시스 / 슈프림)", icon: "images/mystic.png", color: "#38bdf8", c1: "아크메이지", c2: "미스틱", c3: "제네시스", c4: "슈프림" },
+    lord:   { title: "오버로드 (다크로드 / 오버로드 / 소울이터)", icon: "images/overload.png", color: "#a855f7", c1: "다크로드", c2: "팬텀", c3: "오버로드", c4: "소울이터" }
+  };
+
+  const SKILL_ICON_MAP = {
+    "전투태세": "combat_ready", "집중모드": "concentration", "불기둥": "firetor", "신속베기": "rapidslash",
+    "원소돌파": "elem_break", "그림자 포효": "shadow_roar", "불벼락": "fire_light", "어둠 방출": "dark_en",
+    "뇌전검무": "light_sword", "심판의 인장": "judge", "암흑붕괴": "dark_des", "환영나비": "butter",
+    "지옥불베기": "hell", "보이드 펄스": "void", "썬더 오빗": "thunder_orb", "엘리멘탈 차지": "elem_ch",
+    "플레어 필라": "flare_p", "볼트 스파이럴": "volt_sp", "블랙 베일": "black_v", "오버드라이브": "overdrive",
+    "크림슨 웨이브": "wave", "플레임 펄스": "flame_p", "썬더 펄스": "thunder_p", "다크 펄스": "dark_pu",
+    "썬더 익스큐션": "thunder_ex", "암영참": "ahm"
   };
 
   const HERO_ICON_MAP = {
-    "오로라": "orora",
-    "나찰": "nachal", "바토리": "batory", "나리타": "narita", "프레이야": "preiya",
-    "리리스": "riris", "백운귀": "backgui", "이블린": "evelyn", "엘리제": "elize",
-    "라이카": "ryca", "플레어": "plare", "카엘": "kael", "셀렌": "selen",
-    "루비": "ruby", "세리아": "serya", "카엔": "kaen", "엘리시아": "elisia",
-    "칼리아": "kalia", "카이렌": "kairen", "모르반": "morban", "솔라리스": "solaris",
-    "현묵": "hyunmuk", "이그니스": "ignis", "제논": "xenon", "다미안": "damian"
+    "오로라": "orora", "나찰": "nachal", "바토리": "batory", "나리타": "narita", "프레이야": "preiya",
+    "리리스": "riris", "백운귀": "backgui", "이블린": "evelyn", "엘리제": "elize", "라이카": "ryca",
+    "플레어": "plare", "카엘": "kael", "셀렌": "selen", "루비": "ruby", "세리아": "serya",
+    "카엔": "kaen", "엘리시아": "elisia", "칼리아": "kalia", "카이렌": "kairen", "모르반": "morban",
+    "솔라리스": "solaris", "현묵": "hyunmuk", "이그니스": "ignis", "제논": "xenon", "다미안": "damian"
   };
 
   function makeGuideSlotHtml(name, tagText, noteText, isSkill, styleType) {
@@ -7972,13 +7944,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const tagBg = styleType === 'fix' ? '#e11d48' : (styleType === 'future' ? '#ca8a04' : '#0284c7');
 
     const imgHtml = fileKey
-      ? `<img src="images/${fileKey}.png" alt="${name}" onerror="this.onerror=null; this.src='images/${fileKey}.PNG'; this.onerror=function(){this.src='images/${fileKey}.jpg'; this.onerror=function(){this.parentElement.innerHTML='⭐';};};">`
+      ? `<img src="images/${fileKey}.png" alt="${name}" onerror="this.onerror=null; this.src='images/${fileKey}.PNG'; this.onerror=function(){this.src='images/darmian.png'; this.onerror=function(){this.parentElement.innerHTML='⭐';};};">`
       : `<span>${isSkill ? '⚡' : '🦸'}</span>`;
 
-    // 🔥 특수 시너지 짝꿍 아이콘 (+ 표시) 자동 생성:
-    // 1) 루비 -> + [고대/영원/불멸 격화 룬]
-    // 2) 솔라리스 -> + [오버드라이브 3각 스킬 아이콘]
-    // 3) 엘리시아 (과성장 언급 시) -> + [과성장 반지 룬]
+    // 🔥 특수 시너지 짝꿍 아이콘 (+ 표시): 루비(+격화), 솔라리스(+오버3각), 엘리시아(+고대·영원 과성장 상시 표시!)
     let comboPartnerHtml = '';
     if (!isSkill && name === '루비') {
       comboPartnerHtml = `
@@ -7994,14 +7963,14 @@ window.addEventListener('DOMContentLoaded', () => {
       comboPartnerHtml = `
         <span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span>
         <div class="build-slot-thumb" style="border-color:#f59e0b; position:relative;" title="오버드라이브 스킬 3각성과 세트 사용">
-          <img src="images/overdrive.png" alt="오버드라이브" onerror="this.onerror=null; this.src='images/overdrive.PNG'; this.onerror=function(){this.src='images/overdrive.jpg'; this.onerror=function(){this.parentElement.innerHTML='⚡';};};">
+          <img src="images/overdrive.png" alt="오버드라이브" onerror="this.onerror=null; this.src='images/overdrive.PNG'; this.onerror=function(){this.parentElement.innerHTML='⚡';};">
           <span style="position:absolute; bottom:0; right:0; background:rgba(225,29,72,0.92); color:#fff; font-size:8.5px; font-weight:900; padding:0px 3px; border-radius:3px;">3각</span>
         </div>
       `;
-    } else if (!isSkill && name === '엘리시아' && (noteText.includes('과성장') || tagText.includes('1번'))) {
+    } else if (!isSkill && name === '엘리시아') {
       comboPartnerHtml = `
         <span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span>
-        <div style="width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg, #06b6d4 0%, #10b981 100%); padding:1.5px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;" title="고대 / 영원 반지 과성장 룬과 세트 사용">
+        <div style="width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg, #06b6d4 0%, #10b981 100%); padding:1.5px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;" title="고대 / 영원 반지 과성장 룬과 세트 사용 가능">
           <div style="width:100%; height:100%; background:#0f172a; border-radius:8.5px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1;">
             <span style="font-size:8.5px; color:#34d399; font-weight:800;">고대·영원</span>
             <span style="font-size:11px; color:#ffffff; font-weight:900;">과성장</span>
@@ -8010,6 +7979,11 @@ window.addEventListener('DOMContentLoaded', () => {
       `;
     }
 
+    let subSuffix = '';
+    if (!isSkill && name === '루비') subSuffix = ' <small style="color:#67e8f9;">(+격화)</small>';
+    else if (!isSkill && name === '솔라리스') subSuffix = ' <small style="color:#fde047;">(+오버3각)</small>';
+    else if (!isSkill && name === '엘리시아') subSuffix = ' <small style="color:#34d399;">(+과성장)</small>';
+
     return `
       <div class="build-slot-item ${cls}">
         <span class="build-slot-tag" style="background:${tagBg}; color:#fff;">${tagText}</span>
@@ -8017,13 +7991,14 @@ window.addEventListener('DOMContentLoaded', () => {
           <div class="build-slot-thumb">${imgHtml}</div>
           ${comboPartnerHtml}
         </div>
-        <div class="build-slot-name">${name}${!isSkill && name==='루비' ? ' <small style="color:#67e8f9;">(+격화)</small>' : (!isSkill && name==='솔라리스' ? ' <small style="color:#fde047;">(+오버3각)</small>' : '')}</div>
+        <div class="build-slot-name">${name}${subSuffix}</div>
         <div class="build-slot-note">${noteText}</div>
       </div>
     `;
   }
 
- function openBuildGuideDetail(type) {
+  // 1) 극초반 입문 & 사신->앜메 전환 가이드 열기
+  function openSpecialGuideDetail(type) {
     currentGuideType = type;
     document.getElementById("guides_hub_view").style.display = "none";
     document.getElementById("guides_detail_view").style.display = "block";
@@ -8032,49 +8007,600 @@ window.addEventListener('DOMContentLoaded', () => {
     floatBtn.style.display = "flex";
     document.getElementById("floating_back_text").innerText = "가이드 목록으로 돌아가기";
 
-    const selectorEl = document.getElementById("guide_job_elem_selector");
+    const innerCtrl = document.getElementById("guide_job_inner_controls");
+    const headerIcon = document.getElementById("guide_job_header_icon");
+    if (innerCtrl) innerCtrl.style.display = "none";
+    if (headerIcon) headerIcon.style.display = "none";
+
     if (type === 'early') {
-      selectorEl.style.display = "none";
       document.getElementById("guide_view_title").innerText = "🐣 5,000렙 이후 극초반 스킬 & 영웅 세팅";
       document.getElementById("guide_view_badge").innerText = "Lv.5,000+ 입문";
       document.getElementById("guide_view_subtitle").innerText = "캐릭터 5,000레벨 달성 후 해금되는 스킬 5번째 칸과 영웅 4번째 칸의 정석 세팅 빌드 및 극초반 공략입니다.";
     } else if (type === 'transition') {
-      selectorEl.style.display = "none";
       document.getElementById("guide_view_title").innerText = "🔄 사신 ➔ 아크메이지(미스틱) 전환 완벽 가이드";
       document.getElementById("guide_view_badge").innerText = "직업 전환 타이밍";
-    } else if (type === 'skill') {
-      selectorEl.style.display = "grid";
-      document.getElementById("guide_view_title").innerText = "⚡ 직업별 · 전직 차수별 스킬 세팅 가이드";
-      document.getElementById("guide_view_badge").innerText = "초기 ~ 4차 스킬 편성";
-    } else {
-      selectorEl.style.display = "grid";
-      document.getElementById("guide_view_title").innerText = "🦸 직업별 · 전직 차수별 영웅 세팅 가이드";
-      document.getElementById("guide_view_badge").innerText = "초기 ~ 4차 영웅 편성";
+      document.getElementById("guide_view_subtitle").innerText = "초반 사신으로 시작해 1차 60레벨 이후 아크메이지(미스틱)로 공백 없이 넘어가는 핵심 로드맵입니다.";
     }
 
     renderBuildGuideContent();
     window.scrollTo({ top: 100, behavior: 'smooth' });
   }
 
+  // 2) 3대 직업 카드(사신 / 아크메이지 / 오버로드) 클릭 시 진입
+  function openJobHubDetail(jobKey) {
+    guideJob = jobKey;
+    if (currentGuideType === 'early' || currentGuideType === 'transition') {
+      currentGuideType = 'skill';
+    }
+    document.getElementById("guides_hub_view").style.display = "none";
+    document.getElementById("guides_detail_view").style.display = "block";
+
+    const floatBtn = document.getElementById("floating_back_btn");
+    floatBtn.style.display = "flex";
+    document.getElementById("floating_back_text").innerText = "직업 선택으로 돌아가기";
+
+    const innerCtrl = document.getElementById("guide_job_inner_controls");
+    if (innerCtrl) innerCtrl.style.display = "block";
+
+    updateJobHeaderAndTabs();
+    renderBuildGuideContent();
+    window.scrollTo({ top: 100, behavior: 'smooth' });
+  }
+
+  function updateJobHeaderAndTabs() {
+    const jMeta = JOB_NAMES_FULL[guideJob];
+    const headerIcon = document.getElementById("guide_job_header_icon");
+    if (headerIcon) {
+      headerIcon.src = jMeta.icon;
+      headerIcon.style.display = "inline-block";
+    }
+    document.getElementById("guide_view_title").innerText = jMeta.title;
+
+    ['reaper', 'mage', 'lord'].forEach(k => document.getElementById('g_job_' + k)?.classList.toggle('selected', k === guideJob));
+    ['fire', 'light', 'dark'].forEach(k => document.getElementById('g_elem_' + k)?.classList.toggle('selected', k === guideElem));
+
+    const subLabels = {
+      skill: "⚡ 스킬 세팅 가이드",
+      hero: "🦸 영웅 세팅 가이드",
+      spirit: "🧚 정령 세팅 가이드",
+      trait: "🌟 1~4차 전직 특성 가이드"
+    };
+    document.getElementById("guide_view_badge").innerText = subLabels[currentGuideType] || "세팅 가이드";
+
+    ['skill', 'hero', 'spirit', 'trait'].forEach(sub => {
+      const tabEl = document.getElementById('gsub_' + sub);
+      if (tabEl) {
+        tabEl.className = 'rune-tier-tab' + (sub === currentGuideType ? ' active-ancient' : '');
+      }
+    });
+  }
+
+  function switchJobSubGuide(subType) {
+    currentGuideType = subType;
+    updateJobHeaderAndTabs();
+    renderBuildGuideContent();
+  }
 
   function selectGuideJob(j) {
     guideJob = j;
-    ['reaper', 'mage', 'lord'].forEach(k => document.getElementById('g_job_' + k)?.classList.toggle('selected', k === j));
+    updateJobHeaderAndTabs();
     renderBuildGuideContent();
   }
 
   function selectGuideElem(e) {
     guideElem = e;
-    ['fire', 'light', 'dark'].forEach(k => document.getElementById('g_elem_' + k)?.classList.toggle('selected', k === e));
+    updateJobHeaderAndTabs();
     renderBuildGuideContent();
   }
 
+  // ==================== 1차 전직 특성 16단계 등급 & 전체 수치 DB ====================
+  const TRAIT_TIER_SEQUENCE = [
+    { key: "normal",     kr: "하급", cls: "tt-normal" },
+    { key: "middle",     kr: "중급", cls: "tt-middle" },
+    { key: "advanced",   kr: "상급", cls: "tt-advanced" },
+    { key: "unique",     kr: "특급", cls: "tt-unique" },
+    { key: "legend",     kr: "전설", cls: "tt-legend" },
+    { key: "mythic",     kr: "신화", cls: "tt-mythic" },
+    { key: "ancient",    kr: "고대", cls: "tt-ancient" },
+    { key: "eternal",    kr: "영원", cls: "tt-eternal" },
+    { key: "immortal",   kr: "불멸", cls: "tt-immortal" },
+    { key: "heaven",     kr: "천상", cls: "tt-heaven" },
+    { key: "abyss",      kr: "절대", cls: "tt-abyss" },
+    { key: "origin",     kr: "기원", cls: "tt-origin" },       // 절대 다음 1: 검은색+은색
+    { key: "primordial", kr: "태초", cls: "tt-primordial" },   // 절대 다음 2: 하늘+초록+파랑+빨강 멀티컬러
+    { key: "kalpa",      kr: "영겁", cls: "tt-kalpa" },        // 절대 다음 3: 주황+빨강 불꽃
+    { key: "transcend",  kr: "초월", cls: "tt-transcend" },    // 절대 다음 4: 깊은 남색 우주색
+    { key: "infinite",   kr: "무한", cls: "tt-infinite" },     // 절대 다음 5: 특급+천상 섞인 보라색
+    { key: "solar",      kr: "태양", cls: "tt-solar" },        // 절대 다음 6: 강렬한 노란 태양빛 (Lv.140/145)
+    { key: "genesis",    kr: "창세", cls: "tt-genesis" }       // 절대 다음 7: 눈부신 은색+흰색 (Lv.150)
+  ];
+
+  function getTraitTierMeta(tierKey) {
+    return TRAIT_TIER_SEQUENCE.find(t => t.key === tierKey) || TRAIT_TIER_SEQUENCE[0];
+  }
+
+  // 시작 등급(startTier)부터 연속으로 이어지는 등급 배열 생성 헬퍼
+  function buildTierSeq(startTierKey, count, customPreTiers = []) {
+    const res = [...customPreTiers];
+    const startIdx = TRAIT_TIER_SEQUENCE.findIndex(t => t.key === startTierKey);
+    for (let i = 0; res.length < count; i++) {
+      const idx = Math.min(TRAIT_TIER_SEQUENCE.length - 1, startIdx + i);
+      res.push(TRAIT_TIER_SEQUENCE[idx].key);
+    }
+    return res;
+  }
+
+  // 1차 전직 특성 전체 데이터베이스 (보내주신 수기 수치 100% 반영)
+  const TRAIT_1ST_DB = {
+    reaper: [
+      {
+        id: "rp_enh_strike", name: "강화 강타 사용",
+        lvs: [5, 35, 40, 50, 55, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 14, ["normal", "unique", "legend", "mythic", "ancient"]),
+        vals: [500, 3500, 8000, 18000, 54000, 300000, 1200000, 2400000, 4800000, 9600000, 19200000, 38400000, 76800000, 153600000],
+        descFn: (v, lv) => `강타 ${lv===5?5:3}회 사용 후 다음 강타 피해량 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "rp_lv_dmg", name: "전직 레벨당 전직 강타 피해량 증가",
+        lvs: [10, 40, 55, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 12, ["middle", "legend", "ancient"]),
+        vals: [10, 25, 80, 1500, 3000, 6000, 12000, 24000, 48000, 96000, 192000, 384000],
+        descFn: (v, lv) => `전직 레벨 1당 전직 강타 피해량 +${formatKoreanNumber(v)}%`
+      },
+      {
+        id: "rp_skill_to_strike", name: "스킬 피해량(%) 1당 전직 강타 피해량 증가", isOvergrowthCore: true,
+        lvs: [20, 30, 45, 65, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("immortal", 12, ["advanced", "unique", "legend"]),
+        vals: [0.1, 0.15, 0.25, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8, 25.6, 51.2, 102.4],
+        descFn: (v) => `스킬 피해량(%) 1당 전직 강타 피해량 +${v}% 증가 (★과성장+엘리시아 필수)`
+      },
+      {
+        id: "rp_hero_to_strike", name: "영웅 스킬 피해량(%) 1당 전직 강타 피해량 증가",
+        lvs: [20, 30, 45, 65, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("immortal", 12, ["advanced", "unique", "legend"]),
+        vals: [0.1, 0.15, 0.25, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8, 25.6, 51.2, 102.4],
+        descFn: (v) => `영웅 스킬 피해량(%) 1당 전직 강타 피해량 +${v}% 증가`
+      },
+      {
+        id: "rp_hit_fix", name: "강타 타수 고정 및 피해량 증가",
+        lvs: [25, 40, 50, 65, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("immortal", 12, ["advanced", "legend", "mythic"]),
+        vals: [250, 700, 1500, 10000, 20000, 40000, 80000, 160000, 320000, 640000, 1280000, 2560000],
+        descFn: (v, lv) => `강타 타수를 ${lv===25?10:20}으로 고정, 피해량 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "rp_decay_atk", name: "전직 공격력(%) 대폭 증가 후 1초마다 감소", isUnstableBurst: true,
+        lvs: [25, 40, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 12, ["advanced", "legend", "eternal"]),
+        vals: [20000, 50000, 200000, 500000, 750000, 1000000, 1500000, 2000000, 2500000, 3000000, 3500000, 4000000],
+        decays: [4000, 10000, 40000, 100000, 100000, 150000, 200000, 250000, 300000, 350000, 400000, 450000],
+        descFn: (v, lv, idx, obj) => `전투 시작 시 전직 공증 +${formatKoreanNumber(v)}% (초당 -${formatKoreanNumber(obj.decays[idx])}%) ⚠️불발 주의`
+      },
+      {
+        id: "rp_awk_cd", name: "각성기 충전 시간 감소 및 버프 효과 상승",
+        lvs: [25, 40, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 12, ["advanced", "legend", "eternal"]),
+        vals: [16000, 175000, 6100000, 45625000, 68437500, 89000000, 115000000, 149000000, 193000000, 250000000, 324000000, 420000000],
+        descFn: (v) => `각성기 충전 -3초, 사용 후 전직 공격력 증폭 +${formatKoreanNumber(v)}%`
+      },
+      {
+        id: "rp_stack_dmg", name: "스택에 따른 피해량 증가",
+        lvs: [30, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 12, ["unique", "mythic", "eternal"]),
+        vals: [1000, 10000, 20000, 100000, 200000, 400000, 800000, 1600000, 3200000, 6400000, 12800000, 25600000],
+        descFn: (v, lv) => `강타 시 스택 10 획득, ${lv<=50?50:10}스택 시 모든 강타 피해 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "rp_step_dmg", name: "착용한 강타 단계에 따른 피해량 증가",
+        lvs: [35, 60, 65, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("immortal", 11, ["unique", "eternal"]),
+        vals: [1000, 40000, 100000, 200000, 400000, 800000, 1600000, 3200000, 6400000, 12800000, 25600000],
+        descFn: (v, lv) => `착용 강타 ${lv===35?21:(lv===60?25:26)}단계 이상 시 모든 강타 피해 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "rp_seal_awk", name: "각성기 봉인 및 모든 강타 피해량(%) 증가",
+        lvs: [65, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("immortal", 10),
+        vals: [100000, 250000, 500000, 1000000, 2000000, 4000000, 8000000, 16000000, 32000000, 64000000],
+        descFn: (v) => `각성기 봉인(버프 즉시 획득), 강타 26단계↑ 시 모든 강타 피해 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "rp_awk_hits", name: "각성기 사용 시간 및 타격수 증가",
+        lvs: [75, 85, 95, 115, 125, 135, 145],
+        tiers: buildTierSeq("heaven", 7),
+        vals: [1500, 3000, 6000, 12000, 24000, 48000, 96000],
+        descFn: (v) => `각성기 시간 +2초, 타격수 +${v.toLocaleString()}회 증가 (※각성기 봉인 시 미사용)`
+      },
+      {
+        id: "rp_strike_buff", name: "강타 버프 효과 추가",
+        lvs: [80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("abyss", 8),
+        vals: [500000, 1000000, 2000000, 4000000, 8000000, 16000000, 32000000, 64000000],
+        descFn: (v) => `평타 시 50% 확률 강타 발동 / 공속 +200% / 전직 강타 피해 +${formatKoreanNumber(v)}%`
+      }
+    ],
+
+    mage: [
+      {
+        id: "mg_enh_skill", name: "강화 스킬 사용",
+        lvs: [5, 35, 50, 55, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 13, ["normal", "unique", "mythic", "ancient"]),
+        vals: [300, 2000, 10000, 30000, 150000, 600000, 1200000, 2400000, 4800000, 9600000, 19200000, 38400000, 76800000],
+        descFn: (v, lv) => `스킬 ${lv===5?5:3}회 사용 후 다음 1번 슬롯 스킬 피해량 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "mg_eq_lv_sum", name: "장착된 스킬 레벨 총합에 따른 피해량 증가",
+        lvs: [10, 30, 40, 50, 65, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("immortal", 13, ["middle", "unique", "legend", "mythic"]),
+        vals: [250, 750, 2000, 8000, 100000, 200000, 400000, 800000, 1600000, 3200000, 6400000, 12800000, 25600000],
+        reqs: [100, 300, 450, 600, 600, 600, 700, 700, 700, 700, 700, 700, 700],
+        descFn: (v, lv, idx, obj) => `장착 스킬 레벨 합 ${obj.reqs[idx]} 이상 시 모든 스킬 피해 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "mg_lv_dmg", name: "전직 레벨당 전직 스킬 피해량 증가",
+        lvs: [10, 40, 55, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 12, ["middle", "legend", "ancient"]),
+        vals: [10, 25, 80, 1500, 3000, 6000, 12000, 24000, 48000, 96000, 192000, 384000],
+        descFn: (v) => `전직 레벨 1당 전직 스킬 피해량 +${formatKoreanNumber(v)}%`
+      },
+      {
+        id: "mg_hero_to_skill", name: "영웅 스킬 피해량(%) 1당 전직 스킬 피해량 증가", isOvergrowthCore: true,
+        lvs: [20, 30, 45, 65, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("immortal", 12, ["advanced", "unique", "legend"]),
+        vals: [0.1, 0.15, 0.25, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8, 25.6, 51.2, 102.4],
+        descFn: (v) => `영웅 스킬 피해량(%) 1당 전직 스킬 피해량 +${v}% 증가 (★과성장+엘리시아 필수)`
+      },
+      {
+        id: "mg_strike_to_skill", name: "강타 피해량(%) 1당 전직 스킬 피해량 증가",
+        lvs: [20, 30, 45, 65, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("immortal", 12, ["advanced", "unique", "legend"]),
+        vals: [0.12, 0.18, 0.3, 0.5, 1, 2, 4, 8, 16, 32, 64, 128],
+        descFn: (v) => `강타 피해량(%) 1당 전직 스킬 피해량 +${v}% 증가`
+      },
+      {
+        id: "mg_awk_cd", name: "각성기 충전 시간 감소 및 버프 효과 상승",
+        lvs: [25, 40, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 12, ["advanced", "legend", "eternal"]),
+        vals: [16000, 175000, 6100000, 45625000, 68437500, 89000000, 115000000, 149000000, 193000000, 250000000, 324000000, 420000000],
+        descFn: (v) => `각성기 충전 -3초, 사용 후 전직 공격력 증폭 +${formatKoreanNumber(v)}%`
+      },
+      {
+        id: "mg_stack_dmg", name: "스택에 따른 피해량 증가",
+        lvs: [30, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 12, ["unique", "immortal", "eternal"]),
+        vals: [1000, 10000, 20000, 100000, 200000, 400000, 800000, 1600000, 3200000, 6400000, 12800000, 25600000],
+        descFn: (v, lv) => `스킬 사용 시 스택 3 획득, ${lv===30?50:10}스택 시 모든 스킬 피해 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "mg_all_brk_sum", name: "모든 스킬 돌파 단계 총합에 따른 피해량 증가",
+        lvs: [35, 60, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("heaven", 10, ["unique", "eternal"]),
+        vals: [1000, 40000, 150000, 300000, 600000, 1200000, 2400000, 4800000, 9600000, 19200000],
+        reqs: [150, 250, 250, 300, 300, 300, 300, 300, 300, 300],
+        descFn: (v, lv, idx, obj) => `보유 스킬 돌파 총합 ${obj.reqs[idx]} 이상 시 모든 스킬 피해 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "mg_seal_awk", name: "각성기 봉인 및 모든 스킬 피해량(%) 증가",
+        lvs: [65, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("immortal", 10),
+        vals: [4000, 10000, 20000, 40000, 80000, 160000, 320000, 640000, 1280000, 2560000],
+        descFn: (v) => `각성기 봉인(버프 즉시 획득), 보유 스킬 돌파 10당 모든 스킬 피해 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "mg_skill_buff", name: "스킬 버프 효과 추가",
+        lvs: [80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("abyss", 8),
+        vals: [500000, 1000000, 2000000, 4000000, 8000000, 16000000, 32000000, 64000000],
+        descFn: (v) => `확률형 스킬 발동확률 +70% / 스킬 쿨타임 -70% / 전직 스킬 피해 +${formatKoreanNumber(v)}%`
+      }
+    ],
+
+    lord: [
+      {
+        id: "ld_enh_hero", name: "강화 영웅 스킬 사용", isInvalidWithOvergrowth: true,
+        lvs: [5, 35, 50, 55, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 13, ["normal", "unique", "mythic", "ancient"]),
+        vals: [300, 2000, 10000, 30000, 150000, 600000, 1200000, 2400000, 4800000, 9600000, 19200000, 38400000, 76800000],
+        descFn: (v, lv) => `영웅 스킬 ${lv===5?5:3}회 후 1번 슬롯 영웅 피해 +${formatKoreanNumber(v)}% (⚠️과성장+엘리시아 시 메인딜 미적용!)`
+      },
+      {
+        id: "ld_eq_brk_sum", name: "장착된 영웅 돌파 총합에 따른 피해량 증가",
+        lvs: [10, 30, 40, 50, 65, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("immortal", 13, ["middle", "unique", "legend", "mythic"]),
+        vals: [250, 750, 2000, 8000, 100000, 200000, 400000, 800000, 1600000, 3200000, 6400000, 12800000, 25600000],
+        reqs: [20, 30, 35, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40],
+        descFn: (v, lv, idx, obj) => `장착 영웅 돌파 합 ${obj.reqs[idx]} 이상 시 모든 영웅 스킬 피해 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "ld_lv_dmg", name: "전직 레벨당 전직 영웅 스킬 피해량 증가",
+        lvs: [10, 40, 55, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 12, ["middle", "legend", "ancient"]),
+        vals: [10, 25, 80, 1500, 3000, 6000, 12000, 24000, 48000, 96000, 192000, 384000],
+        descFn: (v) => `전직 레벨 1당 전직 영웅 스킬 피해량 +${formatKoreanNumber(v)}%`
+      },
+      {
+        id: "ld_skill_to_hero", name: "스킬 피해량(%) 1당 전직 영웅 스킬 피해량 증가", isOvergrowthCore: true,
+        lvs: [20, 30, 45, 65, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("immortal", 12, ["advanced", "unique", "legend"]),
+        vals: [0.1, 0.15, 0.25, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8, 25.6, 51.2, 102.4],
+        descFn: (v) => `스킬 피해량(%) 1당 전직 영웅 스킬 피해량 +${v}% 증가 (★과성장+엘리시아 필수)`
+      },
+      {
+        id: "ld_strike_to_hero", name: "강타 피해량(%) 1당 전직 영웅 스킬 피해량 증가",
+        lvs: [20, 30, 45, 65, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("immortal", 12, ["advanced", "unique", "legend"]),
+        vals: [0.12, 0.18, 0.3, 0.5, 1, 2, 4, 8, 16, 32, 64, 128],
+        descFn: (v) => `강타 피해량(%) 1당 전직 영웅 스킬 피해량 +${v}% 증가`
+      },
+      {
+        id: "ld_awk_cd", name: "각성기 충전 시간 감소 및 버프 효과 상승",
+        lvs: [25, 40, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 12, ["advanced", "legend", "eternal"]),
+        vals: [16000, 175000, 6100000, 45625000, 68437500, 89000000, 115000000, 149000000, 193000000, 250000000, 324000000, 420000000],
+        descFn: (v) => `각성기 충전 -3초, 사용 후 전직 공격력 증폭 +${formatKoreanNumber(v)}%`
+      },
+      {
+        id: "ld_stack_dmg", name: "스택에 따른 피해량 증가",
+        lvs: [30, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("heaven", 12, ["unique", "immortal", "eternal"]),
+        vals: [1000, 10000, 20000, 100000, 200000, 400000, 800000, 1600000, 3200000, 6400000, 12800000, 25600000],
+        descFn: (v, lv) => `영웅 스킬 시 스택 3 획득, ${lv===30?50:10}스택 시 모든 영웅 피해 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "ld_all_brk_sum", name: "모든 영웅 돌파 단계 총합에 따른 피해량 증가",
+        lvs: [35, 60, 75, 85, 95, 105, 115, 125, 135, 145],
+        tiers: buildTierSeq("heaven", 10, ["unique", "eternal"]),
+        vals: [1000, 40000, 150000, 300000, 600000, 1200000, 2400000, 4800000, 9600000, 19200000],
+        reqs: [150, 250, 250, 300, 300, 300, 300, 300, 300, 300],
+        descFn: (v, lv, idx, obj) => `보유 영웅 돌파 총합 ${obj.reqs[idx]} 이상 시 모든 영웅 피해 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "ld_seal_awk", name: "각성기 봉인 및 모든 영웅 스킬 피해량(%) 증가",
+        lvs: [65, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("immortal", 10),
+        vals: [4000, 10000, 20000, 40000, 80000, 160000, 320000, 640000, 1280000, 2560000],
+        descFn: (v) => `각성기 봉인(버프 즉시 획득), 보유 영웅 돌파 10당 모든 영웅 피해 +${formatKoreanNumber(v)}% (곱연산)`
+      },
+      {
+        id: "ld_hero_buff", name: "영웅 버프 효과 추가",
+        lvs: [80, 90, 100, 110, 120, 130, 140, 150],
+        tiers: buildTierSeq("abyss", 8),
+        vals: [500000, 1000000, 2000000, 4000000, 8000000, 16000000, 32000000, 64000000],
+        descFn: (v) => `영웅 이동속도 +200% / 영웅 공격속도 +200% / 전직 영웅 피해 +${formatKoreanNumber(v)}%`
+      }
+    ]
+  };
+
+  // 현재 선택한 레벨(lv)에서 특정 특성 카테고리의 최고 해금 단계 정보 반환
+  function getUnlockedTraitAtLevel(traitDef, lv) {
+    let bestIdx = -1;
+    for (let i = 0; i < traitDef.lvs.length; i++) {
+      if (traitDef.lvs[i] <= lv) bestIdx = i;
+      else break;
+    }
+    if (bestIdx === -1) return null;
+
+    const unlockLv = traitDef.lvs[bestIdx];
+    const tierKey = traitDef.tiers[bestIdx] || "infinite";
+    const val = traitDef.vals[bestIdx];
+    const desc = traitDef.descFn(val, unlockLv, bestIdx, traitDef);
+
+    return {
+      id: traitDef.id,
+      name: traitDef.name,
+      unlockLv,
+      tierKey,
+      tierMeta: getTraitTierMeta(tierKey),
+      val,
+      desc,
+      isOvergrowthCore: Boolean(traitDef.isOvergrowthCore),
+      isUnstableBurst: Boolean(traitDef.isUnstableBurst),
+      isInvalidWithOvergrowth: Boolean(traitDef.isInvalidWithOvergrowth)
+    };
+  }
+
+  // 레벨별 최적의 1차 전직 특성 추천 알고리즘 (고수분 조언 & 붉양님 공략 완벽 반영)
+  function getRecommended1stTraits(job, lv, useOvergrowth, mode) {
+    const db = TRAIT_1ST_DB[job] || [];
+    const unlockedMap = new Map();
+    db.forEach(t => {
+      const u = getUnlockedTraitAtLevel(t, lv);
+      if (u) unlockedMap.set(t.id, u);
+    });
+
+    // 열려 있는 슬롯 수: 기본(1), Lv20(2), Lv40(3), Lv60(4), Lv80+(5)
+    const slotCount = lv < 20 ? 1 : (lv < 40 ? 2 : (lv < 60 ? 3 : (lv < 80 ? 4 : 5)));
+    let pickedIds = [];
+    let subCandidateIds = [];
+
+    if (job === 'reaper') {
+      // [사신 레벨별 정석 트리]
+      if (lv < 20) {
+        pickedIds = ["rp_enh_strike"];
+      } else if (lv < 35) {
+        pickedIds = ["rp_enh_strike", useOvergrowth ? "rp_skill_to_strike" : "rp_hit_fix"];
+      } else if (lv < 40) {
+        // 35렙: 각성기 3초 감소 + 강화강타 (2슬롯)
+        pickedIds = ["rp_awk_cd", "rp_enh_strike"];
+        if (useOvergrowth) subCandidateIds.push("rp_skill_to_strike");
+      } else if (lv < 50) {
+        // 40~45렙 (3슬롯): 강화강타 + 각성기3초 + (과성장 시 스피->강피 or 강타고정/강타단계)
+        pickedIds = ["rp_enh_strike", "rp_awk_cd", useOvergrowth ? "rp_skill_to_strike" : "rp_hit_fix"];
+        subCandidateIds = ["rp_step_dmg", "rp_hit_fix"];
+      } else if (lv < 60) {
+        // 50~55렙 (3슬롯): 강화강타 + 스택피해량 + 각성기3초 (과성장 시 스피->강피)
+        pickedIds = useOvergrowth
+          ? ["rp_skill_to_strike", "rp_enh_strike", "rp_stack_dmg"]
+          : ["rp_awk_cd", "rp_enh_strike", "rp_stack_dmg"];
+        subCandidateIds = ["rp_awk_cd", "rp_hit_fix"];
+      } else if (lv < 65) {
+        // 60렙 (4슬롯): 각성기3초 + 강타단계 + 스택피해 + 강화강타 (과성장 시 스피->강피 포함)
+        pickedIds = useOvergrowth
+          ? ["rp_skill_to_strike", "rp_step_dmg", "rp_stack_dmg", "rp_enh_strike"]
+          : ["rp_awk_cd", "rp_step_dmg", "rp_stack_dmg", "rp_enh_strike"];
+        subCandidateIds = ["rp_awk_cd"];
+      } else if (lv < 75) {
+        // 65~70렙 (4슬롯): 각성기 봉인 해금!
+        pickedIds = useOvergrowth
+          ? ["rp_seal_awk", "rp_skill_to_strike", "rp_step_dmg", "rp_enh_strike"]
+          : ["rp_seal_awk", "rp_awk_cd", "rp_step_dmg", "rp_enh_strike"];
+        subCandidateIds = ["rp_awk_cd", "rp_stack_dmg"];
+      } else if (lv < 80) {
+        // 75렙 (4슬롯)
+        pickedIds = useOvergrowth
+          ? ["rp_seal_awk", "rp_skill_to_strike", "rp_step_dmg", "rp_enh_strike"]
+          : ["rp_seal_awk", "rp_awk_cd", "rp_step_dmg", "rp_enh_strike"];
+        subCandidateIds = ["rp_stack_dmg", "rp_awk_cd"];
+      } else {
+        // 80렙 ~ 150렙 (5슬롯 오픈!): 상위 레벨 수치 자동 비교 정렬
+        // 기본 코어: 각성기 봉인 + 강타 버프 효과 추가 + (과성장 시 스피->강피)
+        pickedIds = ["rp_seal_awk", "rp_strike_buff"];
+        if (useOvergrowth) pickedIds.push("rp_skill_to_strike");
+
+        // 남은 슬롯(2~3칸)은 현재 레벨(lv)에서 곱연산/증폭 수치가 가장 높은 순으로 자동 채택!
+        const poolIds = ["rp_step_dmg", "rp_enh_strike", "rp_stack_dmg", "rp_awk_cd", "rp_hit_fix"];
+        poolIds.sort((a, b) => {
+          const va = unlockedMap.get(a)?.val || 0;
+          const vb = unlockedMap.get(b)?.val || 0;
+          return vb - va;
+        });
+        for (let pid of poolIds) {
+          if (pickedIds.length < 5 && !pickedIds.includes(pid)) pickedIds.push(pid);
+          else if (!pickedIds.includes(pid)) subCandidateIds.push(pid);
+        }
+      }
+    } else if (job === 'mage') {
+      // [아크메이지: Lv.60 이상 구간]
+      if (lv < 65) {
+        pickedIds = useOvergrowth
+          ? ["mg_hero_to_skill", "mg_all_brk_sum", "mg_stack_dmg", "mg_awk_cd"]
+          : ["mg_all_brk_sum", "mg_stack_dmg", "mg_awk_cd", "mg_enh_skill"];
+      } else if (lv < 75) {
+        // 65~70렙 (4슬롯)
+        pickedIds = useOvergrowth
+          ? ["mg_seal_awk", "mg_hero_to_skill", "mg_eq_lv_sum", "mg_stack_dmg"]
+          : ["mg_seal_awk", "mg_awk_cd", "mg_eq_lv_sum", "mg_enh_skill"];
+        subCandidateIds = ["mg_enh_skill", "mg_all_brk_sum", "mg_awk_cd"];
+      } else if (lv < 80) {
+        // 75렙 (4슬롯)
+        pickedIds = useOvergrowth
+          ? ["mg_seal_awk", "mg_hero_to_skill", "mg_eq_lv_sum", "mg_all_brk_sum"]
+          : ["mg_seal_awk", "mg_eq_lv_sum", "mg_all_brk_sum", "mg_enh_skill"];
+        subCandidateIds = ["mg_stack_dmg", "mg_enh_skill"];
+      } else {
+        // 80~150렙 (5슬롯): 과성장 유무 및 레벨별 최고 배율 자동 편성
+        pickedIds = ["mg_seal_awk"];
+        if (useOvergrowth) pickedIds.push("mg_hero_to_skill");
+        else pickedIds.push("mg_skill_buff");
+
+        const poolIds = ["mg_skill_buff", "mg_eq_lv_sum", "mg_stack_dmg", "mg_enh_skill", "mg_all_brk_sum"];
+        poolIds.sort((a, b) => (unlockedMap.get(b)?.val || 0) - (unlockedMap.get(a)?.val || 0));
+        for (let pid of poolIds) {
+          if (pickedIds.length < 5 && !pickedIds.includes(pid)) pickedIds.push(pid);
+          else if (!pickedIds.includes(pid)) subCandidateIds.push(pid);
+        }
+      }
+    } else if (job === 'lord') {
+      // [오버로드(다크로드): Lv.60 이상 구간]
+      // ⚠️ 핵심: 과성장+엘리시아 사용 시 1번 슬롯이 엘리시아이므로 '강화 영웅 스킬 사용(ld_enh_hero)'은 메인딜러가 못 받아서 제외!
+      if (lv < 65) {
+        pickedIds = useOvergrowth
+          ? ["ld_skill_to_hero", "ld_all_brk_sum", "ld_stack_dmg", "ld_awk_cd"]
+          : ["ld_all_brk_sum", "ld_stack_dmg", "ld_awk_cd", "ld_enh_hero"];
+      } else if (lv < 75) {
+        pickedIds = useOvergrowth
+          ? ["ld_seal_awk", "ld_skill_to_hero", "ld_awk_cd", "ld_eq_brk_sum"]
+          : ["ld_seal_awk", "ld_awk_cd", "ld_eq_brk_sum", "ld_all_brk_sum"];
+        subCandidateIds = ["ld_all_brk_sum", "ld_stack_dmg"];
+      } else if (lv < 80) {
+        pickedIds = useOvergrowth
+          ? ["ld_seal_awk", "ld_skill_to_hero", "ld_eq_brk_sum", "ld_all_brk_sum"]
+          : ["ld_seal_awk", "ld_eq_brk_sum", "ld_all_brk_sum", "ld_stack_dmg"];
+        subCandidateIds = ["ld_stack_dmg", "ld_awk_cd"];
+      } else {
+        // 80~150렙 (5슬롯)
+        pickedIds = ["ld_seal_awk"];
+        if (useOvergrowth) {
+          pickedIds.push("ld_skill_to_hero");
+        } else {
+          pickedIds.push("ld_hero_buff");
+        }
+
+        const poolIds = useOvergrowth
+          ? ["ld_eq_brk_sum", "ld_stack_dmg", "ld_all_brk_sum", "ld_hero_buff"]
+          : ["ld_enh_hero", "ld_eq_brk_sum", "ld_stack_dmg", "ld_all_brk_sum"];
+
+        poolIds.sort((a, b) => (unlockedMap.get(b)?.val || 0) - (unlockedMap.get(a)?.val || 0));
+        for (let pid of poolIds) {
+          if (pickedIds.length < 5 && !pickedIds.includes(pid)) pickedIds.push(pid);
+          else if (!pickedIds.includes(pid)) subCandidateIds.push(pid);
+        }
+      }
+    }
+
+    const activeTraits = pickedIds.slice(0, slotCount).map(id => unlockedMap.get(id)).filter(Boolean);
+    const subTraits = subCandidateIds.map(id => unlockedMap.get(id)).filter(Boolean);
+
+    // 비추천(함정) 특성 목록
+    const notRecommended = [];
+    if (unlockedMap.has("rp_decay_atk")) {
+      notRecommended.push({
+        trait: unlockedMap.get("rp_decay_atk"),
+        reason: "표기 고점은 높으나 1초마다 급감하여 실전 딜 불발이 심해 사용 비추천 ❌"
+      });
+    }
+    if (job === 'lord' && useOvergrowth && unlockedMap.has("ld_enh_hero")) {
+      notRecommended.push({
+        trait: unlockedMap.get("ld_enh_hero"),
+        reason: "과성장+엘리시아 사용 시 1번 슬롯이 엘리시아라서 메인 딜 영웅(칼리아/카이렌/모르반)이 효과를 받지 못함 ❌"
+      });
+    }
+
+    return { slotCount, activeTraits, subTraits, notRecommended };
+  }
+
+  function changeTraitTabStep(step) {
+    currentTraitTabStep = step;
+    renderBuildGuideContent();
+  }
+
+  function changeTrait1stLevel(lvVal) {
+    currentTrait1stLv = parseInt(lvVal);
+    renderBuildGuideContent();
+  }
+
+  function changeTrait3rdLevel(lvVal) {
+    currentTrait3rdLv = parseInt(lvVal);
+    renderBuildGuideContent();
+  }
+
+  function toggleTraitOvergrowth(checked) {
+    traitUseOvergrowth = checked;
+    renderBuildGuideContent();
+  }
+
+  // ==================== 가이드 메인 렌더링 함수 ====================
   function renderBuildGuideContent() {
     const body = document.getElementById("guide_dynamic_body");
     if (!body) return;
 
     // 1) 🐣 극초반 스킬 & 영웅 세팅 (Lv.5,000+ 입문)
     if (currentGuideType === 'early') {
+      const forbiddenSkills = [
+        { name: "불벼락", img: "fire_light" },
+        { name: "뇌전검무", img: "light_sword" },
+        { name: "암흑붕괴", img: "dark_des" },
+        { name: "그림자 포효", img: "shadow_roar" },
+        { name: "환영나비", img: "butter" }
+      ];
+      const forbiddenIconsHtml = forbiddenSkills.map(sk => `
+        <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(15,23,42,0.85); border:1px solid #ef4444; border-radius:8px; padding:4px 9px;">
+          <img src="images/${sk.img}.png" alt="${sk.name}" style="width:24px; height:24px; border-radius:5px; object-fit:cover;" onerror="this.onerror=null; this.src='images/${sk.img}.PNG'; this.onerror=function(){this.style.display='none';};">
+          <span style="font-size:12px; font-weight:800; color:#fecdd3;">${sk.name}</span>
+          <span style="font-size:10px; color:#f87171;">(9돌 전 ❌)</span>
+        </div>
+      `).join('');
+
       body.innerHTML = `
         <div class="stage-build-card" style="border-left-color:#f59e0b;">
           <div class="stage-build-header">
@@ -8094,14 +8620,19 @@ window.addEventListener('DOMContentLoaded', () => {
               <div style="font-size:32px;">🔮</div>
               <div style="text-align:left;">
                 <span class="build-slot-tag" style="background:#ca8a04; color:#fff;">소환 Lv.8 달성</span>
-                <div style="font-size:14px; font-weight:800; color:#fda4af; margin:4px 0;">신화 스킬 택 1</div>
-                <div style="font-size:11.5px; color:#94a3b8;">소환 레벨 8 달성 시 획득하는 신화 스킬 중 1개 장착</div>
+                <div style="font-size:14px; font-weight:800; color:#fda4af; margin:4px 0;">신화 스킬 택 1 (아래 9돌 미만 금지 스킬 제외!)</div>
+                <div style="font-size:11.5px; color:#94a3b8;">소환 레벨 8 달성 시 획득하는 딜링/버프형 신화 스킬 중 1개 장착</div>
               </div>
             </div>
           </div>
-          <div class="build-tip-box" style="margin-top:14px; border-color:#ef4444; background:rgba(239, 68, 68, 0.1); color:#fca5a5;">
-            ⚠️ <strong>극초반 사용 금지 스킬:</strong><br>
-            • <strong>불벼락류</strong> 및 <strong>그림자 포효</strong>는 최소 9돌파(디버프 해금) 전까지 기여도가 전혀 없으므로 <strong>절대 장착하지 마세요!</strong>
+          <div class="build-tip-box" style="margin-top:14px; border-color:#ef4444; background:rgba(239, 68, 68, 0.12); color:#fca5a5;">
+            <div style="margin-bottom:8px;">
+              ⚠️ <strong>극초반 사용 금지 스킬 (9돌파 미만 시 기여도 0%):</strong><br>
+              아래 스킬들은 <strong>최소 9돌파(디버프/버프 해금)</strong> 전까지 아무런 딜 기여도가 없으므로 극초반에 명함만 나왔을 때는 <strong>절대 장착하지 마세요!</strong>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;">
+              ${forbiddenIconsHtml}
+            </div>
           </div>
         </div>
 
@@ -8112,14 +8643,14 @@ window.addEventListener('DOMContentLoaded', () => {
           </div>
           <div style="font-size:12.5px; font-weight:800; color:#cbd5e1; margin-bottom:6px;">📌 기본 3슬롯 필수 장착:</div>
           <div class="build-slot-grid">
-            ${makeGuideSlotHtml("오로라", "전설 1티어", "핵심 초반 딜러", false, 'fix')}
+            ${makeGuideSlotHtml("오로라", "전설 1티어", "초반 화염 디버퍼", false, 'fix')}
             ${makeGuideSlotHtml("바토리", "특급 감전", "번개 감전 부여", false, 'fix')}
-            ${makeGuideSlotHtml("나찰", "특급 혼돈", "어둠 혼돈 부여", false, 'fix')}
+            ${makeGuideSlotHtml("나찰", "특급 혼돈", "확률형 강타게이지+혼돈", false, 'fix')}
           </div>
           <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:16px 0 6px 0;">📌 4번째 슬롯 확장 시 (영웅 소환 레벨 8 달성):</div>
           <div class="build-slot-grid">
-            ${makeGuideSlotHtml("셀렌", "★1티어 추천", "소환 Lv.8 획득 시 채택", false, 'fix')}
-            ${makeGuideSlotHtml("엘리시아", "★1티어 추천", "소환 Lv.8 획득 시 채택", false, 'fix')}
+            ${makeGuideSlotHtml("셀렌", "★사신 필수/디버퍼", "사신 전용 필수 & 감전 디버퍼", false, 'fix')}
+            ${makeGuideSlotHtml("엘리시아", "★과성장 핵심", "고대·영원 과성장 룬 세트", false, 'fix')}
             <div class="build-slot-item future-4th" style="justify-content:center;">
               <span class="build-slot-tag" style="background:#ca8a04; color:#fff;">기타 신화</span>
               <div style="font-size:13px; font-weight:800; color:#fda4af; margin:10px 0 4px 0;">신화 영웅 택 1</div>
@@ -8127,8 +8658,9 @@ window.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
           <div class="build-tip-box" style="margin-top:14px;">
-            • <strong>초반 상태이상 연계:</strong> 오로라가 초반 딜을 전담하며, 바토리(감전)와 나찰(혼돈)이 쿨타임 없이 상태이상을 지속 공급합니다.<br>
-            • 영웅 소환 레벨 8 달성 시 주어지는 신화 영웅 중 <strong>셀렌</strong> 또는 <strong>엘리시아</strong>를 얻었다면 4번째 자리에 최우선으로 투입하세요!
+            • <strong>셀렌 (사신 전용 필수 & 디버퍼):</strong> 강타 피해량 버프와 감전 상태이상을 동시에 제공하는 사신 1순위 필수 영웅입니다.<br>
+            • <strong>엘리시아 (+고대·영원 과성장):</strong> 1번 슬롯에 배치하고 반지 룬 <strong>[고대 또는 영원 과성장]</strong>과 함께 사용하면 폭발적인 버프 효율을 발휘합니다.<br>
+            • <strong>초반 나찰 필수 이유:</strong> 레벨업 특성 중 '영웅 스킬 사용 시 강타 게이지 6 증가'가 있는데, 나찰은 쿨타임 없는 확률형 스킬이라 강타 게이지를 수시로 채워줍니다.
           </div>
         </div>
       `;
@@ -8151,12 +8683,13 @@ window.addEventListener('DOMContentLoaded', () => {
       body.innerHTML = `
         <div class="stage-build-card" style="border-left-color:#38bdf8;">
           <div class="stage-build-header">
-            <span class="stage-build-title">📌 왜 초반에는 사신으로 시작해서 아크메이지(미스틱)로 넘어가나요?</span>
+            <span class="stage-build-title">📌 왜 1차 전직 60레벨 전까지는 무조건 [사신]으로 키우나요?</span>
             <span class="grade-badge grade-ancient">핵심 로드맵</span>
           </div>
           <div class="build-tip-box" style="margin-bottom:14px;">
-            • 초반~중반 구간에서는 고대 패시브(강타의 대가 최저 비용)와 기본 강타 메커니즘 덕분에 <strong>사신(대사신)</strong>의 가성비와 성장 속도가 매우 뛰어납니다.<br>
-            • 하지만 2차·3차 전직 이후 전용 메인딜 스킬과 스킬 돌파 효율이 폭발하는 시점부터는 <strong>아크메이지(미스틱/제네시스)</strong>의 고점이 훨씬 높아지므로 준비물을 모아서 한 번에 넘어가는 것이 정석입니다.
+            • <strong>1차 전직 60레벨 이전 구간</strong>에서는 아크메이지(장착 스킬 레벨 합/보유 스킬 돌파 합 조건 미달)와 오버로드의 전직 특성 효율이 극히 낮아 사신 대비 이득이 전혀 없습니다.<br>
+            • 반면 <strong>사신(대사신)</strong>은 고대 패시브(강타의 대가 최저 비용)와 초반 강화 강타 특성 덕분에 60레벨 이전 구간에서 압도적인 가성비를 자랑합니다.<br>
+            • 이후 <strong>1차 전직 60~65레벨 이상 + 전직 특성 조건 충족 + 아크메이지 전용 딜스킬/영웅 9~10돌파</strong>가 준비되었을 때 미스틱(아크메이지)으로 전환하는 것이 정석입니다!
           </div>
 
           <h4 style="color:#fde047; font-size:15px; margin-bottom:10px;">✅ 사신으로 키우면서 그대로 겹쳐서 쓰는 공용 스킬 & 영웅 (미리 키워두기)</h4>
@@ -8172,25 +8705,25 @@ window.addEventListener('DOMContentLoaded', () => {
             ${makeGuideSlotHtml('솔라리스', '공용 영웅', '9돌 모피증 / 과성장졸업', false, 'fix')}
           </div>
 
-          <h4 style="color:#f43f5e; font-size:15px; margin:16px 0 10px 0;">🔥 언제 아크메이지로 넘어가면 될까? (픽업/이벤트 몰아서 풀돌 타이밍!)</h4>
+          <h4 style="color:#f43f5e; font-size:15px; margin:16px 0 10px 0;">🔥 언제 아크메이지로 넘어가면 될까? (3가지 체크리스트!)</h4>
           <div class="build-slot-grid">
             ${makeGuideSlotHtml('지옥불베기', '앜메 전용버프', '픽업 시 몰아서 풀돌!', true, 'flex')}
             ${makeGuideSlotHtml(mage3rdDeal, '앜메 3차주력', '3차 메인딜 풀돌/각성!', true, 'flex')}
-            ${makeGuideSlotHtml(mage2ndDeal, '앜메 2차주력', '2차 딜스킬 (선택)', true, 'flex')}
+            ${makeGuideSlotHtml(mage2ndDeal, '앜메 2차주력', '최소 9돌파 이상!', true, 'flex')}
             ${makeGuideSlotHtml('카엔', '앜메 전용영웅', '픽업 시 몰아서 풀돌!', false, 'flex')}
           </div>
           <div class="build-tip-box">
-            💡 <strong>핵심 전환 전략:</strong><br>
-            1. 사신으로 플레이하는 동안에는 사신과 겹치는 <strong>공용 스킬(포효, 오버드라이브, 엘차, 불벼락류, 크림슨)</strong>과 <strong>공용 영웅(엘리시아, 나리타, 플레어류, 솔라리스)</strong>을 그대로 키우며 다이아와 소환권을 아껴둡니다.<br>
-            2. 그러다가 <strong>로테이션 픽업이나 커스텀 이벤트 픽업</strong>이 열렸을 때, 아껴둔 재화를 한 번에 몰아서 아크메이지 전용 스킬인 <strong>[지옥불베기] + [${mage3rdDeal}(주속성 메인딜)]</strong>과 전용 영웅 <strong>[카엔]</strong>을 단숨에 <strong>풀돌파(10돌) 및 각성</strong>시키면 딜 공백 없이 즉시 아크메이지로 넘어올 수 있습니다!<br>
-            3. 추가로 아크메이지 전직 특성 조건(장착 스킬 레벨 총합 / 보유 스킬 돌파 총합)과 룬 세팅을 확인한 후 전환하세요.
+            💡 <strong>붉양님 공략 기준 아크메이지 전환 최소 조건 3가지:</strong><br>
+            1. <strong>전직 특성 조건 만족:</strong> 1차 전직 60~65레벨 이상 달성 & '장착한 스킬 레벨 총합(600↑)' 또는 '보유 스킬 돌파 총합(250↑)' 특성을 켤 수 있는 상태<br>
+            2. <strong>룬 세팅 준비:</strong> 고대/영원 룬에서 아크메이지용 룬(연발, 마법의 서 등 또는 파열+파멸 세트) 확보<br>
+            3. <strong>전용 스킬 & 영웅 돌파:</strong> 아크메이지 전용 딜스킬(<strong>${mage2ndDeal}</strong> 또는 <strong>${mage3rdDeal}</strong>) 최소 9돌파 이상 + <strong>[지옥불베기]</strong> + 전용 영웅 <strong>[카엔]</strong> 확보 시 즉시 전환하시면 됩니다!
           </div>
         </div>
       `;
       return;
     }
 
-    // 3) 직업별 스킬 세팅 가이드
+    // 3) ⚡ 직업별 스킬 세팅 가이드
     if (currentGuideType === 'skill') {
       const stage1Fixed = [
         makeGuideSlotHtml(jobOnlySkill, '직업 필수고정', guideJob==='reaper'?'강타 피해 증가':(guideJob==='mage'?'스킬 피해 증가':'영웅스킬 피해 증가'), true, 'fix'),
@@ -8200,7 +8733,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       const stage1FlexPool = [
         makeGuideSlotHtml('오버드라이브', '★1순위 돌파', '나머지 2칸 중 최우선', true, 'flex'),
-        makeGuideSlotHtml('환영나비', '우선 돌파', '돌파 높은 순 선택', true, 'flex'),
+        makeGuideSlotHtml('환영나비', '우선 돌파', '2상태이상 시 발동(9돌↑)', true, 'flex'),
         makeGuideSlotHtml('엘리멘탈 차지', '우선 돌파', '돌파 높은 순 선택', true, 'flex'),
         makeGuideSlotHtml('심판의 인장', '국밥 버프', '돌파 높은 순 선택', true, 'flex'),
         makeGuideSlotHtml('원소돌파', '1각↑ 유효', '돌파 높은 순 선택', true, 'flex')
@@ -8210,13 +8743,13 @@ window.addEventListener('DOMContentLoaded', () => {
       let stage2SlotCntText = '5슬롯';
       if (guideJob === 'mage') {
         stage2SlotCntText = '6슬롯 (아크메이지 스킬 +1)';
-        stage2MainSlots += makeGuideSlotHtml(mage3rdDeal, '앜메 +1슬롯', `또는 ${mage2ndDeal} 착용 존버`, true, 'flex');
+        stage2MainSlots += makeGuideSlotHtml(mage3rdDeal, '앜메 +1슬롯', `1번 슬롯에 ${mage2ndDeal}/${mage3rdDeal} 배치!`, true, 'flex');
       }
 
       const stage2PrepIcons = [
         makeGuideSlotHtml('크림슨 웨이브', '3차 출혈준비', '3차 종결 필수! 미리 육성', true, 'future'),
         makeGuideSlotHtml(elemPulseSkill, '보유효과 준비', '주속성 보유효과 각성용', true, 'future'),
-        ...(guideJob === 'mage' ? [makeGuideSlotHtml(mage2ndDeal, '2차 주속성딜', '또는 3차 필라류 존버', true, 'flex')] : [])
+        ...(guideJob === 'mage' ? [makeGuideSlotHtml(mage2ndDeal, '2차 주속성딜', '강화스킬용 1번슬롯 배치', true, 'flex')] : [])
       ].join('');
 
       let stage3Slots = '';
@@ -8228,7 +8761,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const fourthSkill = guideElem === 'fire' ? '그림자 포효' : '환영나비';
         const fourthNote = guideElem === 'fire' ? '불속성 고정 채택' : '비불속성: 포효 빼고 나비!';
         stage3Slots = [
-          makeGuideSlotHtml(mage3rdDeal, '3차 메인딜', '주속성 메인 딜링기', true, 'fix'),
+          makeGuideSlotHtml(mage3rdDeal, '★1번슬롯 메인딜', '강화스킬 적용용 1번 배치!', true, 'fix'),
           makeGuideSlotHtml('지옥불베기', '직업 고정', '스킬 피해 버프', true, 'fix'),
           makeGuideSlotHtml(elemDebuffSkill, '주속성 고정', '속성 상태이상 디버프', true, 'fix'),
           makeGuideSlotHtml(fourthSkill, '속성별 분기', fourthNote, true, 'fix'),
@@ -8249,12 +8782,12 @@ window.addEventListener('DOMContentLoaded', () => {
       } else if (guideJob === 'reaper') {
         stage3CntText = '6슬롯 (소울리퍼 스킬 +1 추가)';
         stage3Slots = [
-          makeGuideSlotHtml('썬더 오빗', '사신 고정', '강타 피해량 버프', true, 'fix'),
-          makeGuideSlotHtml(elemDebuffSkill, '주속성 고정', '주속성 상태이상 스킬', true, 'fix'),
-          makeGuideSlotHtml('엘리멘탈 차지', '고정 버프', '3차 전직 핵심 버프', true, 'fix'),
+          makeGuideSlotHtml('썬더 오빗', '사신 고정', '3각 시 303.4배(시너지100)', true, 'fix'),
+          makeGuideSlotHtml(elemDebuffSkill, '주속성 고정', '3각 시 111배 + 상태이상', true, 'fix'),
+          makeGuideSlotHtml('엘리멘탈 차지', '고정 버프', '3차 전직 시 300배', true, 'fix'),
           makeGuideSlotHtml('오버드라이브', '고정 버프', '최우선 돌파/각성 버프', true, 'fix'),
-          makeGuideSlotHtml('그림자 포효', '고정 디버프', '2각 시 혼돈 부여', true, 'fix'),
-          makeGuideSlotHtml('크림슨 웨이브', '출혈 고정', '불멸 저주II 출혈 조건', true, 'fix')
+          makeGuideSlotHtml('그림자 포효', '고정 디버프', '2각 혼돈 / 3각 111배', true, 'fix'),
+          makeGuideSlotHtml('크림슨 웨이브', '출혈/원소돌파', '저주II 출혈 또는 원소돌파', true, 'fix')
         ].join('');
         stage4Slots = stage3Slots;
       } else {
@@ -8263,17 +8796,26 @@ window.addEventListener('DOMContentLoaded', () => {
           makeGuideSlotHtml('보이드 펄스', '닼로 고정', '영웅스킬 피해 버프', true, 'fix'),
           makeGuideSlotHtml('크림슨 웨이브', '출혈 고정', '불멸 저주II 출혈 조건', true, 'fix'),
           makeGuideSlotHtml('오버드라이브', '고정 버프', '최우선 돌파/각성 버프', true, 'fix'),
-          makeGuideSlotHtml('환영나비', '고정 버프', '상태이상 조건부 버프', true, 'fix'),
+          makeGuideSlotHtml('환영나비', '고정 버프', '3각 241배(각성합 8↑)', true, 'fix'),
           makeGuideSlotHtml('엘리멘탈 차지', '최종 종결', `전환 전엔 [${elemDebuffSkill}] 사용`, true, 'flex')
         ].join('');
         stage4Slots = stage3Slots;
       }
 
+      // 직업별 대낫 강타 단계 팁 박스 (PDF 공략 반영)
+      const scytheTipHtml = guideJob === 'reaper'
+        ? `🗡️ <strong>대사신 대낫 & 강타 단계 필수 팁:</strong> 장비는 가장 높은 것을 장착하되, 강타는 반드시 <strong>[강타 26단계 (고대 대낫 3)]</strong>을 선택하세요! (기본공격 60회 자동발동, 강타 피해량 증폭 1,500% 버프 및 1차 특성 26단계 조건 충족)`
+        : (guideJob === 'mage'
+          ? `🗡️ <strong>아크메이지 대낫 & 강타 단계 필수 팁:</strong> 반드시 <strong>[강타 27단계 (고대 대낫 2)]</strong>를 사용하세요! (스킬 피해량 증폭 1,500%의 유일한 버프 제공)`
+          : `🗡️ <strong>다크로드(오버로드) 대낫 & 강타 단계 필수 팁:</strong> 장비는 가장 높은 걸 끼되, 강타는 꼭 <strong>[강타 28단계(고대, 영스피 증폭 1,500%)]</strong> 또는 <strong>[강타 24단계(신화, 영스피 증폭 500%)]</strong> 중 하나를 착용하세요!`);
+
       body.innerHTML = `
+        <div class="build-tip-box" style="margin-bottom:14px; border-color:#38bdf8; background:rgba(56,189,248,0.1);">
+          ${scytheTipHtml}
+        </div>
+
         <div class="accordion-group">
-          
-          <!-- 1. 1차 전직 -->
-          <div class="accordion-item acc-advanced" id="g_acc_s1">
+          <div class="accordion-item acc-advanced active" id="g_acc_s1">
             <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_s1')">
               <div class="accordion-left">
                 <span class="accordion-toggle-icon">▶</span>
@@ -8287,14 +8829,11 @@ window.addEventListener('DOMContentLoaded', () => {
               <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:14px 0 6px 0;">📌 나머지 2자리 선택 후보 (오버드라이브 최우선 돌파):</div>
               <div class="build-slot-grid">${stage1FlexPool}</div>
               <div class="build-tip-box" style="margin-top:12px;">
-                • <strong>고정 3자리:</strong> 직업 필수 스킬(<strong>${jobOnlySkill}</strong>) + 주속성 디버프(<strong>${elemDebuffSkill}</strong>) + <strong>그림자 포효</strong>를 고정합니다.<br>
-                • <strong>나머지 2자리:</strong> 위 후보 5종 중 돌파가 높은 순으로 끼우되, <strong>오버드라이브(★1순위), 환영나비, 엘리멘탈 차지</strong> 위주로 돌파를 올립니다.<br>
-                • <strong>신화 미보유 초보 팁:</strong> 신화가 없을 땐 하급~전설 중 한 속성을 정해 끼우다가 신화급이 나올 때마다 변경하세요.
+                • <strong>9돌파 미만 주의:</strong> 그림자 포효, 환영나비, ${elemDebuffSkill}는 <strong>9돌파가 아니면 핵심 효과가 없으므로</strong> 9돌 전에는 다른 딜/상태이상 스킬을 쓰다가 9돌 달성 시 투입하세요!
               </div>
             </div>
           </div>
 
-          <!-- 2. 2차 전직 -->
           <div class="accordion-item acc-unique" id="g_acc_s2">
             <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_s2')">
               <div class="accordion-left">
@@ -8307,14 +8846,9 @@ window.addEventListener('DOMContentLoaded', () => {
               <div class="build-slot-grid">${stage2MainSlots}</div>
               <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 2차 구간부터 미리 돌파·각성하며 키우기 시작할 스킬:</div>
               <div class="build-slot-grid">${stage2PrepIcons}</div>
-              <div class="build-tip-box" style="margin-top:12px;">
-                • ${guideJob === 'mage' ? `<strong>아크메이지(스킬 +1):</strong> 2차 주속성 스킬(<strong>${mage2ndDeal}</strong>) 또는 3차 스킬(<strong>${mage3rdDeal}</strong>)을 착용하고 3차까지 돌파·각성하며 존버합니다.` : `<strong>사신 & 다크로드:</strong> 1차와 동일하게 5슬롯을 가져갑니다.`}<br>
-                • <strong>3차 종결 준비:</strong> 3차 종결에 필수인 <strong>[크림슨 웨이브]</strong>와 주속성 보유효과 각성 스킬인 <strong>[${elemPulseSkill}]</strong>도 함께 돌파해 두세요!
-              </div>
             </div>
           </div>
 
-          <!-- 3. 3차 전직 -->
           <div class="accordion-item acc-mythic" id="g_acc_s3">
             <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_s3')">
               <div class="accordion-left">
@@ -8329,40 +8863,32 @@ window.addEventListener('DOMContentLoaded', () => {
               <div class="build-slot-grid">
                 ${makeGuideSlotHtml(elemPulseSkill, '3차 보유효과', '주속성 맞춰 풀각성(3각) 필수!', true, 'future')}
               </div>
-              <div class="build-tip-box" style="margin-top:12px;">
-                • ${guideJob === 'mage' ? `<strong>미스틱(7슬롯):</strong> 불속성은 <strong>[그림자 포효]</strong>, 번개/어둠 속성은 포효를 빼고 <strong>[환영나비]</strong>를 추가합니다. (오버드라이브/엘차보다 환영나비나 심판의 인장 돌파가 더 높으면 변경)` : (guideJob === 'reaper' ? `<strong>소울리퍼(6슬롯):</strong> <strong>[${elemDebuffSkill} + 썬더 오빗 + 엘리멘탈 차지 + 오버드라이브 + 그림자 포효 + 크림슨 웨이브]</strong> 6칸 고정!` : `<strong>오버로드(5슬롯):</strong> <strong>[보이드 펄스 + 크림슨 웨이브 + 오버드라이브 + 환영나비 + ${elemDebuffSkill}]</strong> ➔ 최종 종결은 ${elemDebuffSkill} 대신 <strong>[엘리멘탈 차지]</strong>!`)}
-              </div>
             </div>
           </div>
 
-          <!-- 4. 4차 전직 -->
           <div class="accordion-item acc-legend" id="g_acc_s4">
             <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_s4')">
               <div class="accordion-left">
                 <span class="accordion-toggle-icon">▶</span>
-                <span class="accordion-title-text"><span class="grade-badge grade-legend">4차 전직</span> 4차 전직 (그림리퍼 / 슈프림 / 소울이터) 세팅</span>
+                <span class="accordion-title-text"><span class="grade-badge grade-legend">4차 전직</span> 4차 전직 (${JOB_NAMES_FULL[guideJob].c4}) 세팅</span>
               </div>
               <span class="accordion-count-badge">최종 종결</span>
             </div>
             <div class="accordion-content">
               <div class="build-slot-grid">${stage4Slots}</div>
-              <div class="build-tip-box" style="margin-top:12px;">
-                • 4차 전직은 슬롯 개수 변화가 없으며, ${guideJob === 'mage' ? `추후 <strong>4차 전용 메인딜 스킬</strong>이 출시되면 기존의 3차 메인딜(<strong>${mage3rdDeal}</strong>)을 4차 전용 스킬로 교체해 주시면 됩니다.` : `3차 종결 스킬 구성을 그대로 유지합니다.`}
-              </div>
             </div>
           </div>
-
         </div>
       `;
       return;
     }
 
-    // 4) 직업별 영웅 세팅 가이드 (루비+격화, 솔라리스+오버드라이브3각, 엘리시아+과성장 연동!)
+    // 4) 🦸 직업별 영웅 세팅 가이드
     if (currentGuideType === 'hero') {
       const hStage0Slots = [
         makeGuideSlotHtml(jobOnlyHero, '직업 필수고정', guideJob==='reaper'?'강타 버프 + 감전':(guideJob==='mage'?'스킬 피해 버프':'영웅스킬 버프'), false, 'fix'),
         makeGuideSlotHtml('바토리', '특급 상태이상', '신화 전 감전 요원', false, 'flex'),
-        makeGuideSlotHtml('나찰', '특급 상태이상', '신화 전 혼돈/타수 요원', false, 'flex')
+        makeGuideSlotHtml('나찰', '특급 상태이상', '확률형 강타게이지+혼돈', false, 'flex')
       ].join('');
 
       const hStage0GrowPool = [
@@ -8373,14 +8899,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
       let hStage1Slots = [
         makeGuideSlotHtml(jobOnlyHero, '직업 필수고정', '최우선 육성', false, 'fix'),
-        makeGuideSlotHtml('나리타', '★3각 최우선', '3각성 시 상시 501배', false, 'fix'),
+        makeGuideSlotHtml('나리타', '★3각 최우선', '3각성 시 상시 501배(115만돌)', false, 'fix'),
         makeGuideSlotHtml(elemDebuffHero, '주속성 디버프', '9돌파 이상 권장', false, 'flex'),
-        makeGuideSlotHtml('루비', '화상/디버프', '또는 엘리시아 채택', false, 'flex')
+        makeGuideSlotHtml('루비', '화상/디버프', '3상태이상 충족 시 채택', false, 'flex')
       ];
       let hStage1CntText = '4슬롯';
       if (guideJob === 'lord') {
         hStage1CntText = '5슬롯 (다크로드 영웅 +1)';
-        hStage1Slots.splice(1, 0, makeGuideSlotHtml('백운귀', '닼로 +1슬롯', '최소 3각성 필수 버퍼', false, 'fix'));
+        hStage1Slots.splice(1, 0, makeGuideSlotHtml('백운귀', '닼로 +1슬롯', '3각성 시 501배 필수 버퍼', false, 'fix'));
       }
 
       const hStage1PrepIcons = [
@@ -8412,28 +8938,28 @@ window.addEventListener('DOMContentLoaded', () => {
         hStage3CntText = '5슬롯 (소울리퍼 영웅 +1 추가)';
         hStage3Slots = [
           makeGuideSlotHtml('엘리시아', '1번슬롯 고정', '오버드라이브 3각 시 ➔ 솔라리스', false, 'fix'),
-          makeGuideSlotHtml('셀렌', '사신 고정', '강타 전용 버퍼', false, 'fix'),
+          makeGuideSlotHtml('셀렌', '사신 고정', '3각 시 1,012.5배(시너지100)', false, 'fix'),
           makeGuideSlotHtml(elemDebuffHero, '주속성 디버퍼', `시너지 후 ➔ ${elemNewHero} 변경`, false, 'flex'),
-          makeGuideSlotHtml('나리타', '고정 버퍼', '3각성 필수', false, 'fix'),
-          makeGuideSlotHtml('루비', '디버프 고정', '3상태이상 유지', false, 'fix')
+          makeGuideSlotHtml('나리타', '고정 버퍼', '3각성 상시 501배', false, 'fix'),
+          makeGuideSlotHtml('루비', '디버프 고정', '3상태이상 유지 필수', false, 'fix')
         ].join('');
       } else if (guideJob === 'mage') {
         hStage3CntText = '4슬롯 (미스틱 영웅 슬롯 동일)';
         hStage3Slots = [
           makeGuideSlotHtml('엘리시아', '1번슬롯 고정', '오버드라이브 3각 시 ➔ 솔라리스', false, 'fix'),
-          makeGuideSlotHtml('카엔', '앜메 고정', '스킬 전용 버퍼', false, 'fix'),
+          makeGuideSlotHtml('카엔', '앜메 고정', '3각 시 302.4배(시너지100)', false, 'fix'),
           makeGuideSlotHtml(elemDebuffHero, '주속성 디버퍼', `시너지 후 ➔ ${elemNewHero} 변경`, false, 'flex'),
-          makeGuideSlotHtml('나리타', '고정 버퍼', '3각성 필수', false, 'fix')
+          makeGuideSlotHtml('나리타', '고정 버퍼', '3각성 상시 501배', false, 'fix')
         ].join('');
       } else {
         hStage3CntText = '6슬롯 (오버로드 영웅 +1 추가)';
         hStage3Slots = [
-          makeGuideSlotHtml(lord3rdDealHero, '3차 메인딜!', '오버로드 주력 딜러 채택', false, 'fix'),
-          makeGuideSlotHtml('백운귀', '닼로 고정', '3각성 필수', false, 'fix'),
+          makeGuideSlotHtml('엘리시아', '1번슬롯(과성장)', '노과성장 시 메인딜을 1번에!', false, 'flex'),
+          makeGuideSlotHtml(lord3rdDealHero, '3차 메인딜!', '10돌 및 3각 최우선!', false, 'fix'),
+          makeGuideSlotHtml('백운귀', '닼로 고정', '3각성 시 501배', false, 'fix'),
           makeGuideSlotHtml(elemDebuffHero, '주속성 디버퍼', `시너지 후 ➔ ${elemNewHero} 변경`, false, 'flex'),
-          makeGuideSlotHtml('카엘', '닼로 고정', '영웅스킬 버퍼', false, 'fix'),
-          makeGuideSlotHtml('나리타', '고정 버퍼', '3각성 필수', false, 'fix'),
-          makeGuideSlotHtml('엘리시아', '과성장/솔라리스', '오버드라이브 3각 시 ➔ 솔라리스', false, 'flex')
+          makeGuideSlotHtml('카엘', '닼로 고정', '3각 시 346.25배(시너지100)', false, 'fix'),
+          makeGuideSlotHtml('나리타', '고정 버퍼', '3각성 상시 501배', false, 'fix')
         ].join('');
       }
 
@@ -8445,9 +8971,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       body.innerHTML = `
         <div class="accordion-group">
-
-          <!-- 1. 1차 전직 이전 -->
-          <div class="accordion-item acc-advanced" id="g_acc_h0">
+          <div class="accordion-item acc-advanced active" id="g_acc_h0">
             <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_h0')">
               <div class="accordion-left">
                 <span class="accordion-toggle-icon">▶</span>
@@ -8456,17 +8980,12 @@ window.addEventListener('DOMContentLoaded', () => {
               <span class="accordion-count-badge">4슬롯</span>
             </div>
             <div class="accordion-content">
-              <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin-bottom:6px;">📌 초기 장착 영웅 (직업 고정 + 특급 상태이상 요원):</div>
               <div class="build-slot-grid">${hStage0Slots}</div>
               <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 천천히 수집하며 키워둘 핵심 신화 영웅:</div>
               <div class="build-slot-grid">${hStage0GrowPool}</div>
-              <div class="build-tip-box" style="margin-top:12px;">
-                • 1차 이전에는 직업별 필수인 <strong>[${jobOnlyHero}]</strong>을 고정하고, 신화 돌파 전까지는 특급 영웅인 <strong>[바토리(감전), 나찰(혼돈)]</strong>을 상태이상으로 채택하며 천천히 <strong>엘리시아, 루비, ${elemDebuffHero}</strong>를 키웁니다.
-              </div>
             </div>
           </div>
 
-          <!-- 2. 1차 전직 이후 -->
           <div class="accordion-item acc-advanced" id="g_acc_h1">
             <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_h1')">
               <div class="accordion-left">
@@ -8479,14 +8998,9 @@ window.addEventListener('DOMContentLoaded', () => {
               <div class="build-slot-grid">${hStage1Slots.join('')}</div>
               <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 3차 전직을 위해 이때부터 함께 돌파를 키워둘 영웅:</div>
               <div class="build-slot-grid">${hStage1PrepIcons}</div>
-              <div class="build-tip-box" style="margin-top:12px;">
-                • <strong>나리타 3각 우선 채택:</strong> 나리타 3각성은 현 메타 필수이므로 우선순위로 채택합니다. ${guideJob === 'lord' ? `(다크로드는 영웅 +1이라 여기에 <strong>[백운귀]</strong>가 추가됩니다!)` : ''}<br>
-                • <strong>미리 키우기:</strong> 3차 전직 때 쓰기 위해 <strong>[솔라리스, 현묵, ${elemNewHero}]</strong>${guideJob === 'lord' ? ` 및 3차 오버로드 메인딜인 <strong>[${lord3rdDealHero}]</strong>` : ''}를 같이 키워두세요.
-              </div>
             </div>
           </div>
 
-          <!-- 3. 2차 전직 -->
           <div class="accordion-item acc-unique" id="g_acc_h2">
             <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_h2')">
               <div class="accordion-left">
@@ -8496,56 +9010,513 @@ window.addEventListener('DOMContentLoaded', () => {
               <span class="accordion-count-badge">${hStage1CntText}</span>
             </div>
             <div class="accordion-content">
-              <div style="font-size:12.5px; font-weight:800; color:#f43f5e; margin-bottom:6px;">🅰️ [과성장 룬 + 엘리시아 트리] (엘리시아가 많이 컸을 때):</div>
+              <div style="font-size:12.5px; font-weight:800; color:#f43f5e; margin-bottom:6px;">🅰️ [과성장 룬 + 엘리시아 트리] (1번 슬롯에 엘리시아 고정):</div>
               <div class="build-slot-grid">${hStage2TreeA}</div>
-              <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:14px 0 6px 0;">🅱️ [노과성장 + 솔라리스 트리] (엘리시아 안 키우고 오버드라이브 각성 올릴 때):</div>
+              <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:14px 0 6px 0;">🅱️ [노과성장 + 솔라리스 트리] (오버드라이브 각성 올릴 때):</div>
               <div class="build-slot-grid">${hStage2TreeB}</div>
-              <div class="build-tip-box" style="margin-top:12px;">
-                • 엘리시아가 많이 컸다면 <strong>과성장 룬 + 엘리시아 + ${jobOnlyHero} + 격화 룬 & 루비(또는 ${elemDebuffHero})</strong>를 쓰고, 과성장 트리를 안 탄다면 <strong>솔라리스 채택 + 스킬 오버드라이브 각성</strong>을 올리시면 됩니다.
-              </div>
             </div>
           </div>
 
-          <!-- 4. 3차 ~ 4차 전직 -->
           <div class="accordion-item acc-mythic" id="g_acc_h3">
             <div class="accordion-header" onclick="toggleNewbieAccordion('g_acc_h3')">
               <div class="accordion-left">
                 <span class="accordion-toggle-icon">▶</span>
                 <span class="accordion-title-text"><span class="grade-badge grade-mythic">3~4차 전직</span> 3차 전직 (Lv.35) ~ 4차 전직 종결 영웅 세팅</span>
               </div>
-              <span class="accordion-count-badge">${hStage3CntText} (4차 슬롯 변화 없음)</span>
+              <span class="accordion-count-badge">${hStage3CntText}</span>
             </div>
             <div class="accordion-content">
-              <div style="font-size:12.5px; font-weight:800; color:#fda4af; margin-bottom:6px;">📌 3차 ~ 4차 주력 장착 슬롯:</div>
               <div class="build-slot-grid">${hStage3Slots}</div>
               <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">🔄 조건 달성 시 교체 투입할 종결 영웅 & 공통 보유효과 각성:</div>
               <div class="build-slot-grid">${hStage3SwitchIcons}</div>
-              <div class="build-tip-box" style="margin-top:12px;">
-                • <strong>🔥 디버프 영웅 교체 기준 (${elemDebuffHero} vs ${elemNewHero}):</strong><br>
-                  &nbsp;&nbsp;- 각성 시너지 조건을 먼저 맞춰야 하며, <strong>[${elemDebuffHero} 풀돌(0각) &lt; ${elemNewHero} 1각]</strong> / <strong>[${elemDebuffHero} 1각 &gt; ${elemNewHero} 2각]</strong> 입니다.<br>
-                  &nbsp;&nbsp;- 각성 시너지를 맞춘 이후 고각성에서는 최종적으로 <strong>[${elemNewHero}]</strong>로 변경합니다!<br>
-                • <strong>⚡ 과성장 졸업 교체:</strong> 스킬 <strong>[오버드라이브 3각]</strong> 달성 시 <strong>엘리시아 ➔ 솔라리스</strong>로 변경합니다.<br>
-                • <strong>🌟 공통 필수:</strong> <strong>[현묵]</strong>은 슬롯에 끼지 않더라도 <strong>보유효과 각성</strong>을 반드시 챙겨주세요!
-              </div>
             </div>
           </div>
-
         </div>
       `;
       return;
     }
+
+    // 5) 🧚 직업별 정령 세팅 가이드 (수호신 오멘 제거 완료)
+    if (currentGuideType === 'spirit') {
+      const elemKr = guideElem === 'fire' ? '화염 🔥' : (guideElem === 'light' ? '번개 ⚡' : '어둠 🌑');
+      const leader3rd = guideElem === 'fire' ? '피라' : (guideElem === 'light' ? '루미아' : '녹시아');
+      const leader4th = guideElem === 'fire' ? '홍련 (4차전용)' : (guideElem === 'light' ? '라이자 (4차전용)' : '릴리스 (4차전용)');
+      const supList = guideElem === 'fire'
+        ? ['라바나', '플레아', '드라카', '베스타', '헤스티아']
+        : (guideElem === 'light'
+          ? ['제피라', '레이메이', '유레이', '바즈라', '레비나']
+          : ['모르나', '니벨', '할로우', '에레보스', '아케론']);
+
+      body.innerHTML = `
+        <div class="stage-build-card" style="border-left-color:#22c55e;">
+          <div class="stage-build-header">
+            <span class="stage-build-title">🧚 [${elemKr}] 속성 정령 리더 & 서포터 추천 편성</span>
+            <a href="https://naver.me/59lnaObJ" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:#38bdf8; font-weight:800; text-decoration:none; background:rgba(56,189,248,0.15); padding:4px 10px; border-radius:6px; border:1px solid #38bdf8;">📖 붉양님 속성별 정령 원문 공략 ➔</a>
+          </div>
+          <div style="font-size:13px; color:#cbd5e1; margin-bottom:12px;">
+            • <strong>신화 리더 교체 기준:</strong> 내 주속성(무속성 제외) <strong>정령 속성 시너지 200점 이상 + 신화 리더 정령 6돌파 이상</strong> 달성 시 특급/전설 리더에서 신화 리더로 교체합니다!
+          </div>
+          <div class="grid-2">
+            <div style="background:#1e293b; padding:14px; border-radius:10px; border:1px solid #eab308;">
+              <div style="font-size:13.5px; font-weight:800; color:#fde047; margin-bottom:6px;">👑 추천 리더 정령 (${elemKr})</div>
+              <div style="font-size:14px; color:#ffffff; font-weight:800;">• 3차 주력 리더: <span style="color:#38bdf8;">${leader3rd}</span> (6돌파↑ + 주속성 시너지 200↑)</div>
+              <div style="font-size:14px; color:#ffffff; font-weight:800; margin-top:4px;">• 4차 종결 리더: <span style="color:#fda4af;">${leader4th}</span></div>
+              <div style="font-size:12px; color:#94a3b8; margin-top:4px;">* 조건 미달성 초반에는 스파키/크로노/엠버/시온/말파스 등 고돌파 하위 리더 사용</div>
+            </div>
+            <div style="background:#1e293b; padding:14px; border-radius:10px; border:1px solid #38bdf8;">
+              <div style="font-size:13.5px; font-weight:800; color:#38bdf8; margin-bottom:6px;">🛡️ 추천 서포터 정령 (${elemKr} + 무속성)</div>
+              <div style="font-size:13.5px; color:#ffffff; font-weight:700;">• 주속성 핵심: ${supList.join(', ')}</div>
+              <div style="font-size:13.5px; color:#a7f3d0; font-weight:700; margin-top:4px;">• 무속성 공용 코어: 아인, 헤라</div>
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // 6) 🌟 전직 특성 가이드 (1차 / 2차 / 3차 / 4차 탭 연동)
+    if (currentGuideType === 'trait') {
+      renderTraitGuideFull(body);
+      return;
+    }
   }
 
-  // ==================== INITIALIZATION (DOM 즉시 실행으로 깜빡임 0%!) ====================
-  function initAppV300() {
-    if (window._v300Initialized) return;
-    window._v300Initialized = true;
+  // ==================== 전직 특성 가이드 (1~4차 + 기본 특성) 렌더링 ====================
+  function renderTraitGuideFull(container) {
+    const jMeta = JOB_NAMES_FULL[guideJob];
 
-    // 1. 이미지 로딩을 기다리지 않고 즉시 [탭 1: 세팅 도우미 모음]으로 화면 정렬!
+    // 상단 1차 / 2차 / 3차 / 4차 전환 버튼 바
+    const stepTabsHtml = `
+      <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; margin-bottom:18px;">
+        <button onclick="changeTraitTabStep(1)" style="padding:11px 8px; border-radius:10px; font-weight:800; font-size:13.5px; cursor:pointer; border:1.5px solid ${currentTraitTabStep===1?'#38bdf8':'#334155'}; background:${currentTraitTabStep===1?'#172554':'#0f172a'}; color:${currentTraitTabStep===1?'#ffffff':'#94a3b8'};">
+          1차 특성 (${jMeta.c1})
+        </button>
+        <button onclick="changeTraitTabStep(2)" style="padding:11px 8px; border-radius:10px; font-weight:800; font-size:13.5px; cursor:pointer; border:1.5px solid ${currentTraitTabStep===2?'#eab308':'#334155'}; background:${currentTraitTabStep===2?'#422006':'#0f172a'}; color:${currentTraitTabStep===2?'#fde047':'#94a3b8'};">
+          2차 특성 (${jMeta.c2}) 🔒
+        </button>
+        <button onclick="changeTraitTabStep(3)" style="padding:11px 8px; border-radius:10px; font-weight:800; font-size:13.5px; cursor:pointer; border:1.5px solid ${currentTraitTabStep===3?'#f43f5e':'#334155'}; background:${currentTraitTabStep===3?'#4c0519':'#0f172a'}; color:${currentTraitTabStep===3?'#fda4af':'#94a3b8'};">
+          3차 특화 (${jMeta.c3})
+        </button>
+        <button onclick="changeTraitTabStep(4)" style="padding:11px 8px; border-radius:10px; font-weight:800; font-size:13.5px; cursor:pointer; border:1.5px solid ${currentTraitTabStep===4?'#a855f7':'#334155'}; background:${currentTraitTabStep===4?'#3b0764':'#0f172a'}; color:${currentTraitTabStep===4?'#e9d5ff':'#94a3b8'};">
+          4차 특성 (${jMeta.c4}) 🔒
+        </button>
+      </div>
+    `;
+
+    // 2차 & 4차 특성 (데이터 수집 중 안내 + 2차 핵심 요약 제공)
+    if (currentTraitTabStep === 2 || currentTraitTabStep === 4) {
+      const stepName = currentTraitTabStep === 2 ? `2차 전직 (${jMeta.c2})` : `4차 전직 (${jMeta.c4})`;
+      const tip2nd = currentTraitTabStep === 2
+        ? `<div class="build-tip-box" style="margin-top:16px; text-align:left;">
+            💡 <strong>[참고] 붉양님 공략 기준 2차 전직(표식 & 크리티컬) 핵심 포인트 요약:</strong><br>
+            • <strong>표식 탭:</strong> 표식 1개당 피해량 증가 및 하단 핵심 노드를 최우선(0~1순위)으로 찍고, 2차 표식 스택이 느리게 쌓일 때만 표식 획득 확률에 투자합니다.<br>
+            • <strong>크리티컬 탭:</strong> 전직 크리티컬 발동 시 부여되는 <strong>저주 디버프 피해량 증가(0순위, 100% 곱연산)</strong>와 <strong>크리티컬 발동 시 표식 4배 획득</strong>이 핵심이므로 표식 확률보다 크리티컬 확률/피해 위주로 투자하세요!
+          </div>`
+        : '';
+
+      container.innerHTML = `
+        ${stepTabsHtml}
+        <div style="text-align:center; padding:40px 20px; background:#0f172a; border-radius:14px; border:1.5px dashed #64748b;">
+          <div style="font-size:36px; margin-bottom:10px;">🔒</div>
+          <strong style="font-size:17px; color:#ffffff;">${stepName} 상세 시뮬레이터는 현재 데이터 수집 중입니다.</strong>
+          <p style="font-size:13.5px; color:#94a3b8; margin-top:6px;">인게임 상세 수치 및 트리 데이터 정리가 완료되는 대로 업데이트될 예정입니다.</p>
+          ${tip2nd}
+        </div>
+      `;
+      return;
+    }
+
+    // 3차 전직 특화 (Lv.0 ~ Lv.40 레벨 선택 및 잠금 & Lv.40 비석치기 비교 색상 완벽 구현!)
+    if (currentTraitTabStep === 3) {
+      const lv3rdList = [
+        { lv: 0,  label: "Lv.0 (기본 오픈)" },
+        { lv: 10, label: "Lv.10 (피해량 전환)" },
+        { lv: 15, label: "Lv.15 (미스틱 Lv.0 변경)" },
+        { lv: 20, label: "Lv.20 (최대중첩 모피증)" },
+        { lv: 30, label: "Lv.30 (주속성 5배 전환)" },
+        { lv: 40, label: "Lv.40 (최종 증폭 해금)" }
+      ];
+
+      const lv3rdBtnsHtml = lv3rdList.map(item => {
+        const isSel = (currentTrait3rdLv === item.lv);
+        return `
+          <button onclick="changeTrait3rdLevel(${item.lv})" style="padding:8px 10px; font-size:12.5px; font-weight:800; border-radius:8px; cursor:pointer; transition:all 0.15s; border:1.5px solid ${isSel?'#f43f5e':'#334155'}; background:${isSel?'linear-gradient(135deg, #e11d48 0%, #881337 100%)':'#0f172a'}; color:${isSel?'#ffffff':'#cbd5e1'}; box-shadow:${isSel?'0 0 12px rgba(244,63,94,0.45)':'none'};">
+            ${item.label}
+          </button>
+        `;
+      }).join('');
+
+      // Lv.0 행 추천 분기 (미스틱은 15렙 미만이면 3번, 15렙 이상이면 1번 주력 + 3번 비교 표시!)
+      const lv0Col1 = (guideJob === 'mage' && currentTrait3rdLv >= 15) ? 'recommended' : '';
+      const lv0Col2 = (guideJob === 'reaper') ? 'recommended' : '';
+      const lv0Col3 = (guideJob === 'lord' || (guideJob === 'mage' && currentTrait3rdLv < 15))
+        ? 'recommended'
+        : (guideJob === 'mage' && currentTrait3rdLv >= 15 ? 'compare-pick' : '');
+
+      // Lv.10 행 추천 분기
+      const isLv10Unlocked = currentTrait3rdLv >= 10;
+      const lv10Col2 = (isLv10Unlocked && guideJob === 'reaper') ? 'recommended' : '';
+      const lv10Col3 = (isLv10Unlocked && (guideJob === 'mage' || guideJob === 'lord')) ? 'recommended' : '';
+
+      // Lv.20 행 추천 분기
+      const isLv20Unlocked = currentTrait3rdLv >= 20;
+      const lv20Col3 = isLv20Unlocked ? 'recommended' : '';
+
+      // Lv.30 행 추천 분기
+      const isLv30Unlocked = currentTrait3rdLv >= 30;
+      const lv30Col1 = (isLv30Unlocked && guideElem === 'fire') ? 'recommended' : '';
+      const lv30Col2 = (isLv30Unlocked && guideElem === 'light') ? 'recommended' : '';
+      const lv30Col3 = (isLv30Unlocked && guideElem === 'dark') ? 'recommended' : '';
+
+      // Lv.40 행 추천 분기 (사신/미스틱: 2번 고점 황금색 + 3번 수련동굴 비석치기 비교용 시안블루 동시 점등!)
+      const isLv40Unlocked = currentTrait3rdLv >= 40;
+      const lv40Col1 = (isLv40Unlocked && guideJob === 'lord') ? 'recommended' : '';
+      const lv40Col2 = (isLv40Unlocked && guideJob !== 'lord') ? 'recommended' : (isLv40Unlocked && guideJob === 'lord' ? 'compare-pick' : '');
+      const lv40Col3 = (isLv40Unlocked && guideJob !== 'lord') ? 'compare-pick' : '';
+
+      container.innerHTML = `
+        ${stepTabsHtml}
+        <div class="stage-build-card" style="border-left-color:#f43f5e;">
+          <div class="stage-build-header">
+            <span class="stage-build-title">🔥 3차 전직 (${jMeta.c3}) 레벨별 특화 트리 추천표</span>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <span class="grade-badge" style="background:rgba(251,191,36,0.2); color:#fde047; border:1px solid #fbbf24;">🟡 노란색 = 주력 고점 채택</span>
+              <span class="grade-badge" style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid #38bdf8;">🔵 파란색 = 비석치기 비교 후 선택</span>
+            </div>
+          </div>
+
+          <!-- 3차 전직 레벨 클릭 선택 바 -->
+          <div style="background:#131d33; padding:12px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:14px;">
+            <label style="color:#fda4af; margin-bottom:8px; display:block;">📊 내 3차 전직 레벨 선택 (선택 레벨 이하만 해금되며, 미달성 줄은 잠금 처리됩니다)</label>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap:8px;">
+              ${lv3rdBtnsHtml}
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table class="spec-3rd-table">
+              <tbody>
+                <!-- Lv.0 -->
+                <tr>
+                  <td style="width:78px; font-weight:900; color:#fde047; text-align:center;">Lv.0<br><small style="color:#34d399;">해금됨</small></td>
+                  <td class="spec-3rd-cell ${lv0Col1}">
+                    <div>속성 버프 최대 중첩 30 증가</div>
+                    ${guideJob==='mage' && currentTrait3rdLv>=15 ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 15~20렙 이후 주력 채택!</div>' : ''}
+                  </td>
+                  <td class="spec-3rd-cell ${lv0Col2}">
+                    <div>속성 버프 획득 확률 50% 증가</div>
+                    ${guideJob==='reaper' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 소울리퍼 고정 채택!</div>' : ''}
+                  </td>
+                  <td class="spec-3rd-cell ${lv0Col3}">
+                    <div>속성 버프 중첩당 피해량 75% 증가</div>
+                    ${guideJob==='lord' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 오버로드 고정 채택!</div>' : (guideJob==='mage' ? (currentTrait3rdLv<15 ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 15렙 이전 주력 채택!</div>' : '<div style="color:#38bdf8; font-size:11px; margin-top:4px;">🔄 스택 안 쌓이면 1번과 비석 비교</div>') : '')}
+                  </td>
+                </tr>
+
+                <!-- Lv.10 -->
+                <tr class="${isLv10Unlocked ? '' : 'spec-3rd-row-locked'}">
+                  <td style="font-weight:900; color:${isLv10Unlocked?'#fde047':'#64748b'}; text-align:center;">
+                    Lv.10<br><small style="color:${isLv10Unlocked?'#34d399':'#f87171'};">${isLv10Unlocked?'해금됨':'🔒잠김'}</small>
+                  </td>
+                  <td class="spec-3rd-cell">
+                    <div>모든 ${guideJob==='reaper'?'강타':(guideJob==='mage'?'스킬':'영웅 스킬')} 피해량 200% 증가 (곱연산)</div>
+                  </td>
+                  <td class="spec-3rd-cell ${lv10Col2}">
+                    <div>${guideJob==='reaper'?'스킬 피해량 1% ➔ 강타 피해량 5% 전환':'강타 피해량 1% ➔ '+(guideJob==='mage'?'스킬':'영웅 스킬')+' 피해량 5% 전환'}</div>
+                    ${isLv10Unlocked && guideJob==='reaper' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 필수 채택! (일반특성 스피증 찍기)</div>' : ''}
+                  </td>
+                  <td class="spec-3rd-cell ${lv10Col3}">
+                    <div>${guideJob==='lord'?'스킬 피해량 1% ➔ 영웅 스킬 피해량 5% 전환':'영웅 스킬 피해량 1% ➔ '+(guideJob==='mage'?'스킬':'강타')+' 피해량 5% 전환'}</div>
+                    ${isLv10Unlocked && guideJob!=='reaper' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 필수 채택! (일반특성 '+(guideJob==='mage'?'영스피':'스피증')+' 찍기)</div>' : ''}
+                  </td>
+                </tr>
+
+                <!-- Lv.20 -->
+                <tr class="${isLv20Unlocked ? '' : 'spec-3rd-row-locked'}">
+                  <td style="font-weight:900; color:${isLv20Unlocked?'#fde047':'#64748b'}; text-align:center;">
+                    Lv.20<br><small style="color:${isLv20Unlocked?'#34d399':'#f87171'};">${isLv20Unlocked?'해금됨':'🔒잠김'}</small>
+                  </td>
+                  <td class="spec-3rd-cell"><div>모든 피해량 150% 증가 (곱연산)</div></td>
+                  <td class="spec-3rd-cell"><div>속성 버프 최대 중첩의 50% 이상일 때 모든 피해량 200% 증가</div></td>
+                  <td class="spec-3rd-cell ${lv20Col3}">
+                    <div>보유한 속성 버프 중첩이 최대 중첩일 때 모든 피해량 400% 증가 (곱연산)</div>
+                    ${isLv20Unlocked ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 전 직업 공통 필수!</div>' : ''}
+                  </td>
+                </tr>
+
+                <!-- Lv.30 -->
+                <tr class="${isLv30Unlocked ? '' : 'spec-3rd-row-locked'}">
+                  <td style="font-weight:900; color:${isLv30Unlocked?'#fde047':'#64748b'}; text-align:center;">
+                    Lv.30<br><small style="color:${isLv30Unlocked?'#34d399':'#f87171'};">${isLv30Unlocked?'해금됨':'🔒잠김'}</small>
+                  </td>
+                  <td class="spec-3rd-cell ${lv30Col1}">
+                    <div>번개, 어둠 1% ➔ 🔥화염 속성 피해량 5% 전환</div>
+                    ${isLv30Unlocked && guideElem==='fire' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 화염 주속성 채택!</div>' : ''}
+                  </td>
+                  <td class="spec-3rd-cell ${lv30Col2}">
+                    <div>화염, 어둠 1% ➔ ⚡번개 속성 피해량 5% 전환</div>
+                    ${isLv30Unlocked && guideElem==='light' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 번개 주속성 채택!</div>' : ''}
+                  </td>
+                  <td class="spec-3rd-cell ${lv30Col3}">
+                    <div>화염, 번개 1% ➔ 🌑어둠 속성 피해량 5% 전환</div>
+                    ${isLv30Unlocked && guideElem==='dark' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 어둠 주속성 채택!</div>' : ''}
+                  </td>
+                </tr>
+
+                <!-- Lv.40 -->
+                <tr class="${isLv40Unlocked ? '' : 'spec-3rd-row-locked'}">
+                  <td style="font-weight:900; color:${isLv40Unlocked?'#fde047':'#64748b'}; text-align:center;">
+                    Lv.40<br><small style="color:${isLv40Unlocked?'#34d399':'#f87171'};">${isLv40Unlocked?'해금됨':'🔒잠김'}</small>
+                  </td>
+                  <td class="spec-3rd-cell ${lv40Col1}">
+                    <div>속성 버프 획득 확률 20% 증가 / 중첩당 피해량 250% 증폭</div>
+                    ${isLv40Unlocked && guideJob==='lord' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 다크로드 1순위 채택! (스택 속도 보완)</div>' : ''}
+                  </td>
+                  <td class="spec-3rd-cell ${lv40Col2}">
+                    <div>속성 버프 획득 확률 20% 감소 / 중첩당 피해량 1,000% 증폭</div>
+                    ${isLv40Unlocked ? (guideJob!=='lord' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 고점 기준 약 1.1배 우위! (주력 채택)</div>' : '<div style="color:#38bdf8; font-size:11px; margin-top:4px;">🔄 스택 잘 쌓이면 수련동굴 비석 비교!</div>') : ''}
+                  </td>
+                  <td class="spec-3rd-cell ${lv40Col3}">
+                    <div>속성 버프 최대 중첩 30 감소 / 중첩당 피해량 1,500% 증폭</div>
+                    ${isLv40Unlocked && guideJob!=='lord' ? '<div style="color:#38bdf8; font-size:11px; margin-top:4px;">🔄 최대중첩 변수! 수련동굴 비석치기로 2번과 비교 후 선택</div>' : ''}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="build-tip-box" style="margin-top:14px;">
+            📌 <strong>[중요] 선택한 3차 레벨(Lv.${currentTrait3rdLv}) 기준 일반 특성(성장 ➔ 특성 탭) 찍는 법:</strong><br>
+            • <strong>3차 Lv.0 ~ Lv.9:</strong> 주력 탭 모든 피해량을 다 찍은 뒤, 포인트가 모일 때마다 초기화하며 25 ➔ 40 ➔ 60 ➔ 80 포인트 모든 피해량을 순서대로 찍습니다.<br>
+            • <strong>3차 Lv.10 이상 ${currentTrait3rdLv>=10?'<span style="color:#34d399;">(현재 활성화!)</span>':'<span style="color:#64748b;">(미달성)</span>'}:</strong> Lv.10 전환 특화가 열리므로, 기존 특성 상태에서 <strong>[${guideJob==='mage'?'영웅 스킬 피해량 증가(%)':'스킬 피해량 증가(%)'}]</strong> 노드를 추가로 마스터합니다!<br>
+            • <strong>3차 Lv.30 이상 ${currentTrait3rdLv>=30?'<span style="color:#34d399;">(현재 활성화!)</span>':'<span style="color:#64748b;">(미달성)</span>'}:</strong> 타 속성 피해량이 주속성 5배로 전환되므로, 스킬/영웅 특성 탭의 <strong>모든 속성(불·번개·어둠) 피해량 노드를 전부 마스터</strong>합니다!
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // ==================== 1차 전직 특성 시뮬레이터 (Lv.1 ~ Lv.150 버튼 선택 방식) ====================
+    const allUnlockLvs = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150];
+    
+    const lvButtonsHtml = allUnlockLvs.map(qLv => {
+      const isSel = (currentTrait1stLv === qLv);
+      let badgeTag = '';
+      if (qLv === 20) badgeTag = '<span style="font-size:9.5px; color:#fde047; display:block;">2슬롯</span>';
+      else if (qLv === 40) badgeTag = '<span style="font-size:9.5px; color:#fde047; display:block;">3슬롯</span>';
+      else if (qLv === 60) badgeTag = '<span style="font-size:9.5px; color:#34d399; display:block;">4슬롯</span>';
+      else if (qLv === 65) badgeTag = '<span style="font-size:9.5px; color:#fda4af; display:block;">각성봉인</span>';
+      else if (qLv === 80) badgeTag = '<span style="font-size:9.5px; color:#38bdf8; display:block;">5슬롯</span>';
+
+      return `
+        <button onclick="changeTrait1stLevel(${qLv})" style="padding:6px 4px; min-width:56px; font-size:12px; font-weight:800; border-radius:8px; cursor:pointer; line-height:1.2; transition:all 0.15s; border:1.5px solid ${isSel?'#38bdf8':'#334155'}; background:${isSel?'linear-gradient(135deg, #0284c7 0%, #1e3a8a 100%)':'#0f172a'}; color:${isSel?'#ffffff':'#cbd5e1'}; box-shadow:${isSel?'0 0 10px rgba(56,189,248,0.45)':'none'};">
+          Lv.${qLv}${badgeTag}
+        </button>
+      `;
+    }).join('');
+
+    const isLockedUnder60 = (guideJob !== 'reaper' && currentTrait1stLv < 60);
+
+    let boardContentHtml = '';
+    if (isLockedUnder60) {
+      boardContentHtml = `
+        <div style="background:linear-gradient(135deg, rgba(225,29,72,0.18) 0%, #0f172a 100%); border:2px solid #f43f5e; border-radius:14px; padding:28px 20px; text-align:center; margin:14px 0;">
+          <div style="font-size:38px; margin-bottom:10px;">⚠️</div>
+          <h3 style="font-size:18px; font-weight:900; color:#fda4af; margin-bottom:8px;">
+            1차 전직 60레벨 이전 구간은 [사신]으로 플레이하시는 것을 강력 권장합니다!
+          </h3>
+          <p style="font-size:13.5px; color:#e2e8f0; line-height:1.65; max-width:640px; margin:0 auto 16px auto;">
+            1차 전직 <strong>Lv.60 이전</strong>에는 <strong>${jMeta.c1}</strong>의 핵심 전직 특성(스킬 레벨 합 / 돌파 합 / 각성기 봉인) 조건이 충족되지 않아 사신 대비 이득이 전혀 없습니다.<br>
+            <strong>Lv.60까지 사신으로 육성한 뒤 전환</strong>하시거나, 위 레벨 버튼에서 <strong>Lv.60 이상</strong>을 선택해 주세요!
+          </p>
+          <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+            <button onclick="selectGuideJob('reaper')" style="background:#e11d48; border:1px solid #fb7185; color:#fff; padding:10px 18px; border-radius:10px; font-weight:800; font-size:13.5px; cursor:pointer;">
+              🗡️ 사신 (Lv.${currentTrait1stLv}) 추천 특성 보러가기
+            </button>
+            <button onclick="changeTrait1stLevel(60)" style="background:#0284c7; border:1px solid #38bdf8; color:#fff; padding:10px 18px; border-radius:10px; font-weight:800; font-size:13.5px; cursor:pointer;">
+              🔓 ${jMeta.c1} Lv.60 이상 특성 바로 보기
+            </button>
+          </div>
+        </div>
+      `;
+    } else {
+      const rec = getRecommended1stTraits(guideJob, currentTrait1stLv, traitUseOvergrowth, traitContentMode);
+      const slotUnlockLvs = [1, 20, 40, 60, 80];
+
+      let slotsHtml = '';
+      for (let i = 0; i < 5; i++) {
+        const reqLv = slotUnlockLvs[i];
+        if (currentTrait1stLv < reqLv) {
+          slotsHtml += `
+            <div class="trait-slot-box locked">
+              <div style="font-size:24px; margin-bottom:4px;">🔒</div>
+              <div style="font-size:14px; font-weight:900; color:#f87171;">Lv.${reqLv} 해금 슬롯</div>
+              <div style="font-size:11.5px; color:#94a3b8; margin-top:4px;">1차 전직 ${reqLv}레벨 달성 시 오픈</div>
+            </div>
+          `;
+        } else {
+          const t = rec.activeTraits[i];
+          if (!t) {
+            slotsHtml += `
+              <div class="trait-slot-box locked">
+                <div style="font-size:13px; color:#94a3b8;">장착할 유효 특성 없음</div>
+              </div>
+            `;
+          } else {
+            slotsHtml += `
+              <div class="trait-slot-box ${t.tierMeta.cls}">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <span style="font-size:11px; font-weight:800; opacity:0.85;">슬롯 ${i+1} (Lv.${t.unlockLv} 해금)</span>
+                  <span class="trait-tier-badge ${t.tierMeta.cls}">${t.tierMeta.kr} 등급</span>
+                </div>
+                <div style="font-size:15px; font-weight:900; color:#ffffff; line-height:1.3; margin-bottom:6px;">
+                  ${t.name}
+                </div>
+                <div style="font-size:12px; color:#fde047; background:rgba(0,0,0,0.45); padding:7px 9px; border-radius:8px; line-height:1.45; font-weight:700;">
+                  ${t.desc}
+                </div>
+              </div>
+            `;
+          }
+        }
+      }
+
+      const subHtml = rec.subTraits.length > 0
+        ? `<div style="margin-top:12px; background:#0f172a; border:1px solid #334155; border-radius:10px; padding:10px 14px; font-size:12.5px; color:#cbd5e1;">
+            🔄 <strong>차순위 대체 가능 특성 (스펙/돌파 조건 미달 시 교체):</strong> 
+            ${rec.subTraits.map(st => `<span class="trait-tier-badge ${st.tierMeta.cls}" style="margin:0 4px;">${st.tierMeta.kr}</span><strong style="color:#fff;">${st.name} (Lv.${st.unlockLv})</strong>`).join(' / ')}
+          </div>`
+        : '';
+
+      const warnHtml = rec.notRecommended.length > 0
+        ? `<div style="margin-top:10px; background:rgba(239,68,68,0.1); border:1px solid #ef4444; border-radius:10px; padding:10px 14px; font-size:12.5px; color:#fca5a5; line-height:1.6;">
+            🚫 <strong>사용 비추천 (함정 특성 주의):</strong><br>
+            ${rec.notRecommended.map(nr => `• <strong>[${nr.trait.name} (Lv.${nr.trait.unlockLv})]</strong>: ${nr.reason}`).join('<br>')}
+          </div>`
+        : '';
+
+      boardContentHtml = `
+        <div class="trait-slots-stage">
+          <div style="text-align:center; font-size:13px; color:#cbd5e1; margin-bottom:12px;">
+            ✨ <strong>1차 전직 Lv.${currentTrait1stLv}</strong> 기준 해금 슬롯 (<strong>${rec.slotCount} / 5칸</strong>) 최적 세팅
+          </div>
+          <div class="trait-5slots-grid">
+            ${slotsHtml}
+          </div>
+        </div>
+        ${subHtml}
+        ${warnHtml}
+      `;
+    }
+
+    const dbList = TRAIT_1ST_DB[guideJob] || [];
+    const allTraitRowsHtml = dbList.map(tDef => {
+      const curUnlocked = getUnlockedTraitAtLevel(tDef, currentTrait1stLv);
+      const badgeHtml = curUnlocked
+        ? `<span class="trait-tier-badge ${curUnlocked.tierMeta.cls}">현재 Lv.${curUnlocked.unlockLv} (${curUnlocked.tierMeta.kr}) 해금됨</span>`
+        : `<span class="grade-badge" style="background:#334155; color:#94a3b8;">🔒 Lv.${tDef.lvs[0]} 해금</span>`;
+
+      const stepPills = tDef.lvs.map((lvNum, idx) => {
+        const tMeta = getTraitTierMeta(tDef.tiers[idx]);
+        const isReached = lvNum <= currentTrait1stLv;
+        return `<span class="trait-tier-badge ${tMeta.cls}" style="opacity:${isReached?1:0.38}; margin:2px;">Lv.${lvNum} (${tMeta.kr}: ${formatKoreanNumber(tDef.vals[idx])}${tDef.id.includes('hits')?'회':'%'})</span>`;
+      }).join('');
+
+      return `
+        <div style="background:#0f172a; border:1px solid #334155; border-radius:10px; padding:12px 14px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:6px;">
+            <strong style="font-size:14.5px; color:#ffffff;">${tDef.name} ${tDef.isUnstableBurst ? '<span style="color:#f87171; font-size:11.5px;">(⚠️사용 비추천)</span>' : ''}</strong>
+            ${badgeHtml}
+          </div>
+          <div style="font-size:12.5px; color:#fde047; margin-bottom:6px;">
+            ${curUnlocked ? `현재 효과: ${curUnlocked.desc}` : `최초 해금 효과 (Lv.${tDef.lvs[0]}): ${tDef.descFn(tDef.vals[0], tDef.lvs[0], 0, tDef)}`}
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:2px;">
+            ${stepPills}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.innerHTML = `
+      ${stepTabsHtml}
+
+      <div class="stage-build-card" style="border-left-color:${jMeta.color};">
+        <div class="stage-build-header">
+          <span class="stage-build-title">🌟 1차 전직 (${jMeta.c1}) 레벨별 최적 특성 자동 추천기</span>
+          <span class="grade-badge grade-ancient">Lv.1 ~ Lv.150 전 구간 반영</span>
+        </div>
+
+        <!-- 💍 크게 확대한 [엘리시아 + 과성장 룬] 선택 카드 (엘리시아 실제 이미지 + 고대·영원 과성장 아이콘 탑재!) -->
+        <div onclick="toggleTraitOvergrowth(!traitUseOvergrowth)" style="background:linear-gradient(135deg, ${traitUseOvergrowth?'rgba(16,185,129,0.18)':'rgba(15,23,42,0.9)'} 0%, #131d33 100%); padding:16px 18px; border-radius:14px; border:2px solid ${traitUseOvergrowth?'#10b981':'#334155'}; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; cursor:pointer; box-shadow:${traitUseOvergrowth?'0 0 18px rgba(16,185,129,0.25)':'none'}; transition:all 0.2s;">
+          <div style="display:flex; align-items:center; gap:14px;">
+            <!-- 엘리시아 썸네일 + 과성장 네온 배지 -->
+            <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+              <div style="width:52px; height:52px; border-radius:12px; background:#0f172a; border:2px solid #38bdf8; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(56,189,248,0.4);">
+                <img src="images/elisia.png" alt="엘리시아" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='images/elisia.PNG'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
+              </div>
+              <span style="font-size:15px; font-weight:900; color:#fde047;">➕</span>
+              <div style="width:52px; height:52px; border-radius:12px; background:linear-gradient(135deg, #06b6d4 0%, #10b981 100%); padding:2px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 12px rgba(16,185,129,0.45);">
+                <div style="width:100%; height:100%; background:#0f172a; border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.15;">
+                  <span style="font-size:9.5px; color:#34d399; font-weight:800;">고대·영원</span>
+                  <span style="font-size:13px; color:#ffffff; font-weight:900;">과성장</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size:16px; font-weight:900; color:#ffffff; display:flex; align-items:center; gap:8px;">
+                <span>💍 [엘리시아 + 과성장 룬] 조합 사용 여부</span>
+                <span class="grade-badge" style="background:${traitUseOvergrowth?'#059669':'#334155'}; color:#fff; font-size:11.5px; padding:2px 8px;">${traitUseOvergrowth?'✅ 사용 중 (ON)':'미사용 (OFF)'}</span>
+              </div>
+              <div style="font-size:12.5px; color:#cbd5e1; margin-top:4px; line-height:1.45;">
+                • 활성화 시 <strong>[${guideJob==='mage'?'영웅 스킬 피해량 1%당 ➔ 전직 스킬 피해량 증가':'스킬 피해량 1%당 ➔ 전직 '+(guideJob==='reaper'?'강타':'영웅 스킬')+' 피해량 증가'}]</strong> 특성을 1순위로 고정 장착합니다.<br>
+                • 다크로드(오버로드)의 경우 1번 슬롯이 엘리시아이므로 메인딜 영웅이 효과를 못 받는 <strong>'강화 영웅 스킬 사용'을 자동으로 제외</strong>합니다.
+              </div>
+            </div>
+          </div>
+
+          <div onclick="event.stopPropagation();" style="display:flex; align-items:center;">
+            <input type="checkbox" ${traitUseOvergrowth ? 'checked' : ''} onchange="toggleTraitOvergrowth(this.checked)" style="width:24px; height:24px; accent-color:#10b981; cursor:pointer;">
+          </div>
+        </div>
+
+        <!-- 해금 레벨 순서대로 쭉 나열된 선택 버튼 그리드 -->
+        <div style="background:#131d33; padding:12px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:14px;">
+          <label style="color:#38bdf8; margin-bottom:8px; display:block;">📊 내 1차 전직 레벨 클릭 선택 (특성/슬롯 해금 순서)</label>
+          <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); gap:6px;">
+            ${lvButtonsHtml}
+          </div>
+        </div>
+
+        <!-- 5슬롯 시각화 보드 -->
+        ${boardContentHtml}
+
+        <!-- 전체 특성 도감 아코디언 -->
+        <div class="accordion-item" id="acc_all_1st_traits" style="margin-top:16px;">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('acc_all_1st_traits')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text" style="font-size:14px;">📚 [${jMeta.c1}] 1차 전직 특성 전체 등급·레벨별 수치 도감 펼치기</span>
+            </div>
+            <span class="accordion-count-badge">${dbList.length}종 카테고리</span>
+          </div>
+          <div class="accordion-content">
+            ${allTraitRowsHtml}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ==================== INITIALIZATION (중복 리스너 제거 및 즉시 초기화) ====================
+  function initAppV330() {
+    if (window._v330Initialized) return;
+    window._v330Initialized = true;
+
     switchMainMode('helpers');
     setSeasonTheme(getAutoSeasonByMonth());
 
-    // 2. 각 계산기 초기 렌더링 및 로컬 저장값 복원
     renderAncientCards();
     initSynergyReferenceTable();
     initRefineSelects();
@@ -8559,18 +9530,13 @@ window.addEventListener('DOMContentLoaded', () => {
     calculateGaho();
     calculateWonhon();
 
-    // 3. 자동 저장 이벤트 연결
+    // 전역 input/change 이벤트는 디바운스(800ms)된 triggerAutoSave 하나만 깔끔하게 연결!
     document.addEventListener('change', triggerAutoSave);
     document.addEventListener('input', triggerAutoSave);
-    document.addEventListener('click', (e) => {
-      if (e.target.closest('.ancient-select-card, .item-select-box, .radio-pill, .exclude-btn')) {
-        triggerAutoSave();
-      }
-    });
   }
 
-  document.addEventListener('DOMContentLoaded', initAppV300);
-  window.onload = initAppV300;
+  document.addEventListener('DOMContentLoaded', initAppV330);
+  window.onload = initAppV330;
 </script>
 </body>
 </html>
