@@ -8553,35 +8553,7 @@
   };
 
   // 현재 선택한 레벨(lv)에서 특정 특성 카테고리의 최고 해금 단계 정보 반환
-  function getUnlockedTraitAtLevel(traitDef, lv) {
-    let bestIdx = -1;
-    for (let i = 0; i < traitDef.lvs.length; i++) {
-      if (traitDef.lvs[i] <= lv) bestIdx = i;
-      else break;
-    }
-    if (bestIdx === -1) return null;
-
-    const unlockLv = traitDef.lvs[bestIdx];
-    const tierKey = traitDef.tiers[bestIdx] || "infinite";
-    const val = traitDef.vals[bestIdx];
-    const desc = traitDef.descFn(val, unlockLv, bestIdx, traitDef);
-
-    return {
-      id: traitDef.id,
-      name: traitDef.name,
-      unlockLv,
-      tierKey,
-      tierMeta: getTraitTierMeta(tierKey),
-      val,
-      desc,
-      isOvergrowthCore: Boolean(traitDef.isOvergrowthCore),
-      isUnstableBurst: Boolean(traitDef.isUnstableBurst),
-      isInvalidWithOvergrowth: Boolean(traitDef.isInvalidWithOvergrowth)
-    };
-  }
-
-  // 레벨별 최적의 1차 전직 특성 추천 알고리즘 (고수분 조언 & 붉양님 공략 완벽 반영)
-  // 레벨별 최적의 1차 전직 특성 추천 알고리즘 (곱연산 고점 최우선 반영!)
+  // 레벨별 최적의 1차 전직 특성 추천 알고리즘 (사신 고패 스위치 연동 100% 복원 + 미스틱/오버로드 곱연산 우선!)
   function getRecommended1stTraits(job, lv, useOvergrowth, mode) {
     const db = TRAIT_1ST_DB[job] || [];
     const unlockedMap = new Map();
@@ -8596,8 +8568,12 @@
     let subCandidateIds = [];
 
     if (job === 'reaper') {
-      // 사신 핵심 분기: 3고패 미만(마력폭주 착용)일 때는 변환(rp_skill_to_strike) 우선, 3고패 이상일 때는 스택(rp_stack_dmg) 우선!
+      // ★ 사신 고패 스위치 핵심:
+      // - [2고패 이하] + [과성장 ON]: 패시브에 '마력폭주'를 쓰므로 [스피증➔강피증 변환(rp_skill_to_strike)] 채용!
+      // - [3고패 이상] (또는 과성장 OFF): 마력폭주가 빠지므로 [스택에 따른 피해량 증가(rp_stack_dmg)] 채용!
       const useConvertTrait = useOvergrowth && !reaperHas3Ancient;
+      const variableSlotId = useConvertTrait ? "rp_skill_to_strike" : "rp_stack_dmg";
+      const altSlotId = useConvertTrait ? "rp_stack_dmg" : "rp_skill_to_strike";
 
       if (lv < 5) {
         pickedIds = ["rp_base_dmg"];
@@ -8607,39 +8583,46 @@
       } else if (lv < 35) {
         pickedIds = ["rp_enh_strike", useConvertTrait ? "rp_skill_to_strike" : "rp_hit_fix"];
       } else if (lv < 40) {
+        // 35렙 (2슬롯): 각성기 3초 감소 + 강화강타
         pickedIds = ["rp_awk_cd", "rp_enh_strike"];
-        if (useConvertTrait) subCandidateIds.push("rp_skill_to_strike");
+        subCandidateIds = [variableSlotId];
       } else if (lv < 50) {
+        // 40~45렙 (3슬롯): 강화강타 + 각성기3초 + (과성장/고패 조건 또는 강타고정)
         pickedIds = ["rp_enh_strike", "rp_awk_cd", useConvertTrait ? "rp_skill_to_strike" : "rp_hit_fix"];
-        subCandidateIds = ["rp_step_dmg", "rp_hit_fix"];
+        subCandidateIds = ["rp_step_dmg", "rp_hit_fix", altSlotId];
       } else if (lv < 60) {
-        pickedIds = ["rp_awk_cd", "rp_enh_strike", useConvertTrait ? "rp_skill_to_strike" : "rp_stack_dmg"];
-        subCandidateIds = [useConvertTrait ? "rp_stack_dmg" : "rp_skill_to_strike", "rp_hit_fix"];
+        // 50~55렙 (3슬롯): 각성기3초 + 강화강타 + [변환 <-> 스택]
+        pickedIds = ["rp_awk_cd", "rp_enh_strike", variableSlotId];
+        subCandidateIds = [altSlotId, "rp_hit_fix"];
       } else if (lv < 65) {
-        pickedIds = ["rp_awk_cd", "rp_enh_strike", "rp_step_dmg", useConvertTrait ? "rp_skill_to_strike" : "rp_stack_dmg"];
-        subCandidateIds = [useConvertTrait ? "rp_stack_dmg" : "rp_skill_to_strike"];
+        // 60렙 (4슬롯): 각성기3초 + 3회강타 + 강타단계 + [변환 <-> 스택]
+        pickedIds = ["rp_awk_cd", "rp_enh_strike", "rp_step_dmg", variableSlotId];
+        subCandidateIds = [altSlotId];
       } else if (lv < 80) {
+        // ★ 65~79렙 (4슬롯 - 고수분 정석):
+        // 각성기봉인 + 3회강타 + 강타단계 + [변환(2고패 이하) <-> 스택(3고패 이상)] (대체픽: 각성기 3초 감소)
         pickedIds = [
           "rp_seal_awk",
           "rp_enh_strike",
           "rp_step_dmg",
-          useConvertTrait ? "rp_skill_to_strike" : (reaperHas3Ancient ? "rp_stack_dmg" : "rp_awk_cd")
+          variableSlotId
         ];
-        subCandidateIds = ["rp_awk_cd", "rp_stack_dmg", "rp_skill_to_strike"].filter(id => !pickedIds.includes(id));
+        subCandidateIds = ["rp_awk_cd", altSlotId];
       } else {
-        // ★ 80렙 ~ 150렙 (5슬롯 오픈): 평타 50% 강타 발동(rp_strike_buff) + 각성기 봉인 + 순수 곱연산 우선!
-        // (합연산인 rp_awk_cd가 곱연산 특성들을 밀어내지 않도록 순수 곱연산 풀에서 먼저 채택!)
-        pickedIds = ["rp_seal_awk", "rp_strike_buff"];
-        if (useConvertTrait) pickedIds.push("rp_skill_to_strike");
-
-        const multPoolIds = ["rp_enh_strike", "rp_step_dmg", "rp_stack_dmg", "rp_hit_fix"];
-        multPoolIds.sort((a, b) => (unlockedMap.get(b)?.val || 0) - (unlockedMap.get(a)?.val || 0));
-
-        for (let pid of multPoolIds) {
-          if (pickedIds.length < 5 && !pickedIds.includes(pid)) pickedIds.push(pid);
-          else if (!pickedIds.includes(pid)) subCandidateIds.push(pid);
-        }
-        if (!pickedIds.includes("rp_awk_cd")) subCandidateIds.push("rp_awk_cd");
+        // ★ 80렙 ~ 150렙 전 구간 (5슬롯 고정 - 고수분 정석):
+        // 1. 강타 버프 효과 추가 (rp_strike_buff)
+        // 2. 3회 강화 강타 사용 (rp_enh_strike)
+        // 3. [2고패 이하: 스피증➔강피증 변환] <-> [3고패 이상: 스택에 따른 피해량 증가] (variableSlotId)
+        // 4. 각성기 봉인 (rp_seal_awk)
+        // 5. 착용한 강타 단계 피해량 증가 (rp_step_dmg)
+        pickedIds = [
+          "rp_strike_buff",
+          "rp_enh_strike",
+          variableSlotId,
+          "rp_seal_awk",
+          "rp_step_dmg"
+        ];
+        subCandidateIds = [altSlotId, "rp_awk_cd", "rp_hit_fix"];
       }
     } else if (job === 'mage') {
       // [아크메이지: Lv.60 이상 구간 - 곱연산 고점 최우선!]
@@ -8658,13 +8641,10 @@
           : ["mg_seal_awk", "mg_eq_lv_sum", "mg_all_brk_sum", "mg_enh_skill"];
         subCandidateIds = ["mg_stack_dmg", "mg_enh_skill"].filter(id => !pickedIds.includes(id));
       } else {
-        // ★ 80 ~ 150렙 (5슬롯):
-        // '스킬 버프 효과 추가(mg_skill_buff)'는 전직 스킬 피해량 합연산이므로,
-        // 순수 곱연산 4종(장착 스킬 레벨합, 모든 스킬 돌파합, 스택 피해량, 강화 스킬 사용)이 고점 기준 훨씬 강력함!
+        // 80 ~ 150렙 (5슬롯): 각성기 봉인 + (과성장 시 영스피➔스피 변환) + 순수 곱연산 높은 순!
         pickedIds = ["mg_seal_awk"];
         if (useOvergrowth) pickedIds.push("mg_hero_to_skill");
 
-        // 순수 곱연산 4종을 현재 레벨(lv)의 배율(val) 높은 순으로 정렬하여 빈 슬롯에 우선 투입!
         const multPoolIds = ["mg_eq_lv_sum", "mg_all_brk_sum", "mg_stack_dmg", "mg_enh_skill"];
         multPoolIds.sort((a, b) => (unlockedMap.get(b)?.val || 0) - (unlockedMap.get(a)?.val || 0));
 
@@ -8672,7 +8652,6 @@
           if (pickedIds.length < 5 && !pickedIds.includes(pid)) pickedIds.push(pid);
           else if (!pickedIds.includes(pid)) subCandidateIds.push(pid);
         }
-        // 스킬 버프 효과 추가(확률 70% / 쿨감 70% 유틸 + 합연산)는 스택 속도가 부족할 때 쓰는 대체 픽으로 안내!
         if (!pickedIds.includes("mg_skill_buff")) subCandidateIds.unshift("mg_skill_buff");
       }
     } else if (job === 'lord') {
@@ -8692,9 +8671,7 @@
           : ["ld_seal_awk", "ld_eq_brk_sum", "ld_all_brk_sum", "ld_stack_dmg"];
         subCandidateIds = ["ld_stack_dmg", "ld_awk_cd"].filter(id => !pickedIds.includes(id));
       } else {
-        // ★ 80 ~ 150렙 (5슬롯):
-        // 과성장 사용 시: 1번 슬롯이 엘리시아이므로 '강화 영웅 스킬(ld_enh_hero)' 제외 & 합연산인 '영웅 버프 추가(ld_hero_buff)'보다
-        // 순수 곱연산 3종(장착 영웅 돌파합 + 모든 영웅 돌파합 + 스택 피해량)을 모두 넣는 것이 고점! (붉양님 공략 8p 완벽 일치)
+        // 80 ~ 150렙 (5슬롯): 과성장 시 '강화 영웅 스킬' 제외 & 순수 곱연산 3종(장착 영웅 돌파합 + 모든 영웅 돌파합 + 스택 피해량) 고정!
         pickedIds = ["ld_seal_awk"];
         if (useOvergrowth) {
           pickedIds.push("ld_skill_to_hero");
@@ -8710,7 +8687,6 @@
           if (pickedIds.length < 5 && !pickedIds.includes(pid)) pickedIds.push(pid);
           else if (!pickedIds.includes(pid)) subCandidateIds.push(pid);
         }
-        // 영웅 버프 효과 추가(영웅 공속/이속 200% 유틸 + 합연산)는 차순위 대체(유틸/스택 보완용)로 배치!
         if (!pickedIds.includes("ld_hero_buff")) subCandidateIds.unshift("ld_hero_buff");
       }
     }
@@ -8734,7 +8710,7 @@
 
     return { slotCount, activeTraits, subTraits, notRecommended };
   }
-
+  
   function changeTraitTabStep(step) {
     currentTraitTabStep = step;
     renderBuildGuideContent();
