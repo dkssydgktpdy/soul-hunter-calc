@@ -8553,8 +8553,35 @@
   };
 
   // 현재 선택한 레벨(lv)에서 특정 특성 카테고리의 최고 해금 단계 정보 반환
-  // 레벨별 최적의 1차 전직 특성 추천 알고리즘 (사신 고패 스위치 연동 100% 복원 + 미스틱/오버로드 곱연산 우선!)
- // 레벨별 최적의 1차 전직 특성 추천 알고리즘 (합연산 희석 vs 독립 바구니 & 과성장 ON/OFF 메커니즘 완벽 반영!)
+  function getUnlockedTraitAtLevel(traitDef, lv) {
+    let bestIdx = -1;
+    for (let i = 0; i < traitDef.lvs.length; i++) {
+      if (traitDef.lvs[i] <= lv) bestIdx = i;
+      else break;
+    }
+    if (bestIdx === -1) return null;
+
+    const unlockLv = traitDef.lvs[bestIdx];
+    const tierKey = traitDef.tiers[bestIdx] || "infinite";
+    const val = traitDef.vals[bestIdx];
+    const desc = traitDef.descFn(val, unlockLv, bestIdx, traitDef);
+
+    return {
+      id: traitDef.id,
+      name: traitDef.name,
+      unlockLv,
+      tierKey,
+      tierMeta: getTraitTierMeta(tierKey),
+      val,
+      desc,
+      isOvergrowthCore: Boolean(traitDef.isOvergrowthCore),
+      isUnstableBurst: Boolean(traitDef.isUnstableBurst),
+      isInvalidWithOvergrowth: Boolean(traitDef.isInvalidWithOvergrowth)
+    };
+  }
+
+  // 레벨별 최적의 1차 전직 특성 추천 알고리즘 (고수분 조언 & 붉양님 공략 완벽 반영)
+  // 레벨별 최적의 1차 전직 특성 추천 알고리즘 (합연산 희석 vs 독립 바구니 & 과성장 ON/OFF 메커니즘 완벽 반영!)
   function getRecommended1stTraits(job, lv, useOvergrowth, mode) {
     const db = TRAIT_1ST_DB[job] || [];
     const unlockedMap = new Map();
