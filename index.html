@@ -8305,8 +8305,15 @@
   }
 
   // 1차 전직 특성 전체 데이터베이스 (보내주신 수기 수치 100% 반영)
-  const TRAIT_1ST_DB = {
+ const TRAIT_1ST_DB = {
     reaper: [
+      {
+        id: "rp_base_dmg", name: "전직 강타 피해량 증가(%)",
+        lvs: [1, 25],
+        tiers: ["normal", "advanced"],
+        vals: [50, 500],
+        descFn: (v) => `전직 강타 피해량이 +${v}% 증가한다.`
+      },
       {
         id: "rp_enh_strike", name: "강화 강타 사용",
         lvs: [5, 35, 40, 50, 55, 70, 80, 90, 100, 110, 120, 130, 140, 150],
@@ -8587,12 +8594,16 @@
     let pickedIds = [];
     let subCandidateIds = [];
 
-    if (job === 'reaper') {
-      // 사신 핵심 분기: 3고패 미만(마력폭주 착용)일 때는 변환(rp_skill_to_strike) 우선, 3고패 이상일 때는 스택(rp_stack_dmg) 우선!
+   if (job === 'reaper') {
       const useConvertTrait = useOvergrowth && !reaperHas3Ancient;
 
-      if (lv < 20) {
+      if (lv < 5) {
+        // Lv.1 ~ 4 (1슬롯): 기본 오픈된 전직 강타 피해량 증가(50%) 착용!
+        pickedIds = ["rp_base_dmg"];
+      } else if (lv < 20) {
+        // Lv.5 ~ 19 (1슬롯): Lv.5에 해금되는 강화 강타 사용 고정!
         pickedIds = ["rp_enh_strike"];
+        subCandidateIds = ["rp_base_dmg"];
       } else if (lv < 35) {
         pickedIds = ["rp_enh_strike", useConvertTrait ? "rp_skill_to_strike" : "rp_hit_fix"];
       } else if (lv < 40) {
