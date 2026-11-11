@@ -1933,6 +1933,94 @@
     }
   }
 
+  /* ==================== 📱 모바일에서 [룬 10칸 보드] & [코어 6칸 보드] PC처럼 한눈에 보기 ==================== */
+  @media (max-width: 720px) {
+    /* 1. 룬 장착 보드: 모바일에서도 PC와 동일하게 [좌측 방어구 3칸 | 중앙 캐릭터+심연 | 우측 장신구 3칸] 3열 유지! */
+    .rune-equip-stage {
+      padding: 12px 6px !important;
+    }
+    .rune-stage-upper {
+      grid-template-columns: 1fr 0.9fr 1fr !important;
+      gap: 6px !important;
+      align-items: center !important;
+    }
+    .rune-col-left, .rune-col-right, .rune-col-center {
+      gap: 6px !important;
+    }
+    .sd-char-box {
+      width: 90px !important;
+      height: 105px !important;
+    }
+    /* 무기 3칸도 세로로 안 깨지고 가로 3열 나란히 유지! */
+    .rune-weapon-bar {
+      margin-top: 10px !important;
+      padding-top: 10px !important;
+    }
+    .rune-weapon-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 6px !important;
+    }
+    /* 모바일 화면 폭에 맞춰 룬 슬롯 박스 크기 및 폰트 컴팩트화 */
+    .rune-slot-block {
+      padding: 6px 5px !important;
+      min-height: 58px !important;
+      border-radius: 8px !important;
+    }
+    .rune-slot-part-tag {
+      font-size: 8.5px !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 1px !important;
+    }
+    .rune-slot-part-tag .grade-badge {
+      font-size: 8px !important;
+      padding: 0px 4px !important;
+    }
+    .rune-slot-name {
+      font-size: 11.5px !important;
+      margin: 2px 0 !important;
+    }
+    .rune-slot-stat {
+      font-size: 9px !important;
+      line-height: 1.15 !important;
+      word-break: keep-all !important;
+    }
+
+    /* 2. 소울커넥트 코어 6슬롯 육각형 보드: 모바일에서도 PC처럼 좌우 2열 육각 배치 유지! */
+    .connect-hex-stage {
+      padding: 12px 6px !important;
+    }
+    .connect-hex-row {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 6px !important;
+      margin: 6px 0 !important;
+    }
+    .connect-hex-row.mid-row {
+      grid-template-columns: 1fr 54px 1fr !important;
+      gap: 4px !important;
+      margin: 8px 0 !important;
+    }
+    .connect-center-emblem {
+      width: 54px !important;
+      height: 54px !important;
+    }
+    .connect-slot-card {
+      width: 100% !important;
+      min-height: 86px !important;
+      padding: 7px 6px !important;
+      border-radius: 10px !important;
+    }
+    .connect-slot-card .core-hex-badge {
+      width: 26px !important;
+      height: 26px !important;
+      font-size: 9.5px !important;
+    }
+    .connect-slot-card div {
+      font-size: 10px !important;
+    }
+  }
+
 </style>
 </head>
 <body>
