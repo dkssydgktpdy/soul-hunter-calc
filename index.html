@@ -2552,11 +2552,21 @@
         </div>
 
         <!-- 고대 패시브 결과 대시보드 -->
+        <!-- 고대 패시브 결과 대시보드 (각성석 이미지 연동) -->
         <div class="result-dashboard">
-          <div class="res-label">선택한 고대 패시브 총 필요 각성석</div>
-          <div class="res-value" id="p_total_cost">0개</div>
+          <div class="res-label" style="display:flex; align-items:center; justify-content:center; gap:6px;">
+            <img src="images/upgrade_stone.png" alt="각성석" class="inline-res-icon" style="width:20px; height:20px;" onerror="this.onerror=null; this.src='images/upgrade_stone.PNG';">
+            <span>선택한 고대 패시브 총 필요 각성석</span>
+          </div>
+          <div class="res-value" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+            <img src="images/upgrade_stone.png" alt="각성석" style="width:34px; height:34px; object-fit:contain; filter:drop-shadow(0 0 10px rgba(56,189,248,0.5));" onerror="this.onerror=null; this.src='images/upgrade_stone.PNG';">
+            <span id="p_total_cost">0개</span>
+          </div>
           <div class="res-sub">
-            <span>만 단위 환산: <strong id="p_cost_man">0만 개</strong></span>
+            <span style="display:inline-flex; align-items:center; gap:4px;">
+              <img src="images/upgrade_stone.png" alt="각성석" style="width:14px; height:14px; vertical-align:middle;" onerror="this.onerror=null; this.src='images/upgrade_stone.PNG';">
+              <span>만 단위 환산: <strong id="p_cost_man">0만 개</strong></span>
+            </span>
             <span>|</span>
             <span>주간 총 수급량: <strong id="p_weekly_total">0개/주</strong></span>
             <span>|</span>
@@ -2640,14 +2650,24 @@
           </div>
         </div>
 
+        <!-- 각성 시너지 결과 대시보드 (각성석 이미지 연동) -->
         <div class="result-dashboard green">
-          <div class="res-label">시너지 1각성 총 소모 각성석 및 공격력(%) 효과</div>
-          <div class="res-value" id="syn_total_stones">0개</div>
+          <div class="res-label" style="display:flex; align-items:center; justify-content:center; gap:6px;">
+            <img src="images/upgrade_stone.png" alt="각성석" class="inline-res-icon" style="width:20px; height:20px;" onerror="this.onerror=null; this.src='images/upgrade_stone.PNG';">
+            <span>시너지 1각성 총 소모 각성석 및 공격력(%) 효과</span>
+          </div>
+          <div class="res-value" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+            <img src="images/upgrade_stone.png" alt="각성석" style="width:34px; height:34px; object-fit:contain; filter:drop-shadow(0 0 10px rgba(52,211,153,0.5));" onerror="this.onerror=null; this.src='images/upgrade_stone.PNG';">
+            <span id="syn_total_stones">0개</span>
+          </div>
           <div style="margin-bottom:12px; font-size:17px; font-weight:800; color:#fde68a;">
             현재 시너지 공격력: <span id="syn_cur_atk_pct" style="color:#ffffff;">0%</span> ➔ 1각 적용 후 최종: <span id="syn_final_atk_pct" style="color:#67e8f9; font-size:20px;">0%</span>
           </div>
           <div class="res-sub">
-            <span>소모 각성석: <strong id="syn_stones_man">0만 개</strong></span>
+            <span style="display:inline-flex; align-items:center; gap:4px;">
+              <img src="images/upgrade_stone.png" alt="각성석" style="width:14px; height:14px; vertical-align:middle;" onerror="this.onerror=null; this.src='images/upgrade_stone.PNG';">
+              <span>소모 각성석: <strong id="syn_stones_man">0만 개</strong></span>
+            </span>
             <span>|</span>
             <span>추가 획득 점수: <strong id="syn_add_points" style="color:#fef08a;">+0점</strong></span>
             <span>|</span>
@@ -9162,14 +9182,20 @@
 
       // [화면 B] 🥇 0순위 고대 패시브 (1~3순위) 컴팩트 레시피 화면 (빈 공간 대폭 축소!)
       if (awkSubView === 'recipe') {
+        // [화면 B] 🥇 0순위 고대 패시브 (1~3순위) 컴팩트 레시피 화면 (각성석 이미지 적용)
+      if (awkSubView === 'recipe') {
         function renderCompactRecipeRow(rankLabel, borderColor, m1, m2, ancName, ancImg, ancDesc, sumCost) {
+          const stoneMiniImg = `<img src="images/upgrade_stone.png" alt="각성석" style="width:15px; height:15px; vertical-align:middle; margin-right:2px; object-fit:contain;" onerror="this.onerror=null; this.src='images/upgrade_stone.PNG';">`;
+
           return `
             <div style="background:#0f172a; border:1px solid #334155; border-left:4px solid ${borderColor}; border-radius:10px; padding:10px 14px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
               <!-- 좌측: 순위 & 완성 고패 설명 -->
               <div style="min-width:175px;">
                 <div style="font-size:13.5px; font-weight:900; color:#ffffff;">${rankLabel} : <span style="color:#67e8f9;">${ancName}</span></div>
                 <div style="font-size:11.5px; color:#94a3b8; margin-top:2px;">${ancDesc}</div>
-                <div style="font-size:12px; font-weight:800; color:#fde047; margin-top:3px;">💎 총 ${(sumCost/10000).toFixed(1)}만 각성석</div>
+                <div style="font-size:12px; font-weight:800; color:#fde047; margin-top:3px; display:flex; align-items:center;">
+                  ${stoneMiniImg}<span>총 ${(sumCost/10000).toFixed(1)}만 각성석</span>
+                </div>
               </div>
 
               <!-- 우측: 컴팩트 [재료1] + [재료2] ➔ [완성 고패] 가로 한 줄 -->
@@ -9179,7 +9205,10 @@
                   <img src="images/${m1.img}.jpg" alt="${m1.name}" style="width:36px; height:36px; border-radius:7px; border:1.5px solid #475569; object-fit:cover;" onerror="this.onerror=null; this.src='images/${m1.img}.png';">
                   <div style="line-height:1.2;">
                     <span class="grade-badge ${m1.gradeCls}" style="font-size:9.5px; padding:1px 4px;">${m1.gradeKr} 3각</span>
-                    <div style="font-size:12px; font-weight:800; color:#f8fafc;">${m1.name} <small style="color:#fde047;">(${m1.costTxt})</small></div>
+                    <div style="font-size:12px; font-weight:800; color:#f8fafc; display:flex; align-items:center;">
+                      <span>${m1.name}</span>
+                      <small style="color:#fde047; margin-left:3px; display:inline-flex; align-items:center;">(${stoneMiniImg}${m1.costTxt})</small>
+                    </div>
                   </div>
                 </div>
 
@@ -9190,7 +9219,10 @@
                   <img src="images/${m2.img}.jpg" alt="${m2.name}" style="width:36px; height:36px; border-radius:7px; border:1.5px solid #475569; object-fit:cover;" onerror="this.onerror=null; this.src='images/${m2.img}.png';">
                   <div style="line-height:1.2;">
                     <span class="grade-badge ${m2.gradeCls}" style="font-size:9.5px; padding:1px 4px;">${m2.gradeKr} 3각</span>
-                    <div style="font-size:12px; font-weight:800; color:#f8fafc;">${m2.name} <small style="color:#fde047;">(${m2.costTxt})</small></div>
+                    <div style="font-size:12px; font-weight:800; color:#f8fafc; display:flex; align-items:center;">
+                      <span>${m2.name}</span>
+                      <small style="color:#fde047; margin-left:3px; display:inline-flex; align-items:center;">(${stoneMiniImg}${m2.costTxt})</small>
+                    </div>
                   </div>
                 </div>
 
@@ -9220,12 +9252,18 @@
           ${renderCompactRecipeRow("🥈 2순위", "#38bdf8", { name: "철갑관통", gradeKr: "전설", gradeCls: "grade-legend", img: "armor_pierce", cost: 125000, costTxt: "12.5만" }, { name: "절대관통", gradeKr: "신화", gradeCls: "grade-mythic", img: "absolute_pierce", cost: 1150000, costTxt: "115만" }, "근원관통", "pierce", "방어도 무시 곱연산 증폭", cost2)}
           ${renderCompactRecipeRow("🥉 3순위", "#f59e0b", e3.m1, { name: "원소융합", gradeKr: "신화", gradeCls: "grade-mythic", img: "elem_fusion", cost: 1150000, costTxt: "115만" }, e3.ancName, e3.ancImg, e3.desc, cost3)}
 
-          <!-- 3고패 총합 & 패시브 장착 도우미 유도 배너 -->
+          <!-- 3고패 총합 & 패시브 장착 도우미 유도 배너 (각성석 이미지 연동) -->
           <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:10px; margin-top:14px;">
             <div style="background:linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border:1.5px solid #6366f1; border-radius:12px; padding:14px 16px; display:flex; align-items:center; justify-content:space-between;">
               <div>
-                <div style="font-size:12px; color:#c7d2fe; font-weight:700;">1~3순위 3고패 총 필요 각성석</div>
-                <div style="font-size:22px; font-weight:900; color:#38bdf8;">${(total3AncCost/10000).toFixed(1)}만 개</div>
+                <div style="font-size:12px; color:#c7d2fe; font-weight:700; display:flex; align-items:center; gap:4px;">
+                  <img src="images/upgrade_stone.png" alt="각성석" style="width:14px; height:14px; object-fit:contain;" onerror="this.onerror=null; this.src='images/upgrade_stone.PNG';">
+                  <span>1~3순위 3고패 총 필요 각성석</span>
+                </div>
+                <div style="font-size:22px; font-weight:900; color:#38bdf8; display:flex; align-items:center; gap:6px; margin-top:2px;">
+                  <img src="images/upgrade_stone.png" alt="각성석" style="width:24px; height:24px; object-fit:contain;" onerror="this.onerror=null; this.src='images/upgrade_stone.PNG';">
+                  <span>${(total3AncCost/10000).toFixed(1)}만 개</span>
+                </div>
               </div>
               <button onclick="switchMainMode('calcs'); openDeepCalculator('tab-passive');" style="background:#6366f1; border:none; color:#fff; padding:8px 12px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">
                 🧮 보유재료 제외 계산기 ➔
