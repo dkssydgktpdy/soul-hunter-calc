@@ -9363,7 +9363,7 @@
             const isSkill = it.isSkill;
             const fileKey = isSkill ? SKILL_ICON_MAP[it.name] : HERO_ICON_MAP[it.name];
             const imgHtml = fileKey
-              ? `<img src="images/${fileKey}.png" alt="${it.name}" onerror="this.onerror=null; this.src='images/${fileKey}.PNG'; this.onerror=function(){this.parentElement.innerHTML='${isSkill?'⚡':'🦸'}';};">`
+              ? `<img src="images/${fileKey}.png" alt="${it.name}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; this.src='images/${fileKey}.PNG'; this.onerror=function(){this.parentElement.innerHTML='${isSkill?'⚡':'🦸'}';};">`
               : `<span>${isSkill ? '⚡' : '🦸'}</span>`;
 
             return `
