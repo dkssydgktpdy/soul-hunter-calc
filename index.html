@@ -9295,13 +9295,32 @@
           `;
         }
 
-        const convPassive = awkGuideJob === 'mage'
-          ? { name: "전투지휘", img: "battle_command", desc: "영스피➔스피 전환용" }
-          : { name: "마력폭주", img: "mana_surge", desc: "스피➔강타/영스피 전환용" };
+        // 직업별 1고패 4~5번 슬롯 및 OUT 순서 정의
+        // 사신: 폭발준비/가속 OUT (2고패) ➔ 마력폭주 OUT (3고패)
+        // 앜메: 전술가속 OUT (2고패) ➔ 전투지휘 OUT (3고패)
+        // 닼로: 전술가속 OUT (1고패) ➔ 전투지휘 OUT (2고패) ➔ 마력폭주 OUT (3고패)
+        let slot4_1Anc, slot5_1Anc, slot5_2Anc, outName2Anc, outName3Anc;
 
-        const slot5_1Anc = awkGuideJob === 'reaper'
-          ? makePassiveSlotMini("폭발준비 or 전술가속", "blast_ready", "비석비교 택1", "#ca8a04", "#eab308")
-          : makePassiveSlotMini("전술가속", "tactical_haste", "임시 유틸", "#ca8a04", "#eab308");
+        if (awkGuideJob === 'reaper') {
+          slot4_1Anc = makePassiveSlotMini("마력폭주", "mana_surge", "변환 시너지", "#7e22ce", "#a855f7");
+          slot5_1Anc = makePassiveSlotMini("폭발준비 or 전술가속", "blast_ready", "비석비교 택1", "#ca8a04", "#eab308");
+          slot5_2Anc = makePassiveSlotMini("마력폭주", "mana_surge", "변환 유지!", "#7e22ce", "#a855f7");
+          outName2Anc = "전술가속/폭발준비 OUT";
+          outName3Anc = "마력폭주 OUT";
+        } else if (awkGuideJob === 'mage') {
+          slot4_1Anc = makePassiveSlotMini("전투지휘", "battle_command", "영스피 증폭", "#7e22ce", "#a855f7");
+          slot5_1Anc = makePassiveSlotMini("전술가속", "tactical_haste", "임시 유틸", "#ca8a04", "#eab308");
+          slot5_2Anc = makePassiveSlotMini("전투지휘", "battle_command", "영스피 유지!", "#7e22ce", "#a855f7");
+          outName2Anc = "전술가속 OUT";
+          outName3Anc = "전투지휘 OUT";
+        } else {
+          // 다크로드(팬텀): 1고패 때 전술가속 OUT & 전투지휘 유지 ➔ 2고패 때 전투지휘 OUT ➔ 3고패 때 마력폭주 OUT!
+          slot4_1Anc = makePassiveSlotMini("마력폭주", "mana_surge", "스피 변환용", "#7e22ce", "#a855f7");
+          slot5_1Anc = makePassiveSlotMini("전투지휘", "battle_command", "영스피 증폭", "#7e22ce", "#a855f7");
+          slot5_2Anc = makePassiveSlotMini("마력폭주", "mana_surge", "스피 유지!", "#7e22ce", "#a855f7");
+          outName2Anc = "전투지휘 OUT";
+          outName3Anc = "마력폭주 OUT";
+        }
 
         body.innerHTML = `
           ${topControllerHtml}
@@ -9314,31 +9333,31 @@
 
             <!-- 1고패 달성 시 5슬롯 -->
             <div style="font-size:13px; font-weight:800; color:#38bdf8; margin-bottom:6px;">
-              ① [1고패 달성] ${j1.ancName} 제작 직후 (5슬롯):
+              ① [1고패 달성] ${j1.ancName} 제작 직후 (5슬롯) ${awkGuideJob==='lord'?'<small style="color:#fde047;">(전술가속 OUT ➔ 전투지휘 유지)</small>':''}:
             </div>
             <div class="build-slot-grid" style="margin-bottom:14px;">
               ${makePassiveSlotMini(j1.ancName, j1.ancImg, "1순위 고패", "#0891b2", "#06b6d4")}
               ${makePassiveSlotMini(e3.m1.name, e3.m1.img, "주속성 신화", "#e11d48", "#f43f5e")}
               ${makePassiveSlotMini("원소융합", "elem_fusion", "모속성 신화", "#e11d48", "#f43f5e")}
-              ${makePassiveSlotMini(convPassive.name, convPassive.img, "전환 버프", "#7e22ce", "#a855f7")}
+              ${slot4_1Anc}
               ${slot5_1Anc}
             </div>
 
             <!-- 2고패 달성 시 5슬롯 -->
             <div style="font-size:13px; font-weight:800; color:#c084fc; margin-bottom:6px;">
-              ② [2고패 달성] 근원관통 제작 시 (<span style="color:#f87171;">전술가속/폭발준비 OUT</span> ➔ <span style="color:#67e8f9;">근원관통 IN</span>):
+              ② [2고패 달성] 근원관통 제작 시 (<span style="color:#f87171;">${outName2Anc}</span> ➔ <span style="color:#67e8f9;">근원관통 IN</span>):
             </div>
             <div class="build-slot-grid" style="margin-bottom:14px;">
               ${makePassiveSlotMini(j1.ancName, j1.ancImg, "1순위 고패", "#0891b2", "#06b6d4")}
               ${makePassiveSlotMini("근원관통", "pierce", "2순위 고패", "#0891b2", "#06b6d4")}
               ${makePassiveSlotMini(e3.m1.name, e3.m1.img, "주속성 신화", "#e11d48", "#f43f5e")}
               ${makePassiveSlotMini("원소융합", "elem_fusion", "모속성 신화", "#e11d48", "#f43f5e")}
-              ${makePassiveSlotMini(convPassive.name, convPassive.img, "전환 유지!", "#7e22ce", "#a855f7")}
+              ${slot5_2Anc}
             </div>
 
             <!-- 3고패 달성 시 5슬롯 -->
             <div style="font-size:13px; font-weight:800; color:#34d399; margin-bottom:6px;">
-              ③ [3고패 달성 (가성비 종결!)] ${e3.ancName} 제작 시 (<span style="color:#f87171;">${convPassive.name} OUT</span> ➔ <span style="color:#67e8f9;">${e3.ancName} IN</span>):
+              ③ [3고패 달성 (가성비 종결!)] ${e3.ancName} 제작 시 (<span style="color:#f87171;">${outName3Anc}</span> ➔ <span style="color:#67e8f9;">${e3.ancName} IN</span>):
             </div>
             <div class="build-slot-grid" style="margin-bottom:10px;">
               ${makePassiveSlotMini(j1.ancName, j1.ancImg, "1순위 고패", "#0891b2", "#06b6d4")}
@@ -9349,18 +9368,17 @@
             </div>
 
             <div class="build-tip-box" style="border-color:#eab308; background:rgba(234,179,8,0.1);">
-              🚨 <strong>[필독] 3고패 달성 시 '${convPassive.name}'가 빠지므로 1차 전직 특성도 함께 변경하세요!</strong><br>
+              🚨 <strong>[필독] 3고패 달성 시 버프 패시브가 빠지므로 1차 전직 특성도 함께 점검하세요!</strong><br>
               ${awkGuideJob === 'reaper'
                 ? `• <strong>사신 :</strong> 3고패에서 [마력폭주]가 빠지면 스킬 피해량이 줄어들므로, 1차 전직 특성에서도 [스피증➔강타 변환]을 빼고 <strong>[스택에 따른 피해량 증가]</strong>로 교체합니다!`
                 : (awkGuideJob === 'mage'
                   ? `• <strong>아크메이지 :</strong> 3고패에서 [전투지휘]가 빠지면 영웅 스킬 피해량이 줄어들므로, 과성장+엘리시아 상태여도 1차 특성에서 [영스피➔스피 변환]을 빼고 <strong>[★스킬 버프 효과 추가]</strong>를 넣는 것이 약 77배 더 강력합니다!`
-                  : `• <strong>다크로드 :</strong> 패시브에서 [마력폭주]가 빠져도 1번 슬롯의 <strong>엘리시아(+과성장)</strong> 본인이 스킬 피해량을 수억% 제공하므로 과성장 졸업 전까지는 1차 특성의 [스피➔영스피 변환]을 그대로 유지합니다!`)}
+                  : `• <strong>다크로드 :</strong> 패시브에서 <strong>[전술가속(1고패 OUT) ➔ 전투지휘(2고패 OUT) ➔ 마력폭주(3고패 OUT)]</strong> 순서로 빠집니다! 3고패에서 마력폭주가 빠지더라도 1번 슬롯의 <strong>엘리시아(+과성장)</strong> 본인이 스킬 피해량을 수억% 제공하므로 과성장 졸업 전까지는 1차 특성의 [스피➔영스피 변환]을 그대로 유지합니다!`)}
             </div>
           </div>
         `;
         return;
       }
-    }
 
     const elemDebuffSkill = guideElem === 'fire' ? '불벼락' : (guideElem === 'light' ? '뇌전검무' : '암흑붕괴');
     const elemPulseSkill = guideElem === 'fire' ? '플레임 펄스' : (guideElem === 'light' ? '썬더 펄스' : '다크 펄스');
