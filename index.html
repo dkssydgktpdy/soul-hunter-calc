@@ -9249,16 +9249,44 @@
               <div class="hub-card-arrow" style="color:#22d3ee; font-weight:900;">보러가기 ➔</div>
             </div>
 
-           <!-- 배너 3: 스킬 & 영웅 각성 우선순위 (잠금 해제 & 통합 로드맵 연결!) -->
-            <div class="hub-card" onclick="openAwkSubView('skill_hero_awk')" style="border:2px solid #eab308; background:linear-gradient(135deg, rgba(234,179,8,0.18) 0%, #0f172a 100%); padding:16px 18px;">
+           <!-- 배너 3: 스킬 & 영웅 각성 우선순위 (3각성 트리플 스타 & 황금 크라운 크리스탈 커스텀 SVG 아트워크) -->
+            <div class="hub-card" onclick="openAwkSubView('skill_hero_awk')" style="border:2px solid #eab308; background:linear-gradient(135deg, rgba(234,179,8,0.18) 0%, #0f172a 100%); padding:16px 18px; box-shadow:0 4px 16px rgba(234,179,8,0.18);">
               <div class="hub-card-left" style="gap:14px;">
-                <div class="hub-card-icon" style="width:48px; height:48px; border-color:#fde047; background:#422006;">
-                  <span style="font-size:24px;">⚡</span>
+                <div class="hub-card-icon" style="width:48px; height:48px; border-color:#fde047; background:radial-gradient(circle at center, #3b0764 0%, #090d16 100%); box-shadow:0 0 14px rgba(250,204,21,0.45), inset 0 0 10px rgba(232,121,249,0.4);">
+                  <svg width="38" height="38" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.75));">
+                    <!-- 배경 후광 마법진 링 -->
+                    <circle cx="20" cy="22" r="13" stroke="url(#awkRingGrad)" stroke-width="1.4" stroke-dasharray="3 2" fill="rgba(234,179,8,0.06)"/>
+                    <!-- 좌우 황금 각성 날개/크라운 프레임 -->
+                    <path d="M5 24 L11 15 L15 22 L20 12 L25 22 L29 15 L35 24 L29 31 L11 31 Z" fill="url(#awkWingGrad)" stroke="#fef08a" stroke-width="1.2" stroke-linejoin="round"/>
+                    <!-- 중앙 각성 코어 크리스탈 블레이드 -->
+                    <polygon points="20,9 25,21 20,35 15,21" fill="url(#awkCoreGrad)" stroke="#ffffff" stroke-width="1.2"/>
+                    <polygon points="20,13 22.5,21 20,30 17.5,21" fill="#ffffff" opacity="0.65"/>
+                    <!-- 상단 인게임 '3각성' 상징 트리플 네온 스타 (★ ★ ★) -->
+                    <path d="M10 4 L11.2 6.8 L14 8 L11.2 9.2 L10 12 L8.8 9.2 L6 8 L8.8 6.8 Z" fill="#f472b6" stroke="#ffffff" stroke-width="0.6"/>
+                    <path d="M20 1 L21.6 4.6 L25.2 6.2 L21.6 7.8 L20 11.4 L18.4 7.8 L14.8 6.2 L18.4 4.6 Z" fill="#fef08a" stroke="#ffffff" stroke-width="0.8"/>
+                    <path d="M30 4 L31.2 6.8 L34 8 L31.2 9.2 L30 12 L28.8 9.2 L26 8 L28.8 6.8 Z" fill="#38bdf8" stroke="#ffffff" stroke-width="0.6"/>
+                    <defs>
+                      <linearGradient id="awkRingGrad" x1="7" y1="9" x2="33" y2="35" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#fde047"/>
+                        <stop offset="100%" stop-color="#c084fc"/>
+                      </linearGradient>
+                      <linearGradient id="awkWingGrad" x1="5" y1="12" x2="35" y2="31" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.85"/>
+                        <stop offset="50%" stop-color="#7e22ce" stop-opacity="0.9"/>
+                        <stop offset="100%" stop-color="#b45309" stop-opacity="0.85"/>
+                      </linearGradient>
+                      <linearGradient id="awkCoreGrad" x1="20" y1="9" x2="20" y2="35" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#38bdf8"/>
+                        <stop offset="50%" stop-color="#e879f9"/>
+                        <stop offset="100%" stop-color="#f43f5e"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
                 </div>
                 <div>
                   <div style="display:flex; align-items:center; gap:6px; margin-bottom:3px;">
                     <span class="grade-badge grade-legend" style="font-size:11px;">통합 3각 로드맵</span>
-                    <span class="hub-card-title" style="font-size:16px; margin:0;">⚡🦸 스킬 & 영웅 통합 3각성 우선순위 가이드</span>
+                    <span class="hub-card-title" style="font-size:16px; margin:0;">스킬 & 영웅 통합 3각성 우선순위 가이드</span>
                   </div>
                   <span class="hub-card-desc" style="color:#cbd5e1;">115만 개 모아 어디에 먼저 박을까? 스킬/영웅 구분 없이 직업별 1순위~5순위 통합 추천 (1각 도배 정석 포함)</span>
                 </div>
