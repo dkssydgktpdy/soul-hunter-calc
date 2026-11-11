@@ -3914,7 +3914,6 @@
   </div>
 </div>
 
-</div>
 
   <!-- Footer (모든 탭 하단 고정 노출 + 실시간 방문자 카운터 정상 작동) -->
   <footer>
@@ -5425,41 +5424,6 @@
     el.classList.toggle("active");
   }
 
-  function selectEquipIconType(type) {
-    selectedEquipType = type;
-    ['scythe', 'orb', 'accessory'].forEach(t => {
-      const card = document.getElementById(`eq_card_${t}`);
-      if (card) {
-        if (t === type) card.classList.add('selected');
-        else card.classList.remove('selected');
-      }
-    });
-
-    const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
-    const curName = nameMap[type] || "대낫";
-
-    const targetSel = document.getElementById('sum_equip_target');
-    if (targetSel) {
-      const prevVal = targetSel.value || "32";
-      targetSel.innerHTML = `
-        <option value="32" ${prevVal === "32" ? "selected" : ""}>고대 ${curName} 1등급 (신화1 32개 분량 / 영원 해금 필수)</option>
-        <option value="16" ${prevVal === "16" ? "selected" : ""}>고대 ${curName} 2등급 (신화1 16개 분량)</option>
-        <option value="8" ${prevVal === "8" ? "selected" : ""}>고대 ${curName} 3등급 (신화1 8개 분량)</option>
-        <option value="4" ${prevVal === "4" ? "selected" : ""}>고대 ${curName} 4등급 (신화1 4개 분량)</option>
-      `;
-    }
-
-    const invTitleEl = document.getElementById('equip_inv_header_title');
-    if (invTitleEl) {
-      invTitleEl.innerText = `🎒 현재 보유 [${curName}] 인벤토리 입력 (전 등급 27슬롯 일괄 합성)`;
-    }
-
-    document.querySelectorAll('.dyn-eq-name').forEach(el => {
-      el.innerText = curName;
-    });
-
-    updateSummonCalculation();
-  }
 
   function renderNewbieCategoryUI() {
     const container = document.getElementById('summon_dynamic_body');
@@ -5948,27 +5912,6 @@
                      ((rates.middle || 0) * val_mid) +
                      ((rates.normal || 0) * val_nor);
     return totalVal;
-  }
-
-  function calcOwnedEquipmentValue() {
-    const tierFactors = {
-      anc2: 16.0, anc3: 8.0, anc4: 4.0,
-      myt1: 1.0, myt2: 0.25, myt3: 0.0625, myt4: 0.015625,
-      leg1: 1 / 256, leg2: 1 / 1024, leg3: 1 / 4096, leg4: 1 / 16384,
-      uni1: 1 / 65536, uni2: 1 / 262144, uni3: 1 / 1048576, uni4: 1 / 4194304,
-      adv1: 1 / 16777216, adv2: 1 / 67108864, adv3: 1 / 268435456, adv4: 1 / 1073741824,
-      mid1: 1 / 4294967296, mid2: 1 / 17179869184, mid3: 1 / 68719476736, mid4: 1 / 274877906944,
-      nor1: 1 / 1099511627776, nor2: 1 / 4398046511104, nor3: 1 / 17592186044416, nor4: 1 / 70368744177664
-    };
-    let total = 0;
-    for (let k in tierFactors) {
-      const el = document.getElementById('inv_' + k);
-      if (el) {
-        const cnt = parseInt(el.value) || 0;
-        total += cnt * tierFactors[k];
-      }
-    }
-    return total;
   }
 
   function updateSummonCalculation() {
@@ -9379,6 +9322,7 @@
         `;
         return;
       }
+    }
 
     const elemDebuffSkill = guideElem === 'fire' ? '불벼락' : (guideElem === 'light' ? '뇌전검무' : '암흑붕괴');
     const elemPulseSkill = guideElem === 'fire' ? '플레임 펄스' : (guideElem === 'light' ? '썬더 펄스' : '다크 펄스');
