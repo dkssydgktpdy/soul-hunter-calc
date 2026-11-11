@@ -3849,10 +3849,15 @@
     'images/character.png', 'avatar.PNG', 'images/avatar.PNG'
   ];
   let sdCharIdx = 0;
+  // SD 캐릭터 이미지 물음표(?) 깜빡임 방지 안전 로더
   function handleSdCharError(img) {
-    if (sdCharIdx < sdCharFallbacks.length) {
-      img.src = sdCharFallbacks[sdCharIdx++];
+    const fallbacks = ['images/char.png', 'char.png', 'images/char.PNG', 'char.PNG', 'images/avatar.png', 'avatar.png', 'avatar.PNG'];
+    let idx = parseInt(img.dataset.retryIdx || '0');
+    if (idx < fallbacks.length) {
+      img.dataset.retryIdx = idx + 1;
+      img.src = fallbacks[idx];
     } else {
+      img.onerror = null;
       img.parentElement.innerHTML = '<div style="font-size:64px;">🧙‍♂️</div>';
     }
   }
@@ -4274,10 +4279,16 @@
     'avatar.jpg', 'images/avatar.jpg'
   ];
   let avatarIndex = 0;
+
+  // 메인 배너 프로필 아바타 물음표(?) 깜빡임 방지 안전 로더
   function handleAvatarError(img) {
-    if (avatarIndex < avatarFallbacks.length) {
-      img.src = avatarFallbacks[avatarIndex++];
+    const fallbacks = ['images/avatar.png', 'avatar.png', 'images/avatar.PNG', 'avatar.PNG', 'images/Avatar.png', 'Avatar.PNG', 'images/avatar.jpg'];
+    let idx = parseInt(img.dataset.retryIdx || '0');
+    if (idx < fallbacks.length) {
+      img.dataset.retryIdx = idx + 1;
+      img.src = fallbacks[idx];
     } else {
+      img.onerror = null;
       img.style.display = 'none';
     }
   }
@@ -8582,6 +8593,7 @@
 
   // 레벨별 최적의 1차 전직 특성 추천 알고리즘 (고수분 조언 & 붉양님 공략 완벽 반영)
   // 레벨별 최적의 1차 전직 특성 추천 알고리즘 (합연산 희석 vs 독립 바구니 & 과성장 ON/OFF 메커니즘 완벽 반영!)
+  // 레벨별 최적의 1차 전직 특성 추천 알고리즘 (사신 & 아크메이지 3고패 분기 + 다크로드 과성장 분기 완벽 반영!)
   function getRecommended1stTraits(job, lv, useOvergrowth, mode) {
     const db = TRAIT_1ST_DB[job] || [];
     const unlockedMap = new Map();
@@ -8590,15 +8602,12 @@
       if (u) unlockedMap.set(t.id, u);
     });
 
-    // 열려 있는 슬롯 수: 기본(1), Lv20(2), Lv40(3), Lv60(4), Lv80+(5)
     const slotCount = lv < 20 ? 1 : (lv < 40 ? 2 : (lv < 60 ? 3 : (lv < 80 ? 4 : 5)));
     let pickedIds = [];
     let subCandidateIds = [];
 
     if (job === 'reaper') {
-      // ★ 사신 핵심:
-      // - [2고패 이하] + [과성장 ON]: 패시브에 '마력폭주'를 쓰므로 [스피증➔강피증 변환(rp_skill_to_strike)] 채용!
-      // - [3고패 이상] (또는 과성장 OFF): 마력폭주가 빠지므로 [스택에 따른 피해량 증가(rp_stack_dmg)] 채용!
+      // ★ 사신: 2고패 이하(마력폭주 착용) + 과성장 ON일 때만 변환(rp_skill_to_strike) 사용, 3고패 이상은 스택(rp_stack_dmg) 사용!
       const useConvertTrait = useOvergrowth && !reaperHas3Ancient;
       const variableSlotId = useConvertTrait ? "rp_skill_to_strike" : "rp_stack_dmg";
       const altSlotId = useConvertTrait ? "rp_stack_dmg" : "rp_skill_to_strike";
@@ -8623,37 +8632,38 @@
         pickedIds = ["rp_awk_cd", "rp_enh_strike", "rp_step_dmg", variableSlotId];
         subCandidateIds = [altSlotId];
       } else if (lv < 80) {
-        // 65~79렙 (4슬롯): 각성기봉인 + 3회강타 + 강타단계 + [변환(2고패 이하) <-> 스택(3고패 이상)]
         pickedIds = ["rp_seal_awk", "rp_enh_strike", "rp_step_dmg", variableSlotId];
         subCandidateIds = ["rp_awk_cd", altSlotId];
       } else {
-        // ★ 80~150렙 (5슬롯): 평타 50% 강타 발동(rp_strike_buff)은 타수 복사 본체이므로 무조건 고정!
         pickedIds = ["rp_strike_buff", "rp_enh_strike", variableSlotId, "rp_seal_awk", "rp_step_dmg"];
         subCandidateIds = [altSlotId, "rp_awk_cd", "rp_hit_fix"];
       }
     } else if (job === 'mage') {
-      // [아크메이지(미스틱): Lv.60 이상 구간]
+      // ★ 아크메이지(미스틱) 핵심 발견 반영:
+      // - 엘리시아 버프는 '스킬 피해량'만 올려주므로, [2고패 이하]에서 패시브에 '전투지휘(영스피 증폭)'를 낄 때만 [영스피➔스피 변환]이 유효함!
+      // - [3고패 이상] 달성 시 패시브에서 '전투지휘'가 빠지므로 과성장+엘리시아 상태여도 [영스피➔스피 변환]을 빼고
+      //   [스킬 버프 효과 추가(발동확률 70% + 쿨감 70% + 전직스피증)]를 넣는 것이 실전 비석 딜 약 77배 이상 강력함!!
+      const useMageConvert = useOvergrowth && !reaperHas3Ancient;
+
       if (lv < 65) {
-        pickedIds = useOvergrowth
+        pickedIds = useMageConvert
           ? ["mg_hero_to_skill", "mg_all_brk_sum", "mg_stack_dmg", "mg_awk_cd"]
           : ["mg_all_brk_sum", "mg_stack_dmg", "mg_awk_cd", "mg_enh_skill"];
       } else if (lv < 75) {
-        pickedIds = useOvergrowth
+        pickedIds = useMageConvert
           ? ["mg_seal_awk", "mg_hero_to_skill", "mg_eq_lv_sum", "mg_stack_dmg"]
           : ["mg_seal_awk", "mg_awk_cd", "mg_eq_lv_sum", "mg_enh_skill"];
-        subCandidateIds = ["mg_enh_skill", "mg_all_brk_sum", "mg_awk_cd"].filter(id => !pickedIds.includes(id));
+        subCandidateIds = ["mg_enh_skill", "mg_all_brk_sum", "mg_awk_cd", "mg_hero_to_skill"].filter(id => !pickedIds.includes(id));
       } else if (lv < 80) {
-        pickedIds = useOvergrowth
+        pickedIds = useMageConvert
           ? ["mg_seal_awk", "mg_hero_to_skill", "mg_eq_lv_sum", "mg_all_brk_sum"]
-          : ["mg_seal_awk", "mg_eq_lv_sum", "mg_all_brk_sum", "mg_enh_skill"];
-        subCandidateIds = ["mg_stack_dmg", "mg_enh_skill"].filter(id => !pickedIds.includes(id));
+          : ["mg_seal_awk", "mg_eq_lv_sum", "mg_all_brk_sum", "mg_stack_dmg"];
+        subCandidateIds = ["mg_stack_dmg", "mg_enh_skill", "mg_hero_to_skill"].filter(id => !pickedIds.includes(id));
       } else {
         // ★ 80 ~ 150렙 (5슬롯):
-        // 1) [과성장 ON]: 변환 특성(mg_hero_to_skill)이 이미 '전직 스킬 피해량' 바구니를 수천만% 채우므로
-        //    같은 바구니인 '스킬 버프 효과 추가(mg_skill_buff)'는 합연산 희석됨 -> 빼고 순수 곱연산 Top 3 투입!
-        // 2) [과성장 OFF]: 변환 특성이 없어 '전직 스킬 피해량' 바구니가 0%이므로
-        //    '스킬 버프 효과 추가(발동확률 70% + 쿨감 70% + 전직스피증)'가 독립 곱연산 + 스택 가속 0티어로 작동함!
-        if (useOvergrowth) {
+        // - 2고패 이하 + 과성장 ON: [각성기 봉인 + 영스피➔스피 변환] + 곱연산 Top 3
+        // - 3고패 이상 (과성장 무관!) 또는 과성장 OFF: [각성기 봉인 + ★스킬 버프 효과 추가(77배 우위!)] + 곱연산 Top 3
+        if (useMageConvert) {
           pickedIds = ["mg_seal_awk", "mg_hero_to_skill"];
           const multPoolIds = ["mg_enh_skill", "mg_eq_lv_sum", "mg_all_brk_sum", "mg_stack_dmg"];
           multPoolIds.sort((a, b) => (unlockedMap.get(b)?.val || 0) - (unlockedMap.get(a)?.val || 0));
@@ -8661,7 +8671,7 @@
             if (pickedIds.length < 5) pickedIds.push(pid);
             else subCandidateIds.push(pid);
           }
-          subCandidateIds.unshift("mg_skill_buff"); // 스택/쿨감 유틸 필요 시 교체 후보
+          subCandidateIds.unshift("mg_skill_buff");
         } else {
           pickedIds = ["mg_seal_awk", "mg_skill_buff"];
           const multPoolIds = ["mg_enh_skill", "mg_eq_lv_sum", "mg_all_brk_sum", "mg_stack_dmg"];
@@ -8670,10 +8680,12 @@
             if (pickedIds.length < 5) pickedIds.push(pid);
             else subCandidateIds.push(pid);
           }
+          if (useOvergrowth) subCandidateIds.push("mg_hero_to_skill");
         }
       }
     } else if (job === 'lord') {
-      // [오버로드(다크로드): Lv.60 이상 구간]
+      // ★ 오버로드(다크로드):
+      // - 엘리시아 본인이 '스킬 피해량'을 수억% 올려주므로, 3고패가 되어도 과성장+엘리시아 사용 중이면 [스피➔영스피 변환(ld_skill_to_hero)]이 계속 0티어!
       if (lv < 65) {
         pickedIds = useOvergrowth
           ? ["ld_skill_to_hero", "ld_all_brk_sum", "ld_stack_dmg", "ld_awk_cd"]
@@ -8689,11 +8701,6 @@
           : ["ld_seal_awk", "ld_eq_brk_sum", "ld_all_brk_sum", "ld_stack_dmg"];
         subCandidateIds = ["ld_stack_dmg", "ld_awk_cd"].filter(id => !pickedIds.includes(id));
       } else {
-        // ★ 80 ~ 150렙 (5슬롯):
-        // 1) [과성장 ON]: 1번 슬롯이 엘리시아라 '강화 영웅 스킬' 무효 + 변환 특성으로 전직 영스피 바구니가 이미 꽉 참
-        //    -> [각성기 봉인 + 스피➔영스피 변환 + 장착 영웅 돌파합(곱) + 모든 영웅 돌파합(곱) + 스택 피해량(곱)] 5개 고정!
-        // 2) [과성장 OFF (솔라리스 졸업 후 1번 슬롯 메인딜러 배치)]:
-        //    -> 1번 슬롯 메인딜러가 '강화 영웅 스킬'을 온전히 받고, 비어있는 전직 영스피 바구니 + 영웅 공속/이속 200%를 주는 '영웅 버프 추가' 채택!
         if (useOvergrowth) {
           pickedIds = ["ld_seal_awk", "ld_skill_to_hero", "ld_eq_brk_sum", "ld_all_brk_sum", "ld_stack_dmg"];
           subCandidateIds = ["ld_hero_buff"];
@@ -8723,6 +8730,12 @@
       notRecommended.push({
         trait: unlockedMap.get("ld_enh_hero"),
         reason: "과성장+엘리시아 사용 시 1번 슬롯이 엘리시아라서 메인 딜 영웅(칼리아/카이렌/모르반)이 효과를 받지 못함 ❌"
+      });
+    }
+    if (job === 'mage' && reaperHas3Ancient && useOvergrowth && unlockedMap.has("mg_hero_to_skill")) {
+      notRecommended.push({
+        trait: unlockedMap.get("mg_hero_to_skill"),
+        reason: "3고패 이상에서는 패시브 '전투지휘(영스피 증폭)'가 빠지므로, 과성장 상태여도 이 변환 특성을 빼고 [스킬 버프 효과 추가]를 넣는 것이 약 77배 더 강력합니다! ⚠️"
       });
     }
 
@@ -9629,32 +9642,38 @@
       : (guideElem === 'light' ? { name: "천둥의 진노", img: "elem_light" } : { name: "그림자 동화", img: "elem_dark" });
 
     // 사신 전용: 과성장 카드 바로 밑에 들어갈 [고대 패시브 보유 단계 (2고패 vs 3고패↑)] 선택 카드
-    const reaperAncientSwitchHtml = (guideJob === 'reaper')
+    // 사신 & 아크메이지 공통: [고대 패시브 보유 단계 (2고패 이하 vs 3고패 이상)] 스위치 카드
+    const job1stAncientImg = guideJob === 'reaper' ? 'strike_master' : 'frenzy';
+    const job1stAncientName = guideJob === 'reaper' ? '강타의 대가' : '마력광란';
+
+    const reaperAncientSwitchHtml = (guideJob === 'reaper' || guideJob === 'mage')
       ? `<div style="background:linear-gradient(135deg, rgba(6,182,212,0.16) 0%, #131d33 100%); padding:14px 18px; border-radius:14px; border:2px solid #06b6d4; margin-bottom:14px;">
           <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
             <div style="display:flex; align-items:center; gap:12px;">
-              <!-- 사신 3대 고대 패시브 아이콘 미리보기 -->
+              <!-- 3대 고대 패시브 아이콘 미리보기 -->
               <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
-                <img src="images/strike_master.jpg" alt="강타의 대가" title="1순위: 강타의 대가" style="width:42px; height:42px; border-radius:9px; border:1.5px solid #06b6d4; object-fit:cover;" onerror="this.onerror=null; this.src='images/strike_master.png';">
+                <img src="images/${job1stAncientImg}.jpg" alt="${job1stAncientName}" title="1순위: ${job1stAncientName}" style="width:42px; height:42px; border-radius:9px; border:1.5px solid #06b6d4; object-fit:cover;" onerror="this.onerror=null; this.src='images/${job1stAncientImg}.png';">
                 <img src="images/pierce.jpg" alt="근원관통" title="2순위: 근원관통" style="width:42px; height:42px; border-radius:9px; border:1.5px solid #06b6d4; object-fit:cover;" onerror="this.onerror=null; this.src='images/pierce.png';">
                 <img src="images/${elemAncientPassive.img}.jpg" alt="${elemAncientPassive.name}" title="3순위: ${elemAncientPassive.name}" style="width:42px; height:42px; border-radius:9px; border:1.5px solid ${reaperHas3Ancient?'#06b6d4':'#475569'}; opacity:${reaperHas3Ancient?1:0.4}; object-fit:cover;" onerror="this.onerror=null; this.src='images/${elemAncientPassive.img}.png';">
               </div>
               <div>
                 <div style="font-size:15px; font-weight:900; color:#ffffff;">
-                  🔮 [사신 전용] 현재 보유한 고대 패시브 단계 선택
+                  🔮 [${guideJob==='reaper'?'사신':'아크메이지'} 필수 조건] 현재 보유한 고대 패시브 단계 선택
                 </div>
-                <div style="font-size:12px; color:#cbd5e1; margin-top:2px;">
-                  * <strong>2고패 이하</strong>는 패시브에 <strong>[마력폭주]</strong>를 쓰므로 1차 특성에 <strong>[스피증➔강타 변환]</strong>을 쓰고, <strong>3고패 이상</strong>부터는 마력폭주가 빠져 <strong>[스택 피해량]</strong>을 채용합니다!
+                <div style="font-size:12px; color:#cbd5e1; margin-top:2px; line-height:1.45;">
+                  ${guideJob === 'reaper'
+                    ? `* <strong>2고패 이하</strong>는 패시브에 <strong>[마력폭주]</strong>를 쓰므로 1차 특성에 <strong>[스피증➔강타 변환]</strong>을 쓰고, <strong>3고패 이상</strong>부터는 <strong>[스택 피해량]</strong>을 채용합니다!`
+                    : `* <strong>2고패 이하</strong>는 패시브에 <strong>[전투지휘]</strong>를 쓰므로 <strong>[영스피➔스피 변환]</strong>을 쓰지만, <strong>3고패 이상</strong>부터는 과성장+엘리시아 상태여도 변환을 빼고 <strong>[★스킬 버프 효과 추가]</strong>를 넣는 것이 <strong>실전 딜 약 77배 더 강력</strong>합니다!`}
                 </div>
               </div>
             </div>
 
             <div style="display:flex; gap:6px; flex-wrap:wrap;">
               <button onclick="toggleReaperAncientCount(false)" style="padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:1.5px solid ${!reaperHas3Ancient?'#38bdf8':'#334155'}; background:${!reaperHas3Ancient?'#0284c7':'#0f172a'}; color:#fff;">
-                2고패 이하 (마력폭주+변환)
+                2고패 이하 (${guideJob==='reaper'?'마력폭주':'전투지휘'}+변환)
               </button>
               <button onclick="toggleReaperAncientCount(true)" style="padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:1.5px solid ${reaperHas3Ancient?'#06b6d4':'#334155'}; background:${reaperHas3Ancient?'#0891b2':'#0f172a'}; color:#fff;">
-                3고패 이상 (스택 특성 채용)
+                3고패 이상 (${guideJob==='reaper'?'스택 특성':'스킬버프 추가'} 채용)
               </button>
             </div>
           </div>
