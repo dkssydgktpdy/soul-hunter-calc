@@ -1868,6 +1868,71 @@
     color: #7dd3fc;
   }
 
+/* ==================== 📱 모바일(핸드폰) 화면 찌그러짐 & 여백 완벽 교정 ==================== */
+  .trait- Flex-card-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .trait-flex-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    min-width: 260px;
+  }
+  @media (max-width: 640px) {
+    body {
+      padding: 10px 6px !important;
+    }
+    /* 이중 카드 여백을 대폭 줄여 모바일 가로폭 확보 */
+    .card {
+      padding: 14px 10px !important;
+      border-radius: 12px !important;
+    }
+    .stage-build-card {
+      padding: 12px 10px !important;
+    }
+    /* 모바일에서 아이콘은 위로, 설명글은 가로 100% 전체 폭을 쓰도록 정렬! */
+    .trait-flex-left {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 10px !important;
+      min-width: 100% !important;
+    }
+    .trait-action-btns {
+      width: 100% !important;
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 6px !important;
+    }
+    .trait-action-btns button {
+      width: 100% !important;
+      text-align: center !important;
+      padding: 9px 6px !important;
+      font-size: 12px !important;
+    }
+    /* 모바일에서 우측 하단 플로팅 버튼 크기 슬림화 & 하단 여백 확보 */
+    .floating-btn-group {
+      right: 10px !important;
+      bottom: 12px !important;
+      gap: 6px !important;
+    }
+    .floating-guide-btn {
+      padding: 7px 12px !important;
+      font-size: 12px !important;
+    }
+    .floating-back-btn-inner {
+      padding: 8px 14px !important;
+      font-size: 12.5px !important;
+    }
+    footer {
+      padding-bottom: 80px !important; /* 플로팅 버튼이 하단 컨텐츠를 가리지 않게 여유 공간 확보 */
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -10671,20 +10736,20 @@
     const job1stAncientName = guideJob === 'reaper' ? '강타의 대가' : '마력광란';
 
     const reaperAncientSwitchHtml = (guideJob === 'reaper' || guideJob === 'mage')
-      ? `<div style="background:linear-gradient(135deg, rgba(6,182,212,0.16) 0%, #131d33 100%); padding:14px 18px; border-radius:14px; border:2px solid #06b6d4; margin-bottom:14px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-            <div style="display:flex; align-items:center; gap:12px;">
+      ? `<div style="background:linear-gradient(135deg, rgba(6,182,212,0.16) 0%, #131d33 100%); padding:14px 16px; border-radius:14px; border:2px solid #06b6d4; margin-bottom:14px;">
+          <div class="trait-Flex-card-inner">
+            <div class="trait-flex-left">
               <!-- 3대 고대 패시브 아이콘 미리보기 -->
-              <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+              <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
                 <img src="images/${job1stAncientImg}.jpg" alt="${job1stAncientName}" title="1순위: ${job1stAncientName}" style="width:42px; height:42px; border-radius:9px; border:1.5px solid #06b6d4; object-fit:cover;" onerror="this.onerror=null; this.src='images/${job1stAncientImg}.png';">
                 <img src="images/pierce.jpg" alt="근원관통" title="2순위: 근원관통" style="width:42px; height:42px; border-radius:9px; border:1.5px solid #06b6d4; object-fit:cover;" onerror="this.onerror=null; this.src='images/pierce.png';">
                 <img src="images/${elemAncientPassive.img}.jpg" alt="${elemAncientPassive.name}" title="3순위: ${elemAncientPassive.name}" style="width:42px; height:42px; border-radius:9px; border:1.5px solid ${reaperHas3Ancient?'#06b6d4':'#475569'}; opacity:${reaperHas3Ancient?1:0.4}; object-fit:cover;" onerror="this.onerror=null; this.src='images/${elemAncientPassive.img}.png';">
               </div>
-              <div>
-                <div style="font-size:15px; font-weight:900; color:#ffffff;">
-                  🔮 [${guideJob==='reaper'?'사신':'아크메이지'} 필수 조건] 현재 보유한 고대 패시브 단계 선택
+              <div style="word-break:keep-all;">
+                <div style="font-size:15px; font-weight:900; color:#ffffff; line-height:1.35;">
+                  🔮 [${guideJob==='reaper'?'사신':'아크메이지'} 필수 조건] 보유 고대 패시브 단계 선택
                 </div>
-                <div style="font-size:12px; color:#cbd5e1; margin-top:2px; line-height:1.45;">
+                <div style="font-size:12.5px; color:#cbd5e1; margin-top:4px; line-height:1.55;">
                   ${guideJob === 'reaper'
                     ? `* <strong>2고패 이하</strong>는 패시브에 <strong>[마력폭주]</strong>를 쓰므로 1차 특성에 <strong>[스피증➔강타 변환]</strong>을 쓰고, <strong>3고패 이상</strong>부터는 <strong>[스택 피해량]</strong>을 채용합니다!`
                     : `* <strong>2고패 이하</strong>는 패시브에 <strong>[전투지휘]</strong>를 쓰므로 <strong>[영스피➔스피 변환]</strong>을 쓰지만, <strong>3고패 이상</strong>부터는 과성장+엘리시아 상태여도 변환을 빼고 <strong>[★스킬 버프 효과 추가]</strong>를 넣는 것이 <strong>실전 딜 약 77배 더 강력</strong>합니다!`}
@@ -10692,7 +10757,7 @@
               </div>
             </div>
 
-            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <div class="trait-action-btns" style="display:flex; gap:6px; flex-wrap:wrap;">
               <button onclick="toggleReaperAncientCount(false)" style="padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:1.5px solid ${!reaperHas3Ancient?'#38bdf8':'#334155'}; background:${!reaperHas3Ancient?'#0284c7':'#0f172a'}; color:#fff;">
                 2고패 이하 (${guideJob==='reaper'?'마력폭주':'전투지휘'}+변환)
               </button>
@@ -10706,18 +10771,17 @@
 
     // 사신 전용: 추천 특성 보드 밑에 들어갈 [고대 패시브 개수별 패시브 5슬롯 편성 & 전술가속/폭발준비 비석 비교 팁]
     const reaperPassiveGuideBoxHtml = (guideJob === 'reaper' && !isLockedUnder60)
-      ? `<div style="margin-top:16px; background:#0b1120; border:1.5px solid #06b6d4; border-radius:14px; padding:16px 18px;">
-          <div style="font-size:15px; font-weight:900; color:#67e8f9; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;">
+      ? `<div style="margin-top:16px; background:#0b1120; border:1.5px solid #06b6d4; border-radius:14px; padding:14px 14px;">
+          <div style="font-size:14.5px; font-weight:900; color:#67e8f9; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;">
             <span>📜 [사신 핵심 팁] 1차 Lv.80 최우선 달성 이유 & 고패 개수별 패시브 편성법</span>
             <span class="grade-badge grade-ancient">사신 패시브 정석</span>
           </div>
 
-          <div style="font-size:12.5px; color:#cbd5e1; margin-bottom:12px; line-height:1.6;">
+          <div style="font-size:12.5px; color:#cbd5e1; margin-bottom:12px; line-height:1.6; word-break:keep-all;">
             • 사신은 <strong>1차 Lv.80</strong>에 열리는 <strong>[강타 버프 효과 추가(평타 50% 강타 + 공속 200%)]</strong>와 5번째 슬롯 개방 시너지가 가장 크기 때문에 타 직업보다 <strong>1차 전직 80레벨 달성이 최우선으로 요구</strong>됩니다.<br>
             • <strong>2고대 패시브(강타의 대가 + 근원관통)</strong> 기준 정석 패시브 5슬롯은 아래와 같으며, 이때 <strong>[마력폭주]</strong>를 착용하기 때문에 1차 특성에서도 <strong>[스킬 피해량 1%당 ➔ 강타 피해량 변환]</strong>의 효율이 극대화됩니다!
           </div>
 
-          <!-- 2고패 기준 사신 정석 패시브 5슬롯 아이콘 그리드 -->
           <div style="font-size:12px; font-weight:800; color:#fde047; margin-bottom:6px;">📌 [2고대 패시브] 달성 시 사신 패시브 5슬롯 정석 편성:</div>
           <div class="build-slot-grid" style="margin-bottom:14px;">
             <div class="build-slot-item core-fix" style="border-color:#06b6d4;">
@@ -10752,10 +10816,9 @@
             </div>
           </div>
 
-          <!-- 아직 2고패가 없는 특이 케이스 (1고패 이하) 전술가속 vs 폭발준비 비교 안내 -->
-          <div style="background:#131d33; border:1px dashed #fbbf24; border-radius:10px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+          <div style="background:#131d33; border:1px dashed #fbbf24; border-radius:10px; padding:12px 14px;">
+            <div class="trait-flex-left">
+              <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
                 <div style="text-align:center;">
                   <img src="images/tactical_haste.jpg" alt="전술가속" style="width:38px; height:38px; border-radius:8px; border:1.5px solid #eab308; object-fit:cover;" onerror="this.onerror=null; this.src='images/tactical_haste.png';">
                   <div style="font-size:10px; color:#fde047; font-weight:800;">전술가속</div>
@@ -10766,7 +10829,7 @@
                   <div style="font-size:10px; color:#fde047; font-weight:800;">폭발준비</div>
                 </div>
               </div>
-              <div style="font-size:12px; color:#e2e8f0; line-height:1.55;">
+              <div style="font-size:12px; color:#e2e8f0; line-height:1.55; word-break:keep-all;">
                 💡 <strong>[아직 2고대 패시브가 없는 경우 패시브 교체 기준]</strong><br>
                 • <strong>2고패 달성 시:</strong> 기존에 쓰던 전설 패시브 중 <strong>[전술가속]</strong>을 가장 먼저 뺍니다.<br>
                 • <strong>1고패 이하일 때:</strong> 강타 게이지/쿨감 상황에 따라 <strong>[폭발준비]</strong>를 뺄지 <strong>[전술가속]</strong>을 쓸지 갈리므로, 두 패시브를 번갈아 끼고 <strong>수련동굴 비석치기</strong>로 딜이 더 높은 쪽을 착용하세요!<br>
@@ -10786,40 +10849,38 @@
           <span class="grade-badge grade-ancient">Lv.1 ~ Lv.150 전 구간 반영</span>
         </div>
 
-        <!-- 💍 크게 확대한 [엘리시아 + 과성장 룬] 선택 카드 -->
-        <div onclick="toggleTraitOvergrowth(!traitUseOvergrowth)" style="background:linear-gradient(135deg, ${traitUseOvergrowth?'rgba(16,185,129,0.18)':'rgba(15,23,42,0.9)'} 0%, #131d33 100%); padding:16px 18px; border-radius:14px; border:2px solid ${traitUseOvergrowth?'#10b981':'#334155'}; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; cursor:pointer; box-shadow:${traitUseOvergrowth?'0 0 18px rgba(16,185,129,0.25)':'none'}; transition:all 0.2s;">
-          <div style="display:flex; align-items:center; gap:14px;">
-            <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-              <div style="width:52px; height:52px; border-radius:12px; background:#0f172a; border:2px solid #38bdf8; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(56,189,248,0.4);">
-                <img src="images/elisia.png" alt="엘리시아" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='images/elisia.PNG'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
+        <!-- 💍 [엘리시아 + 과성장 룬] 선택 카드 (모바일 반응형 완벽 대응) -->
+        <div onclick="toggleTraitOvergrowth(!traitUseOvergrowth)" style="background:linear-gradient(135deg, ${traitUseOvergrowth?'rgba(16,185,129,0.18)':'rgba(15,23,42,0.9)'} 0%, #131d33 100%); padding:14px 16px; border-radius:14px; border:2px solid ${traitUseOvergrowth?'#10b981':'#334155'}; margin-bottom:12px; cursor:pointer; box-shadow:${traitUseOvergrowth?'0 0 18px rgba(16,185,129,0.25)':'none'}; transition:all 0.2s;">
+          <div class="trait-Flex-card-inner">
+            <div class="trait-flex-left">
+              <div style="display:flex; align-items:center; justify-content:space-between; width:100%; max-width:130px; gap:6px; flex-shrink:0;">
+                <div style="width:48px; height:48px; border-radius:11px; background:#0f172a; border:2px solid #38bdf8; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(56,189,248,0.4);">
+                  <img src="images/elisia.png" alt="엘리시아" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='images/elisia.PNG'; this.onerror=function(){this.parentElement.innerHTML='🦸';};">
+                </div>
+                <span style="font-size:14px; font-weight:900; color:#fde047;">➕</span>
+                <div style="width:48px; height:48px; border-radius:11px; background:linear-gradient(135deg, #06b6d4 0%, #10b981 100%); padding:2px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 12px rgba(16,185,129,0.45);">
+                  <div style="width:100%; height:100%; background:#0f172a; border-radius:9px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.15;">
+                    <span style="font-size:9px; color:#34d399; font-weight:800;">고대·영원</span>
+                    <span style="font-size:12px; color:#ffffff; font-weight:900;">과성장</span>
+                  </div>
+                </div>
               </div>
-              <span style="font-size:15px; font-weight:900; color:#fde047;">➕</span>
-              <div style="width:52px; height:52px; border-radius:12px; background:linear-gradient(135deg, #06b6d4 0%, #10b981 100%); padding:2px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 12px rgba(16,185,129,0.45);">
-                <div style="width:100%; height:100%; background:#0f172a; border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.15;">
-                  <span style="font-size:9.5px; color:#34d399; font-weight:800;">고대·영원</span>
-                  <span style="font-size:13px; color:#ffffff; font-weight:900;">과성장</span>
+
+              <div style="word-break:keep-all;">
+                <div style="font-size:15px; font-weight:900; color:#ffffff; display:flex; align-items:center; flex-wrap:wrap; gap:6px;">
+                  <span>💍 [엘리시아 + 과성장 룬] 사용 여부</span>
+                  <span class="grade-badge" style="background:${traitUseOvergrowth?'#059669':'#334155'}; color:#fff; font-size:11px; padding:2px 8px;">${traitUseOvergrowth?'✅ 사용 중 (ON)':'미사용 (OFF)'}</span>
+                </div>
+                <div style="font-size:12.5px; color:#cbd5e1; margin-top:4px; line-height:1.5;">
+                  • 활성화 시 <strong>[${guideJob==='mage'?'영웅 스킬 피해량 1%당 ➔ 전직 스킬 피해량 증가':'스킬 피해량 1%당 ➔ 전직 '+(guideJob==='reaper'?'강타':'영웅 스킬')+' 피해량 증가'}]</strong> 특성을 우선 장착합니다.<br>
+                  • 다크로드(오버로드)의 경우 1번 슬롯이 엘리시아이므로 메인딜 영웅이 효과를 못 받는 <strong>'강화 영웅 스킬 사용'을 자동으로 제외</strong>합니다.
                 </div>
               </div>
             </div>
-
-            <div>
-              <div style="font-size:16px; font-weight:900; color:#ffffff; display:flex; align-items:center; gap:8px;">
-                <span>💍 [엘리시아 + 과성장 룬] 조합 사용 여부</span>
-                <span class="grade-badge" style="background:${traitUseOvergrowth?'#059669':'#334155'}; color:#fff; font-size:11.5px; padding:2px 8px;">${traitUseOvergrowth?'✅ 사용 중 (ON)':'미사용 (OFF)'}</span>
-              </div>
-              <div style="font-size:12.5px; color:#cbd5e1; margin-top:4px; line-height:1.45;">
-                • 활성화 시 <strong>[${guideJob==='mage'?'영웅 스킬 피해량 1%당 ➔ 전직 스킬 피해량 증가':'스킬 피해량 1%당 ➔ 전직 '+(guideJob==='reaper'?'강타':'영웅 스킬')+' 피해량 증가'}]</strong> 특성을 우선 장착합니다.<br>
-                • 다크로드(오버로드)의 경우 1번 슬롯이 엘리시아이므로 메인딜 영웅이 효과를 못 받는 <strong>'강화 영웅 스킬 사용'을 자동으로 제외</strong>합니다.
-              </div>
-            </div>
-          </div>
-
-          <div onclick="event.stopPropagation();" style="display:flex; align-items:center;">
-            <input type="checkbox" ${traitUseOvergrowth ? 'checked' : ''} onchange="toggleTraitOvergrowth(this.checked)" style="width:24px; height:24px; accent-color:#10b981; cursor:pointer;">
           </div>
         </div>
 
-        <!-- 🔮 사신 전용: 고대 패시브 보유 단계 (2고패 vs 3고패↑) 선택 스위치 -->
+        <!-- 🔮 사신/아크메이지 전용: 고대 패시브 보유 단계 (2고패 vs 3고패↑) 선택 스위치 -->
         ${reaperAncientSwitchHtml}
 
         <!-- 해금 레벨 순서대로 쭉 나열된 선택 버튼 그리드 -->
