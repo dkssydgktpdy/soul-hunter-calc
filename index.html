@@ -8223,7 +8223,8 @@
     "라이자": "spirit_ryza", "라이자 (4차전용)": "spirit_ryza", "아케론": "spirit_akeron", "에레보스": "spirit_erebos",
     "니벨": "spirit_nibel", "할로우": "spirit_hallow", "녹시아": "spirit_noxia", "모르나": "spirit_morna",
     "릴리스": "spirit_lilis", "릴리스 (4차전용)": "spirit_lilis", "아인": "spirit_ain", "헤라": "spirit_ain",
-    "녹스": "spirit_nox", "미라": "spirit_mira"
+    "녹스": "spirit_nox", "미라": "spirit_mira",
+    "베인": "spirit_vayne", "아그니아": "spirit_agnia", "세이라": "spirit_seyra", "레이메이": "spirit_leimei", "헬라": "spirit_hella"
   };
 
   function makeGuideSlotHtml(name, tagText, noteText, isSkill, styleType) {
@@ -9440,7 +9441,7 @@
           ];
         } else if (awkGuideJob === 'mage') {
           const butterflyDesc = awkGuideElem === 'fire'
-            ? "⚠️ 화염은 상태이상 부족으로 사용 불가(❌)! 대신 엘차/크림슨/옵드/포효 사용"
+            ? "⚠️ 화염 속성은 크림슨/포효/불베기로 대체됩니다!"
             : "3각 시 241배 (번개/어둠 속성 상태이상 유지 시 필수!)";
 
           awkTiers = [
@@ -9932,19 +9933,21 @@
       return;
     }
 
-    // 5) 🧚 직업별 정령 세팅 가이드 (5단계 시너지 로드맵 & 인게임 1리더 4서포터 배치 완벽 구현!)
+    // 5) 🧚 직업별 정령 세팅 가이드 (인게임 리더 1칸 + 서포터 3칸 & 헤라(spirit_hella) 및 메타 규칙 100% 반영)
     if (currentGuideType === 'spirit') {
       const elemKr = guideElem === 'fire' ? '화염 🔥' : (guideElem === 'light' ? '번개 ⚡' : '어둠 🌑');
 
-      // 정령 미니 슬롯 생성기
+      // 정령 슬롯 생성 헬퍼 (헤라 spirit_hella 자동 연동 & 눈알 확대 방지)
       function makeSpiritSlot(name, roleLabel, tagBg, isLeader = false) {
-        const imgKey = SPIRIT_IMG_MAP[name];
+        let imgKey = SPIRIT_IMG_MAP[name];
+        if (name === "헤라") imgKey = "spirit_hella"; // 헤라 파일명 spirit_hella 직접 보장
+
         const imgHtml = imgKey
-          ? `<img src="images/${imgKey}.jpg" alt="${name}" onerror="this.onerror=null; this.src='images/${imgKey}.png'; this.onerror=function(){this.parentElement.innerHTML='🧚';};">`
+          ? `<img src="images/${imgKey}.jpg" alt="${name}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; this.src='images/${imgKey}.png'; this.onerror=function(){this.parentElement.innerHTML='🧚';};">`
           : `<span>🧚</span>`;
 
-        const size = isLeader ? "width:60px; height:60px;" : "width:48px; height:48px;";
-        const cardWidth = isLeader ? "min-width:130px; max-width:150px; margin:0 auto 12px auto;" : "min-width:105px; flex:1;";
+        const size = isLeader ? "width:62px; height:62px;" : "width:48px; height:48px;";
+        const cardWidth = isLeader ? "min-width:140px; max-width:160px; margin:0 auto 12px auto;" : "min-width:115px; flex:1;";
         const borderCol = isLeader ? "#fbbf24" : "#475569";
 
         return `
@@ -9953,12 +9956,12 @@
             <div class="build-slot-thumb" style="${size} border-color:${borderCol}; margin-bottom:5px;">
               ${imgHtml}
             </div>
-            <div class="build-slot-name" style="font-size:${isLeader?'13px':'12px'};">${name}</div>
+            <div class="build-slot-name" style="font-size:${isLeader?'13.5px':'12px'};">${name}</div>
           </div>
         `;
       }
 
-      // 인게임 배치도 (상단 중앙 리더 1칸 + 하단 서포터 4칸) 렌더링 헬퍼
+      // 인게임 배치도 (상단 중앙 리더 1칸 + 하단 서포터 3칸) 렌더링 헬퍼
       function renderSpiritStageBoard(leaderObj, supList, subPoolList, stageTitle, tipHtml) {
         const supSlotsHtml = supList.map(s => makeSpiritSlot(s.name, s.role, s.tagBg || "#0284c7")).join('');
         const subPoolHtml = (subPoolList && subPoolList.length > 0)
@@ -9981,64 +9984,81 @@
               ${makeSpiritSlot(leaderObj.name, leaderObj.role, leaderObj.tagBg || "#e11d48", true)}
             </div>
 
-            <!-- 하단 서포터 4칸 -->
-            <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+            <!-- 하단 서포터 3칸 (정확한 3칸 규격) -->
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
               ${supSlotsHtml}
             </div>
 
             ${subPoolHtml}
-            ${tipHtml ? `<div style="font-size:12px; color:#cbd5e1; margin-top:10px; line-height:1.5; background:rgba(15,23,42,0.8); padding:8px 12px; border-radius:8px;">💡 ${tipHtml}</div>` : ''}
+            ${tipHtml ? `<div style="font-size:12px; color:#cbd5e1; margin-top:10px; line-height:1.55; background:rgba(15,23,42,0.8); padding:8px 12px; border-radius:8px;">💡 ${tipHtml}</div>` : ''}
           </div>
         `;
       }
 
-      // 속성별 정령 데이터 매핑
       let sData = {};
       if (guideElem === 'fire') {
         sData = {
           step1: {
             leader: { name: "파이로", role: "👑 초·중반 리더 (10돌)", tagBg: "#eab308" },
             sups: [
-              { name: "드라카", role: "🛡️ 서포터" }, { name: "헤스티아", role: "🛡️ 서포터" },
-              { name: "플레아", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "드라카", role: "🛡️ 서포터" },
+              { name: "헤스티아", role: "🛡️ 서포터" },
+              { name: "헤라", role: "🛡️ 무속성 명함", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "플레미", role: "초반 리더(10돌)" }, { name: "헤라", role: "무속성" }],
-            tip: "3차 전직 전에는 돌파 높은 정령이 깡패! 초반엔 플레미 10돌 max ➔ 중반엔 파이로 10돌 max를 리더로 둡니다."
+            subPool: [
+              { name: "베인", role: "드라카 대체" },
+              { name: "아그니아", role: "드라카 대체" },
+              { name: "미라", role: "6돌 필수!" },
+              { name: "플레미", role: "초반 리더(10돌)" }
+            ],
+            tip: "<strong>[3차 이전 규칙]</strong> 플레아는 3차 전직 전 효과 발동이 안 되므로 사용 불가(제외)! 무속성 자리는 <strong>헤라(명함)</strong> 또는 <strong>미라 6돌(6돌 필수)</strong>을 사용합니다. 드라카 자리는 <strong>베인/아그니아</strong>로 대체 가능합니다."
           },
           step2: {
-            leader: { name: "플레아", role: "👑 고돌파 리더", tagBg: "#eab308" },
+            leader: { name: "피라", role: "👑 신화 리더 (플레아 리더불가!)", tagBg: "#e11d48" },
             sups: [
-              { name: "드라카", role: "🛡️ 서포터" }, { name: "헤스티아", role: "🛡️ 서포터" },
-              { name: "베스타", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "드라카", role: "🛡️ 서포터" },
+              { name: "헤스티아", role: "🛡️ 서포터" },
+              { name: "아인", role: "🛡️ 3차이후 명함투입!", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "헤스티아", role: "고돌파 시 리더" }, { name: "드라카", role: "고돌파 시 리더" }],
-            tip: "3차 전직 이후라도 속성 시너지 200점 전에는 [플레아/헤스티아/드라카] 중 돌파가 가장 높은 정령을 리더로 씁니다."
+            subPool: [
+              { name: "베인", role: "대체 서포터" },
+              { name: "아그니아", role: "대체 서포터" },
+              { name: "헤라", role: "무속성 명함" }
+            ],
+            tip: "<strong>[시너지 200점 미만 규칙]</strong> <strong>베스타 및 플레아류는 200점 전까지 제외</strong>합니다! 플레아는 서포터라 리더 자리에 들어갈 수 없으므로 리더는 <strong>피라</strong>(또는 고돌파)를 둡니다. 아인은 3차 이후부터 명함으로 사용 가능합니다."
           },
           step3: {
             leader: { name: "피라", role: "👑 3차 신화 리더 (최소 9돌)", tagBg: "#e11d48" },
             sups: [
-              { name: "베스타", role: "🛡️ 서포터 (200점↑ 필수)" }, { name: "플레아", role: "🛡️ 서포터" },
-              { name: "드라카", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "베스타", role: "🛡️ 200점↑ 필수해금!" },
+              { name: "플레아", role: "🛡️ 3차 핵심서포터" },
+              { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "헤라", role: "무속성 서포터" }],
-            tip: "★화염 시너지 200점 이상 달성 시 피라(최소 9돌)를 리더로 기용! 베스타는 화염 시너지 200점 이상이어야 효과를 받습니다."
+            subPool: [
+              { name: "드라카", role: "서브 서포터" },
+              { name: "아그니아", role: "서브 서포터" },
+              { name: "베인", role: "서브 서포터" }
+            ],
+            tip: "<strong>[시너지 200점 달성]</strong> 드디어 <strong>베스타</strong>가 해금되며, 베스타 ➔ 플레아류로 연계 투입합니다! 리더 피라는 최소 9돌파 권장."
           },
           step4: {
             leader: { name: "피라", role: "👑 3차 신화 리더 (9돌)", tagBg: "#e11d48" },
             sups: [
-              { name: "라바나", role: "🛡️ 300점↑ 서포터", tagBg: "#a855f7" }, { name: "베스타", role: "🛡️ 서포터" },
-              { name: "플레아", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "라바나", role: "🛡️ 300점↑ 서포터", tagBg: "#a855f7" },
+              { name: "플레아", role: "🛡️ 서포터" },
+              { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "드라카", role: "서브 후보" }],
-            tip: "라바나는 화염 시너지 300점 이상일 때 사용 가능! (3·6·9돌파 요구 시너지: 350 / 400 / 450점)"
+            subPool: [{ name: "베스타", role: "서브 서포터" }, { name: "드라카", role: "서브 후보" }],
+            tip: "라바나는 화염 시너지 300점 이상일 때 사용 가능합니다! (3·6·9돌파 요구: 350 / 400 / 450점)"
           },
           step5: {
             leader: { name: "홍련 (4차전용)", role: "👑 4차 종결 리더 (9돌)", tagBg: "#f43f5e" },
             sups: [
-              { name: "라바나", role: "🛡️ 서포터" }, { name: "베스타", role: "🛡️ 서포터" },
-              { name: "플레아", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "라바나", role: "🛡️ 서포터" },
+              { name: "플레아", role: "🛡️ 서포터" },
+              { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "피라", role: "서포터 전환" }],
+            subPool: [{ name: "피라", role: "서포터 전환" }, { name: "베스타", role: "서브 서포터" }],
             tip: "4차 전직 후 홍련 9돌파 효과를 받으려면 화염 시너지 400점 이상이 필수입니다!"
           }
         };
@@ -10047,46 +10067,62 @@
           step1: {
             leader: { name: "스파키", role: "👑 초·중반 리더 (10돌)", tagBg: "#eab308" },
             sups: [
-              { name: "유레이", role: "🛡️ 서포터" }, { name: "레비나", role: "🛡️ 서포터" },
-              { name: "엘로아", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "유레이", role: "🛡️ 서포터" },
+              { name: "레비나", role: "🛡️ 서포터" },
+              { name: "헤라", role: "🛡️ 무속성 명함", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "볼트", role: "초반 리더(10돌)" }, { name: "헤라", role: "무속성" }],
-            tip: "3차 전직 전에는 볼트 10돌 max ➔ 중반엔 스파키 10돌 max를 리더로 둡니다."
+            subPool: [
+              { name: "레이메이", role: "대체 서포터" },
+              { name: "미라", role: "6돌 필수!" },
+              { name: "볼트", role: "초반 리더(10돌)" }
+            ],
+            tip: "<strong>[3차 이전 규칙]</strong> 엘로아는 3차 전직 전 발동 안 됨! 무속성은 <strong>헤라(명함)</strong> 또는 <strong>미라 6돌(6돌 필수)</strong> 사용. 레이메이로 서포터 대체 가능."
           },
           step2: {
-            leader: { name: "엘로아", role: "👑 고돌파 리더", tagBg: "#eab308" },
+            leader: { name: "루미아", role: "👑 신화 리더 (엘로아 리더불가!)", tagBg: "#e11d48" },
             sups: [
-              { name: "유레이", role: "🛡️ 서포터" }, { name: "레비나", role: "🛡️ 서포터" },
-              { name: "바즈라", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "유레이", role: "🛡️ 서포터" },
+              { name: "레비나", role: "🛡️ 서포터" },
+              { name: "아인", role: "🛡️ 3차이후 명함투입!", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "레비나", role: "고돌파 시 리더" }, { name: "유레이", role: "고돌파 시 리더" }],
-            tip: "3차 전직 이후라도 번개 시너지 200점 전에는 [엘로아/레비나/유레이] 중 돌파가 가장 높은 것을 리더로 씁니다."
+            subPool: [
+              { name: "레이메이", role: "대체 서포터" },
+              { name: "헤라", role: "무속성 명함" }
+            ],
+            tip: "<strong>[시너지 200점 미만 규칙]</strong> <strong>바즈라 및 엘로아는 200점 전까지 제외</strong>! 리더는 루미아를 쓰며 레이메이/유레이/레비나로 구성합니다."
           },
           step3: {
             leader: { name: "루미아", role: "👑 3차 신화 리더 (최소 9돌)", tagBg: "#e11d48" },
             sups: [
-              { name: "바즈라", role: "🛡️ 서포터 (200점↑ 필수)" }, { name: "엘로아", role: "🛡️ 서포터" },
-              { name: "유레이", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "바즈라", role: "🛡️ 200점↑ 필수해금!" },
+              { name: "엘로아", role: "🛡️ 3차 핵심서포터" },
+              { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "레비나", role: "서브 서포터" }],
-            tip: "★번개 시너지 200점 달성 시 루미아(최소 9돌) 리더 투입! 바즈라는 번개 시너지 200점 이상 필수."
+            subPool: [
+              { name: "유레이", role: "서브 서포터" },
+              { name: "레비나", role: "서브 서포터" },
+              { name: "레이메이", role: "서브 서포터" }
+            ],
+            tip: "<strong>[시너지 200점 달성]</strong> <strong>바즈라</strong>가 해금되며 엘로아와 함께 투입합니다! 루미아 9돌파 권장."
           },
           step4: {
             leader: { name: "루미아", role: "👑 3차 신화 리더 (9돌)", tagBg: "#e11d48" },
             sups: [
-              { name: "제피라", role: "🛡️ 300점↑ 서포터", tagBg: "#a855f7" }, { name: "바즈라", role: "🛡️ 서포터" },
-              { name: "엘로아", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "제피라", role: "🛡️ 300점↑ 서포터", tagBg: "#a855f7" },
+              { name: "엘로아", role: "🛡️ 서포터" },
+              { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "유레이", role: "서브 후보" }],
-            tip: "제피라는 번개 시너지 300점 이상일 때 사용 가능! (3·6·9돌파 요구: 350 / 400 / 450점)"
+            subPool: [{ name: "바즈라", role: "서브 서포터" }, { name: "유레이", role: "서브 후보" }],
+            tip: "제피라는 번개 시너지 300점 이상일 때 사용 가능합니다! (3·6·9돌파 요구: 350 / 400 / 450점)"
           },
           step5: {
             leader: { name: "라이자 (4차전용)", role: "👑 4차 종결 리더 (9돌)", tagBg: "#f43f5e" },
             sups: [
-              { name: "제피라", role: "🛡️ 서포터" }, { name: "바즈라", role: "🛡️ 서포터" },
-              { name: "엘로아", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "제피라", role: "🛡️ 서포터" },
+              { name: "엘로아", role: "🛡️ 서포터" },
+              { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "루미아", role: "서포터 전환" }],
+            subPool: [{ name: "루미아", role: "서포터 전환" }, { name: "바즈라", role: "서브 서포터" }],
             tip: "4차 전직 후 라이자 9돌파 효과를 받으려면 번개 시너지 400점 이상이 필수입니다!"
           }
         };
@@ -10095,46 +10131,64 @@
           step1: {
             leader: { name: "크로노", role: "👑 초·중반 리더 (10돌)", tagBg: "#eab308" },
             sups: [
-              { name: "아케론", role: "🛡️ 서포터" }, { name: "에레보스", role: "🛡️ 서포터" },
-              { name: "니벨", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "아케론", role: "🛡️ 서포터" },
+              { name: "에레보스", role: "🛡️ 서포터" },
+              { name: "헤라", role: "🛡️ 무속성 명함", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "더스크", role: "초반 리더(10돌)" }, { name: "헤라", role: "무속성" }],
-            tip: "3차 전직 전에는 더스크 10돌 max ➔ 중반엔 크로노 10돌 max를 리더로 둡니다."
+            subPool: [
+              { name: "녹스", role: "대체 서포터" },
+              { name: "세이라", role: "대체 서포터" },
+              { name: "미라", role: "6돌 필수!" },
+              { name: "더스크", role: "초반 리더(10돌)" }
+            ],
+            tip: "<strong>[3차 이전 규칙]</strong> 니벨은 3차 전직 전 발동 안 됨! 무속성은 <strong>헤라(명함)</strong> 또는 <strong>미라 6돌(6돌 필수)</strong> 사용. 녹스/세이라 등으로 대체 가능."
           },
           step2: {
-            leader: { name: "니벨", role: "👑 고돌파 리더", tagBg: "#eab308" },
+            leader: { name: "녹시아", role: "👑 신화 리더 (니벨 리더불가!)", tagBg: "#e11d48" },
             sups: [
-              { name: "아케론", role: "🛡️ 서포터" }, { name: "에레보스", role: "🛡️ 서포터" },
-              { name: "할로우", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "아케론", role: "🛡️ 서포터" },
+              { name: "에레보스", role: "🛡️ 서포터" },
+              { name: "아인", role: "🛡️ 3차이후 명함투입!", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "에레보스", role: "고돌파 시 리더" }, { name: "아케론", role: "고돌파 시 리더" }],
-            tip: "3차 전직 이후라도 어둠 시너지 200점 전에는 [니벨/에레보스/아케론] 중 돌파가 가장 높은 것을 리더로 씁니다."
+            subPool: [
+              { name: "녹스", role: "대체 서포터" },
+              { name: "세이라", role: "대체 서포터" },
+              { name: "헤라", role: "무속성 명함" }
+            ],
+            tip: "<strong>[시너지 200점 미만 규칙]</strong> <strong>할로우 및 니벨은 200점 전까지 제외</strong>! 리더는 녹시아를 쓰며 녹스/세이라/아케론/에레보스로 구성합니다."
           },
           step3: {
             leader: { name: "녹시아", role: "👑 3차 신화 리더 (최소 9돌)", tagBg: "#e11d48" },
             sups: [
-              { name: "할로우", role: "🛡️ 서포터 (200점↑ 필수)" }, { name: "니벨", role: "🛡️ 서포터" },
-              { name: "에레보스", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "할로우", role: "🛡️ 200점↑ 필수해금!" },
+              { name: "니벨", role: "🛡️ 3차 핵심서포터" },
+              { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "아케론", role: "서브 서포터" }],
-            tip: "★어둠 시너지 200점 달성 시 녹시아(최소 9돌) 리더 투입! 할로우는 어둠 시너지 200점 이상 필수."
+            subPool: [
+              { name: "아케론", role: "서브 서포터" },
+              { name: "에레보스", role: "서브 서포터" },
+              { name: "녹스", role: "서브 서포터" }
+            ],
+            tip: "<strong>[시너지 200점 달성]</strong> <strong>할로우</strong>가 해금되며 니벨과 함께 투입합니다! 녹시아 9돌파 권장."
           },
           step4: {
             leader: { name: "녹시아", role: "👑 3차 신화 리더 (9돌)", tagBg: "#e11d48" },
             sups: [
-              { name: "모르나", role: "🛡️ 300점↑ 서포터", tagBg: "#a855f7" }, { name: "할로우", role: "🛡️ 서포터" },
-              { name: "니벨", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "모르나", role: "🛡️ 300점↑ 서포터", tagBg: "#a855f7" },
+              { name: "니벨", role: "🛡️ 서포터" },
+              { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "에레보스", role: "서브 후보" }],
-            tip: "모르나는 어둠 시너지 300점 이상일 때 사용 가능! (3·6·9돌파 요구: 350 / 400 / 450점)"
+            subPool: [{ name: "할로우", role: "서브 서포터" }, { name: "에레보스", role: "서브 후보" }],
+            tip: "모르나는 어둠 시너지 300점 이상일 때 사용 가능합니다! (3·6·9돌파 요구: 350 / 400 / 450점)"
           },
           step5: {
             leader: { name: "릴리스 (4차전용)", role: "👑 4차 종결 리더 (9돌)", tagBg: "#f43f5e" },
             sups: [
-              { name: "모르나", role: "🛡️ 서포터" }, { name: "할로우", role: "🛡️ 서포터" },
-              { name: "니벨", role: "🛡️ 서포터" }, { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
+              { name: "모르나", role: "🛡️ 서포터" },
+              { name: "니벨", role: "🛡️ 서포터" },
+              { name: "아인", role: "🛡️ 공용 서포터", tagBg: "#6366f1" }
             ],
-            subPool: [{ name: "녹시아", role: "서포터 전환" }],
+            subPool: [{ name: "녹시아", role: "서포터 전환" }, { name: "할로우", role: "서브 서포터" }],
             tip: "4차 전직 후 릴리스 9돌파 효과를 받으려면 어둠 시너지 400점 이상이 필수입니다!"
           }
         };
@@ -10148,11 +10202,11 @@
           </div>
 
           <div style="font-size:13px; color:#cbd5e1; margin-bottom:14px; line-height:1.6;">
-            • <strong>정령 배치 규칙:</strong> 상단 중앙 <strong>리더 1칸</strong> + 하단 <strong>서포터 4칸</strong>으로 편성합니다.<br>
-            • <strong>신화 리더 전환 핵심:</strong> 리더 정령은 최소 <strong>9돌파 이상</strong>이어야 풀효율이 나옵니다. 9돌 전에는 돌파가 높은 하위 정령을 리더로 쓰다가 시너지 조건을 맞추고 교체합니다!
+            • <strong>정령 인게임 슬롯:</strong> 상단 중앙 <strong>리더 1칸</strong> + 하단 <strong>서포터 3칸 (총 4칸)</strong>으로 편성합니다.<br>
+            • <strong>리더 정령 9돌파 핵심:</strong> 신화 리더 정령은 최소 <strong>9돌파 이상</strong>이어야 리더 스킬이 풀효율로 터집니다.
           </div>
 
-          <!-- 아코디언 1: 3차 이전 초·중반 가성비 -->
+          <!-- 1단계: 3차 이전 초·중반 가성비 -->
           <div class="accordion-item acc-advanced active" id="acc_sp_step1" style="margin-bottom:10px;">
             <div class="accordion-header" onclick="toggleNewbieAccordion('acc_sp_step1')">
               <div class="accordion-left">
@@ -10162,25 +10216,25 @@
               <span class="accordion-count-badge">돌파 높은 리더</span>
             </div>
             <div class="accordion-content">
-              ${renderSpiritStageBoard(sData.step1.leader, sData.step1.sups, sData.step1.subPool, "📌 3차 전직 이전 정석 배치 (리더: 10돌파 초반 정령)", sData.step1.tip)}
+              ${renderSpiritStageBoard(sData.step1.leader, sData.step1.sups, sData.step1.subPool, "📌 3차 전직 이전 정석 배치 (헤라 명함 / 미라 6돌 필수)", sData.step1.tip)}
             </div>
           </div>
 
-          <!-- 아코디언 2: 3차 전직 후 & 시너지 200점 미만 -->
+          <!-- 2단계: 3차 전직 후 & 시너지 200점 미만 -->
           <div class="accordion-item acc-unique" id="acc_sp_step2" style="margin-bottom:10px;">
             <div class="accordion-header" onclick="toggleNewbieAccordion('acc_sp_step2')">
               <div class="accordion-left">
                 <span class="accordion-toggle-icon">▶</span>
                 <span class="accordion-title-text"><span class="grade-badge grade-unique">2단계</span> 3차 전직 이후 & 속성 시너지 200점 미만</span>
               </div>
-              <span class="accordion-count-badge">과도기 세팅</span>
+              <span class="accordion-count-badge">베스타/플레아류 제외</span>
             </div>
             <div class="accordion-content">
-              ${renderSpiritStageBoard(sData.step2.leader, sData.step2.sups, sData.step2.subPool, "📌 속성 시너지 200점 미만 배치 (돌파 높은 신화 리더)", sData.step2.tip)}
+              ${renderSpiritStageBoard(sData.step2.leader, sData.step2.sups, sData.step2.subPool, "📌 속성 시너지 200점 미만 배치 (아인 명함 투입 가능)", sData.step2.tip)}
             </div>
           </div>
 
-          <!-- 아코디언 3: 속성 시너지 200점 이상 달성 -->
+          <!-- 3단계: 속성 시너지 200점 이상 달성 -->
           <div class="accordion-item acc-mythic" id="acc_sp_step3" style="margin-bottom:10px;">
             <div class="accordion-header" onclick="toggleNewbieAccordion('acc_sp_step3')">
               <div class="accordion-left">
@@ -10190,11 +10244,11 @@
               <span class="accordion-count-badge">피라/루미아/녹시아</span>
             </div>
             <div class="accordion-content">
-              ${renderSpiritStageBoard(sData.step3.leader, sData.step3.sups, sData.step3.subPool, "📌 3차 신화 리더 9돌파 정석 배치", sData.step3.tip)}
+              ${renderSpiritStageBoard(sData.step3.leader, sData.step3.sups, sData.step3.subPool, "📌 3차 신화 리더 9돌파 정석 배치 (베스타/바즈라/할로우 해금)", sData.step3.tip)}
             </div>
           </div>
 
-          <!-- 아코디언 4: 속성 시너지 300점 이상 달성 -->
+          <!-- 4단계: 속성 시너지 300점 이상 달성 -->
           <div class="accordion-item acc-legend" id="acc_sp_step4" style="margin-bottom:10px;">
             <div class="accordion-header" onclick="toggleNewbieAccordion('acc_sp_step4')">
               <div class="accordion-left">
@@ -10208,7 +10262,7 @@
             </div>
           </div>
 
-          <!-- 아코디언 5: 4차 전직 & 시너지 400점 이상 -->
+          <!-- 5단계: 4차 전직 & 시너지 400점 이상 -->
           <div class="accordion-item acc-immortal" id="acc_sp_step5" style="margin-bottom:10px; border-left:4px solid #f43f5e;">
             <div class="accordion-header" onclick="toggleNewbieAccordion('acc_sp_step5')">
               <div class="accordion-left">
