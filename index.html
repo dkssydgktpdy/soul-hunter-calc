@@ -3135,11 +3135,11 @@
             </div>
           </div>
 
-          <!-- 2-1. 실전 메타 조건 & 코어별 인게임 해금 조건 설정 박스 (자동 저장 연동) -->
+          <!-- 2-1. 실전 메타 조건 & 코어별 12P(상급)/16P(특급)/20P(전설~고대) 단계별 해금 드롭다운 -->
           <div style="background:#131d33; padding:14px 16px; border-radius:12px; border:1px solid #334155; margin-bottom:12px; display:flex; flex-direction:column; gap:10px;">
             <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; border-bottom:1px solid #1e293b; padding-bottom:8px;">
-              <span style="font-size:14px; font-weight:800; color:#c084fc;">⚙️ 내 캐릭터 코어 발동 조건 달성 여부 설정 (미체크 시 해당 코어는 잡코어로 계산)</span>
-              <span style="font-size:11.5px; color:#34d399; font-weight:700;">💾 체크 상태는 자동 저장됩니다</span>
+              <span style="font-size:14px; font-weight:800; color:#c084fc;">⚙️ 내 캐릭터 코어 조건 달성 단계 설정 (상급 12P ➔ 특급 16P ➔ 전설·신화·고대 20P 해금)</span>
+              <span style="font-size:11.5px; color:#34d399; font-weight:700;">💾 선택 상태는 자동 저장됩니다</span>
             </div>
 
             <!-- 실전 메타 스위치 2종 -->
@@ -3155,37 +3155,67 @@
               </label>
             </div>
 
-            <!-- 코어 3 / 4 / 5 / 6 인게임 클리어 및 달성 조건 체크박스 그리드 -->
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap:8px; padding-top:4px;">
-              <label style="margin:0; background:#0b1120; padding:7px 10px; border-radius:8px; border:1px solid #334155; display:inline-flex; align-items:center; gap:7px; cursor:pointer; font-size:12.5px; color:#e2e8f0;">
-                <input type="checkbox" id="sc_cond_book5" checked onchange="onAwkSealChange()" style="width:15px; height:15px; accent-color:#38bdf8;">
-                <span>📕 <strong>수호신 도감 100% 5개+</strong> <small style="color:#fde047;">(코어3 도감)</small></span>
-              </label>
+            <!-- 코어 3 / 4 / 5 / 6 단계별 해금 드롭다운 (3열 × 2행) -->
+            <div class="grid-3" style="gap:10px; padding-top:4px;">
+              <div>
+                <label style="font-size:11.5px; color:#fda4af;">📕 코어3 [수호신 : 도감] 달성도</label>
+                <select id="sc_sel_book" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;">
+                  <option value="3" selected>5개 이상 달성 (20P: 전설~고대 풀발동)</option>
+                  <option value="2">3~4개 달성 (16P: 특급 수치까지만 발동)</option>
+                  <option value="1">1~2개 달성 (12P: 상급 수치까지만 발동)</option>
+                  <option value="0">0개 미달성 (잡코어 처리)</option>
+                </select>
+              </div>
 
-              <label style="margin:0; background:#0b1120; padding:7px 10px; border-radius:8px; border:1px solid #334155; display:inline-flex; align-items:center; gap:7px; cursor:pointer; font-size:12.5px; color:#e2e8f0;">
-                <input type="checkbox" id="sc_cond_job3rd" checked onchange="onAwkSealChange()" style="width:15px; height:15px; accent-color:#38bdf8;">
-                <span>⚔️ <strong>3차 전직 달성</strong> <small style="color:#fde047;">(코어4 전직:레벨)</small></span>
-              </label>
+              <div>
+                <label style="font-size:11.5px; color:#86efac;">⚔️ 코어4 [전직 : 레벨] 달성도</label>
+                <select id="sc_sel_joblv" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;">
+                  <option value="3" selected>3차 전직 이상 (20P: 전설~고대 풀발동)</option>
+                  <option value="2">2차 전직 달성 (16P: 특급 수치까지만 발동)</option>
+                  <option value="1">1차 전직 달성 (12P: 상급 수치까지만 발동)</option>
+                  <option value="0">전직 전 (잡코어 처리)</option>
+                </select>
+              </div>
 
-              <label style="margin:0; background:#0b1120; padding:7px 10px; border-radius:8px; border:1px solid #334155; display:inline-flex; align-items:center; gap:7px; cursor:pointer; font-size:12.5px; color:#e2e8f0;">
-                <input type="checkbox" id="sc_cond_promo" checked onchange="onAwkSealChange()" style="width:15px; height:15px; accent-color:#38bdf8;">
-                <span>🏆 <strong>고대급 소울헌터 1단 클리어</strong> <small style="color:#fde047;">(코어5 승급전)</small></span>
-              </label>
+              <div>
+                <label style="font-size:11.5px; color:#f9a8d4;">🏆 코어5 [콘텐츠 : 승급전] 달성도</label>
+                <select id="sc_sel_promo" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;">
+                  <option value="3" selected>고대급 소울헌터 1단+ (20P: 풀발동)</option>
+                  <option value="2">신화급 소울헌터 클리어 (16P까지만 발동)</option>
+                  <option value="1">전설급 이하 클리어 (12P까지만 발동)</option>
+                  <option value="0">미달성 (잡코어 처리)</option>
+                </select>
+              </div>
 
-              <label style="margin:0; background:#0b1120; padding:7px 10px; border-radius:8px; border:1px solid #334155; display:inline-flex; align-items:center; gap:7px; cursor:pointer; font-size:12.5px; color:#e2e8f0;">
-                <input type="checkbox" id="sc_cond_hades10" checked onchange="onAwkSealChange()" style="width:15px; height:15px; accent-color:#38bdf8;">
-                <span>👹 <strong>보스전 하데스 10단 클리어</strong> <small style="color:#fde047;">(코어5 보스전)</small></span>
-              </label>
+              <div>
+                <label style="font-size:11.5px; color:#f9a8d4;">👹 코어5 [콘텐츠 : 보스전] 달성도</label>
+                <select id="sc_sel_boss" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;">
+                  <option value="3" selected>하데스 10단계+ 클리어 (20P: 풀발동)</option>
+                  <option value="2">보스전 2단계 조건 클리어 (16P까지만 발동)</option>
+                  <option value="1">보스전 1단계 조건 클리어 (12P까지만 발동)</option>
+                  <option value="0">미달성 (잡코어 처리)</option>
+                </select>
+              </div>
 
-              <label style="margin:0; background:#0b1120; padding:7px 10px; border-radius:8px; border:1px solid #334155; display:inline-flex; align-items:center; gap:7px; cursor:pointer; font-size:12.5px; color:#e2e8f0;">
-                <input type="checkbox" id="sc_cond_stage350" checked onchange="onAwkSealChange()" style="width:15px; height:15px; accent-color:#38bdf8;">
-                <span>🚩 <strong>스테이지 350챕터 도달</strong> <small style="color:#fde047;">(코어6 스테이지)</small></span>
-              </label>
+              <div>
+                <label style="font-size:11.5px; color:#d8b4fe;">🚩 코어6 [콘텐츠 : 스테이지] 도달</label>
+                <select id="sc_sel_stage" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;">
+                  <option value="3" selected>350챕터 이상 도달 (20P: 풀발동)</option>
+                  <option value="2">중간 챕터 도달 (16P: 특급 수치까지만)</option>
+                  <option value="1">초반 챕터 도달 (12P: 상급 수치까지만)</option>
+                  <option value="0">미달성 (잡코어 처리)</option>
+                </select>
+              </div>
 
-              <label style="margin:0; background:#0b1120; padding:7px 10px; border-radius:8px; border:1px solid #334155; display:inline-flex; align-items:center; gap:7px; cursor:pointer; font-size:12.5px; color:#e2e8f0;">
-                <input type="checkbox" id="sc_cond_Notedungeon154" checked onchange="onAwkSealChange()" style="width:15px; height:15px; accent-color:#38bdf8;">
-                <span>🏰 <strong>룬 던전 154단계 클리어</strong> <small style="color:#fde047;">(코어6 던전)</small></span>
-              </label>
+              <div>
+                <label style="font-size:11.5px; color:#d8b4fe;">🏰 코어6 [콘텐츠 : 던전] 룬던전</label>
+                <select id="sc_sel_dungeon" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;">
+                  <option value="3" selected>룬 던전 154단계+ 클리어 (20P: 풀발동)</option>
+                  <option value="2">룬 던전 2단계 조건 클리어 (16P까지만)</option>
+                  <option value="1">룬 던전 1단계 조건 클리어 (12P까지만)</option>
+                  <option value="0">미달성 (잡코어 처리)</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -7456,17 +7486,63 @@
     triggerAutoSave();
   }
 
+  // 유저가 드롭다운에서 설정한 각 코어별 해금 달성 단계(0: 미달성, 1: 12P, 2: 16P, 3: 20P 풀해금) 반환
+  function getCoreUserMaxStep(coreDef) {
+    if (coreDef.jobReq && coreDef.jobReq !== currentConnectJob) return 0;
+    if (coreDef.elemReq && coreDef.elemReq !== currentConnectElem) return 0;
+
+    if (coreDef.isAwkSkill) {
+      const isSealed = document.getElementById('sc_cond_awk_seal')?.checked ?? true;
+      if (isSealed) return 0;
+    }
+    if (coreDef.isMark) {
+      const noMark = document.getElementById('sc_cond_no_mark')?.checked ?? true;
+      if (noMark) return 0;
+    }
+
+    if (coreDef.id === 'c3_book')    return parseInt(document.getElementById('sc_sel_book')?.value ?? '3');
+    if (coreDef.id === 'c4_level')   return parseInt(document.getElementById('sc_sel_joblv')?.value ?? '3');
+    if (coreDef.id === 'c5_promo')   return parseInt(document.getElementById('sc_sel_promo')?.value ?? '3');
+    if (coreDef.id === 'c5_boss')    return parseInt(document.getElementById('sc_sel_boss')?.value ?? '3');
+    if (coreDef.id === 'c6_stage')   return parseInt(document.getElementById('sc_sel_stage')?.value ?? '3');
+    if (coreDef.id === 'c6_dungeon') return parseInt(document.getElementById('sc_sel_dungeon')?.value ?? '3');
+
+    return 3; // 그 외 직업/속성/하크 코어는 기본 3단계(20P) 풀해금
+  }
+
+  // 코어 등급(tier)과 유저 스펙 단계(userStep)를 모두 반영한 실제 발동 단계(0~3) 계산
+  function getEffectiveCoreStep(coreDef, tier) {
+    const tierCap = tier === 'advanced' ? 1 : (tier === 'unique' ? 2 : 3);
+    const userStep = getCoreUserMaxStep(coreDef);
+    return Math.min(tierCap, userStep);
+  }
+
+  function isCoreValidForUser(coreDef) {
+    return getCoreUserMaxStep(coreDef) > 0;
+  }
+
+  function onAwkSealChange() {
+    renderConnectAccordions();
+    calculateBestConnectLoadout();
+    triggerAutoSave();
+  }
+
   function getCoreThemeSummary(c, tier) {
+    const effStep = getEffectiveCoreStep(c, tier);
+    if (effStep <= 0) {
+      return `조건 미달 (깡공·증폭만 적용)`;
+    }
     if (c.isHyperRate) {
-      const rate = tier === 'advanced' ? 15 : (tier === 'unique' ? 50 : 100);
+      const rate = effStep === 1 ? 15 : (effStep === 2 ? 50 : 100);
       return `하크확 총 +${rate}%`;
     }
     if (c.isHyperDmg) {
-      const dmg = tier === 'advanced' ? 2500 : (tier === 'unique' ? 92500 : 12342500);
+      const dmg = effStep === 1 ? 2500 : (effStep === 2 ? 92500 : 12342500);
       return `하크피 총 +${formatKoreanNumber(dmg)}%`;
     }
-    const sumPct = tier === 'advanced' ? c.p12 : (tier === 'unique' ? (c.p12 + c.p16) : (c.p12 + c.p16 + c.p20));
-    return `${c.unit} +${sumPct.toLocaleString()}%`;
+    const sumPct = effStep === 1 ? c.p12 : (effStep === 2 ? (c.p12 + c.p16) : (c.p12 + c.p16 + c.p20));
+    const stepLabel = (tier !== 'advanced' && tier !== 'unique' && effStep < 3) ? ` (${effStep===1?'12P':'16P'} 부분적용)` : '';
+    return `${c.unit} +${sumPct.toLocaleString()}%${stepLabel}`;
   }
 
   function renderConnectAccordions() {
@@ -7488,17 +7564,23 @@
         const cnt = ownedCoresMap.get(key) || 0;
         if (cnt > 0) ownedInGroup += cnt;
 
-        const isValidForUser = isCoreValidForUser(c);
+        const userStep = getCoreUserMaxStep(c);
+        const effStep = getEffectiveCoreStep(c, currentConnectTierTab);
+        const isValidForUser = effStep > 0;
         
-        let invalidReason = '조건미달(잡)';
-        if (c.jobReq && c.jobReq !== currentConnectJob) invalidReason = '타직업(잡)';
-        else if (c.elemReq && c.elemReq !== currentConnectElem) invalidReason = '타속성(잡)';
-        else if (c.isAwkSkill) invalidReason = '각성기봉인(잡)';
-        else if (c.isMark) invalidReason = '적운영미사용(잡)';
-
-        const validBadge = isValidForUser
-          ? `<span class="mini-tag" style="background:#059669; color:#fff;">유효</span>`
-          : `<span class="mini-tag" style="background:#475569; color:#cbd5e1;">${invalidReason}</span>`;
+        let validBadge = '';
+        if (!isValidForUser) {
+          let invalidReason = '조건미달(잡)';
+          if (c.jobReq && c.jobReq !== currentConnectJob) invalidReason = '타직업(잡)';
+          else if (c.elemReq && c.elemReq !== currentConnectElem) invalidReason = '타속성(잡)';
+          else if (c.isAwkSkill) invalidReason = '각성기봉인(잡)';
+          else if (c.isMark) invalidReason = '적운영미사용(잡)';
+          validBadge = `<span class="mini-tag" style="background:#475569; color:#cbd5e1;">${invalidReason}</span>`;
+        } else if (userStep < 3 && currentConnectTierTab !== 'advanced') {
+          validBadge = `<span class="mini-tag" style="background:#d97706; color:#fff;">${userStep===1?'12P만':'16P만'}발동</span>`;
+        } else {
+          validBadge = `<span class="mini-tag" style="background:#059669; color:#fff;">유효</span>`;
+        }
 
         const dupBtn = cnt > 0
           ? `<span onclick="addCoreDuplicate(event, '${currentConnectTierTab}', '${c.id}')" class="mini-tag" style="background:${cnt >= 2 ? '#e11d48' : '#334155'}; color:#fff; cursor:pointer;" title="동일 코어 2개 중복 보유 설정">${cnt >= 2 ? '2개보유' : '+중복'}</span>`
@@ -7512,7 +7594,6 @@
               <div class="item-box-name" style="margin-top:0;">${c.name}</div>
             </div>
             <div class="item-box-sub" style="margin-top:4px; color:#cbd5e1;">[${tMeta.maxP}P] ${getCoreThemeSummary(c, currentConnectTierTab)}</div>
-            <div style="font-size:10px; color:${isValidForUser ? '#94a3b8' : '#f87171'}; margin-top:2px;">조건: ${c.cond.split('(')[0]}</div>
           </div>
         `;
       }).join('');
@@ -7554,59 +7635,6 @@
     if (badge) badge.innerText = `총 보유 선택: ${totalOwned}개`;
   }
 
-  function isCoreValidForUser(coreDef) {
-    // 1. 직업 / 속성 일치 여부
-    if (coreDef.jobReq && coreDef.jobReq !== currentConnectJob) return false;
-    if (coreDef.elemReq && coreDef.elemReq !== currentConnectElem) return false;
-
-    // 2. 실전 메타 스위치 (각성기 봉인 / 적운영 미사용)
-    if (coreDef.isAwkSkill) {
-      const isSealed = document.getElementById('sc_cond_awk_seal')?.checked ?? true;
-      if (isSealed) return false;
-    }
-    if (coreDef.isMark) {
-      const noMark = document.getElementById('sc_cond_no_mark')?.checked ?? true;
-      if (noMark) return false;
-    }
-
-    // 3. 인게임 코어별 해금 조건 달성 여부 체크
-    if (coreDef.id === 'c3_book' && !(document.getElementById('sc_cond_book5')?.checked ?? true)) return false;
-    if (coreDef.id === 'c4_level' && !(document.getElementById('sc_cond_job3rd')?.checked ?? true)) return false;
-    if (coreDef.id === 'c5_promo' && !(document.getElementById('sc_cond_promo')?.checked ?? true)) return false;
-    if (coreDef.id === 'c5_boss' && !(document.getElementById('sc_cond_hades10')?.checked ?? true)) return false;
-    if (coreDef.id === 'c6_stage' && !(document.getElementById('sc_cond_stage350')?.checked ?? true)) return false;
-    if (coreDef.id === 'c6_dungeon' && !(document.getElementById('sc_cond_Notedungeon154')?.checked ?? true)) return false;
-
-    return true;
-  }
-
-  function onAwkSealChange() {
-    renderConnectAccordions();
-    calculateBestConnectLoadout();
-    triggerAutoSave();
-  }
-
-  function getCoreThemeMultiplier(coreDef, tier, hasHyperRateInCombo, totalHyperRatePct) {
-    if (!isCoreValidForUser(coreDef)) return 1;
-    if (coreDef.isHyperRate) return 1;
-    if (coreDef.isHyperDmg) {
-      if (!hasHyperRateInCombo || totalHyperRatePct <= 0) return 1;
-      const dmgMult = tier === 'advanced' ? 25 : (tier === 'unique' ? 925 : 123425);
-      return Math.max(1, dmgMult * Math.min(1, totalHyperRatePct / 100));
-    }
-    if (coreDef.isMark) {
-      return tier === 'advanced' ? 5 : (tier === 'unique' ? 1000 : 1200000);
-    }
-    if (coreDef.isAwkSkill) {
-      const sumPct = tier === 'advanced' ? 50 : (tier === 'unique' ? 350 : 3850);
-      return sumPct / 100;
-    }
-    const sumPct = tier === 'advanced'
-      ? coreDef.p12
-      : (tier === 'unique' ? (coreDef.p12 + coreDef.p16) : (coreDef.p12 + c.p16 + coreDef.p20));
-    return Math.max(1, sumPct / 100);
-  }
-
   function evaluateConnectCombo(combo) {
     let totalHyperRatePct = 0;
     let hasHyperRate = false;
@@ -7614,9 +7642,12 @@
 
     for (let item of combo) {
       if (item.core.isHyperRate) {
-        hasHyperRate = true;
-        const r = item.tier === 'advanced' ? 15 : (item.tier === 'unique' ? 50 : 100);
-        totalHyperRatePct += r;
+        const effStep = getEffectiveCoreStep(item.core, item.tier);
+        if (effStep > 0) {
+          hasHyperRate = true;
+          const r = effStep === 1 ? 15 : (effStep === 2 ? 50 : 100);
+          totalHyperRatePct += r;
+        }
       }
       if (item.core.isHyperDmg) {
         hasHyperDmg = true;
@@ -7645,24 +7676,27 @@
 
       for (let inst of gList) {
         const tMeta = CORE_TIER_META[inst.tier];
+        // 코어 기본 공격력과 증폭(신화 28P / 고대 32P)은 조건과 무관하게 등급에 따라 100% 적용!
         sumAtkPct += tMeta.atkPct;
         sumAmpPct += tMeta.ampPct;
 
         const c = inst.core;
+        const effStep = getEffectiveCoreStep(c, inst.tier);
+
         if (c.isHyperDmg) {
-          if (hasHyperRate && totalHyperRatePct > 0) {
-            const dmgMult = inst.tier === 'advanced' ? 25 : (inst.tier === 'unique' ? 925 : 123425);
+          if (hasHyperRate && totalHyperRatePct > 0 && effStep > 0) {
+            const dmgMult = effStep === 1 ? 25 : (effStep === 2 ? 925 : 123425);
             hyperDmgMult = Math.max(hyperDmgMult, Math.max(1, dmgMult * Math.min(1, totalHyperRatePct / 100)));
           }
-        } else {
+        } else if (effStep > 0 && !c.isHyperRate) {
           let tm = 1;
-          if (isCoreValidForUser(c) && !c.isHyperRate) {
-            if (c.isMark) tm = inst.tier === 'advanced' ? 5 : (inst.tier === 'unique' ? 1000 : 1200000);
-            else if (c.isAwkSkill) tm = (inst.tier === 'advanced' ? 50 : (inst.tier === 'unique' ? 350 : 3850)) / 100;
-            else {
-              const sPct = inst.tier === 'advanced' ? c.p12 : (inst.tier === 'unique' ? (c.p12 + c.p16) : (c.p12 + c.p16 + c.p20));
-              tm = Math.max(1, sPct / 100);
-            }
+          if (c.isMark) {
+            tm = effStep === 1 ? 5 : (effStep === 2 ? 1000 : 1200000);
+          } else if (c.isAwkSkill) {
+            tm = (effStep === 1 ? 50 : (effStep === 2 ? 350 : 3850)) / 100;
+          } else {
+            const sPct = effStep === 1 ? c.p12 : (effStep === 2 ? (c.p12 + c.p16) : (c.p12 + c.p16 + c.p20));
+            tm = Math.max(1, sPct / 100);
           }
           if (tm > 1) {
             themePctByCoreId[c.id] = (themePctByCoreId[c.id] || 0) + tm;
