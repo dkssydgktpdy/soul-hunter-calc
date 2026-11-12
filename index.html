@@ -1868,8 +1868,8 @@
     color: #7dd3fc;
   }
 
-/* ==================== 📱 모바일(핸드폰) 화면 찌그러짐 & 여백 완벽 교정 ==================== */
-  .trait- Flex-card-inner {
+/* ==================== 📱 모바일(핸드폰) 화면 찌그러짐 & 여백 완벽 교정 (통합 클린 버전) ==================== */
+  .trait-Flex-card-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1883,145 +1883,7 @@
     flex: 1;
     min-width: 260px;
   }
-  @media (max-width: 640px) {
-    body {
-      padding: 10px 6px !important;
-    }
-    /* 이중 카드 여백을 대폭 줄여 모바일 가로폭 확보 */
-    .card {
-      padding: 14px 10px !important;
-      border-radius: 12px !important;
-    }
-    .stage-build-card {
-      padding: 12px 10px !important;
-    }
-    /* 모바일에서 아이콘은 위로, 설명글은 가로 100% 전체 폭을 쓰도록 정렬! */
-    .trait-flex-left {
-      flex-direction: column !important;
-      align-items: flex-start !important;
-      gap: 10px !important;
-      min-width: 100% !important;
-    }
-    .trait-action-btns {
-      width: 100% !important;
-      display: grid !important;
-      grid-template-columns: 1fr 1fr !important;
-      gap: 6px !important;
-    }
-    .trait-action-btns button {
-      width: 100% !important;
-      text-align: center !important;
-      padding: 9px 6px !important;
-      font-size: 12px !important;
-    }
-    /* 모바일에서 우측 하단 플로팅 버튼 크기 슬림화 & 하단 여백 확보 */
-    .floating-btn-group {
-      right: 10px !important;
-      bottom: 12px !important;
-      gap: 6px !important;
-    }
-    .floating-guide-btn {
-      padding: 7px 12px !important;
-      font-size: 12px !important;
-    }
-    .floating-back-btn-inner {
-      padding: 8px 14px !important;
-      font-size: 12.5px !important;
-    }
-    footer {
-      padding-bottom: 80px !important; /* 플로팅 버튼이 하단 컨텐츠를 가리지 않게 여유 공간 확보 */
-    }
-  }
 
-  /* ==================== 📱 모바일에서 [룬 10칸 보드] & [코어 6칸 보드] PC처럼 한눈에 보기 ==================== */
-  @media (max-width: 720px) {
-    /* 1. 룬 장착 보드: 모바일에서도 PC와 동일하게 [좌측 방어구 3칸 | 중앙 캐릭터+심연 | 우측 장신구 3칸] 3열 유지! */
-    .rune-equip-stage {
-      padding: 12px 6px !important;
-    }
-    .rune-stage-upper {
-      grid-template-columns: 1fr 0.9fr 1fr !important;
-      gap: 6px !important;
-      align-items: center !important;
-    }
-    .rune-col-left, .rune-col-right, .rune-col-center {
-      gap: 6px !important;
-    }
-    .sd-char-box {
-      width: 90px !important;
-      height: 105px !important;
-    }
-    /* 무기 3칸도 세로로 안 깨지고 가로 3열 나란히 유지! */
-    .rune-weapon-bar {
-      margin-top: 10px !important;
-      padding-top: 10px !important;
-    }
-    .rune-weapon-grid {
-      grid-template-columns: repeat(3, 1fr) !important;
-      gap: 6px !important;
-    }
-    /* 모바일 화면 폭에 맞춰 룬 슬롯 박스 크기 및 폰트 컴팩트화 */
-    .rune-slot-block {
-      padding: 6px 5px !important;
-      min-height: 58px !important;
-      border-radius: 8px !important;
-    }
-    .rune-slot-part-tag {
-      font-size: 8.5px !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      gap: 1px !important;
-    }
-    .rune-slot-part-tag .grade-badge {
-      font-size: 8px !important;
-      padding: 0px 4px !important;
-    }
-    .rune-slot-name {
-      font-size: 11.5px !important;
-      margin: 2px 0 !important;
-    }
-    .rune-slot-stat {
-      font-size: 9px !important;
-      line-height: 1.15 !important;
-      word-break: keep-all !important;
-    }
-
-    /* 2. 소울커넥트 코어 6슬롯 육각형 보드: 모바일에서도 PC처럼 좌우 2열 육각 배치 유지! */
-    .connect-hex-stage {
-      padding: 12px 6px !important;
-    }
-    .connect-hex-row {
-      display: grid !important;
-      grid-template-columns: 1fr 1fr !important;
-      gap: 6px !important;
-      margin: 6px 0 !important;
-    }
-    .connect-hex-row.mid-row {
-      grid-template-columns: 1fr 54px 1fr !important;
-      gap: 4px !important;
-      margin: 8px 0 !important;
-    }
-    .connect-center-emblem {
-      width: 54px !important;
-      height: 54px !important;
-    }
-    .connect-slot-card {
-      width: 100% !important;
-      min-height: 86px !important;
-      padding: 7px 6px !important;
-      border-radius: 10px !important;
-    }
-    .connect-slot-card .core-hex-badge {
-      width: 26px !important;
-      height: 26px !important;
-      font-size: 9.5px !important;
-    }
-    .connect-slot-card div {
-      font-size: 10px !important;
-    }
-  }
-
-  /* ==================== 🎨 직업별 · 속성별 스위치 고유 네온 컬러 & 모바일 1차 특성 한눈에 보기 ==================== */
   /* 1. 직업 스위치 선택 시 고유 색상 (사신: 빨강 / 앜메: 파랑 / 오버로드: 보라) */
   #g_job_reaper.selected, #sc_job_reaper.selected, #rune_job_reaper.selected, .job-switch-reaper.selected {
     border-color: #f43f5e !important;
@@ -2079,8 +1941,49 @@
     box-shadow: 0 0 16px rgba(192, 132, 252, 0.45) !important;
   }
 
-  /* 4. 모바일에서도 [스킬/영웅/전직특성 3탭] & [1차 전직 특성 5슬롯]을 PC처럼 한눈에 보이게 압축! */
+  /* 4. 태블릿 & 모바일 반응형 통합 최적화 */
   @media (max-width: 768px) {
+    /* 모바일 상단 저장 위젯을 1줄 슬림 바로 압축 */
+    .top-right-floating-widget {
+      position: static !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 6px 12px !important;
+      margin-bottom: 10px !important;
+      width: 100% !important;
+      border-radius: 10px !important;
+    }
+    .save-status-row {
+      gap: 6px !important;
+      font-size: 11px !important;
+    }
+    .save-btn-row {
+      width: auto !important;
+    }
+    .mini-save-btn {
+      padding: 4px 8px !important;
+      white-space: nowrap !important;
+    }
+
+    /* 상단 3대 메인 탭을 모바일에서도 세로로 쌓지 않고 가로 3열 앱 탭바 형태로 배치! */
+    .mode-switcher {
+      flex-direction: row !important;
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 6px !important;
+      padding: 6px !important;
+      margin-bottom: 16px !important;
+    }
+    .mode-btn {
+      padding: 10px 4px !important;
+      font-size: 12.5px !important;
+      line-height: 1.25 !important;
+      text-align: center !important;
+      word-break: keep-all !important;
+    }
+
+    /* 직업 내부 3대 탭 모바일 가로 3열 유지 */
     .job-sub-nav-grid {
       grid-template-columns: repeat(3, 1fr) !important;
       gap: 6px !important;
@@ -2121,7 +2024,6 @@
       padding: 8px 8px !important;
       border-radius: 10px !important;
     }
-    /* 5번째 슬롯은 하단 중앙에 깔끔하게 배치 */
     .trait-5slots-grid > .trait-slot-box:nth-child(5) {
       grid-column: 1 / -1 !important;
       max-width: 65% !important;
@@ -2139,6 +2041,43 @@
       padding: 5px 6px !important;
       line-height: 1.3 !important;
     }
+  }
+
+  @media (max-width: 720px) {
+    /* 룬 장착 보드 3열 유지 */
+    .rune-equip-stage { padding: 12px 6px !important; }
+    .rune-stage-upper { grid-template-columns: 1fr 0.9fr 1fr !important; gap: 6px !important; align-items: center !important; }
+    .rune-col-left, .rune-col-right, .rune-col-center { gap: 6px !important; }
+    .sd-char-box { width: 90px !important; height: 105px !important; }
+    .rune-weapon-bar { margin-top: 10px !important; padding-top: 10px !important; }
+    .rune-weapon-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+    .rune-slot-block { padding: 6px 5px !important; min-height: 58px !important; border-radius: 8px !important; }
+    .rune-slot-part-tag { font-size: 8.5px !important; flex-direction: column !important; align-items: center !important; gap: 1px !important; }
+    .rune-slot-part-tag .grade-badge { font-size: 8px !important; padding: 0px 4px !important; }
+    .rune-slot-name { font-size: 11.5px !important; margin: 2px 0 !important; }
+    .rune-slot-stat { font-size: 9px !important; line-height: 1.15 !important; word-break: keep-all !important; }
+
+    /* 소울커넥트 코어 6슬롯 육각형 보드 2열 유지 */
+    .connect-hex-stage { padding: 12px 6px !important; }
+    .connect-hex-row { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 6px !important; margin: 6px 0 !important; }
+    .connect-hex-row.mid-row { grid-template-columns: 1fr 54px 1fr !important; gap: 4px !important; margin: 8px 0 !important; }
+    .connect-center-emblem { width: 54px !important; height: 54px !important; }
+    .connect-slot-card { width: 100% !important; min-height: 86px !important; padding: 7px 6px !important; border-radius: 10px !important; }
+    .connect-slot-card .core-hex-badge { width: 26px !important; height: 26px !important; font-size: 9.5px !important; }
+    .connect-slot-card div { font-size: 10px !important; }
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 10px 6px !important; }
+    .card { padding: 14px 10px !important; border-radius: 12px !important; }
+    .stage-build-card { padding: 12px 10px !important; }
+    .trait-flex-left { flex-direction: column !important; align-items: flex-start !important; gap: 10px !important; min-width: 100% !important; }
+    .trait-action-btns { width: 100% !important; display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
+    .trait-action-btns button { width: 100% !important; text-align: center !important; padding: 9px 6px !important; font-size: 12px !important; }
+    .floating-btn-group { right: 10px !important; bottom: 12px !important; gap: 6px !important; }
+    .floating-guide-btn { padding: 7px 12px !important; font-size: 12px !important; }
+    .floating-back-btn-inner { padding: 8px 14px !important; font-size: 12.5px !important; }
+    footer { padding-bottom: 80px !important; }
   }
 
 </style>
@@ -5638,8 +5577,8 @@
         { name: "드라카", attr: "🔥", role: "🛡️", star: true, img: "images/spirit_draka.jpg" },
         { name: "유레이", attr: "⚡", role: "🛡️", star: true, img: "images/spirit_urei.jpg" },
         { name: "아케론", attr: "🌑", role: "🛡️", img: "images/spirit_akeron.jpg" },
-        { name: "레이메이", attr: "⚡", role: "🛡️", star: true },
-        { name: "헤라", attr: "⚪", role: "🛡️", star: true, noPickup: true },
+        { name: "레이메이", attr: "⚡", role: "🛡️", star: true, img: "images/spirit_leimei.jpg" },
+        { name: "헤라", attr: "⚪", role: "🛡️", star: true, noPickup: true, img: "images/spirit_hella.jpg" },
         { name: "녹스", attr: "🌑", role: "🛡️", img: "images/spirit_nox.jpg" },
         { name: "미라", attr: "⚪", role: "🛡️", noPickup: true, img: "images/spirit_mira.jpg" },
         { name: "피라", attr: "🔥", role: "👑", star: true, img: "images/spirit_pira.jpg" },
@@ -6715,6 +6654,7 @@
       document.getElementById('rune_job_' + j)?.classList.toggle('selected', j === job);
     });
     calculateBestRuneLoadout();
+    triggerAutoSave();
   }
 
   function selectRuneElem(elem) {
@@ -6723,6 +6663,7 @@
       document.getElementById('rune_elem_' + e)?.classList.toggle('selected', e === elem);
     });
     calculateBestRuneLoadout();
+    triggerAutoSave();
   }
 
   function switchRuneTierTab(tier) {
@@ -8178,6 +8119,8 @@
 
     const floatBtn = document.getElementById("floating_back_btn");
     if (floatBtn) floatBtn.style.display = "none";
+    const guideHelpBtn = document.getElementById("floating_guide_btn");
+    if (guideHelpBtn) guideHelpBtn.style.display = (mode === 'guides') ? "none" : "flex";
 
     if (mode === 'helpers') {
       if (guidesContainer) guidesContainer.style.display = "none";
@@ -8507,7 +8450,7 @@
     "엘로아": "spirit_elloa", "바즈라": "spirit_bazra", "루미아": "spirit_lumina", "제피라": "spirit_zepira",
     "라이자": "spirit_ryza", "라이자 (4차전용)": "spirit_ryza", "아케론": "spirit_akeron", "에레보스": "spirit_erebos",
     "니벨": "spirit_nibel", "할로우": "spirit_hallow", "녹시아": "spirit_noxia", "모르나": "spirit_morna",
-    "릴리스": "spirit_lilis", "릴리스 (4차전용)": "spirit_lilis", "아인": "spirit_ain", "헤라": "spirit_ain",
+    "릴리스": "spirit_lilis", "릴리스 (4차전용)": "spirit_lilis", "아인": "spirit_ain", "헤라": "spirit_hella",
     "녹스": "spirit_nox", "미라": "spirit_mira",
     "베인": "spirit_vayne", "아그니아": "spirit_agnia", "세이라": "spirit_seyra", "레이메이": "spirit_leimei", "헬라": "spirit_hella"
   };
