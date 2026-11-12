@@ -1811,43 +1811,37 @@
   .item-select-box { transition: background-color 0.1s ease, border-color 0.1s ease !important; will-change: auto; }
   .item-select-box:hover { transform: none !important; }
 
-  /* 직업 내부 3대 서브 탭 (스킬 / 영웅 / 전직 특성) */
+  /* ==================== 🛠️ 직업 내부 3대 가이드 탭 겹침 방지 & 완벽 반응형 CSS ==================== */
   .job-sub-nav-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* minmax(0, 1fr)로 절대 겹치지 않고 1:1:1 균등 분할! */
     gap: 10px;
-    margin-bottom: 20px;
-  }
-  @media (max-width: 768px) {
-    .job-sub-nav-grid {
-      grid-template-columns: 1fr;
-    }
+    width: 100%;
+    box-sizing: border-box;
   }
   .job-sub-nav-btn {
-    background: #0f172a;
-    border: 2px solid #334155;
-    border-radius: 14px;
-    padding: 12px 14px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 2px solid #475569;
+    border-radius: 12px;
+    padding: 10px 12px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 12px;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    gap: 10px;
+    transition: all 0.2s ease;
     user-select: none;
+    min-width: 0; /* 자식 요소 오버플로우 방지 */
+    overflow: hidden;
   }
   .job-sub-nav-btn:hover {
-    border-color: #64748b;
-    background: #162038;
-  }
-  .job-sub-nav-btn.active {
-    border-color: #38bdf8;
-    background: linear-gradient(135deg, rgba(2,132,199,0.28) 0%, #172554 100%);
-    box-shadow: 0 0 16px rgba(56, 189, 248, 0.4), inset 0 0 8px rgba(56, 189, 248, 0.2);
+    border-color: #94a3b8;
+    background: #172554;
+    transform: translateY(-2px);
   }
   .job-sub-nav-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 11px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     background: #1e293b;
     border: 1.5px solid #475569;
     display: flex;
@@ -1855,11 +1849,7 @@
     justify-content: center;
     flex-shrink: 0;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.45);
-  }
-  .job-sub-nav-btn.active .job-sub-nav-icon {
-    border-color: #7dd3fc;
-    box-shadow: 0 0 10px rgba(56,189,248,0.5);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
   }
   .job-sub-nav-icon img {
     width: 100%;
@@ -1870,40 +1860,58 @@
     display: flex;
     flex-direction: column;
     text-align: left;
+    min-width: 0;
+    overflow: hidden;
   }
   .job-sub-nav-title {
-    font-size: 15px;
+    font-size: 14.5px;
     font-weight: 900;
     color: #cbd5e1;
     line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .job-sub-nav-btn.active .job-sub-nav-title {
     color: #ffffff;
   }
   .job-sub-nav-sub {
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 700;
     color: #64748b;
     margin-top: 2px;
+    white-space: nowrap;
   }
   .job-sub-nav-btn.active .job-sub-nav-sub {
     color: #7dd3fc;
   }
 
-/* ==================== 📱 모바일(핸드폰) 화면 찌그러짐 & 여백 완벽 교정 (통합 클린 버전) ==================== */
-  .trait-Flex-card-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 14px;
-  }
-  .trait-flex-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex: 1;
-    min-width: 260px;
+  /* 모바일(스마트폰) 환경에서 글씨 깨짐/겹침 방지 */
+  @media (max-width: 640px) {
+    .job-sub-nav-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 6px !important;
+    }
+    .job-sub-nav-btn {
+      flex-direction: column !important;
+      padding: 8px 4px !important;
+      gap: 6px !important;
+      text-align: center !important;
+    }
+    .job-sub-nav-icon {
+      width: 32px !important;
+      height: 32px !important;
+    }
+    .job-sub-nav-text {
+      align-items: center !important;
+      text-align: center !important;
+    }
+    .job-sub-nav-title {
+      font-size: 12px !important;
+    }
+    .job-sub-nav-sub {
+      font-size: 9.5px !important;
+    }
   }
 
   /* 1. 직업 스위치 선택 시 고유 색상 (사신: 빨강 / 앜메: 파랑 / 오버로드: 보라) */
@@ -2519,62 +2527,71 @@
             </div>
           </div>
 
-          <!-- 직업 내부 3대 서브 탭 헤더 안내 -->
-          <div id="guide_sub_tab_header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; padding:0 4px;">
-            <span style="font-size:12.5px; font-weight:800; color:#e2e8f0;">📂 확인하실 가이드 항목을 선택하세요</span>
-            <span style="font-size:11px; font-weight:800; color:#38bdf8;">👆 아래 탭을 눌러서 선택</span>
-          </div>
+          <!-- 직업 내부 3대 가이드 선택 통합 배너 (상하 2층 완벽 분리) -->
+          <div id="guide_sub_tab_header" style="display:block !important; width:100%; box-sizing:border-box; background:linear-gradient(135deg, rgba(30, 58, 138, 0.45) 0%, rgba(15, 23, 42, 0.95) 100%); border:2px solid #38bdf8; border-radius:14px; padding:12px 14px; margin-bottom:20px; box-shadow:0 6px 20px rgba(56, 189, 248, 0.2);">
+            
+            <!-- 1층: 상단 안내 헤더 (가로 100% 널찍하게 1줄 차지) -->
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:12px; padding-bottom:8px; border-bottom:1px dashed rgba(56, 189, 248, 0.35); width:100%;">
+              <span style="font-size:14px; font-weight:900; color:#ffffff; display:flex; align-items:center; gap:6px;">
+                <span>📂</span><span>확인하실 세팅 가이드를 선택하세요</span>
+              </span>
+              <span style="font-size:11px; font-weight:800; color:#fde047; background:rgba(250, 204, 21, 0.15); border:1px solid rgba(250, 204, 21, 0.45); padding:2px 8px; border-radius:6px;">
+                👇 아래 버튼을 눌러서 전환
+              </span>
+            </div>
 
-          <!-- 직업 내부 3대 서브 탭 (스킬 / 영웅 / 전직 특성) -->
-          <div class="job-sub-nav-grid" id="guide_sub_nav_grid">
-            <!-- 1. 스킬 세팅 -->
-            <div class="job-sub-nav-btn active" id="gsub_skill" onclick="switchJobSubGuide('skill')">
-              <div class="job-sub-nav-icon" style="border-color:#fbbf24;">
-                <img src="images/main_skill.png" alt="스킬" onerror="this.onerror=null; this.src='images/hell.png';">
+            <!-- 2층: 3대 가이드 선택 탭 버튼 (1:1:1 균등 가로 3열 나열) -->
+            <div class="job-sub-nav-grid" id="guide_sub_nav_grid" style="margin-bottom:0; width:100%;">
+              <!-- 1. 스킬 세팅 -->
+              <div class="job-sub-nav-btn active" id="gsub_skill" onclick="switchJobSubGuide('skill')">
+                <div class="job-sub-nav-icon" style="border-color:#fbbf24; background:#1e293b;">
+                  <img src="images/main_skill.png" alt="" onerror="this.onerror=null; this.src='images/hell.png'; this.onerror=function(){this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:20px;\'>⚡</span>';};">
+                </div>
+                <div class="job-sub-nav-text">
+                  <span class="job-sub-nav-title">⚡ 스킬 세팅</span>
+                  <span class="job-sub-nav-sub">👆 눌러서 보기</span>
+                </div>
               </div>
-              <div class="job-sub-nav-text">
-                <span class="job-sub-nav-title">⚡ 스킬 세팅</span>
-                <span class="job-sub-nav-sub">👆 눌러서 보기</span>
+
+              <!-- 2. 영웅 세팅 -->
+              <div class="job-sub-nav-btn" id="gsub_hero" onclick="switchJobSubGuide('hero')">
+                <div class="job-sub-nav-icon" style="border-color:#f43f5e; background:#1e293b;">
+                  <img src="images/main_hero.png" alt="" onerror="this.onerror=null; this.src='images/elisia.png'; this.onerror=function(){this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:20px;\'>🦸</span>';};">
+                </div>
+                <div class="job-sub-nav-text">
+                  <span class="job-sub-nav-title">🦸 영웅 세팅</span>
+                  <span class="job-sub-nav-sub">👆 눌러서 보기</span>
+                </div>
+              </div>
+
+              <!-- 3. 전직 특성 (커스텀 네온 엠블렘) -->
+              <div class="job-sub-nav-btn" id="gsub_trait" onclick="switchJobSubGuide('trait')">
+                <div class="job-sub-nav-icon" style="background:radial-gradient(circle, #3b0764 0%, #090d16 100%); border-color:#c084fc;">
+                  <svg width="34" height="34" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 6px rgba(232,121,249,0.8));">
+                    <polygon points="18,2 23,7 30,6 29,13 34,18 29,23 30,30 23,29 18,34 13,29 6,30 7,23 2,18 7,13 6,6 13,7" stroke="url(#goldGrad)" stroke-width="1.8" fill="rgba(250,204,21,0.08)"/>
+                    <polygon points="18,7 27,12.5 27,23.5 18,29 9,23.5 9,12.5" stroke="#38bdf8" stroke-width="1.5" fill="url(#coreGrad)"/>
+                    <path d="M18 10 L21 15 L26 18 L21 21 L18 26 L15 21 L10 18 L15 15 Z" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
+                    <circle cx="18" cy="18" r="2.2" fill="#fde047"/>
+                    <defs>
+                      <linearGradient id="goldGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#fef08a"/>
+                        <stop offset="50%" stop-color="#eab308"/>
+                        <stop offset="100%" stop-color="#a16207"/>
+                      </linearGradient>
+                      <linearGradient id="coreGrad" x1="9" y1="7" x2="27" y2="29" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#e879f9" stop-opacity="0.75"/>
+                        <stop offset="100%" stop-color="#4f46e5" stop-opacity="0.85"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+                <div class="job-sub-nav-text">
+                  <span class="job-sub-nav-title">🌟 전직 특성</span>
+                  <span class="job-sub-nav-sub">👆 눌러서 보기</span>
+                </div>
               </div>
             </div>
 
-            <!-- 2. 영웅 세팅 -->
-            <div class="job-sub-nav-btn" id="gsub_hero" onclick="switchJobSubGuide('hero')">
-              <div class="job-sub-nav-icon" style="border-color:#f43f5e;">
-                <img src="images/main_hero.png" alt="영웅" onerror="this.onerror=null; this.src='images/elisia.png';">
-              </div>
-              <div class="job-sub-nav-text">
-                <span class="job-sub-nav-title">🦸 영웅 세팅</span>
-                <span class="job-sub-nav-sub">👆 눌러서 보기</span>
-              </div>
-            </div>
-
-            <!-- 3. 전직 특성 -->
-            <div class="job-sub-nav-btn" id="gsub_trait" onclick="switchJobSubGuide('trait')">
-              <div class="job-sub-nav-icon" style="background:radial-gradient(circle, #3b0764 0%, #090d16 100%); border-color:#c084fc;">
-                <svg width="34" height="34" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 6px rgba(232,121,249,0.8));">
-                  <polygon points="18,2 23,7 30,6 29,13 34,18 29,23 30,30 23,29 18,34 13,29 6,30 7,23 2,18 7,13 6,6 13,7" stroke="url(#goldGrad)" stroke-width="1.8" fill="rgba(250,204,21,0.08)"/>
-                  <polygon points="18,7 27,12.5 27,23.5 18,29 9,23.5 9,12.5" stroke="#38bdf8" stroke-width="1.5" fill="url(#coreGrad)"/>
-                  <path d="M18 10 L21 15 L26 18 L21 21 L18 26 L15 21 L10 18 L15 15 Z" fill="#ffffff" stroke="#f43f5e" stroke-width="1"/>
-                  <circle cx="18" cy="18" r="2.2" fill="#fde047"/>
-                  <defs>
-                    <linearGradient id="goldGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stop-color="#fef08a"/>
-                      <stop offset="50%" stop-color="#eab308"/>
-                      <stop offset="100%" stop-color="#a16207"/>
-                    </linearGradient>
-                    <linearGradient id="coreGrad" x1="9" y1="7" x2="27" y2="29" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stop-color="#e879f9" stop-opacity="0.75"/>
-                      <stop offset="100%" stop-color="#4f46e5" stop-opacity="0.85"/>
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
-              <div class="job-sub-nav-text">
-                <span class="job-sub-nav-title">🌟 전직 특성</span>
-                <span class="job-sub-nav-sub">👆 눌러서 보기</span>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -8726,11 +8743,11 @@
   // 각성 우선순위 & 패시브 가이드 전용 상태 변수
   let awkGuideJob = 'reaper';
   let awkGuideElem = 'fire';
-  let awkSubView = 'hub';
-  let awkSlotReaperPre80 = true; // true: 1차 80전·마폭 저각성(폭발준비3각 착용) | false: 1차 80후·마폭 고각성(마력폭주 착용)
+  let awkSubView = 'hub'; // 'hub' | 'recipe' | 'passive_slot' | 'skill_hero_awk' | 'endgame_5anc'
+  let awkSlotReaperState = 'pre80_blast'; // 'pre80_blast'(80전 폭준우위) | 'pre80_mana'(80전 마폭우위) | 'post80_mana'(80후 마폭고정)
 
-  function toggleAwkSlotReaperMode(isPre80) {
-    awkSlotReaperPre80 = Boolean(isPre80);
+  function setAwkSlotReaperState(stateVal) {
+    awkSlotReaperState = stateVal;
     renderBuildGuideContent();
   }
 
@@ -8836,7 +8853,7 @@
     const navGrid = document.getElementById("guide_sub_nav_grid") || document.querySelector('.job-sub-nav-grid');
     if (innerCtrl) innerCtrl.style.display = "block";
     if (jobBox) jobBox.style.display = "block";
-    if (tabHeader) tabHeader.style.display = "flex";
+    if (tabHeader) tabHeader.style.display = "block";
     if (navGrid) navGrid.style.display = "grid";
 
     updateJobHeaderAndTabs();
@@ -9773,7 +9790,7 @@
         return;
       }
 
-      // [화면 C] 📜 패시브 세팅 도우미 (사신 1차 80전/후 폭발준비 vs 마력폭주 이미지 전환 & 80렙 쾌속 돌파 안내 탑재!)
+      // [화면 C] 📜 패시브 세팅 도우미 (사신 2고패 3칸 버튼: 80전 각성비교 2개 + 80후 1개 & 풀네임 적용!)
       if (awkSubView === 'passive_slot') {
         function makePassiveSlotMini(pName, pImg, tagTxt, tagBg, borderCol) {
           return `
@@ -9794,42 +9811,64 @@
           slot4_1Anc = makePassiveSlotMini("마력폭주", "mana_surge", "변환 시너지", "#7e22ce", "#a855f7");
           slot5_1Anc = makePassiveSlotMini("폭발준비 or 전술가속", "blast_ready", "비석비교 택1", "#ca8a04", "#eab308");
 
-          // 사신 2고패: 1차 80렙 이전(폭발준비 3각 이미지) vs 1차 80렙 이후(마력폭주 이미지) 실시간 전환!
-          if (awkSlotReaperPre80) {
-            slot5_2Anc = makePassiveSlotMini("폭발준비 (3각)", "blast_ready", "80전·3각우위!", "#ca8a04", "#eab308");
-            outName2Anc = "전술가속/마력폭주(저각) OUT";
+          if (awkSlotReaperState === 'pre80_blast') {
+            slot5_2Anc = makePassiveSlotMini("폭발준비", "blast_ready", "폭발준비 각성 우위", "#ca8a04", "#eab308");
+            outName2Anc = "전술가속 / 마력폭주 OUT";
             outName3Anc = "폭발준비 OUT";
+          } else if (awkSlotReaperState === 'pre80_mana') {
+            slot5_2Anc = makePassiveSlotMini("마력폭주", "mana_surge", "마력폭주 각성 우위", "#7e22ce", "#a855f7");
+            outName2Anc = "전술가속 / 폭발준비 OUT";
+            outName3Anc = "마력폭주 OUT";
           } else {
-            slot5_2Anc = makePassiveSlotMini("마력폭주 (고각)", "mana_surge", "80후·스피세트!", "#7e22ce", "#a855f7");
-            outName2Anc = "전술가속/폭발준비 OUT";
+            slot5_2Anc = makePassiveSlotMini("마력폭주", "mana_surge", "1차 80레벨 이후 고정", "#7e22ce", "#a855f7");
+            outName2Anc = "전술가속 / 폭발준비 OUT";
             outName3Anc = "마력폭주 OUT";
           }
 
+          const isPre80 = (awkSlotReaperState === 'pre80_blast' || awkSlotReaperState === 'pre80_mana');
+
           reaper2AncSwitchHtml = `
-            <div style="background:#131d33; border:1.5px solid #f59e0b; border-radius:10px; padding:10px 12px; margin-bottom:10px;">
+            <div style="background:#131d33; border:1.5px solid #f59e0b; border-radius:10px; padding:12px 14px; margin-bottom:12px;">
               <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
-                <span style="font-size:12.5px; font-weight:900; color:#fde047;">⚔️ [사신 2고패 조건 선택] 내 1차 전직 레벨 & 마력폭주 각성 상태 클릭</span>
-                <span style="font-size:10.5px; color:#38bdf8; font-weight:800;">👆 누르면 아래 5번째 슬롯 이미지가 바뀝니다</span>
+                <span style="font-size:13px; font-weight:900; color:#fde047;">⚔️ [사신 2고패 조건 선택 (3칸)] 내 1차 전직 레벨 및 각성 상태 클릭</span>
+                <span style="font-size:11px; color:#38bdf8; font-weight:800;">👆 눌러서 선택 시 아래 5번 슬롯 이미지가 변경됩니다</span>
               </div>
-              <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap:8px;">
-                <button onclick="toggleAwkSlotReaperMode(true)" style="padding:8px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSlotReaperPre80?'#fbbf24':'#334155'}; background:${awkSlotReaperPre80?'linear-gradient(135deg, #b45309 0%, #78350f 100%)':'#0f172a'}; color:#ffffff; display:flex; align-items:center; justify-content:center; gap:6px;">
-                  <img src="images/blast_ready.jpg" style="width:22px; height:22px; border-radius:4px; object-fit:cover;" onerror="this.onerror=null; this.src='images/blast_ready.png';">
-                  <span>1차 80렙 이전 · 마폭 저각성 (폭발준비 3각 착용)</span>
+
+              <!-- 3칸 선택 버튼 그리드 -->
+              <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:8px;">
+                <!-- 1칸: 80레벨 이전 & 마력폭주 각성 < 폭발준비 각성 -->
+                <button onclick="setAwkSlotReaperState('pre80_blast')" style="padding:9px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:2px solid ${awkSlotReaperState==='pre80_blast'?'#fbbf24':'#475569'}; background:${awkSlotReaperState==='pre80_blast'?'linear-gradient(135deg, #b45309 0%, #78350f 100%)':'#0f172a'}; color:#ffffff; display:flex; align-items:center; justify-content:center; gap:6px; line-height:1.3;">
+                  <img src="images/blast_ready.jpg" style="width:24px; height:24px; border-radius:5px; object-fit:cover; flex-shrink:0;" onerror="this.onerror=null; this.src='images/blast_ready.png';">
+                  <span>1차 80레벨 이전<br><small style="color:#fde047;">[마력폭주 각성 &lt; 폭발준비 각성]</small></span>
                 </button>
-                <button onclick="toggleAwkSlotReaperMode(false)" style="padding:8px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${!awkSlotReaperPre80?'#a855f7':'#334155'}; background:${!awkSlotReaperPre80?'linear-gradient(135deg, #7e22ce 0%, #3b0764 100%)':'#0f172a'}; color:#ffffff; display:flex; align-items:center; justify-content:center; gap:6px;">
-                  <img src="images/mana_surge.jpg" style="width:22px; height:22px; border-radius:4px; object-fit:cover;" onerror="this.onerror=null; this.src='images/mana_surge.png';">
-                  <span>1차 80렙 달성 · 마폭 고각성 (마력폭주 세트 착용)</span>
+
+                <!-- 2칸: 80레벨 이전 & 마력폭주 각성 > 폭발준비 각성 -->
+                <button onclick="setAwkSlotReaperState('pre80_mana')" style="padding:9px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:2px solid ${awkSlotReaperState==='pre80_mana'?'#a855f7':'#475569'}; background:${awkSlotReaperState==='pre80_mana'?'linear-gradient(135deg, #7e22ce 0%, #3b0764 100%)':'#0f172a'}; color:#ffffff; display:flex; align-items:center; justify-content:center; gap:6px; line-height:1.3;">
+                  <img src="images/mana_surge.jpg" style="width:24px; height:24px; border-radius:5px; object-fit:cover; flex-shrink:0;" onerror="this.onerror=null; this.src='images/mana_surge.png';">
+                  <span>1차 80레벨 이전<br><small style="color:#e9d5ff;">[마력폭주 각성 &gt; 폭발준비 각성]</small></span>
+                </button>
+
+                <!-- 3칸: 1차 80레벨 달성 이후 -->
+                <button onclick="setAwkSlotReaperState('post80_mana')" style="padding:9px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:2px solid ${awkSlotReaperState==='post80_mana'?'#38bdf8':'#475569'}; background:${awkSlotReaperState==='post80_mana'?'linear-gradient(135deg, #0284c7 0%, #1e3a8a 100%)':'#0f172a'}; color:#ffffff; display:flex; align-items:center; justify-content:center; gap:6px; line-height:1.3;">
+                  <img src="images/mana_surge.jpg" style="width:24px; height:24px; border-radius:5px; object-fit:cover; flex-shrink:0;" onerror="this.onerror=null; this.src='images/mana_surge.png';">
+                  <span>1차 80레벨 달성 이후<br><small style="color:#7dd3fc;">[마력폭주 고정 착용]</small></span>
                 </button>
               </div>
-              ${awkSlotReaperPre80 ? `
-                <div style="margin-top:8px; background:rgba(239,68,68,0.14); border:1px solid #ef4444; border-radius:8px; padding:8px 12px; font-size:12px; color:#fecdd3; line-height:1.55;">
-                  🚨 <strong>[1차 80렙 이전 + 2고패 과도기 주의!] 빨리 1차 80레벨과 3고패로 넘어가세요!</strong><br>
-                  <span style="color:#ffffff;">1차 80레벨 전에는 특성 슬롯이 4칸뿐이라 <strong>[강화 강타]</strong>를 뺄 수 없고, 1고패 재료로 이미 3각성된 <strong>[폭발준비]</strong>가 저각성 [마력폭주]보다 딜이 더 잘 나옵니다. 하지만 이 구간은 <strong>미완성 과도기</strong>이므로, 보물던전 소탕으로 하루빨리 <strong>[1차 80레벨(5슬롯 & 평타 50% 강타)]</strong>과 <strong>[3고패]</strong>를 달성해 세팅을 완성하시는 것을 강력 권장합니다!</span>
+
+              ${isPre80 ? `
+                <div style="margin-top:10px; background:rgba(239,68,68,0.16); border:1.5px solid #ef4444; border-radius:8px; padding:10px 12px; font-size:12px; color:#fecdd3; line-height:1.6;">
+                  🚨 <strong>[1차 80레벨 이전 + 2고패 과도기 안내] 하루빨리 1차 80레벨 이후로 넘어가세요!</strong><br>
+                  <span style="color:#ffffff;">
+                    ${awkSlotReaperState === 'pre80_blast'
+                      ? `• 현재 <strong>[마력폭주 각성 &lt; 폭발준비 각성]</strong> 상태이므로, 1고패 제작 재료로 이미 3각성된 <strong>[폭발준비]</strong>를 착용하고 1차 특성에는 <strong>[각성기 충전 시간 감소]</strong>를 사용합니다.`
+                      : `• 현재 <strong>[마력폭주 각성 &gt; 폭발준비 각성]</strong> 상태이므로, 패시브에 <strong>[마력폭주]</strong>를 착용하고 1차 특성에는 <strong>[스킬 피해량 1%당 전직 강타 피해량 증가]</strong>를 세트로 사용합니다.`}<br>
+                    • 하지만 사신에게 1차 80레벨 이전 구간은 슬롯(4칸)이 부족한 <strong>미완성 과도기</strong>입니다! 보물던전 소탕으로 최대한 빠르게 <strong>[1차 80레벨 달성 이후(5슬롯 & 평타 50% 강타)]</strong>와 <strong>[3고패 완성]</strong>으로 넘어가시는 것을 강력 권장합니다!
+                  </span>
                 </div>
               ` : `
-                <div style="margin-top:8px; background:rgba(168,85,247,0.14); border:1px solid #a855f7; border-radius:8px; padding:8px 12px; font-size:12px; color:#e9d5ff; line-height:1.55;">
-                  🔥 <strong>[1차 80렙 달성 or 마력폭주 고각성 상태]</strong><br>
-                  <span style="color:#ffffff;">1차 80레벨(5슬롯)이 열리거나 마력폭주 각성이 충분하다면, 패시브에 <strong>[마력폭주]</strong>를 끼고 1차 특성에 <strong>[스피증➔강타 변환]</strong>을 세트로 맞춰 극딜을 뽑아내다가 <strong>[3고패]</strong> 완성 시 마력폭주를 졸업합니다!</span>
+                <div style="margin-top:10px; background:rgba(56,189,248,0.14); border:1.5px solid #38bdf8; border-radius:8px; padding:10px 12px; font-size:12px; color:#e0f2fe; line-height:1.6;">
+                  🔥 <strong>[1차 80레벨 달성 이후 + 2고패 정석 세팅]</strong><br>
+                  <span style="color:#ffffff;">1차 80레벨 달성 이후에는 5슬롯이 모두 열리고 평타 50% 확률 강타가 작동하므로, 패시브 5번째 칸에 <strong>[마력폭주]</strong>를 고정 착용하고 1차 특성에 <strong>[스킬 피해량 1%당 전직 강타 피해량 증가]</strong>를 세트로 사용하다가 <strong>[3고패]</strong> 완성 시 졸업합니다!</span>
                 </div>
               `}
             </div>
@@ -9869,7 +9908,7 @@
               ${slot5_1Anc}
             </div>
 
-            <!-- 2고패 달성 시 5슬롯 (사신 전용 80전/후 이미지 스위치 포함!) -->
+            <!-- 2고패 달성 시 5슬롯 -->
             <div style="font-size:13px; font-weight:800; color:#c084fc; margin-bottom:6px;">
               ② [2고패 달성] 근원관통 제작 시 (<span style="color:#f87171;">${outName2Anc}</span> ➔ <span style="color:#67e8f9;">근원관통 IN</span>):
             </div>
@@ -9897,7 +9936,7 @@
             <div class="build-tip-box" style="border-color:#eab308; background:rgba(234,179,8,0.1);">
               🚨 <strong>[필독] 3고패 달성 시 버프 패시브가 빠지므로 1차 전직 특성도 함께 점검하세요!</strong><br>
               ${awkGuideJob === 'reaper'
-                ? `• <strong>사신 :</strong> 3고패가 완성되면 폭발준비와 마력폭주가 모두 빠지므로, 1차 전직 특성에서도 고민 없이 <strong>[스택에 따른 피해량 증가]</strong>로 통일하시면 됩니다! (사신은 1차 80렙과 3고패 달성을 최우선으로 서두르세요!)`
+                ? `• <strong>사신 :</strong> 3고패가 완성되면 폭발준비와 마력폭주가 모두 빠지므로, 1차 전직 특성에서도 고민 없이 <strong>[스택에 따른 피해량 증가]</strong>로 통일하시면 됩니다!`
                 : (awkGuideJob === 'mage'
                   ? `• <strong>아크메이지 :</strong> 3고패에서 [전투지휘]가 빠지면 영웅 스킬 피해량이 줄어들므로, 과성장+엘리시아 상태여도 1차 특성에서 [영스피➔스피 변환]을 빼고 <strong>[★스킬 버프 효과 추가]</strong>를 넣는 것이 약 77배 더 강력합니다!`
                   : `• <strong>다크로드 :</strong> 패시브에서 <strong>[전술가속(1고패 OUT) ➔ 전투지휘(2고패 OUT) ➔ 마력폭주(3고패 OUT)]</strong> 순서로 빠집니다! 3고패에서 마력폭주가 빠지더라도 1번 슬롯의 <strong>엘리시아(+과성장)</strong> 본인이 스킬 피해량을 수억% 제공하므로 과성장 졸업 전까지는 1차 특성의 [스피➔영스피 변환]을 그대로 유지합니다!`)}
@@ -11341,6 +11380,9 @@
     const job1stAncientImg = guideJob === 'reaper' ? 'strike_master' : 'frenzy';
     const job1stAncientName = guideJob === 'reaper' ? '강타의 대가' : '마력광란';
 
+    // 사신 1차 레벨 구간(80레벨 이전 vs 80레벨 이후)에 따른 조건 버튼 자동 분기 (풀네임 적용!)
+    const isReaperUnder80 = (guideJob === 'reaper' && currentTrait1stLv < 80);
+
     const reaperAncientSwitchHtml = (guideJob === 'reaper' || guideJob === 'mage')
       ? `<div style="background:linear-gradient(135deg, rgba(6,182,212,0.16) 0%, #131d33 100%); padding:14px 16px; border-radius:14px; border:2px solid #06b6d4; margin-bottom:14px;">
           <div class="trait-Flex-card-inner">
@@ -11352,76 +11394,99 @@
               </div>
               <div style="word-break:keep-all;">
                 <div style="font-size:15px; font-weight:900; color:#ffffff; line-height:1.35;">
-                  🔮 [${guideJob==='reaper'?'사신':'아크메이지'} 필수 조건] 보유 고대 패시브 & 각성 단계 선택
+                  🔮 [${guideJob==='reaper'?(isReaperUnder80?'사신 1차 80레벨 이전 조건':'사신 1차 80레벨 이후 조건'):'아크메이지 필수 조건'}] 보유 고대 패시브 & 각성 상태 선택
                 </div>
                 <div style="font-size:12px; color:#cbd5e1; margin-top:4px; line-height:1.55;">
                   ${guideJob === 'reaper'
-                    ? `• <strong>1차 80렙 전(65~79렙)</strong>에는 <strong>[강화 강타]</strong>를 절대 빼면 안 됩니다! 마력폭주 각성이 낮다면 이미 3각성된 <strong>[폭발준비 + 각성기 3초 감소]</strong>가 더 강력합니다.<br>• <strong>1차 80렙 달성 후</strong> 2고패는 <strong>[마력폭주 + 스피증 변환]</strong>을 세트로 쓰고, <strong>3고패 완성 시</strong> 마력폭주를 빼고 <strong>[스택 피해량]</strong>으로 졸업합니다!`
-                    : `* <strong>2고패 이하</strong>는 패시브에 <strong>[전투지휘]</strong>를 쓰므로 <strong>[영스피➔스피 변환]</strong>을 쓰지만, <strong>3고패 이상</strong>부터는 과성장+엘리시아 상태여도 변환을 빼고 <strong>[★스킬 버프 효과 추가]</strong>를 넣는 것이 <strong>실전 딜 약 77배 더 강력</strong>합니다!`}
+                    ? (isReaperUnder80
+                        ? `• <strong>[1차 80레벨 이전 (Lv.${currentTrait1stLv})]</strong>에는 <strong>[강화 강타 사용]</strong>을 절대 빼면 안 됩니다! <strong>[마력폭주 각성 &lt; 폭발준비 각성]</strong>인지, <strong>[마력폭주 각성 &gt; 폭발준비 각성]</strong>인지 아래에서 선택하세요.`
+                        : `• <strong>[1차 80레벨 달성 이후 (Lv.${currentTrait1stLv})]</strong>에는 5슬롯이 모두 열리므로, <strong>[2고패 이하(마력폭주 착용)]</strong>인지 <strong>[3고패 이상(마력폭주 제외)]</strong>인지 아래 2개 중 선택하세요!`)
+                    : `* <strong>2고패 이하</strong>는 패시브에 <strong>[전투지휘]</strong>를 쓰므로 <strong>[영웅 스킬 피해량 ➔ 스킬 피해량 변환]</strong>을 쓰지만, <strong>3고패 이상</strong>부터는 과성장+엘리시아 상태여도 변환을 빼고 <strong>[★스킬 버프 효과 추가]</strong>를 넣는 것이 <strong>실전 딜 약 77배 더 강력</strong>합니다!`}
                 </div>
               </div>
             </div>
 
             <div class="trait-action-btns" style="display:flex; gap:6px; flex-wrap:wrap; width:100%; justify-content:flex-end;">
-              ${guideJob === 'reaper' ? `
-                <button onclick="toggleReaperAncientCount('2anc_low')" style="flex:1; min-width:140px; padding:8px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${!reaperHas3Ancient && reaperPassiveMode==='2anc_low'?'#fbbf24':'#334155'}; background:${!reaperHas3Ancient && reaperPassiveMode==='2anc_low'?'#b45309':'#0f172a'}; color:#fff;">
-                  2고패 (폭준3각 우위·80전 추천)
+              ${guideJob === 'reaper' ? (
+                isReaperUnder80 ? `
+                  <!-- 1차 80레벨 이전일 때: 마력폭주 vs 폭발준비 각성 비교 2개 (+3고패) -->
+                  <button onclick="toggleReaperAncientCount('2anc_low')" style="flex:1; min-width:170px; padding:9px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:2px solid ${!reaperHas3Ancient && reaperPassiveMode==='2anc_low'?'#fbbf24':'#475569'}; background:${!reaperHas3Ancient && reaperPassiveMode==='2anc_low'?'linear-gradient(135deg, #b45309 0%, #78350f 100%)':'#0f172a'}; color:#fff;">
+                    2고패 : 마력폭주 각성 &lt; 폭발준비 각성<br><small style="color:#fde047;">(패시브 폭발준비 + 각성기 3초 감소)</small>
+                  </button>
+                  <button onclick="toggleReaperAncientCount('2anc_high')" style="flex:1; min-width:170px; padding:9px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:2px solid ${!reaperHas3Ancient && reaperPassiveMode==='2anc_high'?'#a855f7':'#475569'}; background:${!reaperHas3Ancient && reaperPassiveMode==='2anc_high'?'linear-gradient(135deg, #7e22ce 0%, #3b0764 100%)':'#0f172a'}; color:#fff;">
+                    2고패 : 마력폭주 각성 &gt; 폭발준비 각성<br><small style="color:#e9d5ff;">(패시브 마력폭주 + 스킬 피해량 변환)</small>
+                  </button>
+                  <button onclick="toggleReaperAncientCount('3anc')" style="flex:1; min-width:150px; padding:9px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:2px solid ${reaperHas3Ancient?'#06b6d4':'#475569'}; background:${reaperHas3Ancient?'linear-gradient(135deg, #0891b2 0%, #164e63 100%)':'#0f172a'}; color:#fff;">
+                    3고패 이상 완성<br><small style="color:#67e8f9;">(폭발준비·마력폭주 제외)</small>
+                  </button>
+                ` : `
+                  <!-- 1차 80레벨 이후일 때: 깔끔하게 2개 (2고패 마력폭주 vs 3고패 완성) -->
+                  <button onclick="toggleReaperAncientCount('2anc_high')" style="flex:1; min-width:200px; padding:10px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:2px solid ${!reaperHas3Ancient?'#38bdf8':'#475569'}; background:${!reaperHas3Ancient?'linear-gradient(135deg, #0284c7 0%, #1e3a8a 100%)':'#0f172a'}; color:#fff;">
+                    1차 80레벨 이후 · 2고패 이하<br><small style="color:#bae6fd;">(패시브 마력폭주 + 스킬 피해량 변환 세트)</small>
+                  </button>
+                  <button onclick="toggleReaperAncientCount('3anc')" style="flex:1; min-width:200px; padding:10px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:2px solid ${reaperHas3Ancient?'#06b6d4':'#475569'}; background:${reaperHas3Ancient?'linear-gradient(135deg, #0891b2 0%, #164e63 100%)':'#0f172a'}; color:#fff;">
+                    1차 80레벨 이후 · 3고패 이상 완성<br><small style="color:#67e8f9;">(마력폭주 제외 + 스택 피해량 채용)</small>
+                  </button>
+                `
+              ) : `
+                <button onclick="toggleReaperAncientCount(false)" style="padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:1.5px solid ${!reaperHas3Ancient?'#38bdf8':'#475569'}; background:${!reaperHas3Ancient?'#0284c7':'#0f172a'}; color:#fff;">
+                  2고패 이하 (전투지휘 + 변환 채용)
                 </button>
-                <button onclick="toggleReaperAncientCount('2anc_high')" style="flex:1; min-width:140px; padding:8px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${!reaperHas3Ancient && reaperPassiveMode==='2anc_high'?'#38bdf8':'#334155'}; background:${!reaperHas3Ancient && reaperPassiveMode==='2anc_high'?'#0284c7':'#0f172a'}; color:#fff;">
-                  2고패 (마폭 고각성·80후 세트)
-                </button>
-                <button onclick="toggleReaperAncientCount('3anc')" style="flex:1; min-width:140px; padding:8px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${reaperHas3Ancient?'#06b6d4':'#334155'}; background:${reaperHas3Ancient?'#0891b2':'#0f172a'}; color:#fff;">
-                  3고패 완성 (마폭OUT·스택채용)
-                </button>
-              ` : `
-                <button onclick="toggleReaperAncientCount(false)" style="padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:1.5px solid ${!reaperHas3Ancient?'#38bdf8':'#334155'}; background:${!reaperHas3Ancient?'#0284c7':'#0f172a'}; color:#fff;">
-                  2고패 이하 (전투지휘+변환)
-                </button>
-                <button onclick="toggleReaperAncientCount(true)" style="padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:1.5px solid ${reaperHas3Ancient?'#06b6d4':'#334155'}; background:${reaperHas3Ancient?'#0891b2':'#0f172a'}; color:#fff;">
-                  3고패 이상 (스킬버프 추가 채용)
+                <button onclick="toggleReaperAncientCount(true)" style="padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:1.5px solid ${reaperHas3Ancient?'#06b6d4':'#475569'}; background:${reaperHas3Ancient?'#0891b2':'#0f172a'}; color:#fff;">
+                  3고패 이상 (스킬 버프 효과 추가 채용)
                 </button>
               `}
             </div>
+
+            ${(guideJob === 'reaper' && isReaperUnder80 && !reaperHas3Ancient) ? `
+              <div style="margin-top:10px; background:rgba(239,68,68,0.16); border:1.5px solid #ef4444; border-radius:8px; padding:9px 12px; font-size:12px; color:#fecdd3; line-height:1.55; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                <div>
+                  🚨 <strong>[1차 80레벨 이전 + 2고패 과도기 주의]</strong> 사신은 1차 80레벨 전까지 슬롯이 부족한 미완성 구간입니다. 보물던전 소탕으로 하루빨리 <strong>[1차 80레벨 이후]</strong>로 넘어가시는 것을 강력 권장합니다!
+                </div>
+                <button onclick="changeTrait1stLevel(80)" style="background:#e11d48; border:1px solid #fda4af; color:#fff; padding:6px 12px; border-radius:6px; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap;">
+                  ⚡ 1차 Lv.80 세팅 바로 보기 ➔
+                </button>
+              </div>
+            ` : ''}
           </div>
         </div>`
       : '';
 
-    // 사신 전용: 하단 패시브 5슬롯 (선택한 고패 모드에 따라 폭발준비 / 마력폭주 / 3고패 자동 변경!)
+    // 사신 전용: 하단 패시브 5슬롯 (선택한 조건에 따라 폭발준비 / 마력폭주 / 3고패 이미지 자동 전환!)
     const reaper5thPassiveCard = reaperHas3Ancient
       ? `<div class="build-slot-item core-fix" style="border-color:#06b6d4;">
           <span class="build-slot-tag" style="background:#0891b2; color:#fff;">3순위 고패</span>
           <div class="build-slot-thumb" style="border-color:#06b6d4;"><img src="images/${elemAncientPassive.img}.jpg" onerror="this.onerror=null; this.src='images/${elemAncientPassive.img}.png';"></div>
           <div class="build-slot-name">${elemAncientPassive.name}</div>
-          <div class="build-slot-note">3고패 완성 (마폭OUT)</div>
+          <div class="build-slot-note">3고패 완성 (마력폭주 제외)</div>
         </div>`
-      : (reaperPassiveMode === '2anc_low' && currentTrait1stLv < 80
+      : (isReaperUnder80 && reaperPassiveMode === '2anc_low'
         ? `<div class="build-slot-item flex-pick" style="border-color:#eab308;">
-            <span class="build-slot-tag" style="background:#ca8a04; color:#fff;">3각 풀각 우위</span>
+            <span class="build-slot-tag" style="background:#ca8a04; color:#fff;">폭발준비 각성 우위</span>
             <div class="build-slot-thumb" style="border-color:#eab308;"><img src="images/blast_ready.jpg" onerror="this.onerror=null; this.src='images/blast_ready.png';"></div>
             <div class="build-slot-name">폭발준비</div>
-            <div class="build-slot-note">80전/마폭 저각성 시 우위</div>
+            <div class="build-slot-note">1차 80레벨 이전 착용</div>
           </div>`
         : `<div class="build-slot-item flex-pick" style="border-color:#a855f7;">
-            <span class="build-slot-tag" style="background:#7e22ce; color:#fff;">스피증 세트</span>
+            <span class="build-slot-tag" style="background:#7e22ce; color:#fff;">스킬 피해량 변환 세트</span>
             <div class="build-slot-thumb" style="border-color:#a855f7;"><img src="images/mana_surge.jpg" onerror="this.onerror=null; this.src='images/mana_surge.png';"></div>
             <div class="build-slot-name">마력폭주</div>
-            <div class="build-slot-note">스피증 변환과 세트 착용</div>
+            <div class="build-slot-note">스킬 피해량 변환과 세트</div>
           </div>`);
 
     const reaperPassiveGuideBoxHtml = (guideJob === 'reaper' && !isLockedUnder60)
       ? `<div style="margin-top:16px; background:#0b1120; border:1.5px solid #06b6d4; border-radius:14px; padding:14px 14px;">
           <div style="font-size:14.5px; font-weight:900; color:#67e8f9; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;">
-            <span>📜 [사신 실전 검증 팁] 왜 '1차 80렙'과 '3고패'를 빨리 찍어야 할까요?</span>
+            <span>📜 [사신 실전 검증 팁] 왜 '1차 80레벨'과 '3고패'를 빨리 찍어야 할까요?</span>
             <span class="grade-badge grade-ancient">북쟁이·붉양님 검증</span>
           </div>
 
           <div style="font-size:12.5px; color:#cbd5e1; margin-bottom:12px; line-height:1.6; word-break:keep-all;">
-            • <strong>"사신은 1차 80렙도, 3고패도 필수급! 그전엔 미완성 과도기입니다."</strong><br>
-            • <strong>1차 80렙 이전(65~79렙):</strong> 슬롯이 4칸뿐이라 <strong>[강화 강타(3회)]</strong>를 빼고 스피증을 넣으면 오히려 딜이 떨어집니다! 게다가 1순위 고패 재료였던 <strong>[폭발준비]는 이미 3각성</strong>인 반면 <strong>[마력폭주]는 각성이 낮다면</strong>, 80렙 전까지는 <strong>[폭발준비 + 각성기 3초 감소]</strong>를 쓰는 것이 딜이 더 잘 나옵니다.<br>
-            • <strong>1차 80렙 달성 후:</strong> 5슬롯이 열리고 평타 50% 강타가 켜지므로 2고패에서는 <strong>[마력폭주 + 스피증 변환]</strong>을 세트로 쓰고, 이후 <strong>3고패(${elemAncientPassive.name})</strong>를 빠르게 올려 마력폭주를 빼고 <strong>[스택 피해량]</strong>으로 정착하는 것이 정석입니다!
+            • <strong>1차 80레벨 이전 (Lv.65 ~ Lv.75) :</strong> 특성 슬롯이 4칸뿐이라 <strong>[강화 강타 사용]</strong>을 빼면 안 됩니다. 이때 <strong>[마력폭주 각성 &lt; 폭발준비 각성]</strong>이면 <strong>[폭발준비 + 각성기 충전 시간 감소]</strong>를 쓰고, <strong>[마력폭주 각성 &gt; 폭발준비 각성]</strong>이면 <strong>[마력폭주 + 스킬 피해량 변환]</strong>을 씁니다.<br>
+            • <strong>1차 80레벨 달성 이후 (Lv.80 ~ Lv.150) :</strong> 5슬롯이 모두 열리고 평타 50% 강타가 켜지므로, 2고패에서는 무조건 <strong>[마력폭주 + 스킬 피해량 변환]</strong>을 세트로 쓰고, <strong>3고패(${elemAncientPassive.name})</strong> 달성 시 마력폭주를 제외하고 <strong>[스택에 따른 피해량 증가]</strong>로 졸업합니다!
           </div>
 
-          <div style="font-size:12px; font-weight:800; color:#fde047; margin-bottom:6px;">📌 현재 선택하신 조건 기준 사신 패시브 5슬롯 편성:</div>
+          <div style="font-size:12px; font-weight:800; color:#fde047; margin-bottom:6px;">📌 현재 선택하신 조건 기준 사신 패시브 5슬롯 편성 (이미지 연동):</div>
           <div class="build-slot-grid" style="margin-bottom:10px;">
             <div class="build-slot-item core-fix" style="border-color:#06b6d4;">
               <span class="build-slot-tag" style="background:#0891b2; color:#fff;">1순위 고패</span>
@@ -11526,7 +11591,7 @@
     `;
   }
 
-  // ==================== INITIALIZATION (중복 리스너 제거 및 즉시 초기화) ====================
+  // ==================== INITIALIZATION (최종 무결점 초기화 엔진) ====================
   function initAppV330() {
     if (window._v330Initialized) return;
     window._v330Initialized = true;
@@ -11536,7 +11601,6 @@
     if (avImg && avImg.complete && avImg.naturalWidth === 0) handleAvatarError(avImg);
     const sdImg = document.getElementById('sd_char_img');
     if (sdImg && sdImg.complete && sdImg.naturalWidth === 0) handleSdCharError(sdImg);
-    // ... (이하 기존 코드 동일)
 
     switchMainMode('helpers');
     setSeasonTheme(getAutoSeasonByMonth());
@@ -11554,7 +11618,7 @@
     calculateGaho();
     calculateWonhon();
 
-    // 전역 input/change 이벤트는 디바운스(800ms)된 triggerAutoSave 하나만 깔끔하게 연결!
+    // 전역 input/change 이벤트 디바운스(800ms) 자동 저장 연결
     document.addEventListener('change', triggerAutoSave);
     document.addEventListener('input', triggerAutoSave);
   }
