@@ -2073,6 +2073,7 @@
     .stage-build-card { padding: 12px 10px !important; }
     .trait-flex-left { flex-direction: column !important; align-items: flex-start !important; gap: 10px !important; min-width: 100% !important; }
     .trait-action-btns { width: 100% !important; display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
+    .trait-action-btns button:nth-child(3) { grid-column: 1 / -1 !important; } /* 👈 이 1줄 추가! (3번째 버튼 모바일 가로 꽉 채우기) */
     .trait-action-btns button { width: 100% !important; text-align: center !important; padding: 9px 6px !important; font-size: 12px !important; }
     .floating-btn-group { right: 10px !important; bottom: 12px !important; gap: 6px !important; }
     .floating-guide-btn { padding: 7px 12px !important; font-size: 12px !important; }
@@ -2128,7 +2129,7 @@
           <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
         </div>
         <div class="author-tag">
-          기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.3.5.2</strong>
+          기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.3.6.3</strong>
         </div>
       </div>
 
@@ -2930,10 +2931,42 @@
       <div id="tab-refine" class="tab-content" style="display:none;">
         <div class="card">
           <div class="card-title">
-            <span>🔨 영원 장비 연마 기댓값 시뮬레이터</span>
+            <span>🔨 영원 장비 연마 기댓값 & 재화 시뮬레이터</span>
             <span class="grade-badge grade-ancient">Lv.0 ~ Lv.20 마르코프 연쇄 정밀식</span>
           </div>
-          <p class="card-subtitle">인게임 공식 연마 확률 정보를 바탕으로 목표 레벨까지 필요한 평균 시도 횟수를 정밀 계산합니다.</p>
+          <p class="card-subtitle">인게임 공식 연마 확률과 수집된 부위별 소모량을 바탕으로 목표 단계까지의 평균 시도 횟수 및 예상 재화(영원의 돌 / 블루 다이아)를 계산합니다.</p>
+
+          <!-- 1. 연마할 영원 장비 부위 & 사용 재화 선택 -->
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
+              <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 연마할 영원 장비 선택</label>
+              <div class="radio-pill-group">
+                <div class="radio-pill job-pill-btn job-switch-reaper selected" id="ref_eq_scythe" onclick="selectRefineEquip('scythe')" style="padding:7px 8px; font-size:13px;">
+                  <span>🗡️ 영원 대낫</span>
+                </div>
+                <div class="radio-pill job-pill-btn job-switch-mage" id="ref_eq_orb" onclick="selectRefineEquip('orb')" style="padding:7px 8px; font-size:13px;">
+                  <span>🔮 영원 오브</span>
+                </div>
+                <div class="radio-pill job-pill-btn job-switch-lord" id="ref_eq_accessory" onclick="selectRefineEquip('accessory')" style="padding:7px 8px; font-size:13px;">
+                  <span>💍 영원 장식</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
+              <label style="color:#fbbf24; margin-bottom:8px;">💎 연마 사용 재화 선택 (다이아는 돌의 1,000배)</label>
+              <div class="radio-pill-group">
+                <div class="radio-pill job-pill-btn elem-switch-light selected" id="ref_res_stone" onclick="selectRefineResource('stone')" style="padding:7px 10px; font-size:13px;">
+                  <span>🪨 영원의 돌 (기본)</span>
+                </div>
+                <div class="radio-pill job-pill-btn elem-switch-dark" id="ref_res_dia" onclick="selectRefineResource('dia')" style="padding:7px 10px; font-size:13px;">
+                  <span>💎 블루 다이아 (×1,000)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. 현재 / 목표 연마 단계 선택 -->
           <div class="grid-2">
             <div><label>현재 연마 단계</label><select id="ref_cur_lv" onchange="calculateRefineExpected()"></select></div>
             <div><label>목표 연마 단계</label><select id="ref_tar_lv" onchange="calculateRefineExpected()"></select></div>
@@ -2941,14 +2974,17 @@
           <div style="margin-top:16px; display:flex; align-items:center; gap:8px;">
             <input type="checkbox" id="ref_safe_mode" checked onchange="calculateRefineExpected()" style="width:18px; height:18px; accent-color:var(--accent);">
             <label for="ref_safe_mode" style="margin-bottom:0; cursor:pointer; font-size:15px; color:#ffffff;">
-              🛡️ <strong>하락 방지 사용 (재화 2배 소모, 하락 확률 0% 고정)</strong>
+              🛡️ <strong>하락 방지 사용 (1회 시도당 소모 재화 2배, 실패 시 단계 하락 0% 고정)</strong>
             </label>
           </div>
         </div>
 
         <div class="result-dashboard">
-          <div class="res-label">목표 단계 달성 평균 연마 시도 기댓값</div>
+          <div class="res-label" id="ref_dash_title">[영원 대낫] 목표 단계 달성 평균 연마 기댓값</div>
           <div class="res-value" id="ref_expected_trials">0회</div>
+          <div style="margin-bottom:12px; font-size:19px; font-weight:900; color:#fde047;" id="ref_expected_cost_box">
+            예상 소모 영원의 돌: 계산 중...
+          </div>
           <div class="res-sub">
             <span>성공 확률 구간: <strong id="ref_prob_range">0%</strong></span>
             <span>|</span>
@@ -2956,20 +2992,20 @@
           </div>
         </div>
 
-        <!-- 영원 장비 연마 공식 확률표 -->
+        <!-- 영원 장비 연마 공식 확률 및 소모 재화표 -->
         <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
           <div class="card-title" style="margin-bottom: 8px;">
-            <span style="font-size:17.5px;">📊 영원 장비 연마 단계별 공식 확률표</span>
-            <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">영원의 돌 소모량: 데이터 수집 중 🔒</span>
+            <span style="font-size:17.5px;" id="ref_table_header_title">📊 [영원 대낫] 연마 단계별 공식 확률 & 소모 재화표</span>
+            <span class="grade-badge grade-ancient" id="ref_table_badge">영원의 돌 기준</span>
           </div>
           <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:12px;">
-            인게임 공식 연마 확률 정보 기준이며, Lv.11 이상부터 실패 시 1단계 하락 페널티가 발생합니다.
+            Lv.11 이상부터 실패 시 1단계 하락 페널티가 발생하며, 하락 방지 체크 시 1회 소모 재화가 2배로 계산됩니다. (미확인 구간은 데이터 수집 중 🔒으로 표시됩니다)
           </p>
           <div class="custom-table-container">
             <table class="custom-table">
               <thead>
                 <tr>
-                  <th>단계</th><th>성공 확률</th><th>유지 확률</th><th>하락 확률</th><th>영원의 돌 소모</th>
+                  <th>단계</th><th>성공 확률</th><th>유지 확률</th><th>하락 확률</th><th id="ref_table_col_cost">1회 소모 재화</th>
                 </tr>
               </thead>
               <tbody id="refine_rates_tbody"></tbody>
@@ -3184,11 +3220,11 @@
                   <div class="gaho-icon-wrapper" style="border-color:#c084fc; background:rgba(192,132,252,0.12);">
                     <img src="images/shooting_star.png" alt="유성" onerror="this.onerror=null; this.src='images/shooting_star.jpg'; this.onerror=function(){this.parentElement.innerHTML='☄️';};">
                   </div>
-                  <div><span class="ancient-name">☄️ 유성의 가호</span><span class="ancient-sub" style="color:#c084fc;">데이터 수집 중 🔒</span></div>
+                  <div><span class="ancient-name">☄️ 유성의 가호</span><span class="ancient-sub" style="color:#c084fc;">100만 ~ 700만/회</span></div>
                 </div>
                 <span class="grade-badge" style="background:rgba(192,132,252,0.2); color:#c084fc; border:1px solid #c084fc;">7칸</span>
               </div>
-              <div class="ancient-desc">확률 동일 / 소모 재화 수집 중</div>
+              <div class="ancient-desc">잠금당 +100만 주사위 증가</div>
             </div>
           </div>
 
@@ -3305,7 +3341,7 @@
                 </tr>
                 <tr>
                   <td><strong style="color:#c084fc;">☄️ 유성의 가호</strong></td>
-                  <td colspan="7" style="color:#94a3b8;">소모 옵션 주사위 데이터 수집 중 🔒 (등장 확률은 타 가호와 동일)</td>
+                  <td>100만</td><td>200만</td><td>300만</td><td>400만</td><td>500만</td><td>600만</td><td>700만</td>
                 </tr>
                 <tr>
                   <td><strong style="color:#a855f7;">💀 원혼 어빌리티</strong></td>
@@ -4145,7 +4181,7 @@
   <!-- Footer (모든 탭 하단 고정 노출 + 실시간 방문자 카운터 정상 작동) -->
   <footer>
     <div style="margin-bottom: 12px;">
-      소울헌터키우기 네이버 라운지 전용 계산기 v.3.5.2 | 제작: <strong>29서버 겨울눈사람</strong>
+      소울헌터키우기 네이버 라운지 전용 계산기 v.3.6.3 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
@@ -4186,25 +4222,6 @@
       return `${highPart.toLocaleString()}${units[unitIdx]} ${lowPart.toLocaleString()}${units[unitIdx - 1]}`;
     }
     return `${highPart.toLocaleString()}${units[unitIdx]}`;
-  }
-
-  // SD 캐릭터 이미지 다중 경로 Fallback 처리
-  const sdCharFallbacks = [
-    'images/char.png', 'char.png', 'images/char.PNG', 'char.PNG',
-    'images/character.png', 'avatar.PNG', 'images/avatar.PNG'
-  ];
-  let sdCharIdx = 0;
-  // SD 캐릭터 이미지 물음표(?) 깜빡임 방지 안전 로더
-  function handleSdCharError(img) {
-    const fallbacks = ['images/char.png', 'char.png', 'images/char.PNG', 'char.PNG', 'images/avatar.png', 'avatar.png', 'avatar.PNG'];
-    let idx = parseInt(img.dataset.retryIdx || '0');
-    if (idx < fallbacks.length) {
-      img.dataset.retryIdx = idx + 1;
-      img.src = fallbacks[idx];
-    } else {
-      img.onerror = null;
-      img.parentElement.innerHTML = '<div style="font-size:64px;">🧙‍♂️</div>';
-    }
   }
 
   // ==================== 각 계산기별 사용법 팝업 데이터 & 제어 ====================
@@ -4348,36 +4365,6 @@
 
   // ==================== GLOBAL NAVIGATION LOGIC ====================
   let currentMainMode = 'deep'; // 'deep' | 'newbie'
-
-  function switchMainMode(mode) {
-    currentMainMode = mode;
-    const deepContainer = document.getElementById("mode_deep_container");
-    const newbieContainer = document.getElementById("mode_newbie_container");
-    const btnDeep = document.getElementById("btn_mode_deep");
-    const btnNewbie = document.getElementById("btn_mode_newbie");
-
-    if (mode === 'deep') {
-      deepContainer.style.display = "block";
-      newbieContainer.style.display = "none";
-      btnDeep.classList.add("active");
-      btnNewbie.classList.remove("active");
-      returnToDeepHub();
-    } else {
-      deepContainer.style.display = "none";
-      newbieContainer.style.display = "block";
-      btnDeep.classList.remove("active");
-      btnNewbie.classList.add("active");
-      returnToNewbieHub();
-    }
-  }
-
-  function handleFloatingBack() {
-    if (currentMainMode === 'deep') {
-      returnToDeepHub();
-    } else {
-      returnToNewbieHub();
-    }
-  }
 
   function openDeepCalculator(calcTabId) {
     document.getElementById("deep_hub_view").style.display = "none";
@@ -4618,12 +4605,18 @@
     calculateAncientCost();
   }
 
-  const avatarFallbacks = [
-    'avatar.PNG', 'images/avatar.PNG', 'avatar.png', 'images/avatar.png',
-    'Avatar.PNG', 'images/Avatar.PNG', 'Avatar.png', 'images/Avatar.png',
-    'avatar.jpg', 'images/avatar.jpg'
-  ];
-  let avatarIndex = 0;
+  // SD 캐릭터 이미지 물음표(?) 깜빡임 방지 안전 로더
+  function handleSdCharError(img) {
+    const fallbacks = ['images/char.png', 'char.png', 'images/char.PNG', 'char.PNG', 'images/avatar.png', 'avatar.png'];
+    let idx = parseInt(img.dataset.retryIdx || '0');
+    if (idx < fallbacks.length) {
+      img.dataset.retryIdx = idx + 1;
+      img.src = fallbacks[idx];
+    } else {
+      img.onerror = null;
+      img.parentElement.innerHTML = '<div style="font-size:64px;">🧙‍♂️</div>';
+    }
+  }
 
   // 메인 배너 프로필 아바타 물음표(?) 깜빡임 방지 안전 로더
   function handleAvatarError(img) {
@@ -4910,7 +4903,10 @@
     document.getElementById("syn_final_atk_pct").innerText = getSynergyAtkPct(finalPts);
   }
 
-  // ==================== DATA & LOGIC: 영원 장비 연마 ====================
+  // ==================== DATA & LOGIC: 영원 장비 연마 (부위별 소모량 & 다이아 ×1,000 완벽 반영) ====================
+  let currentRefineEquip = 'scythe'; // 'scythe' | 'orb' | 'accessory'
+  let currentRefineRes = 'stone';    // 'stone' (영원의 돌) | 'dia' (블루 다이아 ×1000)
+
   const REFINE_RATES = [
     { lv: 0, s: 1.00, k: 0.00, d: 0.00 },
     { lv: 1, s: 0.90, k: 0.10, d: 0.00 },
@@ -4934,63 +4930,147 @@
     { lv: 19, s: 0.01, k: 0.795, d: 0.195 }
   ];
 
+  // 부위별 1회 연마 시 영원의 돌 기본 소모량 (미확인 구간은 null)
+  const REFINE_STONE_COSTS = {
+    scythe: {
+      7: 16250, 9: 25000, 10: 25000, 11: 31250, 12: 37500,
+      13: 37500, 14: 47500, 15: 50000, 16: 52500, 17: 55000
+    },
+    orb: {
+      5: 12500, 7: 16250, 10: 25000, 11: 31250, 12: 37500,
+      13: 37500, 14: 43750, 15: 50000, 16: 52500, 17: 105000
+    },
+    accessory: {
+      0: 7500, 1: 9375, 2: 11250, 3: 13125, 4: 18750,
+      5: 18750, 6: 20625, 7: 24375, 8: 30000, 10: 37500,
+      12: 56250, 13: 56250, 14: 65625, 15: 75000
+    }
+  };
+
+  function selectRefineEquip(eqType) {
+    currentRefineEquip = eqType;
+    ['scythe', 'orb', 'accessory'].forEach(k => {
+      document.getElementById('ref_eq_' + k)?.classList.toggle('selected', k === eqType);
+    });
+    renderRefineTable();
+    calculateRefineExpected();
+  }
+
+  function selectRefineResource(resType) {
+    currentRefineRes = resType;
+    ['stone', 'dia'].forEach(k => {
+      document.getElementById('ref_res_' + k)?.classList.toggle('selected', k === resType);
+    });
+    renderRefineTable();
+    calculateRefineExpected();
+  }
+
   function initRefineSelects() {
     const curSel = document.getElementById("ref_cur_lv");
     const tarSel = document.getElementById("ref_tar_lv");
+    if (!curSel || !tarSel) return;
     curSel.innerHTML = "";
     tarSel.innerHTML = "";
 
     for (let i = 0; i <= 20; i++) {
-      curSel.innerHTML += `<option value="${i}">Lv.${i}</option>`;
+      curSel.innerHTML += `<option value="${i}" ${i === 10 ? "selected" : ""}>Lv.${i}</option>`;
       tarSel.innerHTML += `<option value="${i}" ${i === 15 ? "selected" : ""}>Lv.${i}</option>`;
     }
+    renderRefineTable();
+  }
 
+  function renderRefineTable() {
     const tbody = document.getElementById("refine_rates_tbody");
-    if (tbody) {
-      tbody.innerHTML = "";
-      REFINE_RATES.forEach(r => {
-        const nextLv = r.lv + 1;
-        const sPct = (r.s * 100).toFixed(1) + "%";
-        const kPct = (r.k * 100).toFixed(1) + "%";
-        const dPct = (r.d * 100).toFixed(1) + "%";
-        tbody.innerHTML += `
-          <tr>
-            <td style="font-weight:700;">Lv.${r.lv} ➔ Lv.${nextLv}</td>
-            <td style="color:#34d399; font-weight:700;">${sPct}</td>
-            <td style="color:#cbd5e1;">${kPct}</td>
-            <td style="color:#f43f5e; font-weight:700;">${r.d > 0 ? dPct : '-'}</td>
-            <td style="color:#94a3b8; font-size:12px;">데이터 수집 중 🔒</td>
-          </tr>
-        `;
-      });
-    }
+    if (!tbody) return;
+    const safeMode = document.getElementById("ref_safe_mode")?.checked ?? true;
+    const eqKr = currentRefineEquip === 'scythe' ? '영원 대낫' : (currentRefineEquip === 'orb' ? '영원 오브' : '영원 장식');
+    const resKr = currentRefineRes === 'stone' ? '영원의 돌' : '블루 다이아';
+    const mult = (currentRefineRes === 'dia' ? 1000 : 1) * (safeMode ? 2 : 1);
+
+    const titleEl = document.getElementById("ref_table_header_title");
+    const badgeEl = document.getElementById("ref_table_badge");
+    const colEl = document.getElementById("ref_table_col_cost");
+    if (titleEl) titleEl.innerText = `📊 [${eqKr}] 연마 단계별 공식 확률 & 소모 재화표`;
+    if (badgeEl) badgeEl.innerText = `${resKr} 기준 ${safeMode ? '(하락방지 ×2배 반영)' : '(일반 1배)'}`;
+    if (colEl) colEl.innerText = `1회 소모 ${resKr}`;
+
+    const costMap = REFINE_STONE_COSTS[currentRefineEquip] || {};
+    tbody.innerHTML = "";
+
+    REFINE_RATES.forEach(r => {
+      const nextLv = r.lv + 1;
+      const sPct = (r.s * 100).toFixed(1) + "%";
+      const kPct = (r.k * 100).toFixed(1) + "%";
+      const dPct = (r.d * 100).toFixed(1) + "%";
+      const baseCost = costMap[r.lv];
+      let costHtml = `<span style="color:#64748b; font-size:12px;">데이터 수집 중 🔒</span>`;
+      if (baseCost !== undefined) {
+        const finalCost = baseCost * mult;
+        costHtml = `<strong style="color:${currentRefineRes==='dia'?'#38bdf8':'#fde047'};">${formatKoreanNumber(finalCost)}개</strong> <small style="color:#94a3b8;">(${finalCost.toLocaleString()})</small>`;
+      }
+
+      tbody.innerHTML += `
+        <tr>
+          <td style="font-weight:700;">Lv.${r.lv} ➔ Lv.${nextLv}</td>
+          <td style="color:#34d399; font-weight:700;">${sPct}</td>
+          <td style="color:#cbd5e1;">${kPct}</td>
+          <td style="color:#f43f5e; font-weight:700;">${r.d > 0 ? dPct : '-'}</td>
+          <td>${costHtml}</td>
+        </tr>
+      `;
+    });
   }
 
   function calculateRefineExpected() {
+    renderRefineTable();
     const cur = parseInt(document.getElementById("ref_cur_lv").value);
     const tar = parseInt(document.getElementById("ref_tar_lv").value);
     const safeMode = document.getElementById("ref_safe_mode").checked;
 
+    const eqKr = currentRefineEquip === 'scythe' ? '영원 대낫' : (currentRefineEquip === 'orb' ? '영원 오브' : '영원 장식');
+    const resKr = currentRefineRes === 'stone' ? '🪨 영원의 돌' : '💎 블루 다이아';
+    const dashTitle = document.getElementById("ref_dash_title");
+    if (dashTitle) dashTitle.innerText = `[${eqKr}] Lv.${cur} ➔ Lv.${tar} 평균 연마 기댓값`;
+
+    const costBox = document.getElementById("ref_expected_cost_box");
+
     if (tar <= cur) {
       document.getElementById("ref_expected_trials").innerText = "0회";
       document.getElementById("ref_prob_range").innerText = "-";
+      if (costBox) costBox.innerHTML = `<span style="color:#94a3b8;">목표 단계를 현재 단계보다 높게 설정하세요.</span>`;
       return;
     }
 
+    const costMap = REFINE_STONE_COSTS[currentRefineEquip] || {};
+    const resMult = (currentRefineRes === 'dia' ? 1000 : 1) * (safeMode ? 2 : 1);
+
+    // 마르코프 연쇄: U[i] = i ➔ i+1 달성까지 필요한 평균 시도 횟수, C[i] = i ➔ i+1 달성까지 필요한 평균 소모 재화
     let U = new Array(tar).fill(0);
+    let C = new Array(tar).fill(0);
+    let missingSteps = [];
+
     for (let i = 0; i < tar; i++) {
       const s = REFINE_RATES[i] ? REFINE_RATES[i].s : 0.01;
       const d = (safeMode || !REFINE_RATES[i]) ? 0 : REFINE_RATES[i].d;
+      const stepCost = costMap[i] !== undefined ? (costMap[i] * resMult) : null;
+
       if (i === 0 || d === 0) {
         U[i] = 1.0 / s;
+        C[i] = stepCost !== null ? (stepCost / s) : 0;
       } else {
         U[i] = (1.0 + d * U[i - 1]) / s;
+        C[i] = stepCost !== null ? ((stepCost + d * C[i - 1]) / s) : (d * C[i - 1]) / s;
+      }
+      if (i >= cur && stepCost === null) {
+        missingSteps.push(`${i}➔${i+1}`);
       }
     }
 
-    let expected = 0;
+    let expectedTrials = 0;
+    let expectedCost = 0;
     for (let i = cur; i < tar; i++) {
-      expected += U[i];
+      expectedTrials += U[i];
+      expectedCost += C[i];
     }
 
     if (safeMode) {
@@ -5004,8 +5084,21 @@
     const minProb = (REFINE_RATES[tar - 1] ? REFINE_RATES[tar - 1].s * 100 : 1).toFixed(1);
     const maxProb = (REFINE_RATES[cur] ? REFINE_RATES[cur].s * 100 : 100).toFixed(1);
 
-    document.getElementById("ref_expected_trials").innerText = Math.round(expected).toLocaleString() + "회";
+    document.getElementById("ref_expected_trials").innerText = Math.round(expectedTrials).toLocaleString() + "회";
     document.getElementById("ref_prob_range").innerText = `${minProb}% ~ ${maxProb}%`;
+
+    if (costBox) {
+      if (missingSteps.length === (tar - cur)) {
+        costBox.innerHTML = `<span style="color:#94a3b8; font-size:16px;">🔒 선택한 구간(${cur}➔${tar})의 소모 재화 데이터 수집 중</span>`;
+      } else if (missingSteps.length > 0) {
+        costBox.innerHTML = `
+          <div>예상 소모 ${resKr}: <span style="color:#ffffff;">약 ${formatKoreanNumber(Math.round(expectedCost))}개</span> <small style="font-size:13px; color:#cbd5e1;">(확인 구간 합산)</small></div>
+          <div style="font-size:12px; color:#f87171; font-weight:700; margin-top:3px;">⚠️ 미수집 구간(${missingSteps.join(', ')}강)은 제외된 수치입니다 🔒</div>
+        `;
+      } else {
+        costBox.innerHTML = `예상 소모 ${resKr}: <span style="color:#ffffff;">약 ${formatKoreanNumber(Math.round(expectedCost))}개</span> <small style="font-size:14px; color:#cbd5e1;">(${Math.round(expectedCost).toLocaleString()}개)</small>`;
+      }
+    }
   }
 
   // ==================== DATA & LOGIC: 영원 장비 옵션 변환 ====================
@@ -5224,7 +5317,7 @@
     star: { name: "⭐ 별의 가호", baseCost: 100000, stepCost: 100000, prob: 0.00064, slots: 7, isCollecting: false },
     moon: { name: "🌙 달의 가호", baseCost: 500000, stepCost: 500000, prob: 0.00064, slots: 7, isCollecting: false },
     sun: { name: "☀️ 해의 가호", baseCost: 700000, stepCost: 700000, prob: 0.00064, slots: 7, isCollecting: false },
-    shooting_star: { name: "☄️ 유성의 가호", baseCost: 0, stepCost: 0, prob: 0.00064, slots: 7, isCollecting: true }
+    shooting_star: { name: "☄️ 유성의 가호", baseCost: 1000000, stepCost: 1000000, prob: 0.00064, slots: 7, isCollecting: false }
   };
 
   function selectGahoType(type) {
@@ -7011,10 +7104,17 @@
     let multProduct = 1;
     let pairExtraMult = 1;
 
-    for (let r of combo) {
+   for (let r of combo) {
       if (!r) continue;
       let effVal = getEffectiveRuneValue(r, ids);
       if (effVal <= 0) continue;
+
+      // 🔥 [실전 검증 반영] 불멸 격화는 3상태이상 & 루비 강제 및 영원 룬공 시너지 부재로 인해 영원 명왕보다 후순위로 보정
+      if (r.id === 'anc_ar_gyeokhwa' || r.id === 'ete_ar_gyeokhwa' || r.id === 'imm_ar_gyeokhwa') {
+        const hasCurseAbyss = ownedRunes.has('ete_ab_jeoju') || ownedRunes.has('imm_ab_jeoju2');
+        if (!hasCurseAbyss && ctx.dragonStatus === 'none') effVal = 0;
+        else effVal = effVal * 0.12;
+      }
 
       if (r.cat === 'atk') {
         atkSum += effVal;
@@ -8410,11 +8510,21 @@
   let currentTrait1stLv = 1;      // 1차 전직 초기 레벨 = Lv.1
   let currentTrait3rdLv = 0;      // 3차 전직 초기 레벨 = Lv.0 (첫 단계)
   let traitUseOvergrowth = true;  // 엘리시아 + 과성장 조합 사용 여부
-  let reaperHas3Ancient = false;  // 사신 전용: false(2고패 이하: 마력폭주+변환) vs true(3고패 이상: 스택 채용)
-  let traitContentMode = 'stage';
+  let reaperHas3Ancient = false;
+  let reaperPassiveMode = '2anc_low'; // '2anc_low'(2고패·폭준3각우위) | '2anc_high'(2고패·마폭고각성) | '3anc'(3고패 완성)
+  let traitContentMode = 'stage';     // 👈 [필수 추가!] 이 줄이 빠져서 에러가 납니다! 꼭 추가해 주세요!
 
-  function toggleReaperAncientCount(is3Plus) {
-    reaperHas3Ancient = Boolean(is3Plus);
+  function toggleReaperAncientCount(modeVal) {
+    if (modeVal === true || modeVal === '3anc') {
+      reaperHas3Ancient = true;
+      reaperPassiveMode = '3anc';
+    } else if (modeVal === '2anc_high') {
+      reaperHas3Ancient = false;
+      reaperPassiveMode = '2anc_high';
+    } else {
+      reaperHas3Ancient = false;
+      reaperPassiveMode = '2anc_low';
+    }
     renderBuildGuideContent();
   }
 
@@ -9005,10 +9115,12 @@
     let subCandidateIds = [];
 
     if (job === 'reaper') {
-      // ★ 사신: 2고패 이하(마력폭주 착용) + 과성장 ON일 때만 변환(rp_skill_to_strike) 사용, 3고패 이상은 스택(rp_stack_dmg) 사용!
-      const useConvertTrait = useOvergrowth && !reaperHas3Ancient;
-      const variableSlotId = useConvertTrait ? "rp_skill_to_strike" : "rp_stack_dmg";
-      const altSlotId = useConvertTrait ? "rp_stack_dmg" : "rp_skill_to_strike";
+      // ★ 카톡 실전 검증 완벽 반영:
+      // - 1차 80렙 전(65~79렙, 4슬롯): [각성기 봉인 + 3회 강화 강타 + 착용 강타 단계] 3자리는 절대 빼면 안 되는 본체!
+      //   남은 1자리는 (폭준 3각 우위 시: 각성기 3초 감소) vs (마폭 고각성 시: 스피증 변환)
+      // - 1차 80렙 후(5슬롯): 5칸이 열리므로 2고패는 마력폭주+스피증 변환 세트, 3고패는 스택 피해량 채용!
+      const is2AncHigh = (!reaperHas3Ancient && reaperPassiveMode === '2anc_high' && useOvergrowth);
+      const is2AncLow  = (!reaperHas3Ancient && reaperPassiveMode === '2anc_low');
 
       if (lv < 5) {
         pickedIds = ["rp_base_dmg"];
@@ -9016,25 +9128,27 @@
         pickedIds = ["rp_enh_strike"];
         subCandidateIds = ["rp_base_dmg"];
       } else if (lv < 35) {
-        pickedIds = ["rp_enh_strike", useConvertTrait ? "rp_skill_to_strike" : "rp_hit_fix"];
+        pickedIds = ["rp_enh_strike", is2AncHigh ? "rp_skill_to_strike" : "rp_hit_fix"];
       } else if (lv < 40) {
         pickedIds = ["rp_awk_cd", "rp_enh_strike"];
-        subCandidateIds = [variableSlotId];
       } else if (lv < 50) {
-        pickedIds = ["rp_enh_strike", "rp_awk_cd", useConvertTrait ? "rp_skill_to_strike" : "rp_hit_fix"];
-        subCandidateIds = ["rp_step_dmg", "rp_hit_fix", altSlotId];
+        pickedIds = ["rp_enh_strike", "rp_awk_cd", is2AncHigh ? "rp_skill_to_strike" : "rp_hit_fix"];
+        subCandidateIds = ["rp_step_dmg", "rp_hit_fix"];
       } else if (lv < 60) {
-        pickedIds = ["rp_awk_cd", "rp_enh_strike", variableSlotId];
-        subCandidateIds = [altSlotId, "rp_hit_fix"];
+        pickedIds = ["rp_awk_cd", "rp_enh_strike", is2AncHigh ? "rp_skill_to_strike" : "rp_stack_dmg"];
+        subCandidateIds = ["rp_hit_fix", "rp_skill_to_strike"];
       } else if (lv < 65) {
-        pickedIds = ["rp_awk_cd", "rp_enh_strike", "rp_step_dmg", variableSlotId];
-        subCandidateIds = [altSlotId];
+        pickedIds = ["rp_awk_cd", "rp_enh_strike", "rp_step_dmg", is2AncHigh ? "rp_skill_to_strike" : "rp_stack_dmg"];
       } else if (lv < 80) {
-        pickedIds = ["rp_seal_awk", "rp_enh_strike", "rp_step_dmg", variableSlotId];
-        subCandidateIds = ["rp_awk_cd", altSlotId];
+        // ★ 65~79렙 (4슬롯 과도기): 각성기봉인 + 강화강타(절대 고정!) + 강타단계 + [각성기3초(폭준3각/3고패) vs 스피증변환(마폭고각)]
+        const fourthSlot = is2AncHigh ? "rp_skill_to_strike" : "rp_awk_cd";
+        pickedIds = ["rp_seal_awk", "rp_enh_strike", "rp_step_dmg", fourthSlot];
+        subCandidateIds = [is2AncHigh ? "rp_awk_cd" : "rp_skill_to_strike", "rp_stack_dmg"];
       } else {
-        pickedIds = ["rp_strike_buff", "rp_enh_strike", variableSlotId, "rp_seal_awk", "rp_step_dmg"];
-        subCandidateIds = [altSlotId, "rp_awk_cd", "rp_hit_fix"];
+        // ★ 80~150렙 (5슬롯 완성): 강타버프 + 강화강타 + 각성기봉인 + 강타단계 + [2고패(과성장): 스피증변환 / 3고패: 스택 피해량]
+        const fifthSlot = (!reaperHas3Ancient && useOvergrowth) ? "rp_skill_to_strike" : "rp_stack_dmg";
+        pickedIds = ["rp_strike_buff", "rp_enh_strike", fifthSlot, "rp_seal_awk", "rp_step_dmg"];
+        subCandidateIds = [fifthSlot === "rp_skill_to_strike" ? "rp_stack_dmg" : "rp_skill_to_strike", "rp_awk_cd"];
       }
     } else if (job === 'mage') {
       // ★ 아크메이지(미스틱) 핵심 발견 반영:
@@ -10947,7 +11061,6 @@
       ? `<div style="background:linear-gradient(135deg, rgba(6,182,212,0.16) 0%, #131d33 100%); padding:14px 16px; border-radius:14px; border:2px solid #06b6d4; margin-bottom:14px;">
           <div class="trait-Flex-card-inner">
             <div class="trait-flex-left">
-              <!-- 3대 고대 패시브 아이콘 미리보기 -->
               <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
                 <img src="images/${job1stAncientImg}.jpg" alt="${job1stAncientName}" title="1순위: ${job1stAncientName}" style="width:42px; height:42px; border-radius:9px; border:1.5px solid #06b6d4; object-fit:cover;" onerror="this.onerror=null; this.src='images/${job1stAncientImg}.png';">
                 <img src="images/pierce.jpg" alt="근원관통" title="2순위: 근원관통" style="width:42px; height:42px; border-radius:9px; border:1.5px solid #06b6d4; object-fit:cover;" onerror="this.onerror=null; this.src='images/pierce.png';">
@@ -10955,43 +11068,77 @@
               </div>
               <div style="word-break:keep-all;">
                 <div style="font-size:15px; font-weight:900; color:#ffffff; line-height:1.35;">
-                  🔮 [${guideJob==='reaper'?'사신':'아크메이지'} 필수 조건] 보유 고대 패시브 단계 선택
+                  🔮 [${guideJob==='reaper'?'사신':'아크메이지'} 필수 조건] 보유 고대 패시브 & 각성 단계 선택
                 </div>
-                <div style="font-size:12.5px; color:#cbd5e1; margin-top:4px; line-height:1.55;">
+                <div style="font-size:12px; color:#cbd5e1; margin-top:4px; line-height:1.55;">
                   ${guideJob === 'reaper'
-                    ? `* <strong>2고패 이하</strong>는 패시브에 <strong>[마력폭주]</strong>를 쓰므로 1차 특성에 <strong>[스피증➔강타 변환]</strong>을 쓰고, <strong>3고패 이상</strong>부터는 <strong>[스택 피해량]</strong>을 채용합니다!`
+                    ? `• <strong>1차 80렙 전(65~79렙)</strong>에는 <strong>[강화 강타]</strong>를 절대 빼면 안 됩니다! 마력폭주 각성이 낮다면 이미 3각성된 <strong>[폭발준비 + 각성기 3초 감소]</strong>가 더 강력합니다.<br>• <strong>1차 80렙 달성 후</strong> 2고패는 <strong>[마력폭주 + 스피증 변환]</strong>을 세트로 쓰고, <strong>3고패 완성 시</strong> 마력폭주를 빼고 <strong>[스택 피해량]</strong>으로 졸업합니다!`
                     : `* <strong>2고패 이하</strong>는 패시브에 <strong>[전투지휘]</strong>를 쓰므로 <strong>[영스피➔스피 변환]</strong>을 쓰지만, <strong>3고패 이상</strong>부터는 과성장+엘리시아 상태여도 변환을 빼고 <strong>[★스킬 버프 효과 추가]</strong>를 넣는 것이 <strong>실전 딜 약 77배 더 강력</strong>합니다!`}
                 </div>
               </div>
             </div>
 
-            <div class="trait-action-btns" style="display:flex; gap:6px; flex-wrap:wrap;">
-              <button onclick="toggleReaperAncientCount(false)" style="padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:1.5px solid ${!reaperHas3Ancient?'#38bdf8':'#334155'}; background:${!reaperHas3Ancient?'#0284c7':'#0f172a'}; color:#fff;">
-                2고패 이하 (${guideJob==='reaper'?'마력폭주':'전투지휘'}+변환)
-              </button>
-              <button onclick="toggleReaperAncientCount(true)" style="padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:1.5px solid ${reaperHas3Ancient?'#06b6d4':'#334155'}; background:${reaperHas3Ancient?'#0891b2':'#0f172a'}; color:#fff;">
-                3고패 이상 (${guideJob==='reaper'?'스택 특성':'스킬버프 추가'} 채용)
-              </button>
+            <div class="trait-action-btns" style="display:flex; gap:6px; flex-wrap:wrap; width:100%; justify-content:flex-end;">
+              ${guideJob === 'reaper' ? `
+                <button onclick="toggleReaperAncientCount('2anc_low')" style="flex:1; min-width:140px; padding:8px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${!reaperHas3Ancient && reaperPassiveMode==='2anc_low'?'#fbbf24':'#334155'}; background:${!reaperHas3Ancient && reaperPassiveMode==='2anc_low'?'#b45309':'#0f172a'}; color:#fff;">
+                  2고패 (폭준3각 우위·80전 추천)
+                </button>
+                <button onclick="toggleReaperAncientCount('2anc_high')" style="flex:1; min-width:140px; padding:8px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${!reaperHas3Ancient && reaperPassiveMode==='2anc_high'?'#38bdf8':'#334155'}; background:${!reaperHas3Ancient && reaperPassiveMode==='2anc_high'?'#0284c7':'#0f172a'}; color:#fff;">
+                  2고패 (마폭 고각성·80후 세트)
+                </button>
+                <button onclick="toggleReaperAncientCount('3anc')" style="flex:1; min-width:140px; padding:8px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${reaperHas3Ancient?'#06b6d4':'#334155'}; background:${reaperHas3Ancient?'#0891b2':'#0f172a'}; color:#fff;">
+                  3고패 완성 (마폭OUT·스택채용)
+                </button>
+              ` : `
+                <button onclick="toggleReaperAncientCount(false)" style="padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:1.5px solid ${!reaperHas3Ancient?'#38bdf8':'#334155'}; background:${!reaperHas3Ancient?'#0284c7':'#0f172a'}; color:#fff;">
+                  2고패 이하 (전투지휘+변환)
+                </button>
+                <button onclick="toggleReaperAncientCount(true)" style="padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:800; cursor:pointer; border:1.5px solid ${reaperHas3Ancient?'#06b6d4':'#334155'}; background:${reaperHas3Ancient?'#0891b2':'#0f172a'}; color:#fff;">
+                  3고패 이상 (스킬버프 추가 채용)
+                </button>
+              `}
             </div>
           </div>
         </div>`
       : '';
 
-    // 사신 전용: 추천 특성 보드 밑에 들어갈 [고대 패시브 개수별 패시브 5슬롯 편성 & 전술가속/폭발준비 비석 비교 팁]
+    // 사신 전용: 하단 패시브 5슬롯 (선택한 고패 모드에 따라 폭발준비 / 마력폭주 / 3고패 자동 변경!)
+    const reaper5thPassiveCard = reaperHas3Ancient
+      ? `<div class="build-slot-item core-fix" style="border-color:#06b6d4;">
+          <span class="build-slot-tag" style="background:#0891b2; color:#fff;">3순위 고패</span>
+          <div class="build-slot-thumb" style="border-color:#06b6d4;"><img src="images/${elemAncientPassive.img}.jpg" onerror="this.onerror=null; this.src='images/${elemAncientPassive.img}.png';"></div>
+          <div class="build-slot-name">${elemAncientPassive.name}</div>
+          <div class="build-slot-note">3고패 완성 (마폭OUT)</div>
+        </div>`
+      : (reaperPassiveMode === '2anc_low' && currentTrait1stLv < 80
+        ? `<div class="build-slot-item flex-pick" style="border-color:#eab308;">
+            <span class="build-slot-tag" style="background:#ca8a04; color:#fff;">3각 풀각 우위</span>
+            <div class="build-slot-thumb" style="border-color:#eab308;"><img src="images/blast_ready.jpg" onerror="this.onerror=null; this.src='images/blast_ready.png';"></div>
+            <div class="build-slot-name">폭발준비</div>
+            <div class="build-slot-note">80전/마폭 저각성 시 우위</div>
+          </div>`
+        : `<div class="build-slot-item flex-pick" style="border-color:#a855f7;">
+            <span class="build-slot-tag" style="background:#7e22ce; color:#fff;">스피증 세트</span>
+            <div class="build-slot-thumb" style="border-color:#a855f7;"><img src="images/mana_surge.jpg" onerror="this.onerror=null; this.src='images/mana_surge.png';"></div>
+            <div class="build-slot-name">마력폭주</div>
+            <div class="build-slot-note">스피증 변환과 세트 착용</div>
+          </div>`);
+
     const reaperPassiveGuideBoxHtml = (guideJob === 'reaper' && !isLockedUnder60)
       ? `<div style="margin-top:16px; background:#0b1120; border:1.5px solid #06b6d4; border-radius:14px; padding:14px 14px;">
           <div style="font-size:14.5px; font-weight:900; color:#67e8f9; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;">
-            <span>📜 [사신 핵심 팁] 1차 Lv.80 최우선 달성 이유 & 고패 개수별 패시브 편성법</span>
-            <span class="grade-badge grade-ancient">사신 패시브 정석</span>
+            <span>📜 [사신 실전 검증 팁] 왜 '1차 80렙'과 '3고패'를 빨리 찍어야 할까요?</span>
+            <span class="grade-badge grade-ancient">북쟁이·붉양님 검증</span>
           </div>
 
           <div style="font-size:12.5px; color:#cbd5e1; margin-bottom:12px; line-height:1.6; word-break:keep-all;">
-            • 사신은 <strong>1차 Lv.80</strong>에 열리는 <strong>[강타 버프 효과 추가(평타 50% 강타 + 공속 200%)]</strong>와 5번째 슬롯 개방 시너지가 가장 크기 때문에 타 직업보다 <strong>1차 전직 80레벨 달성이 최우선으로 요구</strong>됩니다.<br>
-            • <strong>2고대 패시브(강타의 대가 + 근원관통)</strong> 기준 정석 패시브 5슬롯은 아래와 같으며, 이때 <strong>[마력폭주]</strong>를 착용하기 때문에 1차 특성에서도 <strong>[스킬 피해량 1%당 ➔ 강타 피해량 변환]</strong>의 효율이 극대화됩니다!
+            • <strong>"사신은 1차 80렙도, 3고패도 필수급! 그전엔 미완성 과도기입니다."</strong><br>
+            • <strong>1차 80렙 이전(65~79렙):</strong> 슬롯이 4칸뿐이라 <strong>[강화 강타(3회)]</strong>를 빼고 스피증을 넣으면 오히려 딜이 떨어집니다! 게다가 1순위 고패 재료였던 <strong>[폭발준비]는 이미 3각성</strong>인 반면 <strong>[마력폭주]는 각성이 낮다면</strong>, 80렙 전까지는 <strong>[폭발준비 + 각성기 3초 감소]</strong>를 쓰는 것이 딜이 더 잘 나옵니다.<br>
+            • <strong>1차 80렙 달성 후:</strong> 5슬롯이 열리고 평타 50% 강타가 켜지므로 2고패에서는 <strong>[마력폭주 + 스피증 변환]</strong>을 세트로 쓰고, 이후 <strong>3고패(${elemAncientPassive.name})</strong>를 빠르게 올려 마력폭주를 빼고 <strong>[스택 피해량]</strong>으로 정착하는 것이 정석입니다!
           </div>
 
-          <div style="font-size:12px; font-weight:800; color:#fde047; margin-bottom:6px;">📌 [2고대 패시브] 달성 시 사신 패시브 5슬롯 정석 편성:</div>
-          <div class="build-slot-grid" style="margin-bottom:14px;">
+          <div style="font-size:12px; font-weight:800; color:#fde047; margin-bottom:6px;">📌 현재 선택하신 조건 기준 사신 패시브 5슬롯 편성:</div>
+          <div class="build-slot-grid" style="margin-bottom:10px;">
             <div class="build-slot-item core-fix" style="border-color:#06b6d4;">
               <span class="build-slot-tag" style="background:#0891b2; color:#fff;">1순위 고패</span>
               <div class="build-slot-thumb" style="border-color:#06b6d4;"><img src="images/strike_master.jpg" onerror="this.onerror=null; this.src='images/strike_master.png';"></div>
@@ -11004,12 +11151,7 @@
               <div class="build-slot-name">근원관통</div>
               <div class="build-slot-note">고대 패시브</div>
             </div>
-            <div class="build-slot-item flex-pick" style="border-color:#a855f7;">
-              <span class="build-slot-tag" style="background:#7e22ce; color:#fff;">변환 시너지</span>
-              <div class="build-slot-thumb" style="border-color:#a855f7;"><img src="images/mana_surge.jpg" onerror="this.onerror=null; this.src='images/mana_surge.png';"></div>
-              <div class="build-slot-name">마력폭주</div>
-              <div class="build-slot-note">특급 (3고패 전 필수)</div>
-            </div>
+            ${reaper5thPassiveCard}
             <div class="build-slot-item core-fix">
               <span class="build-slot-tag" style="background:#e11d48; color:#fff;">주속성 신화</span>
               <div class="build-slot-thumb"><img src="images/${elemMythicPassive.img}.jpg" onerror="this.onerror=null; this.src='images/${elemMythicPassive.img}.png';"></div>
@@ -11021,28 +11163,6 @@
               <div class="build-slot-thumb"><img src="images/elem_fusion.jpg" onerror="this.onerror=null; this.src='images/elem_fusion.png';"></div>
               <div class="build-slot-name">원소융합</div>
               <div class="build-slot-note">신화 패시브</div>
-            </div>
-          </div>
-
-          <div style="background:#131d33; border:1px dashed #fbbf24; border-radius:10px; padding:12px 14px;">
-            <div class="trait-flex-left">
-              <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-                <div style="text-align:center;">
-                  <img src="images/tactical_haste.jpg" alt="전술가속" style="width:38px; height:38px; border-radius:8px; border:1.5px solid #eab308; object-fit:cover;" onerror="this.onerror=null; this.src='images/tactical_haste.png';">
-                  <div style="font-size:10px; color:#fde047; font-weight:800;">전술가속</div>
-                </div>
-                <span style="font-size:12px; font-weight:900; color:#94a3b8;">VS</span>
-                <div style="text-align:center;">
-                  <img src="images/blast_ready.jpg" alt="폭발준비" style="width:38px; height:38px; border-radius:8px; border:1.5px solid #eab308; object-fit:cover;" onerror="this.onerror=null; this.src='images/blast_ready.png';">
-                  <div style="font-size:10px; color:#fde047; font-weight:800;">폭발준비</div>
-                </div>
-              </div>
-              <div style="font-size:12px; color:#e2e8f0; line-height:1.55; word-break:keep-all;">
-                💡 <strong>[아직 2고대 패시브가 없는 경우 패시브 교체 기준]</strong><br>
-                • <strong>2고패 달성 시:</strong> 기존에 쓰던 전설 패시브 중 <strong>[전술가속]</strong>을 가장 먼저 뺍니다.<br>
-                • <strong>1고패 이하일 때:</strong> 강타 게이지/쿨감 상황에 따라 <strong>[폭발준비]</strong>를 뺄지 <strong>[전술가속]</strong>을 쓸지 갈리므로, 두 패시브를 번갈아 끼고 <strong>수련동굴 비석치기</strong>로 딜이 더 높은 쪽을 착용하세요!<br>
-                • <strong>3고패(${elemAncientPassive.name}) 완성 후:</strong> 신화 2종이 합쳐지고 마력폭주가 빠지므로 위 스위치에서 <strong>[3고패 이상]</strong>을 눌러 1차 특성을 <strong>[스택 피해량]</strong>으로 전환하시면 됩니다!
-              </div>
             </div>
           </div>
         </div>`
