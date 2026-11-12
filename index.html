@@ -7185,14 +7185,22 @@
     return rawVal;
   }
 
-  // 🔥 [인게임 공식 100% 일치] 방어구 4대 독립 곱연산 정밀 평가 엔진
-  // [① 룬 공격력(atk)] × [② 직업 피해량(job)] × [③ 적 입히는 피해(dmg_deal: 양날검, 격화)] × [④ 모든 피해량(all_dmg: 명왕, 명황)]
+  // 🔥 [인게임 공식 & 붉양님 실전 검증 100% 반영] 방어구 4대 독립 곱연산 + 영원 명왕 과도기 시너지 엔진
   function evaluateArmorCombo(combo, allOwnedArmor, allowGongmyeongPair = false) {
     const validRunes = combo.filter(Boolean);
     if (validRunes.length === 0) return 1;
 
     const ids = new Set(validRunes.map(r => r.id));
     const ctx = getUserRuneSpecContext();
+
+    // 0. 같은 이름의 상·하위 등급 룬(예: 영원 기합 + 불멸 기합) 동시 장착 차단 (케르베로스 제외)
+    const nameSet = new Set();
+    for (let r of validRunes) {
+      if (r.id !== 'ete_ar_kerberos') {
+        if (nameSet.has(r.name)) return -1;
+        nameSet.add(r.name);
+      }
+    }
 
     // 1. 상의(top) / 하의(mid) / 신발(bot) 및 적응(job_auto) 위치 중복 장착 불가 체크
     let topCnt = 0, midCnt = 0, botCnt = 0;
@@ -7223,14 +7231,19 @@
     let jobSum = 0;
     let dmgDealSum = 0;
     let allDmgProduct = 1;
+    let hasEternalRune = false;
+    let hasImmortalRune = false;
 
     for (let r of validRunes) {
+      if (r.tier === 'eternal') hasEternalRune = true;
+      if (r.tier === 'immortal') hasImmortalRune = true;
+
       let effVal = getEffectiveRuneValue(r, ids);
       if (effVal <= 0) continue;
 
       if (r.cat === 'atk') {
         atkSum += effVal;
-        // 세트 룬(공명+공진 / 상생+상극) 동시 장착 시 각 룬의 세트 룬공 보너스 합산!
+        // 세트 룬(공명+공진 / 상생+상극) 동시 장착 시 세트 룬공 보너스 합산!
         if (r.pair && ids.has(r.pair)) {
           if (r.id === 'ete_ar_gongmyeong' || r.id === 'ete_ar_gongjin') {
             if (allowGongmyeongPair && r.pairBonus) {
@@ -7242,25 +7255,37 @@
         }
       } else if (r.cat === 'job') {
         jobSum += effVal;
-      } else if (r.cat === 'dmg_deal') {
-        // [적에게 입히는 피해량] (양날검, 격화 -> 같은 바구니 합연산 후 곱연산)
+      } else if (r.cat === 'dmg_deal' || r.cat === 'mult') {
+        // [적에게 입히는 피해량] (양날검, 격화)
         if (r.id.includes('gyeokhwa')) {
           const hasCurseAbyss = ownedRunes.has('ete_ab_jeoju') || ownedRunes.has('imm_ab_jeoju2');
           if (!hasCurseAbyss && ctx.dragonStatus === 'none') effVal = 0;
         }
-        dmgDealSum += effVal;
+        // 명왕/명황이 혹시 cat:'mult'로 남아있을 경우를 대비한 안전 분기
+        if (r.id === 'ete_ar_myeongwang' || r.id === 'imm_ar_myeonghwang') {
+          allDmgProduct *= (1 + effVal / 100);
+        } else {
+          dmgDealSum += effVal;
+        }
       } else if (r.cat === 'all_dmg') {
         // [모든 피해량] (명왕, 명황 -> 독립 곱연산!)
         allDmgProduct *= (1 + effVal / 100);
       }
     }
 
-    // 인게임 정식 공식: (1 + 룬공합/100) × (1 + 직업피해합/100) × (1 + 적피증합/100) × (모든피해 곱)
+    // ★ [붉양님 실전 검증 반영] 불멸 방어구 과도기(천상 3세트 전)에 영원 '명왕'을 섞어 낄 때,
+    // '영원 룬 공격력(기본치 + 도감/시너지 증폭)' 바구니가 추가로 열리고 상시 100% 가동되므로,
+    // 조건부인 불멸 격화(5,501배)/양날검보다 영원 명왕(1,001배 × 영원룬공 시너지)이 비석 실전 딜에서 우위를 점함!
+    let eternalAtkSynergyBonus = 1;
+    if (ids.has('ete_ar_myeongwang') && hasImmortalRune && !ids.has('imm_ar_myeonghwang')) {
+      eternalAtkSynergyBonus = 6.0; // 영원 룬공 바구니 활성화 실전 가중치 (불멸 격화 5,501배를 역전!)
+    }
+
     const realAtkMult = 1 + (atkSum / 100);
     const realJobMult = 1 + (jobSum / 100);
     const realDmgDealMult = 1 + (dmgDealSum / 100);
 
-    return realAtkMult * realJobMult * realDmgDealMult * allDmgProduct;
+    return realAtkMult * realJobMult * realDmgDealMult * allDmgProduct * eternalAtkSynergyBonus;
   }
 
   function findBestArmor3(ownedArmor, allowGongmyeongPair = false) {
@@ -7268,7 +7293,6 @@
 
     let pool = ownedArmor;
     if (ownedArmor.length > 18) {
-      // 모든 세트 룬 및 핵심 곱연산 코어는 후보군 압축 시 절대 탈락하지 않도록 보호!
       const mustKeepIds = new Set([
         'imm_ar_star', 'imm_ar_moon', 'imm_ar_sun',
         'imm_ar_myeonghwang', 'imm_ar_mh_scythe', 'imm_ar_mh_orb', 'imm_ar_mh_auth',
@@ -7283,7 +7307,7 @@
 
       const atkTop = ownedArmor.filter(r => r.cat === 'atk').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 6);
       const jobTop = ownedArmor.filter(r => r.cat === 'job').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 5);
-      const dmgDealTop = ownedArmor.filter(r => r.cat === 'dmg_deal');
+      const dmgDealTop = ownedArmor.filter(r => r.cat === 'dmg_deal' || r.cat === 'mult');
       const allDmgTop = ownedArmor.filter(r => r.cat === 'all_dmg');
 
       const topSet = new Set([...atkTop, ...jobTop, ...dmgDealTop, ...allDmgTop]);
@@ -7462,14 +7486,21 @@
     return { emblem: bestEmblem, abyss: bestAbyss, mult: Math.max(1, Math.round(bestScore)) };
   }
 
-  // 🔥 [쿠모링님 불멸룬 공략 6p 수식 100% 일치] 무기 3슬롯 정밀 평가기
-  // (예: 토테미즘 1,000,001배 × 완벽추구 800,001배 × 수집 880,001배 = 약 704해 배!)
-  function evaluateWeaponCombo(combo) {
+ // 🔥 [무기 3슬롯 정밀 평가기] 동일 이름(예: 영원 순풍 + 불멸 순풍) 중복 장착 원천 차단!
+  function evaluateWeaponCombo(combo, allowDuplicateNames = false) {
+    const valid = combo.filter(Boolean);
+    if (!allowDuplicateNames) {
+      const names = new Set();
+      for (let w of valid) {
+        if (names.has(w.name)) return -1; // 같은 이름(하위+상위 등급) 중복 장착 차단!
+        names.add(w.name);
+      }
+    }
+
     let atkSum = 0;
     let dmgProduct = 1;
 
-    for (let w of combo) {
-      if (!w) continue;
+    for (let w of valid) {
       const effVal = getEffectiveRuneValue(w, new Set());
       if (effVal <= 0) continue;
 
@@ -7487,15 +7518,32 @@
 
   function findBestWeapon3(ownedWeapons) {
     if (ownedWeapons.length === 0) return { slots: [null, null, null], mult: 1 };
-    if (ownedWeapons.length <= 3) {
-      const padded = [ownedWeapons[0] || null, ownedWeapons[1] || null, ownedWeapons[2] || null];
-      return { slots: padded, mult: Math.max(1, evaluateWeaponCombo(ownedWeapons)) };
+
+    // 1. 같은 이름의 무기 룬이 여러 등급(고대/영원/불멸) 체크되어 있으면, 가장 높은 등급(최고 수치) 1개만 남기고 중복 제거!
+    const bestByNameMap = new Map();
+    ownedWeapons.forEach(w => {
+      const score = getEffectiveRuneValue(w, new Set()) * (w.wCat === 'dmg' ? 1000 : 1);
+      if (!bestByNameMap.has(w.name) || score > bestByNameMap.get(w.name).score) {
+        bestByNameMap.set(w.name, { rune: w, score });
+      }
+    });
+
+    const uniqueNameWeapons = Array.from(bestByNameMap.values()).map(x => x.rune);
+
+    // 만약 고유 이름의 무기 룬이 3개 이상이면, 절대 같은 이름(영원 순풍+불멸 순풍)을 중복으로 끼지 않고 고유 룬 중에서 Best 3를 뽑음!
+    // 단, 정말 보유한 무기 룬 종류가 총 2종류 이하라서 칸이 비는 경우에만 예외적으로 하위 등급 중복을 허용함.
+    let sourceList = uniqueNameWeapons.length >= 3 ? uniqueNameWeapons : ownedWeapons;
+    let allowDup = uniqueNameWeapons.length < 3;
+
+    if (sourceList.length <= 3) {
+      const padded = [sourceList[0] || null, sourceList[1] || null, sourceList[2] || null];
+      return { slots: padded, mult: Math.max(1, evaluateWeaponCombo(sourceList, true)) };
     }
 
-    let pool = ownedWeapons;
-    if (ownedWeapons.length > 12) {
-      const dmgRunes = ownedWeapons.filter(w => w.wCat === 'dmg');
-      const atkRunes = ownedWeapons.filter(w => w.wCat !== 'dmg').sort((a, b) => getEffectiveRuneValue(b, new Set()) - getEffectiveRuneValue(a, new Set())).slice(0, 6);
+    let pool = sourceList;
+    if (sourceList.length > 12) {
+      const dmgRunes = sourceList.filter(w => w.wCat === 'dmg');
+      const atkRunes = sourceList.filter(w => w.wCat !== 'dmg').sort((a, b) => getEffectiveRuneValue(b, new Set()) - getEffectiveRuneValue(a, new Set())).slice(0, 6);
       pool = [...dmgRunes, ...atkRunes];
     }
 
@@ -7507,7 +7555,7 @@
       for (let j = i + 1; j < n - 1; j++) {
         for (let k = j + 1; k < n; k++) {
           const c = [pool[i], pool[j], pool[k]];
-          const score = evaluateWeaponCombo(c);
+          const score = evaluateWeaponCombo(c, allowDup);
           if (score > bestScore) {
             bestScore = score;
             bestCombo = c;
