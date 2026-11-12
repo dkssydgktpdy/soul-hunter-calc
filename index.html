@@ -6545,7 +6545,7 @@
     { id: "anc_ar_jilju", tier: "ancient", part: "armor", name: "질주", cat: "util", val: 100, desc: "텔레포트 시 10초간 이속 +100%", cond: "이속 유틸 룬" },
     { id: "anc_ar_sangseung", tier: "ancient", part: "armor", name: "상승기류", cat: "atk", val: 3000, desc: "2초마다 룬 공격력 +300% (최대 3,000%)", cond: "20초 경과 시 풀스택" },
     { id: "anc_ar_jungryeok", tier: "ancient", part: "armor", name: "중력", cat: "atk", val: 4500, desc: "룬 공격력 +4,500%", cond: "이동속도 50% 감소, 텔레포트 봉인" },
-    { id: "anc_ar_gyeokhwa", tier: "ancient", part: "armor", name: "격화", cat: "mult", val: 8000, desc: "적용된 상태이상 3개일 때 추가 피해 +8,000% (곱연산)", cond: "화상/감전/혼돈 상태이상 3종 유지 필수 (루비 각성 시 0티어)" },
+    { id: "anc_ar_gyeokhwa", tier: "ancient", part: "armor", name: "격화", cat: "dmg_deal", val: 8000, desc: "적용된 상태이상 3개일 때 추가 피해 +8,000% (적피증 곱연산)", cond: "화상/감전/혼돈 상태이상 3종 유지 필수 (루비 각성 시 0티어)" },
     { id: "anc_ar_sangsaeng2", tier: "ancient", part: "armor", name: "상생 II", cat: "atk", val: 1000, pair: "anc_ar_sanggeuk2", pairBonus: 15000, desc: "룬 공격력 +1,000% ('상극 II' 함께 장착 시 고대룬 공격력 +30,000%)", cond: "상생 II + 상극 II 세트 장착 권장" },
     { id: "anc_ar_sanggeuk2", tier: "ancient", part: "armor", name: "상극 II", cat: "atk", val: 1000, pair: "anc_ar_sangsaeng2", pairBonus: 15000, desc: "룬 공격력 +1,000% ('상생 II' 함께 장착 시 고대룬 공격력 +30,000%)", cond: "상생 II + 상극 II 세트 장착 권장" },
     { id: "anc_ar_mem_top", tier: "ancient", part: "armor", slotPos: "top", name: "영웅의 기억:일격", cat: "job", jobType: "reaper", val: 1000, setGroup: "anc_hero_mem", desc: "상의 장착 시 룬 강타 피해 +1,000%, 3종 세트 시 고대룬 공격력 +1,500,000%", cond: "상의 전용 / 일격+마도+군림 3세트 시 0.5티어" },
@@ -6554,7 +6554,7 @@
     { id: "anc_ar_mugan", tier: "ancient", part: "armor", name: "무간", cat: "atk", val: 6000, desc: "룬 공격력 +6,000%", cond: "시야 범위 감소" },
     { id: "anc_ar_gihap", tier: "ancient", part: "armor", name: "기합", cat: "atk", val: 6000, desc: "룬 공격력 +6,000%", cond: "채팅창에 '!' 입력 시 24시간 유지 (재접속 시 초기화)" },
     { id: "anc_ar_geomtusa", tier: "ancient", part: "armor", name: "검투사", cat: "atk", val: 9000, desc: "룬 공격력 +9,000%", cond: "아레나 100연승 이상 (소탕 가능)" },
-    { id: "anc_ar_yangnal", tier: "ancient", part: "armor", name: "양날검", cat: "mult", val: 4500, desc: "적에게 입히는 피해 +4,500% (곱연산)", cond: "받는 피해 50% 증가 페널티" },
+    { id: "anc_ar_yangnal", tier: "ancient", part: "armor", name: "양날검", cat: "dmg_deal", val: 4500, desc: "적에게 입히는 피해 +4,500% (적피증 곱연산)", cond: "받는 피해 50% 증가 페널티" },
     { id: "anc_ar_jeokil", tier: "ancient", part: "armor", name: "적일", cat: "atk", val: 9000, desc: "주말(토/일) 룬 공격력 +9,000%", cond: "KST 기준 토요일·일요일만 발동" },
     { id: "anc_ar_sasin", tier: "ancient", part: "armor", name: "사신의 낫", cat: "job", jobType: "reaper", val: 8000, desc: "룬 강타 피해량 +8,000% (전직 60렙 기준)", cond: "전직 레벨 60 이상" },
     { id: "anc_ar_mabeopseo", tier: "ancient", part: "armor", name: "마법의 서", cat: "job", jobType: "mage", val: 8000, desc: "룬 스킬 피해량 +8,000% (전직 60렙 기준)", cond: "전직 레벨 60 이상" },
@@ -6564,20 +6564,20 @@
     { id: "ete_ar_mugan", tier: "eternal", part: "armor", name: "무간", cat: "atk", val: 15000, desc: "룬 공격력 +15,000%", cond: "시야 범위 감소" },
     { id: "ete_ar_gihap", tier: "eternal", part: "armor", name: "기합", cat: "atk", val: 15000, desc: "룬 공격력 +15,000%", cond: "채팅창 '!' 입력" },
     { id: "ete_ar_geomtusa", tier: "eternal", part: "armor", name: "검투사", cat: "atk", val: 15000, desc: "룬 공격력 +15,000%", cond: "아레나 100연승" },
-    { id: "ete_ar_yangnal", tier: "eternal", part: "armor", name: "양날검", cat: "mult", val: 15000, desc: "적에게 입히는 피해 +15,000% (곱연산, 151배)", cond: "받는 피해 50% 증가" },
+    { id: "ete_ar_yangnal", tier: "eternal", part: "armor", name: "양날검", cat: "dmg_deal", val: 15000, desc: "적에게 입히는 피해 +15,000% (적피증 곱연산, 151배)", cond: "받는 피해 50% 증가" },
     { id: "ete_ar_samwi", tier: "eternal", part: "armor", name: "삼위일체", cat: "job", jobType: "all", val: 15000, desc: "강타/스킬/영웅 스킬 피해 +15,000%", cond: "조건 없음" },
     { id: "ete_ar_sangsaeng3", tier: "eternal", part: "armor", name: "상생 III", cat: "atk", val: 4000, pair: "ete_ar_sanggeuk3", pairBonus: 30000, desc: "룬 공격력 +4,000% ('상극 III' 장착 시 영원룬공 +60,000%)", cond: "상생 III + 상극 III 세트" },
     { id: "ete_ar_sanggeuk3", tier: "eternal", part: "armor", name: "상극 III", cat: "atk", val: 4000, pair: "ete_ar_sangsaeng3", pairBonus: 30000, desc: "룬 공격력 +4,000% ('상생 III' 장착 시 영원룬공 +60,000%)", cond: "상생 III + 상극 III 세트" },
-    { id: "ete_ar_gyeokhwa", tier: "eternal", part: "armor", name: "격화", cat: "mult", val: 10000, desc: "상태이상 3개일 때 추가 피해 +10,000% (곱연산, 101배)", cond: "화상/감전/혼돈 상태이상 3종 유지" },
+    { id: "ete_ar_gyeokhwa", tier: "eternal", part: "armor", name: "격화", cat: "dmg_deal", val: 10000, desc: "상태이상 3개일 때 추가 피해 +10,000% (적피증 곱연산, 101배)", cond: "화상/감전/혼돈 상태이상 3종 유지" },
     { id: "ete_ar_sasin", tier: "eternal", part: "armor", name: "사신의 낫", cat: "job", jobType: "reaper", val: 15000, desc: "룬 강타 피해 +15,000%", cond: "전직 60렙 이상" },
     { id: "ete_ar_mabeopseo", tier: "eternal", part: "armor", name: "마법의 서", cat: "job", jobType: "mage", val: 15000, desc: "룬 스킬 피해 +15,000%", cond: "전직 60렙 이상" },
     { id: "ete_ar_gunju", tier: "eternal", part: "armor", name: "군주의 혼", cat: "job", jobType: "lord", val: 15000, desc: "룬 영웅 스킬 피해 +15,000%", cond: "전직 60렙 이상" },
-    { id: "ete_ar_gongmyeong", tier: "eternal", part: "armor", name: "공명", cat: "atk", val: 45000, pair: "ete_ar_gongjin", pairMult: 20001, desc: "룬 공격력 +45,000% ('공진' 및 올 영원 장착 시 영원룬 공격력 +1,000,000%)", cond: "공명+공진 세트 및 전 부위 영원 룬 장착 시 0티어" },
-    { id: "ete_ar_gongjin", tier: "eternal", part: "armor", name: "공진", cat: "atk", val: 45000, pair: "ete_ar_gongmyeong", pairMult: 20001, desc: "룬 공격력 +45,000% ('공명' 및 올 영원 장착 시 영원룬 공격력 +1,000,000%)", cond: "공명+공진 세트 및 전 부위 영원 룬 장착 시 0티어" },
+    { id: "ete_ar_gongmyeong", tier: "eternal", part: "armor", name: "공명", cat: "atk", val: 45000, pair: "ete_ar_gongjin", pairBonus: 1000000, desc: "룬 공격력 +45,000% ('공진' 및 올 영원 장착 시 영원룬 공격력 +1,000,000%)", cond: "공명+공진 세트 및 전 부위 영원 룬 장착 시 0티어" },
+    { id: "ete_ar_gongjin", tier: "eternal", part: "armor", name: "공진", cat: "atk", val: 45000, pair: "ete_ar_gongmyeong", pairBonus: 1000000, desc: "룬 공격력 +45,000% ('공명' 및 올 영원 장착 시 영원룬 공격력 +1,000,000%)", cond: "공명+공진 세트 및 전 부위 영원 룬 장착 시 0티어" },
     { id: "ete_ar_kerberos", tier: "eternal", part: "armor", name: "케르베로스", cat: "atk", val: 15000, desc: "1개 장착 시 룬공 +15,000% (2개 1,000만% / 3개 장착 시 총 배율 약 1억 배)", cond: "동일 룬 중복 장착 특수 세트" },
     { id: "ete_ar_jeongbok", tier: "eternal", part: "armor", name: "룬 정복자", cat: "atk", val: 150000, desc: "룬 공격력 총 +150,000% (기본 1만 + 50단계 4만 + 100단계 10만)", cond: "룬 던전 100단계 이상 클리어" },
     { id: "ete_ar_jeogyeok", tier: "eternal", part: "armor", name: "저격수", cat: "atk", val: 150000, desc: "룬 공격력 +150,000%, 사거리 10배", cond: "이속 50% 감소, 텔레포트 봉인" },
-    { id: "ete_ar_myeongwang", tier: "eternal", part: "armor", name: "명왕", cat: "mult", val: 100000, desc: "명계 어딘가를 정찰 완료 시 피해량 +100,000% (곱연산, 1,001배)", cond: "명계 정찰 완료 필수 (불멸 명황 없을 때 1순위 곱연산)" },
+    { id: "ete_ar_myeongwang", tier: "eternal", part: "armor", name: "명왕", cat: "all_dmg", val: 100000, desc: "명계 어딘가를 정찰 완료 시 모든 피해량 +100,000% (모피증 곱연산, 1,001배)", cond: "명계 정찰 완료 필수 (불멸 명황 없을 때 1순위 곱연산)" },
     { id: "ete_ar_sokjeon", tier: "eternal", part: "armor", name: "속전", cat: "atk", val: 30000, desc: "룬 공격력 +30,000%", cond: "스테이지 보스 시간 10초 고정" },
     { id: "ete_ar_pyeongil", tier: "eternal", part: "armor", name: "평일", cat: "atk", val: 30000, desc: "평일 룬 공격력 총 +30,000%", cond: "KST 기준 평일(월~금) 발동" },
     { id: "ete_ar_moheom", tier: "eternal", part: "armor", name: "모험가", cat: "atk", val: 45000, desc: "룬 공격력 총 +45,000% (Easy 올클리어 시)", cond: "모험모드 Easy 모든 별 획득" },
@@ -6590,9 +6590,9 @@
     // ==================== 1. 방어구 (불멸 24종 - 인게임 순서) ====================
     { id: "imm_ar_gihap", tier: "immortal", part: "armor", name: "기합", cat: "atk", val: 550000, desc: "룬 공격력 +550,000% (5,501배)", cond: "채팅창 '!' 입력" },
     { id: "imm_ar_geomtusa", tier: "immortal", part: "armor", name: "검투사", cat: "atk", val: 550000, desc: "룬 공격력 +550,000% (5,501배)", cond: "아레나 100연승" },
-    { id: "imm_ar_yangnal", tier: "immortal", part: "armor", name: "양날검", cat: "mult", val: 550000, desc: "적에게 입히는 피해 +550,000% (곱연산, 5,501배)", cond: "받는 피해 50% 증가" },
+    { id: "imm_ar_yangnal", tier: "immortal", part: "armor", name: "양날검", cat: "dmg_deal", val: 550000, desc: "적에게 입히는 피해 +550,000% (적피증 곱연산, 5,501배)", cond: "받는 피해 50% 증가" },
     { id: "imm_ar_samwi", tier: "immortal", part: "armor", name: "삼위일체", cat: "job", jobType: "all", val: 550000, desc: "강타/스킬/영웅 스킬 피해 +550,000% (5,501배)", cond: "조건 없음" },
-    { id: "imm_ar_gyeokhwa", tier: "immortal", part: "armor", name: "격화", cat: "mult", val: 550000, desc: "상태이상 3개 시 추가 피해 증폭 (곱연산, 5,501배)", cond: "상태이상 3종 적용" },
+    { id: "imm_ar_gyeokhwa", tier: "immortal", part: "armor", name: "격화", cat: "dmg_deal", val: 550000, desc: "상태이상 3개 시 추가 피해 +550,000% (적피증 곱연산, 5,501배)", cond: "상태이상 3종 적용" },
     { id: "imm_ar_jeongbok", tier: "immortal", part: "armor", name: "룬 정복자", cat: "atk", val: 825000, desc: "룬 던전 150단계 시 룬 공격력 총 +825,000% (8,251배)", cond: "룬 던전 150단계 이상" },
     { id: "imm_ar_jeogyeok", tier: "immortal", part: "armor", name: "저격수", cat: "atk", val: 1100000, desc: "룬 공격력 +1,100,000% (11,001배)", cond: "이속 50% 감소, 텔포 봉인, 사거리 10배" },
     { id: "imm_ar_sokjeon", tier: "immortal", part: "armor", name: "속전", cat: "atk", val: 825000, desc: "룬 공격력 +825,000% (8,251배)", cond: "스테이지 보스 시간 10초 고정" },
@@ -6601,7 +6601,7 @@
     { id: "imm_ar_star", tier: "immortal", part: "armor", name: "천상의 빛:별", cat: "atk", val: 2000000, setGroup: "imm_heaven", desc: "룬공 +2,000,000% (별/달/해 3세트 시 총 배율 225조 배 종결!)", cond: "별의 가호 30단계 + 별/달/해 3종 동시 장착 필수" },
     { id: "imm_ar_moon", tier: "immortal", part: "armor", name: "천상의 빛:달", cat: "atk", val: 2000000, setGroup: "imm_heaven", desc: "룬공 +2,000,000% (별/달/해 3세트 시 총 배율 225조 배 종결!)", cond: "달의 가호 20단계 + 별/달/해 3종 동시 장착 필수" },
     { id: "imm_ar_sun", tier: "immortal", part: "armor", name: "천상의 빛:해", cat: "atk", val: 2000000, setGroup: "imm_heaven", desc: "룬공 +2,000,000% (별/달/해 3세트 시 총 배율 225조 배 종결!)", cond: "해의 가호 10단계 + 별/달/해 3종 동시 장착 필수" },
-    { id: "imm_ar_myeonghwang", tier: "immortal", part: "armor", name: "명황", cat: "mult", val: 5500000, desc: "명계 모든 지역 정찰 시 모든 피해량 +5,500,000% (55,001배 곱연산)", cond: "명계 모든 지역 정찰 완료 필수 (준종결 핵심 코어)" },
+    { id: "imm_ar_myeonghwang", tier: "immortal", part: "armor", name: "명황", cat: "all_dmg", val: 5500000, desc: "명계 모든 지역 정찰 시 모든 피해량 +5,500,000% (모피증 곱연산, 55,001배)", cond: "명계 모든 지역 정찰 완료 필수 (준종결 핵심 코어)" },
     { id: "imm_ar_mh_scythe", tier: "immortal", part: "armor", name: "명황의 낫", cat: "job", jobType: "reaper", val: 4400000, reqRune: "imm_ar_myeonghwang", desc: "'명황' 장착 시 룬 강타 피해량 +4,400,000% (44,001배)", cond: "반드시 불멸 '명황' 룬과 함께 장착해야 발동!" },
     { id: "imm_ar_mh_orb", tier: "immortal", part: "armor", name: "명황의 오브", cat: "job", jobType: "mage", val: 4400000, reqRune: "imm_ar_myeonghwang", desc: "'명황' 장착 시 룬 스킬 피해량 +4,400,000% (44,001배)", cond: "반드시 불멸 '명황' 룬과 함께 장착해야 발동!" },
     { id: "imm_ar_mh_auth", tier: "immortal", part: "armor", name: "명황의 권세", cat: "job", jobType: "lord", val: 4400000, reqRune: "imm_ar_myeonghwang", desc: "'명황' 장착 시 룬 영웅 스킬 피해량 +4,400,000% (44,001배)", cond: "반드시 불멸 '명황' 룬과 함께 장착해야 발동!" },
@@ -6612,7 +6612,7 @@
     { id: "imm_ar_seongjwa2", tier: "immortal", part: "armor", name: "성좌 II", cat: "atk", val: 1650000, desc: "별의 가호 40단계 이상 시 룬 공격력 총 +1,650,000% (16,501배)", cond: "별의 가호 40단계 이상" },
     { id: "imm_ar_retro", tier: "immortal", part: "armor", name: "레트로", cat: "atk", val: 1650000, desc: "룬 공격력 +1,650,000% (16,501배)", cond: "캐릭터 외형 도트 기본 외형 고정" },
     { id: "imm_ar_gakseong", tier: "immortal", part: "armor", name: "각성자", cat: "atk", val: 1100000, desc: "룬 공격력 +1,100,000% (11,001배)", cond: "심연장비 각성 중 신화등급 1개 이상" },
-
+    
     // ==================== 2. 반지 (고대 14종 - 인게임 순서) ====================
     { id: "anc_rg_danil", tier: "ancient", part: "ring", name: "단일격", jobType: "reaper", mult: 31, desc: "단일 타겟 룬 강타 피해 +3,000%", cond: "단일 적 대상" },
     { id: "anc_rg_mabeopsa", tier: "ancient", part: "ring", name: "마법사", jobType: "mage", mult: 30, desc: "기본 공격 1회당 다음 확률형 스킬 확정 발동", cond: "확률형 스킬 위주 편성" },
@@ -7186,17 +7186,24 @@
   }
 
   // 🔥 [인게임 공식 100% 일치] 방어구 4대 독립 곱연산 정밀 평가 엔진
-  // [① 룬 공격력(atk)] × [② 직업 피해량(job)] × [③ 적 입히는 피해(dmg_deal: 양날검, 격화)] × [④ 모든 피해량(all_dmg: 명왕, 명황)] × [세트 증폭]
+  // [① 룬 공격력(atk)] × [② 직업 피해량(job)] × [③ 적 입히는 피해(dmg_deal: 양날검, 격화)] × [④ 모든 피해량(all_dmg: 명왕, 명황)]
   function evaluateArmorCombo(combo, allOwnedArmor, allowGongmyeongPair = false) {
-    const ids = new Set(combo.map(r => r.id));
+    const validRunes = combo.filter(Boolean);
+    if (validRunes.length === 0) return 1;
+
+    const ids = new Set(validRunes.map(r => r.id));
     const ctx = getUserRuneSpecContext();
 
-    // 1. 상의/하의/신발 고정 슬롯 중복 장착 불가 체크
+    // 1. 상의(top) / 하의(mid) / 신발(bot) 및 적응(job_auto) 위치 중복 장착 불가 체크
     let topCnt = 0, midCnt = 0, botCnt = 0;
-    for (let r of combo) {
-      if (r.slotPos === 'top') topCnt++;
-      if (r.slotPos === 'mid') midCnt++;
-      if (r.slotPos === 'bot') botCnt++;
+    for (let r of validRunes) {
+      let pos = r.slotPos;
+      if (pos === 'job_auto') {
+        pos = currentRuneJob === 'reaper' ? 'top' : (currentRuneJob === 'mage' ? 'mid' : 'bot');
+      }
+      if (pos === 'top') topCnt++;
+      else if (pos === 'mid') midCnt++;
+      else if (pos === 'bot') botCnt++;
     }
     if (topCnt > 1 || midCnt > 1 || botCnt > 1) return -1;
 
@@ -7216,66 +7223,68 @@
     let jobSum = 0;
     let dmgDealSum = 0;
     let allDmgProduct = 1;
-    let pairExtraMult = 1;
 
-    for (let r of combo) {
-      if (!r) continue;
+    for (let r of validRunes) {
       let effVal = getEffectiveRuneValue(r, ids);
       if (effVal <= 0) continue;
 
       if (r.cat === 'atk') {
         atkSum += effVal;
+        // 세트 룬(공명+공진 / 상생+상극) 동시 장착 시 각 룬의 세트 룬공 보너스 합산!
         if (r.pair && ids.has(r.pair)) {
           if (r.id === 'ete_ar_gongmyeong' || r.id === 'ete_ar_gongjin') {
-            if (allowGongmyeongPair && r.pairMult) pairExtraMult = Math.max(pairExtraMult, r.pairMult);
+            if (allowGongmyeongPair && r.pairBonus) {
+              atkSum += r.pairBonus; // 공명 +100만%, 공진 +100만% -> 합계 +200만% 추가!
+            }
           } else if (r.pairBonus) {
-            pairExtraMult = Math.max(pairExtraMult, 1 + (r.pairBonus * 2) / 100);
+            atkSum += r.pairBonus; // 상생/상극 각 +1.5만%(고대) 또는 +3만%(영원) 추가!
           }
         }
       } else if (r.cat === 'job') {
         jobSum += effVal;
       } else if (r.cat === 'dmg_deal') {
-        // [적에게 입히는 피해량] (양날검, 격화)
-        // 격화는 3상태이상 조건 미충족 시 미발동
+        // [적에게 입히는 피해량] (양날검, 격화 -> 같은 바구니 합연산 후 곱연산)
         if (r.id.includes('gyeokhwa')) {
           const hasCurseAbyss = ownedRunes.has('ete_ab_jeoju') || ownedRunes.has('imm_ab_jeoju2');
           if (!hasCurseAbyss && ctx.dragonStatus === 'none') effVal = 0;
         }
         dmgDealSum += effVal;
       } else if (r.cat === 'all_dmg') {
-        // [모든 피해량] (명왕, 명황) -> 독립 곱연산!
+        // [모든 피해량] (명왕, 명황 -> 독립 곱연산!)
         allDmgProduct *= (1 + effVal / 100);
       }
     }
 
-    // 인게임 정식 공식: (1 + 룬공) × (1 + 직업피해) × (1 + 적피증) × (모든피해) × (세트배율)
+    // 인게임 정식 공식: (1 + 룬공합/100) × (1 + 직업피해합/100) × (1 + 적피증합/100) × (모든피해 곱)
     const realAtkMult = 1 + (atkSum / 100);
     const realJobMult = 1 + (jobSum / 100);
     const realDmgDealMult = 1 + (dmgDealSum / 100);
 
-    return realAtkMult * realJobMult * realDmgDealMult * allDmgProduct * pairExtraMult;
+    return realAtkMult * realJobMult * realDmgDealMult * allDmgProduct;
   }
 
   function findBestArmor3(ownedArmor, allowGongmyeongPair = false) {
     if (ownedArmor.length === 0) return { slots: [null, null, null], mult: 1 };
 
     let pool = ownedArmor;
-    if (ownedArmor.length > 15) {
+    if (ownedArmor.length > 18) {
+      // 모든 세트 룬 및 핵심 곱연산 코어는 후보군 압축 시 절대 탈락하지 않도록 보호!
       const mustKeepIds = new Set([
         'imm_ar_star', 'imm_ar_moon', 'imm_ar_sun',
         'imm_ar_myeonghwang', 'imm_ar_mh_scythe', 'imm_ar_mh_orb', 'imm_ar_mh_auth',
         'ete_ar_gongmyeong', 'ete_ar_gongjin', 'ete_ar_myeongwang',
         'ete_ar_sangsaeng3', 'ete_ar_sanggeuk3',
         'anc_ar_mem_top', 'anc_ar_mem_mid', 'anc_ar_mem_bot',
-        'anc_ar_sangsaeng2', 'anc_ar_sanggeuk2'
+        'anc_ar_sangsaeng2', 'anc_ar_sanggeuk2',
+        'imm_ar_yangnal', 'imm_ar_gyeokhwa', 'ete_ar_yangnal', 'ete_ar_gyeokhwa', 'anc_ar_yangnal', 'anc_ar_gyeokhwa',
+        'imm_ar_jeokeung', 'ete_ar_jeokeung'
       ]);
       const fullSetIds = new Set(ownedArmor.map(r => r.id));
 
-      // 4대 파트(atk / job / dmg_deal / all_dmg)별 상위 룬을 고르게 추출하여 누락 방지!
-      const atkTop = ownedArmor.filter(r => r.cat === 'atk').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 5);
-      const jobTop = ownedArmor.filter(r => r.cat === 'job').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 4);
-      const dmgDealTop = ownedArmor.filter(r => r.cat === 'dmg_deal').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 3);
-      const allDmgTop = ownedArmor.filter(r => r.cat === 'all_dmg').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 3);
+      const atkTop = ownedArmor.filter(r => r.cat === 'atk').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 6);
+      const jobTop = ownedArmor.filter(r => r.cat === 'job').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 5);
+      const dmgDealTop = ownedArmor.filter(r => r.cat === 'dmg_deal');
+      const allDmgTop = ownedArmor.filter(r => r.cat === 'all_dmg');
 
       const topSet = new Set([...atkTop, ...jobTop, ...dmgDealTop, ...allDmgTop]);
       ownedArmor.forEach(r => { if (mustKeepIds.has(r.id)) topSet.add(r); });
