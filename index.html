@@ -7185,8 +7185,8 @@
     return rawVal;
   }
 
-  // 🔥 [공략 공식 100% 일치] 방어구 3칸 합연산/곱연산 정밀 평가기
-  // (붉양님 영원룬 공략 5p & 쿠모링님 불멸룬 공략 2p·5p 수식 그대로 적용!)
+  // 🔥 [인게임 공식 100% 일치] 방어구 4대 독립 곱연산 정밀 평가 엔진
+  // [① 룬 공격력(atk)] × [② 직업 피해량(job)] × [③ 적 입히는 피해(dmg_deal: 양날검, 격화)] × [④ 모든 피해량(all_dmg: 명왕, 명황)] × [세트 증폭]
   function evaluateArmorCombo(combo, allOwnedArmor, allowGongmyeongPair = false) {
     const ids = new Set(combo.map(r => r.id));
     const ctx = getUserRuneSpecContext();
@@ -7212,54 +7212,48 @@
       return 11 * 15001;
     }
 
-    // 4. 파트별 합연산 풀: [룬 공격력(atk)] × [강타/스킬/영웅 피해량(job)] × [기타 곱연산(mult)] × [세트 증폭(pairExtraMult)]
     let atkSum = 0;
     let jobSum = 0;
-    let multProduct = 1;
+    let dmgDealSum = 0;
+    let allDmgProduct = 1;
     let pairExtraMult = 1;
 
-   for (let r of combo) {
+    for (let r of combo) {
       if (!r) continue;
       let effVal = getEffectiveRuneValue(r, ids);
       if (effVal <= 0) continue;
-
-      // 🔥 [실전 검증 반영] 불멸 격화는 3상태이상 & 루비 강제 및 영원 룬공 시너지 부재로 인해 영원 명왕보다 후순위로 보정
-      if (r.id === 'anc_ar_gyeokhwa' || r.id === 'ete_ar_gyeokhwa' || r.id === 'imm_ar_gyeokhwa') {
-        const hasCurseAbyss = ownedRunes.has('ete_ab_jeoju') || ownedRunes.has('imm_ab_jeoju2');
-        if (!hasCurseAbyss && ctx.dragonStatus === 'none') effVal = 0;
-        else effVal = effVal * 0.12;
-      }
 
       if (r.cat === 'atk') {
         atkSum += effVal;
         if (r.pair && ids.has(r.pair)) {
           if (r.id === 'ete_ar_gongmyeong' || r.id === 'ete_ar_gongjin') {
-            // 공명 + 공진 세트 (10칸 올 영원 조건 만족 시 영원룬 공격력 총 +2,000,000% = 20,001배!)
-            if (allowGongmyeongPair && r.pairMult) {
-              pairExtraMult = Math.max(pairExtraMult, r.pairMult);
-            }
-          } else {
-            // 상생 II+상극 II (+60,000% = 601배) / 상생 III+상극 III (+120,000% = 1,201배)
-            if (r.pairBonus) {
-              pairExtraMult = Math.max(pairExtraMult, 1 + (r.pairBonus * 2) / 100);
-            }
+            if (allowGongmyeongPair && r.pairMult) pairExtraMult = Math.max(pairExtraMult, r.pairMult);
+          } else if (r.pairBonus) {
+            pairExtraMult = Math.max(pairExtraMult, 1 + (r.pairBonus * 2) / 100);
           }
         }
       } else if (r.cat === 'job') {
         jobSum += effVal;
-      } else if (r.cat === 'mult') {
-        multProduct *= (1 + effVal / 100);
+      } else if (r.cat === 'dmg_deal') {
+        // [적에게 입히는 피해량] (양날검, 격화)
+        // 격화는 3상태이상 조건 미충족 시 미발동
+        if (r.id.includes('gyeokhwa')) {
+          const hasCurseAbyss = ownedRunes.has('ete_ab_jeoju') || ownedRunes.has('imm_ab_jeoju2');
+          if (!hasCurseAbyss && ctx.dragonStatus === 'none') effVal = 0;
+        }
+        dmgDealSum += effVal;
+      } else if (r.cat === 'all_dmg') {
+        // [모든 피해량] (명왕, 명황) -> 독립 곱연산!
+        allDmgProduct *= (1 + effVal / 100);
       }
     }
 
-    // 공략표 공식 그대로: (1 + 룬공합/100) × (1 + 직업피해합/100) × 기타곱연산 × 세트룬공증폭
-    // 예1) 불멸 모험가II 단독: 1 + 2,750,000/100 = 27,501배 (> 불멸 적응 단독 8,251배!)
-    // 예2) 명황(55,001배) + 명황의낫/오브/권세(44,001배) + 중과부적/모험가II(27,501배) = 약 66.5조 배!
-    // 예3) 공명+공진+명왕(올영원): 901 × 20,001 × 1,001 = 약 180.3억 배!
+    // 인게임 정식 공식: (1 + 룬공) × (1 + 직업피해) × (1 + 적피증) × (모든피해) × (세트배율)
     const realAtkMult = 1 + (atkSum / 100);
     const realJobMult = 1 + (jobSum / 100);
+    const realDmgDealMult = 1 + (dmgDealSum / 100);
 
-    return realAtkMult * realJobMult * multProduct * pairExtraMult;
+    return realAtkMult * realJobMult * realDmgDealMult * allDmgProduct * pairExtraMult;
   }
 
   function findBestArmor3(ownedArmor, allowGongmyeongPair = false) {
@@ -7277,12 +7271,13 @@
       ]);
       const fullSetIds = new Set(ownedArmor.map(r => r.id));
 
-      // 각 파트(atk / job / mult)별로 상위 룬을 골고루 뽑아 조합 누락 원천 차단!
+      // 4대 파트(atk / job / dmg_deal / all_dmg)별 상위 룬을 고르게 추출하여 누락 방지!
       const atkTop = ownedArmor.filter(r => r.cat === 'atk').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 5);
       const jobTop = ownedArmor.filter(r => r.cat === 'job').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 4);
-      const multTop = ownedArmor.filter(r => r.cat === 'mult').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 4);
+      const dmgDealTop = ownedArmor.filter(r => r.cat === 'dmg_deal').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 3);
+      const allDmgTop = ownedArmor.filter(r => r.cat === 'all_dmg').sort((a, b) => getEffectiveRuneValue(b, fullSetIds) - getEffectiveRuneValue(a, fullSetIds)).slice(0, 3);
 
-      const topSet = new Set([...atkTop, ...jobTop, ...multTop]);
+      const topSet = new Set([...atkTop, ...jobTop, ...dmgDealTop, ...allDmgTop]);
       ownedArmor.forEach(r => { if (mustKeepIds.has(r.id)) topSet.add(r); });
       pool = Array.from(topSet);
     }
@@ -7309,8 +7304,6 @@
       }
     }
 
-    // 케르베로스 3세트는 총 배율이 100,251,151배(약 1억 배)이므로,
-    // 불멸 룬이나 공명+공진(180억 배), 저격수+심판+명왕(11.2억 배) 등이 없을 때만 작동!
     const hasKerberos = ownedArmor.some(r => r.id === 'ete_ar_kerberos');
     if (hasKerberos) {
       const kerberos3Score = 100251151;
