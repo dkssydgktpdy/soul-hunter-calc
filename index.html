@@ -6,12 +6,34 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-T45D3S1C5N"></script>
 
 <script>
-
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-T45D3S1C5N');
+
+  // ⚡ [타이밍 에러 원천 차단] 이미지가 로드되기 전 <head>에서 폴백 함수를 미리 선언!
+  function handleAvatarError(img) {
+    const fallbacks = ['images/avatar.PNG', 'avatar.PNG', 'images/avatar.png', 'avatar.png', 'images/Avatar.png', 'Avatar.PNG', 'images/avatar.jpg'];
+    let idx = parseInt(img.dataset.retryIdx || '0');
+    if (idx < fallbacks.length) {
+      img.dataset.retryIdx = idx + 1;
+      img.src = fallbacks[idx];
+    } else {
+      img.onerror = null;
+    }
+  }
+
+  function handleSdCharError(img) {
+    const fallbacks = ['images/char.PNG', 'char.PNG', 'images/char.png', 'char.png', 'images/avatar.png', 'avatar.PNG'];
+    let idx = parseInt(img.dataset.retryIdx || '0');
+    if (idx < fallbacks.length) {
+      img.dataset.retryIdx = idx + 1;
+      img.src = fallbacks[idx];
+    } else {
+      img.onerror = null;
+      img.parentElement.innerHTML = '<div style="font-size:64px;">🧙‍♂️</div>';
+    }
+  }
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10162,7 +10184,7 @@
                 <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
                   <img src="images/elem_create.jpg" alt="원소창조" style="width:48px; height:48px; border-radius:10px; border:2px solid #38bdf8; object-fit:cover;" onerror="this.onerror=null; this.src='images/elem_create.png';">
                   <span style="font-size:14px; font-weight:900; color:#fde047;">➕</span>
-                  <img src="images/orb_calc.png" alt="영원오브" style="width:48px; height:48px; border-radius:10px; border:2px solid #a855f7; object-fit:cover; background:#1e293b;" onerror="this.onerror=null; this.src='images/orb.png';">
+                  <img src="images/orb.png" alt="영원오브" style="width:48px; height:48px; border-radius:10px; border:2px solid #a855f7; object-fit:cover; background:#1e293b;" onerror="this.onerror=null; this.src='images/orb.png';">
                 </div>
                 <div style="font-size:12.5px; color:#e2e8f0; line-height:1.6; flex:1; min-width:220px; word-break:keep-all;">
                   • <strong>돌파 1순위 :</strong> 5고패 중 <strong>[원소창조]를 가장 먼저 단독 10돌파</strong> 시킵니다! 10돌파 달성 시 활성화되는 <strong>[열상 / 과부하 / 공포 디버프 효과 증폭 +700%]</strong>를 먼저 켜는 것이 실질 딜 상승 효율 압도적 1위입니다.<br>
@@ -11508,6 +11530,13 @@
   function initAppV330() {
     if (window._v330Initialized) return;
     window._v330Initialized = true;
+
+    // 🛡️ [이중 안전장치] 만약 초기 로딩 중 아바타나 SD캐릭터가 깨졌다면 즉시 복구 실행!
+    const avImg = document.getElementById('main-avatar');
+    if (avImg && avImg.complete && avImg.naturalWidth === 0) handleAvatarError(avImg);
+    const sdImg = document.getElementById('sd_char_img');
+    if (sdImg && sdImg.complete && sdImg.naturalWidth === 0) handleSdCharError(sdImg);
+    // ... (이하 기존 코드 동일)
 
     switchMainMode('helpers');
     setSeasonTheme(getAutoSeasonByMonth());
