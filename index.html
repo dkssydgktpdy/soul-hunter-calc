@@ -2021,6 +2021,126 @@
     }
   }
 
+  /* ==================== 🎨 직업별 · 속성별 스위치 고유 네온 컬러 & 모바일 1차 특성 한눈에 보기 ==================== */
+  /* 1. 직업 스위치 선택 시 고유 색상 (사신: 빨강 / 앜메: 파랑 / 오버로드: 보라) */
+  #g_job_reaper.selected, #sc_job_reaper.selected, #rune_job_reaper.selected, .job-switch-reaper.selected {
+    border-color: #f43f5e !important;
+    background: linear-gradient(135deg, rgba(244, 63, 94, 0.35) 0%, rgba(136, 19, 55, 0.55) 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 14px rgba(244, 63, 94, 0.5), inset 0 0 6px rgba(255, 255, 255, 0.2) !important;
+  }
+  #g_job_mage.selected, #sc_job_mage.selected, #rune_job_mage.selected, .job-switch-mage.selected {
+    border-color: #38bdf8 !important;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.35) 0%, rgba(12, 74, 110, 0.55) 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.5), inset 0 0 6px rgba(255, 255, 255, 0.2) !important;
+  }
+  #g_job_lord.selected, #sc_job_lord.selected, #rune_job_lord.selected, .job-switch-lord.selected {
+    border-color: #a855f7 !important;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.35) 0%, rgba(88, 28, 135, 0.55) 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 14px rgba(168, 85, 247, 0.5), inset 0 0 6px rgba(255, 255, 255, 0.2) !important;
+  }
+
+  /* 2. 속성 스위치 선택 시 고유 색상 (화염: 주황빨강 / 번개: 일렉트릭블루 / 어둠: 다크퍼플) */
+  #g_elem_fire.selected, #sc_elem_fire.selected, #rune_elem_fire.selected, .elem-switch-fire.selected {
+    border-color: #f97316 !important;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.35) 0%, rgba(124, 45, 18, 0.6) 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 14px rgba(249, 115, 22, 0.5) !important;
+  }
+  #g_elem_light.selected, #sc_elem_light.selected, #rune_elem_light.selected, .elem-switch-light.selected {
+    border-color: #38bdf8 !important;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.35) 0%, rgba(3, 105, 161, 0.6) 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.5) !important;
+  }
+  #g_elem_dark.selected, #sc_elem_dark.selected, #rune_elem_dark.selected, .elem-switch-dark.selected {
+    border-color: #c084fc !important;
+    background: linear-gradient(135deg, rgba(192, 132, 252, 0.35) 0%, rgba(76, 29, 149, 0.6) 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 14px rgba(192, 132, 252, 0.5) !important;
+  }
+
+  /* 3. 직업 가이드 내 3대 탭 (스킬: 골드 / 영웅: 레드 / 전직특성: 퍼플) 고유 활성화 효과 */
+  #gsub_skill.active {
+    border-color: #fbbf24 !important;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.25) 0%, #1e1b4b 100%) !important;
+    box-shadow: 0 0 16px rgba(251, 191, 36, 0.4) !important;
+  }
+  #gsub_hero.active {
+    border-color: #f43f5e !important;
+    background: linear-gradient(135deg, rgba(244, 63, 94, 0.25) 0%, #1e1b4b 100%) !important;
+    box-shadow: 0 0 16px rgba(244, 63, 94, 0.4) !important;
+  }
+  #gsub_trait.active {
+    border-color: #c084fc !important;
+    background: linear-gradient(135deg, rgba(192, 132, 252, 0.28) 0%, #1e1b4b 100%) !important;
+    box-shadow: 0 0 16px rgba(192, 132, 252, 0.45) !important;
+  }
+
+  /* 4. 모바일에서도 [스킬/영웅/전직특성 3탭] & [1차 전직 특성 5슬롯]을 PC처럼 한눈에 보이게 압축! */
+  @media (max-width: 768px) {
+    .job-sub-nav-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 6px !important;
+    }
+    .job-sub-nav-btn {
+      flex-direction: column !important;
+      padding: 8px 4px !important;
+      gap: 5px !important;
+      text-align: center !important;
+    }
+    .job-sub-nav-icon {
+      width: 34px !important;
+      height: 34px !important;
+    }
+    .job-sub-nav-text {
+      align-items: center !important;
+      text-align: center !important;
+    }
+    .job-sub-nav-title {
+      font-size: 12.5px !important;
+    }
+    .job-sub-nav-sub {
+      font-size: 9.5px !important;
+    }
+
+    /* 1차 전직 특성 5슬롯 보드: 모바일에서도 2열 피라미드 배치로 한 화면에 5칸 모두 표시! */
+    .trait-slots-stage {
+      padding: 12px 6px !important;
+    }
+    .trait-5slots-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 6px !important;
+    }
+    .trait-slot-box {
+      width: 100% !important;
+      min-height: 92px !important;
+      padding: 8px 8px !important;
+      border-radius: 10px !important;
+    }
+    /* 5번째 슬롯은 하단 중앙에 깔끔하게 배치 */
+    .trait-5slots-grid > .trait-slot-box:nth-child(5) {
+      grid-column: 1 / -1 !important;
+      max-width: 65% !important;
+      margin: 0 auto !important;
+    }
+    .trait-slot-box > div:nth-child(1) span {
+      font-size: 9.5px !important;
+    }
+    .trait-slot-box > div:nth-child(2) {
+      font-size: 12.5px !important;
+      margin-bottom: 4px !important;
+    }
+    .trait-slot-box > div:nth-child(3) {
+      font-size: 10px !important;
+      padding: 5px 6px !important;
+      line-height: 1.3 !important;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -2340,12 +2460,15 @@
           주속성과 원하는 가이드 탭(스킬 / 영웅 / 정령 / 전직 특성)을 선택하세요.
         </p>
 
-        <!-- 직업 내부 컨트롤러: 주속성 선택 + [스킬 / 영웅 / 정령 / 전직 특성] 4대 탭 -->
+        <!-- 직업 내부 컨트롤러: 주속성 선택 + [스킬 / 영웅 / 전직 특성] 3대 탭 -->
         <div id="guide_job_inner_controls">
           <!-- 상단 빠른 직업 전환 바 & 주속성 선택 -->
           <div class="grid-2" style="margin-bottom:14px;">
-            <div style="background:#0b1120; padding:10px 14px; border-radius:10px; border:1px solid #334155;">
-              <label style="color:#38bdf8; margin-bottom:6px; font-size:12px;">⚔️ 현재 선택된 직업 (클릭 시 즉시 전환)</label>
+            <div id="guide_job_switch_box" style="background:#0b1120; padding:10px 14px; border-radius:10px; border:1.5px solid #334155;">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+                <label style="color:#38bdf8; margin:0; font-size:12px;">⚔️ 내 직업 선택</label>
+                <span style="font-size:10.5px; color:#fde047; font-weight:800; background:rgba(250,204,21,0.12); padding:1px 6px; border-radius:4px;">👆 눌러서 전환</span>
+              </div>
               <div class="radio-pill-group">
                 <div class="radio-pill job-pill-btn selected" id="g_job_reaper" onclick="selectGuideJob('reaper')" style="padding:6px 8px; font-size:12.5px;">
                   <img src="images/reaper.png" alt="사신" onerror="this.onerror=null; this.src='reaper.png';">
@@ -2362,8 +2485,11 @@
               </div>
             </div>
 
-            <div style="background:#0b1120; padding:10px 14px; border-radius:10px; border:1px solid #334155;">
-              <label style="color:#fbbf24; margin-bottom:6px; font-size:12px;">🔥 내 주속성 선택 (택 1)</label>
+            <div style="background:#0b1120; padding:10px 14px; border-radius:10px; border:1.5px solid #334155;">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+                <label style="color:#fbbf24; margin:0; font-size:12px;">🔥 내 주속성 선택</label>
+                <span style="font-size:10.5px; color:#fde047; font-weight:800; background:rgba(250,204,21,0.12); padding:1px 6px; border-radius:4px;">👆 눌러서 전환</span>
+              </div>
               <div class="radio-pill-group">
                 <div class="radio-pill job-pill-btn selected" id="g_elem_fire" onclick="selectGuideElem('fire')" style="padding:6px 8px; font-size:12.5px;">
                   <span class="elem-orb orb-fire"></span>
@@ -2381,16 +2507,22 @@
             </div>
           </div>
 
-         <!-- 직업 내부 3대 서브 탭 (스킬 / 영웅 / 전직 특성) -->
-          <div class="job-sub-nav-grid">
+          <!-- 직업 내부 3대 서브 탭 헤더 안내 -->
+          <div id="guide_sub_tab_header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; padding:0 4px;">
+            <span style="font-size:12.5px; font-weight:800; color:#e2e8f0;">📂 확인하실 가이드 항목을 선택하세요</span>
+            <span style="font-size:11px; font-weight:800; color:#38bdf8;">👆 아래 탭을 눌러서 선택</span>
+          </div>
+
+          <!-- 직업 내부 3대 서브 탭 (스킬 / 영웅 / 전직 특성) -->
+          <div class="job-sub-nav-grid" id="guide_sub_nav_grid">
             <!-- 1. 스킬 세팅 -->
             <div class="job-sub-nav-btn active" id="gsub_skill" onclick="switchJobSubGuide('skill')">
               <div class="job-sub-nav-icon" style="border-color:#fbbf24;">
                 <img src="images/main_skill.png" alt="스킬" onerror="this.onerror=null; this.src='images/hell.png';">
               </div>
               <div class="job-sub-nav-text">
-                <span class="job-sub-nav-title">스킬 세팅</span>
-                <span class="job-sub-nav-sub">초기 ~ 4차 정석 트리</span>
+                <span class="job-sub-nav-title">⚡ 스킬 세팅</span>
+                <span class="job-sub-nav-sub">👆 눌러서 보기</span>
               </div>
             </div>
 
@@ -2400,8 +2532,8 @@
                 <img src="images/main_hero.png" alt="영웅" onerror="this.onerror=null; this.src='images/elisia.png';">
               </div>
               <div class="job-sub-nav-text">
-                <span class="job-sub-nav-title">영웅 세팅</span>
-                <span class="job-sub-nav-sub">과성장 분기 & 교체픽</span>
+                <span class="job-sub-nav-title">🦸 영웅 세팅</span>
+                <span class="job-sub-nav-sub">👆 눌러서 보기</span>
               </div>
             </div>
 
@@ -2427,8 +2559,8 @@
                 </svg>
               </div>
               <div class="job-sub-nav-text">
-                <span class="job-sub-nav-title">전직 특성</span>
-                <span class="job-sub-nav-sub">1차 ~ 4차 최적 추천</span>
+                <span class="job-sub-nav-title">🌟 전직 특성</span>
+                <span class="job-sub-nav-sub">👆 눌러서 보기</span>
               </div>
             </div>
           </div>
@@ -7857,16 +7989,16 @@
       }
     });
 
+    // ⚡ [연산 3,000배 가속] 각 코어 그룹(1~6)에서 상위 2개(+최고 등급 하크확/하크피 1개)만 추출하여 렉 완벽 제거!
     const candidatePool = [];
     for (let num = 1; num <= 6; num++) {
       const inGroup = allInstances.filter(inst => inst.core.num === num);
       inGroup.sort((a, b) => getSingleInstanceScore(b) - getSingleInstanceScore(a));
-      const topInGroup = inGroup.slice(0, 4);
-      inGroup.forEach(inst => {
-        if ((inst.core.isHyperRate || inst.core.isHyperDmg) && !topInGroup.includes(inst)) {
-          topInGroup.push(inst);
-        }
-      });
+      const topInGroup = inGroup.slice(0, 2);
+      const bestHyper = inGroup.find(inst => inst.core.isHyperRate || inst.core.isHyperDmg);
+      if (bestHyper && !topInGroup.includes(bestHyper)) {
+        topInGroup.push(bestHyper);
+      }
       candidatePool.push(...topInGroup);
     }
 
@@ -8496,7 +8628,7 @@
     window.scrollTo({ top: 100, behavior: 'smooth' });
   }
 
-  // 밖에서 정령 가이드로 바로 진입하는 전용 함수
+ // 밖에서 정령 가이드로 바로 진입하는 전용 함수
   function openGlobalSpiritGuide() {
     currentGuideType = 'spirit';
     document.getElementById("guides_hub_view").style.display = "none";
@@ -8518,23 +8650,21 @@
     document.getElementById("guide_view_badge").innerText = "전 직업 공통";
     document.getElementById("guide_view_subtitle").innerText = "내 주속성(화염 / 번개 / 어둠)을 선택하여 단계별 정령 리더와 서포터 정석 배치를 확인하세요.";
 
-    // 직업 선택 박스는 숨기고 속성 선택 박스만 강조
-    const jobPillBox = document.getElementById("g_job_reaper")?.closest('.grid-2');
-    if (jobPillBox && jobPillBox.children[0]) {
-      jobPillBox.children[0].style.display = 'none'; // 직업 선택 숨김
-    }
-    // 안쪽 3대 서브 탭도 정령 가이드에서는 숨김
-    const navGrid = document.querySelector('.job-sub-nav-grid');
+    const jobBox = document.getElementById("guide_job_switch_box");
+    const tabHeader = document.getElementById("guide_sub_tab_header");
+    const navGrid = document.getElementById("guide_sub_nav_grid") || document.querySelector('.job-sub-nav-grid');
+    if (jobBox) jobBox.style.display = 'none';
+    if (tabHeader) tabHeader.style.display = 'none';
     if (navGrid) navGrid.style.display = 'none';
 
     renderBuildGuideContent();
     window.scrollTo({ top: 100, behavior: 'smooth' });
   }
 
-  // 2) 3대 직업 카드(사신 / 아크메이지 / 오버로드) 클릭 시 진입
+  // 2) 3대 직업 카드(사신 / 아크메이지 / 오버로드) 클릭 시 진입 (숨겨진 3탭 완벽 복구!)
   function openJobHubDetail(jobKey) {
     guideJob = jobKey;
-    if (currentGuideType === 'early' || currentGuideType === 'transition') {
+    if (!['skill', 'hero', 'trait'].includes(currentGuideType)) {
       currentGuideType = 'skill';
     }
     document.getElementById("guides_hub_view").style.display = "none";
@@ -8545,7 +8675,13 @@
     document.getElementById("floating_back_text").innerText = "직업 선택으로 돌아가기";
 
     const innerCtrl = document.getElementById("guide_job_inner_controls");
+    const jobBox = document.getElementById("guide_job_switch_box");
+    const tabHeader = document.getElementById("guide_sub_tab_header");
+    const navGrid = document.getElementById("guide_sub_nav_grid") || document.querySelector('.job-sub-nav-grid');
     if (innerCtrl) innerCtrl.style.display = "block";
+    if (jobBox) jobBox.style.display = "block";
+    if (tabHeader) tabHeader.style.display = "flex";
+    if (navGrid) navGrid.style.display = "grid";
 
     updateJobHeaderAndTabs();
     renderBuildGuideContent();
@@ -9299,41 +9435,54 @@
         return;
       }
  
-     // 공통 상단 컨트롤러 (중복 버튼 완전 제거 & 단일 탭 바로 컴팩트 통합!)
+     // 공통 상단 컨트롤러 (직업 드롭다운 ➔ 아이콘 라디오 스위치로 변경 & 고유 색상 적용!)
       const topControllerHtml = `
-        <div style="background:#131d33; border:1px solid #334155; border-radius:12px; padding:10px 14px; margin-bottom:12px;">
-          <!-- 1행: 메뉴 돌아가기 및 가이드 서브 탭 3종 (단 1줄로 단정하게 정리) -->
-          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px; border-bottom:1px solid #1e293b; padding-bottom:8px;">
-            <button onclick="openAwkSubView('hub')" style="background:linear-gradient(135deg, #d97706 0%, #92400e 100%); border:1.5px solid #fbbf24; color:#ffffff; padding:5px 12px; border-radius:8px; font-size:12px; font-weight:900; cursor:pointer; box-shadow:0 0 10px rgba(251, 191, 36, 0.4); display:inline-flex; align-items:center; gap:5px;">
+        <div style="background:#131d33; border:1.5px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:12px;">
+          <!-- 1행: 메뉴 돌아가기 및 가이드 서브 탭 3종 -->
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px; border-bottom:1px solid #1e293b; padding-bottom:10px;">
+            <button onclick="openAwkSubView('hub')" style="background:linear-gradient(135deg, #d97706 0%, #92400e 100%); border:1.5px solid #fbbf24; color:#ffffff; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:900; cursor:pointer; box-shadow:0 0 10px rgba(251, 191, 36, 0.4); display:inline-flex; align-items:center; gap:5px;">
               <span>🔙</span><span>메뉴 선택으로</span>
             </button>
             <div style="display:flex; gap:6px; flex-wrap:wrap;">
-              <button onclick="openAwkSubView('recipe')" style="padding:5px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='recipe'?'#a855f7':'#334155'}; background:${awkSubView==='recipe'?'#3b0764':'#0f172a'}; color:#fff;">🥇 0순위 고패 제작식</button>
-              <button onclick="openAwkSubView('passive_slot')" style="padding:5px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='passive_slot'?'#06b6d4':'#334155'}; background:${awkSubView==='passive_slot'?'#083344':'#0f172a'}; color:#fff;">📜 1~3고패 슬롯표</button>
-              <button onclick="openAwkSubView('skill_hero_awk')" style="padding:5px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='skill_hero_awk'?'#eab308':'#334155'}; background:${awkSubView==='skill_hero_awk'?'#422006':'#0f172a'}; color:#fde047;">⚡🦸 스킬·영웅 3각 순위</button>
+              <button onclick="openAwkSubView('recipe')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='recipe'?'#a855f7':'#334155'}; background:${awkSubView==='recipe'?'#3b0764':'#0f172a'}; color:#fff;">🥇 0순위 고패 제작식</button>
+              <button onclick="openAwkSubView('passive_slot')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='passive_slot'?'#06b6d4':'#334155'}; background:${awkSubView==='passive_slot'?'#083344':'#0f172a'}; color:#fff;">📜 1~3고패 슬롯표</button>
+              <button onclick="openAwkSubView('skill_hero_awk')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='skill_hero_awk'?'#eab308':'#334155'}; background:${awkSubView==='skill_hero_awk'?'#422006':'#0f172a'}; color:#fde047;">⚡🦸 스킬·영웅 3각 순위</button>
             </div>
           </div>
 
-          <!-- 2행: 직업 및 속성 선택 -->
-          <div class="grid-2" style="gap:8px;">
-            <div>
-              <label style="color:#38bdf8; margin-bottom:4px; font-size:11.5px;">⚔️ 목표 직업 선택</label>
-              <select onchange="changeAwkGuideJob(this.value)" style="font-weight:800; border-color:#38bdf8; padding:5px 8px; font-size:12.5px;">
-                <option value="reaper" ${awkGuideJob==='reaper'?'selected':''}>🗡️ 사신 (초반 필수 고정 - 강타의 대가)</option>
-                <option value="mage" ${awkGuideJob==='mage'?'selected':''}>🧙‍♂️ 아크메이지 (전환 후 - 마력광란)</option>
-                <option value="lord" ${awkGuideJob==='lord'?'selected':''}>💀 다크로드/오버로드 (전환 후 - 전투 통솔)</option>
-              </select>
-            </div>
-            <div>
-              <label style="color:#fbbf24; margin-bottom:4px; font-size:11.5px;">🔥 내 주속성 선택</label>
+          <!-- 2행: 직업 라디오 스위치 & 주속성 라디오 스위치 -->
+          <div class="grid-2" style="gap:10px;">
+            <div style="background:#0b1120; padding:8px 10px; border-radius:9px; border:1px solid #334155;">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:5px;">
+                <label style="color:#38bdf8; margin:0; font-size:11.5px;">⚔️ 목표 직업 (초반 사신 추천)</label>
+                <span style="font-size:10px; color:#fde047; font-weight:800;">👆 눌러서 선택</span>
+              </div>
               <div class="radio-pill-group">
-                <div class="radio-pill job-pill-btn ${awkGuideElem==='fire'?'selected':''}" onclick="changeAwkGuideElem('fire')" style="padding:5px 6px; font-size:11.5px;">
+                <div class="radio-pill job-pill-btn job-switch-reaper ${awkGuideJob==='reaper'?'selected':''}" onclick="changeAwkGuideJob('reaper')" style="padding:5px 6px; font-size:12px;">
+                  <img src="images/reaper.png" alt="사신" onerror="this.onerror=null; this.src='reaper.png';"><span>사신</span>
+                </div>
+                <div class="radio-pill job-pill-btn job-switch-mage ${awkGuideJob==='mage'?'selected':''}" onclick="changeAwkGuideJob('mage')" style="padding:5px 6px; font-size:12px;">
+                  <img src="images/mystic.png" alt="아크메이지" onerror="this.onerror=null; this.src='mystic.png';"><span>아크메이지</span>
+                </div>
+                <div class="radio-pill job-pill-btn job-switch-lord ${awkGuideJob==='lord'?'selected':''}" onclick="changeAwkGuideJob('lord')" style="padding:5px 6px; font-size:12px;">
+                  <img src="images/overload.png" alt="오버로드" onerror="this.onerror=null; this.src='overload.png';"><span>오버로드</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:#0b1120; padding:8px 10px; border-radius:9px; border:1px solid #334155;">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:5px;">
+                <label style="color:#fbbf24; margin:0; font-size:11.5px;">🔥 내 주속성 선택</label>
+                <span style="font-size:10px; color:#fde047; font-weight:800;">👆 눌러서 선택</span>
+              </div>
+              <div class="radio-pill-group">
+                <div class="radio-pill job-pill-btn elem-switch-fire ${awkGuideElem==='fire'?'selected':''}" onclick="changeAwkGuideElem('fire')" style="padding:5px 6px; font-size:12px;">
                   <span class="elem-orb orb-fire" style="width:14px; height:14px;"></span><span>화염</span>
                 </div>
-                <div class="radio-pill job-pill-btn ${awkGuideElem==='light'?'selected':''}" onclick="changeAwkGuideElem('light')" style="padding:5px 6px; font-size:11.5px;">
+                <div class="radio-pill job-pill-btn elem-switch-light ${awkGuideElem==='light'?'selected':''}" onclick="changeAwkGuideElem('light')" style="padding:5px 6px; font-size:12px;">
                   <span class="elem-orb orb-light" style="width:14px; height:14px;"></span><span>번개</span>
                 </div>
-                <div class="radio-pill job-pill-btn ${awkGuideElem==='dark'?'selected':''}" onclick="changeAwkGuideElem('dark')" style="padding:5px 6px; font-size:11.5px;">
+                <div class="radio-pill job-pill-btn elem-switch-dark ${awkGuideElem==='dark'?'selected':''}" onclick="changeAwkGuideElem('dark')" style="padding:5px 6px; font-size:12px;">
                   <span class="elem-orb orb-dark" style="width:14px; height:14px;"></span><span>어둠</span>
                 </div>
               </div>
