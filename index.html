@@ -2081,6 +2081,56 @@
     footer { padding-bottom: 80px !important; }
   }
 
+  /* ==================== ✨ 선택 컨트롤러 & 탭 경계선 가시성 대폭 강화 ==================== */
+  /* 1. 직업 / 속성 선택 컨트롤 박스 테두리 강조 */
+  #guide_job_switch_box,
+  #guide_job_inner_controls .grid-2 > div {
+    background: linear-gradient(145deg, #162238 0%, #0b1120 100%) !important;
+    border: 2px solid #475569 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  }
+  /* 선택 안 된 기본 스위치 버튼도 경계선이 잘 보이도록 밝기 상향 */
+  .job-pill-btn, .radio-pill {
+    background: #1e293b !important;
+    border: 1.5px solid #64748b !important;
+    color: #e2e8f0 !important;
+  }
+  .job-pill-btn:hover, .radio-pill:hover {
+    border-color: #94a3b8 !important;
+    background: #26354d !important;
+  }
+
+  /* 2. '확인하실 가이드 항목 선택' (스킬 / 영웅 / 전직특성 3대 탭) 가시성 강화 */
+  #guide_sub_tab_header {
+    background: rgba(56, 189, 248, 0.12);
+    border: 1.5px solid rgba(56, 189, 248, 0.45);
+    border-radius: 10px;
+    padding: 8px 14px !important;
+    margin-bottom: 10px !important;
+  }
+  .job-sub-nav-btn {
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%) !important;
+    border: 2px solid #64748b !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  }
+  .job-sub-nav-btn:not(.active):hover {
+    border-color: #cbd5e1 !important;
+    transform: translateY(-2px);
+  }
+
+  /* 3. 룬 / 소울커넥트 등급 탭 바 경계선 강조 */
+  .rune-tier-tabs, .connect-tier-tabs {
+    background: #131d33 !important;
+    border: 2px solid #475569 !important;
+    padding: 7px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+  }
+  .rune-tier-tab, .connect-tier-tab {
+    border: 1px solid #334155;
+    background: rgba(15, 23, 42, 0.6);
+    color: #cbd5e1;
+  }
+
 </style>
 </head>
 <body>
@@ -2954,13 +3004,17 @@
             </div>
 
             <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
-              <label style="color:#fbbf24; margin-bottom:8px;">💎 연마 사용 재화 선택 (다이아는 돌의 1,000배)</label>
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                <label style="color:#fbbf24; margin:0;">💎 연마 재화 기준 선택 (버튼 클릭 시 수치 전환)</label>
+                <span style="font-size:10.5px; color:#fde047; font-weight:800;">👆 눌러서 선택</span>
+              </div>
               <div class="radio-pill-group">
-                <div class="radio-pill job-pill-btn elem-switch-light selected" id="ref_res_stone" onclick="selectRefineResource('stone')" style="padding:7px 10px; font-size:13px;">
-                  <span>🪨 영원의 돌 (기본)</span>
+                <div class="radio-pill job-pill-btn elem-switch-light selected" id="ref_res_stone" onclick="selectRefineResource('stone')" style="padding:8px 10px; font-size:13px;">
+                  <img src="images/eternity_stone.png" alt="영원의 돌" style="width:20px; height:20px; object-fit:contain;" onerror="this.onerror=null; this.src='images/eternity_stone.PNG'; this.onerror=function(){this.style.display='none';};">
+                  <span>영원의 돌로 하기</span>
                 </div>
-                <div class="radio-pill job-pill-btn elem-switch-dark" id="ref_res_dia" onclick="selectRefineResource('dia')" style="padding:7px 10px; font-size:13px;">
-                  <span>💎 블루 다이아 (×1,000)</span>
+                <div class="radio-pill job-pill-btn elem-switch-dark" id="ref_res_dia" onclick="selectRefineResource('dia')" style="padding:8px 10px; font-size:13px;">
+                  <span>💎 블루 다이아로 하기 (×1,000)</span>
                 </div>
               </div>
             </div>
@@ -4987,12 +5041,16 @@
     const resKr = currentRefineRes === 'stone' ? '영원의 돌' : '블루 다이아';
     const mult = (currentRefineRes === 'dia' ? 1000 : 1) * (safeMode ? 2 : 1);
 
+    const stoneIconHtml = currentRefineRes === 'stone'
+      ? `<img src="images/eternity_stone.png" alt="영원의돌" style="width:16px; height:16px; vertical-align:middle; margin-right:4px; object-fit:contain;" onerror="this.onerror=null; this.src='images/eternity_stone.PNG'; this.onerror=function(){this.style.display='none';};">`
+      : `💎 `;
+
     const titleEl = document.getElementById("ref_table_header_title");
     const badgeEl = document.getElementById("ref_table_badge");
     const colEl = document.getElementById("ref_table_col_cost");
     if (titleEl) titleEl.innerText = `📊 [${eqKr}] 연마 단계별 공식 확률 & 소모 재화표`;
     if (badgeEl) badgeEl.innerText = `${resKr} 기준 ${safeMode ? '(하락방지 ×2배 반영)' : '(일반 1배)'}`;
-    if (colEl) colEl.innerText = `1회 소모 ${resKr}`;
+    if (colEl) colEl.innerHTML = `1회 소모 ${resKr}`;
 
     const costMap = REFINE_STONE_COSTS[currentRefineEquip] || {};
     tbody.innerHTML = "";
@@ -5006,7 +5064,7 @@
       let costHtml = `<span style="color:#64748b; font-size:12px;">데이터 수집 중 🔒</span>`;
       if (baseCost !== undefined) {
         const finalCost = baseCost * mult;
-        costHtml = `<strong style="color:${currentRefineRes==='dia'?'#38bdf8':'#fde047'};">${formatKoreanNumber(finalCost)}개</strong> <small style="color:#94a3b8;">(${finalCost.toLocaleString()})</small>`;
+        costHtml = `${stoneIconHtml}<strong style="color:${currentRefineRes==='dia'?'#38bdf8':'#fde047'};">${formatKoreanNumber(finalCost)}개</strong> <small style="color:#94a3b8;">(${finalCost.toLocaleString()})</small>`;
       }
 
       tbody.innerHTML += `
@@ -5028,7 +5086,10 @@
     const safeMode = document.getElementById("ref_safe_mode").checked;
 
     const eqKr = currentRefineEquip === 'scythe' ? '영원 대낫' : (currentRefineEquip === 'orb' ? '영원 오브' : '영원 장식');
-    const resKr = currentRefineRes === 'stone' ? '🪨 영원의 돌' : '💎 블루 다이아';
+    const resIconHtml = currentRefineRes === 'stone'
+      ? `<img src="images/eternity_stone.png" alt="영원의돌" style="width:24px; height:24px; vertical-align:middle; margin-right:5px; object-fit:contain;" onerror="this.onerror=null; this.src='images/eternity_stone.PNG'; this.onerror=function(){this.style.display='none';};">영원의 돌`
+      : `💎 블루 다이아`;
+
     const dashTitle = document.getElementById("ref_dash_title");
     if (dashTitle) dashTitle.innerText = `[${eqKr}] Lv.${cur} ➔ Lv.${tar} 평균 연마 기댓값`;
 
@@ -5037,14 +5098,14 @@
     if (tar <= cur) {
       document.getElementById("ref_expected_trials").innerText = "0회";
       document.getElementById("ref_prob_range").innerText = "-";
-      if (costBox) costBox.innerHTML = `<span style="color:#94a3b8;">목표 단계를 현재 단계보다 높게 설정하세요.</span>`;
+      if (costBox) costBox.innerHTML = `<span style="color:#94a3b8; font-size:15px;">목표 단계를 현재 단계보다 높게 설정하세요.</span>`;
       return;
     }
 
     const costMap = REFINE_STONE_COSTS[currentRefineEquip] || {};
     const resMult = (currentRefineRes === 'dia' ? 1000 : 1) * (safeMode ? 2 : 1);
 
-    // 마르코프 연쇄: U[i] = i ➔ i+1 달성까지 필요한 평균 시도 횟수, C[i] = i ➔ i+1 달성까지 필요한 평균 소모 재화
+    // 마르코프 연쇄 계산 및 선택 구간 내 미수집 단계 체크
     let U = new Array(tar).fill(0);
     let C = new Array(tar).fill(0);
     let missingSteps = [];
@@ -5059,9 +5120,13 @@
         C[i] = stepCost !== null ? (stepCost / s) : 0;
       } else {
         U[i] = (1.0 + d * U[i - 1]) / s;
-        C[i] = stepCost !== null ? ((stepCost + d * C[i - 1]) / s) : (d * C[i - 1]) / s;
+        C[i] = stepCost !== null ? ((stepCost + d * C[i - 1]) / s) : 0;
       }
+
+      // 선택한 구간(cur ~ tar-1) 중 데이터가 없거나, 하락방지 OFF일 때 연쇄하락으로 내려갈 수 있는 하위 단계 데이터가 없으면 미수집 처리
       if (i >= cur && stepCost === null) {
+        missingSteps.push(`${i}➔${i+1}`);
+      } else if (!safeMode && i >= 10 && i < cur && stepCost === null && tar > 11) {
         missingSteps.push(`${i}➔${i+1}`);
       }
     }
@@ -5087,16 +5152,26 @@
     document.getElementById("ref_expected_trials").innerText = Math.round(expectedTrials).toLocaleString() + "회";
     document.getElementById("ref_prob_range").innerText = `${minProb}% ~ ${maxProb}%`;
 
+    // 🔥 [요청사항 완벽 반영] 미수집 구간이 1개라도 끼어 있으면 수치를 아예 숨기고 '데이터 수집 중(계산 불가)' 표시!
     if (costBox) {
-      if (missingSteps.length === (tar - cur)) {
-        costBox.innerHTML = `<span style="color:#94a3b8; font-size:16px;">🔒 선택한 구간(${cur}➔${tar})의 소모 재화 데이터 수집 중</span>`;
-      } else if (missingSteps.length > 0) {
+      if (missingSteps.length > 0) {
         costBox.innerHTML = `
-          <div>예상 소모 ${resKr}: <span style="color:#ffffff;">약 ${formatKoreanNumber(Math.round(expectedCost))}개</span> <small style="font-size:13px; color:#cbd5e1;">(확인 구간 합산)</small></div>
-          <div style="font-size:12px; color:#f87171; font-weight:700; margin-top:3px;">⚠️ 미수집 구간(${missingSteps.join(', ')}강)은 제외된 수치입니다 🔒</div>
+          <div style="background:rgba(15,23,42,0.75); border:1px dashed #64748b; border-radius:10px; padding:10px 14px; display:inline-block;">
+            <div style="font-size:15px; color:#f87171; font-weight:800;">🔒 데이터 수집 중으로 재화 계산 불가</div>
+            <div style="font-size:12px; color:#cbd5e1; font-weight:normal; margin-top:3px;">
+              선택한 구간 내 미확인 단계(<strong>${missingSteps.join(', ')}강</strong>)가 포함되어 있습니다.<br>
+              확인 완료된 구간(예: 대낫 9➔18 / 오브 10➔18 / 장식 0➔9, 12➔16)을 선택하시면 정확한 수치가 표시됩니다!
+            </div>
+          </div>
         `;
       } else {
-        costBox.innerHTML = `예상 소모 ${resKr}: <span style="color:#ffffff;">약 ${formatKoreanNumber(Math.round(expectedCost))}개</span> <small style="font-size:14px; color:#cbd5e1;">(${Math.round(expectedCost).toLocaleString()}개)</small>`;
+        costBox.innerHTML = `
+          <div style="display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap;">
+            <span>예상 소모 ${resIconHtml} :</span>
+            <span style="color:#ffffff; font-size:22px;">약 ${formatKoreanNumber(Math.round(expectedCost))}개</span>
+            <small style="font-size:14px; color:#cbd5e1;">(${Math.round(expectedCost).toLocaleString()}개)</small>
+          </div>
+        `;
       }
     }
   }
@@ -8629,7 +8704,13 @@
   // 각성 우선순위 & 패시브 가이드 전용 상태 변수
   let awkGuideJob = 'reaper';
   let awkGuideElem = 'fire';
-  let awkSubView = 'hub'; // 'hub' (배너 선택 화면) | 'recipe' (0순위 고패 조합식) | 'passive_slot' (패시브 장착 세팅 도우미)
+  let awkSubView = 'hub';
+  let awkSlotReaperPre80 = true; // true: 1차 80전·마폭 저각성(폭발준비3각 착용) | false: 1차 80후·마폭 고각성(마력폭주 착용)
+
+  function toggleAwkSlotReaperMode(isPre80) {
+    awkSlotReaperPre80 = Boolean(isPre80);
+    renderBuildGuideContent();
+  }
 
   function openAwkSubView(viewName) {
     awkSubView = viewName;
@@ -9487,6 +9568,23 @@
               <div class="hub-card-arrow" style="color:#fde047; font-weight:900;">보러가기 ➔</div>
             </div>
 
+            <!-- 배너 4: [심화 공략] 5고패 완성 & 돌파·각성 순서 (신규 추가!) -->
+            <div class="hub-card" onclick="openAwkSubView('endgame_5anc')" style="border:2px solid #f43f5e; background:linear-gradient(135deg, rgba(244,63,94,0.18) 0%, #0f172a 100%); padding:16px 18px; box-shadow:0 4px 16px rgba(244,63,94,0.18);">
+              <div class="hub-card-left" style="gap:14px;">
+                <div class="hub-card-icon" style="width:48px; height:48px; border-color:#fb7185; background:#4c0519;">
+                  <img src="images/ancient_mem.jpg" alt="5고패" onerror="this.onerror=null; this.src='images/elem_create.jpg'; this.onerror=function(){this.parentElement.innerHTML='👑';};">
+                </div>
+                <div>
+                  <div style="display:flex; align-items:center; gap:6px; margin-bottom:3px;">
+                    <span class="grade-badge grade-mythic" style="font-size:11px;">엔드 스펙 심화</span>
+                    <span class="hub-card-title" style="font-size:16px; margin:0;">👑 [심화 공략] 5고패 완성 & 돌파·각성 최적화 순서</span>
+                  </div>
+                  <span class="hub-card-desc" style="color:#cbd5e1;">왜 초중반엔 3고패에서 멈춰야 할까? 졸업 유저를 위한 [원소창조 10돌 ➔ 3·6·9 균등 돌파 ➔ 고대의 기억 각성] 정석 로드맵</span>
+                </div>
+              </div>
+              <div class="hub-card-arrow" style="color:#fb7185; font-weight:900;">보러가기 ➔</div>
+            </div>
+
           </div>
         `;
         return;
@@ -9501,9 +9599,10 @@
               <span>🔙</span><span>메뉴 선택으로</span>
             </button>
             <div style="display:flex; gap:6px; flex-wrap:wrap;">
-              <button onclick="openAwkSubView('recipe')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='recipe'?'#a855f7':'#334155'}; background:${awkSubView==='recipe'?'#3b0764':'#0f172a'}; color:#fff;">🥇 0순위 고패 제작식</button>
-              <button onclick="openAwkSubView('passive_slot')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='passive_slot'?'#06b6d4':'#334155'}; background:${awkSubView==='passive_slot'?'#083344':'#0f172a'}; color:#fff;">📜 1~3고패 슬롯표</button>
-              <button onclick="openAwkSubView('skill_hero_awk')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='skill_hero_awk'?'#eab308':'#334155'}; background:${awkSubView==='skill_hero_awk'?'#422006':'#0f172a'}; color:#fde047;">⚡🦸 스킬·영웅 3각 순위</button>
+              <button onclick="openAwkSubView('recipe')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='recipe'?'#a855f7':'#475569'}; background:${awkSubView==='recipe'?'#3b0764':'#0f172a'}; color:#fff;">🥇 0순위 고패 제작식</button>
+              <button onclick="openAwkSubView('passive_slot')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='passive_slot'?'#06b6d4':'#475569'}; background:${awkSubView==='passive_slot'?'#083344':'#0f172a'}; color:#fff;">📜 1~3고패 슬롯표</button>
+              <button onclick="openAwkSubView('skill_hero_awk')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='skill_hero_awk'?'#eab308':'#475569'}; background:${awkSubView==='skill_hero_awk'?'#422006':'#0f172a'}; color:#fde047;">⚡🦸 스킬·영웅 3각 순위</button>
+              <button onclick="openAwkSubView('endgame_5anc')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='endgame_5anc'?'#f43f5e':'#475569'}; background:${awkSubView==='endgame_5anc'?'#881337':'#0f172a'}; color:#fda4af;">👑 심화: 5고패 순서</button>
             </div>
           </div>
 
@@ -9544,6 +9643,8 @@
                 </div>
               </div>
             </div>
+
+            
           </div>
         </div>
       `;
@@ -9650,13 +9751,13 @@
         return;
       }
 
-      // [화면 C] 📜 패시브 세팅 도우미 (1고패 ➔ 2고패 ➔ 3고패 달성별 5슬롯 편성 & 교체 가이드)
+      // [화면 C] 📜 패시브 세팅 도우미 (사신 1차 80전/후 폭발준비 vs 마력폭주 이미지 전환 & 80렙 쾌속 돌파 안내 탑재!)
       if (awkSubView === 'passive_slot') {
         function makePassiveSlotMini(pName, pImg, tagTxt, tagBg, borderCol) {
           return `
             <div class="build-slot-item" style="border-color:${borderCol}; padding:8px 6px;">
               <span class="build-slot-tag" style="background:${tagBg}; color:#fff;">${tagTxt}</span>
-              <div class="build-slot-thumb" style="width:40px; height:40px; border-color:${borderCol};">
+              <div class="build-slot-thumb" style="width:42px; height:42px; border-color:${borderCol};">
                 <img src="images/${pImg}.jpg" alt="${pName}" onerror="this.onerror=null; this.src='images/${pImg}.png';">
               </div>
               <div class="build-slot-name" style="font-size:12px;">${pName}</div>
@@ -9665,13 +9766,52 @@
         }
 
         let slot4_1Anc, slot5_1Anc, slot5_2Anc, outName2Anc, outName3Anc;
+        let reaper2AncSwitchHtml = '';
 
         if (awkGuideJob === 'reaper') {
           slot4_1Anc = makePassiveSlotMini("마력폭주", "mana_surge", "변환 시너지", "#7e22ce", "#a855f7");
           slot5_1Anc = makePassiveSlotMini("폭발준비 or 전술가속", "blast_ready", "비석비교 택1", "#ca8a04", "#eab308");
-          slot5_2Anc = makePassiveSlotMini("마력폭주", "mana_surge", "변환 유지!", "#7e22ce", "#a855f7");
-          outName2Anc = "전술가속/폭발준비 OUT";
-          outName3Anc = "마력폭주 OUT";
+
+          // 사신 2고패: 1차 80렙 이전(폭발준비 3각 이미지) vs 1차 80렙 이후(마력폭주 이미지) 실시간 전환!
+          if (awkSlotReaperPre80) {
+            slot5_2Anc = makePassiveSlotMini("폭발준비 (3각)", "blast_ready", "80전·3각우위!", "#ca8a04", "#eab308");
+            outName2Anc = "전술가속/마력폭주(저각) OUT";
+            outName3Anc = "폭발준비 OUT";
+          } else {
+            slot5_2Anc = makePassiveSlotMini("마력폭주 (고각)", "mana_surge", "80후·스피세트!", "#7e22ce", "#a855f7");
+            outName2Anc = "전술가속/폭발준비 OUT";
+            outName3Anc = "마력폭주 OUT";
+          }
+
+          reaper2AncSwitchHtml = `
+            <div style="background:#131d33; border:1.5px solid #f59e0b; border-radius:10px; padding:10px 12px; margin-bottom:10px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+                <span style="font-size:12.5px; font-weight:900; color:#fde047;">⚔️ [사신 2고패 조건 선택] 내 1차 전직 레벨 & 마력폭주 각성 상태 클릭</span>
+                <span style="font-size:10.5px; color:#38bdf8; font-weight:800;">👆 누르면 아래 5번째 슬롯 이미지가 바뀝니다</span>
+              </div>
+              <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap:8px;">
+                <button onclick="toggleAwkSlotReaperMode(true)" style="padding:8px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSlotReaperPre80?'#fbbf24':'#334155'}; background:${awkSlotReaperPre80?'linear-gradient(135deg, #b45309 0%, #78350f 100%)':'#0f172a'}; color:#ffffff; display:flex; align-items:center; justify-content:center; gap:6px;">
+                  <img src="images/blast_ready.jpg" style="width:22px; height:22px; border-radius:4px; object-fit:cover;" onerror="this.onerror=null; this.src='images/blast_ready.png';">
+                  <span>1차 80렙 이전 · 마폭 저각성 (폭발준비 3각 착용)</span>
+                </button>
+                <button onclick="toggleAwkSlotReaperMode(false)" style="padding:8px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${!awkSlotReaperPre80?'#a855f7':'#334155'}; background:${!awkSlotReaperPre80?'linear-gradient(135deg, #7e22ce 0%, #3b0764 100%)':'#0f172a'}; color:#ffffff; display:flex; align-items:center; justify-content:center; gap:6px;">
+                  <img src="images/mana_surge.jpg" style="width:22px; height:22px; border-radius:4px; object-fit:cover;" onerror="this.onerror=null; this.src='images/mana_surge.png';">
+                  <span>1차 80렙 달성 · 마폭 고각성 (마력폭주 세트 착용)</span>
+                </button>
+              </div>
+              ${awkSlotReaperPre80 ? `
+                <div style="margin-top:8px; background:rgba(239,68,68,0.14); border:1px solid #ef4444; border-radius:8px; padding:8px 12px; font-size:12px; color:#fecdd3; line-height:1.55;">
+                  🚨 <strong>[1차 80렙 이전 + 2고패 과도기 주의!] 빨리 1차 80레벨과 3고패로 넘어가세요!</strong><br>
+                  <span style="color:#ffffff;">1차 80레벨 전에는 특성 슬롯이 4칸뿐이라 <strong>[강화 강타]</strong>를 뺄 수 없고, 1고패 재료로 이미 3각성된 <strong>[폭발준비]</strong>가 저각성 [마력폭주]보다 딜이 더 잘 나옵니다. 하지만 이 구간은 <strong>미완성 과도기</strong>이므로, 보물던전 소탕으로 하루빨리 <strong>[1차 80레벨(5슬롯 & 평타 50% 강타)]</strong>과 <strong>[3고패]</strong>를 달성해 세팅을 완성하시는 것을 강력 권장합니다!</span>
+                </div>
+              ` : `
+                <div style="margin-top:8px; background:rgba(168,85,247,0.14); border:1px solid #a855f7; border-radius:8px; padding:8px 12px; font-size:12px; color:#e9d5ff; line-height:1.55;">
+                  🔥 <strong>[1차 80렙 달성 or 마력폭주 고각성 상태]</strong><br>
+                  <span style="color:#ffffff;">1차 80레벨(5슬롯)이 열리거나 마력폭주 각성이 충분하다면, 패시브에 <strong>[마력폭주]</strong>를 끼고 1차 특성에 <strong>[스피증➔강타 변환]</strong>을 세트로 맞춰 극딜을 뽑아내다가 <strong>[3고패]</strong> 완성 시 마력폭주를 졸업합니다!</span>
+                </div>
+              `}
+            </div>
+          `;
         } else if (awkGuideJob === 'mage') {
           slot4_1Anc = makePassiveSlotMini("전투지휘", "battle_command", "영스피 증폭", "#7e22ce", "#a855f7");
           slot5_1Anc = makePassiveSlotMini("전술가속", "tactical_haste", "임시 유틸", "#ca8a04", "#eab308");
@@ -9707,10 +9847,11 @@
               ${slot5_1Anc}
             </div>
 
-            <!-- 2고패 달성 시 5슬롯 -->
+            <!-- 2고패 달성 시 5슬롯 (사신 전용 80전/후 이미지 스위치 포함!) -->
             <div style="font-size:13px; font-weight:800; color:#c084fc; margin-bottom:6px;">
               ② [2고패 달성] 근원관통 제작 시 (<span style="color:#f87171;">${outName2Anc}</span> ➔ <span style="color:#67e8f9;">근원관통 IN</span>):
             </div>
+            ${reaper2AncSwitchHtml}
             <div class="build-slot-grid" style="margin-bottom:14px;">
               ${makePassiveSlotMini(j1.ancName, j1.ancImg, "1순위 고패", "#0891b2", "#06b6d4")}
               ${makePassiveSlotMini("근원관통", "pierce", "2순위 고패", "#0891b2", "#06b6d4")}
@@ -9734,7 +9875,7 @@
             <div class="build-tip-box" style="border-color:#eab308; background:rgba(234,179,8,0.1);">
               🚨 <strong>[필독] 3고패 달성 시 버프 패시브가 빠지므로 1차 전직 특성도 함께 점검하세요!</strong><br>
               ${awkGuideJob === 'reaper'
-                ? `• <strong>사신 :</strong> 3고패에서 [마력폭주]가 빠지면 스킬 피해량이 줄어들므로, 1차 전직 특성에서도 [스피증➔강타 변환]을 빼고 <strong>[스택에 따른 피해량 증가]</strong>로 교체합니다!`
+                ? `• <strong>사신 :</strong> 3고패가 완성되면 폭발준비와 마력폭주가 모두 빠지므로, 1차 전직 특성에서도 고민 없이 <strong>[스택에 따른 피해량 증가]</strong>로 통일하시면 됩니다! (사신은 1차 80렙과 3고패 달성을 최우선으로 서두르세요!)`
                 : (awkGuideJob === 'mage'
                   ? `• <strong>아크메이지 :</strong> 3고패에서 [전투지휘]가 빠지면 영웅 스킬 피해량이 줄어들므로, 과성장+엘리시아 상태여도 1차 특성에서 [영스피➔스피 변환]을 빼고 <strong>[★스킬 버프 효과 추가]</strong>를 넣는 것이 약 77배 더 강력합니다!`
                   : `• <strong>다크로드 :</strong> 패시브에서 <strong>[전술가속(1고패 OUT) ➔ 전투지휘(2고패 OUT) ➔ 마력폭주(3고패 OUT)]</strong> 순서로 빠집니다! 3고패에서 마력폭주가 빠지더라도 1번 슬롯의 <strong>엘리시아(+과성장)</strong> 본인이 스킬 피해량을 수억% 제공하므로 과성장 졸업 전까지는 1차 특성의 [스피➔영스피 변환]을 그대로 유지합니다!`)}
@@ -9946,6 +10087,127 @@
 
           <!-- 컴팩트 가로 밴드 목록 (1~5순위) -->
           ${tierCardsHtml}
+
+          <!-- 하단: 심화 공략 (5고패 돌파·각성 순서) 바로가기 배너 -->
+          <div onclick="openAwkSubView('endgame_5anc')" style="margin-top:14px; background:linear-gradient(135deg, rgba(244, 63, 94, 0.22) 0%, #1e1b4b 100%); border:2px solid #f43f5e; border-radius:12px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; cursor:pointer; box-shadow:0 4px 16px rgba(244,63,94,0.25);">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <img src="images/ancient_mem.jpg" alt="고대의기억" style="width:44px; height:44px; border-radius:10px; border:2px solid #fb7185; object-fit:cover;" onerror="this.onerror=null; this.src='images/elem_create.jpg';">
+              <div>
+                <div style="font-size:12px; color:#fda4af; font-weight:800;">👑 주요 스킬·영웅 3각성 및 유니온 세팅까지 모두 졸업하셨다면?</div>
+                <div style="font-size:15px; font-weight:900; color:#ffffff; margin-top:2px;">[심화 공략] 엔드 유저용 5고패 완성 & 돌파·각성 순서 보러가기</div>
+              </div>
+            </div>
+            <span style="background:#e11d48; color:#fff; font-weight:900; font-size:12.5px; padding:7px 14px; border-radius:8px;">심화 가이드 열기 ➔</span>
+          </div>
+        `;
+        return;
+      }
+
+      // [화면 E] 👑 심화 공략: 5고패 완성 및 돌파·각성 최적화 로드맵 (라운지 공략 원문 + 아이콘 완벽 시각화!)
+      if (awkSubView === 'endgame_5anc') {
+        function make5AncSlot(pName, pImg, tagTxt, tagBg, borderCol, subNote) {
+          return `
+            <div class="build-slot-item" style="border-color:${borderCol}; padding:9px 6px; background:linear-gradient(145deg, rgba(6,182,212,0.14) 0%, #0f172a 100%);">
+              <span class="build-slot-tag" style="background:${tagBg}; color:#fff;">${tagTxt}</span>
+              <div class="build-slot-thumb" style="width:46px; height:46px; border-color:${borderCol};">
+                <img src="images/${pImg}.jpg" alt="${pName}" onerror="this.onerror=null; this.src='images/${pImg}.png';">
+              </div>
+              <div class="build-slot-name" style="font-size:12.5px; color:#67e8f9;">${pName}</div>
+              <div class="build-slot-note" style="color:#e2e8f0; font-size:10.5px;">${subNote}</div>
+            </div>
+          `;
+        }
+
+        body.innerHTML = `
+          ${topControllerHtml}
+
+          <!-- 1. 왜 초중반엔 3고패에서 멈춰야 할까? (함정 경고 박스) -->
+          <div style="background:linear-gradient(135deg, rgba(239, 68, 68, 0.16) 0%, #0f172a 100%); border:2px solid #ef4444; border-radius:12px; padding:14px 16px; margin-bottom:14px;">
+            <div style="font-size:15px; font-weight:900; color:#fca5a5; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+              <span>🚨</span>
+              <span>잠깐! 왜 초·중반에는 무조건 '3고패(명함)'까지만 만들고 멈춰야 할까요?</span>
+            </div>
+            <div style="font-size:12.5px; color:#ffffff; line-height:1.65; word-break:keep-all;">
+              <strong>1) 살인적인 각성석 요구량 (575만 개!) :</strong> 5고패인 <strong>[고대의 기억]</strong>은 신화 패시브 5종(불길권능·천둥격노·그림자침식·원소융합·절대관통) 풀돌+3각성이 필요해, 3고패 이후에도 타속성 신화 2종에 <strong>230만 각성석</strong>이 추가로 증발합니다.<br>
+              <strong>2) 엔드 스펙 전용 발동 조건 :</strong> <strong>[원소창조]</strong> 각성은 <u>영원 오브 5/10/15연마</u>가 필요하고, <strong>[고대의 기억]</strong>은 <u>장착 고패 돌파 합 50 / 각성 합 5·10·15</u>가 되어야만 증폭이 터집니다.<br>
+              <strong>3) 기회비용 :</strong> 이 230만 각성석이면 창고의 미사용 신화 23개를 1각성(<strong>시너지 +345점 & 신영웅 3각 조건 600점 달성</strong>)하여 딜을 몇 배로 뻥튀기할 수 있습니다! 따라서 <strong>주력 스킬/영웅 올 3각, 창고 1각 도배, 유니온 최적화를 모두 끝낸 엔드 유저분들만</strong> 아래 5고패 로드맵으로 진입하세요!
+            </div>
+          </div>
+
+          <!-- 2. 최종 5고패 완성 슬롯 시각화 -->
+          <div class="stage-build-card" style="border-left-color:#f43f5e; padding:14px 16px; margin-bottom:14px;">
+            <div class="stage-build-header" style="margin-bottom:10px;">
+              <span class="stage-build-title" style="font-size:15px;">👑 [${j1.jobKr} · ${e3.elemKr}] 엔드 종결 5고대 패시브 최종 슬롯</span>
+              <span class="grade-badge grade-mythic">초극후반 최종 형태</span>
+            </div>
+            <div class="build-slot-grid" style="margin-bottom:6px;">
+              ${make5AncSlot(j1.ancName, j1.ancImg, "1순위 고패", "#0891b2", "#06b6d4", "직업 메인 고패")}
+              ${make5AncSlot("근원관통", "pierce", "2순위 고패", "#0891b2", "#06b6d4", "방무 곱연산 증폭")}
+              ${make5AncSlot(e3.ancName, e3.ancImg, "3순위 고패", "#0891b2", "#06b6d4", "주속성 +20,000%")}
+              ${make5AncSlot("원소창조", "elem_create", "4순위 고패", "#e11d48", "#f43f5e", "10돌 디버프 +700%")}
+              ${make5AncSlot("고대의 기억", "ancient_mem", "5순위 고패", "#ca8a04", "#fbbf24", "50돌·15각 최종증폭")}
+            </div>
+          </div>
+
+          <!-- 3. 5고패 장착 후 돌파 & 각성 3단계 최적화 순서 -->
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            
+            <!-- 종결 1단계: 원소창조 10돌 & 오브 연계 각성 -->
+            <div style="background:#0f172a; border:1.5px solid #334155; border-left:4px solid #38bdf8; border-radius:12px; padding:14px 16px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                <strong style="font-size:15px; color:#38bdf8;">🥇 종결 1단계 : [원소창조] 최우선 10돌파 & 영원 오브 연마 연계 각성</strong>
+                <span class="grade-badge grade-ancient">고대의 돌 1순위 투자</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+                <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                  <img src="images/elem_create.jpg" alt="원소창조" style="width:48px; height:48px; border-radius:10px; border:2px solid #38bdf8; object-fit:cover;" onerror="this.onerror=null; this.src='images/elem_create.png';">
+                  <span style="font-size:14px; font-weight:900; color:#fde047;">➕</span>
+                  <img src="images/orb_calc.png" alt="영원오브" style="width:48px; height:48px; border-radius:10px; border:2px solid #a855f7; object-fit:cover; background:#1e293b;" onerror="this.onerror=null; this.src='images/orb.png';">
+                </div>
+                <div style="font-size:12.5px; color:#e2e8f0; line-height:1.6; flex:1; min-width:220px; word-break:keep-all;">
+                  • <strong>돌파 1순위 :</strong> 5고패 중 <strong>[원소창조]를 가장 먼저 단독 10돌파</strong> 시킵니다! 10돌파 달성 시 활성화되는 <strong>[열상 / 과부하 / 공포 디버프 효과 증폭 +700%]</strong>를 먼저 켜는 것이 실질 딜 상승 효율 압도적 1위입니다.<br>
+                  • <strong>각성 연계 :</strong> 내 <strong>영원 오브 연마 단계(5 / 10 / 15단계)</strong>에 맞춰 원소창조를 각성시키면 모든 속성 피해량 증폭이 기하급수적으로 뻥튀기됩니다. (근원관통 역시 영원 장식 연마 단계에 맞춰 우선 각성!)
+                </div>
+              </div>
+            </div>
+
+            <!-- 종결 2단계: 고대의 기억 10돌 조건(총합 50돌)을 위한 3·6·9 균등 돌파 -->
+            <div style="background:#0f172a; border:1.5px solid #334155; border-left:4px solid #a855f7; border-radius:12px; padding:14px 16px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                <strong style="font-size:15px; color:#c084fc;">🥈 종결 2단계 : [고대의 기억] 10돌 효과(총합 50돌)를 위한 '3 ➔ 6 ➔ 9 균등 돌파'</strong>
+                <span class="grade-badge grade-unique">고대의 돌 가성비 극대화</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+                <img src="images/ancient_mem.jpg" alt="고대의기억" style="width:50px; height:50px; border-radius:10px; border:2px solid #c084fc; object-fit:cover; flex-shrink:0;" onerror="this.onerror=null; this.src='images/ancient_mem.png';">
+                <div style="font-size:12.5px; color:#e2e8f0; line-height:1.6; flex:1; min-width:220px; word-break:keep-all;">
+                  • <strong>핵심 메커니즘 :</strong> [고대의 기억] 10돌파 효과는 <strong>"장착된 고대 패시브 돌파 총합 50 이상일 때 버프 효과 +3,000%"</strong>이며, 모든 고패는 <strong>3돌(+70%) · 6돌(+150%) · 9돌</strong>에 서브 돌파 옵션이 걸려 있습니다.<br>
+                  • <strong>균등 분배 공식 :</strong> 고돌파로 갈수록 고대의 돌 요구량이 폭증하므로 하나만 몰아 올리지 말고, 아래와 같이 <strong>3돌 ➔ 6돌 ➔ 9돌 순서로 균등 분배</strong>하여 버프를 다 챙기면서 50돌파를 달성합니다!<br>
+                  <div style="margin-top:6px; background:#131d33; border:1px solid #475569; border-radius:8px; padding:7px 10px; color:#fde047; font-weight:800; font-size:12px;">
+                    📌 정석 루트 : 원소창조 10돌 ➔ 나머지 4개 고패 전부 3돌 ➔ 전부 6돌 ➔ 전부 9돌 ➔ 고대의 기억 10돌 ➔ 전체 10돌 (총합 50돌 완성!)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 종결 3단계: 고대의 기억 각성 총합(5 / 10 / 15) 증폭 활성화 -->
+            <div style="background:#0f172a; border:1.5px solid #334155; border-left:4px solid #fbbf24; border-radius:12px; padding:14px 16px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                <strong style="font-size:15px; color:#fde047;">🥉 종결 3단계 : 장착 고패 각성 총합 (5 / 10 / 15) 증폭 활성화</strong>
+                <span class="grade-badge grade-legend">최종 패시브 졸업</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+                <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+                  <img src="images/ancient_mem.jpg" alt="고대의기억" style="width:46px; height:46px; border-radius:10px; border:2px solid #fbbf24; object-fit:cover;" onerror="this.onerror=null; this.src='images/ancient_mem.png';">
+                  <img src="images/upgrade_stone.png" alt="각성석" style="width:32px; height:32px; object-fit:contain;" onerror="this.onerror=null; this.src='images/upgrade_stone.PNG';">
+                </div>
+                <div style="font-size:12.5px; color:#e2e8f0; line-height:1.6; flex:1; min-width:220px; word-break:keep-all;">
+                  • <strong>각성 증폭 구간 :</strong> [고대의 기억]을 각성하면 장착한 5개 고패의 각성 총합이 <strong>5 이상(+150%) ➔ 10 이상(+300%) ➔ 15 달성(+1,400% 증폭!)</strong>일 때 버프 효과가 폭발합니다.<br>
+                  • <strong>각성 순서 :</strong> 영원 오브/장식 연마에 맞춰 <strong>[원소창조]와 [근원관통]을 최우선 각성</strong>한 뒤, 전체 고패 각성 총합 커트라인(5 / 10 / 15)에 맞추어 <strong>[고대의 기억]과 나머지 고패들을 골고루 각성</strong>하여 총합 15각성(올 3각)에 도달하면 패시브 시스템의 최종 정점(종결)이 완성됩니다!
+                </div>
+              </div>
+            </div>
+
+          </div>
         `;
         return;
       }
