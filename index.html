@@ -12,8 +12,26 @@
   gtag('config', 'G-T45D3S1C5N');
 
   // ⚡ [타이밍 에러 원천 차단] 이미지가 로드되기 전 <head>에서 폴백 함수를 미리 선언!
+  // ⚡ 대소문자(jpg/JPG/jpeg/png) 및 점(.) 누락(avatarJPG), 루트 폴더까지 모두 자동으로 찾아내는 무적 폴백!
   function handleAvatarError(img) {
-    const fallbacks = ['images/avatar.PNG', 'avatar.PNG', 'images/avatar.png', 'avatar.png', 'images/Avatar.png', 'Avatar.PNG', 'images/avatar.jpg'];
+    const fallbacks = [
+      'images/avatar.jpg',
+      'images/avatar.JPG',
+      'images/avatarJPG',
+      'images/avatarJPG.jpg',
+      'images/avatarJPG.JPG',
+      'images/avatar.jpeg',
+      'images/avatar.JPEG',
+      'images/Avatar.jpg',
+      'images/Avatar.JPG',
+      'avatar.jpg',
+      'avatar.JPG',
+      'avatarJPG',
+      'images/avatar.png',
+      'images/avatar.PNG',
+      'avatar.png',
+      'avatar.PNG'
+    ];
     let idx = parseInt(img.dataset.retryIdx || '0');
     if (idx < fallbacks.length) {
       img.dataset.retryIdx = idx + 1;
@@ -2418,6 +2436,375 @@
     }
   }
 
+  /* ==================== 🔍 GOOGLE-STYLE GLOBAL OMNI SEARCH ==================== */
+  .global-omni-search-wrap {
+    position: relative;
+    margin-bottom: 16px;
+    z-index: 9500;
+  }
+  .global-omni-box {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #131d33 0%, #0f172a 100%);
+    border: 2px solid #475569;
+    border-radius: 28px;
+    padding: 4px 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    transition: all 0.2s ease;
+  }
+  .global-omni-box:focus-within {
+    border-color: #38bdf8;
+    box-shadow: 0 8px 26px rgba(56, 189, 248, 0.35), 0 0 12px rgba(56, 189, 248, 0.25);
+    background: #0f172a;
+  }
+  .global-omni-box input {
+    border: none !important;
+    background: transparent !important;
+    padding: 9px 10px !important;
+    font-size: 14.5px !important;
+    color: #ffffff !important;
+    width: 100%;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .global-omni-clear {
+    background: #334155;
+    border: none;
+    color: #cbd5e1;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .global-omni-clear:hover { background: #ef4444; color: #fff; }
+  .global-omni-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border: 1.5px solid #38bdf8;
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
+    max-height: 350px;
+    overflow-y: auto;
+    display: none;
+    padding: 6px;
+  }
+  .omni-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.12s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+  .omni-item:last-child { border-bottom: none; }
+  .omni-item:hover, .omni-item.active-item {
+    background: rgba(56, 189, 248, 0.16);
+  }
+  .omni-hl {
+    color: #fde047;
+    font-weight: 900;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ==================== 🏛️ IN-GAME UNION WINDOW (v.1.0.0) STYLES ==================== */
+  .union-ingame-window {
+    background: linear-gradient(180deg, #102a45 0%, #091526 100%);
+    border: 2.5px solid #2563eb;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: inset 0 0 35px rgba(0,0,0,0.85), 0 10px 28px rgba(0,0,0,0.6);
+    color: #f8fafc;
+  }
+  .union-ingame-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 6px 12px 10px 12px;
+    border-bottom: 1.5px solid rgba(56, 189, 248, 0.3);
+    margin-bottom: 12px;
+  }
+  .union-ingame-body {
+    display: grid;
+    grid-template-columns: 115px 1.5fr 1fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .union-left-nav {
+    background: rgba(9, 14, 26, 0.75);
+    border: 1.5px solid #1e3a8a;
+    border-radius: 12px;
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .union-nav-type-btn {
+    width: 100%;
+    padding: 10px 8px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 900;
+    cursor: pointer;
+    border: 1.5px solid #334155;
+    background: #0f172a;
+    color: #94a3b8;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    transition: all 0.15s;
+  }
+  .union-nav-type-btn.active {
+    background: linear-gradient(90deg, #1d4ed8 0%, #1e3a8a 100%);
+    border-color: #60a5fa;
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.45);
+  }
+  .union-center-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .union-row-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(13, 25, 43, 0.92);
+    border: 1.5px solid #1e3a8a;
+    border-radius: 10px;
+    padding: 7px 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .union-row-num {
+    width: 22px;
+    font-size: 18px;
+    font-weight: 900;
+    color: #cbd5e1;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .union-slots-group {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) 8px 1.08fr;
+    gap: 6px;
+    align-items: center;
+    flex: 1;
+  }
+  .union-divider {
+    width: 2px;
+    height: 52px;
+    background: #334155;
+    margin: 0 auto;
+  }
+  .union-slot-card {
+    background: #1a2436;
+    border: 2px solid #475569;
+    border-radius: 8px;
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 74px;
+    position: relative;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.65);
+  }
+  .union-slot-card.tier-mythic { border-color: #f97316; background: linear-gradient(180deg, rgba(234,88,12,0.32) 0%, #0f172a 100%); }
+  .union-slot-card.tier-legend { border-color: #eab308; background: linear-gradient(180deg, rgba(202,138,4,0.28) 0%, #0f172a 100%); }
+  .union-slot-card.tier-unique { border-color: #a855f7; background: linear-gradient(180deg, rgba(147,51,234,0.28) 0%, #0f172a 100%); }
+  .union-slot-card.special-slot {
+    border: 2px solid #d946ef;
+    background: radial-gradient(circle at center, rgba(192, 38, 211, 0.42) 0%, #2e1065 100%);
+    box-shadow: 0 0 12px rgba(217, 70, 239, 0.45), inset 0 0 8px rgba(240, 171, 252, 0.25);
+  }
+  .union-slot-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    background: #090d16;
+    border: 1px solid rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .union-slot-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .union-slot-lv {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 9px;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 1px 2px #000, 0 0 3px #000;
+    background: rgba(0,0,0,0.55);
+    line-height: 1.1;
+  }
+  .union-slot-stars {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 8px;
+    letter-spacing: -1px;
+    line-height: 1;
+    z-index: 2;
+    text-shadow: 0 1px 2px #000;
+  }
+  .union-score-bar {
+    width: 100%;
+    height: 13px;
+    background: #090d16;
+    border: 1px solid #1e3a8a;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 2px;
+  }
+  .union-score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0284c7 0%, #38bdf8 100%);
+    transition: width 0.2s;
+  }
+  .union-score-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 1px 2px #000;
+  }
+  .union-row-lock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(7, 11, 20, 0.86);
+    backdrop-filter: blur(1.5px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 800;
+    gap: 2px;
+  }
+  /* 우측 인게임 시너지 현황판 (일반 / 특수 표) */
+  .union-right-synergy-panel {
+    background: rgba(9, 15, 28, 0.88);
+    border: 1.5px solid #1e3a8a;
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .union-syn-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  .union-syn-box {
+    background: #131d33;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 6px;
+    text-align: center;
+  }
+  .union-syn-box.special-syn {
+    border-color: rgba(192, 132, 252, 0.45);
+    background: linear-gradient(180deg, rgba(88, 28, 135, 0.25) 0%, #131d33 100%);
+  }
+  /* 슬림해진 곱연산 배율 바 */
+  .union-compact-mult-bar {
+    background: linear-gradient(90deg, #1e1b4b 0%, #0f172a 50%, #1e1b4b 100%);
+    border: 1.5px solid #6366f1;
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 13px;
+  }
+  /* 인게임 도감과 동일한 가로 4칸(4열) 배열 */
+  .union-roster-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+  @media (max-width: 820px) {
+    .union-roster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .union-unit-editor {
+    background: #131d33;
+    border: 1.5px solid #334155;
+    border-radius: 12px;
+    padding: 10px 12px;
+    transition: all 0.15s;
+  }
+  .union-unit-editor.owned {
+    border-color: #38bdf8;
+    background: linear-gradient(145deg, rgba(56, 189, 248, 0.12) 0%, #0f172a 100%);
+  }
+  .union-preset-btns {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 3px;
+    margin-top: 7px;
+  }
+  .union-preset-btn {
+    background: #0f172a;
+    border: 1px solid #475569;
+    color: #cbd5e1;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 2px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+  }
+  .union-preset-btn:hover { border-color: #38bdf8; color: #fff; }
+
+  @media (max-width: 860px) {
+    .union-ingame-body { grid-template-columns: 1fr; }
+    .union-left-nav { flex-direction: row; align-items: center; gap: 8px; padding: 8px; }
+    .union-nav-type-btn { margin-bottom: 0; justify-content: center; }
+  }
+
 </style>
 </head>
 <body>
@@ -2459,32 +2846,43 @@
         <div class="header-badge">소울 헌터 키우기 네이버 라운지 전용 툴</div>
         <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:10px; flex-wrap:wrap;">
           <div class="speech-bubble-wrap" data-bubble="💬 룡은 1+1을 활성화 하라!" style="position:relative; width:82px; height:82px; flex-shrink:0;">
-            <img id="main-avatar" src="images/avatar.png" alt="겨울눈사람 아바타" 
+            <img id="main-avatar" src="images/avatar.JPG" alt="겨울눈사람 아바타" 
               onerror="handleAvatarError(this)"
               style="width:82px; height:82px; border-radius:50%; border:3px solid #7dd3fc; object-fit:cover; background:#1e293b; box-shadow:0 0 24px rgba(56, 189, 248, 0.75), inset 0 0 10px rgba(255,255,255,0.4); display:block;">
           </div>
           <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
         </div>
         <div class="author-tag">
-          기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.3.7.0</strong>
+          기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.3.8.0</strong>
         </div>
       </div>
 
-      <!-- 우측 Special Thanks 크레딧 박스 (북선생, 붉양, 쿠모링 말풍선 장착!) -->
+      <!-- 우측 Special Thanks 크레딧 박스 (확장자 자동 탐색 & 깨짐 방지 완벽 적용!) -->
       <div class="header-thanks-box" onclick="event.stopPropagation();">
         <div class="thanks-title">✨ Special Thanks (공략 데이터 제공)</div>
         <div class="thanks-avatars-row">
           <div class="thanks-person speech-bubble-wrap" data-bubble="💬 룡은 하루에 하나만 준다">
-            <img src="images/book.png" alt="북선생" onerror="this.onerror=null; this.style.display='none';">
+            <img src="images/book.png" alt="북선생" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/book.PNG';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/book.jpg';}else{this.onerror=null;this.outerHTML='<div style=\'width:44px;height:44px;border-radius:50%;border:2px solid #38bdf8;background:#1e293b;display:flex;align-items:center;justify-content:center;font-weight:900;color:#7dd3fc;font-size:15px;\'>북</div>';}">
             <span>북선생</span>
           </div>
           <div class="thanks-person speech-bubble-wrap" data-bubble="💬 곱연산 & 합연산 개념 필수">
-            <img src="images/yang.png" alt="붉양" onerror="this.onerror=null; this.style.display='none';">
+            <img src="images/yang.png" alt="붉양" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/yang.PNG';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/yang.jpg';}else{this.onerror=null;this.outerHTML='<div style=\'width:44px;height:44px;border-radius:50%;border:2px solid #38bdf8;background:#1e293b;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fda4af;font-size:15px;\'>붉</div>';}">
             <span>붉양</span>
           </div>
           <div class="thanks-person speech-bubble-wrap" data-bubble="💬 급할수록 천천히">
-            <img src="images/cumo.jpg" alt="쿠모링" onerror="this.onerror=null; this.style.display='none';">
+            <img src="images/cumo.jpg" alt="쿠모링" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/cumo.JPG';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/cumo.png';}else{this.onerror=null;this.outerHTML='<div style=\'width:44px;height:44px;border-radius:50%;border:2px solid #38bdf8;background:#1e293b;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fde047;font-size:15px;\'>쿠</div>';}">
             <span>쿠모링</span>
+          </div>
+        </div>
+
+        <!-- 배너 아바타 제공: 영웅오키V (oki.png / oki.jpg 폴백 + 말풍선 "...") -->
+        <div style="width:100%; border-top:1px dashed rgba(125, 211, 252, 0.3); padding-top:6px; margin-top:2px; display:flex; flex-direction:column; align-items:center; gap:5px;">
+          <div class="thanks-title" style="color:#7dd3fc; font-size:10.5px;">🎨 배너 아바타 제공</div>
+          <div class="thanks-avatars-row">
+            <div class="thanks-person speech-bubble-wrap" data-bubble="💬 ...">
+              <img src="images/oki.png" alt="영웅오키V" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/oki.jpg';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/oki.PNG';}else if(this.dataset.f==2){this.dataset.f=3;this.src='images/oki.JPG';}else{this.onerror=null;this.outerHTML='<div style=\'width:44px;height:44px;border-radius:50%;border:2px solid #c084fc;background:#1e1b4b;display:flex;align-items:center;justify-content:center;font-weight:900;color:#e9d5ff;font-size:12px;\'>오키</div>';}">
+              <span>영웅오키V</span>
+            </div>
           </div>
         </div>
       </div>
@@ -2528,6 +2926,16 @@
         <img src="images/kakaotalk.png" alt="카카오톡" style="width: 28px; height: 28px; border-radius: 7px; object-fit: cover; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" onerror="this.onerror=null; this.src='kakaotalk.png';">
       </div>
     </a>
+  </div>
+
+  <!-- 🔍 구글 스타일 통합 검색창 (3대 메인 라디오 스위치 바로 위 배치) -->
+  <div class="global-omni-search-wrap" id="global_omni_search_wrap">
+    <div class="global-omni-box">
+      <span style="font-size:17px; margin-right:4px;">🔍</span>
+      <input type="text" id="global_omni_input" placeholder="찾으시는 도우미·가이드·계산기 제목 검색 (예: 유니온, 룬, 코어, 2차 특성, 연마, 고패, 정령...)" autocomplete="off" oninput="onGlobalOmniInput(this.value)" onfocus="onGlobalOmniInput(this.value)" onkeydown="onGlobalOmniKeyDown(event)">
+      <button class="global-omni-clear" id="global_omni_clear" onclick="clearGlobalOmniSearch()">✕</button>
+    </div>
+    <div class="global-omni-dropdown" id="global_omni_dropdown"></div>
   </div>
 
   <!-- Top Mode Switcher (v.3.0.0 3대 메인 탭) -->
@@ -2626,6 +3034,21 @@
               </div>
               <div class="hub-card-arrow" style="font-size:15px;">➔</div>
             </div>
+
+            <!-- 4. 내가 사신에서 아크메이지로 갈아탈 수 있을까? (Beta) -->
+            <div class="hub-card" onclick="openTransitionCheckerBeta()" style="padding: 12px 14px; border-color:rgba(52,211,153,0.6); background:linear-gradient(135deg, rgba(16,185,129,0.15) 0%, #0f172a 100%);">
+              <div class="hub-card-left" style="gap: 10px;">
+                <div class="hub-card-icon" style="width:40px; height:40px; border-radius:10px; border-color:#10b981; background:rgba(16,185,129,0.2); font-size:18px;">
+                  <span>⚖️</span>
+                </div>
+                <div>
+                  <span class="hub-card-title" style="font-size:14.5px; margin-bottom:2px; color:#6ee7b7;">⚖️ 내가 사신에서 아크메이지로 갈아탈 수 있을까? <small style="background:#059669; color:#fff; padding:1px 5px; border-radius:4px; font-size:10px;">Beta</small></span>
+                  <span class="hub-card-desc" style="font-size:11.5px;">유니온 스킬·영웅 데이터 자동 연동 & 3차·고패 체크리스트 실시간 전환 판정기</span>
+                </div>
+              </div>
+              <div class="hub-card-arrow" style="font-size:15px; color:#34d399;">➔</div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -2966,6 +3389,43 @@
         </div>
       </div>
 
+     <!-- 섹션 6: 유니온 세팅 도우미 v.1.0.0 (룬 도우미 바로 밑 허브 배너!) -->
+      <div class="hub-section">
+        <div class="hub-section-title" style="border-left-color:#c084fc;">
+          <span>🏛️ 유니온(스킬 · 영웅) 최고 배율 세팅 도우미</span>
+        </div>
+        <div class="hub-grid">
+          <div class="hub-card" onclick="openDeepCalculator('tab-union')" style="border-color:rgba(192,132,252,0.55);">
+            <div class="hub-card-left">
+              <div class="hub-card-icon" style="border-color:#c084fc; background:radial-gradient(circle at center, #3b0764 0%, #090d16 100%); box-shadow:0 0 14px rgba(192,132,252,0.35);">
+                <!-- 간지나는 커스텀 유니온 네온 엠블렘 SVG -->
+                <svg width="38" height="38" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 6px rgba(192,132,252,0.85));">
+                  <polygon points="22,2 39,11 39,33 22,42 5,33 5,11" stroke="#38bdf8" stroke-width="1.5" fill="rgba(56,189,248,0.1)"/>
+                  <polygon points="22,6 35,13.5 35,30.5 22,38 9,30.5 9,13.5" stroke="#c084fc" stroke-width="1.6" stroke-dasharray="3 2" fill="rgba(168,85,247,0.22)"/>
+                  <circle cx="15" cy="16" r="2.5" fill="#7dd3fc"/>
+                  <circle cx="29" cy="16" r="2.5" fill="#7dd3fc"/>
+                  <circle cx="15" cy="28" r="2.5" fill="#7dd3fc"/>
+                  <circle cx="29" cy="28" r="2.5" fill="#7dd3fc"/>
+                  <path d="M22 10L25 18.5L33.5 22L25 25.5L22 34L19 25.5L10.5 22L19 18.5L22 10Z" fill="url(#unionGrad)" stroke="#fde047" stroke-width="1.3"/>
+                  <circle cx="22" cy="22" r="3" fill="#ffffff"/>
+                  <defs>
+                    <linearGradient id="unionGrad" x1="10" y1="10" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#f43f5e"/>
+                      <stop offset="0.5" stop-color="#a855f7"/>
+                      <stop offset="1" stop-color="#38bdf8"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <div>
+                <span class="hub-card-title">🏛️ 유니온 세팅 도우미 v.1.0.0</span>
+                <span class="hub-card-desc">스킬·영웅 보유 스펙(레벨/돌파/각성) 자동 저장 & 특수칸 역순·일반칸 구간 컷 최고 배율 자동 배치</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow">➔</div>
+          </div>
+        </div>
+      </div>
 
     </div>
 
@@ -3653,7 +4113,7 @@
       <div id="tab-connect" class="tab-content" style="display:none;">
         <div class="card" style="border-left: 4px solid #a855f7;">
           <div class="card-title">
-            <span><span class="sc-title-fx"></span>소울커넥트 코어 선택 도우미 (v.1.3.0)</span>
+            <span><span class="sc-title-fx"></span>소울커넥트 코어 선택 도우미 (v.1.4.0)</span>
             <div style="display:flex; gap:6px;">
               <button onclick="selectAllCurrentTierCores()" style="background:#334155; border:1px solid #475569; color:#e2e8f0; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">현재 등급 전체선택</button>
               <button onclick="clearAllOwnedCores()" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">전체 초기화</button>
@@ -3876,6 +4336,109 @@
             </h3>
             <div id="sc_detail_report_list" style="display:flex; flex-direction:column; gap:8px;"></div>
           </div>
+        </div>
+      </div>
+
+      <!-- ==================== 7. 유니온 세팅 도우미 v.1.0.0 (인게임 편성창 완벽 재현) ==================== -->
+      <div id="tab-union" class="tab-content" style="display:none;">
+        <div class="card" style="border-left: 4px solid #c084fc;">
+          <div class="card-title">
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span>🏛️ 유니온 세팅 도우미 (v.1.0.0)</span>
+              <span style="font-size:11px; background:rgba(251,191,36,0.15); border:1px solid rgba(251,191,36,0.45); color:#fde047; padding:2px 8px; border-radius:12px; font-weight:700;">
+                🔄 일부 신규 스킬·영웅 이미지는 순차 업데이트 중입니다
+              </span>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button onclick="openUnionGuideModal()" style="background:#3b0764; border:1px solid #c084fc; color:#f3e8ff; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:800;">📊 점수표 & 배치원리</button>
+              <button onclick="batchSetUnionTier(currentUnionType, 'mythic', 180, 10, 1)" style="background:#1e293b; border:1px solid #38bdf8; color:#bae6fd; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">신화 일괄 1각·10돌</button>
+              <button onclick="batchSetUnionTier(currentUnionType, 'all', 120, 10, 0)" style="background:#334155; border:1px solid #64748b; color:#e2e8f0; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">전설·특급 일괄 10돌(Lv.120)</button>
+              <button onclick="resetUnionOwned(currentUnionType)" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">초기화</button>
+            </div>
+          </div>
+
+          <!-- 1차 특성 스타일: 스테이지 해금 레벨 클릭 바 -->
+          <div style="background:#131d33; padding:10px 14px; border-radius:12px; border:1.5px solid #334155; margin-bottom:14px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:7px;">
+              <label style="color:#38bdf8; margin:0; font-size:12.5px;">🚩 내 스테이지 진행도 클릭 (클릭 시 인게임 보드의 🔒 잠금이 즉시 풀립니다!)</label>
+              <span style="font-size:11px; color:#34d399; font-weight:800;">💾 설정 스펙 자동 저장</span>
+            </div>
+            <div id="union_stage_btns_container" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap:5px;"></div>
+          </div>
+
+          <!-- 🖼️ 인게임 100% 재현 유니온 편성 창 (좌측 탭 + 중앙 1~5줄 슬롯 + 우측 시너지 현황판) -->
+          <div class="union-ingame-window">
+            <div class="union-ingame-topbar">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:18px;">👥</span>
+                <strong style="font-size:16px; color:#ffffff; letter-spacing:-0.3px;">편성 ▸ 유니온</strong>
+                <span id="union_board_title" style="font-size:12.5px; color:#7dd3fc; font-weight:800; margin-left:4px;">[스킬 유니온]</span>
+              </div>
+              <div style="font-size:11.5px; color:#fde047; font-weight:700;">
+                💡 보라색 특수칸(5➔1번 역순) & 회색 일반칸(구간 컷 스왑) 자동 배치 완료
+              </div>
+            </div>
+
+            <div class="union-ingame-body">
+              <!-- 좌측: 인게임 사이드 메뉴 (스킬 / 영웅 라디오 전환) -->
+              <div class="union-left-nav">
+                <div style="width:100%;">
+                  <div style="font-size:11px; color:#60a5fa; font-weight:800; margin-bottom:6px; padding-left:4px;">🌐 유니온 탭</div>
+                  <button id="u_tab_btn_skill" class="union-nav-type-btn active" onclick="switchUnionType('skill')">
+                    <span>⚡</span><span>스킬</span>
+                  </button>
+                  <button id="u_tab_btn_hero" class="union-nav-type-btn" onclick="switchUnionType('hero')">
+                    <span>🦸</span><span>영웅</span>
+                  </button>
+                </div>
+                <div style="font-size:10.5px; color:#94a3b8; line-height:1.35; background:rgba(0,0,0,0.35); padding:6px; border-radius:6px;">
+                  • 일반(4칸): 합산 2,000점 만점<br>
+                  • 특수(1칸): 단독 500점 만점
+                </div>
+              </div>
+
+              <!-- 중앙: 1 ~ 5번 줄 슬롯 보드 (인게임 잠금 오버레이 포함) -->
+              <div class="union-center-rows" id="union_ingame_rows_container"></div>
+
+              <!-- 우측: 인게임 시너지 현황판 (일반 슬롯 총 점수 & 특수 슬롯 총 점수 표) -->
+              <div class="union-right-synergy-panel" id="union_right_synergy_panel"></div>
+            </div>
+          </div>
+
+          <!-- 📉 슬림 & 컴팩트 곱연산 배율 바 -->
+          <div class="union-compact-mult-bar">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="background:#3b0764; border:1px solid #c084fc; color:#f3e8ff; font-size:11px; font-weight:800; padding:2px 8px; border-radius:6px;">현재 탭 배율</span>
+              <strong id="union_current_tab_mult" style="font-size:17px; color:#38bdf8; font-weight:900;">1.00배</strong>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:12.5px; color:#cbd5e1;">
+              <span>⚡ 스킬: <strong id="u_sum_skill_mult" style="color:#7dd3fc;">1.00배</strong></span>
+              <span>×</span>
+              <span>🦸 영웅: <strong id="u_sum_hero_mult" style="color:#fda4af;">1.00배</strong></span>
+              <span>=</span>
+              <span style="background:rgba(250,204,21,0.15); border:1px solid rgba(250,204,21,0.45); padding:3px 10px; border-radius:6px; color:#ffffff;">
+                👑 통합 최종 곱연산: <strong id="u_sum_grand_mult" style="color:#fde047; font-size:14.5px;">1.00배</strong>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. 보유 스킬 / 영웅 스펙(레벨·돌파·각성) 설정 아코디언 -->
+        <div class="card" style="border-left: 4px solid #38bdf8;">
+          <div class="card-title">
+            <span id="union_roster_title">📋 보유 스킬 스펙 설정 (특급 · 전설 · 신화)</span>
+            <span class="grade-badge grade-ancient" id="union_owned_cnt_badge">보유 등록: 0개</span>
+          </div>
+          <p class="card-subtitle">
+            아래 카드에서 <strong>[명함 / 10돌 / 1각 / 2각 / 3각풀]</strong> 버튼을 누르거나 레벨·돌파·각성을 바꾸면 위 인게임 유니온 표에 실시간으로 이미지와 점수가 들어가며 최고 배율로 자동 정렬됩니다!
+          </p>
+
+          <div class="search-input-wrapper">
+            <span class="search-icon-prefix">🔍</span>
+            <input type="text" id="union_search_input" placeholder="스킬 또는 영웅 이름을 검색하세요 (예: 오버드라이브, 셀렌, 오로라, 나찰)" oninput="filterUnionRoster(this.value)">
+          </div>
+
+          <div id="union_roster_accordions" class="accordion-group"></div>
         </div>
       </div>
 
@@ -4476,7 +5039,7 @@
   <!-- Footer (모든 탭 하단 고정 노출 + 실시간 방문자 카운터 정상 작동) -->
   <footer>
     <div style="margin-bottom: 12px;">
-      소울헌터키우기 네이버 라운지 전용 계산기 v.3.7.0 | 제작: <strong>29서버 겨울눈사람</strong>
+      소울헌터키우기 네이버 라운지 전용 계산기 v.3.8.0 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
@@ -4674,7 +5237,8 @@
       'tab-passive': '고대 패시브',
       'tab-synergy': '각성 시너지',
       'tab-ability': '어빌리티',
-      'tab-connect': '소울커넥트 도우미'
+      'tab-connect': '소울커넥트 도우미',
+      'tab-union': '유니온 도우미' // 👈 추가!
     };
     setFloatingGuideContext(calcTabId, labelMap[calcTabId] || '계산기');
 
@@ -4686,6 +5250,10 @@
       renderConnectAccordions();
       calculateBestConnectLoadout();
     }
+
+    if (calcTabId === 'tab-union') {
+   renderUnionAll();
+   }
 
     window.scrollTo({ top: 120, behavior: 'smooth' });
   }
@@ -6577,6 +7145,7 @@
       const ratesObj = (SUMMON_RATES[currentNewbieCat] || {})[lv] || {};
       const gradeProb = ratesObj[grade] || 0;
 
+      // [수정 위치] updateSummonCalculation 함수 내부의 const isPickupAvailable 아래쪽 교체:
       const isPickupAvailable = (currentNewbieCat !== 'passive' && grade === 'mythic' && !it.noPickup);
       const isSkillOrHero = (currentNewbieCat === 'skill' || currentNewbieCat === 'hero');
 
@@ -6584,13 +7153,20 @@
       const costPerDraw = currentNewbieCat === 'hero' ? 500 : 200;
       const resUnitName = currentNewbieCat === 'spirit' ? '정령석' : '블루 다이아';
 
-      const pickupTotalDraws = (isPickupAvailable && remainCount > 0) ? (remainCount / pickupRatePerDraw) : 0;
-      const pickupPaidDraws = Math.round(pickupTotalDraws / 1.02);
+      // 통상(상시) 소환 1회당 목표 개체 등장 확률 (Lv.9 이상부터 신화 등장)
+      const regularProbPerDraw = gradeProb > 0 ? (gradeProb / totalInGrade) : 0;
+
+      // ★ [핵심 교정] 5,000뽑당 100장(2%) 페이백은 '통상 소환권'으로 지급되므로,
+      // 픽업 소환 시에도 페이백 0.02장은 반드시 '통상 소환 확률(regularProbPerDraw)'로만 합산!
+      const effectivePickupRatePerPaidDraw = pickupRatePerDraw + (0.02 * regularProbPerDraw);
+      const pickupPaidDraws = (isPickupAvailable && remainCount > 0)
+        ? Math.round(remainCount / effectivePickupRatePerPaidDraw)
+        : 0;
       const pickupCost = pickupPaidDraws * costPerDraw;
 
-      const regularProbPerDraw = gradeProb > 0 ? (gradeProb / totalInGrade) : 0;
+      // 통상 소환은 본 뽑기(1회)와 페이백 소환권(0.02회) 모두 통상 확률 적용 (등비급수 합산 약 1.0204배)
       const regularTotalDraws = (regularProbPerDraw > 0 && remainCount > 0) ? (remainCount / regularProbPerDraw) : 0;
-      const regularPaidDraws = Math.round(regularTotalDraws / 1.02);
+      const regularPaidDraws = Math.round(regularTotalDraws / 1.0204);
       const regularCost = regularPaidDraws * costPerDraw;
 
       const gColor = getGradeColor(grade);
@@ -6622,7 +7198,7 @@
                 예상 소모: ${formatKoreanNumber(pickupCost)} ${resUnitName}
               </div>
               <div style="font-size:12.5px; color:#cbd5e1;">
-                픽업 0.1% 고정 ${isSkillOrHero ? '+ 1만뽑당 15개 확정 지급 보너스' : ''} + 2% 환급 반영
+                픽업 0.1% 고정 ${isSkillOrHero ? '+ 1만뽑당 15개 확정 보너스' : ''} + 2% 페이백(통상소환권 확률) 반영
               </div>
             </div>
 
@@ -8593,7 +9169,7 @@
       document.getElementById("newbie_rune_view").style.display = "none";
 
       deepSections.forEach((sec) => {
-        const isHelperSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')") || sec.innerHTML.includes("openRuneHelperView()");
+       const isHelperSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')") || sec.innerHTML.includes("openRuneHelperView()") || sec.innerHTML.includes("openDeepCalculator('tab-union')");
         sec.style.display = isHelperSec ? "block" : "none";
       });
     } else if (mode === 'guides') {
@@ -8614,7 +9190,7 @@
       document.getElementById("newbie_rune_view").style.display = "none";
 
       deepSections.forEach((sec) => {
-        const isHelperSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')") || sec.innerHTML.includes("openRuneHelperView()");
+        const isHelperSec = sec.innerHTML.includes("openDeepCalculator('tab-connect')") || sec.innerHTML.includes("openRuneHelperView()") || sec.innerHTML.includes("openDeepCalculator('tab-union')");
         sec.style.display = !isHelperSec ? "block" : "none";
       });
       newbieSections.forEach((sec) => {
@@ -8776,7 +9352,9 @@
         currentConnectElem: typeof currentConnectElem !== 'undefined' ? currentConnectElem : 'fire',
         selectedEquipType,
         equipInventories,
-        inputs: inputsData
+        inputs: inputsData,
+        unionUserSpecs: typeof unionUserSpecs !== 'undefined' ? unionUserSpecs : { skill: {}, hero: {} },
+        currentUnionStageIdx: typeof currentUnionStageIdx !== 'undefined' ? currentUnionStageIdx : 0,
       };
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -8858,6 +9436,10 @@
           }
         });
       }
+
+      if (state.unionUserSpecs) unionUserSpecs = state.unionUserSpecs;
+      if (state.currentUnionStageIdx !== undefined) currentUnionStageIdx = state.currentUnionStageIdx;
+
       isRestoringState = false;
     } catch (e) {
       isRestoringState = false;
@@ -9073,10 +9655,16 @@
       document.getElementById("guide_view_badge").innerText = "0순위 고패 & 패시브 편성";
       document.getElementById("guide_view_subtitle").innerText = "원하시는 가이드를 아래 배너에서 선택하세요. (초반 각성석 0순위는 무조건 1~3순위 고대 패시브 제작입니다!)";
     } else if (type === 'transition') {
-      document.getElementById("guide_view_title").innerText = "🔄 사신 ➔ 아크메이지(미스틱) 전환 완벽 가이드";
+      document.getElementById("guide_view_title").innerText = "🔄 사신 ➔ 아크메이지 전환 완벽 가이드";
       document.getElementById("guide_view_badge").innerText = "직업 전환 타이밍";
-      document.getElementById("guide_view_subtitle").innerText = "초반 사신으로 시작해 1차 60레벨 이후 아크메이지(미스틱)로 공백 없이 넘어가는 핵심 로드맵입니다.";
+      document.getElementById("guide_view_subtitle").innerText = "초반 사신으로 시작해 3차 전직 이후 아크메이지(제네시스)로 공백 없이 넘어가는 핵심 로드맵입니다.";
+    // 👇 아래 4줄만 추가해 주세요!
+    } else if (type === 'transition_beta') {
+      document.getElementById("guide_view_title").innerText = "⚖️ 내가 사신에서 아크메이지로 갈아탈 수 있을까?";
+      document.getElementById("guide_view_badge").innerText = "Beta · 전환 판정기";
+      document.getElementById("guide_view_subtitle").innerText = "내 주속성과 체크리스트, 그리고 유니온에 저장된 스킬·영웅 스펙을 비교해 아크메이지 전환 가능 여부를 즉시 판정합니다.";
     }
+    
 
     renderBuildGuideContent();
     window.scrollTo({ top: 100, behavior: 'smooth' });
@@ -10877,7 +11465,7 @@
     const elemNewHero = guideElem === 'fire' ? '이그니스' : (guideElem === 'light' ? '제논' : '다미안');
     const lord3rdDealHero = guideElem === 'fire' ? '칼리아' : (guideElem === 'light' ? '카이렌' : '모르반');
 
-   // 2) 사신 ➔ 아크메이지 전환 가이드 (최신 메타 반영: 2차 딜스킬 제외, 무조건 3차 전직 & 고패·1각 도배 & 돌파 비교!)
+  // 2-A) 🔄 사신 ➔ 아크메이지 전환 가이드 (독립 화면)
     if (currentGuideType === 'transition') {
       body.innerHTML = `
         <div class="stage-build-card" style="border-left-color:#38bdf8;">
@@ -10886,7 +11474,7 @@
             <span class="grade-badge grade-ancient">최신 전환 로드맵</span>
           </div>
           <div class="build-tip-box" style="margin-bottom:14px;">
-            • <strong>초·중반 가성비 최강 사신:</strong> 1차 전직 저레벨 구간 및 3차 전직 이전에는 아크메이지의 전직 특성 조건(장착 스킬 레벨 합 / 보유 돌파 합)과 스킬 쿨타임·타수 회전율이받쳐주지 않아 사신 대비 이득이 없습니다.<br>
+            • <strong>초·중반 가성비 최강 사신:</strong> 1차 전직 저레벨 구간 및 3차 전직 이전에는 아크메이지의 전직 특성 조건(장착 스킬 레벨 합 / 보유 돌파 합)과 스킬 쿨타임·타수 회전율이 받쳐주지 않아 사신 대비 이득이 없습니다.<br>
             • 반면 <strong>사신(대사신/소울리퍼)</strong>은 1순위 고대 패시브(강타의 대가) 제작 비용이 가장 저렴하고 초반 강타 효율이 압도적이어서, <strong>3차 전직 및 아크메이지 3차 전용 스킬이 준비되기 전까지는 사신으로 쭉 육성</strong>하는 것이 정석입니다!
           </div>
 
@@ -10919,8 +11507,23 @@
             3. <strong>무조건 [고대 패시브 1~3순위] 먼저 완성:</strong> 직업 전환이나 스킬 각성에 각성석을 쓰기 전에 반드시 <strong>고대 패시브(마력광란·근원관통·주속성 고패)를 최우선</strong>으로 맞춰두세요.<br>
             4. <strong>착용 스킬 & 영웅 [골고루 1각성] 도배 원칙:</strong> 특정 스킬 하나만 무리해서 3각성을 올리기보다, <strong>착용 중인 스킬과 영웅을 먼저 1각성씩 골고루 도배(시너지 점수 극대화)</strong>한 뒤 주력기(${mage3rdDeal}, 오버드라이브 등) 3각성을 올리시는 것이 정석입니다!
           </div>
+
+          <!-- 하단: 전환 자가진단 시뮬레이터(Beta)로 바로 이동하는 배너 -->
+          <div onclick="openTransitionCheckerBeta()" style="margin-top:16px; background:linear-gradient(135deg, rgba(16,185,129,0.2) 0%, #0f172a 100%); border:2px solid #10b981; border-radius:12px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; cursor:pointer;">
+            <div>
+              <div style="font-size:12px; color:#6ee7b7; font-weight:800;">⚖️ 내 현재 스펙으로 지금 당장 아크메이지로 넘어가도 될까?</div>
+              <div style="font-size:15px; font-weight:900; color:#ffffff; margin-top:2px;">[내가 사신에서 아크메이지로 갈아탈 수 있을까? (Beta)] 시뮬레이터 실행하기</div>
+            </div>
+            <span style="background:#059669; color:#fff; font-weight:900; font-size:12.5px; padding:8px 14px; border-radius:8px;">진단하러 가기 ➔</span>
+          </div>
         </div>
       `;
+      return;
+    }
+
+    // 2-B) ⚖️ 내가 사신에서 아크메이지로 갈아탈 수 있을까? (Beta) - 완전 독립된 깔끔한 전용 화면!
+    if (currentGuideType === 'transition_beta') {
+      body.innerHTML = buildTransitionCheckerHtml();
       return;
     }
 
@@ -12153,6 +12756,1085 @@
             ${allTraitRowsHtml}
           </div>
         </div>
+      </div>
+    `;
+  }
+
+  // ==================== 🔍 GOOGLE-STYLE OMNI SEARCH ENGINE ====================
+  const GLOBAL_SEARCH_INDEX = [
+    { title: "🛡️ 룬 착용 도우미 v.1.4.0", cat: "🛠️ 세팅 도우미", badge: "grade-immortal", keywords: "룬 방어구 반지 목걸이 엠블렘 심연장식 무기 천상 명황 과성장 마녀 토테미즘", action: () => { switchMainMode('helpers'); openRuneHelperView(); } },
+    { title: "🪐 소울커넥트 코어 선택 도우미 v.1.4.0", cat: "🛠️ 세팅 도우미", badge: "grade-ancient", keywords: "소울커넥트 코어 보석 하크확 하크피 도감 승급전 보스전 32P 28P", action: () => { switchMainMode('helpers'); openDeepCalculator('tab-connect'); } },
+    { title: "🏛️ 유니온 세팅 도우미 v.1.0.0 (스킬·영웅)", cat: "🛠️ 세팅 도우미", badge: "grade-unique", keywords: "유니온 스킬유니온 영웅유니온 특수슬롯 일반슬롯 보라칸 500점 2000점 시너지", action: () => { switchMainMode('helpers'); openDeepCalculator('tab-union'); } },
+    { title: "🐣 5,000렙 뉴비 극초반 스킬 & 영웅 추천 빌드", cat: "⚔️ 세팅 가이드", badge: "grade-legend", keywords: "뉴비 극초반 5000렙 입문 전투태세 집중모드 오로라 나찰 바토리", action: () => { switchMainMode('guides'); openSpecialGuideDetail('early'); } },
+    { title: "🔮 각성 우선순위 & 0~3고패 패시브 슬롯 교체표", cat: "⚔️ 세팅 가이드", badge: "grade-unique", keywords: "각성 우선순위 고대패시브 고패 슬롯 교체표 3각 순위 5고패 원소창조 고대의기억", action: () => { switchMainMode('guides'); openSpecialGuideDetail('awakening_order'); } },
+    { title: "🔄 사신 ➔ 아크메이지(미스틱) 전환 가이드", cat: "⚔️ 세팅 가이드", badge: "grade-ancient", keywords: "사신 아크메이지 미스틱 제네시스 직변 전환 타이밍", action: () => { switchMainMode('guides'); openSpecialGuideDetail('transition'); } },
+    { title: "⚡ 직업·속성별 스킬 세팅 가이드 (1차~4차)", cat: "⚔️ 세팅 가이드", badge: "grade-legend", keywords: "스킬 세팅 사신 아크메이지 오버로드 다크로드 오버드라이브 플레어필라 볼트스파이럴 블랙베일 크림슨웨이브", action: () => { switchMainMode('guides'); openCategoryGuideDirect('skill'); } },
+    { title: "🦸 직업·속성별 영웅 세팅 가이드 (초기~4차)", cat: "⚔️ 세팅 가이드", badge: "grade-mythic", keywords: "영웅 세팅 셀렌 나리타 엘리시아 솔라리스 카엔 카엘 백운귀 이그니스 제논 다미안 칼리아 카이렌 모르반", action: () => { switchMainMode('guides'); openCategoryGuideDirect('hero'); } },
+    { title: "🌟 1차 전직 특성 자동 추천기 (Lv.1~150)", cat: "⚔️ 세팅 가이드", badge: "grade-ancient", keywords: "1차 전직 특성 강화강타 각성기봉인 강타타수감소 버프효과", action: () => { switchMainMode('guides'); openCategoryGuideDirect('trait'); changeTraitTabStep(1); } },
+    { title: "⚡ 2차 전직 특성 표식 & 크리티컬 트리 (Lv.1~180)", cat: "⚔️ 세팅 가이드", badge: "grade-legend", keywords: "2차 전직 특성 표식 크리티컬 2차저주 포인트 TP", action: () => { switchMainMode('guides'); openCategoryGuideDirect('trait'); changeTraitTabStep(2); } },
+    { title: "🔥 3차 전직 특화 트리 가이드 (Lv.0~40)", cat: "⚔️ 세팅 가이드", badge: "grade-mythic", keywords: "3차 전직 특화 속성버프 중첩 전환", action: () => { switchMainMode('guides'); openCategoryGuideDirect('trait'); changeTraitTabStep(3); } },
+    { title: "🧚 속성별 정령 5단계 세팅 가이드", cat: "⚔️ 세팅 가이드", badge: "grade-eternal", keywords: "정령 세팅 피라 루미아 녹시아 홍련 라이자 릴리스 아인 헤라 베스타 라바나", action: () => { switchMainMode('guides'); openCategoryGuideDirect('spirit'); } },
+    { title: "🔨 영원 장비 연마 기댓값 & 재화 계산기", cat: "🎲 확률 계산기", badge: "grade-ancient", keywords: "영원 장비 연마 대낫 오브 장식 영원의돌 하락방지 마르코프", action: () => { switchMainMode('calcs'); openDeepCalculator('tab-refine'); } },
+    { title: "🌌 영원 장비 옵션 변환 (심연정수) 계산기", cat: "🎲 확률 계산기", badge: "grade-mythic", keywords: "영원 장비 옵션 변환 심연정수 SSS SS 대낫 오브", action: () => { switchMainMode('calcs'); openDeepCalculator('tab-orb'); } },
+    { title: "🔮 고대 패시브 제작 & 각성석 파밍 계산기", cat: "🎲 확률 계산기", badge: "grade-unique", keywords: "고대 패시브 계산기 강타의대가 마력광란 전투통솔 근원관통 불길의지배 천둥의진노 그림자동화", action: () => { switchMainMode('calcs'); openDeepCalculator('tab-passive'); } },
+    { title: "✨ 각성 시너지 점수 & 공격력(%) 계산기", cat: "🎲 확률 계산기", badge: "grade-legend", keywords: "각성 시너지 점수 계산기 1각 600점 공격력", action: () => { switchMainMode('calcs'); openDeepCalculator('tab-synergy'); } },
+    { title: "🌙 가호(별·달·해·유성) & 원혼 어빌리티 주사위 계산기", cat: "🎲 확률 계산기", badge: "grade-eternal", keywords: "가호 별의가호 달의가호 해의가호 유성의가호 원혼 어빌리티 옵션주사위 옵공증", action: () => { switchMainMode('calcs'); openDeepCalculator('tab-ability'); } },
+    { title: "🗡️ 장비 소환 & 27슬롯 인벤토리 자동 합성 계산기", cat: "🎲 확률 계산기", badge: "grade-ancient", keywords: "장비 소환 뽑기 대낫 오브 장식 고대 1등급 합성", action: () => { switchMainMode('calcs'); openNewbieCalculator('equip'); } },
+    { title: "📜 패시브 / ⚡ 스킬 / 🦸 영웅 / 🧚 정령 소환 기댓값 계산기", cat: "🎲 확률 계산기", badge: "grade-mythic", keywords: "소환 확률 픽업 통상 다이아 정령석 10돌파 70개", action: () => { switchMainMode('calcs'); openNewbieCalculator('skill'); } }
+  ];
+
+  let omniActiveIdx = -1;
+  let omniFilteredList = [];
+
+  function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function highlightOmniMatch(text, query) {
+    if (!query) return text;
+    const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
+    return text.replace(regex, `<span class="omni-hl">$1</span>`);
+  }
+
+  function onGlobalOmniInput(val) {
+    const q = val.trim();
+    const clearBtn = document.getElementById('global_omni_clear');
+    const dropdown = document.getElementById('global_omni_dropdown');
+    if (clearBtn) clearBtn.style.display = q.length > 0 ? 'flex' : 'none';
+
+    if (!q) {
+      if (dropdown) dropdown.style.display = 'none';
+      omniFilteredList = [];
+      omniActiveIdx = -1;
+      return;
+    }
+
+    const lowerQ = q.toLowerCase();
+    omniFilteredList = GLOBAL_SEARCH_INDEX.filter(item =>
+      item.title.toLowerCase().includes(lowerQ) ||
+      item.cat.toLowerCase().includes(lowerQ) ||
+      item.keywords.toLowerCase().includes(lowerQ)
+    );
+
+    omniActiveIdx = omniFilteredList.length > 0 ? 0 : -1;
+    renderGlobalOmniDropdown(q);
+  }
+
+  function renderGlobalOmniDropdown(q) {
+    const dropdown = document.getElementById('global_omni_dropdown');
+    if (!dropdown) return;
+
+    if (omniFilteredList.length === 0) {
+      dropdown.innerHTML = `<div style="padding:14px; text-align:center; color:#94a3b8; font-size:13px;">검색 결과가 없습니다. 다른 키워드(예: 유니온, 룬, 코어, 2차)로 입력해 보세요!</div>`;
+      dropdown.style.display = 'block';
+      return;
+    }
+
+    dropdown.innerHTML = omniFilteredList.map((item, idx) => {
+      const hlTitle = highlightOmniMatch(item.title, q);
+      // 키워드 중 매칭된 단어가 있으면 보조 표시
+      const matchedKw = item.keywords.split(' ').filter(k => k.toLowerCase().includes(q.toLowerCase())).slice(0, 3).map(k => highlightOmniMatch(k, q)).join(', ');
+      const kwSub = matchedKw ? `<div style="font-size:11px; color:#94a3b8; margin-top:2px;">관련 키워드: ${matchedKw}</div>` : '';
+
+      return `
+        <div class="omni-item ${idx === omniActiveIdx ? 'active-item' : ''}" onclick="executeOmniItem(${idx})" onmouseenter="omniActiveIdx=${idx}">
+          <div>
+            <div style="font-size:14px; font-weight:800; color:#f8fafc;">${hlTitle}</div>
+            ${kwSub}
+          </div>
+          <span class="grade-badge ${item.badge}" style="white-space:nowrap; font-size:11px;">${item.cat} ➔</span>
+        </div>
+      `;
+    }).join('');
+    dropdown.style.display = 'block';
+  }
+
+  function executeOmniItem(idx) {
+    const item = omniFilteredList[idx];
+    if (!item) return;
+    const dropdown = document.getElementById('global_omni_dropdown');
+    if (dropdown) dropdown.style.display = 'none';
+    item.action();
+  }
+
+  function onGlobalOmniKeyDown(e) {
+    const dropdown = document.getElementById('global_omni_dropdown');
+    if (!dropdown || dropdown.style.display === 'none' || omniFilteredList.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      omniActiveIdx = (omniActiveIdx + 1) % omniFilteredList.length;
+      renderGlobalOmniDropdown(e.target.value.trim());
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      omniActiveIdx = (omniActiveIdx - 1 + omniFilteredList.length) % omniFilteredList.length;
+      renderGlobalOmniDropdown(e.target.value.trim());
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (omniActiveIdx >= 0) executeOmniItem(omniActiveIdx);
+    } else if (e.key === 'Escape') {
+      dropdown.style.display = 'none';
+    }
+  }
+
+  function clearGlobalOmniSearch() {
+    const input = document.getElementById('global_omni_input');
+    if (input) {
+      input.value = '';
+      onGlobalOmniInput('');
+      input.focus();
+    }
+  }
+
+  document.addEventListener('click', (e) => {
+    const wrap = document.getElementById('global_omni_search_wrap');
+    const dropdown = document.getElementById('global_omni_dropdown');
+    if (wrap && dropdown && !wrap.contains(e.target)) {
+      dropdown.style.display = 'none';
+    }
+  });
+
+  // ==================== 🏛️ UNION HELPER (v.1.0.0) ENGINE ====================
+  HELP_GUIDE_DATA['tab-union'] = {
+    title: '🏛️ 유니온 세팅 도우미 v.1.0.0 사용법',
+    html: `<ol>
+      <li>좌측 탭에서 <strong>[⚡ 스킬]</strong> 또는 <strong>[🦸 영웅]</strong>을 선택하고, 상단에서 내 현재 <strong>스테이지 진행도 버튼(160-1 ~ 480-1 이상)</strong>을 클릭하면 인게임처럼 잠금이 해제됩니다.</li>
+      <li>아래 아코디언 목록(신화 / 전설 / 특급)에서 보유 중인 스킬과 영웅의 <strong>[명함 / 10돌 / 1각 / 2각 / 3각풀]</strong> 버튼을 누르거나 레벨·돌파·각성을 선택하세요. (선택 즉시 자동 저장됩니다)</li>
+      <li>도우미가 <strong>보라색 특수 슬롯(5번 ➔ 1번 줄 역순)</strong>에 최고점 개체를 우선 배치하고, <strong>회색 일반 슬롯(4칸 합산)</strong>은 <strong>시너지 구간 컷(100~2,000점)</strong>을 최대한 많이 돌파하도록 줄 간 스왑 최적화를 수행해 인게임 표에 즉시 그려줍니다!</li>
+    </ol>`
+  };
+
+  const UNION_SCORE_TABLE = {
+    normal:   { max: 50,  lv: {0:0,20:1,40:2,60:3,80:4,100:5,120:7,140:9,160:11,180:15}, brk: [0,1,2,3,4,5,6,7,8,9,15], awk: [0,5,10,20] },
+    middle:   { max: 100, lv: {0:0,20:2,40:4,60:6,80:8,100:10,120:14,140:18,160:22,180:30}, brk: [0,2,4,6,8,10,12,14,16,18,30], awk: [0,10,20,40] },
+    advanced: { max: 150, lv: {0:0,20:3,40:6,60:9,80:12,100:15,120:21,140:28,160:35,180:45}, brk: [0,3,6,9,12,15,18,21,24,27,45], awk: [0,15,30,60] },
+    unique:   { max: 200, lv: {0:0,20:4,40:8,60:12,80:16,100:20,120:26,140:34,160:42,180:60}, brk: [0,4,8,12,16,20,24,28,32,36,60], awk: [0,20,40,80] },
+    legend:   { max: 250, lv: {0:0,20:5,40:10,60:15,80:20,100:25,120:33,140:44,160:55,180:75}, brk: [0,5,10,15,20,25,30,35,40,45,75], awk: [0,25,50,100] },
+    mythic:   { max: 500, lv: {0:0,20:10,40:20,60:30,80:40,100:50,120:65,140:85,160:105,180:150}, brk: [0,10,20,30,40,50,60,70,80,90,150], awk: [0,50,100,200] }
+  };
+
+  const UNION_NORMAL_TIERS = [
+    { min: 2000, pct: 500.0 },
+    { min: 1750, pct: 389.4 },
+    { min: 1500, pct: 299.5 },
+    { min: 1200, pct: 230.4 },
+    { min: 900,  pct: 164.6 },
+    { min: 700,  pct: 117.6 },
+    { min: 550,  pct: 84.0 },
+    { min: 400,  pct: 60.0 },
+    { min: 250,  pct: 40.0 },
+    { min: 100,  pct: 20.0 }
+  ];
+
+  const UNION_SPECIAL_BASE_TIERS = [
+    { min: 500, pct: 300.0 },
+    { min: 450, pct: 208.8 },
+    { min: 400, pct: 160.6 },
+    { min: 350, pct: 123.5 },
+    { min: 300, pct: 88.2 },
+    { min: 250, pct: 63.0 },
+    { min: 200, pct: 45.0 },
+    { min: 150, pct: 30.0 },
+    { min: 100, pct: 20.0 },
+    { min: 50,  pct: 10.0 }
+  ];
+
+  const UNION_STAGE_MILESTONES = [
+    { idx: 0, label: "160-1 이상", skillRows: 1, heroRows: 0, sub: "스킬 1줄" },
+    { idx: 1, label: "200-1 이상", skillRows: 1, heroRows: 1, sub: "스킬1·영웅1" },
+    { idx: 2, label: "240-1 이상", skillRows: 2, heroRows: 1, sub: "스킬2·영웅1" },
+    { idx: 3, label: "280-1 이상", skillRows: 2, heroRows: 2, sub: "스킬2·영웅2" },
+    { idx: 4, label: "320-1 이상", skillRows: 3, heroRows: 2, sub: "스킬3·영웅2" },
+    { idx: 5, label: "360-1 이상", skillRows: 3, heroRows: 3, sub: "스킬3·영웅3" },
+    { idx: 6, label: "400-1 이상", skillRows: 4, heroRows: 3, sub: "스킬4·영웅3" },
+    { idx: 7, label: "440-1 이상", skillRows: 5, heroRows: 4, sub: "스킬5·영웅4" },
+    { idx: 8, label: "480-1 이상", skillRows: 5, heroRows: 5, sub: "전 슬롯 해금" }
+  ];
+
+  const UNION_SKILL_UNLOCK_STAGES = ["160-1", "240-1", "320-1", "400-1", "440-1"];
+  const UNION_HERO_UNLOCK_STAGES  = ["200-1", "280-1", "360-1", "440-1", "480-1"];
+
+  let currentUnionType = 'skill';
+  let currentUnionStageIdx = 0;
+  let unionUserSpecs = { skill: {}, hero: {} };
+
+  function getUnionUnitScore(grade, lv, brk, awk) {
+    const gData = UNION_SCORE_TABLE[grade] || UNION_SCORE_TABLE.mythic;
+    const stepLv = Math.min(180, Math.max(0, Math.floor((parseInt(lv) || 0) / 20) * 20));
+    const sLv = gData.lv[stepLv] || 0;
+    const sBrk = gData.brk[Math.min(10, Math.max(0, parseInt(brk) || 0))] || 0;
+    const sAwk = gData.awk[Math.min(3, Math.max(0, parseInt(awk) || 0))] || 0;
+    return sLv + sBrk + sAwk;
+  }
+
+  function getUnionNormalSynergyPct(sumScore) {
+    for (let t of UNION_NORMAL_TIERS) {
+      if (sumScore >= t.min) return t.pct;
+    }
+    return 0;
+  }
+
+  function getUnionSpecialSynergyPct(rowNum, score) {
+    for (let t of UNION_SPECIAL_BASE_TIERS) {
+      if (score >= t.min) return +(t.pct * rowNum).toFixed(1);
+    }
+    return 0;
+  }
+
+  function switchUnionType(type) {
+    currentUnionType = type;
+    document.getElementById('u_tab_btn_skill')?.classList.toggle('active', type === 'skill');
+    document.getElementById('u_tab_btn_hero')?.classList.toggle('active', type === 'hero');
+    renderUnionAll();
+  }
+
+  function selectUnionStageIdx(idx) {
+    currentUnionStageIdx = idx;
+    renderUnionStageButtons();
+    calculateAndRenderUnionBoard();
+    triggerAutoSave();
+  }
+
+  function renderUnionStageButtons() {
+    const container = document.getElementById('union_stage_btns_container');
+    if (!container) return;
+    container.innerHTML = UNION_STAGE_MILESTONES.map(m => {
+      const isSel = (currentUnionStageIdx === m.idx);
+      return `
+        <button onclick="selectUnionStageIdx(${m.idx})" style="padding:6px 4px; border-radius:8px; cursor:pointer; font-size:11.5px; font-weight:800; line-height:1.2; transition:all 0.15s; border:1.5px solid ${isSel?'#38bdf8':'#334155'}; background:${isSel?'linear-gradient(135deg, #0284c7 0%, #1e3a8a 100%)':'#0f172a'}; color:${isSel?'#ffffff':'#cbd5e1'}; box-shadow:${isSel?'0 0 10px rgba(56,189,248,0.4)':'none'};">
+          ${m.label}<br><span style="font-size:9.5px; color:${isSel?'#fde047':'#94a3b8'};">${m.sub}</span>
+        </button>
+      `;
+    }).join('');
+  }
+
+  // SUMMON_ITEMS의 순서 그대로 긁어오며, SKILL_ICON_MAP / HERO_ICON_MAP의 모든 이미지를 자동 매칭!
+  function getUnionCatalog(type) {
+    const catObj = SUMMON_ITEMS[type] || {};
+    const grades = ['mythic', 'legend', 'unique'];
+    const result = [];
+    const iconMap = type === 'skill' ? SKILL_ICON_MAP : HERO_ICON_MAP;
+
+    grades.forEach(g => {
+      const arr = catObj[g] || [];
+      arr.forEach((it, idx) => {
+        const rawName = it.name || '';
+        const cleanName = rawName.split('(')[0].trim();
+        const mappedFile = iconMap[cleanName] || iconMap[rawName];
+        const imgUrl = it.img || (mappedFile ? `images/${mappedFile}.png` : '');
+
+        result.push({
+          uid: `${type}_${g}_${idx}`,
+          name: rawName,
+          grade: g,
+          maxScore: UNION_SCORE_TABLE[g].max,
+          attr: it.attr || '',
+          img: imgUrl
+        });
+      });
+    });
+    return result;
+  }
+
+  function setUnionUnitPreset(type, uid, grade, owned, lv, brk, awk) {
+    if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
+    if (!owned) {
+      delete unionUserSpecs[type][uid];
+    } else {
+      unionUserSpecs[type][uid] = { owned: true, grade, lv, brk, awk };
+    }
+    updateSingleUnionEditorCardUI(type, uid, grade);
+    updateUnionOwnedBadge();
+    calculateAndRenderUnionBoard();
+    triggerAutoSave();
+  }
+
+  function onUnionUnitDetailChange(type, uid, grade) {
+    const lvEl = document.getElementById(`u_lv_${uid}`);
+    const brkEl = document.getElementById(`u_brk_${uid}`);
+    const awkEl = document.getElementById(`u_awk_${uid}`);
+    const lv = lvEl ? parseInt(lvEl.value) : 180;
+    const brk = brkEl ? parseInt(brkEl.value) : 10;
+    const awk = awkEl ? parseInt(awkEl.value) : 0;
+
+    if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
+    unionUserSpecs[type][uid] = { owned: true, grade, lv, brk, awk };
+
+    updateSingleUnionEditorCardUI(type, uid, grade);
+    updateUnionOwnedBadge();
+    calculateAndRenderUnionBoard();
+    triggerAutoSave();
+  }
+
+  function updateSingleUnionEditorCardUI(type, uid, grade) {
+    const cardEl = document.getElementById(`u_editor_${uid}`);
+    const scoreBadge = document.getElementById(`u_score_badge_${uid}`);
+    const lvEl = document.getElementById(`u_lv_${uid}`);
+    const brkEl = document.getElementById(`u_brk_${uid}`);
+    const awkEl = document.getElementById(`u_awk_${uid}`);
+
+    const spec = (unionUserSpecs[type] || {})[uid];
+    const maxScore = UNION_SCORE_TABLE[grade].max;
+
+    if (!spec || !spec.owned) {
+      if (cardEl) cardEl.classList.remove('owned');
+      if (scoreBadge) {
+        scoreBadge.innerText = `미보유 (0/${maxScore})`;
+        scoreBadge.style.color = '#64748b';
+      }
+    } else {
+      if (cardEl) cardEl.classList.add('owned');
+      if (lvEl) lvEl.value = spec.lv;
+      if (brkEl) brkEl.value = spec.brk;
+      if (awkEl) awkEl.value = spec.awk;
+      const sc = getUnionUnitScore(grade, spec.lv, spec.brk, spec.awk);
+      if (scoreBadge) {
+        scoreBadge.innerText = `${sc} / ${maxScore}점`;
+        scoreBadge.style.color = '#38bdf8';
+      }
+    }
+  }
+
+  function batchSetUnionTier(type, targetGrade, lv, brk, awk) {
+    const catalog = getUnionCatalog(type);
+    if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
+    catalog.forEach(unit => {
+      if (targetGrade === 'all' ? (unit.grade === 'legend' || unit.grade === 'unique') : (unit.grade === targetGrade)) {
+        unionUserSpecs[type][unit.uid] = { owned: true, grade: unit.grade, lv, brk, awk };
+      }
+    });
+    renderUnionRosterAccordions();
+    calculateAndRenderUnionBoard();
+    triggerAutoSave();
+  }
+
+  function resetUnionOwned(type) {
+    if (!confirm(`현재 [${type === 'skill' ? '스킬' : '영웅'} 유니온] 보유 스펙 설정을 모두 초기화하시겠습니까?`)) return;
+    unionUserSpecs[type] = {};
+    renderUnionRosterAccordions();
+    calculateAndRenderUnionBoard();
+    triggerAutoSave();
+  }
+
+  function updateUnionOwnedBadge() {
+    const mapObj = unionUserSpecs[currentUnionType] || {};
+    const cnt = Object.values(mapObj).filter(v => v && v.owned).length;
+    const badge = document.getElementById('union_owned_cnt_badge');
+    if (badge) badge.innerText = `보유 등록: ${cnt}개`;
+  }
+
+  function renderUnionRosterAccordions() {
+    const container = document.getElementById('union_roster_accordions');
+    if (!container) return;
+
+    const titleEl = document.getElementById('union_roster_title');
+    if (titleEl) {
+      titleEl.innerText = currentUnionType === 'skill'
+        ? '📋 보유 스킬 스펙 설정 (신화 · 전설 · 특급 | 인게임 4열 순서)'
+        : '📋 보유 영웅 스펙 설정 (신화 · 전설 · 특급 | 인게임 4열 순서)';
+    }
+
+    const catalog = getUnionCatalog(currentUnionType);
+    const gradeMeta = [
+      { key: 'mythic', name: '신화 등급 (만점 500점)', cls: 'acc-mythic', badge: 'grade-mythic' },
+      { key: 'legend', name: '전설 등급 (만점 250점)', cls: 'acc-legend', badge: 'grade-legend' },
+      { key: 'unique', name: '특급 등급 (만점 200점)', cls: 'acc-unique', badge: 'grade-unique' }
+    ];
+
+    let html = '';
+    gradeMeta.forEach((gm, gIdx) => {
+      const units = catalog.filter(u => u.grade === gm.key);
+      const cardsHtml = units.map(u => {
+        const spec = (unionUserSpecs[currentUnionType] || {})[u.uid];
+        const isOwned = Boolean(spec && spec.owned);
+        const curLv = isOwned ? spec.lv : 180;
+        const curBrk = isOwned ? spec.brk : 10;
+        const curAwk = isOwned ? spec.awk : 0;
+        const sc = isOwned ? getUnionUnitScore(u.grade, curLv, curBrk, curAwk) : 0;
+
+        // 이미지가 전용 래퍼 div 안에 격리되어, 로드 실패 시에도 옆의 이름 텍스트가 절대 날아가지 않음!
+        const thumbHtml = u.img
+          ? `<div style="width:38px; height:38px; border-radius:8px; background:#0f172a; border:1px solid #475569; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <img src="${u.img}" alt="${u.name}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.PNG');}else{this.parentElement.innerHTML='<span style=\\'font-size:9px;color:#94a3b8;text-align:center;line-height:1.1;font-weight:800;\\'>이미지<br>준비중</span>';}">
+            </div>`
+          : `<div style="width:38px; height:38px; border-radius:8px; background:#0f172a; border:1px dashed #475569; display:flex; align-items:center; justify-content:center; font-size:9px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800; flex-shrink:0;">이미지<br>준비중</div>`;
+
+        return `
+          <div class="union-unit-editor ${isOwned ? 'owned' : ''}" id="u_editor_${u.uid}" data-uname="${u.name}">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:7px;">
+              ${thumbHtml}
+              <div style="min-width:0; flex:1;">
+                <div style="font-size:13px; font-weight:900; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${u.name} ${u.attr}">${u.name} ${u.attr}</div>
+                <div id="u_score_badge_${u.uid}" style="font-size:11.5px; font-weight:900; color:${isOwned ? '#38bdf8' : '#64748b'};">
+                  ${isOwned ? `${sc} / ${u.maxScore}점` : `미보유 (0/${u.maxScore})`}
+                </div>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px;">
+              <select id="u_lv_${u.uid}" onchange="onUnionUnitDetailChange('${currentUnionType}', '${u.uid}', '${u.grade}')" style="padding:4px 2px; font-size:11px;">
+                ${[20,40,60,80,100,120,140,160,180].map(lv => `<option value="${lv}" ${curLv===lv?'selected':''}>Lv.${lv}</option>`).join('')}
+              </select>
+              <select id="u_brk_${u.uid}" onchange="onUnionUnitDetailChange('${currentUnionType}', '${u.uid}', '${u.grade}')" style="padding:4px 2px; font-size:11px;">
+                ${[0,1,2,3,4,5,6,7,8,9,10].map(b => `<option value="${b}" ${curBrk===b?'selected':''}>${b}돌파</option>`).join('')}
+              </select>
+              <select id="u_awk_${u.uid}" onchange="onUnionUnitDetailChange('${currentUnionType}', '${u.uid}', '${u.grade}')" style="padding:4px 2px; font-size:11px;">
+                ${[0,1,2,3].map(a => `<option value="${a}" ${curAwk===a?'selected':''}>${a}각성</option>`).join('')}
+              </select>
+            </div>
+
+            <div class="union-preset-btns">
+              <button class="union-preset-btn" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',false,0,0,0)">미보유</button>
+              <button class="union-preset-btn" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',true,100,0,0)">명함</button>
+              <button class="union-preset-btn" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',true,120,10,0)">10돌</button>
+              <button class="union-preset-btn" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',true,140,10,1)">1각</button>
+              <button class="union-preset-btn" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',true,160,10,2)">2각</button>
+              <button class="union-preset-btn" style="color:#fde047; border-color:#eab308;" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',true,180,10,3)">3각풀</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      html += `
+        <div class="accordion-item ${gm.cls} ${gIdx === 0 ? 'active' : ''}" id="u_acc_${gm.key}">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('u_acc_${gm.key}')">
+            <div class="accordion-left">
+              <span class="accordion-toggle-icon">▶</span>
+              <span class="accordion-title-text"><span class="grade-badge ${gm.badge}">${getGradeKrName(gm.key)}</span> ${gm.name}</span>
+            </div>
+            <div class="accordion-right-info">
+              <span class="accordion-count-badge">${units.length}종</span>
+            </div>
+          </div>
+          <div class="accordion-content">
+            <div class="acc-scroll-box" style="max-height:460px;">
+              <div class="union-roster-grid">${cardsHtml}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+    updateUnionOwnedBadge();
+  }
+
+  function filterUnionRoster(keyword) {
+    const q = keyword.trim().toLowerCase();
+    const cards = document.querySelectorAll('#union_roster_accordions .union-unit-editor');
+    cards.forEach(c => c.style.borderColor = '');
+    if (!q) return;
+
+    let firstMatch = null;
+    cards.forEach(card => {
+      const uname = (card.getAttribute('data-uname') || '').toLowerCase();
+      if (uname.includes(q)) {
+        card.style.borderColor = '#fbbf24';
+        const acc = card.closest('.accordion-item');
+        if (acc && !acc.classList.contains('active')) acc.classList.add('active');
+        if (!firstMatch) firstMatch = card;
+      }
+    });
+    if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function computeOptimalUnionForType(type) {
+    const milestone = UNION_STAGE_MILESTONES[currentUnionStageIdx] || UNION_STAGE_MILESTONES[0];
+    const unlockedRows = type === 'skill' ? milestone.skillRows : milestone.heroRows;
+
+    const catalog = getUnionCatalog(type);
+    const specs = unionUserSpecs[type] || {};
+    const ownedPool = [];
+
+    catalog.forEach(u => {
+      const sp = specs[u.uid];
+      if (sp && sp.owned) {
+        const sc = getUnionUnitScore(u.grade, sp.lv, sp.brk, sp.awk);
+        if (sc > 0) {
+          ownedPool.push({ ...u, lv: sp.lv, brk: sp.brk, awk: sp.awk, score: sc });
+        }
+      }
+    });
+
+    ownedPool.sort((a, b) => b.score - a.score);
+
+    const rowsData = [];
+    for (let r = 1; r <= 5; r++) {
+      rowsData.push({
+        rowNum: r,
+        unlocked: r <= unlockedRows,
+        normalSlots: [null, null, null, null],
+        specialSlot: null,
+        normalSum: 0,
+        normalPct: 0,
+        specialScore: 0,
+        specialPct: 0,
+        rowMult: 1
+      });
+    }
+
+    if (unlockedRows === 0 || ownedPool.length === 0) {
+      return { unlockedRows, rowsData, totalMult: 1 };
+    }
+
+    // 1. 보라색 특수 슬롯 역순 배치 (열린 줄 중 가장 큰 줄 -> 1번 줄)
+    let poolIdx = 0;
+    for (let r = unlockedRows; r >= 1; r--) {
+      if (poolIdx < ownedPool.length) {
+        rowsData[r - 1].specialSlot = ownedPool[poolIdx++];
+      }
+    }
+
+    // 2. 일반 슬롯 초기 분배 (각 줄에 4칸씩)
+    const normalCandidates = ownedPool.slice(poolIdx, poolIdx + unlockedRows * 4);
+    while (normalCandidates.length < unlockedRows * 4) {
+      normalCandidates.push(null);
+    }
+
+    for (let i = 0; i < normalCandidates.length; i++) {
+      const rIdx = i % unlockedRows;
+      const cIdx = Math.floor(i / unlockedRows);
+      rowsData[rIdx].normalSlots[cIdx] = normalCandidates[i];
+    }
+
+    // 3. 일반 슬롯 시너지 구간 컷(100~2000점) 돌파를 위한 줄 간 스왑 최적화 (Hill-Climbing)
+    function calcNormalProduct() {
+      let prod = 1;
+      for (let r = 0; r < unlockedRows; r++) {
+        const sum = rowsData[r].normalSlots.reduce((acc, it) => acc + (it ? it.score : 0), 0);
+        prod *= (1 + getUnionNormalSynergyPct(sum) / 100);
+      }
+      return prod;
+    }
+
+    let improved = true;
+    let guard = 0;
+    while (improved && guard < 80) {
+      improved = false;
+      guard++;
+      let baseProd = calcNormalProduct();
+
+      for (let r1 = 0; r1 < unlockedRows; r1++) {
+        for (let r2 = r1 + 1; r2 < unlockedRows; r2++) {
+          for (let c1 = 0; c1 < 4; c1++) {
+            for (let c2 = 0; c2 < 4; c2++) {
+              const tmp = rowsData[r1].normalSlots[c1];
+              rowsData[r1].normalSlots[c1] = rowsData[r2].normalSlots[c2];
+              rowsData[r2].normalSlots[c2] = tmp;
+
+              const newProd = calcNormalProduct();
+              if (newProd > baseProd + 1e-7) {
+                baseProd = newProd;
+                improved = true;
+              } else {
+                rowsData[r2].normalSlots[c2] = rowsData[r1].normalSlots[c1];
+                rowsData[r1].normalSlots[c1] = tmp;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    let totalMult = 1;
+    for (let r = 0; r < 5; r++) {
+      const rowObj = rowsData[r];
+      rowObj.normalSlots.sort((a, b) => (b ? b.score : 0) - (a ? a.score : 0));
+      const nSum = rowObj.normalSlots.reduce((acc, it) => acc + (it ? it.score : 0), 0);
+      const sScore = rowObj.specialSlot ? rowObj.specialSlot.score : 0;
+      const nPct = rowObj.unlocked ? getUnionNormalSynergyPct(nSum) : 0;
+      const sPct = rowObj.unlocked ? getUnionSpecialSynergyPct(rowObj.rowNum, sScore) : 0;
+      const rowMult = (1 + nPct / 100) * (1 + sPct / 100);
+
+      rowObj.normalSum = nSum;
+      rowObj.normalPct = nPct;
+      rowObj.specialScore = sScore;
+      rowObj.specialPct = sPct;
+      rowObj.rowMult = rowMult;
+      if (rowObj.unlocked) totalMult *= rowMult;
+    }
+
+    return { unlockedRows, rowsData, totalMult };
+  }
+
+  // 👇 function calculateAndRenderUnionBoard() 바로 위에 이 함수를 붙여넣으세요!
+  function renderUnionSlotCell(unit, isSpecial) {
+    if (!unit) {
+      return `
+        <div class="union-slot-card ${isSpecial ? 'special-slot' : ''}">
+          <div style="flex:1; display:flex; align-items:center; justify-content:center; font-size:18px; color:${isSpecial ? '#f0abfc' : '#64748b'};">+</div>
+          <div class="union-score-bar"><div class="union-score-fill" style="width:0%;"></div><div class="union-score-text">0/0</div></div>
+        </div>
+      `;
+    }
+
+    const pctWidth = Math.min(100, Math.round((unit.score / unit.maxScore) * 100));
+    const tierCls = isSpecial ? 'special-slot' : `tier-${unit.grade}`;
+
+    let starsHtml = '';
+    if (unit.awk > 0) {
+      starsHtml = `<span style="color:#e879f9;">${'★'.repeat(unit.awk)}</span>`;
+    } else if (unit.brk > 0) {
+      const starCnt = Math.min(5, Math.ceil(unit.brk / 2));
+      starsHtml = `<span style="color:#facc15;">${'★'.repeat(starCnt)}</span>`;
+    }
+
+    const imgHtml = unit.img
+      ? `<img src="${unit.img}" alt="${unit.name}" onerror="this.onerror=null; if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.PNG');}else{this.style.display='none'; this.nextElementSibling.style.display='flex';}">
+         <span style="display:none; font-size:8.5px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800;">이미지<br>준비중</span>`
+      : `<span style="font-size:8.5px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800;">이미지<br>준비중</span>`;
+
+    return `
+      <div class="union-slot-card ${tierCls}" title="[${getGradeKrName(unit.grade)}] ${unit.name} (Lv.${unit.lv} / ${unit.brk}돌 / ${unit.awk}각 = ${unit.score}점)">
+        <div class="union-slot-thumb">
+          <div class="union-slot-stars">${starsHtml}</div>
+          ${imgHtml}
+          <span class="union-slot-lv">Lv.${unit.lv}</span>
+        </div>
+        <div style="font-size:9.5px; font-weight:800; color:#e2e8f0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; margin-top:2px;">${unit.name.split('(')[0]}</div>
+        <div class="union-score-bar">
+          <div class="union-score-fill" style="width:${pctWidth}%;"></div>
+          <div class="union-score-text">${unit.score}/${unit.maxScore}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function calculateAndRenderUnionBoard() {
+    const skillRes = computeOptimalUnionForType('skill');
+    const heroRes = computeOptimalUnionForType('hero');
+    const activeRes = currentUnionType === 'skill' ? skillRes : heroRes;
+    const unlockStages = currentUnionType === 'skill' ? UNION_SKILL_UNLOCK_STAGES : UNION_HERO_UNLOCK_STAGES;
+    const typeKr = currentUnionType === 'skill' ? '스킬' : '영웅';
+
+    const boardTitleEl = document.getElementById('union_board_title');
+    if (boardTitleEl) {
+      boardTitleEl.innerText = `[${typeKr} 유니온 · ${activeRes.unlockedRows}/5줄 해금]`;
+    }
+
+    // 1. 중앙 1~5번 줄 인게임 슬롯 렌더링
+    const rowsContainer = document.getElementById('union_ingame_rows_container');
+    if (rowsContainer) {
+      rowsContainer.innerHTML = activeRes.rowsData.map((row, idx) => {
+        const lockOverlayHtml = !row.unlocked
+          ? `<div class="union-row-lock-overlay">
+              <span style="font-size:17px;">🔒</span>
+              <span>스테이지 <strong style="color:#fde047;">${unlockStages[idx]}</strong> 도달 시 해금됩니다</span>
+            </div>`
+          : '';
+
+        return `
+          <div class="union-row-box">
+            ${lockOverlayHtml}
+            <div class="union-row-num">${row.rowNum}</div>
+            <div class="union-slots-group">
+              ${row.normalSlots.map(u => renderUnionSlotCell(u, false)).join('')}
+              <div class="union-divider"></div>
+              ${renderUnionSlotCell(row.specialSlot, true)}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 2. 우측 인게임 시너지 현황판 (일반 1~5번 총 점수 & 특수 1~5번 총 점수)
+    const rightPanel = document.getElementById('union_right_synergy_panel');
+    if (rightPanel) {
+      const normalBoxesHtml = activeRes.rowsData.map(row => `
+        <div class="union-syn-box" style="opacity:${row.unlocked ? 1 : 0.4};">
+          <div style="font-size:9.5px; color:#93c5fd; font-weight:800;">유니온 ${typeKr} 일반 공격력 ${row.rowNum}(%) <span style="color:#fde047;">+${row.normalPct}%</span></div>
+          <div style="font-size:10px; color:#fca5a5; margin-top:2px;">${row.rowNum}번 일반 슬롯의 총 점수</div>
+          <div style="font-size:14px; font-weight:900; color:#fbbf24;">${row.normalSum}점</div>
+        </div>
+      `).join('');
+
+      const specialBoxesHtml = activeRes.rowsData.map(row => `
+        <div class="union-syn-box special-syn" style="opacity:${row.unlocked ? 1 : 0.4};">
+          <div style="font-size:9.5px; color:#f0abfc; font-weight:800;">유니온 ${typeKr} 특수 공격력 ${row.rowNum}(%) <span style="color:#fde047;">+${row.specialPct}%</span></div>
+          <div style="font-size:10px; color:#fda4af; margin-top:2px;">${row.rowNum}번 특수 슬롯의 총 점수</div>
+          <div style="font-size:14px; font-weight:900; color:#fbbf24;">${row.specialScore}점</div>
+        </div>
+      `).join('');
+
+      rightPanel.innerHTML = `
+        <div>
+          <div style="font-size:11.5px; font-weight:900; color:#93c5fd; margin-bottom:5px; text-align:center; background:#172554; padding:4px; border-radius:6px;">
+            ⬜ 일반 유니온 시너지 현황 (4칸 합산)
+          </div>
+          <div class="union-syn-grid-2">${normalBoxesHtml}</div>
+        </div>
+        <div style="margin-top:6px;">
+          <div style="font-size:11.5px; font-weight:900; color:#f0abfc; margin-bottom:5px; text-align:center; background:#3b0764; padding:4px; border-radius:6px;">
+            🟪 특수 유니온 시너지 현황 (보라 1칸)
+          </div>
+          <div class="union-syn-grid-2">${specialBoxesHtml}</div>
+        </div>
+      `;
+    }
+
+    // 3. 하단 컴팩트 곱연산 배율 바 업데이트
+    const curMultEl = document.getElementById('union_current_tab_mult');
+    const skillMultEl = document.getElementById('u_sum_skill_mult');
+    const heroMultEl = document.getElementById('u_sum_hero_mult');
+    const grandMultEl = document.getElementById('u_sum_grand_mult');
+
+    const fmtMult = (m) => m >= 10000 ? `약 ${formatKoreanNumber(Math.round(m))}배` : `${m.toLocaleString(undefined, {maximumFractionDigits: 1})}배`;
+
+    if (curMultEl) curMultEl.innerText = fmtMult(activeRes.totalMult);
+    if (skillMultEl) skillMultEl.innerText = fmtMult(skillRes.totalMult);
+    if (heroMultEl) heroMultEl.innerText = fmtMult(heroRes.totalMult);
+    if (grandMultEl) grandMultEl.innerText = fmtMult(skillRes.totalMult * heroRes.totalMult);
+  }
+
+  function openUnionGuideModal() {
+    document.getElementById('help_modal_title').innerText = '🏛️ 유니온 점수표 & 시너지 구간 기준표';
+    document.getElementById('help_modal_body').innerHTML = `
+      <div style="font-size:13px; line-height:1.6; color:#e2e8f0;">
+        <p style="margin-bottom:8px;">• <strong>단일 최대 점수:</strong> <span style="color:#fda4af; font-weight:800;">신화 500점</span> (Lv.180 150 + 10돌 150 + 3각 200) / <span style="color:#fde047; font-weight:800;">전설 250점</span> (75+75+100) / <span style="color:#c084fc; font-weight:800;">특급 200점</span> (60+60+80)</p>
+        <p style="margin-bottom:8px;">• <strong>일반 슬롯 (회색 4칸 합산, 1~5줄 동일):</strong><br>
+        <code>100점(20%)</code> · <code>250점(40%)</code> · <code>400점(60%)</code> · <code>550점(84%)</code> · <code>700점(117.6%)</code> · <code>900점(164.6%)</code> · <code>1,200점(230.4%)</code> · <code>1,500점(299.5%)</code> · <code>1,750점(389.4%)</code> · <code>2,000점(500%)</code></p>
+        <p>• <strong>특수 슬롯 (보라 1칸 단독, 1줄 대비 5줄 5배 효율):</strong><br>
+        500점 만점 기준 <code>1줄(300%)</code> · <code>2줄(600%)</code> · <code>3줄(900%)</code> · <code>4줄(1,200%)</code> · <code>5줄(1,500%)</code></p>
+      </div>
+    `;
+    document.getElementById('help_modal_overlay').style.display = 'flex';
+  }
+
+  function renderUnionAll() {
+    renderUnionStageButtons();
+    renderUnionRosterAccordions();
+    calculateAndRenderUnionBoard();
+  }
+
+  // ==================== ⚖️ 내가 사신에서 아크메이지로 갈아탈 수 있을까? (Beta) 엔진 ====================
+  let transCheckState = {
+    is3rdJob: false,
+    anc1_frenzy: false,
+    anc2_pierce: false,
+    anc3_elem: false
+  };
+
+  try {
+    const savedTrans = localStorage.getItem('shk_trans_beta_state');
+    if (savedTrans) transCheckState = { ...transCheckState, ...JSON.parse(savedTrans) };
+  } catch (e) {}
+
+  function saveTransCheckState() {
+    try {
+      localStorage.setItem('shk_trans_beta_state', JSON.stringify(transCheckState));
+    } catch (e) {}
+  }
+
+  if (typeof GLOBAL_SEARCH_INDEX !== 'undefined' && !GLOBAL_SEARCH_INDEX.some(x => x.title.includes('갈아탈 수 있을까'))) {
+    GLOBAL_SEARCH_INDEX.push({
+      title: "⚖️ 내가 사신에서 아크메이지로 갈아탈 수 있을까? (Beta)",
+      cat: "⚔️ 세팅 가이드",
+      badge: "grade-eternal",
+      keywords: "사신 아크메이지 미스틱 제네시스 직변 갈아탈 전환 진단 테스트 유니온 연동",
+      action: () => { switchMainMode('guides'); openTransitionCheckerBeta(); }
+    });
+  }
+
+  // ★ 이제 원문 가이드와 섞이지 않고 오직 '전용 진단 시뮬레이터 창'으로만 깔끔하게 열립니다!
+  function openTransitionCheckerBeta() {
+    openSpecialGuideDetail('transition_beta');
+  }
+
+  function toggleTransCheckItem(key) {
+    transCheckState[key] = !transCheckState[key];
+    saveTransCheckState();
+    renderBuildGuideContent();
+  }
+
+  function changeTransCheckElem(eKey) {
+    guideElem = eKey;
+    renderBuildGuideContent();
+  }
+
+  function jumpToUnionForMageSetup() {
+    switchMainMode('helpers');
+    openDeepCalculator('tab-union');
+  }
+
+  function getUnionSpecByName(type, targetName) {
+    const catList = (SUMMON_ITEMS[type] && SUMMON_ITEMS[type].mythic) ? SUMMON_ITEMS[type].mythic : [];
+    const idx = catList.findIndex(it => it.name.includes(targetName) || targetName.includes(it.name.split('(')[0].trim()));
+    if (idx === -1) return { found: false, owned: false, lv: 0, brk: 0, awk: 0, score: 0, img: '' };
+
+    const uid = `${type}_mythic_${idx}`;
+    const itemMeta = catList[idx];
+    const cleanName = itemMeta.name.split('(')[0].trim();
+    const iconMap = type === 'skill' ? SKILL_ICON_MAP : HERO_ICON_MAP;
+    const mappedFile = iconMap[cleanName] || iconMap[itemMeta.name];
+    const imgUrl = itemMeta.img || (mappedFile ? `images/${mappedFile}.png` : '');
+
+    const sp = (unionUserSpecs && unionUserSpecs[type]) ? unionUserSpecs[type][uid] : null;
+    if (!sp || !sp.owned) {
+      return { found: true, owned: false, lv: 0, brk: 0, awk: 0, score: 0, img: imgUrl, name: cleanName };
+    }
+    const sc = getUnionUnitScore('mythic', sp.lv, sp.brk, sp.awk);
+    return {
+      found: true,
+      owned: true,
+      lv: sp.lv,
+      brk: sp.brk,
+      awk: sp.awk,
+      score: sc,
+      img: imgUrl,
+      name: cleanName
+    };
+  }
+
+  function buildTransitionCheckerHtml() {
+    const elemKr = guideElem === 'fire' ? '화염' : (guideElem === 'light' ? '번개' : '어둠');
+    const mage3rdSkillName = guideElem === 'fire' ? '플레어 필라' : (guideElem === 'light' ? '볼트 스파이럴' : '블랙 베일');
+    const elemAncMeta = guideElem === 'fire'
+      ? { name: '불길의 지배', img: 'elem_fire', sub: '화염 3순위 고패' }
+      : (guideElem === 'light'
+        ? { name: '천둥의 진노', img: 'elem_light', sub: '번개 3순위 고패' }
+        : { name: '그림자 동화', img: 'elem_dark', sub: '어둠 3순위 고패' });
+
+    // 유니온 신화 데이터에서 사신 & 아크메이지 핵심 스킬/영웅 불러오기
+    const reaperSkill   = getUnionSpecByName('skill', '썬더 오빗');
+    const reaperHero    = getUnionSpecByName('hero', '셀렌');
+    const mageMainSkill = getUnionSpecByName('skill', mage3rdSkillName);
+    const mageSubSkill  = getUnionSpecByName('skill', '지옥불베기');
+    const mageHero      = getUnionSpecByName('hero', '카엔');
+    const commonOver    = getUnionSpecByName('skill', '오버드라이브');
+
+    const missingReasons = [];
+
+    // 1. 3차 전직 여부
+    if (!transCheckState.is3rdJob) {
+      missingReasons.push("❌ <strong>[3차 전직 미달성]</strong> 3차 전직(소울리퍼/제네시스) 달성 후 전환하세요.");
+    }
+    // 2. 고대 패시브 3종 완성 여부
+    if (!transCheckState.anc1_frenzy) missingReasons.push("❌ <strong>[1순위 고패 미완성]</strong> 아크메이지 1순위 고패 <strong>[마력광란]</strong>이 없습니다.");
+    if (!transCheckState.anc2_pierce) missingReasons.push("❌ <strong>[2순위 고패 미완성]</strong> 필수 방무 고패 <strong>[근원관통]</strong>이 없습니다.");
+    if (!transCheckState.anc3_elem)   missingReasons.push(`❌ <strong>[3순위 고패 미완성]</strong> ${elemKr} 주속성 고패 <strong>[${elemAncMeta.name}]</strong>이 없습니다.`);
+
+    // ★ 3. [핵심 추가!] 사신 주력 스킬·영웅 각성 < 아크메이지 전용 스킬·영웅 각성 비교 판정!
+    // (1) 앜메 3차 주력기: 10돌 이상 필수 & 사신 썬더 오빗보다 각성이 높아야 함 (단, 이미 3각 풀각이면 통과)
+    const isMageMainAwkHigher = mageMainSkill.owned && mageMainSkill.brk >= 10 && (
+      mageMainSkill.awk > reaperSkill.awk ||
+      (mageMainSkill.awk === 3 && reaperSkill.awk === 3) ||
+      (mageMainSkill.awk === reaperSkill.awk && mageMainSkill.awk >= 1 && mageSubSkill.awk > 0)
+    );
+
+    if (!mageMainSkill.owned) {
+      missingReasons.push(`❌ <strong>[${mage3rdSkillName} 미등록]</strong> 유니온 도우미에 아크메이지 주력기 <strong>[${mage3rdSkillName}]</strong>이 등록되지 않았습니다.`);
+    } else if (mageMainSkill.brk < 10) {
+      missingReasons.push(`❌ <strong>[${mage3rdSkillName} 돌파 부족]</strong> 현재 ${mageMainSkill.brk}돌파입니다. (최소 10돌파 + 고각성 필수)`);
+    } else if (!isMageMainAwkHigher) {
+      missingReasons.push(`❌ <strong>[주력 스킬 각성 역전 미달]</strong> 아크메이지 <strong>[${mage3rdSkillName}(${mageMainSkill.awk}각)]</strong>의 각성 단계가 지금 끼고 있는 사신 <strong>[썬더 오빗(${reaperSkill.awk}각)]</strong>보다 더 높아야 합니다!`);
+    }
+
+    // (2) 지옥불베기: 최소 9~10돌파 및 1각성 이상 권장
+    const isHellSlashReady = mageSubSkill.owned && mageSubSkill.brk >= 9 && mageSubSkill.awk >= 1;
+    if (!mageSubSkill.owned || mageSubSkill.brk < 9) {
+      missingReasons.push(`❌ <strong>[지옥불베기 돌파 부족]</strong> 유니온 미등록 또는 9돌파 미만(현재 ${mageSubSkill.brk}돌)입니다.`);
+    } else if (mageSubSkill.awk < 1) {
+      missingReasons.push(`❌ <strong>[지옥불베기 각성 부족]</strong> 아크메이지 전용 버프 <strong>[지옥불베기(현재 0각)]</strong>를 최소 1각성 이상 올린 뒤 전환하세요.`);
+    }
+
+    // (3) 전용 영웅 맞대결: 카엔 각성이 사신 셀렌보다 높거나(또는 최소 1각+ & 스킬+영웅 총 각성 합 우위)
+    const reaperTotalAwk = reaperSkill.awk + reaperHero.awk;
+    const mageTotalAwk   = mageMainSkill.awk + mageSubSkill.awk + mageHero.awk;
+    const isTotalAwkHigher = (mageTotalAwk > reaperTotalAwk) && (mageMainSkill.awk >= reaperSkill.awk);
+
+    const isKaenReady = mageHero.owned && mageHero.brk >= 9 && mageHero.awk >= 1 && (
+      mageHero.awk >= reaperHero.awk || mageHero.awk === 3 || isTotalAwkHigher
+    );
+
+    if (!mageHero.owned) {
+      missingReasons.push(`❌ <strong>[카엔 미등록]</strong> 유니온 도우미에 아크메이지 전용 영웅 <strong>[카엔]</strong>이 등록되지 않았습니다.`);
+    } else if (mageHero.brk < 9 || mageHero.awk < 1) {
+      missingReasons.push(`❌ <strong>[카엔 각성 부족]</strong> 현재 카엔(${mageHero.brk}돌·${mageHero.awk}각)입니다. 최소 9~10돌파 및 1각성 이상 필수입니다.`);
+    } else if (!isKaenReady) {
+      missingReasons.push(`❌ <strong>[전용 영웅 각성 역전 미달]</strong> 사신 <strong>[셀렌(${reaperHero.awk}각)]</strong>의 각성이 아크메이지 <strong>[카엔(${mageHero.awk}각)]</strong>보다 높습니다! 아크메이지 스킬·영웅 각성을 더 높게 올린 뒤 갈아타세요.`);
+    }
+
+    if (!isTotalAwkHigher && !(mageMainSkill.awk === 3 && mageSubSkill.awk === 3 && mageHero.awk === 3)) {
+      missingReasons.push(`❌ <strong>[총 각성 수 미달]</strong> 현재 착용 중인 사신 주력기(썬더 오빗+셀렌 총 <strong>${reaperTotalAwk}각</strong>)보다 아크메이지 전용기(${mage3rdSkillName}+지옥불베기+카엔 총 <strong>${mageTotalAwk}각</strong>)의 각성 합이 더 높아야 딜이 오릅니다!`);
+    }
+
+    const isAllPassed = (missingReasons.length === 0);
+
+    function renderUnitCheckCard(unitObj, roleLabel, passBool, vsText) {
+      const specText = unitObj.owned
+        ? `Lv.${unitObj.lv} · <strong style="color:#fde047;">${unitObj.brk}돌</strong> · <strong style="color:#f0abfc;">${unitObj.awk}각</strong>`
+        : `<span style="color:#f87171;">유니온 미등록</span>`;
+
+      return `
+        <div style="background:#131d33; border:2px solid ${passBool ? '#10b981' : '#ef4444'}; border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:8px;">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span style="font-size:11px; font-weight:800; color:#94a3b8;">${roleLabel}</span>
+            <span style="background:${passBool ? '#059669' : '#e11d48'}; color:#fff; font-size:11px; font-weight:900; padding:2px 8px; border-radius:6px;">
+              ${passBool ? '✅ 충족' : '❌ 조건미달'}
+            </span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <img src="${unitObj.img}" alt="${unitObj.name}" style="width:44px; height:44px; border-radius:9px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src=this.src.replace('.png','.PNG'); this.onerror=function(){this.style.display='none';};">
+            <div style="min-width:0;">
+              <div style="font-size:14.5px; font-weight:900; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${unitObj.name || roleLabel}</div>
+              <div style="font-size:12px; color:#e2e8f0; margin-top:2px;">${specText}</div>
+            </div>
+          </div>
+          <div style="font-size:11px; color:#cbd5e1; background:#0b1120; padding:5px 8px; border-radius:6px; text-align:center;">
+            ${vsText}
+          </div>
+        </div>
+      `;
+    }
+
+    const vsPassBool = isTotalAwkHigher || (mageMainSkill.awk === 3 && mageSubSkill.awk === 3 && mageHero.awk === 3);
+
+    return `
+      <!-- 🔥⚡🌑 큼직하고 시원한 내 주속성 라디오 스위치 바 -->
+      <div style="background:#0b1120; padding:12px 16px; border-radius:14px; border:2px solid #475569; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <label style="color:#fbbf24; margin:0; font-size:13.5px; font-weight:900;">🔥 내 주속성 선택 (선택 시 주속성 고패 및 3차 딜스킬 자동 변경)</label>
+          <span style="font-size:11px; color:#cbd5e1;">👆 클릭하여 전환</span>
+        </div>
+        <div class="radio-pill-group" style="gap:10px;">
+          <div class="radio-pill job-pill-btn elem-switch-fire ${guideElem==='fire'?'selected':''}" onclick="changeTransCheckElem('fire')" style="padding:11px 14px; font-size:14.5px;">
+            <span class="elem-orb orb-fire"></span>
+            <span>화염 속성</span>
+          </div>
+          <div class="radio-pill job-pill-btn elem-switch-light ${guideElem==='light'?'selected':''}" onclick="changeTransCheckElem('light')" style="padding:11px 14px; font-size:14.5px;">
+            <span class="elem-orb orb-light"></span>
+            <span>번개 속성</span>
+          </div>
+          <div class="radio-pill job-pill-btn elem-switch-dark ${guideElem==='dark'?'selected':''}" onclick="changeTransCheckElem('dark')" style="padding:11px 14px; font-size:14.5px;">
+            <span class="elem-orb orb-dark"></span>
+            <span>어둠 속성</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 1: 3차 전직 유무 -->
+      <div style="background:#0f172a; border:1.5px solid #334155; border-radius:14px; padding:16px; margin-bottom:14px;">
+        <div style="font-size:14px; font-weight:900; color:#ffffff; margin-bottom:10px;">1️⃣ 3차 전직 달성 유무 (배너를 클릭해 체크하세요)</div>
+        <div onclick="toggleTransCheckItem('is3rdJob')" style="cursor:pointer; padding:14px 16px; border-radius:12px; border:2px solid ${transCheckState.is3rdJob ? '#10b981' : '#ef4444'}; background:${transCheckState.is3rdJob ? 'rgba(16,185,129,0.18)' : 'rgba(239,68,68,0.12)'}; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; transition:all 0.15s;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:22px;">${transCheckState.is3rdJob ? '✅' : '❌'}</span>
+            <strong style="font-size:15px; color:#ffffff;">
+              ${transCheckState.is3rdJob ? '3차 전직 (소울리퍼 / 제네시스) 달성 완료!' : '아직 1차 ~ 2차 전직입니다 (클릭하여 변경)'}
+            </strong>
+          </div>
+          <span style="padding:6px 12px; border-radius:8px; font-size:12.5px; font-weight:900; background:${transCheckState.is3rdJob ? '#059669' : '#e11d48'}; color:#fff;">
+            ${transCheckState.is3rdJob ? '✅ 조건충족' : '❌ 조건미달'}
+          </span>
+        </div>
+      </div>
+
+      <!-- STEP 2: 고대 패시브 3종 체크리스트 -->
+      <div style="background:#0f172a; border:1.5px solid #334155; border-radius:14px; padding:16px; margin-bottom:14px;">
+        <div style="font-size:14px; font-weight:900; color:#ffffff; margin-bottom:10px;">2️⃣ 아크메이지 필수 3고패 보유 체크리스트 (카드를 클릭해 체크하세요)</div>
+        <div class="grid-3" style="gap:10px;">
+          <div onclick="toggleTransCheckItem('anc1_frenzy')" style="cursor:pointer; background:#131d33; border:2px solid ${transCheckState.anc1_frenzy ? '#10b981' : '#ef4444'}; border-radius:12px; padding:12px; display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="images/frenzy.jpg" alt="마력광란" style="width:42px; height:42px; border-radius:8px; object-fit:cover; border:1.5px solid #22d3ee;" onerror="this.onerror=null; this.src='images/frenzy.png';">
+              <div>
+                <span style="font-size:10.5px; color:#67e8f9; font-weight:800;">1순위 직업 고패</span>
+                <div style="font-size:14.5px; font-weight:900; color:#fff;">마력광란</div>
+              </div>
+            </div>
+            <span style="font-size:12.5px; font-weight:900; color:${transCheckState.anc1_frenzy ? '#34d399' : '#f87171'};">${transCheckState.anc1_frenzy ? '✅ 완료' : '❌ 조건미달'}</span>
+          </div>
+
+          <div onclick="toggleTransCheckItem('anc2_pierce')" style="cursor:pointer; background:#131d33; border:2px solid ${transCheckState.anc2_pierce ? '#10b981' : '#ef4444'}; border-radius:12px; padding:12px; display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="images/pierce.jpg" alt="근원관통" style="width:42px; height:42px; border-radius:8px; object-fit:cover; border:1.5px solid #22d3ee;" onerror="this.onerror=null; this.src='images/pierce.png';">
+              <div>
+                <span style="font-size:10.5px; color:#67e8f9; font-weight:800;">2순위 방무 고패</span>
+                <div style="font-size:14.5px; font-weight:900; color:#fff;">근원관통</div>
+              </div>
+            </div>
+            <span style="font-size:12.5px; font-weight:900; color:${transCheckState.anc2_pierce ? '#34d399' : '#f87171'};">${transCheckState.anc2_pierce ? '✅ 완료' : '❌ 조건미달'}</span>
+          </div>
+
+          <div onclick="toggleTransCheckItem('anc3_elem')" style="cursor:pointer; background:#131d33; border:2px solid ${transCheckState.anc3_elem ? '#10b981' : '#ef4444'}; border-radius:12px; padding:12px; display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="images/${elemAncMeta.img}.jpg" alt="${elemAncMeta.name}" style="width:42px; height:42px; border-radius:8px; object-fit:cover; border:1.5px solid #22d3ee;" onerror="this.onerror=null; this.src='images/${elemAncMeta.img}.png';">
+              <div>
+                <span style="font-size:10.5px; color:#67e8f9; font-weight:800;">${elemAncMeta.sub}</span>
+                <div style="font-size:14.5px; font-weight:900; color:#fff;">${elemAncMeta.name}</div>
+              </div>
+            </div>
+            <span style="font-size:12.5px; font-weight:900; color:${transCheckState.anc3_elem ? '#34d399' : '#f87171'};">${transCheckState.anc3_elem ? '✅ 완료' : '❌ 조건미달'}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: 유니온 연동 스킬 & 영웅 각성 역전 비교 -->
+      <div style="background:#0f172a; border:1.5px solid #334155; border-radius:14px; padding:16px; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+          <div>
+            <div style="font-size:14px; font-weight:900; color:#ffffff;">3️⃣ 사신 주력기 VS 아크메이지 전용 스킬·영웅 각성 비교 (유니온 연동)</div>
+            <div style="font-size:11.5px; color:#fde047; font-weight:700; margin-top:2px;">
+              ★ 핵심 조건: 지금 끼고 있는 사신 주력기(썬더 오빗·셀렌)보다 아크메이지 전용 스킬·영웅의 각성 단계가 더 높아야 합니다!
+            </div>
+          </div>
+          <button onclick="jumpToUnionForMageSetup()" style="background:linear-gradient(135deg, #4338ca 0%, #312e81 100%); border:1.5px solid #818cf8; color:#ffffff; padding:8px 14px; border-radius:9px; font-size:12px; font-weight:900; cursor:pointer;">
+            🏛️ 유니온 도우미에서 스펙 입력하고 오기 ➔
+          </button>
+        </div>
+
+        <!-- ⚔️ 사신 vs 아크메이지 각성 합계 맞대결 바 -->
+        <div style="background:#131d33; border:1.5px solid ${vsPassBool ? '#10b981' : '#ef4444'}; border-radius:10px; padding:10px 14px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div style="font-size:12.5px; color:#fda4af; font-weight:800;">
+            🗡️ 현재 사신 주력기: <strong style="color:#fff;">썬더 오빗(${reaperSkill.awk}각) + 셀렌(${reaperHero.awk}각) = 총 ${reaperTotalAwk}각</strong>
+          </div>
+          <div style="font-size:12.5px; color:#7dd3fc; font-weight:800;">
+            🔮 아크메이지 전용기: <strong style="color:#fff;">${mage3rdSkillName}(${mageMainSkill.awk}각) + 불베기(${mageSubSkill.awk}각) + 카엔(${mageHero.awk}각) = 총 ${mageTotalAwk}각</strong>
+          </div>
+          <span style="background:${vsPassBool ? '#059669' : '#e11d48'}; color:#fff; font-size:11.5px; font-weight:900; padding:3px 10px; border-radius:6px;">
+            ${vsPassBool ? '✅ 앜메 각성 우위 달성!' : '❌ 조건미달 (앜메 각성이 더 높아야 함)'}
+          </span>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(205px, 1fr)); gap:10px;">
+          ${renderUnitCheckCard(mageMainSkill, `앜메 3차 주력기 (${elemKr})`, isMageMainAwkHigher, `썬더 오빗(${reaperSkill.brk}돌·${reaperSkill.awk}각)보다 각성 높아야 함`)}
+          ${renderUnitCheckCard(mageSubSkill, '앜메 전용 버프 스킬', isHellSlashReady, '최소 9~10돌파 & 1각성 이상 필수')}
+          ${renderUnitCheckCard(mageHero, '앜메 전용 신화 영웅', isKaenReady, `셀렌(${reaperHero.brk}돌·${reaperHero.awk}각) 이상 각성 권장`)}
+          ${renderUnitCheckCard(commonOver, '공용 1순위 버프 스킬', commonOver.owned && commonOver.brk >= 9, '최소 9돌파 ~ 3각성 권장')}
+        </div>
+      </div>
+
+      <!-- STEP 4: 최종 판정 결과 -->
+      ${isAllPassed ? `
+        <div style="background:linear-gradient(135deg, #064e3b 0%, #022c22 100%); border:2px solid #10b981; border-radius:14px; padding:20px; text-align:center;">
+          <div style="font-size:28px; margin-bottom:4px;">🎉</div>
+          <div style="font-size:19px; font-weight:900; color:#34d399; margin-bottom:6px;">
+            모든 조건 충족! 지금 바로 [아크메이지(제네시스)]로 갈아타셔도 좋습니다!
+          </div>
+          <p style="font-size:13px; color:#d1fae5;">
+            아크메이지 핵심 스킬·영웅의 각성이 사신 세팅을 넘어섰습니다! 대낫 강타를 <strong>[강타 27단계 (고대 대낫 2 - 스킬 피해량 증폭 1,500%)]</strong>로 맞추고 전환하세요!
+          </p>
+        </div>
+      ` : `
+        <div style="background:linear-gradient(135deg, #450a0a 0%, #1e1b4b 100%); border:2px solid #ef4444; border-radius:14px; padding:18px 20px;">
+          <div style="font-size:17px; font-weight:900; color:#fca5a5; margin-bottom:8px;">
+            😢 아쉽지만 지금은 [사신]으로 조금 더 플레이하세요!
+          </div>
+          <div style="font-size:12.5px; color:#fecdd3; margin-bottom:8px;">현재 아래 항목들이 부족하여 전환 시 사신보다 딜이 떨어질 수 있습니다:</div>
+          <div style="background:rgba(15,23,42,0.9); border:1px solid #dc2626; border-radius:10px; padding:12px 14px; font-size:12.5px; color:#ffffff; line-height:1.75;">
+            ${missingReasons.join('<br>')}
+          </div>
+        </div>
+      `}
+
+      <!-- 하단: 더 자세한 공략이 알고 싶다면? 사신 -> 앜메 가이드 배너 링크 -->
+      <div onclick="openSpecialGuideDetail('transition')" style="margin-top:16px; background:linear-gradient(135deg, rgba(56,189,248,0.18) 0%, #0f172a 100%); border:2px solid #38bdf8; border-radius:14px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; cursor:pointer; box-shadow:0 4px 15px rgba(56,189,248,0.18);">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:24px;">🔄</span>
+          <div>
+            <div style="font-size:12px; color:#7dd3fc; font-weight:800;">📖 더 자세한 전환 공략과 사신·앜메 공용 스킬/영웅 목록이 알고 싶다면?</div>
+            <div style="font-size:15px; font-weight:900; color:#ffffff; margin-top:2px;">[사신 ➔ 아크메이지 전환 완벽 가이드] 보러가기</div>
+          </div>
+        </div>
+        <span style="background:#0284c7; color:#fff; font-weight:900; font-size:12.5px; padding:8px 14px; border-radius:8px; white-space:nowrap;">가이드 열기 ➔</span>
       </div>
     `;
   }
