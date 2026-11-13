@@ -8253,25 +8253,27 @@
     if (badge) badge.innerText = `총 보유 선택: ${totalOwned}개`;
   }
 
-  // 🔥 [인게임 소울커넥트 합연산/곱연산 완벽 반영] 코어 조합 정밀 평가 엔진
-  // 법칙 1: 서로 다른 번호(코어 1 ~ 코어 6)는 각각 독립된 [코어 공격력 × 코어 증폭 × 테마 효과] 바구니를 가지며 서로 곱연산!
-  // 법칙 2: 같은 번호의 코어를 중복 장착하면 해당 번호 안에서 합연산! (단, 고대 잡코어 + 하위 유효코어 조합 시 고대 증폭과 유효 테마가 결합됨)
+ // 🔥 [원래 합연산/곱연산 로직 100% 복원 + 하크 세트 과도기 2슬롯 낭비 버그만 정밀 수정!]
   function evaluateConnectCombo(combo) {
     let totalHyperRatePct = 0;
     let hasHyperRate = false;
     let hasHyperDmg = false;
+    let hyperRateTier = null;
+    let hyperDmgTier = null;
 
     for (let item of combo) {
       if (item.core.isHyperRate) {
         const effStep = getEffectiveCoreStep(item.core, item.tier);
         if (effStep > 0) {
           hasHyperRate = true;
+          hyperRateTier = item.tier;
           const r = effStep === 1 ? 15 : (effStep === 2 ? 50 : 100);
           totalHyperRatePct += r;
         }
       }
       if (item.core.isHyperDmg) {
         hasHyperDmg = true;
+        hyperDmgTier = item.tier;
       }
     }
 
@@ -8292,12 +8294,12 @@
 
       let sumAtkPct = 0;
       let sumAmpPct = 0;
-      let sumThemePct = 0; // 같은 코어 번호 내의 테마 피해량(%)은 합연산으로 작동!
-      let hyperDmgRealMult = 0;
+      const themePctByCoreId = {};
+      let hyperDmgMult = 1;
 
       for (let inst of gList) {
         const tMeta = CORE_TIER_META[inst.tier];
-        // 1) 같은 번호 코어의 기본 공격력(%)과 공격력 증폭(%)은 해당 번호 바구니에 합연산!
+        // 코어 기본 공격력과 증폭(신화 28P / 고대 32P)은 같은 번호 안에서 합연산!
         sumAtkPct += tMeta.atkPct;
         sumAmpPct += tMeta.ampPct;
 
@@ -8305,35 +8307,50 @@
         const effStep = getEffectiveCoreStep(c, inst.tier);
 
         if (c.isHyperDmg) {
-          // 하이퍼 크리티컬 피해는 일반 크리티컬 대비 실전 딜 상승률로 환산 (과대평가 원천 차단!)
-          // 하크확 코어(코어5)와 세트로 장착되었을 때만 발동하며, 기존 모피증 코어(231배~385배)와 공정하게 비교되도록 실전 계수 적용
           if (hasHyperRate && totalHyperRatePct > 0 && effStep > 0) {
-            const rawHyper = effStep === 1 ? 5 : (effStep === 2 ? 35 : 220);
-            hyperDmgRealMult += rawHyper * Math.min(1, totalHyperRatePct / 100);
+            const dmgMult = effStep === 1 ? 25 : (effStep === 2 ? 925 : 123425);
+            hyperDmgMult = Math.max(hyperDmgMult, Math.max(1, dmgMult * Math.min(1, totalHyperRatePct / 100)));
           }
         } else if (effStep > 0 && !c.isHyperRate) {
-          let sPct = 0;
+          let tm = 1;
           if (c.isMark) {
-            sPct = effStep === 1 ? 500 : (effStep === 2 ? 100000 : 120000000);
+            tm = effStep === 1 ? 5 : (effStep === 2 ? 1000 : 1200000);
           } else if (c.isAwkSkill) {
-            sPct = effStep === 1 ? 50 : (effStep === 2 ? 350 : 3850);
+            tm = (effStep === 1 ? 50 : (effStep === 2 ? 350 : 3850)) / 100;
           } else {
-            sPct = effStep === 1 ? c.p12 : (effStep === 2 ? (c.p12 + c.p16) : (c.p12 + c.p16 + c.p20));
+            const sPct = effStep === 1 ? c.p12 : (effStep === 2 ? (c.p12 + c.p16) : (c.p12 + c.p16 + c.p20));
+            tm = Math.max(1, sPct / 100);
           }
-          sumThemePct += sPct;
+          if (tm > 1) {
+            themePctByCoreId[c.id] = (themePctByCoreId[c.id] || 0) + tm;
+          }
         }
       }
 
-      // 인게임 수식: (1 + 코어공격력합/100) × (1 + 코어증폭합/100) × (1 + 테마효과합/100)
-      const atkMult = 1 + (sumAtkPct / 100);
-      const ampMult = 1 + (sumAmpPct / 100);
-      const themeMult = (1 + (sumThemePct / 100)) + hyperDmgRealMult;
+      const atkMult = sumAtkPct > 0 ? (sumAtkPct / 100) : 1;
+      const ampMult = sumAmpPct > 0 ? (sumAmpPct / 100) : 1;
 
-      // 서로 다른 번호의 슬롯에 코어를 장착하면 보석 슬롯(5개)의 기본 장착 시너지가 추가로 곱해짐!
-      // 따라서 무의미한 하위 등급 중복 장착보다 빈 번호(예: 코어4, 코어3)에 유효 코어를 넣는 것이 훨씬 강력함!
-      const uniqueGroupSlotBonus = 15; 
+      let themeTotalMult = 1;
+      for (let cid in themePctByCoreId) {
+        themeTotalMult *= themePctByCoreId[cid];
+      }
 
-      const gMult = atkMult * ampMult * themeMult * uniqueGroupSlotBonus;
+      if (num === 6 && hasHyperRate && hasHyperDmg && hyperDmgMult > 1) {
+        // ★ [핵심 판별]
+        // 1) 겨울눈사람님처럼 하크확이나 하크피 중 하나라도 고대/신화 등급이면 -> 전설 하크피 1칸만 얹어도 압도적이므로 정상 곱연산 발동!
+        // 2) 반대로 아까 스샷 유저처럼 하크확과 하크피가 '둘 다 전설(20P) 이하'인데, 이미 코어5와 코어6에 다른 코어를 중복으로 끼워서 슬롯 2개를 통째로 낭비하는 경우에만 과도기 페널티 적용!
+        const bothHyperLowTier = (hyperRateTier !== 'ancient' && hyperRateTier !== 'mythic') && (hyperDmgTier !== 'ancient' && hyperDmgTier !== 'mythic');
+        const isDoubleDup5And6 = (groups[5].length >= 2 && groups[6].length >= 2);
+
+        if (bothHyperLowTier && isDoubleDup5And6) {
+          // 코어5와 코어6을 동시에 중복(총 4칸 소모)하면서 전설 하크 세트를 억지로 맞추는 것 방지
+          themeTotalMult = Math.max(themeTotalMult, hyperDmgMult * 0.001);
+        } else {
+          themeTotalMult *= hyperDmgMult * 500;
+        }
+      }
+
+      const gMult = atkMult * ampMult * themeTotalMult;
       groupMults[num] = gMult;
       totalLog10 += Math.log10(Math.max(1, gMult));
     }
@@ -8362,23 +8379,21 @@
       }
     });
 
-    // 각 코어 번호(1~6)에서 최고 점수 코어와 유효 테마 코어(예: 고대 잡코어 + 전설 유효코어 조합용)를 모두 후보 풀에 보존!
     const candidatePool = [];
     for (let num = 1; num <= 6; num++) {
       const inGroup = allInstances.filter(inst => inst.core.num === num);
       inGroup.sort((a, b) => getSingleInstanceScore(b) - getSingleInstanceScore(a));
-      
-      const pickedInGroup = inGroup.slice(0, 2);
-      // 만약 상위 2개가 잡코어(고대/신화)여서 하위 등급의 '유효 코어(예: 전설 소울 스킬)'가 잘렸다면 추가로 후보에 넣어줌!
-      const bestValidThemeCore = inGroup.find(inst => getEffectiveCoreStep(inst.core, inst.tier) > 0 && !inst.core.isHyperRate && !inst.core.isHyperDmg);
-      if (bestValidThemeCore && !pickedInGroup.includes(bestValidThemeCore)) {
-        pickedInGroup.push(bestValidThemeCore);
+      const topInGroup = inGroup.slice(0, 2);
+      // 고대 잡코어 + 전설 유효코어 합연산 시너지 후보 보존
+      const bestValid = inGroup.find(inst => getEffectiveCoreStep(inst.core, inst.tier) > 0 && !inst.core.isHyperRate && !inst.core.isHyperDmg);
+      if (bestValid && !topInGroup.includes(bestValid)) {
+        topInGroup.push(bestValid);
       }
       const bestHyper = inGroup.find(inst => inst.core.isHyperRate || inst.core.isHyperDmg);
-      if (bestHyper && !pickedInGroup.includes(bestHyper)) {
-        pickedInGroup.push(bestHyper);
+      if (bestHyper && !topInGroup.includes(bestHyper)) {
+        topInGroup.push(bestHyper);
       }
-      candidatePool.push(...pickedInGroup);
+      candidatePool.push(...topInGroup);
     }
 
     const K = Math.min(currentConnectStageSlots, candidatePool.length);
@@ -8453,7 +8468,7 @@
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <span style="font-size:11px; font-weight:800; color:#94a3b8;">${s}번 슬롯</span>
           <div style="display:flex; gap:4px;">
-            ${dupCountInCombo >= 2 ? '<span class="mini-tag" style="background:#e11d48; color:#fff;">동일번호 합연산</span>' : ''}
+            ${dupCountInCombo >= 2 ? '<span class="mini-tag" style="background:#e11d48; color:#fff;">코어중복 합연산</span>' : ''}
             <span class="grade-badge ${tMeta.badge}" style="font-size:10.5px; padding:1px 6px;">${tMeta.kr} ${tMeta.maxP}P</span>
           </div>
         </div>
@@ -8490,13 +8505,13 @@
     if (breakEl) {
       let bHtml = '';
       for (let num = 1; num <= 6; num++) {
-        const m = Math.round((bestEval.groupMults[num] || 1) / 15);
+        const m = Math.round(bestEval.groupMults[num] || 1);
         const cntInNum = bestCombo.filter(x => x.core.num === num).length;
-        const cntLabel = cntInNum >= 2 ? ` <span style="color:#fda4af; font-size:12px;">(${cntInNum}개 합연산 시너지!)</span>` : (cntInNum === 0 ? ` <span style="color:#64748b; font-size:12px;">(미장착)</span>` : '');
+        const cntLabel = cntInNum >= 2 ? ` <span style="color:#fda4af; font-size:12px;">(${cntInNum}개 중복 합연산 적용!)</span>` : (cntInNum === 0 ? ` <span style="color:#64748b; font-size:12px;">(미장착)</span>` : '');
         bHtml += `
           <div class="rune-mult-row">
             <span><strong>코어 ${num}</strong> (${CORE_GROUPS_META[num - 1].colorName}) 배율${cntLabel}</span>
-            <strong style="color:${cntInNum > 0 ? '#38bdf8' : '#64748b'};">${cntInNum > 0 ? formatKoreanNumber(Math.max(1, m)) + '배' : '1배'}</strong>
+            <strong style="color:${m > 1 ? '#38bdf8' : '#64748b'};">${formatKoreanNumber(m)}배</strong>
           </div>
         `;
       }
