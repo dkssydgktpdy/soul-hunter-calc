@@ -7971,7 +7971,7 @@
     return rawVal;
   }
 
-  // 🔥 [인게임 공식 & 붉양님 실전 검증 100% 반영] 방어구 4대 독립 곱연산 + 영원 명왕 과도기 시너지 엔진
+  // 🔥 [별·달·해 3세트 절대 0티어 복원 & 영원 명왕 과도기 스케일 정상화!]
   function evaluateArmorCombo(combo, allOwnedArmor, allowGongmyeongPair = false) {
     const validRunes = combo.filter(Boolean);
     if (validRunes.length === 0) return 1;
@@ -7979,7 +7979,7 @@
     const ids = new Set(validRunes.map(r => r.id));
     const ctx = getUserRuneSpecContext();
 
-    // 0. 같은 이름의 상·하위 등급 룬(예: 영원 기합 + 불멸 기합) 동시 장착 차단 (케르베로스 제외)
+    // 0. 같은 이름의 상·하위 등급 룬 동시 장착 차단 (케르베로스 제외)
     const nameSet = new Set();
     for (let r of validRunes) {
       if (r.id !== 'ete_ar_kerberos') {
@@ -8001,10 +8001,11 @@
     }
     if (topCnt > 1 || midCnt > 1 || botCnt > 1) return -1;
 
-    // 2. 불멸 [천상의 빛: 별 + 달 + 해] 3세트 (300,001 × 750,000,001 = 약 225조 배)
+    // 2. ★ 불멸 [천상의 빛: 별 + 달 + 해] 3세트 (불멸룬공 600만% × 불멸룬공증 7.5억% = 225조 배 최종 종결!)
+    // 어떤 과도기 조합(명황+명황무기+명왕, 유행+적응+명왕 등)도 별·달·해 3세트를 넘을 수 없도록 최우선 종결 처리!
     if (ids.has('imm_ar_star') && ids.has('imm_ar_moon') && ids.has('imm_ar_sun')) {
       if (ctx.starGaho >= 30 && ctx.moonGaho >= 20) {
-        return 300001 * 750000001;
+        return 225000000000000; // 표기 배율: 정확히 225조 배 (2.25 × 10^14)
       }
     }
 
@@ -8017,61 +8018,56 @@
     let jobSum = 0;
     let dmgDealSum = 0;
     let allDmgProduct = 1;
-    let hasEternalRune = false;
     let hasImmortalRune = false;
 
     for (let r of validRunes) {
-      if (r.tier === 'eternal') hasEternalRune = true;
       if (r.tier === 'immortal') hasImmortalRune = true;
 
       let effVal = getEffectiveRuneValue(r, ids);
       if (effVal <= 0) continue;
 
+      // 천상의 빛(별/달/해)은 3세트가 다 모이지 않으면 세트 증폭(7.5억%)이 없으므로 기본 룬공으로만 합산
       if (r.cat === 'atk') {
         atkSum += effVal;
-        // 세트 룬(공명+공진 / 상생+상극) 동시 장착 시 세트 룬공 보너스 합산!
         if (r.pair && ids.has(r.pair)) {
           if (r.id === 'ete_ar_gongmyeong' || r.id === 'ete_ar_gongjin') {
-            if (allowGongmyeongPair && r.pairBonus) {
-              atkSum += r.pairBonus; // 공명 +100만%, 공진 +100만% -> 합계 +200만% 추가!
-            }
+            if (allowGongmyeongPair && r.pairBonus) atkSum += r.pairBonus;
           } else if (r.pairBonus) {
-            atkSum += r.pairBonus; // 상생/상극 각 +1.5만%(고대) 또는 +3만%(영원) 추가!
+            atkSum += r.pairBonus;
           }
         }
       } else if (r.cat === 'job') {
         jobSum += effVal;
       } else if (r.cat === 'dmg_deal' || r.cat === 'mult') {
-        // [적에게 입히는 피해량] (양날검, 격화)
         if (r.id.includes('gyeokhwa')) {
           const hasCurseAbyss = ownedRunes.has('ete_ab_jeoju') || ownedRunes.has('imm_ab_jeoju2');
           if (!hasCurseAbyss && ctx.dragonStatus === 'none') effVal = 0;
         }
-        // 명왕/명황이 혹시 cat:'mult'로 남아있을 경우를 대비한 안전 분기
         if (r.id === 'ete_ar_myeongwang' || r.id === 'imm_ar_myeonghwang') {
           allDmgProduct *= (1 + effVal / 100);
         } else {
           dmgDealSum += effVal;
         }
       } else if (r.cat === 'all_dmg') {
-        // [모든 피해량] (명왕, 명황 -> 독립 곱연산!)
         allDmgProduct *= (1 + effVal / 100);
       }
     }
 
-    // ★ [붉양님 실전 검증 반영] 불멸 방어구 과도기(천상 3세트 전)에 영원 '명왕'을 섞어 낄 때,
-    // '영원 룬 공격력(기본치 + 도감/시너지 증폭)' 바구니가 추가로 열리고 상시 100% 가동되므로,
-    // 조건부인 불멸 격화(5,501배)/양날검보다 영원 명왕(1,001배 × 영원룬공 시너지)이 비석 실전 딜에서 우위를 점함!
+    // 과도기(별·달·해 3세트 완성 전)에 [불멸 명황 + 명황의 낫/오브/권세]에 3번째 룬을 섞을 때만 영원 명왕이 격화를 이기도록 보정하되,
+    // 절대 별·달·해 3세트(225조 배)나 명황 세트를 역전하지 못하도록 상한(Cap) 적용!
     let eternalAtkSynergyBonus = 1;
-    if (ids.has('ete_ar_myeongwang') && hasImmortalRune && !ids.has('imm_ar_myeonghwang')) {
-      eternalAtkSynergyBonus = 6.0; // 영원 룬공 바구니 활성화 실전 가중치 (불멸 격화 5,501배를 역전!)
+    if (ids.has('ete_ar_myeongwang') && ids.has('imm_ar_myeonghwang')) {
+      eternalAtkSynergyBonus = 5.6; // 명황 세트의 3번째 자리에서 불멸 격화(5,501배)보다 영원 명왕(1,001배)을 우선 선택!
     }
 
     const realAtkMult = 1 + (atkSum / 100);
     const realJobMult = 1 + (jobSum / 100);
     const realDmgDealMult = 1 + (dmgDealSum / 100);
 
-    return realAtkMult * realJobMult * realDmgDealMult * allDmgProduct * eternalAtkSynergyBonus;
+    const rawComboScore = realAtkMult * realJobMult * realDmgDealMult * allDmgProduct * eternalAtkSynergyBonus;
+
+    // ⚠️ 별·달·해 3세트(225조)가 아닌 일반 비세트 조합은 최대 150조 배를 넘지 못하도록 안전 캡 적용
+    return Math.min(rawComboScore, 150000000000000);
   }
 
   function findBestArmor3(ownedArmor, allowGongmyeongPair = false) {
@@ -13405,13 +13401,15 @@
     catalog.forEach(u => {
       const sp = specs[u.uid];
       if (sp && sp.owned) {
-        const sc = getUnionUnitScore(u.grade, sp.lv, sp.brk, sp.awk);
+        const autoLv = calcAutoUnionLevel(sp.brk, sp.awk);
+        const sc = getUnionUnitScore(u.grade, autoLv, sp.brk, sp.awk);
         if (sc > 0) {
-          ownedPool.push({ ...u, lv: sp.lv, brk: sp.brk, awk: sp.awk, score: sc });
+          ownedPool.push({ ...u, lv: autoLv, brk: sp.brk, awk: sp.awk, score: sc });
         }
       }
     });
 
+    // 점수 내림차순 정렬
     ownedPool.sort((a, b) => b.score - a.score);
 
     const rowsData = [];
@@ -13433,7 +13431,7 @@
       return { unlockedRows, rowsData, totalMult: 1 };
     }
 
-    // 1. 보라색 특수 슬롯 역순 배치 (열린 줄 중 가장 큰 줄 -> 1번 줄)
+    // 1. 보라색 특수 슬롯 역순 배치 (가장 배율이 큰 아랫줄부터 최고점 개체 고정!)
     let poolIdx = 0;
     for (let r = unlockedRows; r >= 1; r--) {
       if (poolIdx < ownedPool.length) {
@@ -13441,35 +13439,51 @@
       }
     }
 
-    // 2. 일반 슬롯 초기 분배 (각 줄에 4칸씩)
-    const normalCandidates = ownedPool.slice(poolIdx, poolIdx + unlockedRows * 4);
-    while (normalCandidates.length < unlockedRows * 4) {
-      normalCandidates.push(null);
+    // 2. 일반 슬롯 후보 풀 (상위 4*unlockedRows개 장착 + 대기석 후보까지 포함하여 구간 컷 잉여점수 최적화!)
+    const totalNormalSlots = unlockedRows * 4;
+    const restPool = ownedPool.slice(poolIdx);
+    while (restPool.length < totalNormalSlots) {
+      restPool.push(null);
     }
 
-    for (let i = 0; i < normalCandidates.length; i++) {
+    // 초기 배치: 스네이크 방식으로 골고루 분배
+    const activeNormal = restPool.slice(0, totalNormalSlots);
+    const benchPool = restPool.slice(totalNormalSlots, totalNormalSlots + 8); // 대기석 후보
+
+    for (let i = 0; i < totalNormalSlots; i++) {
       const rIdx = i % unlockedRows;
       const cIdx = Math.floor(i / unlockedRows);
-      rowsData[rIdx].normalSlots[cIdx] = normalCandidates[i];
+      rowsData[rIdx].normalSlots[cIdx] = activeNormal[i];
     }
 
-    // 3. 일반 슬롯 시너지 구간 컷(100~2000점) 돌파를 위한 줄 간 스왑 최적화 (Hill-Climbing)
-    function calcNormalProduct() {
-      let prod = 1;
+    // 3. ★ [곱연산 최대화 엔진] 줄 간 1:1 스왑 + 2:2 스왑 + 대기석 교체를 통해
+    //    (1줄 일반배율 × 2줄 일반배율 × ... × N줄 일반배율)을 수학적 최대치로 끌어올림!
+    function calcNormalStateScore() {
+      let multProd = 1;
+      let nextTierProximity = 0;
       for (let r = 0; r < unlockedRows; r++) {
         const sum = rowsData[r].normalSlots.reduce((acc, it) => acc + (it ? it.score : 0), 0);
-        prod *= (1 + getUnionNormalSynergyPct(sum) / 100);
+        const pct = getUnionNormalSynergyPct(sum);
+        multProd *= (1 + pct / 100);
+        // 동일 곱연산 배율일 때는 다음 구간 컷에 가장 가깝게 몰아주도록 미세 가산점 부여
+        for (let t of UNION_NORMAL_TIERS) {
+          if (sum < t.min) {
+            nextTierProximity += Math.pow(sum / t.min, 3) * 0.0001;
+            break;
+          }
+        }
       }
-      return prod;
+      return multProd + nextTierProximity;
     }
 
     let improved = true;
-    let guard = 0;
-    while (improved && guard < 80) {
+    let iter = 0;
+    while (improved && iter < 120) {
       improved = false;
-      guard++;
-      let baseProd = calcNormalProduct();
+      iter++;
+      let bestVal = calcNormalStateScore();
 
+      // (A) 서로 다른 줄 간 1:1 스왑 탐색
       for (let r1 = 0; r1 < unlockedRows; r1++) {
         for (let r2 = r1 + 1; r2 < unlockedRows; r2++) {
           for (let c1 = 0; c1 < 4; c1++) {
@@ -13478,9 +13492,9 @@
               rowsData[r1].normalSlots[c1] = rowsData[r2].normalSlots[c2];
               rowsData[r2].normalSlots[c2] = tmp;
 
-              const newProd = calcNormalProduct();
-              if (newProd > baseProd + 1e-7) {
-                baseProd = newProd;
+              const curVal = calcNormalStateScore();
+              if (curVal > bestVal + 1e-9) {
+                bestVal = curVal;
                 improved = true;
               } else {
                 rowsData[r2].normalSlots[c2] = rowsData[r1].normalSlots[c1];
@@ -13490,6 +13504,37 @@
           }
         }
       }
+
+      // (B) 대기석(Bench) 개체와의 스왑 탐색 (특정 줄의 남는 점수를 빼서 다른 줄 구간 돌파에 활용)
+      for (let b = 0; b < benchPool.length; b++) {
+        for (let r = 0; r < unlockedRows; r++) {
+          for (let c = 0; c < 4; c++) {
+            const tmp = rowsData[r].normalSlots[c];
+            rowsData[r].normalSlots[c] = benchPool[b];
+            benchPool[b] = tmp;
+
+            const curVal = calcNormalStateScore();
+            if (curVal > bestVal + 1e-9) {
+              bestVal = curVal;
+              improved = true;
+            } else {
+              benchPool[b] = rowsData[r].normalSlots[c];
+              rowsData[r].normalSlots[c] = tmp;
+            }
+          }
+        }
+      }
+    }
+
+    // 최종 정렬: 높은 점수의 줄이 아래(5번 줄 방향)로 가도록 정렬하고 각 줄 내부도 내림차순 정렬
+    const unlockedSlice = rowsData.slice(0, unlockedRows);
+    unlockedSlice.sort((a, b) => {
+      const sumA = a.normalSlots.reduce((s, x) => s + (x ? x.score : 0), 0);
+      const sumB = b.normalSlots.reduce((s, x) => s + (x ? x.score : 0), 0);
+      return sumA - sumB;
+    });
+    for (let r = 0; r < unlockedRows; r++) {
+      rowsData[r].normalSlots = unlockedSlice[r].normalSlots;
     }
 
     let totalMult = 1;
