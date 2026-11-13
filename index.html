@@ -2784,6 +2784,40 @@
     .union-nav-type-btn { margin-bottom: 0; justify-content: center; }
   }
 
+  /* ==================== 🏛️ 유니온 도감 인게임 4열 그리드 (PC 4칸 / 모바일 2칸 완벽 고정) ==================== */
+  .union-roster-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  @media (max-width: 860px) {
+    .union-roster-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 8px !important;
+    }
+  }
+
+  .union-unit-editor {
+    background: #131d33;
+    border: 1.5px solid #334155;
+    border-radius: 12px;
+    padding: 10px 12px;
+    transition: all 0.15s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .union-unit-editor.owned {
+    border-color: #38bdf8 !important;
+    background: linear-gradient(145deg, rgba(56, 189, 248, 0.12) 0%, #0f172a 100%) !important;
+  }
+
   /* ==================== 🔍 아바타 호버 시 사진 크게 보기 & 말풍선 확대 효과 ==================== */
   #main-avatar {
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
@@ -3435,7 +3469,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
 
@@ -13180,16 +13213,19 @@
 
     if (!spec || !spec.owned) {
       if (cardEl) cardEl.classList.remove('owned');
-      if (brkEl && !skipInputVal) brkEl.value = "";
+      if (brkEl) {
+        if (!skipInputVal) brkEl.value = "";
+        brkEl.style.borderColor = "#334155";
+        brkEl.style.background = "#090d16";
+      }
       if (scoreBadge) {
-        scoreBadge.innerText = `미보유 (0/${maxScore})`;
-        scoreBadge.style.color = '#64748b';
+        scoreBadge.innerHTML = `<span style="color:#64748b;">미보유 (0/${maxScore})</span>`;
       }
       [1, 2, 3].forEach(a => {
         const btn = document.getElementById(`u_awk_btn_${uid}_${a}`);
         if (btn) {
           btn.style.background = '#0f172a';
-          btn.style.borderColor = '#475569';
+          btn.style.borderColor = '#334155';
           btn.style.color = '#94a3b8';
           btn.style.boxShadow = 'none';
         }
@@ -13198,12 +13234,17 @@
       const autoLv = calcAutoUnionLevel(spec.brk, spec.awk);
       spec.lv = autoLv;
       if (cardEl) cardEl.classList.add('owned');
-      if (brkEl && !skipInputVal) brkEl.value = String(spec.brk);
+      if (brkEl) {
+        if (!skipInputVal) brkEl.value = String(spec.brk);
+        // 입력 완료 시 눈에 확 띄는 에메랄드/시안 테두리 및 배경 점등!
+        brkEl.style.borderColor = "#10b981";
+        brkEl.style.background = "rgba(16, 185, 129, 0.14)";
+      }
 
       const sc = getUnionUnitScore(grade, autoLv, spec.brk, spec.awk);
+      const awkTag = spec.awk > 0 ? `·<span style="color:#f0abfc;">${spec.awk}각</span>` : '';
       if (scoreBadge) {
-        scoreBadge.innerText = `Lv.${autoLv} · ${sc}/${maxScore}점`;
-        scoreBadge.style.color = '#38bdf8';
+        scoreBadge.innerHTML = `<span style="color:#fde047;">[${spec.brk}돌${awkTag}]</span> <span style="color:#38bdf8;">${sc}/${maxScore}점</span>`;
       }
 
       [1, 2, 3].forEach(a => {
@@ -13211,9 +13252,9 @@
         if (btn) {
           const isAct = (spec.awk === a);
           btn.style.background = isAct ? 'linear-gradient(135deg, #9333ea 0%, #581c87 100%)' : '#0f172a';
-          btn.style.borderColor = isAct ? '#e879f9' : '#475569';
+          btn.style.borderColor = isAct ? '#e879f9' : '#334155';
           btn.style.color = isAct ? '#ffffff' : '#cbd5e1';
-          btn.style.boxShadow = isAct ? '0 0 10px rgba(217, 70, 239, 0.5)' : 'none';
+          btn.style.boxShadow = isAct ? '0 0 8px rgba(217, 70, 239, 0.5)' : 'none';
         }
       });
     }
@@ -13257,8 +13298,8 @@
     const titleEl = document.getElementById('union_roster_title');
     if (titleEl) {
       titleEl.innerText = currentUnionType === 'skill'
-        ? '📋 보유 스킬 스펙 설정 (신화 · 전설 · 특급 | 인게임 4열 순서)'
-        : '📋 보유 영웅 스펙 설정 (신화 · 전설 · 특급 | 인게임 4열 순서)';
+        ? '📋 보유 스킬 스펙 설정 (신화 · 전설 · 특급)'
+        : '📋 보유 영웅 스펙 설정 (신화 · 전설 · 특급)';
     }
 
     const catalog = getUnionCatalog(currentUnionType);
@@ -13279,47 +13320,44 @@
         const curLv = isOwned ? calcAutoUnionLevel(curBrk, curAwk) : 0;
         if (isOwned) spec.lv = curLv;
         const sc = isOwned ? getUnionUnitScore(u.grade, curLv, curBrk, curAwk) : 0;
+        const awkTag = curAwk > 0 ? `·<span style="color:#f0abfc;">${curAwk}각</span>` : '';
 
         const thumbHtml = u.img
-          ? `<div style="width:40px; height:40px; border-radius:8px; background:#0f172a; border:1px solid #475569; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-              <img src="${u.img}" alt="${u.name}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.PNG');}else{this.parentElement.innerHTML='<span style=\\'font-size:9px;color:#94a3b8;text-align:center;line-height:1.1;font-weight:800;\\'>이미지<br>준비중</span>';}">
+          ? `<div style="width:36px; height:36px; border-radius:8px; background:#0f172a; border:1px solid #475569; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <img src="${u.img}" alt="${u.name}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.PNG');}else{this.parentElement.innerHTML='<span style=\\'font-size:8.5px;color:#94a3b8;text-align:center;line-height:1.1;font-weight:800;\\'>준비중</span>';}">
             </div>`
-          : `<div style="width:40px; height:40px; border-radius:8px; background:#0f172a; border:1px dashed #475569; display:flex; align-items:center; justify-content:center; font-size:9px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800; flex-shrink:0;">이미지<br>준비중</div>`;
+          : `<div style="width:36px; height:36px; border-radius:8px; background:#0f172a; border:1px dashed #475569; display:flex; align-items:center; justify-content:center; font-size:8.5px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800; flex-shrink:0;">준비중</div>`;
 
         return `
-          <div class="union-unit-editor ${isOwned ? 'owned' : ''}" id="u_editor_${u.uid}" data-uname="${u.name}">
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <div class="union-unit-editor ${isOwned ? 'owned' : ''}" id="u_editor_${u.uid}" data-uname="${u.name}" style="padding:9px 10px;">
+            <div style="display:flex; align-items:center; gap:7px; margin-bottom:7px;">
               ${thumbHtml}
               <div style="min-width:0; flex:1;">
-                <div style="font-size:13.5px; font-weight:900; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${u.name} ${u.attr}">${u.name} ${u.attr}</div>
-                <div id="u_score_badge_${u.uid}" style="font-size:11.5px; font-weight:900; color:${isOwned ? '#38bdf8' : '#64748b'};">
-                  ${isOwned ? `Lv.${curLv} · ${sc}/${u.maxScore}점` : `미보유 (0/${u.maxScore})`}
+                <div style="font-size:12.5px; font-weight:900; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${u.name} ${u.attr}">${u.name.split('(')[0]} ${u.attr}</div>
+                <div id="u_score_badge_${u.uid}" style="font-size:11px; font-weight:900; margin-top:1px;">
+                  ${isOwned ? `<span style="color:#fde047;">[${curBrk}돌${awkTag}]</span> <span style="color:#38bdf8;">${sc}/${u.maxScore}점</span>` : `<span style="color:#64748b;">미보유 (0/${u.maxScore})</span>`}
                 </div>
               </div>
             </div>
 
-            <!-- 1. 장비 인벤토리 방식: 돌파(0~10) 자동 탭(Auto-Tab) 입력칸 -->
-            <div style="display:flex; align-items:center; gap:6px; background:#090d16; border:1.5px solid #475569; border-radius:8px; padding:4px 10px; margin-bottom:6px;">
-              <span style="font-size:11.5px; font-weight:800; color:#94a3b8; white-space:nowrap;"> 돌파(0~10)입력</span>
-              <input type="text"
-                     inputmode="numeric"
-                     class="union-brk-autotab"
-                     id="u_brk_${u.uid}"
-                     value="${isOwned ? curBrk : ''}"
-                     placeholder="미보유"
-                     maxlength="2"
-                     onfocus="this.select()"
-                     onkeydown="handleUnionBrkKeyDown(event, '${currentUnionType}', '${u.uid}', '${u.grade}')"
-                     oninput="handleUnionBrkAutoTab(this, '${currentUnionType}', '${u.uid}', '${u.grade}')"
-                     style="padding:4px 2px !important; font-size:15px !important; font-weight:900 !important; text-align:center !important; background:transparent !important; border:none !important; color:#fde047 !important; width:100% !important;">
-              <span style="font-size:11.5px; font-weight:800; color:#cbd5e1;">돌</span>
-            </div>
+            <!-- 1. 장비 소환 인벤토리 스타일: 카드 가로 100% 꽉 차는 와이드 돌파수 기입란! -->
+            <input type="text"
+                   inputmode="numeric"
+                   class="union-brk-autotab"
+                   id="u_brk_${u.uid}"
+                   value="${isOwned ? curBrk : ''}"
+                   placeholder="돌파수 기입란 (0~10)"
+                   maxlength="2"
+                   onfocus="this.select()"
+                   onkeydown="handleUnionBrkKeyDown(event, '${currentUnionType}', '${u.uid}', '${u.grade}')"
+                   oninput="handleUnionBrkAutoTab(this, '${currentUnionType}', '${u.uid}', '${u.grade}')"
+                   style="width:100% !important; padding:7px 6px !important; font-size:13.5px !important; font-weight:900 !important; text-align:center !important; background:${isOwned ? 'rgba(16, 185, 129, 0.14)' : '#090d16'} !important; border:1.5px solid ${isOwned ? '#10b981' : '#334155'} !important; border-radius:8px !important; color:#fde047 !important; margin-bottom:6px !important; box-shadow:inset 0 1px 3px rgba(0,0,0,0.5) !important;">
 
-            <!-- 2. 원클릭 [1각 / 2각 / 3각] 버튼 3개 -->
-            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:5px;">
+            <!-- 2. 절대 줄바꿈되지 않는 슬림 1줄 [1각 / 2각 / 3각] 버튼 -->
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px;">
               ${[1, 2, 3].map(a => {
                 const isAct = isOwned && curAwk === a;
-                return `<button id="u_awk_btn_${u.uid}_${a}" onclick="onUnionAwkBtnClick('${currentUnionType}', '${u.uid}', '${u.grade}', ${a})" style="padding:7px 4px; border-radius:7px; font-size:12px; font-weight:900; cursor:pointer; transition:all 0.15s; border:1.5px solid ${isAct ? '#e879f9' : '#475569'}; background:${isAct ? 'linear-gradient(135deg, #9333ea 0%, #581c87 100%)' : '#0f172a'}; color:${isAct ? '#ffffff' : '#cbd5e1'}; box-shadow:${isAct ? '0 0 10px rgba(217, 70, 239, 0.5)' : 'none'};">★ ${a}각성</button>`;
+                return `<button id="u_awk_btn_${u.uid}_${a}" onclick="onUnionAwkBtnClick('${currentUnionType}', '${u.uid}', '${u.grade}', ${a})" style="padding:5px 2px; border-radius:6px; font-size:11.5px; font-weight:900; white-space:nowrap; cursor:pointer; transition:all 0.15s; border:1.5px solid ${isAct ? '#e879f9' : '#334155'}; background:${isAct ? 'linear-gradient(135deg, #9333ea 0%, #581c87 100%)' : '#0f172a'}; color:${isAct ? '#ffffff' : '#cbd5e1'}; box-shadow:${isAct ? '0 0 8px rgba(217, 70, 239, 0.5)' : 'none'};">${a}각</button>`;
               }).join('')}
             </div>
           </div>
