@@ -9978,6 +9978,12 @@
     document.getElementById('t2_used_tp').innerText = `${sim.usedTP.toLocaleString()}P`;
     document.getElementById('t2_rem_tp').innerText = `${sim.remTP}P`;
 
+    // 🎚️ 슬라이더 레벨이 Lv.120 이상일 때만 경고창 즉시 노출 (120 미만이면 자동 숨김!)
+    const warnBannerEl = document.getElementById('t2_lv120_warning_banner');
+    if (warnBannerEl) {
+      warnBannerEl.style.display = (currentTrait2ndLv >= 120) ? 'block' : 'none';
+    }
+
     const multSummaryEl = document.getElementById('t2_mult_summary_bar');
     if (multSummaryEl) {
       const combLog10 = Math.log10(Math.max(1, sim.totalMarkMult)) + Math.log10(Math.max(1, sim.totalCritMult)) + Math.log10(Math.max(1, sim.totalCurseMult));
@@ -11674,6 +11680,20 @@
 
             <!-- 실시간 표식 × 크리티컬 × 저주 곱연산 시너지 계산 바 -->
             <div id="t2_mult_summary_bar" style="margin-top:12px; padding-top:10px; border-top:1px dashed #334155; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; font-size:12px; color:#e2e8f0; font-weight:700;"></div>
+          </div>
+
+          <!-- ⚠️ [Lv.120+ 엔드스펙 유저 필독] Lv.120+ 예측치 안내 & 20초 비석치기 스크린샷 비교 경고 -->
+          <div id="t2_lv120_warning_banner" style="display:${currentTrait2ndLv >= 120 ? 'block' : 'none'}; background:linear-gradient(135deg, rgba(239, 68, 68, 0.22) 0%, rgba(15, 23, 42, 0.95) 100%); border:2px solid #ef4444; border-radius:12px; padding:13px 16px; margin-bottom:16px; box-shadow:0 0 16px rgba(239, 68, 68, 0.25);">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
+              <span style="font-size:18px;">🚨</span>
+              <strong style="color:#fca5a5; font-size:14px;">[Lv.120+ 초고레벨 엔드스펙 유저 필독 주의사항]</strong>
+            </div>
+            <div style="font-size:12.5px; color:#e2e8f0; line-height:1.65; word-break:keep-all;">
+              • <strong>[수치 안내] 현재 공식 실측 데이터는 Lv.110까지의 표식 및 크리티컬 피해량만 확인</strong>된 상태이며, <strong>Lv.120 이후의 수치는 성장 규칙에 따른 '예측 수치'</strong>입니다. 따라서 초고레벨일수록 인게임 실제 딜 체감을 더더욱 직접 실험해 보셔야 합니다!<br>
+              • 또한 <strong>수련동굴 비석치기는 '단 20초' 동안만 측정</strong>되므로, 표식 3줄(추가 획득)이 부족할 경우 250스택(풀중첩 16배 곱연산) 도달이 늦어져 20초 누적 딜이 하락할 수 있습니다.<br>
+              • 따라서 <strong>Lv.120 이상 고스펙 유저분들은 본 세팅을 맹신하지 마시고 '참고용'으로만 활용</strong>하시기 바랍니다.<br>
+              • <strong>반드시 기존 2차 특성 세팅을 '스크린샷'으로 찍어 저장</strong>해 두신 뒤, 본 세팅과 번갈아 <strong>비석치기 20초를 3~5회 측정하여 평균 누적 딜이 실제로 상승하는지 직접 비교·판단</strong> 후 정착하세요! (기존 하이브리드 세팅이 비석 딜이 더 높다면 표식 피해량과 표식 3줄을 더 투자하는 것이 유리합니다)
+            </div>
           </div>
 
           <!-- 인게임 2차 특성 보드 (표식 탭 ↔ 크리티컬 탭) -->
