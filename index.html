@@ -6707,36 +6707,7 @@
       }
     }
   }
-
-  function onEquipInvInput(inputEl, slotKey) {
-    if (equipAutoTabTimer) {
-      clearTimeout(equipAutoTabTimer);
-      equipAutoTabTimer = null;
-    }
-    let raw = inputEl.value.replace(/[^0-9]/g, '');
-    if (!equipInventories[selectedEquipType]) equipInventories[selectedEquipType] = {};
-
-    if (raw === '') {
-      delete equipInventories[selectedEquipType][slotKey];
-    } else {
-      const val = parseInt(raw, 10) || 0;
-      inputEl.value = val;
-      equipInventories[selectedEquipType][slotKey] = val;
-    }
-    updateSummonCalculation();
-    if (typeof triggerAutoSave === 'function') triggerAutoSave();
-  }
-
-  function onEquipInvKeyDown(e, slotKey) {
-    if (e.key === 'Enter' || e.key === 'ArrowRight') {
-      e.preventDefault();
-      focusNextEquipSlot(slotKey, 1);
-    } else if (e.key === 'ArrowLeft' || (e.key === 'Backspace' && e.target.value === '')) {
-      e.preventDefault();
-      focusNextEquipSlot(slotKey, -1);
-    }
-  }
-
+  
   function renderEquipmentUI(container) {
     const inv = equipInventories[selectedEquipType] || {};
     const tierConfigs = [
@@ -7087,351 +7058,6 @@
         </div>
       `;
     }
-  }
-
-  // ==================== [복구 완료] 유니온 도감 렌더링 & Auto-Tab 입력 함수 모음 ====================
-  // 1) 돌파(0~10) 타이핑 시 즉시 저장 & 다음 칸 자동 탭(Auto-Tab)
-  function handleUnionBrkAutoTab(inputEl, type, uid, grade) {
-    if (typeof unionAutoTabTimer !== 'undefined' && unionAutoTabTimer) {
-      clearTimeout(unionAutoTabTimer);
-      unionAutoTabTimer = null;
-    }
-
-    if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
-    let raw = inputEl.value.replace(/[^0-9]/g, '');
-
-    if (raw === '') {
-      delete unionUserSpecs[type][uid];
-      updateSingleUnionEditorCardUI(type, uid, grade, true);
-      updateUnionOwnedBadge();
-      calculateAndRenderUnionBoard();
-      if (typeof saveUserSettings === 'function') saveUserSettings(false);
-      return;
-    }
-
-    let num = parseInt(raw, 10);
-    if (num > 10) {
-      raw = raw.slice(-2);
-      num = parseInt(raw, 10);
-      if (num > 10) {
-        raw = raw.slice(-1);
-        num = parseInt(raw, 10);
-      }
-    }
-
-    inputEl.value = num;
-
-    const prev = unionUserSpecs[type][uid];
-    const newAwk = (num === 10 && prev && prev.owned) ? (prev.awk || 0) : 0;
-    const autoLv = calcAutoUnionLevel(num, newAwk);
-    unionUserSpecs[type][uid] = { owned: true, grade, lv: autoLv, brk: num, awk: newAwk };
-
-    updateSingleUnionEditorCardUI(type, uid, grade, true);
-    updateUnionOwnedBadge();
-    calculateAndRenderUnionBoard();
-    if (typeof saveUserSettings === 'function') saveUserSettings(false);
-
-    if (num === 1 && raw.length === 1) {
-      unionAutoTabTimer = setTimeout(() => {
-        if (document.activeElement === inputEl && typeof focusNextUnionBrkInput === 'function') {
-          focusNextUnionBrkInput(uid, 1);
-        }
-      }, 360);
-    } else if (typeof focusNextUnionBrkInput === 'function') {
-      focusNextUnionBrkInput(uid, 1);
-    }
-  }
-
-  // 2) 방향키(좌/우) 및 빈칸에서 Backspace 누를 때 이전 칸 이동
-  function handleUnionBrkKeyDown(e, type, uid, grade) {
-    if (e.key === '0' && e.target.value === '1') {
-      e.preventDefault();
-      e.target.value = '10';
-      handleUnionBrkAutoTab(e.target, type, uid, grade);
-      return;
-    }
-
-    if (e.key === 'Backspace' && e.target.value === '') {
-      e.preventDefault();
-      if (typeof focusNextUnionBrkInput === 'function') focusNextUnionBrkInput(uid, -1);
-    } else if (e.key === 'Delete' || e.key === '-') {
-      e.preventDefault();
-      e.target.value = '';
-      handleUnionBrkAutoTab(e.target, type, uid, grade);
-      if (typeof focusNextUnionBrkInput === 'function') focusNextUnionBrkInput(uid, 1);
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      if (typeof focusNextUnionBrkInput === 'function') focusNextUnionBrkInput(uid, -1);
-    } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
-      e.preventDefault();
-      if (typeof focusNextUnionBrkInput === 'function') focusNextUnionBrkInput(uid, 1);
-    }
-  }
-
-  // 3) [1각 / 2각 / 3각] 버튼 클릭 시 즉시 10돌파 + 해당 각성 세팅
-  function onUnionAwkBtnClick(type, uid, grade, targetAwk) {
-    if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
-    const prev = unionUserSpecs[type][uid];
-
-    const nextAwk = (prev && prev.owned && prev.awk === targetAwk) ? 0 : targetAwk;
-    const autoLv = calcAutoUnionLevel(10, nextAwk);
-
-    unionUserSpecs[type][uid] = { owned: true, grade, lv: autoLv, brk: 10, awk: nextAwk };
-
-    updateSingleUnionEditorCardUI(type, uid, grade, false);
-    updateUnionOwnedBadge();
-    calculateAndRenderUnionBoard();
-    if (typeof saveUserSettings === 'function') saveUserSettings(false);
-  }
-
-  // 4) 개별 스킬/영웅 카드 UI 즉시 갱신
-  function updateSingleUnionEditorCardUI(type, uid, grade, skipInputVal = false) {
-    const cardEl = document.getElementById(`u_editor_${uid}`);
-    const scoreBadge = document.getElementById(`u_score_badge_${uid}`);
-    const brkEl = document.getElementById(`u_brk_${uid}`);
-
-    const spec = (unionUserSpecs[type] || {})[uid];
-    const maxScore = UNION_SCORE_TABLE[grade].max;
-
-    if (!spec || !spec.owned) {
-      if (cardEl) cardEl.classList.remove('owned');
-      if (brkEl) {
-        if (!skipInputVal) brkEl.value = "";
-        brkEl.style.borderColor = "#334155";
-        brkEl.style.background = "#090d16";
-      }
-      if (scoreBadge) {
-        scoreBadge.innerHTML = `<span style="color:#64748b;">미보유 (0/${maxScore})</span>`;
-      }
-      [1, 2, 3].forEach(a => {
-        const btn = document.getElementById(`u_awk_btn_${uid}_${a}`);
-        if (btn) {
-          btn.style.background = '#0f172a';
-          btn.style.borderColor = '#334155';
-          btn.style.color = '#94a3b8';
-          btn.style.boxShadow = 'none';
-        }
-      });
-    } else {
-      const autoLv = calcAutoUnionLevel(spec.brk, spec.awk);
-      spec.lv = autoLv;
-      if (cardEl) cardEl.classList.add('owned');
-      if (brkEl) {
-        if (!skipInputVal) brkEl.value = String(spec.brk);
-        brkEl.style.borderColor = "#10b981";
-        brkEl.style.background = "rgba(16, 185, 129, 0.14)";
-      }
-
-      const sc = getUnionUnitScore(grade, autoLv, spec.brk, spec.awk);
-      const awkTag = spec.awk > 0 ? `·<span style="color:#f0abfc;">${spec.awk}각</span>` : '';
-      if (scoreBadge) {
-        scoreBadge.innerHTML = `<span style="color:#fde047;">[${spec.brk}돌${awkTag}]</span> <span style="color:#38bdf8;">${sc}/${maxScore}점</span>`;
-      }
-
-      [1, 2, 3].forEach(a => {
-        const btn = document.getElementById(`u_awk_btn_${uid}_${a}`);
-        if (btn) {
-          const isAct = (spec.awk === a);
-          btn.style.background = isAct ? 'linear-gradient(135deg, #9333ea 0%, #581c87 100%)' : '#0f172a';
-          btn.style.borderColor = isAct ? '#e879f9' : '#334155';
-          btn.style.color = isAct ? '#ffffff' : '#cbd5e1';
-          btn.style.boxShadow = isAct ? '0 0 8px rgba(217, 70, 239, 0.5)' : 'none';
-        }
-      });
-    }
-  }
-
-  // 5) 등급별 일괄 세팅 버튼
-  function batchSetUnionTier(type, targetGrade, lv, brk, awk) {
-    const catalog = getUnionCatalog(type);
-    if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
-    const validBrk = awk > 0 ? 10 : brk;
-    const autoLv = calcAutoUnionLevel(validBrk, awk);
-
-    catalog.forEach(unit => {
-      if (targetGrade === 'all' ? (unit.grade === 'legend' || unit.grade === 'unique') : (unit.grade === targetGrade)) {
-        unionUserSpecs[type][unit.uid] = { owned: true, grade: unit.grade, lv: autoLv, brk: validBrk, awk };
-      }
-    });
-    renderUnionRosterAccordions();
-    calculateAndRenderUnionBoard();
-    if (typeof saveUserSettings === 'function') saveUserSettings(false);
-  }
-
-  // 6) 유니온 보유 목록 초기화
-  function resetUnionOwned(type) {
-    if (!confirm(`현재 [${type === 'skill' ? '스킬' : '영웅'} 유니온] 보유 스펙 설정을 모두 초기화하시겠습니까?`)) return;
-    unionUserSpecs[type] = {};
-    renderUnionRosterAccordions();
-    calculateAndRenderUnionBoard();
-    if (typeof saveUserSettings === 'function') saveUserSettings(false);
-  }
-
-  // 7) 보유 개수 배지 업데이트
-  function updateUnionOwnedBadge() {
-    const mapObj = unionUserSpecs[currentUnionType] || {};
-    const cnt = Object.values(mapObj).filter(v => v && v.owned).length;
-    const badge = document.getElementById('union_owned_cnt_badge');
-    if (badge) badge.innerText = `보유 등록: ${cnt}개`;
-  }
-
-  // 8) 유니온 보유 스킬/영웅 아코디언 렌더링
-  function renderUnionRosterAccordions() {
-    const container = document.getElementById('union_roster_accordions');
-    if (!container) return;
-
-    const titleEl = document.getElementById('union_roster_title');
-    if (titleEl) {
-      titleEl.innerText = currentUnionType === 'skill'
-        ? '📋 보유 스킬 스펙 설정 (신화 · 전설 · 특급)'
-        : '📋 보유 영웅 스펙 설정 (신화 · 전설 · 특급)';
-    }
-
-    const catalog = getUnionCatalog(currentUnionType);
-    const gradeMeta = [
-      { key: 'mythic', name: '신화 등급 (만점 500점)', cls: 'acc-mythic', badge: 'grade-mythic' },
-      { key: 'legend', name: '전설 등급 (만점 250점)', cls: 'acc-legend', badge: 'grade-legend' },
-      { key: 'unique', name: '특급 등급 (만점 200점)', cls: 'acc-unique', badge: 'grade-unique' }
-    ];
-
-    let html = '';
-    gradeMeta.forEach((gm, gIdx) => {
-      const units = catalog.filter(u => u.grade === gm.key);
-      const cardsHtml = units.map(u => {
-        const spec = (unionUserSpecs[currentUnionType] || {})[u.uid];
-        const isOwned = Boolean(spec && spec.owned);
-        const curBrk = isOwned ? spec.brk : '';
-        const curAwk = isOwned ? spec.awk : 0;
-        const curLv = isOwned ? calcAutoUnionLevel(curBrk, curAwk) : 0;
-        if (isOwned) spec.lv = curLv;
-        const sc = isOwned ? getUnionUnitScore(u.grade, curLv, curBrk, curAwk) : 0;
-        const awkTag = curAwk > 0 ? `·<span style="color:#f0abfc;">${curAwk}각</span>` : '';
-
-        const thumbHtml = u.img
-          ? `<div style="width:36px; height:36px; border-radius:8px; background:#0f172a; border:1px solid #475569; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-              <img src="${u.img}" alt="${u.name}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.PNG');}else{this.parentElement.innerHTML='<span style=\\'font-size:8.5px;color:#94a3b8;text-align:center;line-height:1.1;font-weight:800;\\'>준비중</span>';}">
-            </div>`
-          : `<div style="width:36px; height:36px; border-radius:8px; background:#0f172a; border:1px dashed #475569; display:flex; align-items:center; justify-content:center; font-size:8.5px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800; flex-shrink:0;">준비중</div>`;
-
-        return `
-          <div class="union-unit-editor ${isOwned ? 'owned' : ''}" id="u_editor_${u.uid}" data-uname="${u.name}" style="padding:9px 10px;">
-            <div style="display:flex; align-items:center; gap:7px; margin-bottom:7px;">
-              ${thumbHtml}
-              <div style="min-width:0; flex:1;">
-                <div style="font-size:12.5px; font-weight:900; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${u.name} ${u.attr}">${u.name.split('(')[0]} ${u.attr}</div>
-                <div id="u_score_badge_${u.uid}" style="font-size:11px; font-weight:900; margin-top:1px;">
-                  ${isOwned ? `<span style="color:#fde047;">[${curBrk}돌${awkTag}]</span> <span style="color:#38bdf8;">${sc}/${u.maxScore}점</span>` : `<span style="color:#64748b;">미보유 (0/${u.maxScore})</span>`}
-                </div>
-              </div>
-            </div>
-
-            <input type="text"
-                   inputmode="numeric"
-                   class="union-brk-autotab"
-                   id="u_brk_${u.uid}"
-                   value="${isOwned ? curBrk : ''}"
-                   placeholder="돌파수 기입란 (0~10)"
-                   maxlength="2"
-                   onfocus="this.select()"
-                   onkeydown="handleUnionBrkKeyDown(event, '${currentUnionType}', '${u.uid}', '${u.grade}')"
-                   oninput="handleUnionBrkAutoTab(this, '${currentUnionType}', '${u.uid}', '${u.grade}')"
-                   style="width:100% !important; padding:7px 6px !important; font-size:13.5px !important; font-weight:900 !important; text-align:center !important; background:${isOwned ? 'rgba(16, 185, 129, 0.14)' : '#090d16'} !important; border:1.5px solid ${isOwned ? '#10b981' : '#334155'} !important; border-radius:8px !important; color:#fde047 !important; margin-bottom:6px !important; box-shadow:inset 0 1px 3px rgba(0,0,0,0.5) !important;">
-
-            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px;">
-              ${[1, 2, 3].map(a => {
-                const isAct = isOwned && curAwk === a;
-                return `<button id="u_awk_btn_${u.uid}_${a}" onclick="onUnionAwkBtnClick('${currentUnionType}', '${u.uid}', '${u.grade}', ${a})" style="padding:5px 2px; border-radius:6px; font-size:11.5px; font-weight:900; white-space:nowrap; cursor:pointer; transition:all 0.15s; border:1.5px solid ${isAct ? '#e879f9' : '#334155'}; background:${isAct ? 'linear-gradient(135deg, #9333ea 0%, #581c87 100%)' : '#0f172a'}; color:${isAct ? '#ffffff' : '#cbd5e1'}; box-shadow:${isAct ? '0 0 8px rgba(217, 70, 239, 0.5)' : 'none'};">${a}각</button>`;
-              }).join('')}
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      html += `
-        <div class="accordion-item ${gm.cls} ${gIdx === 0 ? 'active' : ''}" id="u_acc_${gm.key}">
-          <div class="accordion-header" onclick="toggleNewbieAccordion('u_acc_${gm.key}')">
-            <div class="accordion-left">
-              <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text"><span class="grade-badge ${gm.badge}">${getGradeKrName(gm.key)}</span> ${gm.name}</span>
-            </div>
-            <div class="accordion-right-info">
-              <span class="accordion-count-badge">${units.length}종</span>
-            </div>
-          </div>
-          <div class="accordion-content">
-            <div class="acc-scroll-box" style="max-height:480px;">
-              <div class="union-roster-grid">${cardsHtml}</div>
-            </div>
-          </div>
-        </div>
-      `;
-    });
-
-    container.innerHTML = html;
-    updateUnionOwnedBadge();
-  }
-
-  // 9) 유니온 도감 검색 필터
-  function filterUnionRoster(keyword) {
-    const q = keyword.trim().toLowerCase();
-    const cards = document.querySelectorAll('#union_roster_accordions .union-unit-editor');
-    cards.forEach(c => c.style.borderColor = '');
-    if (!q) return;
-
-    let firstMatch = null;
-    cards.forEach(card => {
-      const uname = (card.getAttribute('data-uname') || '').toLowerCase();
-      if (uname.includes(q)) {
-        card.style.borderColor = '#fbbf24';
-        const acc = card.closest('.accordion-item');
-        if (acc && !acc.classList.contains('active')) acc.classList.add('active');
-        if (!firstMatch) firstMatch = card;
-      }
-    });
-    if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  // ★ 아까 지워져서 에러를 뿜게 만들었던 렌더링 함수 완벽 복구!!
-  function renderUnionSlotCell(unit, isSpecial) {
-    if (!unit) {
-      return `
-        <div class="union-slot-card ${isSpecial ? 'special-slot' : ''}">
-          <div style="flex:1; display:flex; align-items:center; justify-content:center; font-size:18px; color:${isSpecial ? '#f0abfc' : '#64748b'};">+</div>
-          <div class="union-score-bar"><div class="union-score-fill" style="width:0%;"></div><div class="union-score-text">0/0</div></div>
-        </div>
-      `;
-    }
-
-    const pctWidth = Math.min(100, Math.round((unit.score / unit.maxScore) * 100));
-    const tierCls = isSpecial ? 'special-slot' : `tier-${unit.grade}`;
-
-    let starsHtml = '';
-    if (unit.awk > 0) {
-      starsHtml = `<span style="color:#e879f9;">${'★'.repeat(unit.awk)}</span>`;
-    } else if (unit.brk > 0) {
-      const starCnt = Math.min(5, Math.ceil(unit.brk / 2));
-      starsHtml = `<span style="color:#facc15;">${'★'.repeat(starCnt)}</span>`;
-    }
-
-    const imgHtml = unit.img
-      ? `<img src="${unit.img}" alt="${unit.name}" onerror="this.onerror=null; if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.PNG');}else{this.style.display='none'; this.nextElementSibling.style.display='flex';}">
-         <span style="display:none; font-size:8.5px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800;">이미지<br>준비중</span>`
-      : `<span style="font-size:8.5px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800;">이미지<br>준비중</span>`;
-
-    return `
-      <div class="union-slot-card ${tierCls}" title="[${getGradeKrName(unit.grade)}] ${unit.name} (Lv.${unit.lv} / ${unit.brk}돌 / ${unit.awk}각 = ${unit.score}점)">
-        <div class="union-slot-thumb">
-          <div class="union-slot-stars">${starsHtml}</div>
-          ${imgHtml}
-          <span class="union-slot-lv">Lv.${unit.lv}</span>
-        </div>
-        <div style="font-size:9.5px; font-weight:800; color:#e2e8f0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; margin-top:2px;">${unit.name.split('(')[0]}</div>
-        <div class="union-score-bar">
-          <div class="union-score-fill" style="width:${pctWidth}%;"></div>
-          <div class="union-score-text">${unit.score}/${unit.maxScore}</div>
-        </div>
-      </div>
-    `;
   }
 
   function renderSummonRatesTable() {
@@ -14418,20 +14044,16 @@
     };
   }
 
-  // 스크립트 로드 즉시 1차 복원 + DOMContentLoaded / load 시 2·3차 복원 보장
-  loadUnionDataFromLocal();
-  window.addEventListener('DOMContentLoaded', loadUnionDataFromLocal);
-  window.addEventListener('load', loadUnionDataFromLocal);
-
-  // ==================== 🚀 [최종 픽스] 장비 소환 Auto-Tab 복구 & 초기 화면 자동 정렬 ====================
+  // ==================== 🚀 [최종 안정화 패치] 장비 소환 즉시 Auto-Tab & 단일 초기화 ====================
   // 1) 로컬 설정 복원 시 장비 아이콘 선택 함수 호환 별칭
   function selectEquipIconType(eqType) {
     if (typeof selectSummonEquipType === 'function') selectSummonEquipType(eqType);
   }
 
-  // 2) 장비 소환 27슬롯 인벤토리: 숫자 타이핑 시 다음 칸 자동 탭(Auto-Tab) 작동!
+  // 2) 장비 소환 27슬롯 인벤토리 전용: 숫자(0~9)를 치자마자 대기 시간(0초) 없이 즉시 다음 칸 이동!
+  //    (유니온의 0~10 돌파 타이머 로직과 완전히 분리됨)
   function onEquipInvInput(inputEl, slotKey) {
-    if (equipAutoTabTimer) {
+    if (typeof equipAutoTabTimer !== 'undefined' && equipAutoTabTimer) {
       clearTimeout(equipAutoTabTimer);
       equipAutoTabTimer = null;
     }
@@ -14446,34 +14068,26 @@
       return;
     }
 
-    const val = parseInt(raw, 10) || 0;
+    // 한 자리 숫자(또는 마지막에 친 숫자)를 즉시 반영하고 바로 다음 칸으로 점프!
+    const lastDigit = raw.slice(-1);
+    const val = parseInt(lastDigit, 10) || 0;
     inputEl.value = val;
     equipInventories[selectedEquipType][slotKey] = val;
 
     updateSummonCalculation();
     if (typeof triggerAutoSave === 'function') triggerAutoSave();
 
-    // 0을 치거나 2자리 이상 입력하면 즉시 다음 칸 이동, 1자리(1~9)는 0.35초 후 자동 이동!
-    if (raw === '0' || raw.length >= 2) {
-      focusNextEquipSlot(slotKey, 1);
-    } else if (raw.length === 1) {
-      equipAutoTabTimer = setTimeout(() => {
-        if (document.activeElement === inputEl) {
-          focusNextEquipSlot(slotKey, 1);
-        }
-      }, 350);
-    }
+    // 딜레이 없이 즉시 다음 슬롯으로 포커스 이동
+    focusNextEquipSlot(slotKey, 1);
   }
 
   // 3) 장비 인벤토리 방향키 / Enter / 스페이스바 / Backspace 이동 지원
   function onEquipInvKeyDown(e, slotKey) {
     if (e.key === 'Enter' || e.key === 'ArrowRight' || e.key === ' ') {
       e.preventDefault();
-      if (equipAutoTabTimer) { clearTimeout(equipAutoTabTimer); equipAutoTabTimer = null; }
       focusNextEquipSlot(slotKey, 1);
     } else if (e.key === 'ArrowLeft' || (e.key === 'Backspace' && e.target.value === '')) {
       e.preventDefault();
-      if (equipAutoTabTimer) { clearTimeout(equipAutoTabTimer); equipAutoTabTimer = null; }
       focusNextEquipSlot(slotKey, -1);
     } else if (e.key === 'Delete' || e.key === '-') {
       e.preventDefault();
@@ -14482,8 +14096,12 @@
     }
   }
 
-  // 4) 페이지 최초 로드 시 모든 계산기 초기화 & 메인 화면('세팅 도우미 모음') 즉시 정렬!
+  // 4) 페이지 최초 로드 시 중복 실행 없이 딱 1번만 깔끔하게 초기화
+  let hasInitializedOnStartup = false;
   function initAllOnStartup() {
+    if (hasInitializedOnStartup) return;
+    hasInitializedOnStartup = true;
+
     try { if (typeof setSeasonTheme === 'function') setSeasonTheme(currentSeason); } catch (e) {}
     try { if (typeof initSynergyReferenceTable === 'function') initSynergyReferenceTable(); } catch (e) {}
     try { if (typeof initRefineSelects === 'function') initRefineSelects(); } catch (e) {}
@@ -14503,12 +14121,14 @@
     try { if (typeof renderConnectAccordions === 'function') renderConnectAccordions(); } catch (e) {}
     try { if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout(); } catch (e) {}
 
-    // ★ 처음 켜자마자 메인 화면에서 계산기 3개를 숨기고 도우미 3종만 깔끔하게 표시!
     if (typeof switchMainMode === 'function') switchMainMode('helpers');
   }
 
-  initAllOnStartup();
-  window.addEventListener('DOMContentLoaded', initAllOnStartup);
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', initAllOnStartup);
+  } else {
+    initAllOnStartup();
+  }
 
 </script>
 </body>
