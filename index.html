@@ -37,6 +37,9 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>소헌키 종합 시뮬레이터 & 각성석·확률 계산기 - 29서버 겨울눈사람</title>
 
 <style>
@@ -1911,6 +1914,9 @@
     }
     .job-sub-nav-sub {
       font-size: 9.5px !important;
+    }
+    .trait2-root-col {
+      padding-top: 68px !important; /* 모바일 48px 노드 높이에 맞춘 황금박스 수직 정렬 */
     }
   }
 
@@ -8752,7 +8758,7 @@
     try {
       const inputsData = {};
       document.querySelectorAll('input[id], select[id]').forEach(el => {
-        if (el.id === 'newbie_search_input' || el.id === 'rune_search_input') return;
+        if (el.id === 'newbie_search_input' || el.id === 'rune_search_input' || el.id === 'trait2_lv_slider') return;
         if (el.id.startsWith('inv_')) return;
         if (el.type === 'checkbox') inputsData[el.id] = el.checked;
         else inputsData[el.id] = el.value;
@@ -9664,11 +9670,11 @@
     return { slotCount, activeTraits, subTraits, notRecommended };
   }
 
- // ==================== ⚡ 2차 전직 시뮬레이터 (인게임 수치 100% & 황금 루트 노드 & 최적 배분 엔진) ====================
-  let currentTrait2ndLv = 1;          // 기본 표시 레벨 (Lv.1 ~ 180)
+ // ==================== ⚡ 2차 전직 시뮬레이터 (Lv.130~ 15P 반영 & 모바일 터치 상세창 완벽 지원) ====================
+  let currentTrait2ndLv = 110;          // 기본 표시 레벨: 권장 주차 레벨인 Lv.110으로 시작!
   let currentTrait2ndSubTab = 'mark';   // 'mark' (표식 탭) | 'crit' (크리티컬 탭)
   let trait2SealAwk65 = true;           // 1차 65렙 각성기 봉인 달성 여부 (ON 시 크리 4줄 1번칸 5P 절약!)
-  let trait2MysticSkipMark3 = false;    // 미스틱 표식 고속충전 시 표식 3줄(10P/20P) 생략 후 크피 몰빵 여부
+  let trait2MysticSkipMark3 = false;
 
   function changeTrait2ndLevel(lvVal) {
     currentTrait2ndLv = Math.max(1, Math.min(180, parseInt(lvVal) || 1));
@@ -9688,7 +9694,16 @@
     updateTrait2ndBoardOnly();
   }
 
-  // 조건 버튼 클릭 시 테두리는 고유 색상 유지 + 안쪽 배경색 & ON/OFF 배지 즉시 전환!
+  // 스마트폰(모바일)에서 노드를 터치했을 때 상단 안내 바에 해당 노드 정보를 즉시 띄워주는 함수!
+  function showTrait2NodeDetail(titleStr, descStr) {
+    const infoEl = document.getElementById('t2_mobile_node_detail');
+    if (infoEl) {
+      infoEl.innerHTML = `<strong style="color:#fde047;">🔍 [${titleStr}]</strong> <span style="color:#ffffff;">${descStr}</span>`;
+      infoEl.style.borderColor = '#fbbf24';
+      infoEl.style.background = 'rgba(245, 158, 11, 0.18)';
+    }
+  }
+
   function syncTrait2ConditionButtonsUI() {
     const box1 = document.getElementById('t2_cond_box_seal');
     const badge1 = document.getElementById('t2_cond_badge_seal');
@@ -9702,20 +9717,6 @@
       badge1.style.background = trait2SealAwk65 ? '#059669' : '#1e293b';
       badge1.style.color = trait2SealAwk65 ? '#ffffff' : '#94a3b8';
       badge1.innerText = trait2SealAwk65 ? '✅ ON (5P 절약)' : 'OFF (미적용)';
-    }
-
-    const box2 = document.getElementById('t2_cond_box_mystic');
-    const badge2 = document.getElementById('t2_cond_badge_mystic');
-    if (box2 && badge2) {
-      box2.style.background = trait2MysticSkipMark3
-        ? 'linear-gradient(135deg, rgba(56, 189, 248, 0.42) 0%, rgba(12, 74, 110, 0.78) 100%)'
-        : '#0b1120';
-      box2.style.boxShadow = trait2MysticSkipMark3
-        ? '0 0 18px rgba(56, 189, 248, 0.55), inset 0 0 8px rgba(125, 211, 252, 0.3)'
-        : 'none';
-      badge2.style.background = trait2MysticSkipMark3 ? '#0284c7' : '#1e293b';
-      badge2.style.color = trait2MysticSkipMark3 ? '#ffffff' : '#94a3b8';
-      badge2.innerText = trait2MysticSkipMark3 ? '✅ ON (크피 몰빵)' : 'OFF (표식3줄 유지)';
     }
   }
 
@@ -9731,7 +9732,7 @@
     updateTrait2ndBoardOnly();
   }
 
- // 2차 전직 누적 TP 정밀 계산 (Lv.2부터 획득 기준: Lv.111 = 671P로 인게임 스샷과 100% 일치!)
+  // 2차 전직 누적 TP 정밀 계산 (1~10: +1P, 11~20: +2P ... 171~180: +18P)
   function get2ndJobTotalTP(lv) {
     let total = 0;
     for (let i = 1; i <= lv; i++) {
@@ -9744,16 +9745,16 @@
     return Math.floor((Math.max(1, lv) - 1) / 10) + 1;
   }
 
-  // 2차 전직 전체 노드 DB 및 수학적 최적 분배 시뮬레이터
+  // 2차 전직 전체 노드 DB 및 수학적 최적 분배 시뮬레이터 (Lv.130부터 15P 완벽 반영!)
   function simulate2ndJobTree(lv) {
     const totalTP = get2ndJobTotalTP(lv);
     let remTP = totalTP;
 
-    // 0. 맨 앞 황금색 루트 박스 (표식 개방 1P / 크리티컬 개방 1P) -> 1·2·3번째 줄을 열기 위한 필수 선행 노드!
+    // 0. 맨 앞 황금색 루트 박스 (표식 개방 1P / 크리티컬 개방 1P)
     const markRoot = { reqLv: 1, max: 1, cost: 1, cur: 0, name: "2차 표식 개방", desc: "공격 시 10% 확률로 표식 1개 획득 / 표식 1개당 피해량 10% 증가 (기본 최대 중첩 : 50)" };
     const critRoot = { reqLv: 1, max: 1, cost: 1, cur: 0, name: "2차 크리티컬 개방", desc: "공격 시 10% 확률로 2차 크리티컬 발동 / 적에게 '2차 저주' 영구 부여 (적이 입는 피해 100% 증가 곱연산)" };
 
-    // 1줄: 표식 획득 확률 / 크리티컬 확률 (칸당 최대 +15%, 1렙당 +3%, 비용: 1, 1, 1, 1, 2, 3)
+    // 1줄: 표식 획득 확률 / 크리티컬 확률 (비용: 1, 1, 1, 1, 2, 3)
     const row1Meta = [
       { reqLv: 1,  max: 5, cost: 1, cls: "t2c-brown",  maxVal: 15 },
       { reqLv: 10, max: 5, cost: 1, cls: "t2c-green",  maxVal: 15 },
@@ -9763,7 +9764,8 @@
       { reqLv: 50, max: 5, cost: 3, cls: "t2c-orange", maxVal: 15 }
     ];
 
-    // ★ [핵심 수정!] 2줄 요구 포인트: 1, 1, 1, 1(보라까지 1P!), 2(노랑), 3(주황), 3(하늘), 5(초록), 7(분홍), 10(보라), 10, 10...
+    // ★ [핵심 수정!] 2줄 요구 포인트:
+    // Lv.1~30(1P), Lv.40(2P), Lv.50~60(3P), Lv.70(5P), Lv.80(7P), Lv.90~120(10P), ★Lv.130~170(15P!)
     const markRow2Meta = [
       { reqLv: 1,   max: 5,  cost: 1,  cls: "t2c-brown",    maxVal: 10 },
       { reqLv: 10,  max: 5,  cost: 1,  cls: "t2c-green",    maxVal: 20 },
@@ -9778,14 +9780,14 @@
       { reqLv: 100, max: 10, cost: 10, cls: "t2c-sky-silv", maxVal: 2800 },
       { reqLv: 110, max: 10, cost: 10, cls: "t2c-blu-silv", maxVal: 4000 },
       { reqLv: 120, max: 10, cost: 10, cls: "t2c-silver1",  maxVal: 5600 },
-      { reqLv: 130, max: 10, cost: 10, cls: "t2c-silver2",  maxVal: 8000 },
-      { reqLv: 140, max: 10, cost: 10, cls: "t2c-emerald1", maxVal: 11200 },
-      { reqLv: 150, max: 10, cost: 10, cls: "t2c-emerald2", maxVal: 16000 },
-      { reqLv: 160, max: 10, cost: 10, cls: "t2c-crimson1", maxVal: 22400 },
-      { reqLv: 170, max: 10, cost: 10, cls: "t2c-crimson2", maxVal: 32000 }
+      { reqLv: 130, max: 10, cost: 15, cls: "t2c-silver2",  maxVal: 8000 },  // ★ Lv.130부터 15P!
+      { reqLv: 140, max: 10, cost: 15, cls: "t2c-emerald1", maxVal: 11200 }, // ★ 15P
+      { reqLv: 150, max: 10, cost: 15, cls: "t2c-emerald2", maxVal: 16000 }, // ★ 15P
+      { reqLv: 160, max: 10, cost: 15, cls: "t2c-crimson1", maxVal: 22400 }, // ★ 15P
+      { reqLv: 170, max: 10, cost: 15, cls: "t2c-crimson2", maxVal: 32000 }  // ★ 15P
     ];
 
-    // 2줄(크리티컬): 요구 포인트 동일 (1, 1, 1, 1, 2, 3, 3, 5, 7, 10, 10...)
+    // 2줄(크리티컬): 요구 포인트 동일 (Lv.130부터 15P!)
     const critRow2Meta = [
       { reqLv: 1,   max: 5,  cost: 1,  cls: "t2c-brown",    maxVal: 50 },
       { reqLv: 10,  max: 5,  cost: 1,  cls: "t2c-green",    maxVal: 100 },
@@ -9800,11 +9802,11 @@
       { reqLv: 100, max: 10, cost: 10, cls: "t2c-sky-silv", maxVal: 1200000 },
       { reqLv: 110, max: 10, cost: 10, cls: "t2c-blu-silv", maxVal: 3000000 },
       { reqLv: 120, max: 10, cost: 10, cls: "t2c-silver1",  maxVal: 7500000 },
-      { reqLv: 130, max: 10, cost: 10, cls: "t2c-silver2",  maxVal: 18000000 },
-      { reqLv: 140, max: 10, cost: 10, cls: "t2c-emerald1", maxVal: 45000000 },
-      { reqLv: 150, max: 10, cost: 10, cls: "t2c-emerald2", maxVal: 110000000 },
-      { reqLv: 160, max: 10, cost: 10, cls: "t2c-crimson1", maxVal: 270000000 },
-      { reqLv: 170, max: 10, cost: 10, cls: "t2c-crimson2", maxVal: 650000000 }
+      { reqLv: 130, max: 10, cost: 15, cls: "t2c-silver2",  maxVal: 18000000 },  // ★ Lv.130부터 15P!
+      { reqLv: 140, max: 10, cost: 15, cls: "t2c-emerald1", maxVal: 45000000 },  // ★ 15P
+      { reqLv: 150, max: 10, cost: 15, cls: "t2c-emerald2", maxVal: 110000000 }, // ★ 15P
+      { reqLv: 160, max: 10, cost: 15, cls: "t2c-crimson1", maxVal: 270000000 }, // ★ 15P
+      { reqLv: 170, max: 10, cost: 15, cls: "t2c-crimson2", maxVal: 650000000 }  // ★ 15P
     ];
 
     // 3줄(표식): 표식 획득 시 추가 획득 (+1, +1, +2, +2, +3, +3개 / 비용: 2, 2, 10, 10, 20, 20)
@@ -9843,8 +9845,8 @@
       { reqLv: 90, max: 1, cost: 30, cls: "t2c-pink",   desc: "2차 크리티컬 확률 100% 달성 시 피해량 +2,000% 증가 (곱연산)" }
     ];
 
-    const mark1 = row1Meta.map(m => ({ ...m, cur: 0, desc: `표식 획득 확률 +${m.maxVal}% (레벨당 +3%)` }));
-    const crit1 = row1Meta.map(m => ({ ...m, cur: 0, desc: `2차 크리티컬 확률 +${m.maxVal}% (레벨당 +3%)` }));
+    const mark1 = row1Meta.map(m => ({ ...m, cur: 0, desc: `표식 획득 확률 최대 +${m.maxVal}% (레벨당 +3%)` }));
+    const crit1 = row1Meta.map(m => ({ ...m, cur: 0, desc: `2차 크리티컬 확률 최대 +${m.maxVal}% (레벨당 +3%)` }));
     const mark2 = markRow2Meta.map(m => ({ ...m, cur: 0, desc: `표식 1개당 피해량 최대 +${m.maxVal.toLocaleString()}% (레벨당 +${(m.maxVal/m.max).toLocaleString()}%)` }));
     const crit2 = critRow2Meta.map(m => ({ ...m, cur: 0, desc: `2차 크리티컬 피해량 최대 +${formatKoreanNumber(m.maxVal)}% (레벨당 +${formatKoreanNumber(m.maxVal/m.max)}%)` }));
     const mark3 = markRow3Meta.map(m => ({ ...m, cur: 0 }));
@@ -9866,56 +9868,47 @@
 
     // [Step 1] 4번째 줄(곱연산 코어) & 3번째 줄(저주 피해량 / 표식 추가획득) 개방 즉시 0순위 마스터!
     if (!trait2SealAwk65) {
-      tryInvest(crit4[0], 1); // 65렙 각성기 봉인 전일 때만 투자
+      tryInvest(crit4[0], 1);
     }
-    tryInvest(mark4[0], 1); // 크리 시 표식 4배
+    tryInvest(mark4[0], 1);
 
     for (let i = 1; i < 4; i++) {
       tryInvest(crit4[i], 1);
       tryInvest(mark4[i], 1);
     }
 
-     for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i++) {
       tryInvest(crit3[i], 1);
-      // ★ 전 직업 공통: Lv.90(크확 100% + 크리 시 표식 4배 상시 발동) 달성 시점부터는 표식이 순식간에 차오르므로,
-      // 표식 3번째 줄은 가성비인 2번째 칸(2P+2P)까지만 찍고 나머지 3~6번째 칸(60P)은 아껴서 크리티컬 피해량에 몰빵!
+      // Lv.90(크확 100% + 크리 시 표식 4배)부터는 표식 3번째 줄을 2번째 칸(Lv.30)까지만 찍고 60P를 크피에 몰빵!
       if (lv < 90 || i < 2) {
         tryInvest(mark3[i], 1);
       }
     }
 
-    // [Step 2] ★ 90레벨 이전 vs 90레벨 이후 최적 분배!
+    // [Step 2] 90레벨 이전 vs 90레벨 이후 최적 분배!
     if (lv < 90) {
-      // 🔥 [Lv.1 ~ 89 구간] 크리 확률 먼저 찍지 않음!!
-      // 1) 셋째·넷째 줄을 다 채웠다면, 둘째 줄(표식 피해량 & 크리 피해량)을 초록색(5/10)까지 번갈아가며(하이브리드) 먼저 꽉 채움!
       for (let i = 0; i <= 7; i++) {
         if (lv < mark2[i].reqLv) break;
         const cap = (i === 7) ? 5 : mark2[i].max;
         for (let step = 1; step <= cap; step++) {
-          tryInvest(mark2[i], step); // 초반엔 상시 적용되는 표식 피해량 먼저 1렙!
-          tryInvest(crit2[i], step); // 이어서 크리 피해량 1렙!
+          tryInvest(mark2[i], step);
+          tryInvest(crit2[i], step);
         }
       }
-      // 2) 만약 표식 초록색(5/10)까지 다 찍고도 열린 크리 피해량(70~80렙 구간 초록 후반/분홍)이 있다면 크리 피해량 마저 채움!
       for (let i = 7; i < crit2.length; i++) {
         if (lv < crit2[i].reqLv) break;
         tryInvest(crit2[i], crit2[i].max);
       }
-      // 3) 둘째 줄(피해량)이 열린 데까지 전부 꽉 찼을 때만, 남는 포인트를 [크리티컬 확률(1줄)]에 투자!
       for (let i = 0; i < 6; i++) {
         tryInvest(crit1[i], 5);
       }
-      // 4) 크확도 다 차고 남으면 [표식 확률(1줄)]에 투자!
       for (let i = 0; i < 6; i++) {
         tryInvest(mark1[i], 5);
       }
     } else {
-      // 🔥 [Lv.90 ~ 180 구간]
-      // 1) Lv.90 크리티컬 4줄 마지막 칸(크확 100% 달성 시 +2,000% 곱연산) 발동을 위해 크리티컬 확률(1줄) 6칸 전부 5/5 마스터!
       for (let i = 0; i < 6; i++) {
         tryInvest(crit1[i], 5);
       }
-      // 2) 표식 피해량(2줄) 초록색(8번째 칸, index 7) '5/10'까지는 표식 피해량과 크리 피해량을 하이브리드로 마스터!
       for (let i = 0; i <= 7; i++) {
         const cap = (i === 7) ? 5 : mark2[i].max;
         for (let step = 1; step <= cap; step++) {
@@ -9923,21 +9916,17 @@
           tryInvest(crit2[i], step);
         }
       }
-      // 3) 표식 초록색 5/10 이후부터는 칸당 4~5배씩 폭등하는 [크리티컬 피해량(2줄)]에만 끝까지 올인!
       for (let i = 7; i < crit2.length; i++) {
         tryInvest(crit2[i], crit2[i].max);
       }
-      // 4) 크피 찍고 남는 자투리 포인트(예: Lv.111의 2P)는 [표식 확률(1줄)]에 투자!
       for (let i = 0; i < 6; i++) {
         tryInvest(mark1[i], 5);
       }
-      // 5) 초고레벨에서 크피와 표식 확률까지 다 찍고 남으면 표식 피해량(2줄) 나머지 투자
       for (let i = 7; i < mark2.length; i++) {
         tryInvest(mark2[i], mark2[i].max);
       }
     }
 
-    // 📊 실시간 배율 시뮬레이션 계산 (표식 최대중첩 × 크리티컬 × 저주)
     const maxStacks = mark4[1].cur > 0 ? 250 : 50;
     let markPerStackPct = markRoot.cur > 0 ? 10 : 0;
     mark2.forEach(n => { if (n.cur > 0) markPerStackPct += (n.maxVal / n.max) * n.cur; });
@@ -9989,7 +9978,6 @@
     document.getElementById('t2_used_tp').innerText = `${sim.usedTP.toLocaleString()}P`;
     document.getElementById('t2_rem_tp').innerText = `${sim.remTP}P`;
 
-    // 실시간 배율 요약 바 갱신
     const multSummaryEl = document.getElementById('t2_mult_summary_bar');
     if (multSummaryEl) {
       const combLog10 = Math.log10(Math.max(1, sim.totalMarkMult)) + Math.log10(Math.max(1, sim.totalCritMult)) + Math.log10(Math.max(1, sim.totalCurseMult));
@@ -10042,9 +10030,12 @@
       const nodesHtml = nodes.map((n, idx) => {
         const isUnlocked = currentTrait2ndLv >= n.reqLv;
         const hasLine = idx > 0 ? 'has-line' : '';
+        const safeTitle = `${rowIdx}번째 줄 ${idx+1}번 칸 (Lv.${n.reqLv} 개방 / 레벨당 ${n.cost}P)`;
+        const safeDesc = (n.desc || '').replace(/'/g, "\\'");
+
         if (!isUnlocked) {
           return `
-            <div class="trait2-node locked-node ${hasLine}" title="Lv.${n.reqLv} 개방 (요구 TP: ${n.cost}P) | ${n.desc || ''}">
+            <div class="trait2-node locked-node ${hasLine}" onclick="showTrait2NodeDetail('${safeTitle}', '🔒 미개방 노드 | ${safeDesc}')" title="${safeTitle} | ${n.desc || ''}">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-top:4px; opacity:0.75;">
                 <rect x="5" y="11" width="14" height="10" rx="2" stroke="#94a3b8" stroke-width="2" fill="#1e293b"/>
                 <path d="M8 11V7C8 4.79 9.79 3 12 3C14.21 3 16 4.79 16 7V11" stroke="#94a3b8" stroke-width="2"/>
@@ -10055,7 +10046,7 @@
         }
         const uninvestedCls = n.cur === 0 ? 'uninvested' : '';
         return `
-          <div class="trait2-node ${n.cls} ${hasLine} ${uninvestedCls}" title="[개방: Lv.${n.reqLv} / 레벨당 ${n.cost}P] ${n.desc || ''}">
+          <div class="trait2-node ${n.cls} ${hasLine} ${uninvestedCls}" onclick="showTrait2NodeDetail('${safeTitle} - 현재 ${n.cur}/${n.max}', '${safeDesc}')" title="[${safeTitle}] ${n.desc || ''}">
             <span class="trait2-node-cost">${n.cost}P</span>
             <div style="display:flex; align-items:center; justify-content:center; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.85));">
               ${getTrait2NodeSvg(isMark, rowIdx, idx)}
@@ -10074,20 +10065,24 @@
     }
 
     const row1Title = isMark ? "1번째 줄 : 표식 획득 확률 증가 (칸당 +15%, 레벨당 +3% | 요구 TP: 1·1·1·1·2·3)" : "1번째 줄 : 2차 크리티컬 확률 증가 (칸당 +15%, Lv.90 특화 조건 때문에 6칸 전부 5/5 마스터!)";
-    const row2Title = isMark ? "2번째 줄 : 표식 1개당 피해량 증가 (갈10% ~ 초1,000%[5/10]까지 하이브리드 후 크피 몰빵!)" : "2번째 줄 : 2차 크리티컬 피해량 증가 (50% ~ 300만% 기하급수 폭등! 표식 초록 5/10 이후 올인!)";
-    const row3Title = isMark ? "3번째 줄 : 표식 획득 시 추가 획득 (+1, +1, +2, +2, +3, +3개 | 요구 TP: 2·2·10·10·20·20)" : "3번째 줄 : 2차 저주 상태 적이 입는 피해량 증가 (+100% ~ +40,000% | 개방 즉시 0순위 마스터!)";
+    const row2Title = isMark ? "2번째 줄 : 표식 1개당 피해량 증가 (요구 TP: 1·1·1·1·2·3·3·5·7·10·10·10·10·15...)" : "2번째 줄 : 2차 크리티컬 피해량 증가 (요구 TP: 1·1·1·1·2·3·3·5·7·10·10·10·10·15...)";
+    const row3Title = isMark ? "3번째 줄 : 표식 획득 시 추가 획득 (Lv.90부터는 2번째 칸까지만 찍고 60P 절약!)" : "3번째 줄 : 2차 저주 상태 적이 입는 피해량 증가 (+100% ~ +40,000% | 개방 즉시 0순위 마스터!)";
     const row4Title = isMark ? "4번째 줄 : 3차 전용 표식 증폭 (크리 시 4배 획득 / 최대중첩 50➔250개 / 표식증폭 1,000% / 풀중첩 1,500%)" : "4번째 줄 : 3차 전용 크리티컬 증폭 (각성기 크리[봉인시 제외] / 저주증폭 700% / 표식당 저주 6% / 크확100%시 2,000%)";
 
-    // 맨 앞 황금색 루트 노드(1/1, 1P) + 1·2·3줄 연결선 렌더링
     const rootSvg = isMark
       ? `<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="5" fill="#fde047" stroke="#78350f" stroke-width="1.5"/><circle cx="15" cy="15" r="5" fill="#fef08a" stroke="#78350f" stroke-width="1.5"/></svg>`
       : `<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M12 2L15 9L22 9L16.5 14L18.5 21L12 17L5.5 21L7.5 14L2 9L9 9L12 2Z" fill="#fef08a" stroke="#78350f" stroke-width="1.2"/></svg>`;
 
     const rootBoxHtml = `
-      <div style="display:flex; align-items:flex-start; gap:22px; min-width:max-content;">
-        <!-- 좌측: 황금색 메인 루트 박스 (1·2·3번째 줄과 연결됨, 4번째 줄과는 독립) -->
-        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding-top:88px; position:relative;">
-          <div class="trait2-node ${activeRoot.cur > 0 ? '' : 'uninvested'}" style="width:68px; height:68px; background:linear-gradient(145deg, #facc15, #b45309); border:2.5px solid #fef08a; box-shadow:0 0 18px rgba(250,204,21,0.65);" title="[기본 개방 노드: 1P] ${activeRoot.desc}">
+      <!-- 📱 모바일 & PC 공통: 노드를 클릭/터치하면 상세 수치와 요구 TP가 여기에 표시됩니다! -->
+      <div id="t2_mobile_node_detail" style="background:rgba(15,23,42,0.85); border:1px solid #475569; border-radius:8px; padding:7px 12px; margin-bottom:12px; font-size:12px; color:#cbd5e1; position:sticky; left:0;">
+        👆 <strong>[팁]</strong> 아래 트리에서 <strong>아무 칸이나 클릭(모바일은 터치)</strong>하시면 해당 칸의 정확한 요구 TP와 피해량(%) 수치가 여기에 표시됩니다!
+      </div>
+
+      <div style="display:flex; align-items:flex-start; gap:20px; min-width:max-content;">
+        <!-- 좌측: 황금색 메인 루트 박스 (모바일에서도 줄 높이가 딱 맞도록 trait2-root-col 클래스 적용) -->
+        <div class="trait2-root-col" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding-top:88px; position:relative;">
+          <div class="trait2-node ${activeRoot.cur > 0 ? '' : 'uninvested'}" onclick="showTrait2NodeDetail('${activeRoot.name} (요구 TP: 1P)', '${activeRoot.desc}')" style="width:64px; height:64px; background:linear-gradient(145deg, #facc15, #b45309); border:2.5px solid #fef08a; box-shadow:0 0 18px rgba(250,204,21,0.65);" title="[기본 개방 노드: 1P] ${activeRoot.desc}">
             <span class="trait2-node-cost" style="color:#451a03; font-weight:900;">1P</span>
             ${rootSvg}
             <span class="trait2-node-lv">${activeRoot.cur}/1</span>
