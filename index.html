@@ -12961,7 +12961,6 @@
     const idx = allInputs.findIndex(el => el.id === `u_brk_${curUid}`);
     if (idx !== -1 && idx + dir >= 0 && idx + dir < allInputs.length) {
       const nextEl = allInputs[idx + dir];
-      // 만약 다음 칸이 접혀있는 아코디언 안에 있다면 자동으로 펼쳐줌!
       const parentAcc = nextEl.closest('.accordion-item');
       if (parentAcc && !parentAcc.classList.contains('active')) {
         parentAcc.classList.add('active');
@@ -12971,7 +12970,7 @@
     }
   }
 
-  // 1) 장비 인벤토리 방식: 돌파(0~10) 타이핑 시 자동 저장 & 다음 칸 자동 탭(Auto-Tab)!
+  // 1) 장비 인벤토리 방식: 돌파(0~10) 타이핑 시 즉시 저장 & 다음 칸 자동 탭(Auto-Tab)!
   function handleUnionBrkAutoTab(inputEl, type, uid, grade) {
     if (unionAutoTabTimer) {
       clearTimeout(unionAutoTabTimer);
@@ -12981,19 +12980,17 @@
     if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
     let raw = inputEl.value.replace(/[^0-9]/g, '');
 
-    // 빈칸(Backspace로 지웠을 때) -> 미보유 처리
     if (raw === '') {
       delete unionUserSpecs[type][uid];
       updateSingleUnionEditorCardUI(type, uid, grade, true);
       updateUnionOwnedBadge();
       calculateAndRenderUnionBoard();
-      triggerAutoSave();
+      triggerAutoSave(); // 저장 충돌 방지용 디바운스 복구
       return;
     }
 
     let num = parseInt(raw);
     if (num > 10) {
-      // 만약 이미 숫자가 있는 상태에서 덮어썼거나 10을 초과하면 마지막 자리 숫자만 취함 (단, '10'은 그대로 10 유지)
       raw = raw.slice(-2);
       num = parseInt(raw);
       if (num > 10) {
@@ -13001,7 +12998,6 @@
         num = parseInt(raw);
       }
     }
-
     inputEl.value = num;
 
     const prev = unionUserSpecs[type][uid];
@@ -13014,9 +13010,6 @@
     calculateAndRenderUnionBoard();
     triggerAutoSave();
 
-    // ★ 스마트 자동 점프:
-    // - 2~9 또는 10, 0을 입력했을 때는 지체 없이 즉시 다음 칸으로 점프!
-    // - '1'을 입력했을 때는 유저가 '10'을 치려고 바로 '0'을 누를 수 있으므로 0.35초 대기 후 다음 칸으로 점프!
     if (num === 1 && raw.length === 1) {
       unionAutoTabTimer = setTimeout(() => {
         if (document.activeElement === inputEl) {
@@ -13028,16 +13021,13 @@
     }
   }
 
-  // 방향키(좌/우) 및 빈칸에서 Backspace 누를 때 이전 칸 이동
   function handleUnionBrkKeyDown(e, type, uid, grade) {
-    // '1'을 쳐놓고 0.36초 안에 '0'을 누르면 '10'이 되도록 선택영역 해제 보조
     if (e.key === '0' && e.target.value === '1') {
       e.preventDefault();
       e.target.value = '10';
       handleUnionBrkAutoTab(e.target, type, uid, grade);
       return;
     }
-
     if (e.key === 'Backspace' && e.target.value === '') {
       e.preventDefault();
       focusNextUnionBrkInput(uid, -1);
@@ -13055,7 +13045,7 @@
     }
   }
 
-  // 2) [★1각 / ★2각 / ★3각] 버튼 클릭 시 호출 (클릭 즉시 10돌파 + 해당 각성 세팅! 한 번 더 누르면 각성 해제)
+  // 2) [★1각 / ★2각 / ★3각] 버튼 클릭 시 호출 (클릭 즉시 10돌파 + 해당 각성 세팅!)
   function onUnionAwkBtnClick(type, uid, grade, targetAwk) {
     if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
     const prev = unionUserSpecs[type][uid];
@@ -13104,7 +13094,6 @@
       if (cardEl) cardEl.classList.add('owned');
       if (brkEl) {
         if (!skipInputVal) brkEl.value = String(spec.brk);
-        // 입력 완료 시 눈에 확 띄는 에메랄드/시안 테두리 및 배경 점등!
         brkEl.style.borderColor = "#10b981";
         brkEl.style.background = "rgba(16, 185, 129, 0.14)";
       }
@@ -13154,7 +13143,7 @@
 
   function updateUnionOwnedBadge() {
     const mapObj = unionUserSpecs[currentUnionType] || {};
-    const cnt = Object.values(mapObj).filter(v => v && v.owned).length;
+    const cnt = Object.values(mapObj).filter(v => v && (v.owned || v.awk > 0 || parseInt(v.brk) >= 0)).length;
     const badge = document.getElementById('union_owned_cnt_badge');
     if (badge) badge.innerText = `보유 등록: ${cnt}개`;
   }
@@ -13182,7 +13171,8 @@
       const units = catalog.filter(u => u.grade === gm.key);
       const cardsHtml = units.map(u => {
         const spec = (unionUserSpecs[currentUnionType] || {})[u.uid];
-        const isOwned = Boolean(spec && spec.owned);
+        // 삭제되지 않고 속성값이 존재하면 보유로 판정!
+        const isOwned = Boolean(spec && (spec.owned || spec.awk > 0 || parseInt(spec.brk) >= 0));
         const curBrk = isOwned ? spec.brk : '';
         const curAwk = isOwned ? spec.awk : 0;
         const curLv = isOwned ? calcAutoUnionLevel(curBrk, curAwk) : 0;
@@ -13208,7 +13198,6 @@
               </div>
             </div>
 
-            <!-- 1. 장비 소환 인벤토리 스타일: 카드 가로 100% 꽉 차는 와이드 돌파수 기입란! -->
             <input type="text"
                    inputmode="numeric"
                    class="union-brk-autotab"
@@ -13221,7 +13210,6 @@
                    oninput="handleUnionBrkAutoTab(this, '${currentUnionType}', '${u.uid}', '${u.grade}')"
                    style="width:100% !important; padding:7px 6px !important; font-size:13.5px !important; font-weight:900 !important; text-align:center !important; background:${isOwned ? 'rgba(16, 185, 129, 0.14)' : '#090d16'} !important; border:1.5px solid ${isOwned ? '#10b981' : '#334155'} !important; border-radius:8px !important; color:#fde047 !important; margin-bottom:6px !important; box-shadow:inset 0 1px 3px rgba(0,0,0,0.5) !important;">
 
-            <!-- 2. 절대 줄바꿈되지 않는 슬림 1줄 [1각 / 2각 / 3각] 버튼 -->
             <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px;">
               ${[1, 2, 3].map(a => {
                 const isAct = isOwned && curAwk === a;
@@ -13275,7 +13263,7 @@
     if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
- // 🧠 [버그 완벽 수정] 1각/2각/3각 개체 누락 원천 차단 & 점수 순서 완벽 보장 엔진!
+  // 🧠 [글로벌 다중 탐색 엔진 복원!] 700점, 550점 컷 최우선 돌파 및 2:2 복합 스왑!
   function computeOptimalUnionForType(type) {
     const milestone = UNION_STAGE_MILESTONES[currentUnionStageIdx] || UNION_STAGE_MILESTONES[0];
     const unlockedRows = type === 'skill' ? milestone.skillRows : milestone.heroRows;
@@ -13284,7 +13272,7 @@
     const specs = unionUserSpecs[type] || {};
     const ownedPool = [];
 
-    // ★ [핵심 수정] sp.owned 여부와 상관없이 각성(awk > 0)이나 돌파(brk >= 0)가 있으면 무조건 수집!
+    // ★ sp.owned 뿐만 아니라 돌파/각성 값이 있으면 무조건 수집 (1각/2각 누락 방지!)
     catalog.forEach(u => {
       const sp = specs[u.uid];
       if (sp && (sp.owned || sp.awk > 0 || (sp.brk !== undefined && sp.brk !== null && sp.brk !== "" && sp.brk !== -1))) {
@@ -13306,7 +13294,7 @@
       }
     });
 
-    // 점수 높은 순 엄격 내림차순 정렬 (1각, 2각, 3각이 무조건 맨 앞으로!)
+    // 점수 높은 순 엄격 내림차순 정렬
     ownedPool.sort((a, b) => b.score - a.score);
 
     const rowsData = [];
@@ -13328,7 +13316,7 @@
       return { unlockedRows, rowsData, totalMult: 1 };
     }
 
-    // Step 1: 보라색 특수 슬롯 역순 배치 (배율이 가장 큰 아랫줄부터 최고점 개체 우선 장착!)
+    // Step 1: 보라색 특수 슬롯 역순 배치 (5번줄 -> 1번줄 순서로 최고점 개체 우선 장착)
     let poolIdx = 0;
     for (let r = unlockedRows; r >= 1; r--) {
       if (poolIdx < ownedPool.length) {
@@ -13336,74 +13324,133 @@
       }
     }
 
-    // Step 2: 남은 개체 중 일반 슬롯 후보 추출 (절대 누락 없음)
-    const normalCandidates = ownedPool.slice(poolIdx, poolIdx + unlockedRows * 4);
-    while (normalCandidates.length < unlockedRows * 4) {
-      normalCandidates.push(null);
+    // Step 2: 일반 슬롯 풀 (상위 4 * unlockedRows 개체)
+    const normalPool = ownedPool.slice(poolIdx, poolIdx + unlockedRows * 4);
+    while (normalPool.length < unlockedRows * 4) {
+      normalPool.push(null);
     }
 
-    // 초기 배치: 점수가 높은 개체부터 차곡차곡 분배
+    // 초기 배치: 점수 큰 것부터 차례대로 4개씩 모아서 채움 (상위 컷을 뚫기 가장 좋은 기본 배치)
     for (let i = 0; i < unlockedRows * 4; i++) {
       const r = Math.floor(i / 4);
       const c = i % 4;
-      rowsData[r].normalSlots[c] = normalCandidates[i];
+      rowsData[r].normalSlots[c] = normalPool[i];
     }
 
-    // 순수 곱연산 평가 함수
-    function evalNormalMult() {
+    function evalGridMult(grid) {
       let prod = 1;
       for (let r = 0; r < unlockedRows; r++) {
-        const sum = rowsData[r].normalSlots.reduce((acc, it) => acc + (it ? it.score : 0), 0);
+        const sum = grid[r].reduce((acc, it) => acc + (it ? it.score : 0), 0);
         prod *= (1 + getUnionNormalSynergyPct(sum) / 100);
       }
       return prod;
     }
 
-    // Step 3: [안정적 힐클라이밍] 실제 곱연산 배율이 상승할 때만 1:1 및 2:2 스왑 허용!
-    let bestMult = evalNormalMult();
-    let improved = true;
-    let guard = 0;
+    function optimizeGrid(startGrid) {
+      let currentGrid = startGrid.map(row => [...row]);
+      let currentMult = evalGridMult(currentGrid);
+      let improved = true;
+      let guard = 0;
 
-    while (improved && guard < 60) {
-      improved = false;
-      guard++;
+      while (improved && guard < 60) {
+        improved = false;
+        guard++;
 
-      for (let r1 = 0; r1 < unlockedRows; r1++) {
-        for (let r2 = r1 + 1; r2 < unlockedRows; r2++) {
-          for (let c1 = 0; c1 < 4; c1++) {
-            for (let c2 = 0; c2 < 4; c2++) {
-              const tmp = rowsData[r1].normalSlots[c1];
-              rowsData[r1].normalSlots[c1] = rowsData[r2].normalSlots[c2];
-              rowsData[r2].normalSlots[c2] = tmp;
+        // 1:1 스왑
+        for (let r1 = 0; r1 < unlockedRows; r1++) {
+          for (let r2 = r1 + 1; r2 < unlockedRows; r2++) {
+            for (let c1 = 0; c1 < 4; c1++) {
+              for (let c2 = 0; c2 < 4; c2++) {
+                const t = currentGrid[r1][c1];
+                currentGrid[r1][c1] = currentGrid[r2][c2];
+                currentGrid[r2][c2] = t;
 
-              const curMult = evalNormalMult();
-              if (curMult > bestMult + 0.001) {
-                bestMult = curMult;
-                improved = true;
-              } else {
-                rowsData[r2].normalSlots[c2] = rowsData[r1].normalSlots[c1];
-                rowsData[r1].normalSlots[c1] = tmp;
+                const m = evalGridMult(currentGrid);
+                if (m > currentMult + 1e-5) {
+                  currentMult = m;
+                  improved = true;
+                } else {
+                  currentGrid[r2][c2] = currentGrid[r1][c1];
+                  currentGrid[r1][c1] = t;
+                }
+              }
+            }
+          }
+        }
+
+        // 2:2 복합 스왑
+        for (let r1 = 0; r1 < unlockedRows; r1++) {
+          for (let r2 = r1 + 1; r2 < unlockedRows; r2++) {
+            for (let a = 0; a < 3; a++) {
+              for (let b = a + 1; b < 4; b++) {
+                for (let x = 0; x < 3; x++) {
+                  for (let y = x + 1; y < 4; y++) {
+                    const t1 = currentGrid[r1][a];
+                    const t2 = currentGrid[r1][b];
+                    currentGrid[r1][a] = currentGrid[r2][x];
+                    currentGrid[r1][b] = currentGrid[r2][y];
+                    currentGrid[r2][x] = t1;
+                    currentGrid[r2][y] = t2;
+
+                    const m = evalGridMult(currentGrid);
+                    if (m > currentMult + 1e-5) {
+                      currentMult = m;
+                      improved = true;
+                    } else {
+                      currentGrid[r2][x] = currentGrid[r1][a];
+                      currentGrid[r2][y] = currentGrid[r1][b];
+                      currentGrid[r1][a] = t1;
+                      currentGrid[r1][b] = t2;
+                    }
+                  }
+                }
               }
             }
           }
         }
       }
+      return { grid: currentGrid, mult: currentMult };
     }
 
-    // Step 4: 각 줄 내부 내림차순 정렬 & 점수 낮은 줄 -> 높은 줄(아래쪽) 배치
-    const activeSlice = rowsData.slice(0, unlockedRows);
-    activeSlice.sort((a, b) => {
+    // Step 3: 어닐링(셔플) 기법 추가 - 시작점을 다르게 해서 가장 높은 배율(예: 700점 2개)을 무조건 찾음!
+    const gridA = [];
+    for (let r = 0; r < unlockedRows; r++) gridA.push(normalPool.slice(r * 4, r * 4 + 4));
+
+    const gridB = Array.from({ length: unlockedRows }, () => []);
+    for (let i = 0; i < normalPool.length; i++) {
+      gridB[i % unlockedRows].push(normalPool[i]);
+    }
+
+    const resA = optimizeGrid(gridA);
+    const resB = optimizeGrid(gridB);
+    let bestResult = resA.mult >= resB.mult ? resA : resB;
+
+    if (bestResult.mult < 2.0 && unlockedRows >= 2) {
+      const shuffled = [...normalPool].sort(() => Math.random() - 0.5);
+      const gridC = [];
+      for (let r = 0; r < unlockedRows; r++) gridC.push(shuffled.slice(r * 4, r * 4 + 4));
+      const resC = optimizeGrid(gridC);
+      if (resC.mult > bestResult.mult) bestResult = resC;
+    }
+
+    for (let r = 0; r < unlockedRows; r++) {
+      rowsData[r].normalSlots = bestResult.grid[r];
+    }
+
+    // Step 4: 보기 좋게 줄 정렬 (점수가 높은 줄이 아래(5번 줄)로 가도록 정렬 & 각 줄 내부는 점수 내림차순 정렬)
+    const activeRows = rowsData.slice(0, unlockedRows);
+    activeRows.sort((a, b) => {
       const sumA = a.normalSlots.reduce((s, x) => s + (x ? x.score : 0), 0);
       const sumB = b.normalSlots.reduce((s, x) => s + (x ? x.score : 0), 0);
       return sumA - sumB;
     });
 
     for (let r = 0; r < unlockedRows; r++) {
-      rowsData[r].normalSlots = activeSlice[r].normalSlots;
+      rowsData[r].normalSlots = activeRows[r].normalSlots;
       rowsData[r].normalSlots.sort((a, b) => (b ? b.score : 0) - (a ? a.score : 0));
     }
 
-    // 최종 확정
+    // 최종 배율 및 점수 확정
     let totalMult = 1;
     for (let r = 0; r < 5; r++) {
       const rowObj = rowsData[r];
@@ -13424,48 +13471,8 @@
     return { unlockedRows, rowsData, totalMult };
   }
 
-  // 👇 function calculateAndRenderUnionBoard() 바로 위에 이 함수를 붙여넣으세요!
-  function renderUnionSlotCell(unit, isSpecial) {
-    if (!unit) {
-      return `
-        <div class="union-slot-card ${isSpecial ? 'special-slot' : ''}">
-          <div style="flex:1; display:flex; align-items:center; justify-content:center; font-size:18px; color:${isSpecial ? '#f0abfc' : '#64748b'};">+</div>
-          <div class="union-score-bar"><div class="union-score-fill" style="width:0%;"></div><div class="union-score-text">0/0</div></div>
-        </div>
-      `;
-    }
-
-    const pctWidth = Math.min(100, Math.round((unit.score / unit.maxScore) * 100));
-    const tierCls = isSpecial ? 'special-slot' : `tier-${unit.grade}`;
-
-    let starsHtml = '';
-    if (unit.awk > 0) {
-      starsHtml = `<span style="color:#e879f9;">${'★'.repeat(unit.awk)}</span>`;
-    } else if (unit.brk > 0) {
-      const starCnt = Math.min(5, Math.ceil(unit.brk / 2));
-      starsHtml = `<span style="color:#facc15;">${'★'.repeat(starCnt)}</span>`;
-    }
-
-    const imgHtml = unit.img
-      ? `<img src="${unit.img}" alt="${unit.name}" onerror="this.onerror=null; if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.PNG');}else{this.style.display='none'; this.nextElementSibling.style.display='flex';}">
-         <span style="display:none; font-size:8.5px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800;">이미지<br>준비중</span>`
-      : `<span style="font-size:8.5px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800;">이미지<br>준비중</span>`;
-
-    return `
-      <div class="union-slot-card ${tierCls}" title="[${getGradeKrName(unit.grade)}] ${unit.name} (Lv.${unit.lv} / ${unit.brk}돌 / ${unit.awk}각 = ${unit.score}점)">
-        <div class="union-slot-thumb">
-          <div class="union-slot-stars">${starsHtml}</div>
-          ${imgHtml}
-          <span class="union-slot-lv">Lv.${unit.lv}</span>
-        </div>
-        <div style="font-size:11px; font-weight:800; color:#e2e8f0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; margin-top:2px;">${unit.name.split('(')[0]}</div>
-        <div class="union-score-bar">
-          <div class="union-score-fill" style="width:${pctWidth}%;"></div>
-          <div class="union-score-text">${unit.score}/${unit.maxScore}</div>
-        </div>
-      </div>
-    `;
-  }
+  // -------------------------
+  // (렌더링 영역: renderUnionSlotCell, calculateAndRenderUnionBoard 등은 그 아래에 이어서 유지됩니다)
 
   function calculateAndRenderUnionBoard() {
     const skillRes = computeOptimalUnionForType('skill');
