@@ -9875,9 +9875,11 @@
       tryInvest(mark4[i], 1);
     }
 
+     // 👇 [수정 후] i < 4 로 변경! (1~4번째 칸까지는 찍고, 5·6번째 20P짜리 2칸만 생략)
     for (let i = 0; i < 6; i++) {
       tryInvest(crit3[i], 1);
-      if (!trait2MysticSkipMark3 || i < 2) {
+      // 미스틱 고속충전 스위치 ON일 때도 표식이 너무 느리게 쌓이지 않도록 4번째 칸(Lv.60)까지는 찍고 5·6번째(20P×2)만 생략!
+      if (!trait2MysticSkipMark3 || i < 4) {
         tryInvest(mark3[i], 1);
       }
     }
@@ -11652,8 +11654,7 @@
                     <strong style="color:#7dd3fc; font-size:13.5px; text-shadow:0 0 8px rgba(56,189,248,0.4);">[미스틱 전용] 1차 80렙 스킬버프 사용</strong>
                     <span id="t2_cond_badge_mystic" class="grade-badge" style="background:${trait2MysticSkipMark3?'#0284c7':'#1e293b'}; color:${trait2MysticSkipMark3?'#ffffff':'#94a3b8'}; border:1px solid #38bdf8; font-size:10.5px;">${trait2MysticSkipMark3?'✅ ON (크피 몰빵)':'OFF (표식3줄 유지)'}</span>
                   </div>
-                  <span style="font-size:11.5px; color:#f0f9ff; display:block;">표식 고속 수급으로 표식 3줄 후반(10·20P)을 생략하고 크피에 몰빵! <small style="color:#fde047;">(사신·닼로는 OFF)</small></span>
-                </div>
+                  <span style="font-size:11.5px; color:#f0f9ff; display:block;">표식 3번째 줄을 <strong>4번째 칸(Lv.60)까지만 투자</strong>하고 마지막 5·6번째 칸(20P×2)을 아껴 크피에 몰빵! <small style="color:#fde047;">(사신·닼로는 OFF)</small></span>                </div>
               </label>
             </div>
           </div>
