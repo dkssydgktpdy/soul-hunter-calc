@@ -4460,10 +4460,11 @@
             <span class="grade-badge grade-ancient" id="union_owned_cnt_badge">보유 등록: 0개</span>
           </div>
           <!-- 영웅/스킬 목록 위쪽 초간단 사용법 안내 -->
-          <div style="background:rgba(56, 189, 248, 0.1); border:1.5px solid rgba(56, 189, 248, 0.4); border-radius:10px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#e2e8f0; line-height:1.55;">
-            💡 <strong>초간단 입력 방법:</strong><br>
-            • <strong>노각성(명함~10돌) 보유 시:</strong> 드롭다운에서 <strong>[돌파 단계]</strong>만 선택하세요. (돌파에 맞춰 최대 레벨이 자동 적용됩니다)<br>
-            • <strong>각성(1~3각) 보유 시:</strong> 드롭다운을 만질 필요 없이 바로 아래 <strong>[1각 / 2각 / 3각] 버튼만 클릭</strong>하면 자동으로 10돌파+최대레벨로 설정됩니다!
+          <!-- 영웅/스킬 목록 위쪽 초간단 Auto-Tab 사용법 안내 -->
+          <div style="background:rgba(56, 189, 248, 0.1); border:1.5px solid rgba(56, 189, 248, 0.4); border-radius:10px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#e2e8f0; line-height:1.6;">
+            ⚡ <strong>초고속 자동 탭(Auto-Tab) 입력 안내 (장비 인벤토리 방식):</strong><br>
+            • <strong>돌파 숫자 연속 입력:</strong> 첫 칸을 누르고 숫자(<strong>0 ~ 10</strong>)를 치면 <strong>최대 레벨이 자동 계산되며 즉시 다음 칸으로 커서가 넘어갑니다!</strong> <small style="color:#fde047;">(2~9나 10을 치면 즉시 이동, 1돌파는 1 입력 후 자동 이동 / 미보유는 <strong>Backspace</strong>로 빈칸 처리)</small><br>
+            • <strong>각성 원클릭 버튼:</strong> 각성한 스킬·영웅은 숫자 입력 없이 아래 <strong>[★1각 / ★2각 / ★3각] 버튼만 클릭</strong>하면 자동으로 10돌파+최대레벨로 설정됩니다!
           </div>
 
           <div class="search-input-wrapper">
@@ -13076,46 +13077,125 @@
     return Math.min(180, 20 + (b * 10) + (a * 20));
   }
 
-  // 1) 드롭다운(미보유 / 0돌파 ~ 10돌파) 변경 시 호출
-  function onUnionBrkSelectChange(type, uid, grade, valStr) {
-    if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
-    const brkVal = parseInt(valStr);
+  let unionAutoTabTimer = null;
 
-    if (isNaN(brkVal) || brkVal < 0) {
-      // '미보유(-1)' 선택 시
-      delete unionUserSpecs[type][uid];
-    } else {
-      const prev = unionUserSpecs[type][uid];
-      // 10돌 미만으로 내리면 각성은 자동으로 0각 처리
-      const newAwk = (brkVal === 10 && prev && prev.owned) ? (prev.awk || 0) : 0;
-      const autoLv = calcAutoUnionLevel(brkVal, newAwk);
-      unionUserSpecs[type][uid] = { owned: true, grade, lv: autoLv, brk: brkVal, awk: newAwk };
+  // 다음 유니온 돌파 입력칸으로 포커스 자동 점프!
+  function focusNextUnionBrkInput(curUid, dir = 1) {
+    const allInputs = Array.from(document.querySelectorAll('.union-brk-autotab'));
+    const idx = allInputs.findIndex(el => el.id === `u_brk_${curUid}`);
+    if (idx !== -1 && idx + dir >= 0 && idx + dir < allInputs.length) {
+      const nextEl = allInputs[idx + dir];
+      // 만약 다음 칸이 접혀있는 아코디언 안에 있다면 자동으로 펼쳐줌!
+      const parentAcc = nextEl.closest('.accordion-item');
+      if (parentAcc && !parentAcc.classList.contains('active')) {
+        parentAcc.classList.add('active');
+      }
+      nextEl.focus();
+      nextEl.select();
+    }
+  }
+
+  // 1) 장비 인벤토리 방식: 돌파(0~10) 타이핑 시 자동 저장 & 다음 칸 자동 탭(Auto-Tab)!
+  function handleUnionBrkAutoTab(inputEl, type, uid, grade) {
+    if (unionAutoTabTimer) {
+      clearTimeout(unionAutoTabTimer);
+      unionAutoTabTimer = null;
     }
 
-    updateSingleUnionEditorCardUI(type, uid, grade);
+    if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
+    let raw = inputEl.value.replace(/[^0-9]/g, '');
+
+    // 빈칸(Backspace로 지웠을 때) -> 미보유 처리
+    if (raw === '') {
+      delete unionUserSpecs[type][uid];
+      updateSingleUnionEditorCardUI(type, uid, grade, true);
+      updateUnionOwnedBadge();
+      calculateAndRenderUnionBoard();
+      triggerAutoSave();
+      return;
+    }
+
+    let num = parseInt(raw);
+    if (num > 10) {
+      // 만약 이미 숫자가 있는 상태에서 덮어썼거나 10을 초과하면 마지막 자리 숫자만 취함 (단, '10'은 그대로 10 유지)
+      raw = raw.slice(-2);
+      num = parseInt(raw);
+      if (num > 10) {
+        raw = raw.slice(-1);
+        num = parseInt(raw);
+      }
+    }
+
+    inputEl.value = num;
+
+    const prev = unionUserSpecs[type][uid];
+    const newAwk = (num === 10 && prev && prev.owned) ? (prev.awk || 0) : 0;
+    const autoLv = calcAutoUnionLevel(num, newAwk);
+    unionUserSpecs[type][uid] = { owned: true, grade, lv: autoLv, brk: num, awk: newAwk };
+
+    updateSingleUnionEditorCardUI(type, uid, grade, true);
     updateUnionOwnedBadge();
     calculateAndRenderUnionBoard();
     triggerAutoSave();
+
+    // ★ 스마트 자동 점프:
+    // - 2~9 또는 10, 0을 입력했을 때는 지체 없이 즉시 다음 칸으로 점프!
+    // - '1'을 입력했을 때는 유저가 '10'을 치려고 바로 '0'을 누를 수 있으므로 0.35초 대기 후 다음 칸으로 점프!
+    if (num === 1 && raw.length === 1) {
+      unionAutoTabTimer = setTimeout(() => {
+        if (document.activeElement === inputEl) {
+          focusNextUnionBrkInput(uid, 1);
+        }
+      }, 360);
+    } else {
+      focusNextUnionBrkInput(uid, 1);
+    }
   }
 
-  // 2) [1각 / 2각 / 3각] 버튼 클릭 시 호출 (클릭 즉시 10돌파 + 해당 각성 세팅! 한 번 더 누르면 각성 해제)
+  // 방향키(좌/우) 및 빈칸에서 Backspace 누를 때 이전 칸 이동
+  function handleUnionBrkKeyDown(e, type, uid, grade) {
+    // '1'을 쳐놓고 0.36초 안에 '0'을 누르면 '10'이 되도록 선택영역 해제 보조
+    if (e.key === '0' && e.target.value === '1') {
+      e.preventDefault();
+      e.target.value = '10';
+      handleUnionBrkAutoTab(e.target, type, uid, grade);
+      return;
+    }
+
+    if (e.key === 'Backspace' && e.target.value === '') {
+      e.preventDefault();
+      focusNextUnionBrkInput(uid, -1);
+    } else if (e.key === 'Delete' || e.key === '-') {
+      e.preventDefault();
+      e.target.value = '';
+      handleUnionBrkAutoTab(e.target, type, uid, grade);
+      focusNextUnionBrkInput(uid, 1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      focusNextUnionBrkInput(uid, -1);
+    } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+      e.preventDefault();
+      focusNextUnionBrkInput(uid, 1);
+    }
+  }
+
+  // 2) [★1각 / ★2각 / ★3각] 버튼 클릭 시 호출 (클릭 즉시 10돌파 + 해당 각성 세팅! 한 번 더 누르면 각성 해제)
   function onUnionAwkBtnClick(type, uid, grade, targetAwk) {
     if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
     const prev = unionUserSpecs[type][uid];
 
-    // 이미 같은 각성이 켜져 있으면 -> 0각성(10돌파)으로 해제 토글!
     const nextAwk = (prev && prev.owned && prev.awk === targetAwk) ? 0 : targetAwk;
     const autoLv = calcAutoUnionLevel(10, nextAwk);
 
     unionUserSpecs[type][uid] = { owned: true, grade, lv: autoLv, brk: 10, awk: nextAwk };
 
-    updateSingleUnionEditorCardUI(type, uid, grade);
+    updateSingleUnionEditorCardUI(type, uid, grade, false);
     updateUnionOwnedBadge();
     calculateAndRenderUnionBoard();
     triggerAutoSave();
   }
 
-  function updateSingleUnionEditorCardUI(type, uid, grade) {
+  function updateSingleUnionEditorCardUI(type, uid, grade, skipInputVal = false) {
     const cardEl = document.getElementById(`u_editor_${uid}`);
     const scoreBadge = document.getElementById(`u_score_badge_${uid}`);
     const brkEl = document.getElementById(`u_brk_${uid}`);
@@ -13125,7 +13205,7 @@
 
     if (!spec || !spec.owned) {
       if (cardEl) cardEl.classList.remove('owned');
-      if (brkEl) brkEl.value = "-1";
+      if (brkEl && !skipInputVal) brkEl.value = "";
       if (scoreBadge) {
         scoreBadge.innerText = `미보유 (0/${maxScore})`;
         scoreBadge.style.color = '#64748b';
@@ -13143,7 +13223,7 @@
       const autoLv = calcAutoUnionLevel(spec.brk, spec.awk);
       spec.lv = autoLv;
       if (cardEl) cardEl.classList.add('owned');
-      if (brkEl) brkEl.value = String(spec.brk);
+      if (brkEl && !skipInputVal) brkEl.value = String(spec.brk);
 
       const sc = getUnionUnitScore(grade, autoLv, spec.brk, spec.awk);
       if (scoreBadge) {
@@ -13219,7 +13299,7 @@
       const cardsHtml = units.map(u => {
         const spec = (unionUserSpecs[currentUnionType] || {})[u.uid];
         const isOwned = Boolean(spec && spec.owned);
-        const curBrk = isOwned ? spec.brk : -1;
+        const curBrk = isOwned ? spec.brk : '';
         const curAwk = isOwned ? spec.awk : 0;
         const curLv = isOwned ? calcAutoUnionLevel(curBrk, curAwk) : 0;
         if (isOwned) spec.lv = curLv;
@@ -13243,14 +13323,24 @@
               </div>
             </div>
 
-            <!-- 1. 큼직하고 깔끔한 [돌파 선택 드롭다운] 1개 -->
-            <select id="u_brk_${u.uid}" onchange="onUnionBrkSelectChange('${currentUnionType}', '${u.uid}', '${u.grade}', this.value)" style="width:100%; padding:8px 10px; font-size:13px; font-weight:800; border-radius:8px; background:#0f172a; border:1.5px solid #475569; color:#ffffff; margin-bottom:6px; cursor:pointer;">
-              <option value="-1" ${!isOwned ? 'selected' : ''}>미보유 (선택 안 함)</option>
-              <option value="0" ${isOwned && curBrk === 0 ? 'selected' : ''}>0돌파 (명함)</option>
-              ${[1,2,3,4,5,6,7,8,9,10].map(b => `<option value="${b}" ${isOwned && curBrk === b ? 'selected' : ''}>${b}돌파</option>`).join('')}
-            </select>
+            <!-- 1. 장비 인벤토리 방식: 돌파(0~10) 자동 탭(Auto-Tab) 입력칸 -->
+            <div style="display:flex; align-items:center; gap:6px; background:#090d16; border:1.5px solid #475569; border-radius:8px; padding:4px 10px; margin-bottom:6px;">
+              <span style="font-size:11.5px; font-weight:800; color:#94a3b8; white-space:nowrap;"> 돌파(0~10)입력</span>
+              <input type="text"
+                     inputmode="numeric"
+                     class="union-brk-autotab"
+                     id="u_brk_${u.uid}"
+                     value="${isOwned ? curBrk : ''}"
+                     placeholder="미보유"
+                     maxlength="2"
+                     onfocus="this.select()"
+                     onkeydown="handleUnionBrkKeyDown(event, '${currentUnionType}', '${u.uid}', '${u.grade}')"
+                     oninput="handleUnionBrkAutoTab(this, '${currentUnionType}', '${u.uid}', '${u.grade}')"
+                     style="padding:4px 2px !important; font-size:15px !important; font-weight:900 !important; text-align:center !important; background:transparent !important; border:none !important; color:#fde047 !important; width:100% !important;">
+              <span style="font-size:11.5px; font-weight:800; color:#cbd5e1;">돌</span>
+            </div>
 
-            <!-- 2. 원클릭 [1각 / 2각 / 3각] 버튼 3개 (누르면 즉시 10돌파 + 해당 각성 적용!) -->
+            <!-- 2. 원클릭 [1각 / 2각 / 3각] 버튼 3개 -->
             <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:5px;">
               ${[1, 2, 3].map(a => {
                 const isAct = isOwned && curAwk === a;
