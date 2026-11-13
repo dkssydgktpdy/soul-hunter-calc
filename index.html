@@ -2452,7 +2452,7 @@
       <div class="header-main-left">
         <div class="header-badge">소울 헌터 키우기 네이버 라운지 전용 툴</div>
         <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:10px; flex-wrap:wrap;">
-          <div class="speech-bubble-wrap" data-bubble="💬 룡은 1+1은 활성화 하라" style="position:relative; width:82px; height:82px; flex-shrink:0;">
+          <div class="speech-bubble-wrap" data-bubble="💬 룡은 1+1을 활성화 하라!" style="position:relative; width:82px; height:82px; flex-shrink:0;">
             <img id="main-avatar" src="images/avatar.png" alt="겨울눈사람 아바타" 
               onerror="handleAvatarError(this)"
               style="width:82px; height:82px; border-radius:50%; border:3px solid #7dd3fc; object-fit:cover; background:#1e293b; box-shadow:0 0 24px rgba(56, 189, 248, 0.75), inset 0 0 10px rgba(255,255,255,0.4); display:block;">
@@ -2472,7 +2472,7 @@
             <img src="images/book.png" alt="북선생" onerror="this.onerror=null; this.style.display='none';">
             <span>북선생</span>
           </div>
-          <div class="thanks-person speech-bubble-wrap" data-bubble="💬 ...">
+          <div class="thanks-person speech-bubble-wrap" data-bubble="💬 곱연산 & 합연산 개념 필수">
             <img src="images/yang.png" alt="붉양" onerror="this.onerror=null; this.style.display='none';">
             <span>붉양</span>
           </div>
@@ -9875,11 +9875,11 @@
       tryInvest(mark4[i], 1);
     }
 
-     // 👇 [수정 후] i < 4 로 변경! (1~4번째 칸까지는 찍고, 5·6번째 20P짜리 2칸만 생략)
-    for (let i = 0; i < 6; i++) {
+     for (let i = 0; i < 6; i++) {
       tryInvest(crit3[i], 1);
-      // 미스틱 고속충전 스위치 ON일 때도 표식이 너무 느리게 쌓이지 않도록 4번째 칸(Lv.60)까지는 찍고 5·6번째(20P×2)만 생략!
-      if (!trait2MysticSkipMark3 || i < 4) {
+      // ★ 전 직업 공통: Lv.90(크확 100% + 크리 시 표식 4배 상시 발동) 달성 시점부터는 표식이 순식간에 차오르므로,
+      // 표식 3번째 줄은 가성비인 2번째 칸(2P+2P)까지만 찍고 나머지 3~6번째 칸(60P)은 아껴서 크리티컬 피해량에 몰빵!
+      if (lv < 90 || i < 2) {
         tryInvest(mark3[i], 1);
       }
     }
@@ -11621,9 +11621,9 @@
             • 2차 전직을 <strong>Lv.100 ~ 110</strong>까지 찍어 핵심 노드를 모두 챙겼다면, 이후 보물던전 2 보상은 <strong>수호신 도감작을 위해 수호신 재화로 다 바꿔 먹거나, 정령 육성을 위해 정령 재화로 교환</strong>하는 것이 훨씬 효율적입니다!
           </div>
 
-         <!-- 🎯 눈에 확 띄는 배너형 [2차 전직 실전 조건 설정 컨트롤러] (테두리 고정 + ON/OFF 시 안쪽 배경색 & 배지 즉시 전환!) -->
+         <!-- 🎯 눈에 확 띄는 배너형 [2차 전직 실전 조건 설정 컨트롤러] (미스틱 버튼 제거 & 각성기 봉인 단일 스위치!) -->
           <div style="background:linear-gradient(135deg, rgba(30, 58, 138, 0.5) 0%, rgba(15, 23, 42, 0.98) 100%); border:2px solid #38bdf8; border-radius:16px; padding:14px 16px; margin-bottom:16px; box-shadow:0 8px 24px rgba(56, 189, 248, 0.22);">
-            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:12px; padding-bottom:8px; border-bottom:1px dashed rgba(56, 189, 248, 0.45);">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:10px; padding-bottom:8px; border-bottom:1px dashed rgba(56, 189, 248, 0.45);">
               <span style="font-size:14px; font-weight:900; color:#ffffff; display:flex; align-items:center; gap:6px;">
                 <span>⚙️</span><span>내 캐릭터 2차 전직 조건 선택 (클릭 시 안쪽 색상 및 TP 배분 즉시 전환!)</span>
               </span>
@@ -11632,31 +11632,17 @@
               </span>
             </div>
 
-            <div class="grid-2" style="gap:12px;">
-              <!-- 조건 1: 1차 65렙 각성기 봉인 여부 (에메랄드 테두리 상시 고정 + ON/OFF 시 안쪽 색상 변환) -->
-              <label id="t2_cond_box_seal" style="margin:0; background:${trait2SealAwk65?'linear-gradient(135deg, rgba(16, 185, 129, 0.36) 0%, rgba(6, 78, 59, 0.72) 100%)':'#0b1120'}; padding:12px 14px; border-radius:12px; border:2px solid #10b981; box-shadow:${trait2SealAwk65?'0 0 18px rgba(16, 185, 129, 0.45), inset 0 0 8px rgba(52, 211, 153, 0.25)':'none'}; display:flex; align-items:center; gap:12px; cursor:pointer; color:#ffffff; transition:all 0.2s;">
-                <input type="checkbox" ${trait2SealAwk65?'checked':''} onchange="toggleTrait2SealAwk(this.checked)" style="width:19px; height:19px; accent-color:#10b981; flex-shrink:0; cursor:pointer;">
-                <div style="line-height:1.4; flex:1;">
-                  <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; margin-bottom:3px; flex-wrap:wrap;">
-                    <strong style="color:#34d399; font-size:13.5px;">🔒 1차 Lv.65 [각성기 봉인] 달성</strong>
-                    <span id="t2_cond_badge_seal" class="grade-badge" style="background:${trait2SealAwk65?'#059669':'#1e293b'}; color:${trait2SealAwk65?'#ffffff':'#94a3b8'}; border:1px solid #10b981; font-size:10.5px;">${trait2SealAwk65?'✅ ON (5P 절약)':'OFF (미적용)'}</span>
-                  </div>
-                  <span style="font-size:11.5px; color:#e2e8f0; display:block;">크리티컬 4줄 1번 칸(각성기 사용 후 크리 발동, 5P)을 찍지 않고 아낍니다!</span>
+            <!-- 조건: 1차 65렙 각성기 봉인 여부 (단일 와이드 배너 버튼) -->
+            <label id="t2_cond_box_seal" style="margin:0; background:${trait2SealAwk65?'linear-gradient(135deg, rgba(16, 185, 129, 0.36) 0%, rgba(6, 78, 59, 0.72) 100%)':'#0b1120'}; padding:12px 16px; border-radius:12px; border:2px solid #10b981; box-shadow:${trait2SealAwk65?'0 0 18px rgba(16, 185, 129, 0.45), inset 0 0 8px rgba(52, 211, 153, 0.25)':'none'}; display:flex; align-items:center; gap:12px; cursor:pointer; color:#ffffff; transition:all 0.2s;">
+              <input type="checkbox" ${trait2SealAwk65?'checked':''} onchange="toggleTrait2SealAwk(this.checked)" style="width:19px; height:19px; accent-color:#10b981; flex-shrink:0; cursor:pointer;">
+              <div style="line-height:1.4; flex:1;">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; margin-bottom:3px; flex-wrap:wrap;">
+                  <strong style="color:#34d399; font-size:14px;">🔒 1차 전직 Lv.65 [각성기 봉인] 특성 사용 중 (기본 권장)</strong>
+                  <span id="t2_cond_badge_seal" class="grade-badge" style="background:${trait2SealAwk65?'#059669':'#1e293b'}; color:${trait2SealAwk65?'#ffffff':'#94a3b8'}; border:1px solid #10b981; font-size:11px;">${trait2SealAwk65?'✅ ON (5P 절약)':'OFF (미적용)'}</span>
                 </div>
-              </label>
-
-              <!-- 조건 2: 미스틱 전용 (시안 블루 테두리 상시 고정 + 미스틱 이미지 + ON/OFF 시 안쪽 색상 변환) -->
-              <label id="t2_cond_box_mystic" style="margin:0; background:${trait2MysticSkipMark3?'linear-gradient(135deg, rgba(56, 189, 248, 0.42) 0%, rgba(12, 74, 110, 0.78) 100%)':'#0b1120'}; padding:12px 14px; border-radius:12px; border:2px solid #38bdf8; box-shadow:${trait2MysticSkipMark3?'0 0 18px rgba(56, 189, 248, 0.55), inset 0 0 8px rgba(125, 211, 252, 0.3)':'none'}; display:flex; align-items:center; gap:12px; cursor:pointer; color:#ffffff; transition:all 0.2s;">
-                <input type="checkbox" ${trait2MysticSkipMark3?'checked':''} onchange="toggleTrait2MysticSkip(this.checked)" style="width:19px; height:19px; accent-color:#38bdf8; flex-shrink:0; cursor:pointer;">
-                <img src="images/mystic.png" alt="미스틱" style="width:38px; height:38px; border-radius:8px; border:1.5px solid #7dd3fc; background:#0f172a; padding:2px; object-fit:contain; flex-shrink:0; box-shadow:0 0 10px rgba(56,189,248,0.4);" onerror="this.onerror=null; this.src='mystic.png';">
-                <div style="line-height:1.4; flex:1;">
-                  <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; margin-bottom:3px; flex-wrap:wrap;">
-                    <strong style="color:#7dd3fc; font-size:13.5px; text-shadow:0 0 8px rgba(56,189,248,0.4);">[미스틱 전용] 1차 80렙 스킬버프 사용</strong>
-                    <span id="t2_cond_badge_mystic" class="grade-badge" style="background:${trait2MysticSkipMark3?'#0284c7':'#1e293b'}; color:${trait2MysticSkipMark3?'#ffffff':'#94a3b8'}; border:1px solid #38bdf8; font-size:10.5px;">${trait2MysticSkipMark3?'✅ ON (크피 몰빵)':'OFF (표식3줄 유지)'}</span>
-                  </div>
-                  <span style="font-size:11.5px; color:#f0f9ff; display:block;">표식 3번째 줄을 <strong>4번째 칸(Lv.60)까지만 투자</strong>하고 마지막 5·6번째 칸(20P×2)을 아껴 크피에 몰빵! <small style="color:#fde047;">(사신·닼로는 OFF)</small></span>                </div>
-              </label>
-            </div>
+                <span style="font-size:12px; color:#e2e8f0; display:block;">크리티컬 4번째 줄 1번 칸(각성기 사용 후 크리티컬 발동, 요구량 5P)은 각성기 봉인 상태에서 무옵션이므로 찍지 않고 아낍니다!</span>
+              </div>
+            </label>
           </div>
 
           <!-- 레벨 슬라이더(드래그 끊김 0%) & [-1]/[+1] 미세조절 & 퀵 버튼 컨트롤러 -->
@@ -11714,12 +11700,12 @@
             <div class="trait2-tree-scroll" id="t2_tree_rows_container"></div>
           </div>
 
-          <!-- 2차 전직 수학적 최적해 & 직업별 표식 3줄 가이드 -->
+          <!-- 2차 전직 수학적 최적해 & Lv.90 이후 표식 3줄 다이어트 가이드 -->
           <div class="build-tip-box" style="margin-top:16px; border-color:#eab308;">
-            🧮 <strong>[수학적 검증 완료] 왜 '표식 초록색(5/10)까지 하이브리드 ➔ 이후 크피 몰빵'이 최적해인가요?</strong><br>
-            • <strong>표식 피해량 × 크리티컬 피해량은 서로 독립 곱연산</strong>입니다! 초·중반(1~7번째 칸)에는 두 스탯의 성장 비율이 비슷하여 양쪽을 같이 올리는 <strong>[하이브리드]</strong>가 무조건 가장 강력합니다.<br>
-            • 하지만 <strong>8번째 칸(초록색, Lv.70) 이후</strong>부터는 표식 1개당 피해량이 <code>1,000% ➔ 1,400% ➔ 2,000% ➔ 2,800% ➔ 4,000%</code>로 칸당 <strong>약 1.4배씩만 완만하게 증가</strong>하는 반면, 크리티컬 피해량은 <code>18,000% ➔ 70,000% ➔ 30만% ➔ 120만% ➔ 300만%</code>로 <strong>칸당 4~5배씩 기하급수적으로 폭등</strong>합니다! 따라서 표식 초록색 <code>5/10</code> 이후부터는 1포인트당 딜 상승률이 압도적인 <strong>[크리티컬 피해량(2줄)]에 몰빵</strong>하는 것이 수학적 최고점입니다.<br>
-            • <strong>직업별 표식 3번째 줄(추가 획득 +1~+3개) 팁:</strong> 표식 4줄 마지막 효과(<strong>250스택 최대 중첩 시 +1,500% 곱연산</strong>)를 빨리 켜려면 250스택을 빠르게 채워야 합니다. <strong>사신과 다크로드</strong>는 스택이 느리게 차므로 표식 3번째 줄을 모두 찍는 것이 좋고, <strong>미스틱(아크메이지)</strong>은 1차 80렙 [스킬 버프 효과 추가] 사용 시 스킬 난사로 표식이 순식간에 차므로 위 스위치를 켜서 표식 3줄 포인트를 아껴 크피에 더 투자하셔도 됩니다!
+            🧮 <strong>[수학적 검증 완료] 2차 전직 TP 최적 분배 핵심 공식 3가지:</strong><br>
+            1. <strong>Lv.90 전후 표식 3번째 줄(추가 획득) 다이어트 :</strong> Lv.90이 되어 <strong>크리티컬 확률 100%(1줄 마스터) + 표식 4줄 1번 칸(크리 시 표식 4배 획득)</strong>이 만나면 전 직업 모두 표식이 순식간에 차오릅니다! 따라서 <strong>Lv.90부터는 표식 3번째 줄을 2번째 칸(Lv.30, 2P)까지만 찍고, 뒤쪽 3~6번째 칸(총 60P)은 빼서 크리티컬 피해량에 투자</strong>합니다!<br>
+            2. <strong>표식 초록색(8번째 칸) 5/10까지 하이브리드 :</strong> 표식 피해량 × 크리티컬 피해량은 서로 독립 곱연산이므로, 초·중반(1~7번째 칸 및 8번째 초록색 <code>5/10</code>까지)에는 두 스탯을 나란히 올리는 <strong>[하이브리드]</strong>가 가장 강력합니다.<br>
+            3. <strong>초록색 5/10 이후 크리티컬 피해량 올인 :</strong> 8번째 칸(Lv.70 초록색) 이후부터는 표식 피해량이 칸당 1.4배씩만 오르는 반면, 크리티컬 피해량은 <code>18,000% ➔ 70,000% ➔ 30만% ➔ 120만% ➔ 300만%</code>로 <strong>칸당 4~5배씩 기하급수 폭등</strong>하므로 남은 모든 포인트를 <strong>크리티컬 피해량(2줄)에 몰빵</strong>합니다!
           </div>
         </div>
       `;
