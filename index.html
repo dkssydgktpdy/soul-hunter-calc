@@ -6673,615 +6673,483 @@
     'nor4', 'nor3', 'nor2', 'nor1'
   ];
 
-  // 1) 은행 앱 방식: 숫자 1자리 입력 시 즉시 저장 & 다음 칸 자동 점프
-  function handleAutoTabSlot(inputEl, slotId, maxVal) {
-    let valStr = inputEl.value.replace(/[^0-9]/g, '');
-    if (valStr.length > 1) valStr = valStr.slice(-1); // 마지막 입력된 숫자 1개만 유지
+  // 1) 장비 인벤토리 방식: 돌파(0~10) 타이핑 시 즉시 저장 & 다음 칸 자동 탭(Auto-Tab)!
+  function handleUnionBrkAutoTab(inputEl, type, uid, grade) {
+    if (unionAutoTabTimer) {
+      clearTimeout(unionAutoTabTimer);
+      unionAutoTabTimer = null;
+    }
 
-    let num = parseInt(valStr);
-    if (isNaN(num)) num = 0;
-    if (num > maxVal) num = maxVal; // 고대는 1 초과 방지, 그 외 등급은 3 초과 방지
+    if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
+    let raw = inputEl.value.replace(/[^0-9]/g, '');
+
+    // 빈칸(Backspace로 지웠을 때) -> 미보유 처리
+    if (raw === '') {
+      delete unionUserSpecs[type][uid];
+      updateSingleUnionEditorCardUI(type, uid, grade, true);
+      updateUnionOwnedBadge();
+      calculateAndRenderUnionBoard();
+      saveUserSettings(false);
+      return;
+    }
+
+    let num = parseInt(raw);
+    if (num > 10) {
+      raw = raw.slice(-2);
+      num = parseInt(raw);
+      if (num > 10) {
+        raw = raw.slice(-1);
+        num = parseInt(raw);
+      }
+    }
 
     inputEl.value = num;
 
-    // 현재 장비 타입(대낫/오브/장식)에 실시간 기록
-    if (!equipInventories[selectedEquipType]) equipInventories[selectedEquipType] = {};
-    equipInventories[selectedEquipType][slotId] = num;
+    const prev = unionUserSpecs[type][uid];
+    const newAwk = (num === 10 && prev && prev.owned) ? (prev.awk || 0) : 0;
+    const autoLv = calcAutoUnionLevel(num, newAwk);
+    unionUserSpecs[type][uid] = { owned: true, grade, lv: autoLv, brk: num, awk: newAwk };
 
-    updateSummonCalculation();
-    triggerAutoSave();
+    updateSingleUnionEditorCardUI(type, uid, grade, true);
+    updateUnionOwnedBadge();
+    calculateAndRenderUnionBoard();
+    saveUserSettings(false);
 
-    // 다음 칸으로 자동 포커스 이동 (자동 Tab)
-    const currentIdx = INVENTORY_SLOT_SEQUENCE.indexOf(slotId);
-    if (currentIdx !== -1 && currentIdx < INVENTORY_SLOT_SEQUENCE.length - 1) {
-      const nextId = INVENTORY_SLOT_SEQUENCE[currentIdx + 1];
-      const nextInput = document.getElementById('inv_' + nextId);
-      if (nextInput) {
-        nextInput.focus();
-        nextInput.select();
-      }
-    }
-  }
-
-  // 2) Backspace 및 좌우 방향키로 이전/다음 칸 이동
-  function handleSlotKeyNav(event, slotId) {
-    const currentIdx = INVENTORY_SLOT_SEQUENCE.indexOf(slotId);
-    if (currentIdx === -1) return;
-
-    if (event.key === 'Backspace' && (event.target.value === '0' || event.target.value === '')) {
-      // 이미 0이거나 비어있을 때 Backspace 누르면 이전 칸으로 이동
-      if (currentIdx > 0) {
-        event.preventDefault();
-        const prevId = INVENTORY_SLOT_SEQUENCE[currentIdx - 1];
-        const prevInput = document.getElementById('inv_' + prevId);
-        if (prevInput) {
-          prevInput.focus();
-          prevInput.select();
+    if (num === 1 && raw.length === 1) {
+      unionAutoTabTimer = setTimeout(() => {
+        if (document.activeElement === inputEl) {
+          focusNextUnionBrkInput(uid, 1);
         }
+      }, 360);
+    } else {
+      focusNextUnionBrkInput(uid, 1);
+    }
+  }
+
+  // 방향키(좌/우) 및 빈칸에서 Backspace 누를 때 이전 칸 이동
+  function handleUnionBrkKeyDown(e, type, uid, grade) {
+    if (e.key === '0' && e.target.value === '1') {
+      e.preventDefault();
+      e.target.value = '10';
+      handleUnionBrkAutoTab(e.target, type, uid, grade);
+      return;
+    }
+
+    if (e.key === 'Backspace' && e.target.value === '') {
+      e.preventDefault();
+      focusNextUnionBrkInput(uid, -1);
+    } else if (e.key === 'Delete' || e.key === '-') {
+      e.preventDefault();
+      e.target.value = '';
+      handleUnionBrkAutoTab(e.target, type, uid, grade);
+      focusNextUnionBrkInput(uid, 1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      focusNextUnionBrkInput(uid, -1);
+    } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+      e.preventDefault();
+      focusNextUnionBrkInput(uid, 1);
+    }
+  }
+
+  // 2) [★1각 / ★2각 / ★3각] 버튼 클릭 시 호출 (클릭 즉시 10돌파 + 해당 각성 세팅!)
+  function onUnionAwkBtnClick(type, uid, grade, targetAwk) {
+    if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
+    const prev = unionUserSpecs[type][uid];
+
+    const nextAwk = (prev && prev.owned && prev.awk === targetAwk) ? 0 : targetAwk;
+    const autoLv = calcAutoUnionLevel(10, nextAwk);
+
+    unionUserSpecs[type][uid] = { owned: true, grade, lv: autoLv, brk: 10, awk: nextAwk };
+
+    updateSingleUnionEditorCardUI(type, uid, grade, false);
+    updateUnionOwnedBadge();
+    calculateAndRenderUnionBoard();
+    saveUserSettings(false);
+  }
+
+  function updateSingleUnionEditorCardUI(type, uid, grade, skipInputVal = false) {
+    const cardEl = document.getElementById(`u_editor_${uid}`);
+    const scoreBadge = document.getElementById(`u_score_badge_${uid}`);
+    const brkEl = document.getElementById(`u_brk_${uid}`);
+
+    const spec = (unionUserSpecs[type] || {})[uid];
+    const maxScore = UNION_SCORE_TABLE[grade].max;
+
+    if (!spec || !spec.owned) {
+      if (cardEl) cardEl.classList.remove('owned');
+      if (brkEl) {
+        if (!skipInputVal) brkEl.value = "";
+        brkEl.style.borderColor = "#334155";
+        brkEl.style.background = "#090d16";
       }
-    } else if (event.key === 'ArrowLeft') {
-      if (currentIdx > 0) {
-        event.preventDefault();
-        const prevInput = document.getElementById('inv_' + INVENTORY_SLOT_SEQUENCE[currentIdx - 1]);
-        if (prevInput) { prevInput.focus(); prevInput.select(); }
+      if (scoreBadge) {
+        scoreBadge.innerHTML = `<span style="color:#64748b;">미보유 (0/${maxScore})</span>`;
       }
-    } else if (event.key === 'ArrowRight') {
-      if (currentIdx < INVENTORY_SLOT_SEQUENCE.length - 1) {
-        event.preventDefault();
-        const nextInput = document.getElementById('inv_' + INVENTORY_SLOT_SEQUENCE[currentIdx + 1]);
-        if (nextInput) { nextInput.focus(); nextInput.select(); }
-      }
-    }
-  }
-
-  // 3) 등급별 4-3-2-1 슬롯 렌더링
-  function renderInventoryTierBlock(tierName, pillClass, ids, labels, borderColor, eqKrName) {
-    const curInv = equipInventories[selectedEquipType] || {};
-    const inputsHtml = ids.map((id, i) => {
-      const val = curInv[id] !== undefined ? curInv[id] : 0;
-      const maxVal = id.startsWith('anc') ? 1 : 3; // 고대는 최대 1, 그 외 등급은 최대 3
-      return `
-        <div>
-          <label style="font-size:11px; color:#cbd5e1;"><span class="dyn-eq-name">${eqKrName}</span> ${labels[i]}</label>
-          <input type="text" 
-                 inputmode="numeric"
-                 class="auto-tab-slot"
-                 id="inv_${id}" 
-                 value="${val}" 
-                 maxlength="1"
-                 onfocus="this.select()"
-                 onkeydown="handleSlotKeyNav(event, '${id}')"
-                 oninput="handleAutoTabSlot(this, '${id}', ${maxVal})" 
-                 style="padding:9px 0; font-size:16px; font-weight:800; text-align:center; letter-spacing:1px; background:#0f172a; border:1.5px solid #334155; border-radius:8px; color:#ffffff; width:100%; box-shadow:inset 0 1px 3px rgba(0,0,0,0.5);">
-        </div>
-      `;
-    }).join('');
-
-    return `
-      <div class="inv-tier-card" style="border-left:3px solid ${borderColor}; margin-bottom:10px;">
-        <div class="inv-tier-header" style="display:flex; justify-content:space-between; margin-bottom:6px;">
-          <span class="grade-badge grade-${pillClass}">${tierName}</span>
-          <span style="font-size:11px; color:#94a3b8;">${pillClass === 'ancient' ? '합성비 2:1 (0~1)' : '합성비 4:1 (0~3)'}</span>
-        </div>
-        <div class="grid-${ids.length}" style="gap:8px;">
-          ${inputsHtml}
-        </div>
-      </div>
-    `;
-  }
-
-  // 4) 장비 소환 계산기 전체 UI 빌드 (드롭다운 바로 밑 설명글 포함)
-  function renderEquipmentUI(container) {
-    const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
-    const curName = nameMap[selectedEquipType] || "대낫";
-
-    container.innerHTML = `
-      <div style="margin-bottom:16px;">
-        <label>소환할 장비 종류 선택</label>
-        <div class="grid-3" style="gap:12px;">
-          <div class="ancient-select-card ${selectedEquipType === 'scythe' ? 'selected' : ''}" id="eq_card_scythe" onclick="selectEquipIconType('scythe')">
-            <div class="ancient-header" style="margin-bottom:4px;">
-              <div class="ancient-title-box">
-                <div class="icon-avatar-wrapper" style="border-color:#f43f5e;">
-                  <span class="icon-avatar-fallback">대낫</span>
-                  <img src="images/schyte_calc.png" alt="대낫" onerror="this.onerror=null; this.src='images/scythe_calc.png'; this.onerror=function(){this.src='images/schyte_calc.jpg'; this.onerror=function(){this.style.display='none';};};" class="icon-avatar-img">
-                </div>
-                <div>
-                  <span class="ancient-name">🗡️ 대낫</span>
-                  <span class="ancient-sub" style="color:#f43f5e;">1회 100 다이아</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="ancient-select-card ${selectedEquipType === 'orb' ? 'selected' : ''}" id="eq_card_orb" onclick="selectEquipIconType('orb')">
-            <div class="ancient-header" style="margin-bottom:4px;">
-              <div class="ancient-title-box">
-                <div class="icon-avatar-wrapper" style="border-color:#38bdf8;">
-                  <span class="icon-avatar-fallback">오브</span>
-                  <img src="images/orb_calc.png" alt="오브" onerror="this.onerror=null; this.src='images/orb_calc.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
-                </div>
-                <div>
-                  <span class="ancient-name">🔮 오브</span>
-                  <span class="ancient-sub" style="color:#38bdf8;">1회 100 다이아</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="ancient-select-card ${selectedEquipType === 'accessory' ? 'selected' : ''}" id="eq_card_accessory" onclick="selectEquipIconType('accessory')">
-            <div class="ancient-header" style="margin-bottom:4px;">
-              <div class="ancient-title-box">
-                <div class="icon-avatar-wrapper" style="border-color:#fbbf24;">
-                  <span class="icon-avatar-fallback">장식</span>
-                  <img src="images/accessory_calc.png" alt="장식" onerror="this.onerror=null; this.src='images/accessory_calc.jpg'; this.onerror=function(){this.style.display='none';};" class="icon-avatar-img">
-                </div>
-                <div>
-                  <span class="ancient-name">💍 장식</span>
-                  <span class="ancient-sub" style="color:#fbbf24;">1회 200 다이아</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-bottom:12px;">
-        <label>최종 목표 고대 등급 선택</label>
-        <select id="sum_equip_target" onchange="updateSummonCalculation()" style="font-weight:700;">
-          <option value="32" selected>고대 ${curName} 1등급 (신화1 32개 분량 / 영원 해금 필수)</option>
-          <option value="16">고대 ${curName} 2등급 (신화1 16개 분량)</option>
-          <option value="8">고대 ${curName} 3등급 (신화1 8개 분량)</option>
-          <option value="4">고대 ${curName} 4등급 (신화1 4개 분량)</option>
-        </select>
-      </div>
-
-      <!-- 드롭다운 메뉴 바로 밑: 상세 사용법 및 입력 안내 설명글 -->
-      <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 10px; padding: 11px 16px; margin-bottom: 16px; line-height: 1.6; box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.08);">
-        <div style="font-size: 13.5px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-          <span>⚡</span>
-          <span>인벤토리 연속 입력 안내 (비밀번호 방식 자동 이동)</span>
-        </div>
-        <div style="font-size: 12.5px; color: #cbd5e1;">
-          • 인게임 장비 창에 보이는 순서 그대로 <strong>4등급 ➔ 3등급 ➔ 2등급 ➔ 1등급</strong> 순으로 배열되어 있습니다.<br>
-          • 첫 칸을 누르고 키패드로 숫자(0~3)를 연속으로 치시면 <strong>자동으로 다음 칸으로 커서가 넘어갑니다.</strong> (클릭/탭 불필요)<br>
-          • 잘못 입력했을 때는 <strong>Backspace(지우기)</strong> 또는 <strong>← 방향키</strong>를 누르면 이전 칸으로 돌아갑니다.<br>
-          • 대낫, 오브, 장식에 입력한 모든 수치는 <strong>실시간으로 각각 안전하게 자동 저장</strong>됩니다.
-        </div>
-      </div>
-
-      <div class="card" style="padding:16px 18px; margin-bottom:14px; background:#0b1120; border-color:#334155;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
-          <div>
-            <strong style="font-size:15px; color:#38bdf8;" id="equip_inv_header_title">🎒 현재 보유 [${curName}] 인벤토리 입력 (4 ➔ 1등급 순)</strong>
-          </div>
-          <button onclick="resetEquipInventory()" style="background:#334155; border:none; color:#cbd5e1; padding:5px 12px; border-radius:8px; font-size:12px; cursor:pointer;">인벤토리 초기화</button>
-        </div>
-
-        <!-- 4 -> 3 -> 2 -> 1 순서 배치 -->
-        ${renderInventoryTierBlock('고대 등급', 'ancient', ['anc4', 'anc3', 'anc2'], ['4등급', '3등급', '2등급'], '#06b6d4', curName)}
-        ${renderInventoryTierBlock('신화 등급', 'mythic', ['myt4', 'myt3', 'myt2', 'myt1'], ['4등급', '3등급', '2등급', '1등급'], '#f43f5e', curName)}
-        ${renderInventoryTierBlock('전설 등급', 'legend', ['leg4', 'leg3', 'leg2', 'leg1'], ['4등급', '3등급', '2등급', '1등급'], '#f97316', curName)}
-        ${renderInventoryTierBlock('특급 등급', 'unique', ['uni4', 'uni3', 'uni2', 'uni1'], ['4등급', '3등급', '2등급', '1등급'], '#a855f7', curName)}
-        ${renderInventoryTierBlock('상급 등급', 'advanced', ['adv4', 'adv3', 'adv2', 'adv1'], ['4등급', '3등급', '2등급', '1등급'], '#3b82f6', curName)}
-        ${renderInventoryTierBlock('중급 등급', 'middle', ['mid4', 'mid3', 'mid2', 'mid1'], ['4등급', '3등급', '2등급', '1등급'], '#22c55e', curName)}
-        ${renderInventoryTierBlock('하급 등급', 'normal', ['nor4', 'nor3', 'nor2', 'nor1'], ['4등급', '3등급', '2등급', '1등급'], '#b45309', curName)}
-
-        <div style="font-size:13.5px; color:#e2e8f0; margin-top:10px; text-align:right;">
-          현재 인벤토리 자동 일괄 합성 가치: <strong id="inv_total_synthesized_val" style="color:#38bdf8;">신화1 약 0.00개</strong>
-        </div>
-      </div>
-    `;
-  }
-
-  // 5) 장비 부위(대낫/오브/장식) 클릭 전환 시 값 보존 및 스위칭
-  function selectEquipIconType(type) {
-    selectedEquipType = type;
-    ['scythe', 'orb', 'accessory'].forEach(t => {
-      const card = document.getElementById(`eq_card_${t}`);
-      if (card) card.classList.toggle('selected', t === type);
-    });
-
-    const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
-    const curName = nameMap[type] || "대낫";
-
-    const targetSel = document.getElementById('sum_equip_target');
-    if (targetSel) {
-      const prevVal = targetSel.value || "32";
-      targetSel.innerHTML = `
-        <option value="32" ${prevVal === "32" ? "selected" : ""}>고대 ${curName} 1등급 (신화1 32개 분량 / 영원 해금 필수)</option>
-        <option value="16" ${prevVal === "16" ? "selected" : ""}>고대 ${curName} 2등급 (신화1 16개 분량)</option>
-        <option value="8" ${prevVal === "8" ? "selected" : ""}>고대 ${curName} 3등급 (신화1 8개 분량)</option>
-        <option value="4" ${prevVal === "4" ? "selected" : ""}>고대 ${curName} 4등급 (신화1 4개 분량)</option>
-      `;
-    }
-
-    const invTitleEl = document.getElementById('equip_inv_header_title');
-    if (invTitleEl) {
-      invTitleEl.innerText = `🎒 현재 보유 [${curName}] 인벤토리 입력 (4 ➔ 1등급 순)`;
-    }
-
-    document.querySelectorAll('.dyn-eq-name').forEach(el => el.innerText = curName);
-
-    // 전환된 장비 부위의 저장된 데이터로 화면 인풋 즉시 채우기
-    const curInv = equipInventories[selectedEquipType] || {};
-    INVENTORY_SLOT_SEQUENCE.forEach(id => {
-      const el = document.getElementById('inv_' + id);
-      if (el) el.value = curInv[id] !== undefined ? curInv[id] : 0;
-    });
-
-    updateSummonCalculation();
-    triggerAutoSave();
-  }
-
-  // 6) 인벤토리 초기화
-  function resetEquipInventory() {
-    const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
-    if (!confirm(`현재 [${nameMap[selectedEquipType]}] 인벤토리 수치를 초기화하시겠습니까?`)) return;
-    equipInventories[selectedEquipType] = {};
-    INVENTORY_SLOT_SEQUENCE.forEach(id => {
-      const el = document.getElementById('inv_' + id);
-      if (el) el.value = 0;
-    });
-    updateSummonCalculation();
-    triggerAutoSave();
-  }
-
-  // 7) 가치 계산기 (4:1, 2:1 합성비 적용)
-  function calcOwnedEquipmentValue() {
-    const tierFactors = {
-      anc2: 16.0, anc3: 8.0, anc4: 4.0,
-      myt1: 1.0, myt2: 0.25, myt3: 0.0625, myt4: 0.015625,
-      leg1: 1 / 256, leg2: 1 / 1024, leg3: 1 / 4096, leg4: 1 / 16384,
-      uni1: 1 / 65536, uni2: 1 / 262144, uni3: 1 / 1048576, uni4: 1 / 4194304,
-      adv1: 1 / 16777216, adv2: 1 / 67108864, adv3: 1 / 268435456, adv4: 1 / 1073741824,
-      mid1: 1 / 4294967296, mid2: 1 / 17179869184, mid3: 1 / 68719476736, mid4: 1 / 274877906944,
-      nor1: 1 / 1099511627776, nor2: 1 / 4398046511104, nor3: 1 / 17592186044416, nor4: 1 / 70368744177664
-    };
-    let total = 0;
-    const curInv = equipInventories[selectedEquipType] || {};
-    for (let k in tierFactors) {
-      const cnt = curInv[k] !== undefined ? curInv[k] : (parseInt(document.getElementById('inv_' + k)?.value) || 0);
-      total += cnt * tierFactors[k];
-    }
-    return total;
-  }
-
-  function filterNewbieItems(keyword) {
-    const q = keyword.trim().toLowerCase();
-    const boxes = document.querySelectorAll('.item-select-box');
-    boxes.forEach(b => b.classList.remove('search-match'));
-
-    if (!q) return;
-
-    let firstMatchedBox = null;
-    boxes.forEach(box => {
-      const nameAttr = (box.getAttribute('data-item-name') || '').toLowerCase();
-      if (nameAttr.includes(q)) {
-        box.classList.add('search-match');
-        const acc = box.closest('.accordion-item');
-        if (acc && !acc.classList.contains('active')) {
-          acc.classList.add('active');
+      [1, 2, 3].forEach(a => {
+        const btn = document.getElementById(`u_awk_btn_${uid}_${a}`);
+        if (btn) {
+          btn.style.background = '#0f172a';
+          btn.style.borderColor = '#334155';
+          btn.style.color = '#94a3b8';
+          btn.style.boxShadow = 'none';
         }
-        if (!firstMatchedBox) firstMatchedBox = box;
+      });
+    } else {
+      const autoLv = calcAutoUnionLevel(spec.brk, spec.awk);
+      spec.lv = autoLv;
+      if (cardEl) cardEl.classList.add('owned');
+      if (brkEl) {
+        if (!skipInputVal) brkEl.value = String(spec.brk);
+        brkEl.style.borderColor = "#10b981";
+        brkEl.style.background = "rgba(16, 185, 129, 0.14)";
+      }
+
+      const sc = getUnionUnitScore(grade, autoLv, spec.brk, spec.awk);
+      const awkTag = spec.awk > 0 ? `·<span style="color:#f0abfc;">${spec.awk}각</span>` : '';
+      if (scoreBadge) {
+        scoreBadge.innerHTML = `<span style="color:#fde047;">[${spec.brk}돌${awkTag}]</span> <span style="color:#38bdf8;">${sc}/${maxScore}점</span>`;
+      }
+
+      [1, 2, 3].forEach(a => {
+        const btn = document.getElementById(`u_awk_btn_${uid}_${a}`);
+        if (btn) {
+          const isAct = (spec.awk === a);
+          btn.style.background = isAct ? 'linear-gradient(135deg, #9333ea 0%, #581c87 100%)' : '#0f172a';
+          btn.style.borderColor = isAct ? '#e879f9' : '#334155';
+          btn.style.color = isAct ? '#ffffff' : '#cbd5e1';
+          btn.style.boxShadow = isAct ? '0 0 8px rgba(217, 70, 239, 0.5)' : 'none';
+        }
+      });
+    }
+  }
+
+  function batchSetUnionTier(type, targetGrade, lv, brk, awk) {
+    const catalog = getUnionCatalog(type);
+    if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
+    const validBrk = awk > 0 ? 10 : brk;
+    const autoLv = calcAutoUnionLevel(validBrk, awk);
+
+    catalog.forEach(unit => {
+      if (targetGrade === 'all' ? (unit.grade === 'legend' || unit.grade === 'unique') : (unit.grade === targetGrade)) {
+        unionUserSpecs[type][unit.uid] = { owned: true, grade: unit.grade, lv: autoLv, brk: validBrk, awk };
       }
     });
-
-    if (firstMatchedBox) {
-      firstMatchedBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+    renderUnionRosterAccordions();
+    calculateAndRenderUnionBoard();
+    saveUserSettings(false);
   }
 
-  function selectNewbieTargetItem(grade, idx) {
-    const catData = SUMMON_ITEMS[currentNewbieCat] || {};
-    const items = catData[grade] || [];
-    selectedTargetItem = {
-      grade: grade,
-      index: idx,
-      data: items[idx]
-    };
-
-    document.querySelectorAll('.item-select-box').forEach(b => b.classList.remove('selected'));
-    const targetBox = document.getElementById(`box_${grade}_${idx}`);
-    if (targetBox) targetBox.classList.add('selected');
-
-    const labelEl = document.getElementById('newbie_selected_target_label');
-    const barEl = document.getElementById('newbie_selected_target_bar');
-    if (labelEl && selectedTargetItem.data) {
-      const it = selectedTargetItem.data;
-      const gColor = getGradeColor(grade);
-      labelEl.innerHTML = `
-        선택된 목표: 
-        <span class="grade-badge grade-${grade}" style="margin:0 4px;">${getGradeKrName(grade)}</span>
-        <strong style="color:${gColor}; font-size:16px; text-shadow:0 0 10px rgba(0,0,0,0.6);">${it.name} ${it.attr || ''}</strong>
-      `;
-      if (barEl) {
-        barEl.style.borderColor = gColor;
-      }
-    }
-
-    updateSummonCalculation();
+  function resetUnionOwned(type) {
+    if (!confirm(`현재 [${type === 'skill' ? '스킬' : '영웅'} 유니온] 보유 스펙 설정을 모두 초기화하시겠습니까?`)) return;
+    unionUserSpecs[type] = {};
+    renderUnionRosterAccordions();
+    calculateAndRenderUnionBoard();
+    saveUserSettings(false);
   }
 
-  function renderAccordionUI(container) {
-    const catData = SUMMON_ITEMS[currentNewbieCat] || {};
-    const gradeOrder = [
-      { key: "mythic", name: "신화", cls: "acc-mythic", pill: "grade-mythic" },
-      { key: "legend", name: "전설", cls: "acc-legend", pill: "grade-legend" },
-      { key: "unique", name: "특급", cls: "acc-unique", pill: "grade-unique" },
-      { key: "advanced", name: "상급", cls: "acc-advanced", pill: "grade-advanced" },
-      { key: "middle", name: "중급", cls: "acc-middle", pill: "grade-middle" },
-      { key: "normal", name: "하급", cls: "acc-normal", pill: "grade-normal" }
+  function updateUnionOwnedBadge() {
+    const mapObj = unionUserSpecs[currentUnionType] || {};
+    const cnt = Object.values(mapObj).filter(v => v && v.owned).length;
+    const badge = document.getElementById('union_owned_cnt_badge');
+    if (badge) badge.innerText = `보유 등록: ${cnt}개`;
+  }
+
+  function renderUnionRosterAccordions() {
+    const container = document.getElementById('union_roster_accordions');
+    if (!container) return;
+
+    const titleEl = document.getElementById('union_roster_title');
+    if (titleEl) {
+      titleEl.innerText = currentUnionType === 'skill'
+        ? '📋 보유 스킬 스펙 설정 (신화 · 전설 · 특급)'
+        : '📋 보유 영웅 스펙 설정 (신화 · 전설 · 특급)';
+    }
+
+    const catalog = getUnionCatalog(currentUnionType);
+    const gradeMeta = [
+      { key: 'mythic', name: '신화 등급 (만점 500점)', cls: 'acc-mythic', badge: 'grade-mythic' },
+      { key: 'legend', name: '전설 등급 (만점 250점)', cls: 'acc-legend', badge: 'grade-legend' },
+      { key: 'unique', name: '특급 등급 (만점 200점)', cls: 'acc-unique', badge: 'grade-unique' }
     ];
 
-    let accordionsHtml = "";
-    gradeOrder.forEach((g, idx) => {
-      const items = catData[g.key] || [];
-      if (items.length === 0) return;
+    let html = '';
+    gradeMeta.forEach((gm, gIdx) => {
+      const units = catalog.filter(u => u.grade === gm.key);
+      const cardsHtml = units.map(u => {
+        const spec = (unionUserSpecs[currentUnionType] || {})[u.uid];
+        const isOwned = Boolean(spec && spec.owned);
+        const curBrk = isOwned ? spec.brk : '';
+        const curAwk = isOwned ? spec.awk : 0;
+        const curLv = isOwned ? calcAutoUnionLevel(curBrk, curAwk) : 0;
+        if (isOwned) spec.lv = curLv;
+        const sc = isOwned ? getUnionUnitScore(u.grade, curLv, curBrk, curAwk) : 0;
+        const awkTag = curAwk > 0 ? `·<span style="color:#f0abfc;">${curAwk}각</span>` : '';
 
-      const isFirst = (idx === 0);
-      let cardsHtml = "";
-      items.forEach((it, i) => {
-        let badgesHtml = "";
-        if (it.star) badgesHtml += '<span title="실사용 추천" style="font-size:10px;">⭐</span>';
-        if (it.isNew) badgesHtml += '<span class="mini-tag" style="background:#e11d48; color:#fff;">NEW</span>';
-        if (it.prob_proc) badgesHtml += '<span class="mini-tag" style="background:#f59e0b; color:#000;">확률형</span>';
-        if (it.role) badgesHtml += `<span class="mini-tag" style="background:#0284c7; color:#fff;">${it.role}</span>`;
+        const thumbHtml = u.img
+          ? `<div style="width:36px; height:36px; border-radius:8px; background:#0f172a; border:1px solid #475569; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <img src="${u.img}" alt="${u.name}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.PNG');}else{this.parentElement.innerHTML='<span style=\\'font-size:8.5px;color:#94a3b8;text-align:center;line-height:1.1;font-weight:800;\\'>준비중</span>';}">
+            </div>`
+          : `<div style="width:36px; height:36px; border-radius:8px; background:#0f172a; border:1px dashed #475569; display:flex; align-items:center; justify-content:center; font-size:8.5px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800; flex-shrink:0;">준비중</div>`;
 
-        let thumbHtml = "";
-        if (it.img) {
-        thumbHtml = `<img src="${it.img}" alt="${it.name}" style="width:32px; height:32px; border-radius:6px; object-fit:cover; margin-bottom:3px;" onerror="this.onerror=null; this.src=this.src.replace('.png','.jpg'); this.onerror=function(){this.style.display='none';};">`;
-        }
-
-        cardsHtml += `
-          <div class="item-select-box" id="box_${g.key}_${i}" data-item-name="${it.name}" onclick="selectNewbieTargetItem('${g.key}', ${i})">
-            <div class="item-box-badges">${badgesHtml}</div>
-            <div style="display:flex; flex-direction:column; align-items:flex-start;">
+        return `
+          <div class="union-unit-editor ${isOwned ? 'owned' : ''}" id="u_editor_${u.uid}" data-uname="${u.name}" style="padding:9px 10px;">
+            <div style="display:flex; align-items:center; gap:7px; margin-bottom:7px;">
               ${thumbHtml}
-              <div class="item-box-name">${it.name} ${it.attr || ''}</div>
+              <div style="min-width:0; flex:1;">
+                <div style="font-size:12.5px; font-weight:900; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${u.name} ${u.attr}">${u.name.split('(')[0]} ${u.attr}</div>
+                <div id="u_score_badge_${u.uid}" style="font-size:11px; font-weight:900; margin-top:1px;">
+                  ${isOwned ? `<span style="color:#fde047;">[${curBrk}돌${awkTag}]</span> <span style="color:#38bdf8;">${sc}/${u.maxScore}점</span>` : `<span style="color:#64748b;">미보유 (0/${u.maxScore})</span>`}
+                </div>
+              </div>
             </div>
-            <div class="item-box-sub">${g.name} ${it.noPickup ? '<span style="color:#f87171;">(픽업불가)</span>' : ''}</div>
+
+            <input type="text"
+                   inputmode="numeric"
+                   class="union-brk-autotab"
+                   id="u_brk_${u.uid}"
+                   value="${isOwned ? curBrk : ''}"
+                   placeholder="돌파수 기입란 (0~10)"
+                   maxlength="2"
+                   onfocus="this.select()"
+                   onkeydown="handleUnionBrkKeyDown(event, '${currentUnionType}', '${u.uid}', '${u.grade}')"
+                   oninput="handleUnionBrkAutoTab(this, '${currentUnionType}', '${u.uid}', '${u.grade}')"
+                   style="width:100% !important; padding:7px 6px !important; font-size:13.5px !important; font-weight:900 !important; text-align:center !important; background:${isOwned ? 'rgba(16, 185, 129, 0.14)' : '#090d16'} !important; border:1.5px solid ${isOwned ? '#10b981' : '#334155'} !important; border-radius:8px !important; color:#fde047 !important; margin-bottom:6px !important; box-shadow:inset 0 1px 3px rgba(0,0,0,0.5) !important;">
+
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px;">
+              ${[1, 2, 3].map(a => {
+                const isAct = isOwned && curAwk === a;
+                return `<button id="u_awk_btn_${u.uid}_${a}" onclick="onUnionAwkBtnClick('${currentUnionType}', '${u.uid}', '${u.grade}', ${a})" style="padding:5px 2px; border-radius:6px; font-size:11.5px; font-weight:900; white-space:nowrap; cursor:pointer; transition:all 0.15s; border:1.5px solid ${isAct ? '#e879f9' : '#334155'}; background:${isAct ? 'linear-gradient(135deg, #9333ea 0%, #581c87 100%)' : '#0f172a'}; color:${isAct ? '#ffffff' : '#cbd5e1'}; box-shadow:${isAct ? '0 0 8px rgba(217, 70, 239, 0.5)' : 'none'};">${a}각</button>`;
+              }).join('')}
+            </div>
           </div>
         `;
-      });
+      }).join('');
 
-      accordionsHtml += `
-        <div class="accordion-item ${g.cls}" id="acc_sum_${g.key}">
-          <div class="accordion-header" onclick="toggleNewbieAccordion('acc_sum_${g.key}')">
+      html += `
+        <div class="accordion-item ${gm.cls} ${gIdx === 0 ? 'active' : ''}" id="u_acc_${gm.key}">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('u_acc_${gm.key}')">
             <div class="accordion-left">
               <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text"><span class="grade-badge ${g.pill}">${g.name}</span> ${g.name} 등급 목록</span>
+              <span class="accordion-title-text"><span class="grade-badge ${gm.badge}">${getGradeKrName(gm.key)}</span> ${gm.name}</span>
             </div>
             <div class="accordion-right-info">
-              <span class="accordion-count-badge">${items.length}종</span>
+              <span class="accordion-count-badge">${units.length}종</span>
             </div>
           </div>
           <div class="accordion-content">
-            <div class="acc-scroll-box">
-              <div class="item-compact-grid">
-                ${cardsHtml}
-              </div>
+            <div class="acc-scroll-box" style="max-height:480px;">
+              <div class="union-roster-grid">${cardsHtml}</div>
             </div>
           </div>
         </div>
       `;
     });
 
-    const showLegendAndSearch = (currentNewbieCat !== 'passive');
-
-    const legendHtml = showLegendAndSearch ? `
-      <div class="legend-guide-bar">
-        <span style="font-weight:700; color:#38bdf8;">📌 범례:</span>
-        <span class="legend-item">⭐ <strong>실사용 추천</strong></span>
-        ${currentNewbieCat === 'skill' ? '<span class="legend-item"><span class="mini-tag" style="background:#f59e0b; color:#000;">확률형</span> <strong>타수 확률 발동</strong></span>' : ''}
-        ${currentNewbieCat === 'spirit' ? '<span class="legend-item">👑 <strong>리더</strong> / 🛡️ <strong>서포터</strong></span>' : ''}
-        <span class="legend-item"><span class="mini-tag" style="background:#e11d48; color:#fff;">NEW</span> <strong>신규 출시</strong></span>
-      </div>
-      <div class="search-input-wrapper">
-        <span class="search-icon-prefix">🔍</span>
-        <input type="text" id="newbie_search_input" placeholder="찾으시는 스킬 / 영웅 / 정령 이름을 검색하세요 (자동 펼침 & 이동)" oninput="filterNewbieItems(this.value)">
-      </div>
-    ` : '';
-
-    container.innerHTML = `
-      ${legendHtml}
-
-      <div style="background:rgba(56, 189, 248, 0.1); border:1px solid rgba(56, 189, 248, 0.35); border-radius:8px; padding:8px 12px; margin-bottom:10px; font-size:12.5px; color:#bae6fd;">
-        💡 <strong>빠른 계산 팁:</strong> 동일 등급 내 모든 대상의 등장 확률은 완전히 똑같습니다! 단순 기댓값만 확인하실 거라면 <strong>해당 등급에서 아무 카드나 클릭</strong>하고 보유 개수만 입력하셔도 됩니다. <span style="color:#94a3b8;">(단, 정령의 무속성 노말 3종만 픽업 불가 예외)</span>
-      </div>
-
-      <div id="newbie_selected_target_bar" style="background:#0f172a; border:1.5px solid #334155; border-radius:12px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; transition: border-color 0.2s;">
-        <div id="newbie_selected_target_label" style="font-size:15px; color:#ffffff;">
-          선택된 목표: <strong style="color:#f59e0b;">아래 목록에서 카드를 클릭하세요</strong>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <label style="margin:0; font-size:13px; color:#cbd5e1;">현재 보유 수량:</label>
-          <input type="number" id="sum_cur_have_count" value="0" min="0" max="70" oninput="updateSummonCalculation()" style="width:85px; padding:6px 10px; font-weight:700;">
-          <span style="font-size:12.5px; color:#94a3b8;">/ 70개 (10돌파)</span>
-        </div>
-      </div>
-
-      <div class="accordion-group">
-        ${accordionsHtml}
-      </div>
-    `;
-
-    const mythicItems = catData.mythic || [];
-    if (mythicItems.length > 0) {
-      selectNewbieTargetItem('mythic', 0);
-    }
+    container.innerHTML = html;
+    updateUnionOwnedBadge();
   }
 
-  function getDrawEquipSynthesisValue(rates) {
-    const avgGradeFactor = 0.175;
-    const val_myt = avgGradeFactor * 1.0;
-    const val_leg = avgGradeFactor * (1 / 256);
-    const val_uni = avgGradeFactor * (1 / 65536);
-    const val_adv = avgGradeFactor * (1 / 16777216);
-    const val_mid = avgGradeFactor * (1 / 4294967296);
-    const val_nor = avgGradeFactor * (1 / 1099511627776);
+  function filterUnionRoster(keyword) {
+    const q = keyword.trim().toLowerCase();
+    const cards = document.querySelectorAll('#union_roster_accordions .union-unit-editor');
+    cards.forEach(c => c.style.borderColor = '');
+    if (!q) return;
 
-    const totalVal = ((rates.mythic || 0) * val_myt) +
-                     ((rates.legend || 0) * val_leg) +
-                     ((rates.unique || 0) * val_uni) +
-                     ((rates.advanced || 0) * val_adv) +
-                     ((rates.middle || 0) * val_mid) +
-                     ((rates.normal || 0) * val_nor);
-    return totalVal;
+    let firstMatch = null;
+    cards.forEach(card => {
+      const uname = (card.getAttribute('data-uname') || '').toLowerCase();
+      if (uname.includes(q)) {
+        card.style.borderColor = '#fbbf24';
+        const acc = card.closest('.accordion-item');
+        if (acc && !acc.classList.contains('active')) acc.classList.add('active');
+        if (!firstMatch) firstMatch = card;
+      }
+    });
+    if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  function updateSummonCalculation() {
-    const resBox = document.getElementById('summon_result_box');
-    if (!resBox) return;
+  // 🧠 [완벽 무결점 최적화 엔진] 중복 배치 0% 보장 + 인게임 84%(550점) 및 117.6%(700점) 완벽 달성!
+  function computeOptimalUnionForType(type) {
+    const milestone = UNION_STAGE_MILESTONES[currentUnionStageIdx] || UNION_STAGE_MILESTONES[0];
+    const unlockedRows = type === 'skill' ? milestone.skillRows : milestone.heroRows;
 
-    const lv = parseInt(document.getElementById('sum_common_level')?.value || '10');
+    const catalog = getUnionCatalog(type);
+    const specs = unionUserSpecs[type] || {};
+    const ownedPool = [];
 
-    if (currentNewbieCat === 'equip') {
-      const nameMap = { scythe: "대낫", orb: "오브", accessory: "장식" };
-      const curName = nameMap[selectedEquipType] || "대낫";
-      const targetVal = parseFloat(document.getElementById('sum_equip_target')?.value || '32');
-      const costPerDraw = selectedEquipType === 'accessory' ? 200 : 100;
+    // 1. 보유한 모든 개체를 점수와 함께 정확히 1개씩만 수집 (중복 원천 차단)
+    catalog.forEach(u => {
+      const sp = specs[u.uid];
+      if (sp && sp.owned) {
+        const brkVal = Math.min(10, Math.max(0, parseInt(sp.brk) || 0));
+        const awkVal = Math.min(3, Math.max(0, parseInt(sp.awk) || 0));
+        const validBrk = awkVal > 0 ? 10 : brkVal;
+        const autoLv = calcAutoUnionLevel(validBrk, awkVal);
+        const sc = getUnionUnitScore(u.grade, autoLv, validBrk, awkVal);
 
-      const ownedVal = calcOwnedEquipmentValue();
-      const remainVal = Math.max(0, targetVal - ownedVal);
-
-      const labelVal = document.getElementById('inv_total_synthesized_val');
-      if (labelVal) {
-        labelVal.innerHTML = `신화1 약 <strong style="color:#38bdf8;">${ownedVal.toFixed(2)}개</strong> 분량 (목표: ${targetVal}개)`;
+        if (sc > 0) {
+          ownedPool.push({
+            ...u,
+            lv: autoLv,
+            brk: validBrk,
+            awk: awkVal,
+            score: sc
+          });
+        }
       }
+    });
 
-      const rates = (SUMMON_RATES.equip || {})[lv] || SUMMON_RATES.equip[10];
-      const valPerDraw = getDrawEquipSynthesisValue(rates);
+    // 점수 높은 순 엄격 내림차순 정렬 (신화 3각 500점 ➔ 2각 355점 ➔ 1각 285점 ➔ ...)
+    ownedPool.sort((a, b) => b.score - a.score);
 
-      const totalEffectiveDraws = (remainVal > 0 && valPerDraw > 0) ? (remainVal / valPerDraw) : 0;
-      const paidDraws = Math.round(totalEffectiveDraws / 1.05);
-      const expectedDia = paidDraws * costPerDraw;
+    const rowsData = [];
+    for (let r = 1; r <= 5; r++) {
+      rowsData.push({
+        rowNum: r,
+        unlocked: r <= unlockedRows,
+        normalSlots: [null, null, null, null],
+        specialSlot: null,
+        normalSum: 0,
+        normalPct: 0,
+        specialScore: 0,
+        specialPct: 0,
+        rowMult: 1
+      });
+    }
 
-      const targetGradeMap = { "32": "1등급", "16": "2등급", "8": "3등급", "4": "4등급" };
-      const targetGradeStr = targetGradeMap[String(targetVal)] || "1등급";
+    if (unlockedRows === 0 || ownedPool.length === 0) {
+      return { unlockedRows, rowsData, totalMult: 1 };
+    }
 
-      resBox.innerHTML = `
-        <div class="result-dashboard">
-          <div class="res-label">[고대 ${curName} ${targetGradeStr}] 달성까지 예상 유료 소환 기댓값</div>
-          <div class="res-value">${paidDraws.toLocaleString()}회</div>
-          <div style="font-size:18px; font-weight:800; color:#38bdf8; margin-bottom:10px;">
-            💎 필요 블루 다이아: ${formatKoreanNumber(expectedDia)} (${expectedDia.toLocaleString()}개)
-          </div>
-          <div class="res-sub">
-            <span>부족한 순수 가치: <strong>신화1 ${remainVal.toFixed(2)}개 분량</strong></span>
-            <span>|</span>
-            <span>총 소환(환급포함): <strong>${Math.round(totalEffectiveDraws).toLocaleString()}회</strong></span>
-            <span>|</span>
-            <span>1회 비용: <strong>${costPerDraw} 다이아</strong></span>
-          </div>
-        </div>
-      `;
-    } else {
-      if (!selectedTargetItem || !selectedTargetItem.data) return;
-
-      const grade = selectedTargetItem.grade;
-      const it = selectedTargetItem.data;
-      const curCount = parseInt(document.getElementById('sum_cur_have_count')?.value || '0');
-      const remainCount = Math.max(0, 70 - curCount);
-
-      const catData = SUMMON_ITEMS[currentNewbieCat] || {};
-      const itemsInGrade = catData[grade] || [];
-      const totalInGrade = itemsInGrade.length || 1;
-
-      const ratesObj = (SUMMON_RATES[currentNewbieCat] || {})[lv] || {};
-      const gradeProb = ratesObj[grade] || 0;
-
-      // [수정 위치] updateSummonCalculation 함수 내부의 const isPickupAvailable 아래쪽 교체:
-      const isPickupAvailable = (currentNewbieCat !== 'passive' && grade === 'mythic' && !it.noPickup);
-      const isSkillOrHero = (currentNewbieCat === 'skill' || currentNewbieCat === 'hero');
-
-      const pickupRatePerDraw = isSkillOrHero ? 0.0025 : 0.001;
-      const costPerDraw = currentNewbieCat === 'hero' ? 500 : 200;
-      const resUnitName = currentNewbieCat === 'spirit' ? '정령석' : '블루 다이아';
-
-      // 통상(상시) 소환 1회당 목표 개체 등장 확률 (Lv.9 이상부터 신화 등장)
-      const regularProbPerDraw = gradeProb > 0 ? (gradeProb / totalInGrade) : 0;
-
-      // ★ [핵심 교정] 5,000뽑당 100장(2%) 페이백은 '통상 소환권'으로 지급되므로,
-      // 픽업 소환 시에도 페이백 0.02장은 반드시 '통상 소환 확률(regularProbPerDraw)'로만 합산!
-      const effectivePickupRatePerPaidDraw = pickupRatePerDraw + (0.02 * regularProbPerDraw);
-      const pickupPaidDraws = (isPickupAvailable && remainCount > 0)
-        ? Math.round(remainCount / effectivePickupRatePerPaidDraw)
-        : 0;
-      const pickupCost = pickupPaidDraws * costPerDraw;
-
-      // 통상 소환은 본 뽑기(1회)와 페이백 소환권(0.02회) 모두 통상 확률 적용 (등비급수 합산 약 1.0204배)
-      const regularTotalDraws = (regularProbPerDraw > 0 && remainCount > 0) ? (remainCount / regularProbPerDraw) : 0;
-      const regularPaidDraws = Math.round(regularTotalDraws / 1.0204);
-      const regularCost = regularPaidDraws * costPerDraw;
-
-      const gColor = getGradeColor(grade);
-
-      if (!isPickupAvailable && gradeProb === 0) {
-        resBox.innerHTML = `
-          <div class="result-dashboard" style="border-color:#ef4444;">
-            <div class="res-label" style="color:#fca5a5;">⚠️ 현재 선택된 소환 레벨(Lv.${lv})에서는 [${getGradeKrName(grade)}] 등급이 등장하지 않습니다!</div>
-            <div style="font-size:14px; color:#cbd5e1; margin-top:8px;">상단에서 소환 레벨을 높이거나 다른 등급을 선택해 주세요.</div>
-          </div>
-        `;
-        return;
-      }
-
-      if (isPickupAvailable) {
-        const regularText = regularProbPerDraw > 0
-          ? `${regularPaidDraws.toLocaleString()}회`
-          : `Lv.${lv} 등장불가 (0%)`;
-        const regularCostText = regularProbPerDraw > 0
-          ? `예상 소모: ${formatKoreanNumber(regularCost)} ${resUnitName}`
-          : `상시 소환은 Lv.9 이상부터 등장`;
-
-        resBox.innerHTML = `
-          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:14px; margin-top:16px;">
-            <div class="result-dashboard green" style="margin-top:0;">
-              <div class="res-label">🔥 [${it.name}] 픽업 소환 시 (강력 추천)</div>
-              <div class="res-value" style="font-size:28px;">${pickupPaidDraws.toLocaleString()}회</div>
-              <div style="font-size:16px; font-weight:800; color:#fef08a; margin-bottom:8px;">
-                예상 소모: ${formatKoreanNumber(pickupCost)} ${resUnitName}
-              </div>
-              <div style="font-size:12.5px; color:#cbd5e1;">
-                픽업 0.1% 고정 ${isSkillOrHero ? '+ 1만뽑당 15개 확정 보너스' : ''} + 2% 페이백(통상소환권 확률) 반영
-              </div>
-            </div>
-
-            <div class="result-dashboard" style="margin-top:0; border-color:#ef4444; background:linear-gradient(135deg, #450a0a 0%, #1e1b4b 100%);">
-              <div class="res-label" style="color:#fca5a5;">📦 상시(통상) 소환 시 (극히 비추천)</div>
-              <div class="res-value" style="font-size:28px; color:#f87171;">${regularText}</div>
-              <div style="font-size:16px; font-weight:800; color:#fca5a5; margin-bottom:8px;">
-                ${regularCostText}
-              </div>
-              <div style="font-size:12.5px; color:#cbd5e1;">
-                신화 ${totalInGrade}종 균등 분배 ${regularProbPerDraw > 0 ? `(픽업 대비 약 ${(regularPaidDraws / Math.max(1, pickupPaidDraws)).toFixed(1)}배 소모)` : ''}
-              </div>
-            </div>
-          </div>
-        `;
-      } else {
-        resBox.innerHTML = `
-          <div class="result-dashboard">
-            <div class="res-label">
-              <span class="grade-badge grade-${grade}">${getGradeKrName(grade)}</span> 
-              <strong style="color:${gColor};">${it.name}</strong> 10돌파 달성까지 예상 기댓값
-            </div>
-            <div class="res-value">${regularPaidDraws.toLocaleString()}회</div>
-            <div style="font-size:18px; font-weight:800; color:#38bdf8; margin-bottom:10px;">
-              필요 ${resUnitName}: ${formatKoreanNumber(regularCost)} (${regularCost.toLocaleString()}개)
-            </div>
-            <div class="res-sub">
-              <span>남은 필요 수량: <strong>${remainCount}개 / 70개</strong></span>
-              <span>|</span>
-              <span>동일 등급 풀: <strong>${totalInGrade}종 균등 분배 (단일 ${(regularProbPerDraw * 100).toFixed(4)}%)</strong></span>
-              <span>|</span>
-              <span>환급: <strong>5천뽑당 100장 (2%) 반영</strong></span>
-            </div>
-          </div>
-        `;
+    // Step 1: 보라색 특수 슬롯 역순 배치 (효율이 가장 높은 5번 -> 4번 -> 3번 -> 2번 -> 1번 줄에 최고점 개체 우선 장착!)
+    let poolIdx = 0;
+    for (let r = unlockedRows; r >= 1; r--) {
+      if (poolIdx < ownedPool.length) {
+        rowsData[r - 1].specialSlot = ownedPool[poolIdx++];
       }
     }
+
+    // Step 2: 남은 개체들을 일반 슬롯 풀로 고유하게 추출 (중복 없이 정확히 슬롯 수만큼만!)
+    const totalNormalSlots = unlockedRows * 4;
+    const normalCandidates = ownedPool.slice(poolIdx, poolIdx + totalNormalSlots);
+    while (normalCandidates.length < totalNormalSlots) {
+      normalCandidates.push(null);
+    }
+
+    // 초기 배치: 점수가 높은 개체들이 고르게 분배되도록 스네이크 방식으로 1개씩 배분
+    for (let i = 0; i < totalNormalSlots; i++) {
+      const r = i % unlockedRows;
+      const c = Math.floor(i / unlockedRows);
+      rowsData[r].normalSlots[c] = normalCandidates[i];
+    }
+
+    // 순수 곱연산 평가 함수
+    function evalNormalMult() {
+      let prod = 1;
+      for (let r = 0; r < unlockedRows; r++) {
+        const sum = rowsData[r].normalSlots.reduce((acc, it) => acc + (it ? it.score : 0), 0);
+        prod *= (1 + getUnionNormalSynergyPct(sum) / 100);
+      }
+      return prod;
+    }
+
+    // Step 3: [안정적 힐클라이밍 최적화] 
+    // 1:1 및 2:2 스왑을 통해 다른 줄의 컷을 깨지 않으면서 550점(84%)이나 700점(117.6%)을 최대한 많이 돌파!
+    let bestMult = evalNormalMult();
+    let improved = true;
+    let guard = 0;
+
+    while (improved && guard < 80) {
+      improved = false;
+      guard++;
+
+      // 1) 1:1 맞교환 탐색
+      for (let r1 = 0; r1 < unlockedRows; r1++) {
+        for (let r2 = r1 + 1; r2 < unlockedRows; r2++) {
+          for (let c1 = 0; c1 < 4; c1++) {
+            for (let c2 = 0; c2 < 4; c2++) {
+              const tmp = rowsData[r1].normalSlots[c1];
+              rowsData[r1].normalSlots[c1] = rowsData[r2].normalSlots[c2];
+              rowsData[r2].normalSlots[c2] = tmp;
+
+              const curMult = evalNormalMult();
+              if (curMult > bestMult + 0.0001) {
+                bestMult = curMult;
+                improved = true;
+              } else {
+                rowsData[r2].normalSlots[c2] = rowsData[r1].normalSlots[c1];
+                rowsData[r1].normalSlots[c1] = tmp;
+              }
+            }
+          }
+        }
+      }
+
+      // 2) 2:2 복합 맞교환 탐색 (두 개를 묶어서 넘겨야 550점이나 700점이 뚫리는 경우 해결!)
+      for (let r1 = 0; r1 < unlockedRows; r1++) {
+        for (let r2 = r1 + 1; r2 < unlockedRows; r2++) {
+          for (let a = 0; a < 3; a++) {
+            for (let b = a + 1; b < 4; b++) {
+              for (let x = 0; x < 3; x++) {
+                for (let y = x + 1; y < 4; y++) {
+                  const t1 = rowsData[r1].normalSlots[a];
+                  const t2 = rowsData[r1].normalSlots[b];
+                  rowsData[r1].normalSlots[a] = rowsData[r2].normalSlots[x];
+                  rowsData[r1].normalSlots[b] = rowsData[r2].normalSlots[y];
+                  rowsData[r2].normalSlots[x] = t1;
+                  rowsData[r2].normalSlots[y] = t2;
+
+                  const curMult = evalNormalMult();
+                  if (curMult > bestMult + 0.0001) {
+                    bestMult = curMult;
+                    improved = true;
+                  } else {
+                    rowsData[r2].normalSlots[x] = rowsData[r1].normalSlots[a];
+                    rowsData[r2].normalSlots[y] = rowsData[r1].normalSlots[b];
+                    rowsData[r1].normalSlots[a] = t1;
+                    rowsData[r1].normalSlots[b] = t2;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Step 4: 각 줄 내부는 점수 내림차순 정렬 & 점수 낮은 줄 -> 높은 줄(5번 줄 쪽) 순서로 보기 좋게 정렬
+    const activeSlice = rowsData.slice(0, unlockedRows);
+    activeSlice.sort((a, b) => {
+      const sumA = a.normalSlots.reduce((s, x) => s + (x ? x.score : 0), 0);
+      const sumB = b.normalSlots.reduce((s, x) => s + (x ? x.score : 0), 0);
+      return sumA - sumB;
+    });
+
+    for (let r = 0; r < unlockedRows; r++) {
+      rowsData[r].normalSlots = activeSlice[r].normalSlots;
+      rowsData[r].normalSlots.sort((a, b) => (b ? b.score : 0) - (a ? a.score : 0));
+    }
+
+    // 최종 점수 및 배율 확정
+    let totalMult = 1;
+    for (let r = 0; r < 5; r++) {
+      const rowObj = rowsData[r];
+      const nSum = rowObj.normalSlots.reduce((acc, it) => acc + (it ? it.score : 0), 0);
+      const sScore = rowObj.specialSlot ? rowObj.specialSlot.score : 0;
+      const nPct = rowObj.unlocked ? getUnionNormalSynergyPct(nSum) : 0;
+      const sPct = rowObj.unlocked ? getUnionSpecialSynergyPct(rowObj.rowNum, sScore) : 0;
+      const rowMult = (1 + nPct / 100) * (1 + sPct / 100);
+
+      rowObj.normalSum = nSum;
+      rowObj.normalPct = nPct;
+      rowObj.specialScore = sScore;
+      rowObj.specialPct = sPct;
+      rowObj.rowMult = rowMult;
+      if (rowObj.unlocked) totalMult *= rowMult;
+    }
+
+    return { unlockedRows, rowsData, totalMult };
   }
 
   function renderSummonRatesTable() {
