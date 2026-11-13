@@ -2907,7 +2907,7 @@
 
         <!-- 배너 아바타 제공: 영웅오키V (oki.png / oki.jpg 폴백 + 말풍선 "...") -->
         <div style="width:100%; border-top:1px dashed rgba(125, 211, 252, 0.3); padding-top:6px; margin-top:2px; display:flex; flex-direction:column; align-items:center; gap:5px;">
-          <div class="thanks-title" style="color:#7dd3fc; font-size:10.5px;">🎨 배너 아바타 제공</div>
+          <div class="thanks-title" style="color:#7dd3fc; font-size:10.5px;">🎨 배너 아바타 제공 & 사신 데이터 제공</div>
           <div class="thanks-avatars-row">
             <div class="thanks-person speech-bubble-wrap" data-bubble="💬 사신은 인내하라.">
               <img src="images/oki.png" alt="영웅오키V" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/oki.jpg';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/oki.PNG';}else if(this.dataset.f==2){this.dataset.f=3;this.src='images/oki.JPG';}else{this.onerror=null;this.outerHTML='<div style=\'width:44px;height:44px;border-radius:50%;border:2px solid #c084fc;background:#1e1b4b;display:flex;align-items:center;justify-content:center;font-weight:900;color:#e9d5ff;font-size:12px;\'>오키</div>';}">
@@ -4459,9 +4459,12 @@
             <span id="union_roster_title">📋 보유 스킬 스펙 설정 (특급 · 전설 · 신화)</span>
             <span class="grade-badge grade-ancient" id="union_owned_cnt_badge">보유 등록: 0개</span>
           </div>
-          <p class="card-subtitle">
-            아래 카드에서 <strong>[명함 / 10돌 / 1각 / 2각 / 3각풀]</strong> 버튼을 누르거나 레벨·돌파·각성을 바꾸면 위 인게임 유니온 표에 실시간으로 이미지와 점수가 들어가며 최고 배율로 자동 정렬됩니다!
-          </p>
+          <!-- 영웅/스킬 목록 위쪽 초간단 사용법 안내 -->
+          <div style="background:rgba(56, 189, 248, 0.1); border:1.5px solid rgba(56, 189, 248, 0.4); border-radius:10px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#e2e8f0; line-height:1.55;">
+            💡 <strong>초간단 입력 방법:</strong><br>
+            • <strong>노각성(명함~10돌) 보유 시:</strong> 드롭다운에서 <strong>[돌파 단계]</strong>만 선택하세요. (돌파에 맞춰 최대 레벨이 자동 적용됩니다)<br>
+            • <strong>각성(1~3각) 보유 시:</strong> 드롭다운을 만질 필요 없이 바로 아래 <strong>[1각 / 2각 / 3각] 버튼만 클릭</strong>하면 자동으로 10돌파+최대레벨로 설정됩니다!
+          </div>
 
           <div class="search-input-wrapper">
             <span class="search-icon-prefix">🔍</span>
@@ -13066,29 +13069,45 @@
     return result;
   }
 
-  function setUnionUnitPreset(type, uid, grade, owned, lv, brk, awk) {
+// ★ 기본 Lv.20 + 돌파당 +10렙 + 각성당 +20렙 자동 계산
+  function calcAutoUnionLevel(brk, awk) {
+    const b = Math.min(10, Math.max(0, parseInt(brk) || 0));
+    const a = Math.min(3, Math.max(0, parseInt(awk) || 0));
+    return Math.min(180, 20 + (b * 10) + (a * 20));
+  }
+
+  // 1) 드롭다운(미보유 / 0돌파 ~ 10돌파) 변경 시 호출
+  function onUnionBrkSelectChange(type, uid, grade, valStr) {
     if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
-    if (!owned) {
+    const brkVal = parseInt(valStr);
+
+    if (isNaN(brkVal) || brkVal < 0) {
+      // '미보유(-1)' 선택 시
       delete unionUserSpecs[type][uid];
     } else {
-      unionUserSpecs[type][uid] = { owned: true, grade, lv, brk, awk };
+      const prev = unionUserSpecs[type][uid];
+      // 10돌 미만으로 내리면 각성은 자동으로 0각 처리
+      const newAwk = (brkVal === 10 && prev && prev.owned) ? (prev.awk || 0) : 0;
+      const autoLv = calcAutoUnionLevel(brkVal, newAwk);
+      unionUserSpecs[type][uid] = { owned: true, grade, lv: autoLv, brk: brkVal, awk: newAwk };
     }
+
     updateSingleUnionEditorCardUI(type, uid, grade);
     updateUnionOwnedBadge();
     calculateAndRenderUnionBoard();
     triggerAutoSave();
   }
 
-  function onUnionUnitDetailChange(type, uid, grade) {
-    const lvEl = document.getElementById(`u_lv_${uid}`);
-    const brkEl = document.getElementById(`u_brk_${uid}`);
-    const awkEl = document.getElementById(`u_awk_${uid}`);
-    const lv = lvEl ? parseInt(lvEl.value) : 180;
-    const brk = brkEl ? parseInt(brkEl.value) : 10;
-    const awk = awkEl ? parseInt(awkEl.value) : 0;
-
+  // 2) [1각 / 2각 / 3각] 버튼 클릭 시 호출 (클릭 즉시 10돌파 + 해당 각성 세팅! 한 번 더 누르면 각성 해제)
+  function onUnionAwkBtnClick(type, uid, grade, targetAwk) {
     if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
-    unionUserSpecs[type][uid] = { owned: true, grade, lv, brk, awk };
+    const prev = unionUserSpecs[type][uid];
+
+    // 이미 같은 각성이 켜져 있으면 -> 0각성(10돌파)으로 해제 토글!
+    const nextAwk = (prev && prev.owned && prev.awk === targetAwk) ? 0 : targetAwk;
+    const autoLv = calcAutoUnionLevel(10, nextAwk);
+
+    unionUserSpecs[type][uid] = { owned: true, grade, lv: autoLv, brk: 10, awk: nextAwk };
 
     updateSingleUnionEditorCardUI(type, uid, grade);
     updateUnionOwnedBadge();
@@ -13099,38 +13118,61 @@
   function updateSingleUnionEditorCardUI(type, uid, grade) {
     const cardEl = document.getElementById(`u_editor_${uid}`);
     const scoreBadge = document.getElementById(`u_score_badge_${uid}`);
-    const lvEl = document.getElementById(`u_lv_${uid}`);
     const brkEl = document.getElementById(`u_brk_${uid}`);
-    const awkEl = document.getElementById(`u_awk_${uid}`);
 
     const spec = (unionUserSpecs[type] || {})[uid];
     const maxScore = UNION_SCORE_TABLE[grade].max;
 
     if (!spec || !spec.owned) {
       if (cardEl) cardEl.classList.remove('owned');
+      if (brkEl) brkEl.value = "-1";
       if (scoreBadge) {
         scoreBadge.innerText = `미보유 (0/${maxScore})`;
         scoreBadge.style.color = '#64748b';
       }
+      [1, 2, 3].forEach(a => {
+        const btn = document.getElementById(`u_awk_btn_${uid}_${a}`);
+        if (btn) {
+          btn.style.background = '#0f172a';
+          btn.style.borderColor = '#475569';
+          btn.style.color = '#94a3b8';
+          btn.style.boxShadow = 'none';
+        }
+      });
     } else {
+      const autoLv = calcAutoUnionLevel(spec.brk, spec.awk);
+      spec.lv = autoLv;
       if (cardEl) cardEl.classList.add('owned');
-      if (lvEl) lvEl.value = spec.lv;
-      if (brkEl) brkEl.value = spec.brk;
-      if (awkEl) awkEl.value = spec.awk;
-      const sc = getUnionUnitScore(grade, spec.lv, spec.brk, spec.awk);
+      if (brkEl) brkEl.value = String(spec.brk);
+
+      const sc = getUnionUnitScore(grade, autoLv, spec.brk, spec.awk);
       if (scoreBadge) {
-        scoreBadge.innerText = `${sc} / ${maxScore}점`;
+        scoreBadge.innerText = `Lv.${autoLv} · ${sc}/${maxScore}점`;
         scoreBadge.style.color = '#38bdf8';
       }
+
+      [1, 2, 3].forEach(a => {
+        const btn = document.getElementById(`u_awk_btn_${uid}_${a}`);
+        if (btn) {
+          const isAct = (spec.awk === a);
+          btn.style.background = isAct ? 'linear-gradient(135deg, #9333ea 0%, #581c87 100%)' : '#0f172a';
+          btn.style.borderColor = isAct ? '#e879f9' : '#475569';
+          btn.style.color = isAct ? '#ffffff' : '#cbd5e1';
+          btn.style.boxShadow = isAct ? '0 0 10px rgba(217, 70, 239, 0.5)' : 'none';
+        }
+      });
     }
   }
 
   function batchSetUnionTier(type, targetGrade, lv, brk, awk) {
     const catalog = getUnionCatalog(type);
     if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
+    const validBrk = awk > 0 ? 10 : brk;
+    const autoLv = calcAutoUnionLevel(validBrk, awk);
+
     catalog.forEach(unit => {
       if (targetGrade === 'all' ? (unit.grade === 'legend' || unit.grade === 'unique') : (unit.grade === targetGrade)) {
-        unionUserSpecs[type][unit.uid] = { owned: true, grade: unit.grade, lv, brk, awk };
+        unionUserSpecs[type][unit.uid] = { owned: true, grade: unit.grade, lv: autoLv, brk: validBrk, awk };
       }
     });
     renderUnionRosterAccordions();
@@ -13177,49 +13219,43 @@
       const cardsHtml = units.map(u => {
         const spec = (unionUserSpecs[currentUnionType] || {})[u.uid];
         const isOwned = Boolean(spec && spec.owned);
-        const curLv = isOwned ? spec.lv : 180;
-        const curBrk = isOwned ? spec.brk : 10;
+        const curBrk = isOwned ? spec.brk : -1;
         const curAwk = isOwned ? spec.awk : 0;
+        const curLv = isOwned ? calcAutoUnionLevel(curBrk, curAwk) : 0;
+        if (isOwned) spec.lv = curLv;
         const sc = isOwned ? getUnionUnitScore(u.grade, curLv, curBrk, curAwk) : 0;
 
-        // 이미지가 전용 래퍼 div 안에 격리되어, 로드 실패 시에도 옆의 이름 텍스트가 절대 날아가지 않음!
         const thumbHtml = u.img
-          ? `<div style="width:38px; height:38px; border-radius:8px; background:#0f172a; border:1px solid #475569; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          ? `<div style="width:40px; height:40px; border-radius:8px; background:#0f172a; border:1px solid #475569; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
               <img src="${u.img}" alt="${u.name}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.PNG');}else{this.parentElement.innerHTML='<span style=\\'font-size:9px;color:#94a3b8;text-align:center;line-height:1.1;font-weight:800;\\'>이미지<br>준비중</span>';}">
             </div>`
-          : `<div style="width:38px; height:38px; border-radius:8px; background:#0f172a; border:1px dashed #475569; display:flex; align-items:center; justify-content:center; font-size:9px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800; flex-shrink:0;">이미지<br>준비중</div>`;
+          : `<div style="width:40px; height:40px; border-radius:8px; background:#0f172a; border:1px dashed #475569; display:flex; align-items:center; justify-content:center; font-size:9px; color:#94a3b8; text-align:center; line-height:1.1; font-weight:800; flex-shrink:0;">이미지<br>준비중</div>`;
 
         return `
           <div class="union-unit-editor ${isOwned ? 'owned' : ''}" id="u_editor_${u.uid}" data-uname="${u.name}">
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:7px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
               ${thumbHtml}
               <div style="min-width:0; flex:1;">
-                <div style="font-size:13px; font-weight:900; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${u.name} ${u.attr}">${u.name} ${u.attr}</div>
+                <div style="font-size:13.5px; font-weight:900; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${u.name} ${u.attr}">${u.name} ${u.attr}</div>
                 <div id="u_score_badge_${u.uid}" style="font-size:11.5px; font-weight:900; color:${isOwned ? '#38bdf8' : '#64748b'};">
-                  ${isOwned ? `${sc} / ${u.maxScore}점` : `미보유 (0/${u.maxScore})`}
+                  ${isOwned ? `Lv.${curLv} · ${sc}/${u.maxScore}점` : `미보유 (0/${u.maxScore})`}
                 </div>
               </div>
             </div>
 
-            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px;">
-              <select id="u_lv_${u.uid}" onchange="onUnionUnitDetailChange('${currentUnionType}', '${u.uid}', '${u.grade}')" style="padding:4px 2px; font-size:11px;">
-                ${[20,40,60,80,100,120,140,160,180].map(lv => `<option value="${lv}" ${curLv===lv?'selected':''}>Lv.${lv}</option>`).join('')}
-              </select>
-              <select id="u_brk_${u.uid}" onchange="onUnionUnitDetailChange('${currentUnionType}', '${u.uid}', '${u.grade}')" style="padding:4px 2px; font-size:11px;">
-                ${[0,1,2,3,4,5,6,7,8,9,10].map(b => `<option value="${b}" ${curBrk===b?'selected':''}>${b}돌파</option>`).join('')}
-              </select>
-              <select id="u_awk_${u.uid}" onchange="onUnionUnitDetailChange('${currentUnionType}', '${u.uid}', '${u.grade}')" style="padding:4px 2px; font-size:11px;">
-                ${[0,1,2,3].map(a => `<option value="${a}" ${curAwk===a?'selected':''}>${a}각성</option>`).join('')}
-              </select>
-            </div>
+            <!-- 1. 큼직하고 깔끔한 [돌파 선택 드롭다운] 1개 -->
+            <select id="u_brk_${u.uid}" onchange="onUnionBrkSelectChange('${currentUnionType}', '${u.uid}', '${u.grade}', this.value)" style="width:100%; padding:8px 10px; font-size:13px; font-weight:800; border-radius:8px; background:#0f172a; border:1.5px solid #475569; color:#ffffff; margin-bottom:6px; cursor:pointer;">
+              <option value="-1" ${!isOwned ? 'selected' : ''}>미보유 (선택 안 함)</option>
+              <option value="0" ${isOwned && curBrk === 0 ? 'selected' : ''}>0돌파 (명함)</option>
+              ${[1,2,3,4,5,6,7,8,9,10].map(b => `<option value="${b}" ${isOwned && curBrk === b ? 'selected' : ''}>${b}돌파</option>`).join('')}
+            </select>
 
-            <div class="union-preset-btns">
-              <button class="union-preset-btn" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',false,0,0,0)">미보유</button>
-              <button class="union-preset-btn" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',true,100,0,0)">명함</button>
-              <button class="union-preset-btn" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',true,120,10,0)">10돌</button>
-              <button class="union-preset-btn" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',true,140,10,1)">1각</button>
-              <button class="union-preset-btn" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',true,160,10,2)">2각</button>
-              <button class="union-preset-btn" style="color:#fde047; border-color:#eab308;" onclick="setUnionUnitPreset('${currentUnionType}','${u.uid}','${u.grade}',true,180,10,3)">3각풀</button>
+            <!-- 2. 원클릭 [1각 / 2각 / 3각] 버튼 3개 (누르면 즉시 10돌파 + 해당 각성 적용!) -->
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:5px;">
+              ${[1, 2, 3].map(a => {
+                const isAct = isOwned && curAwk === a;
+                return `<button id="u_awk_btn_${u.uid}_${a}" onclick="onUnionAwkBtnClick('${currentUnionType}', '${u.uid}', '${u.grade}', ${a})" style="padding:7px 4px; border-radius:7px; font-size:12px; font-weight:900; cursor:pointer; transition:all 0.15s; border:1.5px solid ${isAct ? '#e879f9' : '#475569'}; background:${isAct ? 'linear-gradient(135deg, #9333ea 0%, #581c87 100%)' : '#0f172a'}; color:${isAct ? '#ffffff' : '#cbd5e1'}; box-shadow:${isAct ? '0 0 10px rgba(217, 70, 239, 0.5)' : 'none'};">★ ${a}각성</button>`;
+              }).join('')}
             </div>
           </div>
         `;
@@ -13237,7 +13273,7 @@
             </div>
           </div>
           <div class="accordion-content">
-            <div class="acc-scroll-box" style="max-height:460px;">
+            <div class="acc-scroll-box" style="max-height:480px;">
               <div class="union-roster-grid">${cardsHtml}</div>
             </div>
           </div>
