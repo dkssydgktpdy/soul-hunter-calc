@@ -13199,8 +13199,13 @@
     if (unit.awk > 0) {
       starsHtml = `<span style="color:#e879f9;">${'★'.repeat(unit.awk)}</span>`;
     } else if (unit.brk > 0) {
-      const starCnt = Math.min(5, Math.ceil(unit.brk / 2));
-      starsHtml = `<span style="color:#facc15;">${'★'.repeat(starCnt)}</span>`;
+      if (unit.brk <= 5) {
+        starsHtml = `<span style="color:#facc15;">${'★'.repeat(unit.brk)}</span>`;
+      } else {
+        const blueCnt = Math.min(5, unit.brk - 5);
+        const yellowCnt = 5 - blueCnt;
+        starsHtml = `<span style="color:#38bdf8;">${'★'.repeat(blueCnt)}</span><span style="color:#facc15;">${'★'.repeat(yellowCnt)}</span>`;
+      }
     }
 
     const imgHtml = unit.img
