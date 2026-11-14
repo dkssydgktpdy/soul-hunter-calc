@@ -14355,12 +14355,21 @@
     const styleEl = document.createElement('style');
     styleEl.id = 'shk_v390_patch_styles';
     styleEl.textContent = `
-      /* 29서버 버전 텍스트 바로 아래 중앙 후원 버튼 & 호버 팝업창 */
+      /* 29서버 버전 텍스트 바로 아래 중앙 후원 버튼 & 호버 팝업창 (검색창 z-index:9500 보다 항상 위에 뜨도록 header z-index 부여!) */
+      header {
+        z-index: 9600 !important;
+      }
+      header .header-content {
+        z-index: 9601 !important;
+      }
+      .global-omni-search-wrap:focus-within {
+        z-index: 9700 !important;
+      }
       .header-donation-wrap {
         position: relative;
         display: inline-block;
         margin-top: 10px;
-        z-index: 9995;
+        z-index: 10002;
         user-select: none;
       }
       .header-donation-btn {
