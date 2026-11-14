@@ -14323,25 +14323,23 @@
     `
   };
 
-  // QR 이미지 다중 경로 자동 폴백 함수
-  function handleDonationQrError(img) {
-    const fallbacks = [
-      'images/donation.jpg',
-      'donation.jpg',
-      'images/donation.JPG',
-      'donation.JPG',
-      'images/donation.png',
-      'donation.png',
-      'images/donation.PNG',
-      'donation.PNG',
-      'images/donation.jpeg'
-    ];
-    let idx = parseInt(img.dataset.retryIdx || '0', 10);
-    if (idx < fallbacks.length) {
-      img.dataset.retryIdx = idx + 1;
-      img.src = fallbacks[idx];
-    } else {
-      img.onerror = null;
+  // 📱 모바일(안드로이드/아이폰/아이패드) vs 💻 PC 판별
+  function isMobileDonationEnv() {
+    const ua = navigator.userAgent || '';
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    const isIPadOS = (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    return isMobileUA || isIPadOS;
+  }
+
+  // 📱 모바일: 카톡 송금 링크 바로 이동 / 💻 PC: 모바일 접속 안내 알림
+  function handleDonationBtnClick(e) {
+    e.stopPropagation();
+    const donWrap = document.getElementById('header_donation_widget');
+    if (donWrap) donWrap.classList.remove('open-mobile');
+
+    if (!isMobileDonationEnv()) {
+      e.preventDefault();
+      alert('📱 카카오페이 송금은 모바일(스마트폰) 환경에서 지원됩니다.\n모바일로 접속하신 뒤 위 아이콘을 클릭해 주세요!');
     }
   }
 
@@ -14417,24 +14415,33 @@
         transform: translateX(-50%) translateY(0) scale(1);
         pointer-events: auto;
       }
-      .donation-qr-frame {
-        background: #ffffff;
-        padding: 10px;
-        border-radius: 14px;
-        width: 196px;
-        height: 196px;
-        margin: 10px auto 8px auto;
-        box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
+      /* 카카오페이 바로 송금 링크 버튼 (QR 프레임 대체) */
+      .donation-kakaopay-btn {
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden;
-      }
-      .donation-qr-frame img {
+        gap: 10px;
         width: 100%;
-        height: 100%;
-        object-fit: contain;
-        display: block;
+        margin: 12px 0 10px 0;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #fee500 0%, #facc15 100%);
+        border: 2px solid #fef08a;
+        color: #191919 !important;
+        text-decoration: none !important;
+        font-size: 14px;
+        font-weight: 900;
+        box-shadow: 0 6px 18px rgba(250, 204, 21, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
+      }
+      .donation-kakaopay-btn:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 24px rgba(254, 229, 0, 0.65), 0 0 14px rgba(250, 204, 21, 0.6);
+        background: linear-gradient(135deg, #fff04d 0%, #fee500 100%);
+      }
+      .donation-kakaopay-btn:active {
+        transform: scale(0.98);
       }
       @media (max-width: 768px) {
         .header-donation-wrap {
@@ -14524,10 +14531,11 @@
       donWrap.className = 'header-donation-wrap';
       donWrap.id = 'header_donation_widget';
       donWrap.setAttribute('onclick', "event.stopPropagation(); this.classList.toggle('open-mobile');");
+      const isMobDon = isMobileDonationEnv();
       donWrap.innerHTML = `
-        <div class="header-donation-btn" title="마우스를 올리시면 겨울눈사람 토스 후원 QR코드가 열립니다">
+        <div class="header-donation-btn" title="마우스를 올리시면 개발자 후원 창이 열립니다">
           ${CUSTOM_SVG_ART.donation}
-          <span>개발자 후원 QR</span>
+          <span>개발자 후원하기</span>
         </div>
         <div class="header-donation-popover" onclick="event.stopPropagation();">
           <div style="font-size:13.5px; font-weight:900; color:#fde047; margin-bottom:6px; display:flex; align-items:center; justify-content:center; gap:5px;">
@@ -14538,12 +14546,20 @@
             이 시뮬레이터는 <strong>1인 개발</strong>로 꾸준히 만들어지고 있습니다.<br>
             유용하게 사용하고 계시다면, 작은 후원이 앞으로 더 좋은 기능을 개발하는 데 <strong>정말 큰 힘과 도움</strong>이 됩니다! 💙
           </div>
-          <div class="donation-qr-frame">
-            <img src="images/donation.jpg" alt="토스 후원 QR코드" onerror="handleDonationQrError(this)">
-          </div>
-          <div style="font-size:11px; color:#7dd3fc; font-weight:800;">
-            📱 카메라 또는 토스(Toss) 앱으로 QR 스캔<br>
-            - 핸드폰을 이용중이시라면 QR을 꾹!눌러주세요 -
+
+          <!-- 💛 카카오페이 직행 송금 아이콘 버튼 (모바일 클릭 시 바로 이동) -->
+          <a href="https://qr.kakaopay.com/FDr52LD99" target="_blank" rel="noopener noreferrer" class="donation-kakaopay-btn" onclick="handleDonationBtnClick(event)">
+            <svg width="26" height="26" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+              <rect width="36" height="36" rx="9" fill="#191919"/>
+              <path d="M18 7.5C11.9 7.5 7 11.4 7 16.2C7 19.3 9.05 22.02 12.14 23.54L11.05 27.55C10.95 27.89 11.34 28.15 11.63 27.95L16.36 24.81C16.9 24.87 17.44 24.9 18 24.9C24.1 24.9 29 21 29 16.2C29 11.4 24.1 7.5 18 7.5Z" fill="#FEE500"/>
+              <path d="M18 20.4C18 20.4 13.4 17.3 13.4 14.5C13.4 13.1 14.5 12 15.8 12C16.8 12 17.6 12.6 18 13.4C18.4 12.6 19.2 12 20.2 12C21.5 12 22.6 13.1 22.6 14.5C22.6 17.3 18 20.4 18 20.4Z" fill="#191919"/>
+            </svg>
+            <span>카카오페이로 후원하기 ➔</span>
+          </a>
+
+          <div style="font-size:11px; color:#7dd3fc; font-weight:800; line-height:1.45;">
+            📱 모바일로 위 아이콘을 클릭해 주세요!<br>
+            <span style="color:#94a3b8; font-weight:600;">(모바일에서 클릭 시 카카오톡 송금 바로 연결)</span>
           </div>
         </div>
       `;
