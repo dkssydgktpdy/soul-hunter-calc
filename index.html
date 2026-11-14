@@ -12953,8 +12953,13 @@
     }
   }
 
-  // 2) [★1각 / ★2각 / ★3각] 버튼 클릭 시 호출 (클릭 즉시 10돌파 + 해당 각성 세팅!)
+  // 2) [★1각 / ★2각 / ★3각] 버튼 클릭 시 호출 (클릭 즉시 10돌파 + 해당 각성 세팅 & 다음 칸 자동 이동!)
   function onUnionAwkBtnClick(type, uid, grade, targetAwk) {
+    if (typeof unionAutoTabTimer !== 'undefined' && unionAutoTabTimer) {
+      clearTimeout(unionAutoTabTimer);
+      unionAutoTabTimer = null;
+    }
+
     if (!unionUserSpecs[type]) unionUserSpecs[type] = {};
     const prev = unionUserSpecs[type][uid];
 
@@ -12967,6 +12972,11 @@
     updateUnionOwnedBadge();
     calculateAndRenderUnionBoard();
     triggerAutoSave();
+
+    // ★ 각성 버튼을 누르는 즉시 다음 스킬·영웅의 돌파 입력칸으로 커서 자동 점프!
+    if (typeof focusNextUnionBrkInput === 'function') {
+      focusNextUnionBrkInput(uid, 1);
+    }
   }
 
   function updateSingleUnionEditorCardUI(type, uid, grade, skipInputVal = false) {
