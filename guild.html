@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>이계 쟁탈전 길드 분석 (길보길 전용) - 29서버 겨울눈사람</title>
+  <title>이계 쟁탈전 길드 분석 (기부랑길보필수 전용) - 29서버 겨울눈사람</title>
   <style>
     :root {
       --bg-main: #0b1120;
@@ -26,10 +26,10 @@
       background-color: var(--bg-main);
       color: var(--text-primary);
       line-height: 1.6;
-      padding: 20px 14px;
+      padding: 20px 14px 50px;
     }
     .container {
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto;
     }
     .header-bar {
@@ -42,7 +42,7 @@
       border: 1.5px solid var(--accent);
       border-radius: 14px;
       padding: 16px 20px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2);
     }
     .btn-home {
@@ -67,7 +67,7 @@
       border: 1.5px solid var(--border);
       border-radius: 14px;
       padding: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     .action-btn {
@@ -84,6 +84,76 @@
       transition: all 0.2s;
     }
     .action-btn:hover { opacity: 0.9; }
+
+    /* 우리 길드 브리핑 배너 */
+    .our-guild-banner {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.22) 0%, rgba(15, 23, 42, 0.96) 55%, rgba(234, 179, 8, 0.16) 100%);
+      border: 2px solid #10b981;
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 0 22px rgba(16, 185, 129, 0.22);
+    }
+    .our-guild-card {
+      border: 2.5px solid #fbbf24 !important;
+      background: linear-gradient(145deg, rgba(234, 179, 8, 0.15) 0%, rgba(16, 185, 129, 0.12) 50%, #0f172a 100%) !important;
+      box-shadow: 0 0 20px rgba(250, 204, 21, 0.3) !important;
+    }
+    .our-guild-row {
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.24) 0%, rgba(250, 204, 21, 0.14) 100%) !important;
+      outline: 2px solid #34d399;
+      outline-offset: -2px;
+      font-weight: 800;
+    }
+
+    /* 전략 태그 뱃지 */
+    .tac-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .tag-our      { background: linear-gradient(135deg, #059669, #047857); color: #fef08a; border: 1px solid #34d399; }
+    .tag-lurk     { background: rgba(168, 85, 247, 0.22); color: #e9d5ff; border: 1px solid #a855f7; } /* 존버중 */
+    .tag-prep     { background: rgba(245, 158, 11, 0.22); color: #fde047; border: 1px solid #f59e0b; } /* 몰빵준비중 */
+    .tag-allin    { background: rgba(244, 63, 94, 0.24); color: #fda4af; border: 1px solid #f43f5e; }  /* 몰빵중 */
+    .tag-spread   { background: rgba(56, 189, 248, 0.2); color: #7dd3fc; border: 1px solid #0284c7; }   /* 분산투자중 */
+    .tag-scout    { background: rgba(148, 163, 184, 0.2); color: #e2e8f0; border: 1px solid #64748b; }  /* 정찰병 보냈음 */
+    .tag-move     { background: rgba(236, 72, 153, 0.2); color: #f9a8d4; border: 1px solid #ec4899; }   /* 주력구역 변경 */
+    .tag-surge    { background: rgba(239, 68, 68, 0.25); color: #fecaca; border: 1px solid #ef4444; }   /* 화력폭발 */
+    .tag-drop     { background: rgba(34, 197, 94, 0.16); color: #86efac; border: 1px solid #22c55e; }   /* 화력급감(기회) */
+    .tag-king     { background: linear-gradient(135deg, #b45309, #78350f); color: #fef08a; border: 1px solid #fbbf24; } /* 전구역 패왕 */
+
+    /* 태그 필터 칩 */
+    .filter-chips-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .filter-chip {
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      color: #cbd5e1;
+      padding: 5px 11px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .filter-chip:hover { border-color: #38bdf8; color: #fff; }
+    .filter-chip.active {
+      background: #1d4ed8;
+      border-color: #60a5fa;
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.45);
+    }
 
     /* 구역 탭 */
     .zone-tabs-bar {
@@ -108,10 +178,7 @@
       transition: all 0.2s;
       user-select: none;
     }
-    .zone-tab-btn:hover {
-      border-color: var(--accent);
-      color: #ffffff;
-    }
+    .zone-tab-btn:hover { border-color: var(--accent); color: #ffffff; }
     .zone-tab-btn.active {
       background: #172554;
       border-color: var(--accent);
@@ -142,11 +209,12 @@
       background: #131d33;
       color: #93c5fd;
       font-weight: 800;
-      padding: 11px 12px;
+      padding: 11px 10px;
       border-bottom: 2px solid #1e3a8a;
+      white-space: nowrap;
     }
     .custom-table td {
-      padding: 10px 12px;
+      padding: 10px 10px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       color: #e2e8f0;
     }
@@ -167,6 +235,43 @@
     .rank-3 { background: #b45309; color: #fff; }
     .rank-top5 { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #0284c7; }
 
+    /* 진행률 미니바 */
+    .prog-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: #1e293b;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+    .prog-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+
+    /* 저번주 Top 5 추적기 박스 */
+    .prev-tracker-box {
+      background: #0b1120;
+      border: 1.5px solid #475569;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+    .prev-tracker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .prev-tracker-item {
+      background: #131d33;
+      border: 1px solid #334155;
+      border-radius: 9px;
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
     /* 동기화 상태 바 */
     .sync-status-bar {
       display: flex;
@@ -178,7 +283,7 @@
       border: 1px solid var(--border);
       padding: 10px 16px;
       border-radius: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       font-size: 12.5px;
     }
     input[type="text"], select {
@@ -194,11 +299,11 @@
 </head>
 <body>
 
-  <!-- guild.html 자체 보안 잠금 화면 (비밀번호 모를 때 공략툴 복귀 버튼 완비!) -->
+  <!-- guild.html 자체 보안 잠금 화면 -->
   <div id="gate_lock_overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(11, 17, 32, 0.96); backdrop-filter:blur(8px); z-index:999999; display:flex; align-items:center; justify-content:center; padding:16px;">
     <div style="background:#1e293b; border:2px solid #f43f5e; border-radius:18px; max-width:400px; width:100%; padding:28px 24px; text-align:center; box-shadow:0 15px 45px rgba(0,0,0,0.85);">
       <div style="font-size:36px; margin-bottom:10px;">🔒</div>
-      <h3 style="color:#fda4af; font-size:19px; font-weight:800; margin-bottom:8px;">길보길 전용 쟁탈전 분석실</h3>
+      <h3 style="color:#fda4af; font-size:19px; font-weight:800; margin-bottom:8px;">기부랑길보필수 전용 쟁탈전 분석실</h3>
       <p style="color:#cbd5e1; font-size:13.5px; margin-bottom:20px; line-height:1.55;">
         길드원 전용 대외비 분석 대시보드입니다.<br>길드 공지방에 안내된 비밀번호를 입력해주세요.
       </p>
@@ -211,7 +316,6 @@
         🔓 분석실 입장하기
       </button>
 
-      <!-- 일반 유저용: 시뮬레이터 & 공략툴로 돌아가는 직관적 안내 및 버튼 -->
       <div style="border-top:1px dashed #334155; padding-top:14px; margin-top:4px;">
         <div style="font-size:12px; color:#94a3b8; margin-bottom:8px;">비밀번호가 없으신가요?</div>
         <button onclick="location.href='index.html'" 
@@ -226,16 +330,17 @@
   <div class="container">
     <div class="header-bar">
       <div>
-        <h1 style="font-size:20px; color:var(--accent); margin-bottom:2px;">⚔️ 이계 쟁탈전 길드 분석 (길보길 전용)</h1>
-        <span style="font-size:12.5px; color:#94a3b8;">구글 시트 실시간 자동 연동 & 구역별 1~50위 실시간 리더보드</span>
+        <h1 style="font-size:20px; color:var(--accent); margin-bottom:2px;">⚔️ 이계 쟁탈전 전략 분석실 (<span style="color:#fde047;">기부랑길보필수</span> 전용)</h1>
+        <span style="font-size:12.5px; color:#94a3b8;">이번 주 vs 저번 주 자동 교차 분석 · 존버/몰빵/정찰병 실시간 태그 추적</span>
       </div>
       <a href="index.html" class="btn-home">🏠 메인 계산기로 돌아가기</a>
     </div>
 
     <div class="sync-status-bar">
-      <div style="display:flex; align-items:center; gap:8px;">
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
         <span id="sync_live_dot" style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
         <strong id="sync_status_text" style="color:#ffffff;">구글 스프레드시트 실시간 연동 중</strong>
+        <span id="sync_compare_text" style="color:#c084fc; font-size:11.5px; font-weight:800;"></span>
         <span id="sync_time_text" style="color:#94a3b8; font-size:11.5px;">(최근 동기화: 대기 중)</span>
       </div>
       <select id="season_select" onchange="onSeasonChange(this.value)" style="border-color:#38bdf8; font-weight:bold; color:#38bdf8; padding:6px 10px;">
@@ -250,6 +355,12 @@
       </div>
     </div>
 
+    <!-- 👑 우리 길드 [기부랑길보필수] 실시간 브리핑 배너 -->
+    <div id="our_guild_briefing_container"></div>
+
+    <!-- 🥷 이번 주 미출현(0점) 저번주 강호 길드 존버 감시 배너 -->
+    <div id="missing_lurkers_container"></div>
+
     <div class="zone-tabs-bar">
       <div class="zone-tab-btn active" id="tab_all" onclick="switchZoneView('all')">🌐 전체 종합 순위</div>
       <div class="zone-tab-btn tab-fire" id="tab_fire" onclick="switchZoneView('fire')">🔥 불꽃구역</div>
@@ -261,24 +372,29 @@
     </div>
 
     <div class="card" id="main_viewer_card" style="border-left: 4px solid var(--accent);">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
         <div>
           <h2 id="view_title" style="font-size:17.5px; font-weight:800; color:#fff;">🌐 길드 전체 종합 순위</h2>
-          <span id="view_subtitle" style="font-size:12.5px; color:#cbd5e1;">총 누적 점수 및 각성석 획득량 기준 정렬</span>
+          <span id="view_subtitle" style="font-size:12.5px; color:#cbd5e1;">저번 주 대비 진행률(%) · 분산/몰빵/정찰 성향 태그 자동 분석</span>
         </div>
-        <div id="zone_search_box" style="display:flex; gap:8px;">
-          <input type="text" id="guildSearchInput" placeholder="길드명 검색..." onkeyup="filterGuildCards()">
-          <select id="guildSortSelect" onchange="sortAndRenderAllView()">
+        <div id="zone_search_box" style="display:flex; gap:8px; flex-wrap:wrap;">
+          <input type="text" id="guildSearchInput" placeholder="길드명 검색..." onkeyup="renderAllGuildCards()">
+          <select id="guildSortSelect" onchange="renderAllGuildCards()">
             <option value="total">총 점수 높은 순</option>
-            <option value="stones">누적 각성석 많은 순</option>
+            <option value="stones">예상 각성석 많은 순</option>
+            <option value="prevTotal">저번 주 총점 높은 순 (체급순)</option>
+            <option value="lowProgress">전주 대비 진행률 낮은 순 (존버 찾기)</option>
             <option value="count">출현 구역 많은 순</option>
             <option value="name">길드명 가나다순</option>
           </select>
         </div>
       </div>
 
+      <!-- 태그 필터 칩 바 (전체 뷰 전용) -->
+      <div id="tag_filter_chips_bar" class="filter-chips-bar"></div>
+
       <!-- 전체 카드 뷰 -->
-      <div id="guildCardContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px;"></div>
+      <div id="guildCardContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(335px, 1fr)); gap: 14px;"></div>
 
       <!-- 구역별 리더보드 테이블 (1~50위) -->
       <div id="zoneLeaderboardContainer" style="display: none;"></div>
@@ -288,22 +404,57 @@
 <script>
   const GATE_PASSWORD = "guildboss";
   const SPREADSHEET_ID = "1k5IvfxaEFlI6BKYIbHnbKIY71lxBlVN4i1UU7S1LTeY";
+  const OUR_GUILD_NAME = "기부랑길보필수";
 
   let currentSelectedSheet = "";
+  let prevCompareSheet = "";
   let availableSeasons = [];
   let currentActiveTab = 'all';
+  let currentTagFilter = 'all';
+
   let guildDatabase = [];
+  let guildMap = new Map();
   let zoneRankings = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
+
+  let prevGuildDatabase = [];
+  let prevGuildMap = new Map();
+  let prevZoneRankings = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
+  let missingLurkersList = [];
+
   let autoRefreshTimer = null;
 
   const ZONE_CONFIG = {
-    fire:   { name: "불꽃", title: "🔥 불꽃구역 실시간 1~50위 리더보드", color: "var(--fire)" },
-    ice:    { name: "빙하", title: "❄️ 빙하구역 실시간 1~50위 리더보드", color: "var(--ice)" },
-    heaven: { name: "천상", title: "⚡ 천상구역 실시간 1~50위 리더보드", color: "var(--heaven)" },
-    grass:  { name: "초원", title: "🌱 초원구역 실시간 1~50위 리더보드", color: "var(--grass)" },
-    dark:   { name: "암흑", title: "🌑 암흑구역 실시간 1~50위 리더보드", color: "var(--dark)" },
-    abyss:  { name: "절대", title: "👑 절대구역 실시간 1~50위 리더보드", color: "var(--abyss)" }
+    fire:   { name: "불꽃", icon: "🔥", title: "🔥 불꽃구역 실시간 1~50위 리더보드", color: "var(--fire)" },
+    ice:    { name: "빙하", icon: "❄️", title: "❄️ 빙하구역 실시간 1~50위 리더보드", color: "var(--ice)" },
+    heaven: { name: "천상", icon: "⚡", title: "⚡ 천상구역 실시간 1~50위 리더보드", color: "var(--heaven)" },
+    grass:  { name: "초원", icon: "🌱", title: "🌱 초원구역 실시간 1~50위 리더보드", color: "var(--grass)" },
+    dark:   { name: "암흑", icon: "🌑", title: "🌑 암흑구역 실시간 1~50위 리더보드", color: "var(--dark)" },
+    abyss:  { name: "절대", icon: "👑", title: "👑 절대구역 실시간 1~50위 리더보드", color: "var(--abyss)" }
   };
+  const ZONE_KEYS = ["fire", "ice", "heaven", "grass", "dark", "abyss"];
+
+  const TAG_FILTER_OPTIONS = [
+    { key: "all",     label: "🌐 전체 보기" },
+    { key: "our",     label: "👑 우리 길드" },
+    { key: "lurk",    label: "🥷 존버중" },
+    { key: "prep",    label: "🔋 몰빵준비중" },
+    { key: "allin",   label: "💥 몰빵중" },
+    { key: "spread",  label: "🌐 분산투자중" },
+    { key: "scout",   label: "👀 정찰병 보냈음" },
+    { key: "move",    label: "🔄 주력구역 변경" },
+    { key: "surge",   label: "🔥 화력폭발" },
+    { key: "drop",    label: "📉 화력급감" },
+    { key: "king",    label: "👑 전구역 패왕" }
+  ];
+
+  function escHtml(str) {
+    return String(str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  function isOurGuild(name) {
+    if (!name) return false;
+    return name.replace(/\s+/g, '') === OUR_GUILD_NAME;
+  }
 
   function checkGateAuth() {
     const isAuthed = sessionStorage.getItem("guild_auth_passed");
@@ -406,7 +557,7 @@
     const selectEl = document.getElementById("season_select");
     if (!selectEl) return;
     selectEl.innerHTML = availableSeasons.map((s, idx) => 
-      `<option value="${s.sheetName}" ${idx === 0 ? 'selected' : ''}>📅 ${s.name}</option>`
+      `<option value="${s.sheetName}" ${s.sheetName === currentSelectedSheet ? 'selected' : ''}>📅 ${s.name}</option>`
     ).join('');
   }
 
@@ -415,51 +566,12 @@
     fetchSheetData(true);
   }
 
-  // 구글 시트 실시간 CSV 데이터 패치 함수 (정상 복구!)
-  async function fetchSheetData(isManual) {
-    const statusText = document.getElementById("sync_status_text");
-    const timeText = document.getElementById("sync_time_text");
-    const liveDot = document.getElementById("sync_live_dot");
-
-    if (isManual && statusText) {
-      statusText.innerText = "데이터 동기화 중...";
-    }
-
-    try {
-      const sheetParam = currentSelectedSheet ? `&sheet=${encodeURIComponent(currentSelectedSheet)}` : "";
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv${sheetParam}&_t=${Date.now()}`;
-
-      const response = await fetch(csvUrl);
-      if (!response.ok) throw new Error("네트워크 응답 오류");
-      const csvText = await response.text();
-
-      parseMultiColumnSheetCSV(csvText);
-
-      const now = new Date();
-      const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
-      if (statusText) statusText.innerText = `[${currentSelectedSheet || '기본 시트'}] 실시간 연동 완료`;
-      if (timeText) timeText.innerText = `(최근 동기화: ${timeStr})`;
-      if (liveDot) {
-        liveDot.style.background = "#10b981";
-        liveDot.style.boxShadow = "0 0 8px #10b981";
-      }
-    } catch (err) {
-      console.error("Sheet Sync Error:", err);
-      if (statusText) statusText.innerText = "시트 데이터 로드 실패 (공유 권한 또는 시트명 확인)";
-      if (liveDot) {
-        liveDot.style.background = "#ef4444";
-        liveDot.style.boxShadow = "0 0 8px #ef4444";
-      }
-    }
-  }
-
-  function parseMultiColumnSheetCSV(csvText) {
+  // CSV 파서 (이번 주 & 저번 주 공용)
+  function parseSheetCSV(csvText) {
+    const zRank = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
+    const gMap = new Map();
     const lines = csvText.trim().split("\n");
-    if (lines.length < 2) return;
-
-    zoneRankings = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
-    const tempGuildMap = new Map();
-    const zoneKeys = ["fire", "ice", "heaven", "grass", "dark", "abyss"];
+    if (lines.length < 2) return { zoneRankings: zRank, guildMap: gMap, guildList: [] };
 
     let startRow = 2;
     for (let r = 0; r < Math.min(5, lines.length); r++) {
@@ -472,7 +584,7 @@
     for (let r = startRow; r < lines.length; r++) {
       const cols = lines[r].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
 
-      zoneKeys.forEach((zk, zIdx) => {
+      ZONE_KEYS.forEach((zk, zIdx) => {
         const baseCol = zIdx * 4;
         const rankStr = cols[baseCol] || "";
         const nameStr = cols[baseCol + 1] || "";
@@ -480,46 +592,371 @@
 
         if (nameStr && nameStr !== "" && nameStr !== "-") {
           const rankMatch = rankStr.match(/(\d+)/);
-          const rawScore = parseInt(scoreStr.replace(/[^0-9]/g, ''));
+          const rawScore = parseInt(scoreStr.replace(/[^0-9]/g, ''), 10);
           const score = isNaN(rawScore) ? 0 : rawScore;
-          const currentRank = rankMatch ? parseInt(rankMatch[1]) : (zoneRankings[zk].length + 1);
+          const currentRank = rankMatch ? parseInt(rankMatch[1], 10) : (zRank[zk].length + 1);
 
-          zoneRankings[zk].push({
+          zRank[zk].push({
             guildName: nameStr,
             rank: currentRank,
             score: score,
             zoneKey: zk,
-            zone: ZONE_CONFIG[zk].name
+            zone: ZONE_CONFIG[zk].name,
+            isScout: false
           });
         }
       });
     }
 
-    zoneKeys.forEach(zk => {
-      zoneRankings[zk].sort((a,b) => b.score - a.score);
-      zoneRankings[zk].forEach((item, idx) => {
+    ZONE_KEYS.forEach(zk => {
+      zRank[zk].sort((a, b) => b.score - a.score);
+      const zoneTopScore = zRank[zk].length > 0 ? zRank[zk][0].score : 0;
+
+      zRank[zk].forEach((item, idx) => {
         item.rank = idx + 1;
         item.stones = getStoneRewardByRank(item.rank);
+        // 해당 구역 1위 점수의 5% 미만(또는 0점)이면서 15위 밖이면 일단 구역 단위 정찰 후보 표시
+        item.zoneTopRatio = zoneTopScore > 0 ? (item.score / zoneTopScore) : 0;
 
-        if (!tempGuildMap.has(item.guildName)) {
-          tempGuildMap.set(item.guildName, {
+        if (!gMap.has(item.guildName)) {
+          gMap.set(item.guildName, {
             name: item.guildName,
             totalScore: 0,
             totalStones: 0,
             count: 0,
-            records: []
+            top5Count: 0,
+            maxZoneScore: -1,
+            maxZoneKey: null,
+            maxZoneRank: 999,
+            records: [],
+            zoneMap: {},
+            tags: [],
+            tagKeys: []
           });
         }
-        const gInfo = tempGuildMap.get(item.guildName);
+        const gInfo = gMap.get(item.guildName);
         gInfo.totalScore += item.score;
         gInfo.totalStones += item.stones;
         gInfo.count += 1;
+        if (item.rank <= 5 && item.score > 0) gInfo.top5Count += 1;
+        if (item.score > gInfo.maxZoneScore) {
+          gInfo.maxZoneScore = item.score;
+          gInfo.maxZoneKey = zk;
+          gInfo.maxZoneRank = item.rank;
+        }
         gInfo.records.push(item);
+        gInfo.zoneMap[zk] = item;
       });
     });
 
-    guildDatabase = Array.from(tempGuildMap.values());
-    renderCurrentView();
+    const guildList = Array.from(gMap.values());
+    guildList.forEach(g => {
+      g.maxZoneShare = g.totalScore > 0 ? (g.maxZoneScore / g.totalScore) : 0;
+      g.records.sort((a, b) => b.score - a.score);
+    });
+
+    return { zoneRankings: zRank, guildMap: gMap, guildList };
+  }
+
+  // 🧠 이번 주 + 저번 주 교차 분석 & 전략 태그 산출 엔진
+  function analyzeGuildStrategies() {
+    const hasPrev = prevGuildDatabase.length > 0;
+    const prevTop20Names = new Set(
+      [...prevGuildDatabase].sort((a, b) => b.totalScore - a.totalScore).slice(0, 25).map(g => g.name)
+    );
+
+    // 1. 이번 주 길드별 전략 태그 계산
+    guildDatabase.forEach(g => {
+      const tags = [];
+      const tagKeys = [];
+      const prev = hasPrev ? prevGuildMap.get(g.name) : null;
+
+      g.prevInfo = prev || null;
+      g.progressPct = (prev && prev.totalScore > 0) ? Math.round((g.totalScore / prev.totalScore) * 100) : null;
+      g.scoreDiff = prev ? (g.totalScore - prev.totalScore) : null;
+
+      if (isOurGuild(g.name)) {
+        tags.push({ key: 'our', label: '👑 우리 길드', cls: 'tag-our' });
+        tagKeys.push('our');
+      }
+
+      // 구역별 정찰병 여부 판별 (본인 총점 5% 미만이거나 해당 구역 1위 5% 미만이면서 15위 밖)
+      let hasScout = false;
+      g.records.forEach(r => {
+        const isSmallVsZone = r.zoneTopRatio < 0.05 && r.rank >= 15;
+        const isSmallVsSelf = g.totalScore > 0 && (r.score / g.totalScore) < 0.05 && r.rank >= 15;
+        if (r.score === 0 || isSmallVsZone || isSmallVsSelf) {
+          r.isScout = true;
+          hasScout = true;
+        } else {
+          r.isScout = false;
+        }
+      });
+
+      // 전구역 패왕
+      if (g.count >= 5 && g.top5Count >= 3) {
+        tags.push({ key: 'king', label: '👑 전구역 패왕', cls: 'tag-king' });
+        tagKeys.push('king');
+      }
+
+      // 전주 데이터가 있을 때 (존버 / 몰빵준비 / 몰빵 / 화력폭발 / 화력급감 / 구역이동)
+      if (prev && prev.totalScore > 0) {
+        const pct = g.progressPct;
+        const isPrevStrong = prevTop20Names.has(g.name) || prev.totalStones >= 120000 || prev.top5Count >= 1;
+
+        if (pct < 15 && isPrevStrong) {
+          tags.push({ key: 'lurk', label: `🥷 존버중 (전주 ${pct}%)`, cls: 'tag-lurk' });
+          tagKeys.push('lurk');
+        } else if (pct >= 15 && pct < 55 && g.count <= 3 && isPrevStrong) {
+          tags.push({ key: 'prep', label: `🔋 몰빵준비중 (${pct}%)`, cls: 'tag-prep' });
+          tagKeys.push('prep');
+        } else if ((g.count <= 2 || g.maxZoneShare >= 0.70) && pct >= 55 && g.totalScore > 0) {
+          tags.push({ key: 'allin', label: `💥 몰빵중 (${ZONE_CONFIG[g.maxZoneKey].name})`, cls: 'tag-allin' });
+          tagKeys.push('allin');
+        } else if (pct < 50 && g.count >= 3 && isPrevStrong) {
+          tags.push({ key: 'drop', label: `📉 화력급감 (${pct}%)`, cls: 'tag-drop' });
+          tagKeys.push('drop');
+        }
+
+        if (pct >= 130) {
+          tags.push({ key: 'surge', label: `🔥 화력폭발 (+${pct - 100}%)`, cls: 'tag-surge' });
+          tagKeys.push('surge');
+        }
+
+        // 주력 구역 변경 체크
+        if (prev.maxZoneKey && g.maxZoneKey && prev.maxZoneKey !== g.maxZoneKey && g.totalScore > 0 && g.maxZoneShare >= 0.4) {
+          const pName = ZONE_CONFIG[prev.maxZoneKey].icon + ZONE_CONFIG[prev.maxZoneKey].name;
+          const cName = ZONE_CONFIG[g.maxZoneKey].icon + ZONE_CONFIG[g.maxZoneKey].name;
+          tags.push({ key: 'move', label: `🔄 이동 (${pName}➔${cName})`, cls: 'tag-move' });
+          tagKeys.push('move');
+        }
+      } else {
+        // 전주 기록 없는 경우 현재 분포만으로 판별
+        if ((g.count <= 2 || g.maxZoneShare >= 0.70) && g.maxZoneRank <= 15 && g.totalScore > 0) {
+          tags.push({ key: 'allin', label: `💥 몰빵중 (${ZONE_CONFIG[g.maxZoneKey].name})`, cls: 'tag-allin' });
+          tagKeys.push('allin');
+        }
+      }
+
+      // 분산투자중 (전주 유무 무관하게 3개 이상 구역에 고르게 배치 시)
+      if (g.count >= 3 && g.maxZoneShare < 0.50 && g.totalScore > 0) {
+        tags.push({ key: 'spread', label: '🌐 분산투자중', cls: 'tag-spread' });
+        tagKeys.push('spread');
+      }
+
+      // 정찰병 보냈음
+      if (hasScout) {
+        tags.push({ key: 'scout', label: '👀 정찰병 보냈음', cls: 'tag-scout' });
+        tagKeys.push('scout');
+      }
+
+      g.tags = tags;
+      g.tagKeys = tagKeys;
+    });
+
+    // 2. 저번 주엔 강호였는데 이번 주엔 아예 0점(미출현)인 완전 잠수 존버 길드 추출
+    missingLurkersList = [];
+    if (hasPrev) {
+      prevGuildDatabase
+        .filter(pg => !guildMap.has(pg.name) && (prevTop20Names.has(pg.name) || pg.totalStones >= 100000))
+        .sort((a, b) => b.totalScore - a.totalScore)
+        .forEach(pg => {
+          missingLurkersList.push(pg);
+        });
+    }
+  }
+
+  async function fetchSheetData(isManual) {
+    const statusText = document.getElementById("sync_status_text");
+    const compareText = document.getElementById("sync_compare_text");
+    const timeText = document.getElementById("sync_time_text");
+    const liveDot = document.getElementById("sync_live_dot");
+
+    if (isManual && statusText) {
+      statusText.innerText = "데이터 동기화 중...";
+    }
+
+    const curIdx = availableSeasons.findIndex(s => s.sheetName === currentSelectedSheet);
+    prevCompareSheet = (curIdx >= 0 && curIdx + 1 < availableSeasons.length)
+      ? availableSeasons[curIdx + 1].sheetName
+      : "";
+
+    try {
+      const sheetParam = currentSelectedSheet ? `&sheet=${encodeURIComponent(currentSelectedSheet)}` : "";
+      const curCsvUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv${sheetParam}&_t=${Date.now()}`;
+
+      const prevCsvUrl = prevCompareSheet
+        ? `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(prevCompareSheet)}&_t=${Date.now()}`
+        : null;
+
+      const [curRes, prevRes] = await Promise.all([
+        fetch(curCsvUrl),
+        prevCsvUrl ? fetch(prevCsvUrl).catch(() => null) : Promise.resolve(null)
+      ]);
+
+      if (!curRes.ok) throw new Error("네트워크 응답 오류");
+      const curCsvText = await curRes.text();
+      const curParsed = parseSheetCSV(curCsvText);
+
+      zoneRankings = curParsed.zoneRankings;
+      guildMap = curParsed.guildMap;
+      guildDatabase = curParsed.guildList;
+
+      if (prevRes && prevRes.ok) {
+        const prevCsvText = await prevRes.text();
+        const prevParsed = parseSheetCSV(prevCsvText);
+        prevZoneRankings = prevParsed.zoneRankings;
+        prevGuildMap = prevParsed.guildMap;
+        prevGuildDatabase = prevParsed.guildList;
+      } else {
+        prevZoneRankings = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
+        prevGuildMap = new Map();
+        prevGuildDatabase = [];
+      }
+
+      analyzeGuildStrategies();
+
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+      if (statusText) statusText.innerText = `[${currentSelectedSheet || '기본 시트'}] 연동 완료`;
+      if (compareText) compareText.innerText = prevCompareSheet ? `(🆚 비교: ${prevCompareSheet})` : `(이전 주차 데이터 없음)`;
+      if (timeText) timeText.innerText = `(최근 동기화: ${timeStr})`;
+      if (liveDot) {
+        liveDot.style.background = "#10b981";
+        liveDot.style.boxShadow = "0 0 8px #10b981";
+      }
+
+      renderOurGuildBriefing();
+      renderMissingLurkersBanner();
+      renderTagFilterChips();
+      renderCurrentView();
+    } catch (err) {
+      console.error("Sheet Sync Error:", err);
+      if (statusText) statusText.innerText = "시트 데이터 로드 실패 (공유 권한 또는 시트명 확인)";
+      if (liveDot) {
+        liveDot.style.background = "#ef4444";
+        liveDot.style.boxShadow = "0 0 8px #ef4444";
+      }
+    }
+  }
+
+  // 👑 우리 길드 [기부랑길보필수] 최상단 브리핑 카드 렌더링
+  function renderOurGuildBriefing() {
+    const box = document.getElementById("our_guild_briefing_container");
+    if (!box) return;
+
+    const ourCur = guildDatabase.find(g => isOurGuild(g.name));
+    const ourPrev = prevGuildDatabase.find(g => isOurGuild(g.name));
+
+    if (!ourCur && !ourPrev) {
+      box.innerHTML = `
+        <div class="our-guild-banner">
+          <div style="font-size:13.5px; font-weight:800; color:#fde047;">
+            👑 우리 길드 [${OUR_GUILD_NAME}] — 아직 이번 주 시트에 등록된 기록이 없습니다.
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    const curStones = ourCur ? ourCur.totalStones : 0;
+    const prevStones = ourPrev ? ourPrev.totalStones : 0;
+    const curScore = ourCur ? ourCur.totalScore : 0;
+    const progPct = (ourPrev && ourPrev.totalScore > 0) ? Math.round((curScore / ourPrev.totalScore) * 100) : null;
+
+    // 우리 길드가 들어간 구역들에 숨어있는 잠재 위협(존버중/몰빵준비중) 길드 수 체크
+    let threatCount = 0;
+    const zoneBadges = ourCur ? ourCur.records.map(r => {
+      const zCfg = ZONE_CONFIG[r.zoneKey];
+      const rankCol = r.rank <= 5 ? '#34d399' : '#fde047';
+      return `<span style="background:#0f172a; border:1px solid ${r.rank<=5?'#10b981':'#475569'}; padding:3px 9px; border-radius:7px; font-size:12px;">
+        ${zCfg.icon} <strong>${zCfg.name}</strong>: <strong style="color:${rankCol};">${r.rank}위</strong> (${r.score.toLocaleString()}점 / ${r.stones.toLocaleString()}개)
+      </span>`;
+    }).join('') : '<span style="color:#94a3b8; font-size:12.5px;">이번 주 미출현</span>';
+
+    if (ourCur) {
+      const ourZoneKeys = new Set(ourCur.records.map(r => r.zoneKey));
+      guildDatabase.forEach(g => {
+        if (isOurGuild(g.name)) return;
+        const sharesZone = g.records.some(r => ourZoneKeys.has(r.zoneKey));
+        if (sharesZone && (g.tagKeys.includes('lurk') || g.tagKeys.includes('prep'))) threatCount++;
+      });
+    }
+
+    box.innerHTML = `
+      <div class="our-guild-banner">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span style="font-size:16px; font-weight:900; color:#fde047;">👑 우리 길드 [${OUR_GUILD_NAME}] 실시간 현황</span>
+            ${ourCur && ourCur.tags.filter(t=>t.key!=='our').map(t => `<span class="tac-tag ${t.cls}">${t.label}</span>`).join('')}
+          </div>
+          <div style="font-size:13px; font-weight:800; color:#ffffff;">
+            예상 각성석: <strong style="color:#34d399; font-size:15px;">${curStones.toLocaleString()}개</strong>
+            ${ourPrev ? `<span style="color:#94a3b8; font-size:12px;">(전주 ${prevStones.toLocaleString()}개 / 화력 진행률 <strong style="color:#38bdf8;">${progPct}%</strong>)</span>` : ''}
+          </div>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
+          ${zoneBadges}
+          ${threatCount > 0 ? `<span style="margin-left:auto; font-size:11.5px; color:#fda4af; background:rgba(244,63,94,0.18); border:1px solid #f43f5e; padding:3px 9px; border-radius:7px; font-weight:800;">⚠️ 우리 진입 구역 내 존버/몰빵준비 길드 ${threatCount}개 감지</span>` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  // 🥷 이번 주 미출현(0점) 저번 주 강호 길드 감시 배너
+  function renderMissingLurkersBanner() {
+    const box = document.getElementById("missing_lurkers_container");
+    if (!box) return;
+
+    if (missingLurkersList.length === 0) {
+      box.innerHTML = '';
+      return;
+    }
+
+    const itemsHtml = missingLurkersList.slice(0, 12).map(pg => {
+      const zCfg = pg.maxZoneKey ? ZONE_CONFIG[pg.maxZoneKey] : { icon: '', name: '-' };
+      return `
+        <span style="background:#0f172a; border:1px solid #a855f7; border-radius:8px; padding:4px 9px; font-size:11.5px; color:#e9d5ff;">
+          <strong style="color:#ffffff;">${escHtml(pg.name)}</strong>
+          <small style="color:#cbd5e1;">(전주 ${pg.totalScore.toLocaleString()}점 · 주력 ${zCfg.icon}${zCfg.name} ${pg.maxZoneRank}위)</small>
+        </span>
+      `;
+    }).join('');
+
+    box.innerHTML = `
+      <div style="background:rgba(88, 28, 135, 0.2); border:1.5px solid #a855f7; border-radius:12px; padding:11px 15px; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:7px;">
+          <strong style="font-size:13px; color:#f0abfc;">🥷 [미출현 완전 존버 감시] 저번 주 상위권이었으나 이번 주 아직 0점인 길드 (${missingLurkersList.length}개)</strong>
+          <span style="font-size:11px; color:#cbd5e1;">* 마감 직전 어디든 갑자기 몰빵 들어올 수 있는 잠재 변수</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          ${itemsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderTagFilterChips() {
+    const bar = document.getElementById("tag_filter_chips_bar");
+    if (!bar) return;
+
+    bar.innerHTML = TAG_FILTER_OPTIONS.map(opt => {
+      const cnt = opt.key === 'all'
+        ? guildDatabase.length
+        : guildDatabase.filter(g => g.tagKeys.includes(opt.key)).length;
+      const isAct = (currentTagFilter === opt.key);
+      return `
+        <div class="filter-chip ${isAct ? 'active' : ''}" onclick="setTagFilter('${opt.key}')">
+          ${opt.label} <span style="opacity:0.75;">(${cnt})</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function setTagFilter(tagKey) {
+    currentTagFilter = tagKey;
+    renderTagFilterChips();
+    renderAllGuildCards();
   }
 
   function switchZoneView(tabKey) {
@@ -530,22 +967,25 @@
     const cardContainer = document.getElementById("guildCardContainer");
     const zoneContainer = document.getElementById("zoneLeaderboardContainer");
     const searchBox = document.getElementById("zone_search_box");
+    const chipsBar = document.getElementById("tag_filter_chips_bar");
     const mainCard = document.getElementById("main_viewer_card");
 
     if (tabKey === 'all') {
       mainCard.style.borderLeftColor = "var(--accent)";
       document.getElementById("view_title").innerText = "🌐 길드 전체 종합 순위";
-      document.getElementById("view_subtitle").innerText = "총 누적 점수 및 각성석 획득량 기준 정렬";
+      document.getElementById("view_subtitle").innerText = "저번 주 대비 진행률(%) · 분산/몰빵/정찰 성향 태그 자동 분석";
       searchBox.style.display = "flex";
+      chipsBar.style.display = "flex";
       cardContainer.style.display = "grid";
       zoneContainer.style.display = "none";
-      sortAndRenderAllView();
+      renderAllGuildCards();
     } else {
       const cfg = ZONE_CONFIG[tabKey];
       mainCard.style.borderLeftColor = cfg.color;
       document.getElementById("view_title").innerText = cfg.title;
-      document.getElementById("view_subtitle").innerHTML = `<span style="color:#f43f5e; font-weight:bold;">1~5위 점령 보너스(50%~20%) 획득 구간</span> (실시간 점수 확인 후 빈집 집중 공략)`;
+      document.getElementById("view_subtitle").innerHTML = `<span style="color:#f43f5e; font-weight:bold;">1~5위 점령 보너스(50%~20%) 획득 구간</span> · 지난주 Top 5 길드의 이번 주 이동/존버 여부 실시간 추적`;
       searchBox.style.display = "none";
+      chipsBar.style.display = "none";
       cardContainer.style.display = "none";
       zoneContainer.style.display = "block";
       renderZoneLeaderboard(tabKey);
@@ -554,43 +994,94 @@
 
   function renderCurrentView() {
     if (currentActiveTab === 'all') {
-      sortAndRenderAllView();
+      renderAllGuildCards();
     } else {
       renderZoneLeaderboard(currentActiveTab);
     }
   }
 
-  function sortAndRenderAllView() {
-    const sortType = document.getElementById("guildSortSelect").value;
-    let list = [...guildDatabase];
-    if (sortType === 'total') list.sort((a,b) => b.totalScore - a.totalScore);
-    else if (sortType === 'stones') list.sort((a,b) => b.totalStones - a.totalStones);
-    else if (sortType === 'count') list.sort((a,b) => b.count - a.count);
-    else if (sortType === 'name') list.sort((a,b) => a.name.localeCompare(b.name));
+  function renderAllGuildCards() {
+    const q = (document.getElementById("guildSearchInput")?.value || "").trim().toLowerCase();
+    const sortType = document.getElementById("guildSortSelect")?.value || "total";
+
+    let list = guildDatabase.filter(g => {
+      if (q && !g.name.toLowerCase().includes(q)) return false;
+      if (currentTagFilter !== 'all' && !g.tagKeys.includes(currentTagFilter)) return false;
+      return true;
+    });
+
+    if (sortType === 'total') list.sort((a, b) => b.totalScore - a.totalScore);
+    else if (sortType === 'stones') list.sort((a, b) => b.totalStones - a.totalStones);
+    else if (sortType === 'prevTotal') list.sort((a, b) => (b.prevInfo?.totalScore || 0) - (a.prevInfo?.totalScore || 0));
+    else if (sortType === 'lowProgress') {
+      list.sort((a, b) => {
+        const pa = a.progressPct !== null ? a.progressPct : 999999;
+        const pb = b.progressPct !== null ? b.progressPct : 999999;
+        return pa - pb;
+      });
+    }
+    else if (sortType === 'count') list.sort((a, b) => b.count - a.count);
+    else if (sortType === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
 
     const container = document.getElementById("guildCardContainer");
     if (!container) return;
 
     if (list.length === 0) {
-      container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#94a3b8; background:#0f172a; border-radius:12px; border:1px dashed #334155;">등록된 길드 데이터가 없습니다. 상단 [🔄 지금 동기화]를 눌러주세요.</div>`;
+      container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#94a3b8; background:#0f172a; border-radius:12px; border:1px dashed #334155;">조건에 맞는 길드 데이터가 없습니다.</div>`;
       return;
     }
 
-    container.innerHTML = list.map(g => `
-      <div style="background:#0f172a; border:1.5px solid #334155; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
-        <div style="border-bottom:1px solid #1e293b; padding-bottom:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-          <strong style="font-size:16px; color:#38bdf8;">${g.name}</strong>
-          <span style="font-size:11.5px; background:rgba(56, 189, 248, 0.15); color:#7dd3fc; border:1px solid #0284c7; padding:2px 8px; border-radius:6px; font-weight:bold;">${g.count}개 구역 출현</span>
+    container.innerHTML = list.map(g => {
+      const isOurs = isOurGuild(g.name);
+      const tagsHtml = g.tags.map(t => `<span class="tac-tag ${t.cls}">${t.label}</span>`).join('');
+
+      let prevHtml = '';
+      if (g.prevInfo) {
+        const diff = g.scoreDiff;
+        const diffStr = diff >= 0 ? `<span style="color:#f87171;">▲ +${diff.toLocaleString()}</span>` : `<span style="color:#38bdf8;">▼ ${diff.toLocaleString()}</span>`;
+        const barW = Math.min(100, g.progressPct);
+        const barCol = g.progressPct < 20 ? '#a855f7' : (g.progressPct < 60 ? '#f59e0b' : (g.progressPct >= 120 ? '#ef4444' : '#10b981'));
+        const prevMainZ = g.prevInfo.maxZoneKey ? `${ZONE_CONFIG[g.prevInfo.maxZoneKey].icon}${ZONE_CONFIG[g.prevInfo.maxZoneKey].name} ${g.prevInfo.maxZoneRank}위` : '-';
+
+        prevHtml = `
+          <div style="margin-top:6px; padding-top:6px; border-top:1px dashed #334155; font-size:12px;">
+            <div style="display:flex; justify-content:space-between; color:#cbd5e1;">
+              <span>전주 총점: <strong>${g.prevInfo.totalScore.toLocaleString()}점</strong> (${prevMainZ})</span>
+              <strong style="color:#fde047;">${g.progressPct}% 진행</strong>
+            </div>
+            <div class="prog-bar-bg"><div class="prog-bar-fill" style="width:${barW}%; background:${barCol};"></div></div>
+            <div style="font-size:11px; color:#94a3b8; margin-top:3px;">전주 대비 증감: ${diffStr}</div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="${isOurs ? 'our-guild-card' : ''}" style="background:#0f172a; border:1.5px solid #334155; border-radius:12px; padding:15px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="border-bottom:1px solid #1e293b; padding-bottom:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:6px;">
+              <strong style="font-size:16px; color:${isOurs ? '#fde047' : '#38bdf8'};">${isOurs ? '👑 ' : ''}${escHtml(g.name)}</strong>
+              <span style="font-size:11.5px; background:rgba(56, 189, 248, 0.15); color:#7dd3fc; border:1px solid #0284c7; padding:2px 8px; border-radius:6px; font-weight:bold; white-space:nowrap;">${g.count}개 구역 출현</span>
+            </div>
+
+            ${tagsHtml ? `<div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:9px;">${tagsHtml}</div>` : ''}
+
+            <div style="font-size:13px; margin-bottom:10px;">
+              <div>총 누적 점수: <strong style="color:#ffffff;">${g.totalScore.toLocaleString()}점</strong></div>
+              <div style="margin-top:2px;">예상 총 각성석: <strong style="color:#34d399;">${g.totalStones.toLocaleString()}개</strong></div>
+              ${prevHtml}
+            </div>
+          </div>
+
+          <div style="background:#1e293b; border-radius:8px; padding:8px 10px; font-size:12px; color:#cbd5e1; max-height:130px; overflow-y:auto;">
+            ${g.records.map(r => {
+              const zIcon = ZONE_CONFIG[r.zoneKey].icon;
+              const scoutTag = r.isScout ? ' <span class="tac-tag tag-scout" style="font-size:9.5px; padding:0 4px;">👀 정찰</span>' : '';
+              return `<div>• <strong>${zIcon}${r.zone}구역</strong>: ${r.rank}위 (${r.score.toLocaleString()}점 / ${r.stones.toLocaleString()}개)${scoutTag}</div>`;
+            }).join('')}
+          </div>
         </div>
-        <div style="font-size:13.5px; margin-bottom:10px;">
-          <div>총 누적 점수: <strong style="color:#ffffff;">${g.totalScore.toLocaleString()}점</strong></div>
-          <div style="margin-top:2px;">예상 총 각성석: <strong style="color:#34d399;">${g.totalStones.toLocaleString()}개</strong></div>
-        </div>
-        <div style="background:#1e293b; border-radius:8px; padding:8px 10px; font-size:12px; color:#cbd5e1; max-height:120px; overflow-y:auto;">
-          ${g.records.map(r => `<div>• <strong>${r.zone}구역</strong>: ${r.rank}위 (${r.score.toLocaleString()}점 / 각성석 ${r.stones.toLocaleString()}개)</div>`).join('')}
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   function renderZoneLeaderboard(tabKey) {
@@ -598,12 +1089,73 @@
     if (!container) return;
 
     const ranking = zoneRankings[tabKey] || [];
+    const prevTop5 = (prevZoneRankings[tabKey] || []).slice(0, 5);
+    const zName = ZONE_CONFIG[tabKey].name;
+    const zIcon = ZONE_CONFIG[tabKey].icon;
+
+    // 1. 저번 주 이 구역 Top 5 길드 이번 주 행방 추적기 박스
+    let trackerHtml = '';
+    if (prevTop5.length > 0) {
+      const trackerItems = prevTop5.map(pItem => {
+        const curG = guildMap.get(pItem.guildName);
+        let statusHtml = '';
+        let borderCol = '#475569';
+
+        if (!curG) {
+          borderCol = '#a855f7';
+          statusHtml = `<span style="color:#e9d5ff; font-weight:800;">🥷 전 구역 미출현 (존버중 ⚠️)</span>`;
+        } else {
+          const sameZoneRec = curG.zoneMap[tabKey];
+          const curMainCfg = ZONE_CONFIG[curG.maxZoneKey];
+
+          if (curG.maxZoneKey === tabKey && sameZoneRec && sameZoneRec.rank <= 5) {
+            borderCol = '#f43f5e';
+            statusHtml = `<span style="color:#fda4af; font-weight:800;">🔥 ${zName} ${sameZoneRec.rank}위 유지중 (${sameZoneRec.score.toLocaleString()}점)</span>`;
+          } else if (curG.maxZoneKey !== tabKey) {
+            borderCol = '#10b981';
+            statusHtml = `<span style="color:#6ee7b7; font-weight:800;">➡️ ${curMainCfg.icon}${curMainCfg.name} ${curG.maxZoneRank}위로 이동 (${curG.progressPct || 0}%) ✅</span>`;
+          } else {
+            borderCol = '#f59e0b';
+            statusHtml = `<span style="color:#fde047; font-weight:800;">👀 ${zName} ${sameZoneRec ? sameZoneRec.rank + '위' : '-'} 대기중 (${curG.progressPct || 0}%)</span>`;
+          }
+        }
+
+        const isOurs = isOurGuild(pItem.guildName);
+        return `
+          <div class="prev-tracker-item" style="border-color:${isOurs ? '#fbbf24' : borderCol};">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
+              <strong style="color:${isOurs ? '#fde047' : '#ffffff'};">${pItem.rank}위 · ${escHtml(pItem.guildName)}</strong>
+              <span style="font-size:10.5px; color:#94a3b8;">전주 ${pItem.score.toLocaleString()}점</span>
+            </div>
+            <div>${statusHtml}</div>
+          </div>
+        `;
+      }).join('');
+
+      trackerHtml = `
+        <div class="prev-tracker-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+            <strong style="font-size:13.5px; color:#93c5fd;">📌 지난주 [${zIcon} ${zName}구역] Top 5 길드 이번 주 행방 추적기</strong>
+            <span style="font-size:11.5px; color:#94a3b8;">* 강자들이 다른 구역으로 이동(✅)했는지, 여기서 존버(⚠️) 중인지 한눈에 확인!</span>
+          </div>
+          <div class="prev-tracker-grid">${trackerItems}</div>
+        </div>
+      `;
+    }
+
     if (ranking.length === 0) {
-      container.innerHTML = `<div style="text-align:center; padding:40px; color:#94a3b8;">해당 구역의 등록된 순위 데이터가 없습니다.</div>`;
+      container.innerHTML = trackerHtml + `<div style="text-align:center; padding:40px; color:#94a3b8;">해당 구역의 등록된 순위 데이터가 없습니다.</div>`;
       return;
     }
 
+    // 5위권 접전 여부 판단
+    const rank5Score = ranking[4] ? ranking[4].score : 0;
+
     let rowsHtml = ranking.map(item => {
+      const isOurs = isOurGuild(item.guildName);
+      const gObj = guildMap.get(item.guildName);
+      const prevZoneRec = (prevGuildMap.get(item.guildName)?.zoneMap || {})[tabKey];
+
       let rankBadgeCls = "rank-top5";
       if (item.rank === 1) rankBadgeCls = "rank-1";
       else if (item.rank === 2) rankBadgeCls = "rank-2";
@@ -611,29 +1163,62 @@
       else if (item.rank > 5) rankBadgeCls = "";
 
       const isTop5 = item.rank <= 5;
-      const rowStyle = isTop5 ? "background: rgba(56, 189, 248, 0.08); font-weight: bold;" : "";
+      let rowStyle = isTop5 ? "background: rgba(56, 189, 248, 0.08); font-weight: bold;" : "";
+      const rowClass = isOurs ? "our-guild-row" : "";
+
+      // 길드 전략 태그 (최대 3개 요약 표시 + 현재 구역 정찰병 뱃지)
+      let tagsHtml = '';
+      if (gObj) {
+        const displayTags = gObj.tags.filter(t => t.key !== 'our').slice(0, 3);
+        tagsHtml = displayTags.map(t => `<span class="tac-tag ${t.cls}" style="font-size:10px; padding:1px 5px;">${t.label}</span>`).join(' ');
+      }
+      if (item.isScout) {
+        tagsHtml += ` <span class="tac-tag tag-scout" style="font-size:10px; padding:1px 5px;">👀 이 구역 정찰</span>`;
+      }
+      if (rank5Score > 0 && item.rank >= 4 && item.rank <= 7 && Math.abs(item.score - rank5Score) <= rank5Score * 0.08) {
+        tagsHtml += ` <span class="tac-tag" style="background:rgba(244,63,94,0.2); color:#fda4af; border:1px solid #f43f5e; font-size:10px; padding:1px 5px;">⚔️ 5위권 접전</span>`;
+      }
+
+      const prevColHtml = prevZoneRec
+        ? `<span style="color:#cbd5e1; font-size:12px;">${prevZoneRec.rank}위 (${prevZoneRec.score.toLocaleString()})</span>`
+        : `<span style="color:#64748b; font-size:11.5px;">미출현</span>`;
+
+      const pctSub = (gObj && gObj.progressPct !== null)
+        ? `<div style="font-size:10.5px; color:#94a3b8;">총점 전주 대비 ${gObj.progressPct}%</div>`
+        : '';
 
       return `
-        <tr style="${rowStyle}">
+        <tr class="${rowClass}" style="${isOurs ? '' : rowStyle}">
           <td><span class="rank-badge ${rankBadgeCls}">${item.rank}위</span></td>
-          <td style="font-size:14.5px; color:${isTop5 ? '#ffffff' : '#cbd5e1'};">${item.guildName}</td>
-          <td style="color:#38bdf8; font-weight:700;">${item.score.toLocaleString()}점</td>
+          <td style="text-align:left;">
+            <div style="font-size:14.5px; color:${isOurs ? '#fde047' : (isTop5 ? '#ffffff' : '#cbd5e1')}; font-weight:900;">
+              ${isOurs ? '👑 ' : ''}${escHtml(item.guildName)}
+              ${isOurs ? '<span class="tac-tag tag-our" style="font-size:10px; margin-left:4px;">우리 길드</span>' : ''}
+            </div>
+            ${tagsHtml ? `<div style="display:flex; flex-wrap:wrap; gap:3px; margin-top:4px;">${tagsHtml}</div>` : ''}
+          </td>
+          <td style="color:#38bdf8; font-weight:700;">
+            <div>${item.score.toLocaleString()}점</div>
+            ${pctSub}
+          </td>
+          <td>${prevColHtml}</td>
           <td style="color:${isTop5 ? '#34d399' : '#94a3b8'};">${item.stones.toLocaleString()}개</td>
           <td style="font-size:12px;">${isTop5 ? '<span style="color:#fde047; border:1px solid #eab308; padding:2px 6px; border-radius:4px;">보너스 획득</span>' : '-'}</td>
         </tr>
       `;
     }).join('');
 
-    container.innerHTML = `
+    container.innerHTML = trackerHtml + `
       <div class="table-container">
         <table class="custom-table">
           <thead>
             <tr>
-              <th style="width:75px;">순위</th>
-              <th>길드명</th>
-              <th>획득 점수</th>
+              <th style="width:70px;">순위</th>
+              <th style="text-align:left;">길드명 & 전략 태그</th>
+              <th>현재 점수 (전주 대비)</th>
+              <th>전주 이 구역 성적</th>
               <th>예상 각성석</th>
-              <th style="width:110px;">점령 보너스</th>
+              <th style="width:105px;">점령 보너스</th>
             </tr>
           </thead>
           <tbody>
@@ -642,29 +1227,6 @@
         </table>
       </div>
     `;
-  }
-
-  function filterGuildCards() {
-    const q = document.getElementById("guildSearchInput").value.trim().toLowerCase();
-    const filtered = guildDatabase.filter(g => g.name.toLowerCase().includes(q));
-    const container = document.getElementById("guildCardContainer");
-    if (!container) return;
-
-    container.innerHTML = filtered.map(g => `
-      <div style="background:#0f172a; border:1.5px solid #334155; border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
-        <div style="border-bottom:1px solid #1e293b; padding-bottom:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-          <strong style="font-size:16px; color:#38bdf8;">${g.name}</strong>
-          <span style="font-size:11.5px; background:rgba(56, 189, 248, 0.15); color:#7dd3fc; border:1px solid #0284c7; padding:2px 8px; border-radius:6px; font-weight:bold;">${g.count}개 구역 출현</span>
-        </div>
-        <div style="font-size:13.5px; margin-bottom:10px;">
-          <div>총 누적 점수: <strong style="color:#ffffff;">${g.totalScore.toLocaleString()}점</strong></div>
-          <div style="margin-top:2px;">예상 총 각성석: <strong style="color:#34d399;">${g.totalStones.toLocaleString()}개</strong></div>
-        </div>
-        <div style="background:#1e293b; border-radius:8px; padding:8px 10px; font-size:12px; color:#cbd5e1; max-height:120px; overflow-y:auto;">
-          ${g.records.map(r => `<div>• <strong>${r.zone}구역</strong>: ${r.rank}위 (${r.score.toLocaleString()}점 / 각성석 ${r.stones.toLocaleString()}개)</div>`).join('')}
-        </div>
-      </div>
-    `).join('');
   }
 
   function toggleAutoRefresh(isOn) {
