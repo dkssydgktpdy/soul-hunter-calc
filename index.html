@@ -5298,8 +5298,8 @@
     }
 
     if (calcTabId === 'tab-union') {
-   renderUnionAll();
-   }
+      switchUnionType('skill');
+  }
 
     window.scrollTo({ top: 120, behavior: 'smooth' });
   }
@@ -13332,6 +13332,8 @@
   }
 
   function renderUnionAll() {
+    document.getElementById('u_tab_btn_skill')?.classList.toggle('active', currentUnionType === 'skill');
+    document.getElementById('u_tab_btn_hero')?.classList.toggle('active', currentUnionType === 'hero');
     renderUnionStageButtons();
     renderUnionRosterAccordions();
     calculateAndRenderUnionBoard();
@@ -14014,9 +14016,7 @@
         if (typeof parsed.currentUnionStageIdx === 'number') {
           currentUnionStageIdx = parsed.currentUnionStageIdx;
         }
-        if (parsed.currentUnionType === 'skill' || parsed.currentUnionType === 'hero') {
-          currentUnionType = parsed.currentUnionType;
-        }
+        currentUnionType = 'skill';
       }
       isUnionStorageReady = true;
       if (typeof renderUnionAll === 'function') {
