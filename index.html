@@ -3278,7 +3278,7 @@
     <div id="deep_hub_view">
       
       <!-- 섹션 1: 영원무기 관련 기댓값 계산기 (기본 닫힘) -->
-      <div class="hub-section">
+      <div class="hub-section" style="display:none;">
         <div class="accordion-item" id="acc_calc_weapon" style="border-left: 4px solid #38bdf8;">
           <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_weapon')">
             <div class="accordion-left">
@@ -3320,7 +3320,7 @@
       </div>
 
       <!-- 섹션 2: 고대 패시브 & 각성석 관련 계산기 (기본 닫힘) -->
-      <div class="hub-section">
+      <div class="hub-section" style="display:none;">
         <div class="accordion-item" id="acc_calc_awakening" style="border-left: 4px solid #a855f7;">
           <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_awakening')">
             <div class="accordion-left">
@@ -3362,7 +3362,7 @@
       </div>
 
       <!-- 섹션 3: 어빌리티 기댓값 및 재화 계산기 (기본 닫힘) -->
-      <div class="hub-section">
+      <div class="hub-section" style="display:none;">
         <div class="accordion-item" id="acc_calc_ability" style="border-left: 4px solid #22c55e;">
           <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_ability')">
             <div class="accordion-left">
@@ -14355,11 +14355,11 @@
     const styleEl = document.createElement('style');
     styleEl.id = 'shk_v390_patch_styles';
     styleEl.textContent = `
-      /* 배너 좌측 상단 후원 버튼 & 호버 팝업창 */
+      /* 29서버 버전 텍스트 바로 아래 중앙 후원 버튼 & 호버 팝업창 */
       .header-donation-wrap {
-        position: absolute;
-        top: 14px;
-        left: 16px;
+        position: relative;
+        display: inline-block;
+        margin-top: 10px;
         z-index: 9995;
         user-select: none;
       }
@@ -14367,9 +14367,9 @@
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        padding: 6px 13px 6px 10px;
+        padding: 6px 15px 6px 12px;
         border-radius: 24px;
-        background: linear-gradient(135deg, rgba(30, 27, 75, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%);
+        background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
         border: 1.5px solid #f472b6;
         color: #fdf2f8;
         font-size: 12.5px;
@@ -14386,7 +14386,7 @@
       .header-donation-popover {
         position: absolute;
         top: calc(100% + 10px);
-        left: 0;
+        left: 50%;
         width: 310px;
         background: linear-gradient(160deg, #0f172a 0%, #1e1b4b 60%, #090d16 100%);
         border: 2px solid #38bdf8;
@@ -14395,7 +14395,7 @@
         box-shadow: 0 20px 45px rgba(0, 0, 0, 0.88), 0 0 24px rgba(56, 189, 248, 0.4);
         opacity: 0;
         visibility: hidden;
-        transform: translateY(-8px) scale(0.97);
+        transform: translateX(-50%) translateY(-8px) scale(0.97);
         transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
         pointer-events: none;
         text-align: center;
@@ -14405,7 +14405,7 @@
       .header-donation-wrap.open-mobile .header-donation-popover {
         opacity: 1;
         visibility: visible;
-        transform: translateY(0) scale(1);
+        transform: translateX(-50%) translateY(0) scale(1);
         pointer-events: auto;
       }
       .donation-qr-frame {
@@ -14538,7 +14538,12 @@
           </div>
         </div>
       `;
-      headerEl.insertBefore(donWrap, headerEl.firstChild);
+      const authorTagEl = headerEl.querySelector('.author-tag') || headerEl.querySelector('.header-main-left');
+      if (authorTagEl) {
+        authorTagEl.insertAdjacentElement('afterend', donWrap);
+      } else {
+        headerEl.insertBefore(donWrap, headerEl.firstChild);
+      }
 
       document.addEventListener('click', () => {
         donWrap.classList.remove('open-mobile');
