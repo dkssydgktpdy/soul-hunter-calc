@@ -427,13 +427,22 @@
 
   let autoRefreshTimer = null;
 
+ const ZONE_SVG = {
+    fire: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px; filter:drop-shadow(0 0 5px rgba(249,115,22,0.85));"><path d="M12 2C12 2 6 8 6 14C6 17.866 8.686 21 12 21C15.314 21 18 17.866 18 14C18 11.5 16.5 9 15 7.5C15 10 13.5 11 12.5 11C13.5 8.5 13 5 12 2Z" fill="url(#fg)" stroke="#fef08a" stroke-width="1.2"/><defs><linearGradient id="fg" x1="12" y1="2" x2="12" y2="21" gradientUnits="userSpaceOnUse"><stop stop-color="#fef08a"/><stop offset="0.5" stop-color="#f97316"/><stop offset="1" stop-color="#dc2626"/></linearGradient></defs></svg>`,
+    ice: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px; filter:drop-shadow(0 0 5px rgba(56,189,248,0.85));"><polygon points="12,2 19,9 12,22 5,9" fill="url(#ig)" stroke="#e0f2fe" stroke-width="1.3"/><polyline points="5,9 12,12 19,9" stroke="#bae6fd" stroke-width="1.1"/><line x1="12" y1="2" x2="12" y2="22" stroke="#e0f2fe" stroke-width="1.1"/><defs><linearGradient id="ig" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse"><stop stop-color="#e0f2fe"/><stop offset="0.5" stop-color="#38bdf8"/><stop offset="1" stop-color="#0284c7"/></linearGradient></defs></svg>`,
+    heaven: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px; filter:drop-shadow(0 0 6px rgba(250,204,21,0.9));"><polygon points="13,2 4,14 11,14 10,22 20,10 13,10" fill="url(#hg)" stroke="#ffffff" stroke-width="1.2"/><defs><linearGradient id="hg" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff"/><stop offset="0.4" stop-color="#fde047"/><stop offset="1" stop-color="#d97706"/></linearGradient></defs></svg>`,
+    grass: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px; filter:drop-shadow(0 0 5px rgba(34,197,94,0.85));"><path d="M20 4C12 4 5 9 5 17C5 18.5 5.5 20 5.5 20C5.5 20 7 20.5 8.5 20.5C16.5 20.5 20 13 20 4Z" fill="url(#gg)" stroke="#bbf7d0" stroke-width="1.3"/><path d="M5.5 20C9 15 13 11 19 5" stroke="#dcfce7" stroke-width="1.3" stroke-linecap="round"/><defs><linearGradient id="gg" x1="20" y1="4" x2="5" y2="20" gradientUnits="userSpaceOnUse"><stop stop-color="#86efac"/><stop offset="0.5" stop-color="#22c55e"/><stop offset="1" stop-color="#15803d"/></linearGradient></defs></svg>`,
+    dark: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px; filter:drop-shadow(0 0 6px rgba(168,85,247,0.9));"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" fill="url(#dg)" stroke="#f3e8ff" stroke-width="1.3"/><circle cx="16" cy="7" r="1.5" fill="#fde047"/><defs><linearGradient id="dg" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse"><stop stop-color="#e879f9"/><stop offset="0.5" stop-color="#9333ea"/><stop offset="1" stop-color="#3b0764"/></linearGradient></defs></svg>`,
+    abyss: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px; filter:drop-shadow(0 0 6px rgba(244,63,94,0.95));"><polygon points="2,18 5,7 9.5,12 12,4 14.5,12 19,7 22,18" fill="url(#ag)" stroke="#fde047" stroke-width="1.3"/><rect x="3" y="19" width="18" height="2.5" rx="1" fill="#fde047"/><defs><linearGradient id="ag" x1="12" y1="4" x2="12" y2="19" gradientUnits="userSpaceOnUse"><stop stop-color="#fda4af"/><stop offset="0.5" stop-color="#f43f5e"/><stop offset="1" stop-color="#881337"/></linearGradient></defs></svg>`
+  };
+
   const ZONE_CONFIG = {
-    fire:   { name: "불꽃", icon: "🔥", title: "🔥 불꽃구역 실시간 1~50위 리더보드", color: "var(--fire)" },
-    ice:    { name: "빙하", icon: "❄️", title: "❄️ 빙하구역 실시간 1~50위 리더보드", color: "var(--ice)" },
-    heaven: { name: "천상", icon: "⚡", title: "⚡ 천상구역 실시간 1~50위 리더보드", color: "var(--heaven)" },
-    grass:  { name: "초원", icon: "🌱", title: "🌱 초원구역 실시간 1~50위 리더보드", color: "var(--grass)" },
-    dark:   { name: "암흑", icon: "🌑", title: "🌑 암흑구역 실시간 1~50위 리더보드", color: "var(--dark)" },
-    abyss:  { name: "절대", icon: "👑", title: "👑 절대구역 실시간 1~50위 리더보드", color: "var(--abyss)" }
+    fire:   { name: "불꽃", icon: ZONE_SVG.fire,   title: `${ZONE_SVG.fire} 불꽃구역 실시간 1~50위 리더보드`, color: "var(--fire)" },
+    ice:    { name: "빙하", icon: ZONE_SVG.ice,    title: `${ZONE_SVG.ice} 빙하구역 실시간 1~50위 리더보드`, color: "var(--ice)" },
+    heaven: { name: "천상", icon: ZONE_SVG.heaven, title: `${ZONE_SVG.heaven} 천상구역 실시간 1~50위 리더보드`, color: "var(--heaven)" },
+    grass:  { name: "초원", icon: ZONE_SVG.grass,  title: `${ZONE_SVG.grass} 초원구역 실시간 1~50위 리더보드`, color: "var(--grass)" },
+    dark:   { name: "암흑", icon: ZONE_SVG.dark,   title: `${ZONE_SVG.dark} 암흑구역 실시간 1~50위 리더보드`, color: "var(--dark)" },
+    abyss:  { name: "절대", icon: ZONE_SVG.abyss,  title: `${ZONE_SVG.abyss} 절대구역 실시간 1~50위 리더보드`, color: "var(--abyss)" }
   };
   const ZONE_KEYS = ["fire", "ice", "heaven", "grass", "dark", "abyss"];
 
@@ -929,45 +938,101 @@
     `;
   }
 
+  let selectedTargetCutRank = 1; // 기본 비교 등수: 1위컷
+
+  function onCutlineRankChange(rankVal) {
+    selectedTargetCutRank = parseInt(rankVal, 10) || 1;
+    renderZoneCutlineSummary();
+  }
+
   function renderZoneCutlineSummary() {
     const box = document.getElementById("zone_cutline_summary_container");
     if (!box) return;
 
-    // 5위 컷이 가장 낮은 구역(빈집 후보) 찾기
+    const cutRanks = [1, 2, 3, 4, 5, 10, 20, 50];
+    const targetIdx = selectedTargetCutRank - 1;
+
+    // 현재 드롭다운에서 선택한 등수(selectedTargetCutRank) 기준으로 점수가 가장 낮은 구역(최저컷) 찾기
     let easiestZone = null;
-    let lowest5thScore = Infinity;
+    let lowestTargetScore = Infinity;
 
     ZONE_KEYS.forEach(zk => {
       const list = zoneRankings[zk] || [];
-      const s5 = list[4] ? list[4].score : 0;
-      if (s5 > 0 && s5 < lowest5thScore) {
-        lowest5thScore = s5;
+      const item = list[targetIdx];
+      const sc = item ? item.score : 0;
+      if (sc > 0 && sc < lowestTargetScore) {
+        lowestTargetScore = sc;
         easiestZone = zk;
       }
     });
 
+    const formatShortScore = (sc) => {
+      if (!sc || sc <= 0) return '-';
+      return sc >= 10000 ? `${(sc / 10000).toFixed(1)}만` : `${sc.toLocaleString()}`;
+    };
+
     const cardsHtml = ZONE_KEYS.map(zk => {
       const cfg = ZONE_CONFIG[zk];
       const list = zoneRankings[zk] || [];
-      const r1 = list[0] ? `${list[0].guildName} (${(list[0].score/10000).toFixed(0)}만)` : '-';
-      const r5 = list[4] ? `${list[4].guildName} (${(list[4].score/10000).toFixed(0)}만)` : '-';
       const isEasy = (zk === easiestZone);
 
-      return `
-        <div onclick="switchZoneView('${zk}')" style="background:#0f172a; border:1.5px solid ${isEasy ? '#10b981' : '#334155'}; border-radius:10px; padding:8px 10px; cursor:pointer; font-size:11.5px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
-            <strong style="color:#ffffff; font-size:12.5px;">${cfg.icon} ${cfg.name}구역</strong>
-            ${isEasy ? '<span style="background:#059669; color:#fef08a; font-size:10px; font-weight:800; padding:1px 5px; border-radius:4px;">🎯 5위컷 최저</span>' : ''}
+      const targetItem = list[targetIdx];
+      const targetStr = targetItem
+        ? `${escHtml(targetItem.guildName)} (${targetItem.score.toLocaleString()}점)`
+        : '미달 (데이터 없음)';
+
+      // 카드 하단에 1/2/3/4/5/10/20/50위 컷 한꺼번에 미니 그리드로 표시
+      const miniRowsHtml = cutRanks.map(rNum => {
+        const it = list[rNum - 1];
+        const isSelRank = (rNum === selectedTargetCutRank);
+        const rowBg = isSelRank ? 'background:rgba(56,189,248,0.18); border-radius:4px; font-weight:900; color:#fde047;' : 'color:#cbd5e1;';
+        const valText = it ? `${escHtml(it.guildName)} <span style="color:#38bdf8;">(${formatShortScore(it.score)})</span>` : '<span style="color:#64748b;">-</span>';
+        return `
+          <div style="display:flex; justify-content:space-between; padding:1.5px 4px; font-size:11px; ${rowBg}">
+            <span>${rNum}위컷</span>
+            <span style="text-align:right; max-width:115px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${valText}</span>
           </div>
-          <div style="color:#fde047;">1위: <strong>${escHtml(r1)}</strong></div>
-          <div style="color:#38bdf8;">5위컷: <strong>${escHtml(r5)}</strong></div>
+        `;
+      }).join('');
+
+      return `
+        <div onclick="switchZoneView('${zk}')" style="background:#0f172a; border:1.5px solid ${isEasy ? '#10b981' : '#334155'}; border-radius:11px; padding:10px 11px; cursor:pointer; font-size:11.5px; box-shadow:${isEasy ? '0 0 14px rgba(16,185,129,0.25)' : 'none'}; transition:all 0.2s;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; padding-bottom:5px; border-bottom:1px solid #1e293b;">
+            <strong style="color:#ffffff; font-size:13px; display:inline-flex; align-items:center; gap:5px;">${cfg.icon} ${cfg.name}구역</strong>
+            ${isEasy ? `<span style="background:#059669; color:#fef08a; font-size:10px; font-weight:800; padding:1.5px 6px; border-radius:4px;">🎯 ${selectedTargetCutRank}위컷 최저</span>` : ''}
+          </div>
+          <div style="background:#131d33; border:1px solid ${isEasy ? '#059669' : '#1e3a8a'}; border-radius:7px; padding:5px 7px; margin-bottom:7px;">
+            <div style="font-size:10.5px; color:#93c5fd; font-weight:700;">📌 현재 ${selectedTargetCutRank}위 컷</div>
+            <div style="font-size:12px; color:#fde047; font-weight:800; margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${targetStr}</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:1px;">
+            ${miniRowsHtml}
+          </div>
         </div>
       `;
     }).join('');
 
+    const optionsHtml = cutRanks.map(rNum => {
+      const rewardStone = getStoneRewardByRank(rNum).toLocaleString();
+      const bonusMap = { 1: '+50% 버프', 2: '+40% 버프', 3: '+30% 버프', 4: '+25% 버프', 5: '+20% 버프' };
+      const bonusTxt = bonusMap[rNum] ? ` · ${bonusMap[rNum]}` : '';
+      return `<option value="${rNum}" ${selectedTargetCutRank === rNum ? 'selected' : ''}>🎯 ${rNum}위 컷 비교 (보상 ${rewardStone}개${bonusTxt})</option>`;
+    }).join('');
+
     box.innerHTML = `
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap:8px; margin-bottom:14px;">
-        ${cardsHtml}
+      <div style="background:#131d33; border:1.5px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <strong style="font-size:14px; color:#ffffff;">📊 전 구역 등수별 커트라인 비교 (1/2/3/4/5/10/20/50위)</strong>
+            <span style="font-size:11.5px; color:#94a3b8;">* 초록색 테두리 = 선택한 목표 등수 진입이 가장 쉬운 구역</span>
+          </div>
+          <select onchange="onCutlineRankChange(this.value)" style="background:#0f172a; border:1.5px solid #38bdf8; color:#fde047; font-weight:800; font-size:12.5px; padding:6px 12px; border-radius:8px; cursor:pointer;">
+            ${optionsHtml}
+          </select>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(172px, 1fr)); gap:8px;">
+          ${cardsHtml}
+        </div>
       </div>
     `;
   }
@@ -1055,7 +1120,7 @@
     } else {
       const cfg = ZONE_CONFIG[tabKey];
       mainCard.style.borderLeftColor = cfg.color;
-      document.getElementById("view_title").innerText = cfg.title;
+      document.getElementById("view_title").innerHTML = cfg.title;
       document.getElementById("view_subtitle").innerHTML = `<span style="color:#f43f5e; font-weight:bold;">1~5위 점령 보너스(50%~20%) 획득 구간</span> · 지난주 Top 5 길드의 이번 주 이동/존버 여부 실시간 추적`;
       searchBox.style.display = "none";
       chipsBar.style.display = "none";
@@ -1315,6 +1380,11 @@
   window.addEventListener("DOMContentLoaded", () => {
     checkGateAuth();
   });
+
+  ZONE_KEYS.forEach(zk => {
+  const tabEl = document.getElementById(`tab_${zk}`);
+  if (tabEl) tabEl.innerHTML = `${ZONE_CONFIG[zk].icon}<span>${ZONE_CONFIG[zk].name}구역</span>`;
+});
 </script>
 
 </body>
