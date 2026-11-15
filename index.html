@@ -9290,6 +9290,7 @@
   let currentTraitTabStep = 0;    // 0 (1~4차 선택 허브) | 1 (1차) | 2 (2차🔒) | 3 (3차) | 4 (4차🔒)
   let currentTrait1stLv = 1;      // 1차 전직 초기 레벨 = Lv.1
   let currentTrait3rdLv = 0;      // 3차 전직 초기 레벨 = Lv.0 (첫 단계)
+  let currentLord3rdMode = 'other'; // 오버로드 3차 콘텐츠 모드: 'other'(그외 333) | 'war'(쟁탈전 332) | 'cave'(수련동굴 232)
   let traitUseOvergrowth = true;  // 엘리시아 + 과성장 조합 사용 여부 (아크메이지/오버로드용)
   let reaperHas3Ancient = false;  // 아크메이지 2고패 vs 3고패 스위치용
   let reaperPassiveMode = '2anc_low';
@@ -10563,6 +10564,16 @@
 
   function changeTrait3rdLevel(lvVal) {
     currentTrait3rdLv = parseInt(lvVal);
+    renderBuildGuideContent();
+  }
+
+  function changeTrait3rdLevel(lvVal) {
+    currentTrait3rdLv = parseInt(lvVal);
+    renderBuildGuideContent();
+  }
+
+  function changeLord3rdMode(modeKey) {
+    currentLord3rdMode = modeKey;
     renderBuildGuideContent();
   }
 
@@ -12191,18 +12202,29 @@
         `;
       }).join('');
 
+      const isLordCave = (guideJob === 'lord' && currentLord3rdMode === 'cave');
+      const isLordWar  = (guideJob === 'lord' && currentLord3rdMode === 'war');
+      const isLordOther = (guideJob === 'lord' && currentLord3rdMode === 'other');
+
       const lv0Col1 = (guideJob === 'mage' && currentTrait3rdLv >= 15) ? 'recommended' : '';
-      const lv0Col2 = (guideJob === 'reaper') ? 'recommended' : '';
-      const lv0Col3 = (guideJob === 'lord' || (guideJob === 'mage' && currentTrait3rdLv < 15))
+      const lv0Col2 = (guideJob === 'reaper' || isLordCave)
         ? 'recommended'
-        : (guideJob === 'mage' && currentTrait3rdLv >= 15 ? 'compare-pick' : '');
+        : (guideJob === 'lord' && !isLordCave ? 'compare-pick' : '');
+      const lv0Col3 = ((guideJob === 'lord' && !isLordCave) || (guideJob === 'mage' && currentTrait3rdLv < 15))
+        ? 'recommended'
+        : ((guideJob === 'mage' && currentTrait3rdLv >= 15) || isLordCave ? 'compare-pick' : '');
 
       const isLv10Unlocked = currentTrait3rdLv >= 10;
       const lv10Col2 = (isLv10Unlocked && guideJob === 'reaper') ? 'recommended' : '';
       const lv10Col3 = (isLv10Unlocked && (guideJob === 'mage' || guideJob === 'lord')) ? 'recommended' : '';
 
       const isLv20Unlocked = currentTrait3rdLv >= 20;
-      const lv20Col3 = isLv20Unlocked ? 'recommended' : '';
+      const lv20Col2 = (isLv20Unlocked && (isLordWar || isLordCave))
+        ? 'recommended'
+        : (isLv20Unlocked && isLordOther ? 'compare-pick' : '');
+      const lv20Col3 = (isLv20Unlocked && (guideJob !== 'lord' || isLordOther))
+        ? 'recommended'
+        : (isLv20Unlocked && (isLordWar || isLordCave) ? 'compare-pick' : '');
 
       const isLv30Unlocked = currentTrait3rdLv >= 30;
       const lv30Col1 = (isLv30Unlocked && guideElem === 'fire') ? 'recommended' : '';
@@ -12214,6 +12236,38 @@
       const lv40Col2 = (isLv40Unlocked && guideJob !== 'lord') ? 'recommended' : (isLv40Unlocked && guideJob === 'lord' ? 'compare-pick' : '');
       const lv40Col3 = (isLv40Unlocked && guideJob !== 'lord') ? 'compare-pick' : '';
 
+      // 다크로드(오버로드/팬텀) 전용 콘텐츠별 3차 트리 스위치 (그외 333 / 쟁탈전 332 / 수련동굴 232)
+      const lordModeSelectorHtml = guideJob === 'lord' ? `
+        <div style="background:linear-gradient(135deg, rgba(168, 85, 247, 0.22) 0%, rgba(15, 23, 42, 0.98) 100%); border:2px solid #c084fc; border-radius:14px; padding:14px 16px; margin-bottom:14px; box-shadow:0 6px 20px rgba(168, 85, 247, 0.25);">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:10px; padding-bottom:8px; border-bottom:1px dashed rgba(192, 132, 252, 0.4);">
+            <span style="font-size:14px; font-weight:900; color:#f3e8ff; display:flex; align-items:center; gap:6px;">
+              <span>⚔️</span><span>[다크로드(팬텀) 전용] 플레이 콘텐츠별 3차 특화 세팅 선택</span>
+            </span>
+            <span style="font-size:11px; font-weight:800; color:#fde047; background:rgba(250, 204, 21, 0.15); border:1px solid rgba(250, 204, 21, 0.45); padding:2px 8px; border-radius:6px;">
+              💡 다크로드는 3차 속성 버프(표식)가 매우 느리게 차올라 콘텐츠별 변경 필수!
+            </span>
+          </div>
+          <div class="grid-3" style="gap:8px; margin-bottom:10px;">
+            <button onclick="changeLord3rdMode('other')" style="padding:10px 12px; border-radius:10px; cursor:pointer; font-weight:900; font-size:13px; transition:all 0.15s; border:2px solid ${currentLord3rdMode==='other'?'#fbbf24':'#475569'}; background:${currentLord3rdMode==='other'?'linear-gradient(135deg, rgba(251,191,36,0.28) 0%, #3b0764 100%)':'#0f172a'}; color:${currentLord3rdMode==='other'?'#ffffff':'#cbd5e1'}; box-shadow:${currentLord3rdMode==='other'?'0 0 14px rgba(251,191,36,0.4)':'none'};">
+              🌟 그 외 일반 콘텐츠 : <span style="color:#fde047;">3 - 3 - 3</span>
+              <span style="display:block; font-size:11px; font-weight:600; color:#e2e8f0; margin-top:3px;">스테이지·보스·던전 (풀스택 고점)</span>
+            </button>
+            <button onclick="changeLord3rdMode('war')" style="padding:10px 12px; border-radius:10px; cursor:pointer; font-weight:900; font-size:13px; transition:all 0.15s; border:2px solid ${currentLord3rdMode==='war'?'#f43f5e':'#475569'}; background:${currentLord3rdMode==='war'?'linear-gradient(135deg, rgba(244,63,94,0.3) 0%, #3b0764 100%)':'#0f172a'}; color:${currentLord3rdMode==='war'?'#ffffff':'#cbd5e1'}; box-shadow:${currentLord3rdMode==='war'?'0 0 14px rgba(244,63,94,0.4)':'none'};">
+              🏆 이계 쟁탈전 : <span style="color:#fda4af;">3 - 3 - 2</span>
+              <span style="display:block; font-size:11px; font-weight:600; color:#e2e8f0; margin-top:3px;">Lv.20 [50% 이상 모피증 200%] 채택</span>
+            </button>
+            <button onclick="changeLord3rdMode('cave')" style="padding:10px 12px; border-radius:10px; cursor:pointer; font-weight:900; font-size:13px; transition:all 0.15s; border:2px solid ${currentLord3rdMode==='cave'?'#38bdf8':'#475569'}; background:${currentLord3rdMode==='cave'?'linear-gradient(135deg, rgba(56,189,248,0.28) 0%, #3b0764 100%)':'#0f172a'}; color:${currentLord3rdMode==='cave'?'#ffffff':'#cbd5e1'}; box-shadow:${currentLord3rdMode==='cave'?'0 0 14px rgba(56,189,248,0.4)':'none'};">
+              🪨 수련동굴(비석치기) : <span style="color:#7dd3fc;">2 - 3 - 2</span>
+              <span style="display:block; font-size:11px; font-weight:600; color:#e2e8f0; margin-top:3px;">Lv.0 [획득확률 +50%] + Lv.20 [50% 이상]</span>
+            </button>
+          </div>
+          <div style="font-size:12px; color:#e9d5ff; line-height:1.55; background:rgba(15,23,42,0.75); padding:8px 12px; border-radius:8px; border:1px solid rgba(192,132,252,0.3);">
+            📌 <strong>왜 콘텐츠마다 다르게 찍나요? (제보 반영)</strong><br>
+            • 다크로드는 3차 속성 버프가 차오르는 속도가 느린 편입니다. 따라서 제한 시간이 짧은 <strong>수련동굴(20초 비석치기)에서는 <code>2-3-2</code></strong>로 획득 확률(+50%)과 50% 중첩 조건을 동시에 챙기고, <strong>쟁탈전에서는 <code>3-3-2</code></strong>로 안정적인 중첩 딜을, <strong>그 외 장기전/일반 콘텐츠에서는 <code>3-3-3</code></strong>으로 풀스택 최대 고점을 챙깁니다! (Lv.30은 주속성 고정, Lv.40은 1번 고정)
+          </div>
+        </div>
+      ` : '';
+
       container.innerHTML = `
         ${stepTabsHtml}
         <div class="stage-build-card" style="border-left-color:#f43f5e;">
@@ -12221,7 +12275,7 @@
             <span class="stage-build-title">🔥 3차 전직 (${jMeta.c3}) 레벨별 특화 트리 추천표</span>
             <div style="display:flex; gap:6px; flex-wrap:wrap;">
               <span class="grade-badge" style="background:rgba(251,191,36,0.2); color:#fde047; border:1px solid #fbbf24;">🟡 노란색 = 주력 고점 채택</span>
-              <span class="grade-badge" style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid #38bdf8;">🔵 파란색 = 비석치기 비교 후 선택</span>
+              <span class="grade-badge" style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid #38bdf8;">🔵 파란색 = 상황별/비석 비교 선택</span>
             </div>
           </div>
 
@@ -12230,6 +12284,8 @@
             <strong style="color:#fda4af; font-size:13.5px;">💡 [3차 전직 육성 팁] 3차 전직은 Lv.45까지만 달성하시면 충분합니다!</strong><br>
             • Lv.40 최종 특화 해금 및 Lv.45 달성 이후로는 요구량 대비 효율이 낮으므로 <strong>Lv.45 주차</strong>를 권장합니다. (1차는 Lv.80~90, 2차는 Lv.100~110 주차 권장)
           </div>
+
+          ${lordModeSelectorHtml}
 
           <div style="background:#131d33; padding:12px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:14px;">
             <label style="color:#fda4af; margin-bottom:8px; display:block;">📊 내 3차 전직 레벨 선택 (선택 레벨 이하만 해금되며, 미달성 줄은 잠금 처리됩니다)</label>
@@ -12249,11 +12305,11 @@
                   </td>
                   <td class="spec-3rd-cell ${lv0Col2}">
                     <div>속성 버프 획득 확률 50% 증가</div>
-                    ${guideJob==='reaper' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 소울리퍼 고정 채택!</div>' : ''}
+                    ${guideJob==='reaper' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 소울리퍼 고정 채택!</div>' : (guideJob==='lord' ? (isLordCave ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 수련동굴(232) 채택! (빠른 스택 확보)</div>' : '<div style="color:#38bdf8; font-size:11px; margin-top:4px;">🔄 수련동굴(비석 232) 시 채택</div>') : '')}
                   </td>
                   <td class="spec-3rd-cell ${lv0Col3}">
                     <div>속성 버프 중첩당 피해량 75% 증가</div>
-                    ${guideJob==='lord' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 오버로드 고정 채택!</div>' : (guideJob==='mage' ? (currentTrait3rdLv<15 ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 15렙 이전 주력 채택!</div>' : '<div style="color:#38bdf8; font-size:11px; margin-top:4px;">🔄 스택 안 쌓이면 1번과 비석 비교</div>') : '')}
+                    ${guideJob==='lord' ? (!isLordCave ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 쟁탈전(332) · 그 외(333) 주력 채택!</div>' : '<div style="color:#38bdf8; font-size:11px; margin-top:4px;">🔄 쟁탈전(332) · 그 외(333) 시 채택</div>') : (guideJob==='mage' ? (currentTrait3rdLv<15 ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 15렙 이전 주력 채택!</div>' : '<div style="color:#38bdf8; font-size:11px; margin-top:4px;">🔄 스택 안 쌓이면 1번과 비석 비교</div>') : '')}
                   </td>
                 </tr>
 
@@ -12277,10 +12333,13 @@
                     Lv.20<br><small style="color:${isLv20Unlocked?'#34d399':'#f87171'};">${isLv20Unlocked?'해금됨':'🔒잠김'}</small>
                   </td>
                   <td class="spec-3rd-cell"><div>모든 피해량 150% 증가 (곱연산)</div></td>
-                  <td class="spec-3rd-cell"><div>속성 버프 최대 중첩의 50% 이상일 때 모든 피해량 200% 증가</div></td>
+                  <td class="spec-3rd-cell ${lv20Col2}">
+                    <div>속성 버프 최대 중첩의 50% 이상일 때 모든 피해량 200% 증가</div>
+                    ${isLv20Unlocked && guideJob==='lord' ? ((isLordWar || isLordCave) ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 쟁탈전(332) · 수련동굴(232) 채택! (느린 스택 보완)</div>' : '<div style="color:#38bdf8; font-size:11px; margin-top:4px;">🔄 쟁탈전(332) · 수련동굴(232) 시 채택</div>') : ''}
+                  </td>
                   <td class="spec-3rd-cell ${lv20Col3}">
                     <div>보유한 속성 버프 중첩이 최대 중첩일 때 모든 피해량 400% 증가 (곱연산)</div>
-                    ${isLv20Unlocked ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 전 직업 공통 필수!</div>' : ''}
+                    ${isLv20Unlocked ? (guideJob!=='lord' ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 사신 · 아크메이지 필수 채택!</div>' : (isLordOther ? '<div style="color:#fde047; font-size:11px; margin-top:4px;">★ 그 외 일반 콘텐츠(333) 주력 채택!</div>' : '<div style="color:#38bdf8; font-size:11px; margin-top:4px;">🔄 그 외 일반 콘텐츠(333) 시 채택</div>')) : ''}
                   </td>
                 </tr>
 
