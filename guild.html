@@ -513,8 +513,9 @@
     if (rank === 5) return 100000;
     if (rank <= 10) return 80000;
     if (rank <= 20) return 60000;
-    if (rank <= 30) return 40000;
-    if (rank <= 50) return 20000;
+    if (rank <= 50) return 40000;   // 21~50위: 4만 개
+    if (rank <= 100) return 20000;  // 51~100위: 2만 개
+    if (rank <= 1000) return 10000; // 101~1000위(참가상): 1만 개
     return 0;
   }
 
@@ -628,7 +629,7 @@
       const zoneTopScore = zRank[zk].length > 0 ? zRank[zk][0].score : 0;
 
       zRank[zk].forEach((item, idx) => {
-        item.rank = idx + 1;
+        item.rank = (item.rank > 50 || idx >= 50) ? (item.rank > 50 ? item.rank : idx + 1) : (idx + 1);
         item.stones = getStoneRewardByRank(item.rank);
         item.zoneTopRatio = zoneTopScore > 0 ? (item.score / zoneTopScore) : 0;
 
