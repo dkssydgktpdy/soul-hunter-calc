@@ -3735,13 +3735,13 @@
               <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 연마할 영원 장비 선택</label>
               <div class="radio-pill-group">
                 <div class="radio-pill job-pill-btn job-switch-reaper selected" id="ref_eq_scythe" onclick="selectRefineEquip('scythe')" style="padding:7px 8px; font-size:13px;">
-                  <span>🗡️ 영원 대낫</span>
+                  <span>🗡️ 영원 대낫 <small style="color:#fde047;">(제작 200만💎)</small></span>
                 </div>
                 <div class="radio-pill job-pill-btn job-switch-mage" id="ref_eq_orb" onclick="selectRefineEquip('orb')" style="padding:7px 8px; font-size:13px;">
-                  <span>🔮 영원 오브</span>
+                  <span>🔮 영원 오브 <small style="color:#fde047;">(제작 200만💎)</small></span>
                 </div>
                 <div class="radio-pill job-pill-btn job-switch-lord" id="ref_eq_accessory" onclick="selectRefineEquip('accessory')" style="padding:7px 8px; font-size:13px;">
-                  <span>💍 영원 장식</span>
+                  <span>💍 영원 장식 <small style="color:#fde047;">(제작 300만💎)</small></span>
                 </div>
               </div>
             </div>
@@ -5816,8 +5816,9 @@
   // 부위별 1회 연마 시 영원의 돌 기본 소모량 (미확인 구간은 null)
   const REFINE_STONE_COSTS = {
     scythe: {
-      7: 16250, 9: 25000, 10: 25000, 11: 31250, 12: 37500,
-      13: 37500, 14: 47500, 15: 50000, 16: 52500, 17: 55000
+      0: 5000, 1: 6250, 2: 7500, 3: 8750, 4: 12500, 5: 12500,
+      6: 13750, 7: 16250, 8: 20000, 9: 25000, 10: 25000, 11: 31250,
+      12: 37500, 13: 37500, 14: 47500, 15: 50000, 16: 52500, 17: 55000
     },
     orb: {
       5: 12500, 7: 16250, 10: 25000, 11: 31250, 12: 37500,
@@ -10132,6 +10133,8 @@
     }
   }
 
+  let trait2Crit49Mode = true; // ★ 기본값: 크리·표식 확률 49%(13P) 고정 후 2줄 피해량에 몰빵!
+
   function syncTrait2ConditionButtonsUI() {
     const box1 = document.getElementById('t2_cond_box_seal');
     const badge1 = document.getElementById('t2_cond_badge_seal');
@@ -10146,10 +10149,30 @@
       badge1.style.color = trait2SealAwk65 ? '#ffffff' : '#94a3b8';
       badge1.innerText = trait2SealAwk65 ? '✅ ON (5P 절약)' : 'OFF (미적용)';
     }
+
+    const box2 = document.getElementById('t2_cond_box_crit49');
+    const badge2 = document.getElementById('t2_cond_badge_crit49');
+    if (box2 && badge2) {
+      box2.style.background = trait2Crit49Mode
+        ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.36) 0%, rgba(120, 53, 15, 0.72) 100%)'
+        : '#0b1120';
+      box2.style.boxShadow = trait2Crit49Mode
+        ? '0 0 18px rgba(245, 158, 11, 0.45), inset 0 0 8px rgba(251, 191, 36, 0.25)'
+        : 'none';
+      badge2.style.background = trait2Crit49Mode ? '#d97706' : '#1e293b';
+      badge2.style.color = trait2Crit49Mode ? '#ffffff' : '#94a3b8';
+      badge2.innerText = trait2Crit49Mode ? '🎯 49% 고정 (+32P 피해량 몰빵)' : '💯 Lv.90+ 크확 100% 모드';
+    }
   }
 
   function toggleTrait2SealAwk(checked) {
     trait2SealAwk65 = checked;
+    syncTrait2ConditionButtonsUI();
+    updateTrait2ndBoardOnly();
+  }
+
+  function toggleTrait2Crit49Mode(checked) {
+    trait2Crit49Mode = checked;
     syncTrait2ConditionButtonsUI();
     updateTrait2ndBoardOnly();
   }
@@ -10173,16 +10196,16 @@
     return Math.floor((Math.max(1, lv) - 1) / 10) + 1;
   }
 
-  // 2차 전직 전체 노드 DB 및 수학적 최적 분배 시뮬레이터 (Lv.130부터 15P 완벽 반영!)
+  // ★ 2차 전직 전체 노드 DB (랭커 실측 은색1~진홍2 수치 & 49% 확률 다이어트 & 전역 최적 DP 엔진 완벽 반영!)
   function simulate2ndJobTree(lv) {
     const totalTP = get2ndJobTotalTP(lv);
     let remTP = totalTP;
 
-    // 0. 맨 앞 황금색 루트 박스 (표식 개방 1P / 크리티컬 개방 1P)
+    // 0. 맨 앞 황금색 루트 박스 (표식 개방 1P / 크리티컬 개방 1P -> 각각 기본 확률 10% 부여)
     const markRoot = { reqLv: 1, max: 1, cost: 1, cur: 0, name: "2차 표식 개방", desc: "공격 시 10% 확률로 표식 1개 획득 / 표식 1개당 피해량 10% 증가 (기본 최대 중첩 : 50)" };
     const critRoot = { reqLv: 1, max: 1, cost: 1, cur: 0, name: "2차 크리티컬 개방", desc: "공격 시 10% 확률로 2차 크리티컬 발동 / 적에게 '2차 저주' 영구 부여 (적이 입는 피해 100% 증가 곱연산)" };
 
-    // 1줄: 표식 획득 확률 / 크리티컬 확률 (비용: 1, 1, 1, 1, 2, 3)
+    // 1줄: 표식 획득 확률 / 크리티컬 확률 (비용: 1, 1, 1, 1, 2, 3 | 레벨당 +3%, 칸당 +15%)
     const row1Meta = [
       { reqLv: 1,  max: 5, cost: 1, cls: "t2c-brown",  maxVal: 15 },
       { reqLv: 10, max: 5, cost: 1, cls: "t2c-green",  maxVal: 15 },
@@ -10192,8 +10215,8 @@
       { reqLv: 50, max: 5, cost: 3, cls: "t2c-orange", maxVal: 15 }
     ];
 
-    // ★ [핵심 수정!] 2줄 요구 포인트:
-    // Lv.1~30(1P), Lv.40(2P), Lv.50~60(3P), Lv.70(5P), Lv.80(7P), Lv.90~120(10P), ★Lv.130~170(15P!)
+    // ★ 2줄(표식): 은색 1(Lv.120)부터 랭커 실측치 100% 반영!
+    // 1렙당: 600% -> 900% -> 1,350% -> 2,025% -> 3,038% -> 4,557% (10렙 만렙 시: 6,000 ~ 45,570%)
     const markRow2Meta = [
       { reqLv: 1,   max: 5,  cost: 1,  cls: "t2c-brown",    maxVal: 10 },
       { reqLv: 10,  max: 5,  cost: 1,  cls: "t2c-green",    maxVal: 20 },
@@ -10202,20 +10225,21 @@
       { reqLv: 40,  max: 5,  cost: 2,  cls: "t2c-yellow",   maxVal: 100 },
       { reqLv: 50,  max: 5,  cost: 3,  cls: "t2c-orange",   maxVal: 200 },
       { reqLv: 60,  max: 5,  cost: 3,  cls: "t2c-cyan",     maxVal: 350 },
-      { reqLv: 70,  max: 10, cost: 5,  cls: "t2c-mint",     maxVal: 1000 }, // ★ 표식 초록색 5/10 분기점!
+      { reqLv: 70,  max: 10, cost: 5,  cls: "t2c-mint",     maxVal: 1000 },
       { reqLv: 80,  max: 10, cost: 7,  cls: "t2c-pink",     maxVal: 1400 },
       { reqLv: 90,  max: 10, cost: 10, cls: "t2c-purple",   maxVal: 2000 },
       { reqLv: 100, max: 10, cost: 10, cls: "t2c-sky-silv", maxVal: 2800 },
       { reqLv: 110, max: 10, cost: 10, cls: "t2c-blu-silv", maxVal: 4000 },
-      { reqLv: 120, max: 10, cost: 10, cls: "t2c-silver1",  maxVal: 5600 },
-      { reqLv: 130, max: 10, cost: 15, cls: "t2c-silver2",  maxVal: 8000 },  // ★ Lv.130부터 15P!
-      { reqLv: 140, max: 10, cost: 15, cls: "t2c-emerald1", maxVal: 11200 }, // ★ 15P
-      { reqLv: 150, max: 10, cost: 15, cls: "t2c-emerald2", maxVal: 16000 }, // ★ 15P
-      { reqLv: 160, max: 10, cost: 15, cls: "t2c-crimson1", maxVal: 22400 }, // ★ 15P
-      { reqLv: 170, max: 10, cost: 15, cls: "t2c-crimson2", maxVal: 32000 }  // ★ 15P
+      { reqLv: 120, max: 10, cost: 10, cls: "t2c-silver1",  maxVal: 6000 },  // ★ 실측: 1렙당 +600% (만렙 +6,000%)
+      { reqLv: 130, max: 10, cost: 15, cls: "t2c-silver2",  maxVal: 9000 },  // ★ 실측: 1렙당 +900% (만렙 +9,000%)
+      { reqLv: 140, max: 10, cost: 15, cls: "t2c-emerald1", maxVal: 13500 }, // ★ 실측: 1렙당 +1,350% (만렙 +13,500%)
+      { reqLv: 150, max: 10, cost: 15, cls: "t2c-emerald2", maxVal: 20250 }, // ★ 실측: 1렙당 +2,025% (만렙 +20,250%)
+      { reqLv: 160, max: 10, cost: 15, cls: "t2c-crimson1", maxVal: 30380 }, // ★ 실측: 1렙당 +3,038% (만렙 +30,380%)
+      { reqLv: 170, max: 10, cost: 15, cls: "t2c-crimson2", maxVal: 45570 }  // ★ 실측: 1렙당 +4,557% (만렙 +45,570%)
     ];
 
-    // 2줄(크리티컬): 요구 포인트 동일 (Lv.130부터 15P!)
+    // ★ 2줄(크리티컬): 은색 1(Lv.120)부터 랭커 실측치 100% 반영!
+    // 1렙당: 75만% -> 188만% -> 470만% -> 1,175만% -> 2,938만% -> 7,345만% (10렙 만렙 시: 750만 ~ 7.345억%)
     const critRow2Meta = [
       { reqLv: 1,   max: 5,  cost: 1,  cls: "t2c-brown",    maxVal: 50 },
       { reqLv: 10,  max: 5,  cost: 1,  cls: "t2c-green",    maxVal: 100 },
@@ -10229,22 +10253,22 @@
       { reqLv: 90,  max: 10, cost: 10, cls: "t2c-purple",   maxVal: 300000 },
       { reqLv: 100, max: 10, cost: 10, cls: "t2c-sky-silv", maxVal: 1200000 },
       { reqLv: 110, max: 10, cost: 10, cls: "t2c-blu-silv", maxVal: 3000000 },
-      { reqLv: 120, max: 10, cost: 10, cls: "t2c-silver1",  maxVal: 7500000 },
-      { reqLv: 130, max: 10, cost: 15, cls: "t2c-silver2",  maxVal: 18000000 },  // ★ Lv.130부터 15P!
-      { reqLv: 140, max: 10, cost: 15, cls: "t2c-emerald1", maxVal: 45000000 },  // ★ 15P
-      { reqLv: 150, max: 10, cost: 15, cls: "t2c-emerald2", maxVal: 110000000 }, // ★ 15P
-      { reqLv: 160, max: 10, cost: 15, cls: "t2c-crimson1", maxVal: 270000000 }, // ★ 15P
-      { reqLv: 170, max: 10, cost: 15, cls: "t2c-crimson2", maxVal: 650000000 }  // ★ 15P
+      { reqLv: 120, max: 10, cost: 10, cls: "t2c-silver1",  maxVal: 7500000 },   // ★ 실측: 1렙당 +75만% (만렙 +750만%)
+      { reqLv: 130, max: 10, cost: 15, cls: "t2c-silver2",  maxVal: 18800000 },  // ★ 실측: 1렙당 +188만% (만렙 +1,880만%)
+      { reqLv: 140, max: 10, cost: 15, cls: "t2c-emerald1", maxVal: 47000000 },  // ★ 실측: 1렙당 +470만% (만렙 +4,700만%)
+      { reqLv: 150, max: 10, cost: 15, cls: "t2c-emerald2", maxVal: 117500000 }, // ★ 실측: 1렙당 +1,175만% (만렙 +1.175억%)
+      { reqLv: 160, max: 10, cost: 15, cls: "t2c-crimson1", maxVal: 293800000 }, // ★ 실측: 1렙당 +2,938만% (만렙 +2.938억%)
+      { reqLv: 170, max: 10, cost: 15, cls: "t2c-crimson2", maxVal: 734500000 }  // ★ 실측: 1렙당 +7,345만% (만렙 +7.345억%)
     ];
 
     // 3줄(표식): 표식 획득 시 추가 획득 (+1, +1, +2, +2, +3, +3개 / 비용: 2, 2, 10, 10, 20, 20)
     const markRow3Meta = [
-      { reqLv: 10,  max: 1, cost: 2,  cls: "t2c-green",    maxVal: 1, desc: "표식 획득 시 +1개 추가 획득" },
-      { reqLv: 30,  max: 1, cost: 2,  cls: "t2c-purple",   maxVal: 1, desc: "표식 획득 시 +1개 추가 획득" },
-      { reqLv: 45,  max: 1, cost: 10, cls: "t2c-yellow",   maxVal: 2, desc: "표식 획득 시 +2개 추가 획득" },
-      { reqLv: 60,  max: 1, cost: 10, cls: "t2c-cyan",     maxVal: 2, desc: "표식 획득 시 +2개 추가 획득" },
-      { reqLv: 80,  max: 1, cost: 20, cls: "t2c-pink",     maxVal: 3, desc: "표식 획득 시 +3개 추가 획득" },
-      { reqLv: 100, max: 1, cost: 20, cls: "t2c-sky-silv", maxVal: 3, desc: "표식 획득 시 +3개 추가 획득" }
+      { reqLv: 10,  max: 1, cost: 2,  cls: "t2c-green",    maxVal: 1, desc: "표식 획득 시 +1개 추가 획득 (가성비 필수)" },
+      { reqLv: 30,  max: 1, cost: 2,  cls: "t2c-purple",   maxVal: 1, desc: "표식 획득 시 +1개 추가 획득 (가성비 필수)" },
+      { reqLv: 45,  max: 1, cost: 10, cls: "t2c-yellow",   maxVal: 2, desc: "표식 획득 시 +2개 추가 획득 (비효율 - 확률/피해량 우선)" },
+      { reqLv: 60,  max: 1, cost: 10, cls: "t2c-cyan",     maxVal: 2, desc: "표식 획득 시 +2개 추가 획득 (비효율 - 확률/피해량 우선)" },
+      { reqLv: 80,  max: 1, cost: 20, cls: "t2c-pink",     maxVal: 3, desc: "표식 획득 시 +3개 추가 획득 (비효율 - 확률/피해량 우선)" },
+      { reqLv: 100, max: 1, cost: 20, cls: "t2c-sky-silv", maxVal: 3, desc: "표식 획득 시 +3개 추가 획득 (비효율 - 확률/피해량 우선)" }
     ];
 
     // 3줄(크리티컬): 2차 저주 상태 적이 입는 피해량 증가 (+100%, +300%, +1000%, +4500%, +13000%, +40000%)
@@ -10257,20 +10281,20 @@
       { reqLv: 100, max: 1, cost: 20, cls: "t2c-sky-silv", maxVal: 40000, desc: "2차 저주 상태 적이 입는 피해 +40,000% 증가" }
     ];
 
-    // 4줄(표식 - 황금박스와 연결 X): 비용 5, 10, 20, 30 (개방: 1, 40, 60, 90)
+    // 4줄(표식): 비용 5, 10, 20, 30 (개방: 1, 40, 60, 90)
     const markRow4Meta = [
       { reqLv: 1,  max: 1, cost: 5,  cls: "t2c-blue",   desc: "2차 크리티컬 발동 시 표식 4배 획득" },
       { reqLv: 40, max: 1, cost: 10, cls: "t2c-yellow", desc: "표식 최대 중첩 5배 증가 (50개 ➔ 250개)" },
-      { reqLv: 60, max: 1, cost: 20, cls: "t2c-cyan",   desc: "장착 조건 충족 시 표식 피해량 +1,000% 증폭 (곱연산)" },
+      { reqLv: 60, max: 1, cost: 20, cls: "t2c-cyan",   desc: "모든 스킬 돌파횟수 60 이상일 때 표식 피해량 +1,000% 증폭 (곱연산)" },
       { reqLv: 90, max: 1, cost: 30, cls: "t2c-pink",   desc: "표식 최대 중첩(250개) 달성 시 피해량 +1,500% 증가 (곱연산)" }
     ];
 
-    // 4줄(크리티컬 - 황금박스와 연결 X): 비용 5, 10, 20, 30 (개방: 1, 40, 60, 90)
+    // 4줄(크리티컬): 비용 5, 10, 20, 30 (개방: 1, 40, 60, 90)
     const critRow4Meta = [
       { reqLv: 1,  max: 1, cost: 5,  cls: "t2c-blue",   desc: "각성기 사용 후 다음 공격 1회 2차 크리티컬 확정 발동 (⚠️1차 65렙 각성기 봉인 시 미사용!)" },
       { reqLv: 40, max: 1, cost: 10, cls: "t2c-yellow", desc: "2차 저주 상태인 적이 입는 피해량 +700% 증폭 (곱연산)" },
       { reqLv: 60, max: 1, cost: 20, cls: "t2c-cyan",   desc: "표식 1개당 2차 저주 상태 피해량 +6% 증폭 (250개 시 +1,500% 곱연산)" },
-      { reqLv: 90, max: 1, cost: 30, cls: "t2c-pink",   desc: "2차 크리티컬 확률 100% 달성 시 피해량 +2,000% 증가 (곱연산)" }
+      { reqLv: 90, max: 1, cost: 30, cls: "t2c-pink",   desc: "크리티컬 확률 100% 달성 시 피해량 +2,000% 증가 (곱연산)" }
     ];
 
     const mark1 = row1Meta.map(m => ({ ...m, cur: 0, desc: `표식 획득 확률 최대 +${m.maxVal}% (레벨당 +3%)` }));
@@ -10294,7 +10318,7 @@
     tryInvest(markRoot, 1);
     tryInvest(critRoot, 1);
 
-    // [Step 1] 4번째 줄(곱연산 코어) & 3번째 줄(저주 피해량 / 표식 추가획득) 개방 즉시 0순위 마스터!
+    // [Step 1] 4번째 줄(곱연산 코어) & 3번째 줄(저주 피해량 / 표식 추가획득 1·2번 칸만!) 최우선 마스터!
     if (!trait2SealAwk65) {
       tryInvest(crit4[0], 1);
     }
@@ -10305,57 +10329,128 @@
       tryInvest(mark4[i], 1);
     }
 
+    // 크리 3줄(저주 피해량)은 1P당 효율이 압도적이므로 개방 즉시 마스터
     for (let i = 0; i < 6; i++) {
       tryInvest(crit3[i], 1);
-      // Lv.90(크확 100% + 크리 시 표식 4배)부터는 표식 3번째 줄을 2번째 칸(Lv.30)까지만 찍고 60P를 크피에 몰빵!
-      if (lv < 90 || i < 2) {
-        tryInvest(mark3[i], 1);
-      }
     }
 
-    // [Step 2] 90레벨 이전 vs 90레벨 이후 최적 분배!
-    if (lv < 90) {
-      for (let i = 0; i <= 7; i++) {
-        if (lv < mark2[i].reqLv) break;
-        const cap = (i === 7) ? 5 : mark2[i].max;
-        for (let step = 1; step <= cap; step++) {
-          tryInvest(mark2[i], step);
-          tryInvest(crit2[i], step);
-        }
-      }
-      for (let i = 7; i < crit2.length; i++) {
-        if (lv < crit2[i].reqLv) break;
-        tryInvest(crit2[i], crit2[i].max);
-      }
+    // ★ 표식 3줄(추가 획득): 전 구간(Lv.1~180) 1·2번 칸(2P+2P=4P)만 찍고, 3번째 칸(10P)부터는 찍지 않음!
+    tryInvest(mark3[0], 1);
+    tryInvest(mark3[1], 1);
+
+    // [Step 2] Lv.70 이상에서 2줄(8·9번 칸)이 열릴 때 크리·표식 확률이 10%로 초기화되는 현상 완벽 방지!
+    // - Lv.90 이상: 크확 100%(4줄 +2,000% 곱연산 조건) + 표식 확률 최소 28%(5/5, 1/5 = 6P) 선확보!
+    // - Lv.70 ~ 89: 도영님 검증 황금 베이스 [크확 5/5·5/5 (40%, 10P) + 표식확률 5/5·1/5 (28%, 6P)] 선확보!
+    if (lv >= 90) {
       for (let i = 0; i < 6; i++) {
         tryInvest(crit1[i], 5);
       }
+      const m1Base = [5, 1, 0, 0, 0, 0];
       for (let i = 0; i < 6; i++) {
-        tryInvest(mark1[i], 5);
+        tryInvest(mark1[i], m1Base[i]);
       }
-    } else {
+    } else if (lv >= 70) {
+      const c1Base = [5, 5, 0, 0, 0, 0];
+      const m1Base = [5, 1, 0, 0, 0, 0];
       for (let i = 0; i < 6; i++) {
-        tryInvest(crit1[i], 5);
-      }
-      for (let i = 0; i <= 7; i++) {
-        const cap = (i === 7) ? 5 : mark2[i].max;
-        for (let step = 1; step <= cap; step++) {
-          tryInvest(mark2[i], step);
-          tryInvest(crit2[i], step);
-        }
-      }
-      for (let i = 7; i < crit2.length; i++) {
-        tryInvest(crit2[i], crit2[i].max);
-      }
-      for (let i = 0; i < 6; i++) {
-        tryInvest(mark1[i], 5);
-      }
-      for (let i = 7; i < mark2.length; i++) {
-        tryInvest(mark2[i], mark2[i].max);
+        tryInvest(crit1[i], c1Base[i]);
+        tryInvest(mark1[i], m1Base[i]);
       }
     }
 
+    // [Step 3] 2번째 줄(표식 피해량 vs 크리티컬 피해량) 전역 최적 탐색 (Global DP Optimization)!
     const maxStacks = mark4[1].cur > 0 ? 250 : 50;
+
+    function buildRow2Curve(metaList) {
+      const curve = [{ tp: 0, val: 0, counts: new Array(metaList.length).fill(0) }];
+      let cTp = 0;
+      let cVal = 0;
+      const counts = new Array(metaList.length).fill(0);
+      for (let i = 0; i < metaList.length; i++) {
+        if (lv < metaList[i].reqLv) break;
+        const stepVal = metaList[i].maxVal / metaList[i].max;
+        const stepCost = metaList[i].cost;
+        for (let s = 0; s < metaList[i].max; s++) {
+          cTp += stepCost;
+          cVal += stepVal;
+          counts[i]++;
+          curve.push({ tp: cTp, val: cVal, counts: [...counts] });
+        }
+      }
+      return curve;
+    }
+
+    const mCurve = buildRow2Curve(markRow2Meta);
+    const cCurve = buildRow2Curve(critRow2Meta);
+
+    let bestProd = -1;
+    let bestMState = mCurve[0];
+    let bestCState = cCurve[0];
+
+    let cIdx = cCurve.length - 1;
+    for (let mIdx = 0; mIdx < mCurve.length; mIdx++) {
+      const mEntry = mCurve[mIdx];
+      if (mEntry.tp > remTP) break;
+      const availForCrit = remTP - mEntry.tp;
+      while (cIdx > 0 && cCurve[cIdx].tp > availForCrit) {
+        cIdx--;
+      }
+      const cEntry = cCurve[cIdx];
+      const mMult = 1 + ((10 + mEntry.val) * maxStacks) / 100;
+      const cMult = 1 + (100 + cEntry.val) / 100;
+      const prod = mMult * cMult;
+      if (prod > bestProd) {
+        bestProd = prod;
+        bestMState = mEntry;
+        bestCState = cEntry;
+      }
+    }
+
+    bestMState.counts.forEach((cnt, i) => { mark2[i].cur = cnt; });
+    bestCState.counts.forEach((cnt, i) => { crit2[i].cur = cnt; });
+    remTP -= (bestMState.tp + bestCState.tp);
+
+    // [Step 4] 2줄(피해량) 풀마스터 후 남는 TP를 크리확률(crit1)과 표식확률(mark1)에 황금 비율로 분배!
+    // 1) 먼저 Lv.63 검증 비율 [크확 5/5, 5/5 (10P = 40%) + 표식확률 5/5, 1/5 (6P = 28%)] 달성!
+    const c1TargetBase = [5, 5, 0, 0, 0, 0];
+    const m1TargetBase = [5, 1, 0, 0, 0, 0];
+    for (let i = 0; i < 6; i++) {
+      tryInvest(crit1[i], c1TargetBase[i]);
+    }
+    for (let i = 0; i < 6; i++) {
+      tryInvest(mark1[i], m1TargetBase[i]);
+    }
+
+    // 2) 그 이상 남는 TP(예: Lv.64~69 등)는 크리확률 +1렙 <-> 표식확률 +1렙씩 번갈아 가며 균등 분배!
+    for (let step = 0; step < 30; step++) {
+      let progressed = false;
+      for (let i = 0; i < 6; i++) {
+        if (lv >= crit1[i].reqLv && crit1[i].cur < crit1[i].max && remTP >= crit1[i].cost) {
+          crit1[i].cur++;
+          remTP -= crit1[i].cost;
+          progressed = true;
+          break;
+        }
+      }
+      for (let i = 0; i < 6; i++) {
+        if (lv >= mark1[i].reqLv && mark1[i].cur < mark1[i].max && remTP >= mark1[i].cost) {
+          mark1[i].cur++;
+          remTP -= mark1[i].cost;
+          progressed = true;
+          break;
+        }
+      }
+      if (!progressed) break;
+    }
+
+    // 3) 그래도 TP가 남는 초극후반에는 표식 3줄 잔여분 마스터
+    for (let i = 2; i < 6; i++) {
+      tryInvest(mark3[i], 1);
+    }
+
+    const markProbPct = (markRoot.cur > 0 ? 10 : 0) + mark1.reduce((acc, n) => acc + n.cur * 3, 0);
+    const critProbPct = (critRoot.cur > 0 ? 10 : 0) + crit1.reduce((acc, n) => acc + n.cur * 3, 0);
+
     let markPerStackPct = markRoot.cur > 0 ? 10 : 0;
     mark2.forEach(n => { if (n.cur > 0) markPerStackPct += (n.maxVal / n.max) * n.cur; });
     const markAmpMult = (mark4[2].cur > 0 ? 11 : 1) * (mark4[3].cur > 0 ? 16 : 1);
@@ -10377,6 +10472,8 @@
       remTP,
       perLvTP: get2ndJobPointPerLv(lv),
       maxStacks,
+      markProbPct,
+      critProbPct,
       markPerStackPct,
       totalMarkMult,
       totalCritMult,
@@ -10406,7 +10503,6 @@
     document.getElementById('t2_used_tp').innerText = `${sim.usedTP.toLocaleString()}P`;
     document.getElementById('t2_rem_tp').innerText = `${sim.remTP}P`;
 
-    // 🎚️ 슬라이더 레벨이 Lv.120 이상일 때만 경고창 즉시 노출 (120 미만이면 자동 숨김!)
     const warnBannerEl = document.getElementById('t2_lv120_warning_banner');
     if (warnBannerEl) {
       warnBannerEl.style.display = (currentTrait2ndLv >= 120) ? 'block' : 'none';
@@ -10417,11 +10513,13 @@
       const combLog10 = Math.log10(Math.max(1, sim.totalMarkMult)) + Math.log10(Math.max(1, sim.totalCritMult)) + Math.log10(Math.max(1, sim.totalCurseMult));
       const combStr = combLog10 < 16 ? formatKoreanNumber(Math.pow(10, combLog10)) + '배' : `약 ${Math.pow(10, combLog10 - Math.floor(combLog10)).toFixed(2)} × 10^${Math.floor(combLog10)}배`;
       multSummaryEl.innerHTML = `
-        <span>🪙 표식 풀스택(${sim.maxStacks}개) 배율: <strong style="color:#fde047;">${formatKoreanNumber(Math.round(sim.totalMarkMult))}배</strong> <small style="color:#94a3b8;">(개당 +${sim.markPerStackPct.toLocaleString()}%)</small></span>
+        <span style="background:#0f172a; border:1px solid #475569; padding:2px 8px; border-radius:6px;">🎯 확률: <strong style="color:#34d399;">표식 ${sim.markProbPct}% · 크리 ${sim.critProbPct}%</strong></span>
+        <span>|</span>
+        <span>🪙 표식 풀스택(${sim.maxStacks}개): <strong style="color:#fde047;">${formatKoreanNumber(Math.round(sim.totalMarkMult))}배</strong> <small style="color:#94a3b8;">(개당 +${sim.markPerStackPct.toLocaleString()}%)</small></span>
         <span>×</span>
-        <span>💥 2차 크리티컬 배율: <strong style="color:#fda4af;">${formatKoreanNumber(Math.round(sim.totalCritMult))}배</strong></span>
+        <span>💥 2차 크피: <strong style="color:#fda4af;">${formatKoreanNumber(Math.round(sim.totalCritMult))}배</strong></span>
         <span>×</span>
-        <span>💀 2차 저주 배율: <strong style="color:#c084fc;">${formatKoreanNumber(Math.round(sim.totalCurseMult))}배</strong></span>
+        <span>💀 2차 저주: <strong style="color:#c084fc;">${formatKoreanNumber(Math.round(sim.totalCurseMult))}배</strong></span>
         <span>=</span>
         <span style="background:rgba(56,189,248,0.18); border:1px solid #38bdf8; padding:2px 8px; border-radius:6px; color:#ffffff;">총합 시너지: <strong style="color:#38bdf8;">${combStr}</strong></span>
       `;
@@ -12099,6 +12197,8 @@
             </label>
           </div>
 
+          
+
           <!-- 레벨 슬라이더(드래그 끊김 0%) & [-1]/[+1] 미세조절 & 퀵 버튼 컨트롤러 -->
           <div style="background:#131d33; padding:14px 16px; border-radius:12px; border:1.5px solid #334155; margin-bottom:16px;">
             <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
@@ -12135,17 +12235,21 @@
             <div id="t2_mult_summary_bar" style="margin-top:12px; padding-top:10px; border-top:1px dashed #334155; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; font-size:12px; color:#e2e8f0; font-weight:700;"></div>
           </div>
 
-          <!-- ⚠️ [Lv.120+ 엔드스펙 유저 필독] Lv.120+ 예측치 안내 & 20초 비석치기 스크린샷 비교 경고 -->
+         <!-- ⚠️ [Lv.120+ 엔드스펙 유저 안내] 탑팀x라온님 실측 데이터 반영 & 세팅 백업 안내 -->
           <div id="t2_lv120_warning_banner" style="display:${currentTrait2ndLv >= 120 ? 'block' : 'none'}; background:linear-gradient(135deg, rgba(239, 68, 68, 0.22) 0%, rgba(15, 23, 42, 0.95) 100%); border:2px solid #ef4444; border-radius:12px; padding:13px 16px; margin-bottom:16px; box-shadow:0 0 16px rgba(239, 68, 68, 0.25);">
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
-              <span style="font-size:18px;">🚨</span>
-              <strong style="color:#fca5a5; font-size:14px;">[Lv.120+ 초고레벨 엔드스펙 유저 필독 주의사항]</strong>
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:6px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:18px;">🚨</span>
+                <strong style="color:#fca5a5; font-size:14px;">[Lv.120+ 초고레벨 엔드스펙 유저 안내 & 백업 권장]</strong>
+              </div>
+              <span style="background:rgba(250, 204, 21, 0.16); border:1px solid rgba(250, 204, 21, 0.5); color:#fde047; font-size:11.5px; font-weight:800; padding:2px 9px; border-radius:6px;">
+                ✨ Special Thanks: 탑팀x라온님 (Lv.120~170 실측 수치 제공)
+              </span>
             </div>
             <div style="font-size:12.5px; color:#e2e8f0; line-height:1.65; word-break:keep-all;">
-              • <strong>[수치 안내] 현재 공식 실측 데이터는 Lv.110까지의 표식 및 크리티컬 피해량만 확인</strong>된 상태이며, <strong>Lv.120 이후의 수치는 성장 규칙에 따른 '예측 수치'</strong>입니다. 따라서 초고레벨일수록 인게임 실제 딜 체감을 더더욱 직접 실험해 보셔야 합니다!<br>
-              • 또한 <strong>수련동굴 비석치기는 '단 20초' 동안만 측정</strong>되므로, 표식 3줄(추가 획득)이 부족할 경우 250스택(풀중첩 16배 곱연산) 도달이 늦어져 20초 누적 딜이 하락할 수 있습니다.<br>
-              • 따라서 <strong>Lv.120 이상 고스펙 유저분들은 본 세팅을 맹신하지 마시고 '참고용'으로만 활용</strong>하시기 바랍니다.<br>
-              • <strong>반드시 기존 2차 특성 세팅을 '스크린샷'으로 찍어 저장</strong>해 두신 뒤, 본 세팅과 번갈아 <strong>비석치기 20초를 3~5회 측정하여 평균 누적 딜이 실제로 상승하는지 직접 비교·판단</strong> 후 정착하세요! (기존 하이브리드 세팅이 비석 딜이 더 높다면 표식 피해량과 표식 3줄을 더 투자하는 것이 유리합니다)
+              • <strong>[실측 데이터 반영 완료]</strong> 귀중한 Lv.120(은색 1) ~ Lv.170(진홍 2) 실제 수치를 제공해 주신 <strong>탑팀x라온님께 진심으로 감사드립니다!</strong> 해당 실측치를 기반으로 표식 피해량과 크리티컬 피해량의 곱연산 한계효율 전역 최적화(Global DP)가 완료되었습니다.<br>
+              • 다만 <strong>수련동굴 비석치기는 '단 20초' 제한시간</strong>으로 측정되므로, 개인의 공격속도·타수 회전율·직업에 따라 250스택 도달 속도에 미세한 체감 차이가 발생할 수 있습니다.<br>
+              • 최적화는 완료되었으나 <strong>혹시 모르니 변경 전 기존 2차 특성 세팅을 반드시 '스크린샷'으로 저장해 두신 뒤</strong>, 본 세팅과 번갈아 <strong>비석치기 20초를 3~5회 측정하여 평균 누적 딜이 상승하는지 직접 확인</strong> 후 정착하시기 바랍니다!
             </div>
           </div>
 
