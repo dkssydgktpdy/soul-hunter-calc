@@ -2938,7 +2938,7 @@
           <!-- 우측 구역: 탑팀x라온 -->
           <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:space-between; gap:5px;">
             <div class="thanks-title" style="color:#34d399; font-size:10px; line-height:1.35; text-align:center; display:flex; align-items:center; min-height:27px;">
-              📊 2차특성 데이터 제공
+              📊 1차특성 데이터 제공
             </div>
             <div class="thanks-person speech-bubble-wrap" data-bubble="💬 감기조심">
               <img src="images/raon_banner.jpeg" alt="탑팀x라온" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/raon_banner.jpg';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/raon_banner.JPEG';}else if(this.dataset.f==2){this.dataset.f=3;this.src='images/raon_banner.png';}else{this.onerror=null;this.outerHTML='<div style=\'width:44px;height:44px;border-radius:50%;border:2px solid #34d399;background:#1e1b4b;display:flex;align-items:center;justify-content:center;font-weight:900;color:#6ee7b7;font-size:12px;\'>라온</div>';}">
@@ -10025,9 +10025,9 @@
         pickedIds = ["rp_awk_cd", "rp_enh_strike"];
         subCandidateIds = ["rp_step_dmg", "rp_stack_dmg"];
       } else if (lv < 50) {
-        // Lv.40 ~ 45 (3슬롯): 강화 강타 + 각성기 3초 감소 + 착용 강타 단계(또는 스택)
-        pickedIds = ["rp_enh_strike", "rp_awk_cd", "rp_step_dmg"];
-        subCandidateIds = ["rp_stack_dmg", "rp_skill_to_strike"];
+        // Lv.40 ~ 45 (3슬롯): 강화 강타 + 각성기 3초 감소 + 강타 타수 고정 및 피해량 증가
+        pickedIds = ["rp_enh_strike", "rp_awk_cd", "rp_hit_fix"];
+        subCandidateIds = ["rp_step_dmg", "rp_stack_dmg", "rp_skill_to_strike"];
       } else if (lv < 60) {
         // Lv.50 ~ 55 (3슬롯): 각성기 3초 감소 + 강화 강타 + 스택 피해량
         pickedIds = ["rp_awk_cd", "rp_enh_strike", "rp_stack_dmg"];
