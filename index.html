@@ -2999,16 +2999,36 @@
     <div class="global-omni-dropdown" id="global_omni_dropdown"></div>
   </div>
 
-  <!-- Top Mode Switcher (v.3.0.0 3대 메인 탭) -->
+  <!-- Top Mode Switcher (v.3.9.2 커스텀 SVG 아이콘 확대 적용) -->
   <div class="mode-switcher">
     <button class="mode-btn active" id="btn_mode_helpers" onclick="switchMainMode('helpers')">
-      <span>🛠️ 세팅 도우미 모음</span>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 6px rgba(56,189,248,0.9));">
+        <circle cx="12" cy="12" r="3.5" stroke="#fde047" stroke-width="1.8" fill="rgba(253,224,71,0.2)"/>
+        <path d="M12 2V5M12 19V22M2 12H5M19 12H22M4.9 4.9L7.1 7.1M16.9 16.9L19.1 19.1M19.1 4.9L16.9 7.1M7.1 16.9L4.9 19.1" stroke="#38bdf8" stroke-width="2.1" stroke-linecap="round"/>
+        <circle cx="12" cy="12" r="7.5" stroke="#818cf8" stroke-width="1.4" stroke-dasharray="2 2"/>
+      </svg>
+      <span>세팅 도우미 모음</span>
     </button>
+
     <button class="mode-btn newbie" id="btn_mode_guides" onclick="switchMainMode('guides')">
-      <span>⚔️ 직업별 세팅 가이드</span>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 6px rgba(251,191,36,0.9));">
+        <path d="M5 19L19 5M19 5H13M19 5V11" stroke="#fde047" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 19L5 5M5 5H11M5 5V11" stroke="#f97316" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="2.8" fill="#ffffff" stroke="#f59e0b" stroke-width="1.3"/>
+      </svg>
+      <span>직업별 세팅 가이드</span>
     </button>
+
     <button class="mode-btn" id="btn_mode_calcs" onclick="switchMainMode('calcs')">
-      <span>🎲 확률 기댓값 & 재화 계산기</span>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 6px rgba(192,132,252,0.9));">
+        <polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="rgba(168,85,247,0.28)" stroke="#c084fc" stroke-width="1.8"/>
+        <polyline points="3,7 12,12 21,7" stroke="#e9d5ff" stroke-width="1.5"/>
+        <line x1="12" y1="12" x2="12" y2="22" stroke="#e9d5ff" stroke-width="1.5"/>
+        <circle cx="12" cy="7" r="1.4" fill="#fde047"/>
+        <circle cx="7.5" cy="14" r="1.3" fill="#38bdf8"/>
+        <circle cx="16.5" cy="14" r="1.3" fill="#fb7185"/>
+      </svg>
+      <span>확률 기댓값 &amp; 재화 계산기</span>
     </button>
   </div>
 
@@ -3295,13 +3315,16 @@
     <!-- 심화 공략 메인 허브 (선택 화면) -->
     <div id="deep_hub_view">
       
-      <!-- 섹션 1: 영원무기 관련 기댓값 계산기 (기본 닫힘) -->
+     <!-- 섹션 1: 영원무기 관련 기댓값 계산기 (기본 닫힘) -->
       <div class="hub-section" style="display:none;">
         <div class="accordion-item" id="acc_calc_weapon" style="border-left: 4px solid #38bdf8;">
           <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_weapon')">
             <div class="accordion-left">
               <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text">⚔️ 영원무기 관련 기댓값 계산기</span>
+              <span class="accordion-title-text" style="display:inline-flex; align-items:center; gap:9px;">
+                <svg width="28" height="28" viewBox="0 0 44 44" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 6px rgba(56,189,248,0.85));"><path d="M9 28H35L32 34H12L9 28Z" fill="#0284c7" stroke="#7dd3fc" stroke-width="2"/><path d="M14 21H30L33 28H11L14 21Z" fill="#38bdf8" stroke="#e0f2fe" stroke-width="1.8"/><path d="M25 8L33 16L29 20L21 12L25 8Z" fill="#fde047" stroke="#ffffff" stroke-width="1.5"/></svg>
+                <span>영원무기 관련 기댓값 계산기</span>
+              </span>
             </div>
             <div class="accordion-right-info"><span class="accordion-count-badge">2개 계산기</span></div>
           </div>
@@ -3327,7 +3350,7 @@
                   </div>
                   <div>
                     <span class="hub-card-title">🌌 영원 장비 옵션 변환</span>
-                    <span class="hub-card-desc">대낫/오브 SSS·SS 1·2옵션 곱연산 & 심연정수 기댓값</span>
+                    <span class="hub-card-desc">대낫/오브 SSS·SS 1·2옵션 곱연산 &amp; 심연정수 기댓값</span>
                   </div>
                 </div>
                 <div class="hub-card-arrow">➔</div>
@@ -3343,7 +3366,10 @@
           <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_awakening')">
             <div class="accordion-left">
               <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text">🔮 고대 패시브 & 각성석 관련 계산기</span>
+              <span class="accordion-title-text" style="display:inline-flex; align-items:center; gap:9px;">
+                <svg width="28" height="28" viewBox="0 0 44 44" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 6px rgba(6,182,212,0.9));"><polygon points="22,4 37,13 37,31 22,40 7,31 7,13" stroke="#22d3ee" stroke-width="2" fill="rgba(6,182,212,0.18)"/><circle cx="22" cy="22" r="9" fill="#0891b2" stroke="#a5f3fc" stroke-width="1.8"/><path d="M22 15L24.5 20L29.5 22L24.5 24L22 29L19.5 24L14.5 22L19.5 20L22 15Z" fill="#ffffff"/></svg>
+                <span>고대 패시브 &amp; 각성석 관련 계산기</span>
+              </span>
             </div>
             <div class="accordion-right-info"><span class="accordion-count-badge">2개 계산기</span></div>
           </div>
@@ -3356,7 +3382,7 @@
                   </div>
                   <div>
                     <span class="hub-card-title">🔮 고대 패시브</span>
-                    <span class="hub-card-desc">직업별 3고패 자동선택, 종결 합성 & 주간 파밍 예측</span>
+                    <span class="hub-card-desc">직업별 3고패 자동선택, 종결 합성 &amp; 주간 파밍 예측</span>
                   </div>
                 </div>
                 <div class="hub-card-arrow">➔</div>
@@ -3385,7 +3411,10 @@
           <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_ability')">
             <div class="accordion-left">
               <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text">🌙 어빌리티 기댓값 및 재화 계산기</span>
+              <span class="accordion-title-text" style="display:inline-flex; align-items:center; gap:9px;">
+                <svg width="28" height="28" viewBox="0 0 44 44" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 6px rgba(52,211,153,0.9));"><path d="M28 9C20 10 14 17 15 26C16 33 22 38 29 37C21 36 18 29 19 22C20 15 24 11 28 9Z" fill="#34d399" stroke="#d1fae5" stroke-width="1.8"/><rect x="22" y="13" width="12" height="12" rx="2.5" transform="rotate(15 28 19)" fill="#059669" stroke="#fde047" stroke-width="1.8"/><circle cx="28" cy="19" r="1.8" fill="#ffffff"/></svg>
+                <span>어빌리티 기댓값 및 재화 계산기</span>
+              </span>
             </div>
             <div class="accordion-right-info"><span class="accordion-count-badge">1개 계산기</span></div>
           </div>
@@ -3397,7 +3426,7 @@
                     <img src="images/option_dice.png" alt="어빌" onerror="this.onerror=null; this.src='images/elem_light.jpg'; this.onerror=function(){this.parentElement.innerHTML='🌙';};">
                   </div>
                   <div>
-                    <span class="hub-card-title">🌙 가호 & 원혼 어빌리티</span>
+                    <span class="hub-card-title">🌙 가호 &amp; 원혼 어빌리티</span>
                     <span class="hub-card-desc">별/달/해/유성 가호 및 원혼 단계별 잠금 옵션 주사위 계산</span>
                   </div>
                 </div>
@@ -4520,7 +4549,10 @@
           <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_summon')">
             <div class="accordion-left">
               <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text">🎲 소환 확률 기댓값 & 재화 계산기</span>
+              <span class="accordion-title-text" style="display:inline-flex; align-items:center; gap:9px;">
+                <svg width="28" height="28" viewBox="0 0 44 44" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 6px rgba(250,204,21,0.9));"><circle cx="22" cy="22" r="16" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 2" fill="rgba(245,158,11,0.16)"/><polygon points="24,7 12,24 21,24 19,37 32,19 23,19" fill="#fde047" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                <span>소환 확률 기댓값 &amp; 재화 계산기</span>
+              </span>
             </div>
             <div class="accordion-right-info"><span class="accordion-count-badge">5개 소환 계산기</span></div>
           </div>
@@ -4546,7 +4578,7 @@
                   </div>
                   <div>
                     <span class="hub-card-title">📜 패시브 소환</span>
-                    <span class="hub-card-desc">200 다이아 | 등급별 아코디언 & 특정 패시브 10돌파</span>
+                    <span class="hub-card-desc">200 다이아 | 등급별 아코디언 &amp; 특정 패시브 10돌파</span>
                   </div>
                 </div>
                 <div class="hub-card-arrow">➔</div>
@@ -14466,10 +14498,9 @@
           </linearGradient>
         </defs>
         <circle cx="22" cy="22" r="18" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1.6" stroke-dasharray="4 2"/>
-        <!-- 교차하는 1차 전직 소울 블레이드 & 시련의 결정 -->
         <path d="M11 33L31 13M31 13H23M31 13V21" stroke="#fde047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <polygon points="22,7 31,22 22,37 13,22" fill="url(#j1Grad)" stroke="#e0f2fe" stroke-width="1.5"/>
-        <text x="22" y="26" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="900" font-family="sans-serif">1차</text>
+        <text x="22" y="22.5" text-anchor="middle" dominant-baseline="central" fill="#ffffff" font-size="14" font-weight="900" font-family="Georgia, 'Times New Roman', serif">I</text>
       </svg>
     `,
     job2: `
@@ -14481,10 +14512,9 @@
             <stop offset="1" stop-color="#3b0764"/>
           </linearGradient>
         </defs>
-        <!-- 이중 마법진 스타 -->
         <polygon points="22,3 27,15 40,16 30,25 33,38 22,31 11,38 14,25 4,16 17,15" fill="rgba(168,85,247,0.2)" stroke="#c084fc" stroke-width="1.4"/>
         <polygon points="22,8 33,22 22,36 11,22" fill="url(#j2Grad)" stroke="#fde047" stroke-width="1.5"/>
-        <text x="22" y="26" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="900" font-family="sans-serif">2차</text>
+        <text x="22" y="22.5" text-anchor="middle" dominant-baseline="central" fill="#ffffff" font-size="13.5" font-weight="900" font-family="Georgia, 'Times New Roman', serif" letter-spacing="0.5">II</text>
       </svg>
     `,
     job3: `
@@ -14496,10 +14526,9 @@
             <stop offset="1" stop-color="#881337"/>
           </linearGradient>
         </defs>
-        <!-- 초월 태양 불꽃 크라운 -->
         <path d="M22 2L26 11L35 7L32 17L41 22L32 27L35 37L26 33L22 42L18 33L9 37L12 27L3 22L12 17L9 7L18 11L22 2Z" fill="rgba(244,63,94,0.22)" stroke="#fb7185" stroke-width="1.4"/>
         <polygon points="22,7 34,22 22,37 10,22" fill="url(#j3Grad)" stroke="#fef08a" stroke-width="1.6"/>
-        <text x="22" y="26" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="900" font-family="sans-serif">3차</text>
+        <text x="22" y="22.5" text-anchor="middle" dominant-baseline="central" fill="#ffffff" font-size="12.5" font-weight="900" font-family="Georgia, 'Times New Roman', serif" letter-spacing="0.5">III</text>
       </svg>
     `
   };
@@ -14756,35 +14785,14 @@
       });
     }
 
-    // B. [소환 확률 기댓값 & 재화 계산기] 아코디언에 [드래곤 성장·승급 재화 계산기] 카드 추가
+    // B. [소환 확률 기댓값 & 재화 계산기] 아코디언은 5개 소환 계산기 유지 (드래곤은 아래 전직·성장 아코디언으로 이동)
     const summonAcc = document.getElementById('acc_calc_summon');
-    if (summonAcc && !document.getElementById('hub_card_dragon_calc')) {
-      const grid = summonAcc.querySelector('.hub-grid');
+    if (summonAcc) {
       const badge = summonAcc.querySelector('.accordion-count-badge');
-      if (badge) badge.innerText = '6개 계산기';
-      if (grid) {
-        const dragonCard = document.createElement('div');
-        dragonCard.className = 'hub-card';
-        dragonCard.id = 'hub_card_dragon_calc';
-        dragonCard.style.borderColor = 'rgba(245, 158, 11, 0.55)';
-        dragonCard.onclick = () => openGrowthResourceCalculator('dragon');
-        dragonCard.innerHTML = `
-          <div class="hub-card-left">
-            <div class="hub-card-icon" style="border-color:#f59e0b; background:radial-gradient(circle, rgba(245,158,11,0.2) 0%, #0f172a 100%);">
-              ${CUSTOM_SVG_ART.dragon}
-            </div>
-            <div>
-              <span class="hub-card-title" style="color:#fde68a;">🐉 드래곤 육성 & 승급 재화</span>
-              <span class="hub-card-desc">Lv.1~64 드래곤의 영혼 & 승급(20/40/60) 열쇠 계산기</span>
-            </div>
-          </div>
-          <div class="hub-card-arrow" style="color:#f59e0b;">➔</div>
-        `;
-        grid.appendChild(dragonCard);
-      }
+      if (badge) badge.innerText = '5개 소환 계산기';
     }
 
-    // C. 그 바로 밑에 새로운 아코디언(기본 닫힘 상태)으로 [1차·2차·3차 전직 재화 계산기] 신설!
+    // C. [전직 & 드래곤 육성 재화 계산기] 아코디언 (1차 -> 2차 -> 3차 -> 드래곤 육성 & 승급 바로 밑 배치!)
     const newbieHub = document.getElementById('newbie_hub_view');
     if (newbieHub && !document.getElementById('acc_calc_job_cost')) {
       const newSec = document.createElement('div');
@@ -14794,9 +14802,12 @@
           <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_job_cost')">
             <div class="accordion-left">
               <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text">⚔️ 전직 재화 & 던전 열쇠 계산기 (1차 · 2차 · 3차 전직)</span>
+              <span class="accordion-title-text" style="display:inline-flex; align-items:center; gap:9px;">
+                <svg width="28" height="28" viewBox="0 0 44 44" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 6px rgba(192,132,252,0.9));"><polygon points="22,4 37,22 22,40 7,22" fill="rgba(168,85,247,0.28)" stroke="#c084fc" stroke-width="2"/><polygon points="22,11 31,22 22,33 13,22" fill="#9333ea" stroke="#fde047" stroke-width="1.6"/></svg>
+                <span>전직 &amp; 드래곤 육성 재화 계산기 (1차 · 2차 · 3차 · 드래곤)</span>
+              </span>
             </div>
-            <div class="accordion-right-info"><span class="accordion-count-badge">3개 전직 계산기</span></div>
+            <div class="accordion-right-info"><span class="accordion-count-badge">4개 성장 계산기</span></div>
           </div>
           <div class="accordion-content" style="padding: 14px;">
             <div class="hub-grid">
@@ -14807,7 +14818,7 @@
                   </div>
                   <div>
                     <span class="hub-card-title">🌟 1차 전직 재화 계산기</span>
-                    <span class="hub-card-desc">Lv.1~90 시련의 정수 | 보물던전 & 시련의 탑 열쇠 계산</span>
+                    <span class="hub-card-desc">Lv.1~90 시련의 정수 | 보물던전 &amp; 시련의 탑 열쇠 계산</span>
                   </div>
                 </div>
                 <div class="hub-card-arrow" style="color:#38bdf8;">➔</div>
@@ -14820,7 +14831,7 @@
                   </div>
                   <div>
                     <span class="hub-card-title">⚡ 2차 전직 재화 계산기</span>
-                    <span class="hub-card-desc">Lv.1~98 극한의 정수 | 극한의 탑 & 보물던전 열쇠 계산</span>
+                    <span class="hub-card-desc">Lv.1~98 극한의 정수 | 극한의 탑 &amp; 보물던전 열쇠 계산</span>
                   </div>
                 </div>
                 <div class="hub-card-arrow" style="color:#c084fc;">➔</div>
@@ -14833,10 +14844,23 @@
                   </div>
                   <div>
                     <span class="hub-card-title">🔥 3차 전직 재화 계산기</span>
-                    <span class="hub-card-desc">Lv.1~44 절망의 정수 | 절망의 탑 & 보물던전 열쇠 계산</span>
+                    <span class="hub-card-desc">Lv.1~44 절망의 정수 | 절망의 탑 &amp; 보물던전 열쇠 계산</span>
                   </div>
                 </div>
                 <div class="hub-card-arrow" style="color:#f43f5e;">➔</div>
+              </div>
+
+              <div class="hub-card" id="hub_card_dragon_calc" onclick="openGrowthResourceCalculator('dragon')" style="border-color:rgba(245, 158, 11, 0.55);">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#f59e0b; background:radial-gradient(circle, rgba(245,158,11,0.2) 0%, #0f172a 100%);">
+                    ${CUSTOM_SVG_ART.dragon}
+                  </div>
+                  <div>
+                    <span class="hub-card-title" style="color:#fde68a;">🐉 드래곤 육성 &amp; 승급 재화</span>
+                    <span class="hub-card-desc">Lv.1~64 드래곤의 영혼 &amp; 승급(20/40/60/80) 열쇠 계산기</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow" style="color:#f59e0b;">➔</div>
               </div>
             </div>
           </div>
