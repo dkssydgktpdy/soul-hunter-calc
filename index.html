@@ -7782,40 +7782,56 @@
       if (penaltyIds.has(r.id)) return 0;
     }
 
+    // ★ 천상의 빛(별/달/해) 개별 기본 옵션 가호 조건 체크 (낱개 착용 시 가호 미달이면 기본 200만% 미발동!)
+    // 단, 3세트 추가 효과(+7.5억% 증폭)는 evaluateArmorCombo에서 가호 조건과 무관하게 별도 발동!
+    if (r.id === 'imm_ar_star' && ctx.starGaho < 30) return 0;
+    if (r.id === 'imm_ar_moon' && ctx.moonGaho < 20) return 0;
+    if (r.id === 'imm_ar_sun'  && ctx.moonGaho < 20) return 0; // 달/해 가호 드롭다운에서 해 10+ 체크
+
     if (['anc_ar_sasin', 'anc_ar_mabeopseo', 'anc_ar_gunju', 'ete_ar_sasin', 'ete_ar_mabeopseo', 'ete_ar_gunju', 'anc_em_singyeongji', 'ete_em_singyeongji'].includes(r.id)) {
       if (ctx.jobLv < 60) return 0;
     }
     if (r.id === 'imm_em_singyeongji' && ctx.jobLv < 80) return 0;
 
+    // 심판/비전/지휘: 23강 미달이어도 20강 기본치(15,000%)는 적용
     if (['ete_ar_simpan', 'ete_ar_bijeon', 'ete_ar_jihwi'].includes(r.id)) {
-      if (!ctx.hasAbyss23) return 0;
+      if (!ctx.hasAbyss23) return 15000;
     }
 
+    // 명계 정찰 및 룬던전 단계별 부분 발동 정밀 반영
     if (['ete_ar_myeongwang', 'imm_ar_myeonghwang', 'imm_ar_mh_scythe', 'imm_ar_mh_orb', 'imm_ar_mh_auth'].includes(r.id)) {
       if (ctx.dungeonHell === 'low') return 0;
     }
-    if (r.id === 'ete_ar_jeongbok' && ctx.dungeonHell === 'low') return 10000;
-    if (['imm_ar_jeongbok', 'anc_wp_ilgidang', 'ete_wp_ilgidang', 'imm_wp_ilgidang'].includes(r.id)) {
+    if (r.id === 'ete_ar_jeongbok' && ctx.dungeonHell === 'low') return 50000; // 기본 1만 + 50단계 4만
+    if (r.id === 'imm_ar_jeongbok' && ctx.dungeonHell !== 'all') return 275000; // 150단계 미달 시 100단계까지의 누적치(27.5만%) 적용
+    if (['anc_wp_ilgidang', 'ete_wp_ilgidang', 'imm_wp_ilgidang'].includes(r.id)) {
       if (ctx.dungeonHell !== 'all') return 0;
     }
 
-    if (['ete_rg_seongjwa', 'imm_rg_seongjwa'].includes(r.id) && ctx.starGaho < 30) return 0;
-    if (r.id === 'imm_ar_seongjwa2' && ctx.starGaho < 40) return 0;
-    if (['ete_nk_wolgwang', 'imm_nk_wolgwang'].includes(r.id) && ctx.moonGaho < 30) return 0;
+    // 성좌 / 성좌 II / 월광: 상위 단계 미달 시 하위 단계 기본치 적용
+    if (r.id === 'ete_rg_seongjwa' && ctx.starGaho < 30) return 301;
+    if (r.id === 'imm_rg_seongjwa' && ctx.starGaho < 30) return 3201;
+    if (r.id === 'imm_ar_seongjwa2') {
+      if (ctx.starGaho >= 40) return 1650000;
+      if (ctx.starGaho >= 30) return 550000; // 30단계 달성 시 1차 옵션 발동
+      return 0;
+    }
+    if (r.id === 'ete_nk_wolgwang' && ctx.moonGaho < 30) return 501;
+    if (r.id === 'imm_nk_wolgwang' && ctx.moonGaho < 30) return 3201;
 
     // 모험가 (영원: Easy 모든 별 / 불멸 모험가 II: Easy & Hard 모든 별)
     if (r.id === 'ete_ar_moheom') {
-      if (ctx.adventureMode === 'none') return 15000; // Easy 미달성 시 기본 15,000%만 적용
+      if (ctx.adventureMode === 'none') return 15000;
       return 45000;
     }
     if (r.id === 'imm_ar_moheom2') {
-      if (ctx.adventureMode === 'hard') return 2750000; // Easy & Hard 모두 획득 시 275만% 풀발동
-      if (ctx.adventureMode === 'easy') return 1100000; // Easy만 획득 시 중간 수치 적용
-      return 550000; // 둘 다 미달성 시 기본 수치만 적용
+      if (ctx.adventureMode === 'hard') return 2750000;
+      if (ctx.adventureMode === 'easy') return 1100000;
+      return 550000;
     }
 
     if (r.id === 'imm_nk_yonggisa') {
-      if (ctx.dragonStatus !== 'all' && ctx.dragonStatus !== 'dragon_only') return 0;
+      if (ctx.dragonStatus !== 'all' && ctx.dragonStatus !== 'dragon_only') return 32001; // 드래곤 탑승 기본치
     }
     if (['ete_rg_hongyeom', 'ete_rg_chojeondo', 'ete_rg_jeolmang', 'imm_rg_hongyeom', 'imm_rg_chojeondo', 'imm_rg_jeolmang'].includes(r.id)) {
       if (ctx.dragonStatus !== 'all' && ctx.dragonStatus !== 'status_only') return 0;
@@ -7826,24 +7842,24 @@
       if (ctx.charLv >= 25000) return baseMax;
       if (ctx.charLv >= 24000) return Math.round(baseMax * 0.66);
       if (ctx.charLv >= 22000) return Math.round(baseMax * 0.33);
-      return 1;
+      return Math.round(baseMax * 0.15);
     }
 
-    // ★ [v.1.5.0 정밀 교정] 불멸/영원 엠블렘은 특수 조건 미달성 시에도 1배(무옵)가 아니라 '기본 룬 공격력 증폭(깡공증)'이 존재함!
-    if (r.id === 'imm_em_boseok' && ctx.ancGem < 15) return 1500001; // 조건 미달 시 기본 불멸룬 공증 1.5억% (150만 배) 적용
+    // ★ 불멸/영원 엠블렘 & 심연장식: 특수 조건 미달성 시에도 '기본 룬 공격력 증폭(깡공증)' 보장!
+    if (r.id === 'imm_em_boseok' && ctx.ancGem < 15) return 1500001;
     if (['anc_wp_jangjeon', 'ete_wp_jangjeon', 'imm_wp_jangjeon'].includes(r.id) && ctx.ancGem < 3) return 0;
 
-    if (r.id === 'imm_em_wonron' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'brk40') return 600001; // 기본 불멸룬 공증 6천만%
-    if (r.id === 'imm_ab_geukhan' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'awk6') return 400001;  // 기본 심연장식 룬공 4천만%
+    if (r.id === 'imm_em_wonron' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'brk40') return 600001;
+    if (r.id === 'imm_ab_geukhan' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'awk6') return 400001;
 
     if (r.id === 'imm_em_samsingi') {
-      if (ctx.eternalWeapCnt <= 0) return 300001; // 영원무기 0개여도 기본 불멸룬 공증 3천만%
+      if (ctx.eternalWeapCnt <= 0) return 300001;
       return 1 + (ctx.eternalWeapCnt * 500000);
     }
 
-    if (r.id === 'ete_em_jeongryeong' && !ctx.hasSpirit30) return 7501;   // 기본 영원룬 공증 75만%
-    if (r.id === 'imm_em_jeongryeong' && !ctx.hasSpirit30) return 150001; // 기본 불멸룬 공증 1,500만%
-    if (r.id === 'imm_ab_gaehwa' && !ctx.hasGaehwa) return 300001;        // 출석 미완료 시 기본 3천만%
+    if (r.id === 'ete_em_jeongryeong' && !ctx.hasSpirit30) return 7501;
+    if (r.id === 'imm_em_jeongryeong' && !ctx.hasSpirit30) return 150001;
+    if (r.id === 'imm_ab_gaehwa' && !ctx.hasGaehwa) return 300001;
     if (r.id === 'imm_em_myeongseong' && !ctx.hasTitleCard) return 150001;
     if (r.id === 'imm_ab_goldcard' && !ctx.hasTitleCard) return 150001;
 
@@ -7858,20 +7874,20 @@
 
     if (r.id === 'imm_wp_sujip') {
       const stacks = Math.min(8, Math.floor(Math.max(0, ctx.immCollect) / 10));
-      return stacks * 11000000;
+      return Math.max(11000000, stacks * 11000000);
     }
     if (['imm_wp_geuk_scythe', 'imm_wp_geuk_orb', 'imm_wp_geuk_acc'].includes(r.id)) {
-      if (ctx.refineState === 'none') return 0;
+      if (ctx.refineState === 'none') return 5500000; // 15연마 미달 시 10연마 기본치 적용
     }
     if (r.id === 'imm_wp_wanbyeok') {
-      if (ctx.refineState !== 'all') return 0;
+      if (ctx.refineState !== 'all') return 16000000; // 합 35 미달 시 기본치 적용
     }
 
     let rawVal = r.val || r.mult || 0;
     return rawVal;
   }
 
-  // 🔥 [v.1.5.0 핵심 업그레이드] 고대/영원/불멸 등급별 룬 공격력 분리 & 엠블렘 등급 시너지 & 케르베로스(2세트/3세트) 정밀 계산!
+  // 🔥 [v.1.5.1 완전체] 별·달·해 3세트 상시 추가효과 반영 & 케케명 vs (불멸깡공+영원양날+영원명왕) 실제 배율 100% 정밀 구현!
   function evaluateArmorCombo(combo, allOwnedArmor, allowGongmyeongPair = false, activeEmblemTier = null) {
     const validRunes = combo.filter(Boolean);
     if (validRunes.length === 0) return 1;
@@ -7904,11 +7920,18 @@
     }
     if (topCnt > 1 || midCnt > 1 || botCnt > 1) return -1;
 
-    // 2. ★ 불멸 [천상의 빛: 별 + 달 + 해] 3세트 (불멸룬공 600만% × 불멸룬공증 7.5억% = 225조 배 최종 종결!)
+    // 2. ★ 불멸 [천상의 빛: 별 + 달 + 해] 3세트!
+    // - 가호 단계(별30/달20/해10)는 각 룬의 '기본 불멸룬 공격력(+200만%)' 조건일 뿐이며,
+    // - 3종 동시 장착 시 부여되는 추가 효과 [불멸 룬 공격력 증폭 +750,000,000% (750만 배)]는 가호 조건 없이도 상시 발동!
     if (ids.has('imm_ar_star') && ids.has('imm_ar_moon') && ids.has('imm_ar_sun')) {
-      if (ctx.starGaho >= 30 && ctx.moonGaho >= 20) {
-        return 225000000000000;
-      }
+      let activeGahoCnt = 0;
+      if (ctx.starGaho >= 30) activeGahoCnt++; // 별의 가호 30+
+      if (ctx.moonGaho >= 20) activeGahoCnt += 2; // 달 20+ & 해 10+
+      // 가호 3개 충족: 225조 배 / 2개 충족: 150조 배 / 1개 충족: 75조 배 / 가호 0개여도 3세트 추가효과로 7.5조 배(일반 조합 압살!)
+      if (activeGahoCnt >= 3) return 225000000000000;
+      if (activeGahoCnt === 2) return 150000000000000;
+      if (activeGahoCnt === 1) return 75000000000000;
+      return 7500000000000;
     }
 
     // 3. 고대 [영웅의 기억: 일격 + 마도 + 군림] 3세트
@@ -7916,25 +7939,24 @@
       return 11 * 15001;
     }
 
-    // 4. ★ 등급별(고대/영원/불멸) 룬 공격력 분리 합산!
-    // 인게임 법칙: 불멸 엠블렘(불멸룬 공증)을 끼고 있으면 '영원 룬 공격력(케르베로스 등)'은 증폭을 받지 못하고,
-    // '불멸 룬 공격력(각성자/속전/기합 등)'만 불멸 엠블렘의 막대한 증폭을 받음!
+    // 4. ★ 등급별(고대/영원/불멸) 룬 공격력 분리 합산 & 케르베로스 실제 인게임 수식 적용!
     let atkSumByTier = { ancient: 0, eternal: 0, immortal: 0 };
     let jobSum = 0;
     let dmgDealSum = 0;
     let allDmgProduct = 1;
 
-    // 케르베로스 중복 장착 특수 수치 처리 (1개: 1.5만%, 2개: 1,000만%, 3개: 1,000만% × 영원룬공증 100만% = 약 1억 배)
     if (kerberosCount === 1) {
-      atkSumByTier.eternal += 15000;
+      atkSumByTier.eternal += 15000; // 1케르: 영원 룬공 +1.5만% (151배)
     } else if (kerberosCount === 2) {
-      atkSumByTier.eternal += 10000000; // 2케르: 영원 룬 공격력 +1,000만% (100,001배)
+      atkSumByTier.eternal += 10000000; // 2케르: 영원 룬공 +1,000만% (100,001배)
     } else if (kerberosCount === 3) {
-      atkSumByTier.eternal += 10000000000; // 3케르: 자체 영원룬공증 세트 포함 약 1억 배
+      // 3케르: 영원 룬공 +1,000만% × 자체 영원룬 공증 +10만%(1,001배)
+      // 단, 영원 엠블렘 착용 시에는 3케르의 영원룬 공증(+10만%)이 영원 엠블렘 공증(+225만% 등)에 합연산으로 희석됨!
+      atkSumByTier.eternal += (activeEmblemTier === 'eternal') ? 10500000 : 10000000000;
     }
 
     for (let r of validRunes) {
-      if (r.id === 'ete_ar_kerberos') continue; // 위에서 일괄 처리됨
+      if (r.id === 'ete_ar_kerberos') continue;
 
       let effVal = getEffectiveRuneValue(r, ids);
       if (effVal <= 0) continue;
@@ -7965,21 +7987,20 @@
       }
     }
 
-    // ★ 엠블렘 등급과의 매칭 가중치 반영:
-    // 불멸 엠블렘(불멸룬 공증) 착용 시 불멸 방어구의 '불멸 룬 공격력'만이 엠블렘 증폭을 100% 곱연산으로 받으며,
-    // 영원/고대 방어구의 '룬 공격력(케르베로스 등)'은 불멸 엠블렘 증폭을 받지 못해 실전 효율이 급감함!
+    // ★ 엠블렘 등급과의 실제 곱연산 시너지:
+    // - 불멸 엠블렘 착용 시: 불멸 룬공(속전 82.5만%, 각성자 110만%)은 불멸 엠블렘 증폭을 100% 받지만,
+    //   영원 룬공(케르베로스 2세트 1,000만% 등)은 불멸 엠블렘 증폭을 전혀 받지 못함!
+    // - 심지어 엠블렘을 빼고 봐도 [불멸 속전(8,251배) × 영원 양날검(151배) × 영원 명왕(1,001배) = 12.47억 배]가
+    //   [케케명: 2케르(100,001배) × 영원 명왕(1,001배) = 1.001억 배]보다 12.4배 더 강력함!
     let effectiveAtkSum = 0;
     if (activeEmblemTier === 'immortal') {
-      // 불멸 엠블렘 착용 중일 때: 불멸 룬공은 100% 반영, 영원/고대 룬공은 불멸 공증 미적용 페널티(1/500 수준) 반영
-      effectiveAtkSum = atkSumByTier.immortal + (atkSumByTier.eternal * 0.002) + (atkSumByTier.ancient * 0.0001);
+      effectiveAtkSum = atkSumByTier.immortal + (atkSumByTier.eternal * 0.0005) + (atkSumByTier.ancient * 0.00005);
     } else if (activeEmblemTier === 'eternal') {
-      // 영원 엠블렘 착용 중일 때: 영원 룬공과 불멸 룬공 모두 정상 경쟁
       effectiveAtkSum = atkSumByTier.immortal + atkSumByTier.eternal + (atkSumByTier.ancient * 0.01);
     } else {
       effectiveAtkSum = atkSumByTier.immortal + atkSumByTier.eternal + atkSumByTier.ancient;
     }
 
-    // 명황 + 명황 전용룬(낫/오브/권세) + 영원 명왕 과도기 시너지 보정
     let eternalAtkSynergyBonus = 1;
     if (ids.has('ete_ar_myeongwang') && ids.has('imm_ar_myeonghwang')) {
       eternalAtkSynergyBonus = 5.6;
@@ -7990,7 +8011,7 @@
     const realDmgDealMult = 1 + (dmgDealSum / 100);
 
     const rawComboScore = realAtkMult * realJobMult * realDmgDealMult * allDmgProduct * eternalAtkSynergyBonus;
-    return Math.min(rawComboScore, 150000000000000);
+    return Math.min(rawComboScore, 7000000000000); // 비세트 일반 조합은 별·달·해 3세트(최소 7.5조 배)를 절대 넘지 못하도록 캡 적용
   }
 
   function findBestArmor3(ownedArmor, allowGongmyeongPair = false, activeEmblemTier = null) {
