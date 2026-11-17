@@ -13718,7 +13718,8 @@
     openDeepCalculator('tab-connect');
   }
 
-  // ★ 내 보유 소울커넥트 코어(ownedCoresMap)를 기반으로 [사신] vs [아크메이지] 최적 조합 & 배율을 각각 시뮬레이션!
+  // ★ 내 보유 소울커넥트 코어(ownedCoresMap)를 기반으로
+  // 1) 사신 최적 세팅, 2) 사신 세팅 그대로 직변 시 배율, 3) 아크메이지 최적 교체 시 배율, 4) 인벤토리 유효 코어를 다각도로 정밀 분석!
   function simulateSoulConnectForJob(targetJob, targetElem) {
     const prevJob = currentConnectJob;
     const prevElem = currentConnectElem;
@@ -13780,10 +13781,20 @@
 
     bestCombo.sort((a, b) => a.core.num - b.core.num);
 
-    // 추천 조합 내 해당 직업 전용 유효 코어(1번 소울 강타/스킬, 4번 전직 대사신/미스틱) 포함 여부 확인
-    const jobValidCores = bestCombo.filter(inst => inst.core.jobReq === targetJob);
+    // 추천 조합 내 해당 직업 전용 유효 코어(1번 소울 강타/스킬, 4번 전직 대사신/미스틱)
+    const jobValidCores = bestCombo.filter(inst => inst.core.jobReq === targetJob && getEffectiveCoreStep(inst.core, inst.tier) > 0);
 
-    // 원래 선택 상태로 복구
+    // 인벤토리 전체에서 보유 중인 해당 직업 전용 코어들 목록 추출 (등급순 정렬)
+    const tierRankOrder = { ancient: 5, mythic: 4, legend: 3, unique: 2, advanced: 1 };
+    const ownedJobSpecificAll = allInstances
+      .filter(inst => inst.core.jobReq === targetJob)
+      .sort((a, b) => (tierRankOrder[b.tier] || 0) - (tierRankOrder[a.tier] || 0));
+
+    // 4번 코어 중 전 직업 공용 1티어인 [전직 : 레벨 (c4_level)] 보유 현황
+    const ownedCore4Level = allInstances
+      .filter(inst => inst.core.id === 'c4_level' && getEffectiveCoreStep(inst.core, inst.tier) > 0)
+      .sort((a, b) => (tierRankOrder[b.tier] || 0) - (tierRankOrder[a.tier] || 0));
+
     currentConnectJob = prevJob;
     currentConnectElem = prevElem;
 
@@ -13791,8 +13802,25 @@
       totalOwnedCount: allInstances.length,
       bestCombo,
       totalLog10: bestEval.totalLog10,
-      jobValidCores
+      groupMults: bestEval.groupMults,
+      jobValidCores,
+      ownedJobSpecificAll,
+      ownedCore4Level
     };
+  }
+
+  // ★ 사신이 현재 끼고 있는 코어 조합(reaperCombo)을 '교체 없이 그대로' 아크메이지로 직변했을 때의 배율 계산
+  function evaluateComboAsJob(combo, targetJob, targetElem) {
+    const prevJob = currentConnectJob;
+    const prevElem = currentConnectElem;
+    currentConnectJob = targetJob;
+    currentConnectElem = targetElem;
+
+    const ev = evaluateConnectCombo(combo || []);
+
+    currentConnectJob = prevJob;
+    currentConnectElem = prevElem;
+    return ev;
   }
 
   function getUnionSpecByName(type, targetName) {
@@ -13894,45 +13922,101 @@
       missingReasons.push(`❌ <strong>[총 각성 수 미달]</strong> 현재 착용 중인 사신 주력기(썬더 오빗+셀렌 총 <strong>${reaperTotalAwk}각</strong>)보다 아크메이지 전용기(${mage3rdSkillName}+지옥불베기+카엔 총 <strong>${mageTotalAwk}각</strong>)의 각성 합이 더 높아야 딜이 오릅니다!`);
     }
 
-    // ★ 4. [신규 핵심 조건!] 소울커넥트 코어 인벤토리 연동: 사신 코어 세팅 vs 아크메이지 코어 세팅 배율 비교!
+    // ★ 4. [다각도 소울커넥트 정밀 진단]
+    // (A) 현재 사신 최적 세팅 vs (B) 사신 세팅 그대로 직변 시 vs (C) 인벤토리 내 아크메이지 유효 소울 교체 시
     const scReaper = simulateSoulConnectForJob('reaper', guideElem);
     const scMage   = simulateSoulConnectForJob('mage', guideElem);
+    const sameComboAsMageEval = evaluateComboAsJob(scReaper.bestCombo, 'mage', guideElem);
 
     const hasOwnedCores = scMage.totalOwnedCount > 0;
-    const logDiff = scMage.totalLog10 - scReaper.totalLog10; // 양수면 앜메 우위, 음수면 사신 우위
-    const ratioMageVsReaper = Math.pow(10, Math.abs(logDiff));
+
+    // 1) 사신 장착 소울을 바꾸지 않고 그대로 앜메로 넘어갔을 때의 배율 변화
+    const keepComboLogDiff = sameComboAsMageEval.totalLog10 - scReaper.totalLog10;
+    const keepComboDropRatio = Math.pow(10, Math.abs(keepComboLogDiff));
+    const deactivatedReaperCores = scReaper.bestCombo.filter(inst => inst.core.jobReq === 'reaper');
+
+    // 2) 인벤토리에서 최적의 아크메이지 소울로 갈아입었을 때의 배율 변화
+    const bestSwapLogDiff = scMage.totalLog10 - scReaper.totalLog10;
+    const bestSwapRatio = Math.pow(10, Math.abs(bestSwapLogDiff));
+
+    // 3) 인벤토리 내 아크메이지용 유효 소울(1번 소울 스킬, 4번 전직:미스틱, 4번 공용 전직:레벨) 보유 여부
+    const invSkillCores = scMage.ownedJobSpecificAll.filter(x => x.core.id === 'c1_skill');
+    const invMysticCores = scMage.ownedJobSpecificAll.filter(x => x.core.id === 'c4_mystic');
+    const invLevelCores = scMage.ownedCore4Level || [];
 
     let isSoulConnectPassed = false;
+    let scStatusBadgeColor = "#ef4444";
     let scStatusTitle = "";
-    let scReasonDetail = "";
+    let scAnalysisLines = [];
 
     if (!hasOwnedCores) {
       isSoulConnectPassed = false;
-      scStatusTitle = "❌ 소울 인벤토리 미입력 (클릭 필요)";
-      scReasonDetail = "소울커넥트 도우미에서 현재 보유 중인 소울(코어)들을 먼저 클릭해 주세요!";
-      missingReasons.push(`❌ <strong>[소울커넥트 보유 코어 미입력]</strong> <strong>[소울커넥트 코어 선택 도우미]</strong>에서 내가 보유한 소울(고대·신화·전설 등)을 먼저 클릭해 등록해 주세요!`);
-    } else if (scReaper.jobValidCores.length > 0 && scMage.jobValidCores.length === 0) {
-      // 사신 전용 유효 코어(소울 강타 / 전직:대사신)는 있는데, 아크메이지 유효 코어(소울 스킬 / 전직:미스틱)가 추천란에 아예 안 뜨는 경우
-      isSoulConnectPassed = false;
-      scStatusTitle = "❌ 아크메이지 유효 소울 부재 (사신 코어만 보유 중)";
-      scReasonDetail = `현재 사신 전용 코어(${scReaper.jobValidCores.map(x=>`${CORE_TIER_META[x.tier].kr} ${x.core.name}`).join(', ')})만 보유 중이며, 아크메이지 추천란에 [소울 스킬]이나 [전직:미스틱] 유효 코어가 없습니다!`;
-      missingReasons.push(`❌ <strong>[아크메이지 유효 소울(코어) 없음]</strong> 현재 사신 전용 소울만 보유 중이고 아크메이지 세팅 시 추천란에 <strong>[소울 스킬 / 전직:미스틱]</strong> 관련 유효 코어가 뜨지 않아 딜이 급감합니다!`);
-    } else if (logDiff >= -0.18) {
-      // 아크메이지 소울 배율이 더 높거나(logDiff >= 0), 사신보다 약간 낮더라도 딜 차이가 1.5배 이내(logDiff >= -0.18)로 거의 안 나는 경우 -> 전환 가능!
-      isSoulConnectPassed = true;
-      if (logDiff > 0.05) {
-        scStatusTitle = `✅ 아크메이지 소울 세팅 우위! (약 ${formatKoreanNumber(Math.round(ratioMageVsReaper))}배 더 강력)`;
-        scReasonDetail = `아크메이지 전환 시 소울커넥트 배율이 사신보다 약 ${formatKoreanNumber(Math.round(ratioMageVsReaper))}배 더 높게 나옵니다!`;
-      } else {
-        scStatusTitle = `✅ 통과 (사신·아크메이지 소울 배율 동급 / 딜 차이 거의 없음)`;
-        scReasonDetail = `사신 세팅과 아크메이지 세팅 간 소울커넥트 배율 차이가 거의 없어(약 ${ratioMageVsReaper.toFixed(2)}배 차이) 바로 전환 가능합니다!`;
-      }
+      scStatusBadgeColor = "#ef4444";
+      scStatusTitle = "❌ 소울 인벤토리 미입력 (보유 소울 클릭 필요)";
+      scAnalysisLines.push(`• <strong>[소울커넥트 코어 선택 도우미]</strong>에서 현재 보유 중인 소울(고대·신화·전설 등)을 모두 클릭해 주세요!`);
+      missingReasons.push(`❌ <strong>[소울커넥트 보유 코어 미입력]</strong> <strong>[소울커넥트 코어 선택 도우미]</strong>에서 내가 보유한 소울(사신용·아크메이지용·공용 포함)을 모두 클릭해 등록해 주세요!`);
     } else {
-      // 사신 쪽에 고대 강타 등 고밸류 코어가 몰려 있어 아크메이지 전환 시 배율이 1.5배 이상 크게 떨어지는 경우 -> 전환 불가!
-      isSoulConnectPassed = false;
-      scStatusTitle = `❌ 사신 소울 세팅이 약 ${formatKoreanNumber(Math.round(ratioMageVsReaper))}배 더 강력함 (전환 시 딜 하락)`;
-      scReasonDetail = `보유 중인 사신 소울 세팅(고대 강타/대사신 등)의 배율이 아크메이지 세팅보다 약 ${formatKoreanNumber(Math.round(ratioMageVsReaper))}배 더 높습니다. 아크메이지용 소울(소울 스킬 / 전직:미스틱)을 더 확보한 뒤 전환하세요!`;
-      missingReasons.push(`❌ <strong>[소울커넥트 배율 열세]</strong> 현재 보유 소울 기준 사신 세팅이 아크메이지 세팅보다 <strong>약 ${formatKoreanNumber(Math.round(ratioMageVsReaper))}배</strong> 더 높습니다. 아크메이지 유효 소울(소울 스킬·미스틱)을 맞춘 뒤 전환하세요!`);
+      // [다각도 분석 1] 지금 끼고 있는 사신 소울 그대로 넘어갈 때
+      if (deactivatedReaperCores.length === 0) {
+        scAnalysisLines.push(`• <strong>① 현재 장착 소울 그대로 전환 시:</strong> 착용 중인 사신 전용 코어(강타/대사신)가 없어, <strong>코어를 바꾸지 않고 그대로 넘어가도 소울 딜 손실이 0%(동일 배율)</strong>입니다!`);
+      } else {
+        const deactNames = deactivatedReaperCores.map(x => `<strong style="color:#fda4af;">[${CORE_TIER_META[x.tier].kr} ${x.core.name}]</strong>`).join(', ');
+        scAnalysisLines.push(`• <strong>① 현재 장착 소울 그대로 전환 시:</strong> 사신 전용 코어인 ${deactNames}의 고유 옵션이 비활성화(깡공·증폭만 유지)되어, <strong>교체 없이 그대로 넘어가면 소울 배율이 약 ${formatKoreanNumber(Math.round(keepComboDropRatio))}배 하락</strong>합니다.`);
+      }
+
+      // [다각도 분석 2] 인벤토리 내 아크메이지 대체 소울 보유 현황
+      const skillCoreStr = invSkillCores.length > 0
+        ? invSkillCores.map(x => `<strong style="color:#67e8f9;">${CORE_TIER_META[x.tier].kr} 소울 스킬</strong>`).join(', ')
+        : `<span style="color:#f87171;">없음(미보유)</span>`;
+      const mysticCoreStr = (invMysticCores.length > 0 || invLevelCores.length > 0)
+        ? [
+            ...invMysticCores.map(x => `<strong style="color:#67e8f9;">${CORE_TIER_META[x.tier].kr} 전직:미스틱</strong>`),
+            ...invLevelCores.map(x => `<strong style="color:#34d399;">${CORE_TIER_META[x.tier].kr} 전직:레벨(공용1티어)</strong>`)
+          ].join(', ')
+        : `<span style="color:#f87171;">없음(미보유)</span>`;
+
+      scAnalysisLines.push(`• <strong>② 인벤토리 내 아크메이지 유효 소울:</strong> 1번 코어(${skillCoreStr}) / 4번 코어(${mysticCoreStr})`);
+
+      // [다각도 분석 3] 인벤토리 최적 교체 후 최종 배율 비교 & 판정
+      const reaperHasJobCore = deactivatedReaperCores.length > 0;
+      const mageHasValidReplacement = (scMage.jobValidCores.length > 0) || (invSkillCores.length > 0) || (invMysticCores.length > 0) || (invLevelCores.length > 0);
+
+      if (reaperHasJobCore && !mageHasValidReplacement) {
+        // 사신 전용 코어는 끼고 있는데, 인벤토리에 아크메이지용 유효 코어가 아예 없는 경우 -> 전환 불가!
+        isSoulConnectPassed = false;
+        scStatusBadgeColor = "#ef4444";
+        scStatusTitle = `❌ 전환 불가 — 아크메이지 대체 소울 미보유 (전환 시 약 ${formatKoreanNumber(Math.round(bestSwapRatio))}배 딜 손실)`;
+        scAnalysisLines.push(`• <strong>③ 최종 판정:</strong> 현재 사신 전용 소울만 보유 중이고 인벤토리에 아크메이지용 유효 소울이 없어 전환 시 소울 배율이 급락합니다. <strong>[소울 스킬] 또는 [전직:미스틱/레벨]</strong> 코어를 먼저 확보하세요!`);
+        missingReasons.push(`❌ <strong>[소울커넥트 아크메이지 유효 소울 부재]</strong> 현재 사신 전용 소울(${deactivatedReaperCores.map(x=>`${CORE_TIER_META[x.tier].kr} ${x.core.name}`).join(', ')})을 대체할 아크메이지 유효 소울이 인벤토리에 없어 전환 시 소울 배율이 <strong>약 ${formatKoreanNumber(Math.round(bestSwapRatio))}배</strong> 떨어집니다!`);
+      } else if (bestSwapLogDiff >= -0.05) {
+        // 아크메이지 세팅 배율이 사신과 같거나 더 높은 경우 -> 완벽 통과!
+        isSoulConnectPassed = true;
+        scStatusBadgeColor = "#10b981";
+        if (bestSwapLogDiff > 0.05 && reaperHasJobCore) {
+          scStatusTitle = `✅ 전환 가능 — 인벤토리 소울 교체 시 아크메이지가 약 ${formatKoreanNumber(Math.round(bestSwapRatio))}배 더 강력!`;
+          scAnalysisLines.push(`• <strong>③ 최종 판정:</strong> 인벤토리의 아크메이지 추천 소울로 교체하면 사신 세팅보다 소울 배율이 오히려 <strong>약 ${formatKoreanNumber(Math.round(bestSwapRatio))}배 상승</strong>합니다!`);
+        } else if (bestSwapLogDiff > 0.05 && !reaperHasJobCore) {
+          scStatusTitle = `✅ 전환 가능 — 아크메이지 전용 유효 소울 세팅 완비!`;
+          scAnalysisLines.push(`• <strong>③ 최종 판정:</strong> 인벤토리에 아크메이지 유효 소울이 완벽히 준비되어 있어 소울 손실 없이 즉시 전환 가능합니다!`);
+        } else {
+          scStatusTitle = `✅ 전환 가능 — 사신과 아크메이지 소울 세팅 배율 100% 동급!`;
+          scAnalysisLines.push(`• <strong>③ 최종 판정:</strong> 사신 세팅과 아크메이지 세팅의 소울 배율이 완전히 동일하여 딜 손실 없이 즉시 넘어갈 수 있습니다!`);
+        }
+      } else if (bestSwapLogDiff >= -2.40) {
+        // 아크메이지 유효 소울(예: 전설/신화 소울 스킬 등)이 있거나 고대 깡공+전설 스킬 합연산으로 세팅되어,
+        // 사신 고대 코어 대비 배율이 약 2배~250배 이내로만 차이나는 경우 -> 아크메이지 스킬 계수로 충분히 커버 가능하므로 조건부 통과!
+        isSoulConnectPassed = true;
+        scStatusBadgeColor = "#f59e0b";
+        scStatusTitle = `✅ 전환 가능 (소울 배율 약 ${formatKoreanNumber(Math.round(bestSwapRatio))}배 차이 ➔ 앜메 스킬 계수로 극복 가능 구간)`;
+        scAnalysisLines.push(`• <strong>③ 최종 판정:</strong> 사신 소울 세팅이 약 ${formatKoreanNumber(Math.round(bestSwapRatio))}배 더 높지만, 인벤토리에 대체 소울이 있어 <strong>위의 3차 주력 스킬·영웅 각성 조건만 충족했다면 아크메이지의 자체 딜 계수로 충분히 이기는 구간</strong>입니다!`);
+      } else {
+        // 사신 쪽에 고대 전용 코어가 2개 다 박혀 있는데 아크메이지 쪽은 크게 밀려 배율이 수백~수만 배 이상 차이나는 경우 -> 전환 보류!
+        isSoulConnectPassed = false;
+        scStatusBadgeColor = "#ef4444";
+        scStatusTitle = `❌ 전환 보류 — 사신 소울 세팅이 약 ${formatKoreanNumber(Math.round(bestSwapRatio))}배 더 높음 (소울 격차 과다)`;
+        scAnalysisLines.push(`• <strong>③ 최종 판정:</strong> 인벤토리의 소울로 교체해도 현재 사신 소울 세팅보다 배율이 <strong>약 ${formatKoreanNumber(Math.round(bestSwapRatio))}배 낮아</strong> 직변 시 딜이 떨어질 위험이 큽니다. 상위 등급의 아크메이지 소울(또는 1번/4번 고대 코어 중복 합연산용 코어)을 먼저 확보하세요!`);
+        missingReasons.push(`❌ <strong>[소울커넥트 배율 격차 과다]</strong> 인벤토리 내 아크메이지 소울로 교체하더라도 현재 사신 소울 세팅보다 배율이 <strong>약 ${formatKoreanNumber(Math.round(bestSwapRatio))}배</strong> 낮습니다. 소울 인벤토리에 아크메이지 유효 소울(소울 스킬 / 미스틱 / 레벨)을 더 맞춘 뒤 전환하세요!`);
+      }
     }
 
     const isAllPassed = (missingReasons.length === 0);
@@ -13968,18 +14052,28 @@
       if (!simObj || simObj.bestCombo.length === 0) {
         return `<span style="color:#64748b; font-size:12px;">선택된 보유 소울 없음</span>`;
       }
-      return simObj.bestCombo.map(inst => {
+      const prevJ = currentConnectJob;
+      const prevE = currentConnectElem;
+      currentConnectJob = jobFocus;
+      currentConnectElem = guideElem;
+
+      const htmlStr = simObj.bestCombo.map(inst => {
         const tMeta = CORE_TIER_META[inst.tier];
         const isJobCore = inst.core.jobReq === jobFocus;
         const effStep = getEffectiveCoreStep(inst.core, inst.tier);
-        const tagStyle = isJobCore
+        const isDeadCore = effStep <= 0 && !inst.core.isHyperRate && !inst.core.isHyperDmg;
+        const tagStyle = isJobCore && !isDeadCore
           ? 'border:1.5px solid #fde047; background:rgba(250,204,21,0.15); color:#fef08a;'
-          : (effStep > 0 ? 'border:1px solid #334155; background:#0f172a; color:#e2e8f0;' : 'border:1px dashed #475569; background:#090d16; color:#94a3b8;');
+          : (!isDeadCore ? 'border:1px solid #334155; background:#0f172a; color:#e2e8f0;' : 'border:1px dashed #ef4444; background:rgba(239,68,68,0.12); color:#fca5a5;');
         return `<span style="display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:6px; font-size:11.5px; font-weight:800; ${tagStyle}">
           <span class="grade-badge ${tMeta.badge}" style="font-size:9.5px; padding:1px 4px;">${tMeta.kr}</span>
-          <span>${inst.core.num}번 ${inst.core.name}${effStep<=0 && !inst.core.isHyperRate && !inst.core.isHyperDmg ? '(깡공)' : ''}</span>
+          <span>${inst.core.num}번 ${inst.core.name}${isDeadCore ? ' (무효·깡공만)' : ''}</span>
         </span>`;
       }).join(' ');
+
+      currentConnectJob = prevJ;
+      currentConnectElem = prevE;
+      return htmlStr;
     }
 
     const vsPassBool = isTotalAwkHigher || (mageMainSkill.awk === 3 && mageSubSkill.awk === 3 && mageHero.awk === 3);
@@ -14096,13 +14190,13 @@
         </div>
       </div>
 
-      <!-- ★ STEP 4: 소울커넥트 보유 소울(코어) 인벤토리 연동 비교 (신규 추가!) -->
+      <!-- ★ STEP 4: 소울커넥트 다각도 비교 (① 현재 소울 그대로 전환 시 vs ② 인벤토리 유효 소울 교체 시) -->
       <div style="background:#0f172a; border:1.5px solid #a855f7; border-radius:14px; padding:16px; margin-bottom:16px;">
         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
           <div>
-            <div style="font-size:14px; font-weight:900; color:#ffffff;">4️⃣ 소울커넥트 보유 소울(코어) 세팅 비교 (소울 인벤토리 자동 연동)</div>
+            <div style="font-size:14px; font-weight:900; color:#ffffff;">4️⃣ 소울커넥트 다각도 분석 (현재 장착 소울 유지 시 VS 인벤토리 교체 시)</div>
             <div style="font-size:11.5px; color:#e9d5ff; font-weight:700; margin-top:2px;">
-              ★ 핵심 조건: <strong>[소울커넥트 도우미]</strong>에서 보유 소울을 모두 클릭해 주세요! 고대 강타만 있고 아크메이지 추천 소울이 없거나 배율이 크게 밀리면 전환 불가로 판정됩니다.
+              💡 <strong>[소울커넥트 도우미]</strong>에 사신용 소울과 인벤토리에 보유 중인 아크메이지용 소울을 모두 클릭해 두시면 3단계로 자동 진단합니다!
             </div>
           </div>
           <button onclick="jumpToSoulConnectForMageSetup()" style="background:linear-gradient(135deg, #7e22ce 0%, #4c1d95 100%); border:1.5px solid #c084fc; color:#ffffff; padding:8px 14px; border-radius:9px; font-size:12px; font-weight:900; cursor:pointer;">
@@ -14110,21 +14204,29 @@
           </button>
         </div>
 
-        <div style="background:#131d33; border:2px solid ${isSoulConnectPassed ? '#10b981' : '#ef4444'}; border-radius:12px; padding:12px 14px; margin-bottom:10px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
-            <strong style="font-size:13.5px; color:${isSoulConnectPassed ? '#34d399' : '#fca5a5'};">${scStatusTitle}</strong>
-            <span style="font-size:11.5px; color:#cbd5e1;">현재 등록된 보유 소울: <strong style="color:#fde047;">${scMage.totalOwnedCount}개</strong></span>
+        <div style="background:#131d33; border:2px solid ${scStatusBadgeColor}; border-radius:12px; padding:12px 14px; margin-bottom:10px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px; padding-bottom:6px; border-bottom:1px dashed #334155;">
+            <strong style="font-size:14px; color:${isSoulConnectPassed ? '#34d399' : '#fca5a5'};">${scStatusTitle}</strong>
+            <span style="font-size:11.5px; color:#cbd5e1;">인벤토리 등록 소울: <strong style="color:#fde047;">${scMage.totalOwnedCount}개</strong></span>
           </div>
-          <div style="font-size:12px; color:#e2e8f0; line-height:1.5;">${scReasonDetail}</div>
+          <div style="font-size:12.5px; color:#e2e8f0; line-height:1.7;">
+            ${scAnalysisLines.join('<br>')}
+          </div>
         </div>
 
         <div class="grid-2" style="gap:10px;">
           <div style="background:#131d33; border:1px solid #334155; border-radius:10px; padding:10px 12px;">
-            <div style="font-size:12px; font-weight:800; color:#fda4af; margin-bottom:6px;">🗡️ [사신] 기준 추천 소울 세팅 (${currentConnectStageSlots || 6}슬롯)</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-size:12px; font-weight:800; color:#fda4af;">🗡️ 현재 [사신] 기준 최적 장착 소울</span>
+              <span style="font-size:11px; color:#fde047; font-weight:800;">약 ${formatKoreanNumber(Math.pow(10, scReaper.totalLog10))}배</span>
+            </div>
             <div style="display:flex; flex-wrap:wrap; gap:5px;">${renderMiniCoreList(scReaper, 'reaper')}</div>
           </div>
           <div style="background:#131d33; border:1px solid #38bdf8; border-radius:10px; padding:10px 12px;">
-            <div style="font-size:12px; font-weight:800; color:#7dd3fc; margin-bottom:6px;">🔮 [아크메이지] 기준 추천 소울 세팅 (${currentConnectStageSlots || 6}슬롯)</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-size:12px; font-weight:800; color:#7dd3fc;">🔮 인벤토리 교체 후 [아크메이지] 최적 소울</span>
+              <span style="font-size:11px; color:#34d399; font-weight:800;">약 ${formatKoreanNumber(Math.pow(10, scMage.totalLog10))}배</span>
+            </div>
             <div style="display:flex; flex-wrap:wrap; gap:5px;">${renderMiniCoreList(scMage, 'mage')}</div>
           </div>
         </div>
@@ -14138,7 +14240,7 @@
             모든 조건(고패 · 스킬/영웅 각성 · 소울커넥트) 충족! 지금 바로 [아크메이지]로 갈아타셔도 좋습니다!
           </div>
           <p style="font-size:13px; color:#d1fae5;">
-            아크메이지 핵심 스킬·영웅 각성과 소울커넥트 세팅까지 모두 준비되었습니다! 대낫 강타를 <strong>[강타 27단계 (고대 대낫 2 - 스킬 피해량 증폭 1,500%)]</strong>로 맞추고 전환하세요!
+            아크메이지 핵심 스킬·영웅 각성과 소울커넥트 세팅까지 모두 검증되었습니다! 대낫 강타를 <strong>[강타 27단계 (고대 대낫 2 - 스킬 피해량 증폭 1,500%)]</strong>로 맞추고 전환하세요!
           </p>
         </div>
       ` : `
