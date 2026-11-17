@@ -1404,13 +1404,16 @@
     renderCurrentView();
   }
 
-  // ★ [완전 자동 판별] 길드 전주 총점(600만 점 기준)에 따라 1주일 스펙업 예상 배율을 자동으로 산출!
-  function getGuildSpecUpMultiplier(guildPrevTotal) {
+  // ★ [보수적 자동 판별] 1주차 50위권 미수집 왜곡 방지 & 과투자 방지를 위해 예측 배율을 현실적으로 대폭 낮춤!
+  function getGuildSpecUpMultiplier(guildPrevTotal, isSeasonDone = false) {
+    // 이미 종료된 주차(예: 11월 2주차 마감 완료)를 볼 때는 추가 상승이 없으므로 1.00 고정
+    if (isSeasonDone) return 1.0;
+
     const total = guildPrevTotal || 0;
-    if (total >= 6000000) return 1.08; // 총점 600만 이상 초고점 길드: 보수적 (+8%)
-    if (total >= 3000000) return 1.15; // 총점 300만~600만 상위권 길드: (+15%)
-    if (total >= 1000000) return 1.25; // 총점 100만~300만 중상위 성장 길드: (+25%)
-    return 1.35;                       // 총점 100만 미만 급성장 길드: (+35%)
+    if (total >= 6000000) return 1.03; // 총점 600만↑ 초고점 길드: 매우 보수적 (+3%)
+    if (total >= 3000000) return 1.06; // 총점 300만~600만 상위 길드: (+6%)
+    if (total >= 1000000) return 1.10; // 총점 100만~300만 중상위 길드: (+10%)
+    return 1.15;                       // 그 외 성장 길드: (+15%)
   }
 
   function buildGuildProgressAndPredHtml(curScore, prevScore, guildPrevTotal) {
@@ -1421,13 +1424,14 @@
       return `
         <div class="guild-prog-wrap">
           <div class="guild-prog-Header">
-            <span style="color:#64748b;">전주 이 구역 기록 없음 (신규/이동 진입)</span>
+            <span style="color:#64748b;">전주 이 구역 50위 내 기록 없음 (신규/이동)</span>
           </div>
         </div>
       `;
     }
 
-    const specUpMult = getGuildSpecUpMultiplier(guildPrevTotal || prevScore);
+    const ended = isSeasonEnded(currentSelectedSheet);
+    const specUpMult = getGuildSpecUpMultiplier(guildPrevTotal || prevScore, ended);
     const rawPredScore = Math.round(prevScore * specUpMult);
     const finalPredScore = Math.max(rawPredScore, curScore);
 
@@ -1448,14 +1452,14 @@
       <div class="guild-prog-wrap">
         <div class="guild-prog-Header">
           <span style="color:#e2e8f0;">
-            전주 대비: <strong style="color:${vsPrevPct >= 100 ? '#34d399' : '#38bdf8'};">${vsPrevPct.toFixed(1)}%</strong> 소화
+            전주 대비: <strong style="color:${vsPrevPct >= 100 ? '#34d399' : '#38bdf8'};">${vsPrevPct.toFixed(1)}%</strong>
             <small style="color:#94a3b8;">(전주 ${prevScore.toLocaleString()}점)</small>
           </span>
-          <span class="pred-yellow-badge" title="전주 점수 × 스펙업(+${growthPctText}%) 반영 이번 주 최종 예상 점수">
-            ⚡ 예측(+${growthPctText}%): <strong>${finalPredScore.toLocaleString()}점</strong> <small>(예측의 ${vsPredPct.toFixed(0)}%)</small>
+          <span class="pred-yellow-badge" title="전주 점수 기준 보수적 예측치">
+            ⚡ 예상치${growthPctText > 0 ? '(+' + growthPctText + '%)' : '(마감)'}: <strong>${finalPredScore.toLocaleString()}점</strong> <small>(${vsPredPct.toFixed(0)}%)</small>
           </span>
         </div>
-        <div class="guild-prog-track" title="파란/초록 바: 현재 점수 | 흰색 선: 전주 100% 기준선 | 노란 빗금: 1주일 스펙업 반영 예상 최종치">
+        <div class="guild-prog-track" title="파란/초록 바: 현재 점수 | 흰색 선: 전주 100% 기준선 | 노란 빗금: 보수적 예상치">
           <div class="guild-prog-fill-pred" style="width:${predWidthPct}%;"></div>
           <div class="guild-prog-fill-cur" style="width:${curWidthPct}%; background:${curBarColor};"></div>
           <div class="guild-prog-marker-prev" style="left:${prevMarkerLeftPct}%;"></div>
@@ -1464,6 +1468,7 @@
     `;
   }
 
+  // 🧭 [1인 3타 시스템 맞춤형] 과투자 방지 & 루미엘 등 실제 순위 기반 타격권 분배 브리핑
   function renderGuildStrategyAdvisor() {
     const box = document.getElementById('guild_strategy_advisor_box');
     if (!box) return;
@@ -1472,136 +1477,142 @@
     box.style.display = showCompare ? 'block' : 'none';
     if (!showCompare) return;
 
+    const ended = isSeasonEnded(currentSelectedSheet);
     const ourCur = guildDatabase.find(g => isOurGuild(g.name));
     const ourPrev = prevGuildDatabase.find(g => isOurGuild(g.name));
 
     const ourCurTotal = ourCur ? ourCur.totalScore : 0;
     const ourPrevTotal = ourPrev ? ourPrev.totalScore : 0;
-    const ourSpecMult = getGuildSpecUpMultiplier(ourPrevTotal);
+    const ourSpecMult = getGuildSpecUpMultiplier(ourPrevTotal, ended);
 
-    const ourExpectedCapacity = Math.max(Math.round(ourPrevTotal * ourSpecMult), ourCurTotal, 100);
-    const ourRemainingPower = Math.max(0, ourExpectedCapacity - ourCurTotal);
+    // 1인당 3타 기준 단위 환산 가이드 (상위권 1인 3타=약 15~20만점 / 1타=약 5~6.5만점)
+    const ONE_HIT_UNIT = 55000; // 중고투력 1회 타격(1타) 평균 기준치 (약 5.5만 점)
+
+    const ourExpectedCapacity = Math.max(Math.round(ourPrevTotal * ourSpecMult), ourCurTotal);
+    const ourRemainingPower = ended ? 0 : Math.max(0, ourExpectedCapacity - ourCurTotal);
 
     const analyzedZones = ZONE_KEYS.map(zk => {
       const cfg = ZONE_CONFIG[zk];
       const curList = zoneRankings[zk] || [];
-      const prevList = prevZoneRankings[zk] || [];
 
-      const rivalMap = new Map();
-      curList.forEach(item => {
-        if (isOurGuild(item.guildName)) return;
-        const pGuild = prevGuildMap.get(item.guildName);
-        const pZoneScore = pGuild?.zoneMap?.[zk]?.score || 0;
-        const mult = getGuildSpecUpMultiplier(pGuild?.totalScore || pZoneScore);
-        const pred = pZoneScore > 0 ? Math.max(item.score, Math.round(pZoneScore * mult)) : Math.round(item.score * 1.15);
-        rivalMap.set(item.guildName, { guildName: item.guildName, curScore: item.score, predScore: pred, isLurking: false });
-      });
+      // ★ 핵심 교정: 전주 타 구역 점수 때문에 4위(DK)가 2위(루미엘)를 역전하는 현상 차단!
+      // 현재 이 구역의 실제 점수 순위(curList)를 최우선 기준으로 삼고, 전주 동일 구역 점수가 더 높았던 경우에만 보수적으로 반영
+      const rivals = curList
+        .filter(item => !isOurGuild(item.guildName))
+        .map(item => {
+          const pGuild = prevGuildMap.get(item.guildName);
+          const sameZonePrevScore = pGuild?.zoneMap?.[zk]?.score || 0;
+          const mult = getGuildSpecUpMultiplier(pGuild?.totalScore || sameZonePrevScore, ended);
 
-      prevList.slice(0, 5).forEach(pItem => {
-        if (isOurGuild(pItem.guildName) || rivalMap.has(pItem.guildName)) return;
-        const curG = guildMap.get(pItem.guildName);
-        if (curG && curG.maxZoneKey && curG.maxZoneKey !== zk && curG.progressPct >= 40) return;
-        const pGuild = prevGuildMap.get(pItem.guildName);
-        const mult = getGuildSpecUpMultiplier(pGuild?.totalScore || pItem.score);
-        rivalMap.set(pItem.guildName, {
-          guildName: pItem.guildName,
-          curScore: curG?.zoneMap?.[zk]?.score || 0,
-          predScore: Math.round(pItem.score * mult),
-          isLurking: true
+          // 전주 '같은 구역' 점수가 현재보다 높을 때만 제한적으로 예측치 반영 (최대 현재 점수의 +12% 캡으로 DK 과대평가 방지!)
+          let pred = item.score;
+          if (!ended && sameZonePrevScore > item.score) {
+            pred = Math.min(Math.round(sameZonePrevScore * mult), Math.round(item.score * 1.12));
+          } else if (!ended) {
+            pred = Math.round(item.score * 1.03); // 마감 전 소폭 상승 마진(+3%)만 반영
+          }
+          return {
+            guildName: item.guildName,
+            curRank: item.rank,
+            curScore: item.score,
+            predScore: pred
+          };
         });
-      });
 
-      const rivals = Array.from(rivalMap.values()).sort((a, b) => b.predScore - a.predScore);
+      // 현재 점수 순서를 해치지 않도록 정렬
+      rivals.sort((a, b) => b.curScore - a.curScore);
+
       const ourZoneRec = ourCur?.zoneMap?.[zk];
       const ourZoneCur = ourZoneRec ? ourZoneRec.score : 0;
       const ourZoneRank = ourZoneRec ? ourZoneRec.rank : null;
 
-      const getCutInfo = (rankTarget) => {
-        const rival = rivals[rankTarget - 1];
-        if (!rival) return { rivalName: '경쟁자 없음', pred: 0, safeCut: 100, need: Math.max(0, 100 - ourZoneCur) };
-        const safeCut = Math.ceil(rival.predScore * 1.05);
-        return {
-          rivalName: rival.guildName + (rival.isLurking ? '(존버주의)' : ''),
-          pred: rival.predScore,
-          safeCut,
-          need: Math.max(0, safeCut - ourZoneCur)
-        };
-      };
+      // 우리가 현재 1위인 구역(예: 암흑구역)은 바로 밑 추격자(2위 루미엘)가 1위 경쟁 상대!
+      const topRival = rivals[0] || { guildName: '없음', curScore: 0, predScore: 0 };
+      const rank3Rival = rivals[2] || rivals[rivals.length - 1] || { guildName: '없음', curScore: 0, predScore: 0 };
+      const rank5Rival = rivals[4] || rivals[rivals.length - 1] || { guildName: '없음', curScore: 0, predScore: 0 };
+      const rank50Rival = curList[49] || curList[curList.length - 1] || { guildName: '컷', score: 0 };
 
-      const cut1 = getCutInfo(1);
-      const cut2 = getCutInfo(2);
-      const cut3 = getCutInfo(3);
-      const cut5 = getCutInfo(5);
+      // 과투자 방지: 안전 컷은 경쟁자 현재 점수 + 약 15만 점(1인 3타 분량) 또는 예측치 중 합리적인 선으로 설정
+      const safe1stCut = Math.max(topRival.curScore + 150000, topRival.predScore);
+      const leadOrNeed1st = ourZoneCur - topRival.curScore; // 양수면 우리가 리드 중, 음수면 추격 필요
+      const needFor1stSafe = Math.max(0, safe1stCut - ourZoneCur);
 
-      let achievableRank = 99;
-      let targetCutObj = cut5;
-      if (cut1.need <= ourRemainingPower || ourZoneCur >= cut1.safeCut) { achievableRank = 1; targetCutObj = cut1; }
-      else if (cut2.need <= ourRemainingPower || ourZoneCur >= cut2.safeCut) { achievableRank = 2; targetCutObj = cut2; }
-      else if (cut3.need <= ourRemainingPower || ourZoneCur >= cut3.safeCut) { achievableRank = 3; targetCutObj = cut3; }
-      else if (cut5.need <= ourRemainingPower || ourZoneCur >= cut5.safeCut) { achievableRank = 5; targetCutObj = cut5; }
+      const safe5thCut = Math.max(rank5Rival.curScore + 80000, rank5Rival.predScore);
+      const needFor5thSafe = Math.max(0, safe5thCut - ourZoneCur);
+
+      const cut50Score = rank50Rival ? rank50Rival.score : 0;
+      const needFor50th = Math.max(0, (cut50Score + 10000) - ourZoneCur);
 
       return {
         zk, cfg, ourZoneCur, ourZoneRank,
-        cut1, cut2, cut3, cut5,
-        achievableRank, targetCutObj
+        topRival, rank3Rival, rank5Rival,
+        safe1stCut, leadOrNeed1st, needFor1stSafe,
+        safe5thCut, needFor5thSafe,
+        cut50Score, needFor50th
       };
     });
 
-    const sortedForPrimary = [...analyzedZones].sort((a, b) => {
-      if (a.achievableRank !== b.achievableRank) return a.achievableRank - b.achievableRank;
-      return a.targetCutObj.safeCut - b.targetCutObj.safeCut;
-    });
+    // 우리 길드가 현재 1~2위로 싸우고 있는 주력 구역(예: 암흑구역) 찾기
+    const ourMainZone = analyzedZones.find(z => z.ourZoneRank === 1 || z.ourZoneRank === 2)
+      || [...analyzedZones].sort((a, b) => a.safe1stCut - b.safe1stCut)[0];
 
-    const primaryZone = sortedForPrimary[0];
-    let remBudget = Math.max(0, ourRemainingPower - (primaryZone ? primaryZone.targetCutObj.need : 0));
-
-    const subZones = new Set();
-    sortedForPrimary.slice(1).forEach(z => {
-      if (z.cut5.need > 0 && z.cut5.need <= remBudget) {
-        subZones.add(z.zk);
-        remBudget -= z.cut5.need;
-      } else if (z.ourZoneCur >= z.cut5.safeCut && z.cut5.safeCut > 0) {
-        subZones.add(z.zk);
-      }
-    });
+    // 5위권이나 50위권 진입이 가장 만만한 서브 분배 구역 찾기
+    const subCandidates = analyzedZones
+      .filter(z => !ourMainZone || z.zk !== ourMainZone.zk)
+      .sort((a, b) => a.safe5thCut - b.safe5thCut);
+    const bestSubZoneKey = subCandidates[0] ? subCandidates[0].zk : null;
 
     const cardsHtml = analyzedZones.map(z => {
-      const isPrimary = primaryZone && (z.zk === primaryZone.zk);
-      const isSub = subZones.has(z.zk);
+      const isMain = ourMainZone && (z.zk === ourMainZone.zk);
+      const isBestSub = (z.zk === bestSubZoneKey);
 
       let boxCls = 'rec-fee';
-      let roleBadge = `<span class="tac-tag" style="background:#422006; color:#fde047; border:1px solid #eab308;">🎟️ 참가비(기본보상) 수급</span>`;
+      let roleBadge = `<span class="tac-tag" style="background:#422006; color:#fde047; border:1px solid #eab308;">🎟️ 저투력 1타 참가비 / 50위컷</span>`;
       let bodyHtml = '';
 
-      if (isPrimary) {
+      if (isMain) {
         boxCls = 'rec-primary';
-        const goalRank = z.achievableRank <= 5 ? z.achievableRank : 1;
-        const cObj = goalRank === 1 ? z.cut1 : z.targetCutObj;
-        roleBadge = `<span class="tac-tag" style="background:#059669; color:#fff; border:1px solid #34d399;">👑 1순위 주력 점령 (${goalRank}위 타겟)</span>`;
-        bodyHtml = `
-          <div style="font-size:12px; color:#d1fae5; margin-top:7px; line-height:1.55;">
-            • 경쟁 상대(<strong>${escHtml(cObj.rivalName)}</strong>) 예측: <strong style="color:#fde047;">${cObj.pred.toLocaleString()}점</strong><br>
-            • 🛡️ <strong>${goalRank}위 확정 안전 컷(+5%): <span style="color:#34d399;">${cObj.safeCut.toLocaleString()}점</span></strong><br>
-            • 🎯 <strong>추천 행동: <span style="color:#ffffff; text-decoration:underline;">${cObj.need > 0 ? '+' + cObj.need.toLocaleString() + '점 추가 투입해 굳히기!' : '현재 점수로도 예측치 돌파 (안전권)!'}</span></strong>
-          </div>
-        `;
-      } else if (isSub) {
+        roleBadge = `<span class="tac-tag" style="background:#059669; color:#fff; border:1px solid #34d399;">👑 우리 길드 1위 주력 구역</span>`;
+
+        if (z.leadOrNeed1st >= 0) {
+          const leadMan = (z.leadOrNeed1st / 10000).toFixed(1);
+          const eqHits = Math.max(1, Math.round(z.leadOrNeed1st / ONE_HIT_UNIT));
+          bodyHtml = `
+            <div style="font-size:12px; color:#d1fae5; margin-top:7px; line-height:1.6;">
+              • 2위 추격자: <strong>${escHtml(z.topRival.guildName)}</strong> (${z.topRival.curScore.toLocaleString()}점)<br>
+              • 🛡️ <strong>현재 리드 격차: <span style="color:#34d399;">+${z.leadOrNeed1st.toLocaleString()}점 (+${leadMan}만 점 앞서고 있음!)</span></strong><br>
+              • 💡 <strong>타격권 가이드:</strong> 이미 <strong>약 ${eqHits}타(고투력 ${Math.max(1, Math.round(z.leadOrNeed1st / 160000))}명분 3타)</strong> 여유가 있습니다! <strong>과투자 금지!</strong> ${escHtml(z.topRival.guildName)} 점수가 올라올 때만 1~2타씩 방어하고, 남은 타격권은 다른 구역에 5:5:5로 분배하세요.
+            </div>
+          `;
+        } else {
+          const gap = Math.abs(z.leadOrNeed1st);
+          const reqHits = Math.ceil(z.needFor1stSafe / ONE_HIT_UNIT);
+          bodyHtml = `
+            <div style="font-size:12px; color:#d1fae5; margin-top:7px; line-height:1.6;">
+              • 1위 경쟁 상대: <strong>${escHtml(z.topRival.guildName)}</strong> (${z.topRival.curScore.toLocaleString()}점)<br>
+              • 🎯 <strong>역전 필요 점수: <span style="color:#fde047;">+${gap.toLocaleString()}점</span></strong> (안전 컷 ${z.safe1stCut.toLocaleString()}점)<br>
+              • 💡 <strong>타격권 가이드:</strong> 주력 딜러 기준 <strong>약 ${reqHits}타(15만점급 ${Math.ceil(z.needFor1stSafe / 150000)}명)</strong> 집중 투입이 필요합니다.
+            </div>
+          `;
+        }
+      } else if (isBestSub) {
         boxCls = 'rec-sub';
-        const subRank = z.cut3.need <= ourRemainingPower ? 3 : 5;
-        const cObj = subRank === 3 ? z.cut3 : z.cut5;
-        roleBadge = `<span class="tac-tag" style="background:#0284c7; color:#fff; border:1px solid #7dd3fc;">⚔️ 잔여 화력 분배 (${subRank}위권)</span>`;
+        const reqHits50 = Math.max(1, Math.ceil(z.needFor50th / ONE_HIT_UNIT));
+        roleBadge = `<span class="tac-tag" style="background:#0284c7; color:#fff; border:1px solid #7dd3fc;">⚔️ 남은 타격권(5:5:5) 추천 분배처</span>`;
         bodyHtml = `
-          <div style="font-size:12px; color:#e0f2fe; margin-top:7px; line-height:1.55;">
-            • ${subRank}위 경쟁(<strong>${escHtml(cObj.rivalName)}</strong>) 예측: <strong style="color:#fde047;">${cObj.pred.toLocaleString()}점</strong><br>
-            • 🛡️ <strong>${subRank}위 안전 컷: <span style="color:#7dd3fc;">${cObj.safeCut.toLocaleString()}점</span></strong><br>
-            • 🎯 <strong>추천 행동:</strong> 주력 구역 안전 컷 달성 후 <strong>남는 화력으로 +${cObj.need.toLocaleString()}점 추가 분배</strong> 추천!
+          <div style="font-size:12px; color:#e0f2fe; margin-top:7px; line-height:1.6;">
+            • 현재 5위컷(<strong>${escHtml(z.rank5Rival.guildName)}</strong>): <strong style="color:#fde047;">${z.rank5Rival.curScore.toLocaleString()}점</strong> / 50위컷: <strong>${z.cut50Score.toLocaleString()}점</strong><br>
+            • 💡 <strong>타격권 가이드:</strong> 주력 구역이 안전할 때 <strong>중·상위 길드원이 3타를 한곳에 다 쓰지 말고 1타(약 5~7만점)씩 쪼개어</strong> 상위 보상컷(20위/50위)을 챙기기 가장 좋은 구역입니다! ${z.needFor50th > 0 ? `(50위권 진입에 약 +${z.needFor50th.toLocaleString()}점 / ${reqHits50}타 필요)` : `(현재 50위권 안쪽!)`}
           </div>
         `;
       } else {
+        const inTop50 = z.ourZoneRank && z.ourZoneRank <= 50;
         bodyHtml = `
-          <div style="font-size:12px; color:#cbd5e1; margin-top:7px; line-height:1.55;">
-            • 1위 예측 <strong style="color:#fde047;">${z.cut1.pred.toLocaleString()}점</strong> / 5위 예측 <strong style="color:#fde047;">${z.cut5.pred.toLocaleString()}점</strong><br>
-            • 💡 상위권 과열 구역입니다. 무리한 딜 낭비 없이 <strong>50위권(4만개) 또는 최소 1타 참가비만 챙기고 주력 구역에 화력을 아끼세요!</strong>
+          <div style="font-size:12px; color:#cbd5e1; margin-top:7px; line-height:1.6;">
+            • 1위(<strong>${escHtml(z.topRival.guildName)}</strong>): ${z.topRival.curScore.toLocaleString()}점 / 50위컷: <strong style="color:#fde047;">${z.cut50Score.toLocaleString()}점</strong><br>
+            • 💡 <strong>타격권 가이드:</strong> ${inTop50
+              ? `현재 <strong>${z.ourZoneRank}위</strong> 진입 완료! 추가 타격 없이 순위 유지만 모니터링하세요.`
+              : `50위권 진입에 <strong>+${z.needFor50th.toLocaleString()}점</strong> 필요. <strong>길드 내 저투력 인원이 1타씩 쳐서 참가비(기본 각성석 1만~2만개)만 알뜰하게 챙기는 구역</strong>으로 추천합니다.`}
           </div>
         `;
       }
@@ -1613,7 +1624,7 @@
             ${roleBadge}
           </div>
           <div style="font-size:11.5px; color:#94a3b8; margin-top:3px;">
-            우리 길드 현재: <strong style="color:#38bdf8;">${z.ourZoneCur.toLocaleString()}점</strong> ${z.ourZoneRank ? `(${z.ourZoneRank}위)` : '(미진입)'}
+            우리 길드 현재: <strong style="color:#38bdf8;">${z.ourZoneCur.toLocaleString()}점</strong> ${z.ourZoneRank ? `(<strong style="color:#fde047;">${z.ourZoneRank}위</strong>)` : '(50위 밖 / 미진입)'}
           </div>
           ${bodyHtml}
         </div>
@@ -1623,17 +1634,15 @@
     box.innerHTML = `
       <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; border-bottom:1px solid rgba(251, 191, 36, 0.3); padding-bottom:10px;">
         <div>
-          <span style="font-size:16px; font-weight:900; color:#fde047;">🧭 [${OUR_GUILD_NAME}] 실시간 최적 점령지 &amp; 안전 컷 &amp; 화력 분배 브리핑</span>
+          <span style="font-size:16px; font-weight:900; color:#fde047;">🧭 [${OUR_GUILD_NAME}] 1인 3타 기반 실전 타격권 분배 브리핑 (과투자 방지 모드)</span>
           <p style="font-size:12px; color:#cbd5e1; margin-top:2px;">
-            경쟁 길드들의 1주일 스펙업 예측치(노란색)와 잠복(존버) 길드까지 계산하여 가장 유리한 구역과 잔여 화력 투자처를 추천합니다.
+            실제 현재 순위(2위 추격자)를 기준으로 불필요한 과투자를 막고, 길드원 체급별 3회 타격권(예: 고투력 5만×3타 분산 vs 저투력 참가비) 배분을 안내합니다.
           </p>
         </div>
         <div style="background:#0f172a; border:1px solid #475569; border-radius:10px; padding:8px 14px; font-size:12px; color:#e2e8f0;">
-          🔥 우리 길드 예상 총 가용 화력: <strong style="color:#fde047;">${ourExpectedCapacity.toLocaleString()}점</strong>
+          ⚡ 우리 길드 현재 총합: <strong style="color:#38bdf8;">${ourCurTotal.toLocaleString()}점</strong>
           <span style="margin:0 6px; color:#475569;">|</span>
-          ⚡ 현재 타격: <strong style="color:#38bdf8;">${ourCurTotal.toLocaleString()}점</strong>
-          <span style="margin:0 6px; color:#475569;">|</span>
-          🔋 <strong>남은 예상 화력: <span style="color:#34d399;">+${ourRemainingPower.toLocaleString()}점</span></strong>
+          🎯 <strong>기준 타격 단위: <span style="color:#fde047;">1타 약 5~7만 점 (3타 15~20만 점)</span></strong>
         </div>
       </div>
       <div class="strategy-grid">
