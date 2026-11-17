@@ -495,7 +495,7 @@
     <!-- 👑 우리 길드 [기부랑길보필수] 실시간 브리핑 배너 (기존 코드) -->
  <div id="our_guild_briefing_container"></div>
 
- <!-- 👇 [여기에 추가!] 1. 전주 비교 스위치 & 비교 주차 선택 & 주간 스펙업(인플레이션) 컨트롤러 -->
+ <!-- 1. 전주 비교 스위치 & 비교 주차 선택 & 자동 스펙업/종료 상태 표시 바 -->
  <div class="compare-control-bar">
    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
      <label class="compare-toggle-label">
@@ -506,21 +506,17 @@
      <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:#cbd5e1;">
        <span>🆚 비교할 이전 주차:</span>
        <select id="sel_prev_week" onchange="onPrevWeekSelectChange(this.value)" style="background:#0f172a; border:1px solid #475569; color:#fde047; padding:5px 10px; border-radius:8px; font-weight:800;">
-         <option value="">자동 (직전 주차)</option>
+         <option value="">자동 탐색 중...</option>
        </select>
      </div>
    </div>
 
-   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; font-size:12.5px;">
-     <div style="background:#0b1120; padding:6px 12px; border-radius:8px; border:1px solid #334155;">
-       <span>📈 일반 길드 1주일 스펙업 예상치: </span>
-       <select id="sel_specup_rate" onchange="onGuildCompareConfigChange()" style="background:transparent; border:none; color:#fde047; font-weight:900; cursor:pointer;">
-         <option value="1.15">+15% (보수적)</option>
-         <option value="1.25" selected>+25% (평균 스펙업 권장)</option>
-         <option value="1.35">+35% (고성장 주간)</option>
-         <option value="1.50">+50% (대형 업데이트 직후)</option>
-       </select>
-       <small style="color:#94a3b8; margin-left:4px;">(※ 초고점 탑랭커 길드는 성장폭 자동 반감)</small>
+   <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:12px;">
+     <span id="season_end_status_badge" style="padding:5px 11px; border-radius:8px; font-weight:900; background:#0f172a; border:1px solid #475569; color:#cbd5e1;">
+       ⏳ 시즌 상태 확인 중...
+     </span>
+     <div style="background:#0b1120; padding:6px 12px; border-radius:8px; border:1px solid #334155; color:#cbd5e1;">
+       🤖 <strong>AI 자동 스펙업 예측:</strong> <span style="color:#fde047; font-weight:800;">총점 600만↑ 초고점 길드 보수적(+8%)</span> · 일반 성장 길드 체급별(+15%~+35%) 자동 적용
      </div>
    </div>
  </div>
@@ -693,378 +689,173 @@
     return 0;
   }
 
-  async function autoDetectSheetSeasons() {
-    const selectEl = document.getElementById("season_select");
-    if (selectEl) selectEl.innerHTML = `<option value="">탭 목록 자동 검색 중...</option>`;
+  // ==================== 🚀 [스마트 시즌 자동 감지] 데이터가 있는 최신 주차 자동 선택 & 일요일 23:50 종료 판정 ====================
+ let latestActiveSheetName = ""; // 실제 데이터가 들어 있는 가장 최신 시트명
 
-    try {
-      const res = await fetch(`https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/htmlview?_t=${Date.now()}`);
-      if (!res.ok) throw new Error("시트 메타데이터 로드 실패");
-      const htmlText = await res.text();
-
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlText, "text/html");
-      const tabElements = doc.querySelectorAll("#sheet-menu li a");
-
-      let tabNames = [];
-      tabElements.forEach(el => {
-        const name = el.innerText.trim();
-        if (name && (name.includes("주차") || name.includes("주"))) {
-          tabNames.push(name);
-        }
-      });
-
-      if (tabNames.length === 0) {
-        const matches = htmlText.match(/class="sheet-button[^"]*"[^>]*><a[^>]*>([^<]+)<\/a>/g);
-        if (matches) {
-          matches.forEach(m => {
-            const cleanName = m.replace(/<[^>]+>/g, '').trim();
-            if (cleanName && cleanName.includes("주차")) tabNames.push(cleanName);
-          });
-        }
-      }
-
-      if (tabNames.length > 0) {
-        tabNames.reverse();
-        availableSeasons = tabNames.map((name, idx) => ({
-          name: idx === 0 ? `${name} (최신)` : name,
-          sheetName: name
-        }));
-      } else {
-        availableSeasons = [
-          { name: "11월 2주차 (최신)", sheetName: "11월 2주차" },
-          { name: "11월 1주차", sheetName: "11월 1주차" }
-        ];
-      }
-    } catch (e) {
-      availableSeasons = [
-        { name: "11월 2주차 (최신)", sheetName: "11월 2주차" },
-        { name: "11월 1주차", sheetName: "11월 1주차" }
-      ];
-    }
-
-    currentSelectedSheet = availableSeasons[0].sheetName;
-    renderSeasonDropdown();
-    fetchSheetData(false);
-  }
-
-  function renderSeasonDropdown() {
-    const selectEl = document.getElementById("season_select");
-    if (!selectEl) return;
-    selectEl.innerHTML = availableSeasons.map((s) => 
-      `<option value="${s.sheetName}" ${s.sheetName === currentSelectedSheet ? 'selected' : ''}>📅 ${s.name}</option>`
-    ).join('');
-  }
-
-  function onSeasonChange(sheetName) {
-    currentSelectedSheet = sheetName;
-    fetchSheetData(true);
-  }
-
-  // 2차원 배열(rows) 또는 CSV 문자열을 모두 파싱하는 통합 파서
-  function parseSheetRows(rows) {
-    const zRank = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
-    const gMap = new Map();
-
-    for (let r = 0; r < rows.length; r++) {
-      const cols = rows[r];
-      if (!cols || cols.length < 3) continue;
-
-      ZONE_KEYS.forEach((zk, zIdx) => {
-        const baseCol = zIdx * 4;
-        const rankStr = String(cols[baseCol] ?? "").trim();
-        const rawNameStr = String(cols[baseCol + 1] ?? "").trim();
-        const scoreStr = String(cols[baseCol + 2] ?? "").trim();
-
-        const nameStr = cleanGuildName(rawNameStr);
-        if (nameStr && nameStr !== "" && nameStr !== "-" && nameStr !== "길드명" && !nameStr.includes("불꽃") && !nameStr.includes("빙하")) {
-          const rankMatch = rankStr.match(/(\d+)/);
-          const rawScore = parseInt(scoreStr.replace(/[^0-9]/g, ''), 10);
-          const score = isNaN(rawScore) ? 0 : rawScore;
-
-          if (score <= 0) return;
-
-          const currentRank = rankMatch ? parseInt(rankMatch[1], 10) : (zRank[zk].length + 1);
-
-          zRank[zk].push({
-            guildName: nameStr,
-            rank: currentRank,
-            score: score,
-            zoneKey: zk,
-            zone: ZONE_CONFIG[zk].name,
-            isScout: false
-          });
-        }
-      });
-    }
-
-    ZONE_KEYS.forEach(zk => {
-      zRank[zk].sort((a, b) => b.score - a.score);
-      const zoneTopScore = zRank[zk].length > 0 ? zRank[zk][0].score : 0;
-
-      zRank[zk].forEach((item, idx) => {
-        item.rank = (item.rank > 50 || idx >= 50) ? (item.rank > 50 ? item.rank : idx + 1) : (idx + 1);
-        item.stones = getStoneRewardByRank(item.rank);
-        item.zoneTopRatio = zoneTopScore > 0 ? (item.score / zoneTopScore) : 0;
-
-        if (!gMap.has(item.guildName)) {
-          gMap.set(item.guildName, {
-            name: item.guildName,
-            totalScore: 0,
-            totalStones: 0,
-            count: 0,
-            top5Count: 0,
-            maxZoneScore: -1,
-            maxZoneKey: null,
-            maxZoneRank: 999,
-            records: [],
-            zoneMap: {},
-            tags: [],
-            tagKeys: []
-          });
-        }
-        const gInfo = gMap.get(item.guildName);
-        gInfo.totalScore += item.score;
-        gInfo.totalStones += item.stones;
-        gInfo.count += 1;
-        if (item.rank <= 5) gInfo.top5Count += 1;
-        if (item.score > gInfo.maxZoneScore) {
-          gInfo.maxZoneScore = item.score;
-          gInfo.maxZoneKey = zk;
-          gInfo.maxZoneRank = item.rank;
-        }
-        gInfo.records.push(item);
-        gInfo.zoneMap[zk] = item;
-      });
-    });
-
-    const guildList = Array.from(gMap.values());
-    guildList.forEach(g => {
-      g.maxZoneShare = g.totalScore > 0 ? (g.maxZoneScore / g.totalScore) : 0;
-      g.records.sort((a, b) => b.score - a.score);
-    });
-
-    return { zoneRankings: zRank, guildMap: gMap, guildList };
-  }
-
-  function parseSheetCSV(csvText) {
-    const lines = csvText.trim().split("\n");
-    if (lines.length < 2) return parseSheetRows([]);
-
-    let startRow = 0;
-    for (let r = 0; r < Math.min(5, lines.length); r++) {
-      if (lines[r].includes("순위") || lines[r].includes("길드명")) {
-        startRow = r + 1;
-      }
-    }
-    const rows = [];
-    for (let r = startRow; r < lines.length; r++) {
-      const cols = lines[r].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
-      rows.push(cols);
-    }
-    return parseSheetRows(rows);
-  }
-
-  async function loadSingleSheetParsed(sheetName) {
-    if (!sheetName) return parseSheetRows([]);
-    // 1순위: Apps Script doGet (캐시 지연 0초 실시간 로드)
-    if (GOOGLE_WEBHOOK_URL) {
-      try {
-        const res = await fetch(`${GOOGLE_WEBHOOK_URL}?sheetName=${encodeURIComponent(sheetName)}&_t=${Date.now()}`);
-        if (res.ok) {
-          const json = await res.json();
-          if (json && Array.isArray(json.rows) && json.rows.length > 0) {
-            return parseSheetRows(json.rows);
-          }
-        }
-      } catch (e) {
-        // 폴백으로 gviz CSV 사용
-      }
-    }
-    // 2순위 폴백: Google gviz CSV 엔드포인트
-    const csvUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&_t=${Date.now()}`;
-    const res = await fetch(csvUrl);
-    if (!res.ok) throw new Error("시트 로드 오류");
-    const csvText = await res.text();
-    return parseSheetCSV(csvText);
-  }
-
-  function analyzeGuildStrategies() {
-    const hasPrev = prevGuildDatabase.length > 0;
-    const prevTop25Names = new Set(
-      [...prevGuildDatabase].sort((a, b) => b.totalScore - a.totalScore).slice(0, 25).map(g => g.name)
-    );
-
-    guildDatabase.forEach(g => {
-      const tags = [];
-      const tagKeys = [];
-      const prev = hasPrev ? prevGuildMap.get(g.name) : null;
-
-      g.prevInfo = prev || null;
-      g.progressPct = (prev && prev.totalScore > 0) ? Math.round((g.totalScore / prev.totalScore) * 100) : null;
-      g.scoreDiff = prev ? (g.totalScore - prev.totalScore) : null;
-
-      if (isOurGuild(g.name)) {
-        tags.push({ key: 'our', label: '👑 우리 길드', cls: 'tag-our' });
-        tagKeys.push('our');
-      }
-
-      let hasScout = false;
-      g.records.forEach(r => {
-        const isSmallVsZone = r.zoneTopRatio < 0.05 && r.rank >= 15;
-        const isSmallVsSelf = g.totalScore > 0 && (r.score / g.totalScore) < 0.05 && r.rank >= 15;
-        if (isSmallVsZone || isSmallVsSelf) {
-          r.isScout = true;
-          hasScout = true;
-        } else {
-          r.isScout = false;
-        }
-      });
-
-      if (g.count >= 5 && g.top5Count >= 3) {
-        tags.push({ key: 'king', label: '👑 전구역 패왕', cls: 'tag-king' });
-        tagKeys.push('king');
-      }
-
-      if (prev && prev.totalScore > 0) {
-        const pct = g.progressPct;
-        const isPrevStrong = prev.top5Count >= 1 || prevTop25Names.has(g.name) || prev.totalStones >= 100000;
-
-        if (pct < 15 && isPrevStrong) {
-          tags.push({ key: 'lurk', label: `🥷 존버중 (전주 ${pct}%)`, cls: 'tag-lurk' });
-          tagKeys.push('lurk');
-        } else if (pct >= 15 && pct < 55 && g.count <= 3 && isPrevStrong) {
-          tags.push({ key: 'prep', label: `🔋 몰빵준비중 (${pct}%)`, cls: 'tag-prep' });
-          tagKeys.push('prep');
-        } else if ((g.count <= 2 || g.maxZoneShare >= 0.70) && pct >= 55 && g.totalScore > 0) {
-          tags.push({ key: 'allin', label: `💥 몰빵중 (${ZONE_CONFIG[g.maxZoneKey].name})`, cls: 'tag-allin' });
-          tagKeys.push('allin');
-        } else if (pct < 50 && g.count >= 3 && isPrevStrong) {
-          tags.push({ key: 'drop', label: `📉 화력급감 (${pct}%)`, cls: 'tag-drop' });
-          tagKeys.push('drop');
-        }
-
-        if (pct >= 130) {
-          tags.push({ key: 'surge', label: `🔥 화력폭발 (+${pct - 100}%)`, cls: 'tag-surge' });
-          tagKeys.push('surge');
-        }
-
-        if (prev.maxZoneKey && g.maxZoneKey && prev.maxZoneKey !== g.maxZoneKey && g.totalScore > 0 && g.maxZoneShare >= 0.4) {
-          const pName = ZONE_CONFIG[prev.maxZoneKey].icon + ZONE_CONFIG[prev.maxZoneKey].name;
-          const cName = ZONE_CONFIG[g.maxZoneKey].icon + ZONE_CONFIG[g.maxZoneKey].name;
-          tags.push({ key: 'move', label: `🔄 이동 (${pName}➔${cName})`, cls: 'tag-move' });
-          tagKeys.push('move');
-        }
-      } else {
-        if ((g.count <= 2 || g.maxZoneShare >= 0.70) && g.maxZoneRank <= 15 && g.totalScore > 0) {
-          tags.push({ key: 'allin', label: `💥 몰빵중 (${ZONE_CONFIG[g.maxZoneKey].name})`, cls: 'tag-allin' });
-          tagKeys.push('allin');
-        }
-      }
-
-      if (g.count >= 3 && g.maxZoneShare < 0.50 && g.totalScore > 0) {
-        tags.push({ key: 'spread', label: '🌐 분산투자중', cls: 'tag-spread' });
-        tagKeys.push('spread');
-      }
-
-      if (hasScout) {
-        tags.push({ key: 'scout', label: '👀 정찰병 보냈음', cls: 'tag-scout' });
-        tagKeys.push('scout');
-      }
-
-      g.tags = tags;
-      g.tagKeys = tagKeys;
-    });
-
-    missingLurkersList = [];
-    if (hasPrev) {
-      prevGuildDatabase
-        .filter(pg => !isOurGuild(pg.name) && !guildMap.has(pg.name) && (pg.top5Count >= 1 || prevTop25Names.has(pg.name)))
-        .sort((a, b) => {
-          if (b.top5Count !== a.top5Count) return b.top5Count - a.top5Count;
-          return b.totalScore - a.totalScore;
-        })
-        .forEach(pg => {
-          missingLurkersList.push(pg);
-        });
-    }
-  }
-
-  async function fetchSheetData(isManual) {
-   const statusText = document.getElementById("sync_status_text");
-   const compareText = document.getElementById("sync_compare_text");
-   const timeText = document.getElementById("sync_time_text");
-   const liveDot = document.getElementById("sync_live_dot");
-
-   if (isManual && statusText) {
-     statusText.innerText = "데이터 동기화 중...";
+ // 시트 이름(예: "26년 11월 2주차")과 현재 시각을 비교해 일요일 23:50 종료 여부 판정
+ function isSeasonEnded(sheetName) {
+   if (!sheetName) return false;
+   // 1) 만약 현재 선택된 시트가 '데이터가 존재하는 가장 최신 시트'보다 과거 주차라면 무조건 종료됨!
+   if (latestActiveSheetName && sheetName !== latestActiveSheetName) {
+     const idxCur = availableSeasons.findIndex(s => s.sheetName === sheetName);
+     const idxLatest = availableSeasons.findIndex(s => s.sheetName === latestActiveSheetName);
+     if (idxCur > idxLatest && idxLatest !== -1) return true;
    }
 
+   // 2) 시트명에서 연/월/주차 파싱 후 현재 날짜 및 일요일 23:50 체크
+   const now = new Date();
+   const m = sheetName.match(/(?:(\d{2,4})년\s*)?(\d{1,2})월\s*(\d{1,2})주차/);
+   if (m) {
+     let yr = m[1] ? parseInt(m[1], 10) : now.getFullYear();
+     if (yr < 100) yr += 2000;
+     const mo = parseInt(m[2], 10);
+     const wk = parseInt(m[3], 10);
+
+     // 달의 첫째 주 일요일을 기준으로 n주차 일요일 23:50 마감 시각 산출 (11월 1주차 = 11/8 일요일, 2주차 = 11/15 일요일, 3주차 = 11/22 일요일 기준)
+     const firstDay = new Date(yr, mo - 1, 1);
+     const firstSunOffset = (7 - firstDay.getDay()) % 7;
+     // 첫째 날이 일요일(11월 1일 등)인 경우 1주차 일요일은 그 다음 일요일(8일)로 계산되는 인게임 주차 규칙 반영
+     const baseSunDate = (firstDay.getDay() === 0) ? (1 + wk * 7) : (1 + firstSunOffset + (wk - 1) * 7);
+     const deadline = new Date(yr, mo - 1, baseSunDate, 23, 50, 0);
+
+     if (now.getTime() >= deadline.getTime()) {
+       return true;
+     }
+   }
+
+   // 일요일(0) 23시 50분 이후면 종료 처리
+   if (now.getDay() === 0 && (now.getHours() > 23 || (now.getHours() === 23 && now.getMinutes() >= 50))) {
+     return true;
+   }
+   return false;
+ }
+
+ function updateSeasonEndBadgeUI() {
+   const badgeEl = document.getElementById("season_end_status_badge");
+   const liveDot = document.getElementById("sync_live_dot");
+   const ended = isSeasonEnded(currentSelectedSheet);
+
+   if (badgeEl) {
+     if (ended) {
+       badgeEl.style.background = "rgba(239, 68, 68, 0.2)";
+       badgeEl.style.borderColor = "#ef4444";
+       badgeEl.style.color = "#fca5a5";
+       badgeEl.innerHTML = `🔴 [${currentSelectedSheet}] 쟁탈전 종료됨 (일요일 23:50 마감 완료)`;
+     } else {
+       badgeEl.style.background = "rgba(16, 185, 129, 0.18)";
+       badgeEl.style.borderColor = "#10b981";
+       badgeEl.style.color = "#6ee7b7";
+       badgeEl.innerHTML = `🟢 [${currentSelectedSheet}] 쟁탈전 진행 중 (마감: 일요일 23:50)`;
+     }
+   }
+   if (liveDot) {
+     liveDot.style.background = ended ? "#ef4444" : "#10b981";
+     liveDot.style.boxShadow = ended ? "0 0 8px #ef4444" : "0 0 8px #10b981";
+   }
+ }
+
+ // 26년 11월 ~ 27년 1월 후보 시트들을 자동 점검하여 '실제 데이터가 들어있는' 시트만 추출하고 가장 최신 주차를 자동 선택!
+ async function autoDetectSheetSeasons() {
+   const selectEl = document.getElementById("season_select");
+   if (selectEl) selectEl.innerHTML = `<option value="">실제 데이터가 있는 최신 주차 탐색 중...</option>`;
+
+   // 후보 시트 리스트 생성 (26년 11월 1~5주차, 26년 12월 1~5주차, 27년 1월 1~5주차 + 구형 표기 호환)
+   const candidateNames = [];
+   const ymList = [
+     { y: "26년 ", m: 11 },
+     { y: "26년 ", m: 12 },
+     { y: "27년 ", m: 1 }
+   ];
+   ymList.forEach(({ y, m }) => {
+     for (let w = 1; w <= 5; w++) {
+       candidateNames.push(`${y}${m}월 ${w}주차`);
+     }
+   });
+   // 혹시 "26년 " 없이 "11월 1주차", "11월 2주차"로 된 탭이 있을 경우를 대비한 하위 호환
+   ["11월 1주차", "11월 2주차", "11월 3주차", "11월 4주차"].forEach(oldName => {
+     if (!candidateNames.includes(oldName)) candidateNames.push(oldName);
+   });
+
+   // 핵심 트릭: 구글 gviz CSV는 존재하지 않는 시트명을 요청하면 무조건 '첫 번째 시트'의 CSV를 그대로 반환함!
+   // 따라서 첫 번째 유효 시트와 텍스트 해시(상위 3개 길드+점수 지문)가 똑같으면 '존재하지 않는 시트'로 판별하여 걸러냄!
+   const checkResults = await Promise.all(
+     candidateNames.map(async (sName) => {
+       try {
+         const parsed = await loadSingleSheetParsed(sName);
+         const hasData = parsed && parsed.guildList && parsed.guildList.length > 0 && parsed.guildList.some(g => g.totalScore > 0);
+         if (!hasData) return null;
+         // 시트 고유 지문(Fingerprint) 생성: 구역별 1위 길드명과 점수 조합
+         const fp = ZONE_KEYS.map(zk => {
+           const top = (parsed.zoneRankings[zk] || [])[0];
+           return top ? `${top.guildName}:${top.score}` : '';
+         }).join('|');
+         return { sheetName: sName, parsed, fp };
+       } catch (e) {
+         return null;
+       }
+     })
+   );
+
+   // 실제 데이터가 존재하고 중복 지문이 아닌 진짜 시트들만 필터링 (시간순 정렬 유지)
+   const validSheets = [];
+   const seenFingerprints = new Map();
+
+   checkResults.forEach(res => {
+     if (!res) return;
+     // 만약 앞서 등록된 첫 번째 시트와 지문(fp)이 100% 똑같다면 구글 gviz가 없는 시트명을 첫 시트로 폴백한 것이므로 제외!
+     // 단, "26년 11월 1주차"와 "11월 1주차" 중에서는 "26년"이 붙은 새 이름을 우선 채택!
+     if (seenFingerprints.has(res.fp)) {
+       const prevEntry = seenFingerprints.get(res.fp);
+       if (!prevEntry.sheetName.includes("년") && res.sheetName.includes("년")) {
+         prevEntry.sheetName = res.sheetName;
+       }
+       return;
+     }
+     seenFingerprints.set(res.fp, res);
+     validSheets.push(res);
+   });
+
+   if (validSheets.length > 0) {
+     // 최신 주차가 맨 위에 오도록 역순 정렬
+     validSheets.reverse();
+     latestActiveSheetName = validSheets[0].sheetName;
+     availableSeasons = validSheets.map((item, idx) => {
+       const ended = isSeasonEnded(item.sheetName);
+       const statusTag = ended ? " [종료]" : (idx === 0 ? " (최신·진행중)" : "");
+       return {
+         name: `${item.sheetName}${statusTag}`,
+         sheetName: item.sheetName
+       };
+     });
+   } else {
+     availableSeasons = [
+       { name: "26년 11월 2주차", sheetName: "26년 11월 2주차" },
+       { name: "26년 11월 1주차", sheetName: "26년 11월 1주차" }
+     ];
+     latestActiveSheetName = availableSeasons[0].sheetName;
+   }
+
+   currentSelectedSheet = availableSeasons[0].sheetName;
+   prevCompareSheet = availableSeasons[1] ? availableSeasons[1].sheetName : "";
+   renderSeasonDropdown();
+   fetchSheetData(false);
+ }
+
+ function renderSeasonDropdown() {
+   const selectEl = document.getElementById("season_select");
+   if (!selectEl) return;
+   selectEl.innerHTML = availableSeasons.map((s) =>
+     `<option value="${s.sheetName}" ${s.sheetName === currentSelectedSheet ? 'selected' : ''}>📅 ${s.name}</option>`
+   ).join('');
+ }
+
+ function onSeasonChange(sheetName) {
+   currentSelectedSheet = sheetName;
    const curIdx = availableSeasons.findIndex(s => s.sheetName === currentSelectedSheet);
-   const defaultPrev = (curIdx >= 0 && curIdx + 1 < availableSeasons.length)
+   prevCompareSheet = (curIdx >= 0 && curIdx + 1 < availableSeasons.length)
      ? availableSeasons[curIdx + 1].sheetName
      : "";
-
-   // 비교 주차 드롭다운 옵션 갱신
-   const prevSelEl = document.getElementById("sel_prev_week");
-   if (prevSelEl) {
-     const otherSeasons = availableSeasons.filter(s => s.sheetName !== currentSelectedSheet);
-     if (!prevCompareSheet || prevCompareSheet === currentSelectedSheet) {
-       prevCompareSheet = defaultPrev;
-     }
-     prevSelEl.innerHTML = otherSeasons.length > 0
-       ? otherSeasons.map(s => `<option value="${s.sheetName}" ${s.sheetName === prevCompareSheet ? 'selected' : ''}>${s.name}</option>`).join('')
-       : `<option value="">비교할 이전 주차 없음</option>`;
-   } else {
-     prevCompareSheet = defaultPrev;
-   }
-
-   try {
-     const [curParsed, prevParsed] = await Promise.all([
-       loadSingleSheetParsed(currentSelectedSheet),
-       prevCompareSheet ? loadSingleSheetParsed(prevCompareSheet).catch(() => null) : Promise.resolve(null)
-     ]);
-
-     zoneRankings = curParsed.zoneRankings;
-     guildMap = curParsed.guildMap;
-     guildDatabase = curParsed.guildList;
-
-     if (prevParsed) {
-       prevZoneRankings = prevParsed.zoneRankings;
-       prevGuildMap = prevParsed.guildMap;
-       prevGuildDatabase = prevParsed.guildList;
-     } else {
-       prevZoneRankings = { fire: [], ice: [], heaven: [], grass: [], dark: [], abyss: [] };
-       prevGuildMap = new Map();
-       prevGuildDatabase = [];
-     }
-
-     analyzeGuildStrategies();
-
-     const now = new Date();
-     const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
-     if (statusText) statusText.innerText = `[${currentSelectedSheet || '기본 시트'}] 실시간 연동 완료`;
-     if (compareText) compareText.innerText = prevCompareSheet ? `(🆚 비교: ${prevCompareSheet})` : `(이전 주차 데이터 없음)`;
-     if (timeText) timeText.innerText = `(최근 동기화: ${timeStr})`;
-     if (liveDot) {
-       liveDot.style.background = "#10b981";
-       liveDot.style.boxShadow = "0 0 8px #10b981";
-     }
-
-     renderOurGuildBriefing();
-     renderGuildStrategyAdvisor(); // 👈 실시간 최적 점령지 & 안전 컷 & 화력 분배 브리핑!
-     renderZoneCutlineSummary();
-     renderMissingLurkersBanner();
-     renderTagFilterChips();
-     renderCurrentView();
-   } catch (err) {
-     console.error("Sheet Sync Error:", err);
-     if (statusText) statusText.innerText = "시트 데이터 로드 실패 (공유 권한 또는 시트명 확인)";
-     if (liveDot) {
-       liveDot.style.background = "#ef4444";
-       liveDot.style.boxShadow = "0 0 8px #ef4444";
-     }
-   }
+   fetchSheetData(true);
  }
 
   function renderOurGuildBriefing() {
@@ -1344,17 +1135,24 @@
    return Math.max(1, ...prevGuildDatabase.map(g => g.totalScore || 0));
  }
 
- // 길드 체급별 1주일 스펙업(인플레이션) 배율 계산 (탑랭커 길드는 보수적, 성장형 길드는 스펙업 폭 100% 반영)
+ // ★ [완전 자동 판별] 길드 전주 총점(600만 점 기준)에 따라 1주일 스펙업 예상 배율을 자동으로 산출!
  function getGuildSpecUpMultiplier(guildPrevTotal) {
-   const baseRate = parseFloat(document.getElementById('sel_specup_rate')?.value || '1.25');
-   const growthPart = baseRate - 1.0;
-   const maxPrev = getMaxPrevGuildTotal();
-   if (!guildPrevTotal || guildPrevTotal <= 0) return baseRate;
+   const total = guildPrevTotal || 0;
 
-   const ratioToTop = guildPrevTotal / maxPrev;
-   if (ratioToTop >= 0.70) return 1.0 + (growthPart * 0.35); // 초고점 탑랭커 길드 (예: +25% 선택 시 +8.8%만 적용)
-   if (ratioToTop >= 0.35) return 1.0 + (growthPart * 0.70); // 중상위권 길드
-   return baseRate; // 폭풍 성장 중인 일반/중위권 길드 (+25% 그대로 적용)
+   // 1) 전주 총점 600만 점 이상 초고점 탑랭커 길드: 이미 성장이 한계치에 가까우므로 매우 보수적(+8%)으로 잡음
+   if (total >= 6000000) {
+     return 1.08;
+   }
+   // 2) 전주 총점 300만 ~ 600만 점 상위권 길드: 안정적 스펙업(+15%)
+   if (total >= 3000000) {
+     return 1.15;
+   }
+   // 3) 전주 총점 100만 ~ 300만 점 중상위 성장 길드: 표준 주간 스펙업(+25%)
+   if (total >= 1000000) {
+     return 1.25;
+   }
+   // 4) 전주 총점 100만 점 미만 급성장 길드: 1주일 사이 폭풍 성장 가능성 반영(+35%)
+   return 1.35;
  }
 
  // 직관적인 [전주 대비 진행률(%) + 노란색 스펙업 예측치] 듀얼 게이지 바 생성
