@@ -3506,7 +3506,7 @@
                 <img src="images/main_rune.png" alt="룬" onerror="this.onerror=null; this.src='images/main_rune.jpg'; this.onerror=function(){this.parentElement.innerHTML='🛡️';};">
               </div>
               <div>
-                <span class="hub-card-title">🛡️ 룬 착용 도우미 v.1.4.0</span>
+                <span class="hub-card-title">🛡️ 룬 착용 도우미 v.1.5.0</span>
                 <span class="hub-card-desc">고대·영원·불멸 보유 룬 선택 시 최고 배율 10칸(상의/하의/신발/장식/무기) 자동 배치</span>
               </div>
             </div>
@@ -6088,7 +6088,7 @@
             <div style="font-size:15px; color:#f87171; font-weight:800;">🔒 데이터 수집 중으로 재화 계산 불가</div>
             <div style="font-size:12px; color:#cbd5e1; font-weight:normal; margin-top:3px;">
               선택한 구간 내 미확인 단계(<strong>${missingSteps.join(', ')}강</strong>)가 포함되어 있습니다.<br>
-              확인 완료된 구간(예: 대낫 9➔18 / 오브 10➔18 / 장식 0➔9, 12➔16)을 선택하시면 정확한 수치가 표시됩니다!
+              확인 완료된 구간(예: 대낫 0➔18 / 오브 10➔18 / 장식 0➔9, 12➔16)을 선택하시면 정확한 수치가 표시됩니다!
             </div>
           </div>
         `;
@@ -7829,21 +7829,23 @@
       return 1;
     }
 
-    if (r.id === 'imm_em_boseok' && ctx.ancGem < 15) return 1;
+    // ★ [v.1.5.0 정밀 교정] 불멸/영원 엠블렘은 특수 조건 미달성 시에도 1배(무옵)가 아니라 '기본 룬 공격력 증폭(깡공증)'이 존재함!
+    if (r.id === 'imm_em_boseok' && ctx.ancGem < 15) return 1500001; // 조건 미달 시 기본 불멸룬 공증 1.5억% (150만 배) 적용
     if (['anc_wp_jangjeon', 'ete_wp_jangjeon', 'imm_wp_jangjeon'].includes(r.id) && ctx.ancGem < 3) return 0;
 
-    if (r.id === 'imm_em_wonron' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'brk40') return 1;
-    if (r.id === 'imm_ab_geukhan' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'awk6') return 1;
+    if (r.id === 'imm_em_wonron' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'brk40') return 600001; // 기본 불멸룬 공증 6천만%
+    if (r.id === 'imm_ab_geukhan' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'awk6') return 400001;  // 기본 심연장식 룬공 4천만%
 
     if (r.id === 'imm_em_samsingi') {
-      if (ctx.eternalWeapCnt <= 0) return 1;
+      if (ctx.eternalWeapCnt <= 0) return 300001; // 영원무기 0개여도 기본 불멸룬 공증 3천만%
       return 1 + (ctx.eternalWeapCnt * 500000);
     }
 
-    if (['ete_em_jeongryeong', 'imm_em_jeongryeong'].includes(r.id) && !ctx.hasSpirit30) return 1;
-    if (r.id === 'imm_ab_gaehwa' && !ctx.hasGaehwa) return 1;
-    if (r.id === 'imm_em_myeongseong' && !ctx.hasTitleCard) return 1;
-    if (r.id === 'imm_ab_goldcard' && !ctx.hasTitleCard) return 1;
+    if (r.id === 'ete_em_jeongryeong' && !ctx.hasSpirit30) return 7501;   // 기본 영원룬 공증 75만%
+    if (r.id === 'imm_em_jeongryeong' && !ctx.hasSpirit30) return 150001; // 기본 불멸룬 공증 1,500만%
+    if (r.id === 'imm_ab_gaehwa' && !ctx.hasGaehwa) return 300001;        // 출석 미완료 시 기본 3천만%
+    if (r.id === 'imm_em_myeongseong' && !ctx.hasTitleCard) return 150001;
+    if (r.id === 'imm_ab_goldcard' && !ctx.hasTitleCard) return 150001;
 
     if (['anc_ab_gwangpung', 'ete_ab_gwangpung', 'imm_ab_gwangpung'].includes(r.id)) {
       const ratio = Math.min(1, Math.max(0, Math.floor(ctx.atkSpd / 10) / 10));
@@ -7869,18 +7871,21 @@
     return rawVal;
   }
 
-  // 🔥 [별·달·해 3세트 절대 0티어 복원 & 영원 명왕 과도기 스케일 정상화!]
-  function evaluateArmorCombo(combo, allOwnedArmor, allowGongmyeongPair = false) {
+  // 🔥 [v.1.5.0 핵심 업그레이드] 고대/영원/불멸 등급별 룬 공격력 분리 & 엠블렘 등급 시너지 & 케르베로스(2세트/3세트) 정밀 계산!
+  function evaluateArmorCombo(combo, allOwnedArmor, allowGongmyeongPair = false, activeEmblemTier = null) {
     const validRunes = combo.filter(Boolean);
     if (validRunes.length === 0) return 1;
 
     const ids = new Set(validRunes.map(r => r.id));
     const ctx = getUserRuneSpecContext();
 
-    // 0. 같은 이름의 상·하위 등급 룬 동시 장착 차단 (케르베로스 제외)
+    // 0. 같은 이름의 상·하위 등급 룬 동시 장착 차단 (케르베로스만 중복 허용)
     const nameSet = new Set();
+    let kerberosCount = 0;
     for (let r of validRunes) {
-      if (r.id !== 'ete_ar_kerberos') {
+      if (r.id === 'ete_ar_kerberos') {
+        kerberosCount++;
+      } else {
         if (nameSet.has(r.name)) return -1;
         nameSet.add(r.name);
       }
@@ -7900,38 +7905,47 @@
     if (topCnt > 1 || midCnt > 1 || botCnt > 1) return -1;
 
     // 2. ★ 불멸 [천상의 빛: 별 + 달 + 해] 3세트 (불멸룬공 600만% × 불멸룬공증 7.5억% = 225조 배 최종 종결!)
-    // 어떤 과도기 조합(명황+명황무기+명왕, 유행+적응+명왕 등)도 별·달·해 3세트를 넘을 수 없도록 최우선 종결 처리!
     if (ids.has('imm_ar_star') && ids.has('imm_ar_moon') && ids.has('imm_ar_sun')) {
       if (ctx.starGaho >= 30 && ctx.moonGaho >= 20) {
-        return 225000000000000; // 표기 배율: 정확히 225조 배 (2.25 × 10^14)
+        return 225000000000000;
       }
     }
 
-    // 3. 고대 [영웅의 기억: 일격 + 마도 + 군림] 3세트 (11 × 15,001 = 165,011배)
+    // 3. 고대 [영웅의 기억: 일격 + 마도 + 군림] 3세트
     if (ids.has('anc_ar_mem_top') && ids.has('anc_ar_mem_mid') && ids.has('anc_ar_mem_bot')) {
       return 11 * 15001;
     }
 
-    let atkSum = 0;
+    // 4. ★ 등급별(고대/영원/불멸) 룬 공격력 분리 합산!
+    // 인게임 법칙: 불멸 엠블렘(불멸룬 공증)을 끼고 있으면 '영원 룬 공격력(케르베로스 등)'은 증폭을 받지 못하고,
+    // '불멸 룬 공격력(각성자/속전/기합 등)'만 불멸 엠블렘의 막대한 증폭을 받음!
+    let atkSumByTier = { ancient: 0, eternal: 0, immortal: 0 };
     let jobSum = 0;
     let dmgDealSum = 0;
     let allDmgProduct = 1;
-    let hasImmortalRune = false;
+
+    // 케르베로스 중복 장착 특수 수치 처리 (1개: 1.5만%, 2개: 1,000만%, 3개: 1,000만% × 영원룬공증 100만% = 약 1억 배)
+    if (kerberosCount === 1) {
+      atkSumByTier.eternal += 15000;
+    } else if (kerberosCount === 2) {
+      atkSumByTier.eternal += 10000000; // 2케르: 영원 룬 공격력 +1,000만% (100,001배)
+    } else if (kerberosCount === 3) {
+      atkSumByTier.eternal += 10000000000; // 3케르: 자체 영원룬공증 세트 포함 약 1억 배
+    }
 
     for (let r of validRunes) {
-      if (r.tier === 'immortal') hasImmortalRune = true;
+      if (r.id === 'ete_ar_kerberos') continue; // 위에서 일괄 처리됨
 
       let effVal = getEffectiveRuneValue(r, ids);
       if (effVal <= 0) continue;
 
-      // 천상의 빛(별/달/해)은 3세트가 다 모이지 않으면 세트 증폭(7.5억%)이 없으므로 기본 룬공으로만 합산
       if (r.cat === 'atk') {
-        atkSum += effVal;
+        atkSumByTier[r.tier] = (atkSumByTier[r.tier] || 0) + effVal;
         if (r.pair && ids.has(r.pair)) {
           if (r.id === 'ete_ar_gongmyeong' || r.id === 'ete_ar_gongjin') {
-            if (allowGongmyeongPair && r.pairBonus) atkSum += r.pairBonus;
+            if (allowGongmyeongPair && r.pairBonus) atkSumByTier.eternal += r.pairBonus;
           } else if (r.pairBonus) {
-            atkSum += r.pairBonus;
+            atkSumByTier[r.tier] += r.pairBonus;
           }
         }
       } else if (r.cat === 'job') {
@@ -7951,24 +7965,35 @@
       }
     }
 
-    // 과도기(별·달·해 3세트 완성 전)에 [불멸 명황 + 명황의 낫/오브/권세]에 3번째 룬을 섞을 때만 영원 명왕이 격화를 이기도록 보정하되,
-    // 절대 별·달·해 3세트(225조 배)나 명황 세트를 역전하지 못하도록 상한(Cap) 적용!
-    let eternalAtkSynergyBonus = 1;
-    if (ids.has('ete_ar_myeongwang') && ids.has('imm_ar_myeonghwang')) {
-      eternalAtkSynergyBonus = 5.6; // 명황 세트의 3번째 자리에서 불멸 격화(5,501배)보다 영원 명왕(1,001배)을 우선 선택!
+    // ★ 엠블렘 등급과의 매칭 가중치 반영:
+    // 불멸 엠블렘(불멸룬 공증) 착용 시 불멸 방어구의 '불멸 룬 공격력'만이 엠블렘 증폭을 100% 곱연산으로 받으며,
+    // 영원/고대 방어구의 '룬 공격력(케르베로스 등)'은 불멸 엠블렘 증폭을 받지 못해 실전 효율이 급감함!
+    let effectiveAtkSum = 0;
+    if (activeEmblemTier === 'immortal') {
+      // 불멸 엠블렘 착용 중일 때: 불멸 룬공은 100% 반영, 영원/고대 룬공은 불멸 공증 미적용 페널티(1/500 수준) 반영
+      effectiveAtkSum = atkSumByTier.immortal + (atkSumByTier.eternal * 0.002) + (atkSumByTier.ancient * 0.0001);
+    } else if (activeEmblemTier === 'eternal') {
+      // 영원 엠블렘 착용 중일 때: 영원 룬공과 불멸 룬공 모두 정상 경쟁
+      effectiveAtkSum = atkSumByTier.immortal + atkSumByTier.eternal + (atkSumByTier.ancient * 0.01);
+    } else {
+      effectiveAtkSum = atkSumByTier.immortal + atkSumByTier.eternal + atkSumByTier.ancient;
     }
 
-    const realAtkMult = 1 + (atkSum / 100);
+    // 명황 + 명황 전용룬(낫/오브/권세) + 영원 명왕 과도기 시너지 보정
+    let eternalAtkSynergyBonus = 1;
+    if (ids.has('ete_ar_myeongwang') && ids.has('imm_ar_myeonghwang')) {
+      eternalAtkSynergyBonus = 5.6;
+    }
+
+    const realAtkMult = 1 + (effectiveAtkSum / 100);
     const realJobMult = 1 + (jobSum / 100);
     const realDmgDealMult = 1 + (dmgDealSum / 100);
 
     const rawComboScore = realAtkMult * realJobMult * realDmgDealMult * allDmgProduct * eternalAtkSynergyBonus;
-
-    // ⚠️ 별·달·해 3세트(225조)가 아닌 일반 비세트 조합은 최대 150조 배를 넘지 못하도록 안전 캡 적용
     return Math.min(rawComboScore, 150000000000000);
   }
 
-  function findBestArmor3(ownedArmor, allowGongmyeongPair = false) {
+  function findBestArmor3(ownedArmor, allowGongmyeongPair = false, activeEmblemTier = null) {
     if (ownedArmor.length === 0) return { slots: [null, null, null], mult: 1 };
 
     let pool = ownedArmor;
@@ -7976,7 +8001,7 @@
       const mustKeepIds = new Set([
         'imm_ar_star', 'imm_ar_moon', 'imm_ar_sun',
         'imm_ar_myeonghwang', 'imm_ar_mh_scythe', 'imm_ar_mh_orb', 'imm_ar_mh_auth',
-        'ete_ar_gongmyeong', 'ete_ar_gongjin', 'ete_ar_myeongwang',
+        'ete_ar_gongmyeong', 'ete_ar_gongjin', 'ete_ar_myeongwang', 'ete_ar_kerberos',
         'ete_ar_sangsaeng3', 'ete_ar_sanggeuk3',
         'anc_ar_mem_top', 'anc_ar_mem_mid', 'anc_ar_mem_bot',
         'anc_ar_sangsaeng2', 'anc_ar_sanggeuk2',
@@ -7999,7 +8024,7 @@
     let bestCombo = [];
 
     if (pool.length <= 3) {
-      bestScore = Math.max(1, evaluateArmorCombo(pool, pool, allowGongmyeongPair));
+      bestScore = Math.max(1, evaluateArmorCombo(pool, pool, allowGongmyeongPair, activeEmblemTier));
       bestCombo = assignArmorPositions(pool);
     } else {
       const n = pool.length;
@@ -8007,7 +8032,7 @@
         for (let j = i + 1; j < n - 1; j++) {
           for (let k = j + 1; k < n; k++) {
             const c = [pool[i], pool[j], pool[k]];
-            const score = evaluateArmorCombo(c, pool, allowGongmyeongPair);
+            const score = evaluateArmorCombo(c, pool, allowGongmyeongPair, activeEmblemTier);
             if (score > bestScore) {
               bestScore = score;
               bestCombo = assignArmorPositions(c);
@@ -8017,17 +8042,34 @@
       }
     }
 
-    const hasKerberos = ownedArmor.some(r => r.id === 'ete_ar_kerberos');
-    if (hasKerberos) {
-      const kerberos3Score = 100251151;
-      if (kerberos3Score > bestScore) {
-        const kerberosRune = ownedArmor.find(r => r.id === 'ete_ar_kerberos');
-        bestScore = kerberos3Score;
-        bestCombo = [
-          { ...kerberosRune, name: "케르베로스 (1/3)", desc: "케르베로스 3세트 (총 1억 배)", cond: "케르베로스 3개 중복 장착" },
-          { ...kerberosRune, name: "케르베로스 (2/3)", desc: "케르베로스 3세트 (총 1억 배)", cond: "상의·하의·신발" },
-          { ...kerberosRune, name: "케르베로스 (3/3)", desc: "케르베로스 3세트 (총 1억 배)", cond: "상의·하의·신발" }
+    // ★ 케르베로스 2세트(케케 + 다른 룬 1개) 및 3세트(케케케)도 동일한 공식(activeEmblemTier 반영)으로 공정하게 비교!
+    const kerberosRune = ownedArmor.find(r => r.id === 'ete_ar_kerberos');
+    if (kerberosRune) {
+      // 1) 케르베로스 2개 + 다른 방어구 1개 (예: 케케명, 케케양 등)
+      for (let thirdRune of pool) {
+        if (thirdRune.id === 'ete_ar_kerberos') continue;
+        const c2 = [
+          { ...kerberosRune, name: "케르베로스 (1/2)", desc: "케르베로스 2세트 (영원룬공 +1,000만%)", cond: "케르베로스 2개 장착" },
+          { ...kerberosRune, name: "케르베로스 (2/2)", desc: "케르베로스 2세트 (영원룬공 +1,000만%)", cond: "케르베로스 2개 장착" },
+          thirdRune
         ];
+        const score2 = evaluateArmorCombo(c2, pool, false, activeEmblemTier);
+        if (score2 > bestScore) {
+          bestScore = score2;
+          bestCombo = assignArmorPositions(c2);
+        }
+      }
+
+      // 2) 케르베로스 3개 (케케케)
+      const c3 = [
+        { ...kerberosRune, name: "케르베로스 (1/3)", desc: "케르베로스 3세트 (총 1억 배)", cond: "케르베로스 3개 중복 장착" },
+        { ...kerberosRune, name: "케르베로스 (2/3)", desc: "케르베로스 3세트 (총 1억 배)", cond: "상의·하의·신발" },
+        { ...kerberosRune, name: "케르베로스 (3/3)", desc: "케르베로스 3세트 (총 1억 배)", cond: "상의·하의·신발" }
+      ];
+      const score3 = evaluateArmorCombo(c3, pool, false, activeEmblemTier);
+      if (score3 > bestScore) {
+        bestScore = score3;
+        bestCombo = c3;
       }
     }
 
@@ -8318,7 +8360,9 @@
     ];
     const isOther7AllEternal = other7Slots.every(s => s && s.tier === 'eternal');
 
-    const bestArmorMixed = findBestArmor3(ownedArmor, isOther7AllEternal);
+    // 기존: const bestArmorMixed = findBestArmor3(ownedArmor, isOther7AllEternal);
+    // 변경: 현재 최적 엠블렘의 등급(bestEmbAbMixed.emblem?.tier)을 함께 전달!
+    const bestArmorMixed = findBestArmor3(ownedArmor, isOther7AllEternal, bestEmbAbMixed.emblem?.tier || null);
     const log10Mixed = Math.log10(Math.max(1, bestArmorMixed.mult))
                      + Math.log10(Math.max(1, bestAccMixed.mult))
                      + Math.log10(Math.max(1, bestEmbAbMixed.mult))
@@ -8342,7 +8386,7 @@
       const eteWeapons = ownedWeapons.filter(r => r.tier === 'eternal');
       
       if (eteArmor.length >= 3 && eteRings.length >= 1 && eteNecks.length >= 1 && eteEmblems.length >= 1 && eteAbyss.length >= 1 && eteWeapons.length >= 3) {
-        const bestArmorEte = findBestArmor3(eteArmor, true);
+        const bestArmorEte = findBestArmor3(eteArmor, true, 'eternal');
         const bestAccEte = findBestRingAndNeck(eteRings, eteNecks);
         const bestEmbAbEte = findBestEmblemAndAbyss(eteEmblems, eteAbyss);
         const bestWeapEte = findBestWeapon3(eteWeapons);
@@ -10221,18 +10265,8 @@
     updateTrait2ndBoardOnly();
   }
 
-  // 스마트폰(모바일)에서 노드를 터치했을 때 상단 안내 바에 해당 노드 정보를 즉시 띄워주는 함수!
-  function showTrait2NodeDetail(titleStr, descStr) {
-    const infoEl = document.getElementById('t2_mobile_node_detail');
-    if (infoEl) {
-      infoEl.innerHTML = `<strong style="color:#fde047;">🔍 [${titleStr}]</strong> <span style="color:#ffffff;">${descStr}</span>`;
-      infoEl.style.borderColor = '#fbbf24';
-      infoEl.style.background = 'rgba(245, 158, 11, 0.18)';
-    }
-  }
-
-  let trait2Crit49Mode = true; // ★ 기본값: 크리·표식 확률 49%(13P) 고정 후 2줄 피해량에 몰빵!
-
+  // 10248번째 줄의 let trait2MysticSkipMark3 = false; 삭제 후,
+  // 10278~10326번째 줄을 아래 코드로 깔끔하게 교체:
   function syncTrait2ConditionButtonsUI() {
     const box1 = document.getElementById('t2_cond_box_seal');
     const badge1 = document.getElementById('t2_cond_badge_seal');
@@ -10246,20 +10280,6 @@
       badge1.style.background = trait2SealAwk65 ? '#059669' : '#1e293b';
       badge1.style.color = trait2SealAwk65 ? '#ffffff' : '#94a3b8';
       badge1.innerText = trait2SealAwk65 ? '✅ ON (5P 절약)' : 'OFF (미적용)';
-    }
-
-    const box2 = document.getElementById('t2_cond_box_crit49');
-    const badge2 = document.getElementById('t2_cond_badge_crit49');
-    if (box2 && badge2) {
-      box2.style.background = trait2Crit49Mode
-        ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.36) 0%, rgba(120, 53, 15, 0.72) 100%)'
-        : '#0b1120';
-      box2.style.boxShadow = trait2Crit49Mode
-        ? '0 0 18px rgba(245, 158, 11, 0.45), inset 0 0 8px rgba(251, 191, 36, 0.25)'
-        : 'none';
-      badge2.style.background = trait2Crit49Mode ? '#d97706' : '#1e293b';
-      badge2.style.color = trait2Crit49Mode ? '#ffffff' : '#94a3b8';
-      badge2.innerText = trait2Crit49Mode ? '🎯 49% 고정 (+32P 피해량 몰빵)' : '💯 Lv.90+ 크확 100% 모드';
     }
   }
 
@@ -10755,11 +10775,6 @@
 
   function changeTrait1stLevel(lvVal) {
     currentTrait1stLv = parseInt(lvVal);
-    renderBuildGuideContent();
-  }
-
-  function changeTrait3rdLevel(lvVal) {
-    currentTrait3rdLv = parseInt(lvVal);
     renderBuildGuideContent();
   }
 
@@ -12370,12 +12385,12 @@
             <div class="trait2-tree-scroll" id="t2_tree_rows_container"></div>
           </div>
 
-          <!-- 2차 전직 수학적 최적해 & Lv.90 이후 표식 3줄 다이어트 가이드 -->
+          <!-- 2차 전직 수학적 최적해 & 실측 Global DP 가이드 -->
           <div class="build-tip-box" style="margin-top:16px; border-color:#eab308;">
             🧮 <strong>[수학적 검증 완료] 2차 전직 TP 최적 분배 핵심 공식 3가지:</strong><br>
-            1. <strong>Lv.90 전후 표식 3번째 줄(추가 획득) 다이어트 :</strong> Lv.90이 되어 <strong>크리티컬 확률 100%(1줄 마스터) + 표식 4줄 1번 칸(크리 시 표식 4배 획득)</strong>이 만나면 전 직업 모두 표식이 순식간에 차오릅니다! 따라서 <strong>Lv.90부터는 표식 3번째 줄을 2번째 칸(Lv.30, 2P)까지만 찍고, 뒤쪽 3~6번째 칸(총 60P)은 빼서 크리티컬 피해량에 투자</strong>합니다!<br>
-            2. <strong>표식 초록색(8번째 칸) 5/10까지 하이브리드 :</strong> 표식 피해량 × 크리티컬 피해량은 서로 독립 곱연산이므로, 초·중반(1~7번째 칸 및 8번째 초록색 <code>5/10</code>까지)에는 두 스탯을 나란히 올리는 <strong>[하이브리드]</strong>가 가장 강력합니다.<br>
-            3. <strong>초록색 5/10 이후 크리티컬 피해량 올인 :</strong> 8번째 칸(Lv.70 초록색) 이후부터는 표식 피해량이 칸당 1.4배씩만 오르는 반면, 크리티컬 피해량은 <code>18,000% ➔ 70,000% ➔ 30만% ➔ 120만% ➔ 300만%</code>로 <strong>칸당 4~5배씩 기하급수 폭등</strong>하므로 남은 모든 포인트를 <strong>크리티컬 피해량(2줄)에 몰빵</strong>합니다!
+            1. <strong>전 구간 표식 3번째 줄(추가 획득) 1·2번 칸(4P) 고정 :</strong> 비싼 3~6번째 칸(총 60P)을 과감히 패스하고, 아낀 포인트를 <strong>1줄 확률(크확 40% : 표식확률 28% 황금 베이스)</strong>과 <strong>2줄 피해량</strong>에 투자하면 20초 수련동굴과 장기전 모두 딜이 대폭 상승합니다!<br>
+            2. <strong>초·중반 크리 확률 &amp; 표식 확률 균형 분배 :</strong> 크리 확률($P_{\text{크리}}$)과 표식 확률($P_{\text{표식}}$)은 서로 곱연산 시너지를 내므로, 한쪽에 몰빵하지 않고 <strong>크확 5/5·5/5(40%) + 표식확률 5/5·1/5(28%)</strong>를 먼저 맞춘 뒤 남는 포인트를 양쪽에 번갈아 투자합니다.<br>
+            3. <strong>Lv.90+ 크확 100% 달성 &amp; 은색~진홍 피해량 전역 최적화(Global DP) :</strong> Lv.90부터는 4줄 마지막 특화(<code>크확 100% 시 +2,000% 곱연산</code>) 발동을 위해 크확을 100%로 채우고, 실측된 은색 1~진홍 2 수치를 바탕으로 <strong>표식 2줄(8~10번 칸 확장)과 크피 2줄의 곱이 최대가 되는 황금 비율</strong>로 자동 배분합니다!
           </div>
         </div>
       `;
