@@ -13712,6 +13712,89 @@
     openDeepCalculator('tab-union');
   }
 
+  // ★ 소울커넥트 코어 인벤토리 설정 화면으로 원클릭 이동
+  function jumpToSoulConnectForMageSetup() {
+    switchMainMode('helpers');
+    openDeepCalculator('tab-connect');
+  }
+
+  // ★ 내 보유 소울커넥트 코어(ownedCoresMap)를 기반으로 [사신] vs [아크메이지] 최적 조합 & 배율을 각각 시뮬레이션!
+  function simulateSoulConnectForJob(targetJob, targetElem) {
+    const prevJob = currentConnectJob;
+    const prevElem = currentConnectElem;
+
+    currentConnectJob = targetJob;
+    currentConnectElem = targetElem;
+
+    const allInstances = [];
+    ownedCoresMap.forEach((cnt, key) => {
+      const [tier, coreId] = key.split('__');
+      const coreDef = CORE_TYPES_DB.find(c => c.id === coreId);
+      if (!coreDef) return;
+      for (let i = 0; i < cnt; i++) {
+        allInstances.push({
+          uid: `${key}__${i}`,
+          tier: tier,
+          core: coreDef,
+          copyIndex: i + 1
+        });
+      }
+    });
+
+    const candidatePool = [];
+    for (let num = 1; num <= 6; num++) {
+      const inGroup = allInstances.filter(inst => inst.core.num === num);
+      inGroup.sort((a, b) => getSingleInstanceScore(b) - getSingleInstanceScore(a));
+      const topInGroup = inGroup.slice(0, 2);
+      const bestValid = inGroup.find(inst => getEffectiveCoreStep(inst.core, inst.tier) > 0 && !inst.core.isHyperRate && !inst.core.isHyperDmg);
+      if (bestValid && !topInGroup.includes(bestValid)) topInGroup.push(bestValid);
+      const bestHyper = inGroup.find(inst => inst.core.isHyperRate || inst.core.isHyperDmg);
+      if (bestHyper && !topInGroup.includes(bestHyper)) topInGroup.push(bestHyper);
+      candidatePool.push(...topInGroup);
+    }
+
+    const K = Math.min(currentConnectStageSlots || 6, candidatePool.length);
+    let bestCombo = [];
+    let bestEval = { totalLog10: 0, groupMults: { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1 } };
+
+    if (K > 0) {
+      let bestLog = -1;
+      function dfs(startIdx, picked) {
+        if (picked.length === K) {
+          const ev = evaluateConnectCombo(picked);
+          if (ev.totalLog10 > bestLog) {
+            bestLog = ev.totalLog10;
+            bestCombo = [...picked];
+            bestEval = ev;
+          }
+          return;
+        }
+        for (let i = startIdx; i <= candidatePool.length - (K - picked.length); i++) {
+          picked.push(candidatePool[i]);
+          dfs(i + 1, picked);
+          picked.pop();
+        }
+      }
+      dfs(0, []);
+    }
+
+    bestCombo.sort((a, b) => a.core.num - b.core.num);
+
+    // 추천 조합 내 해당 직업 전용 유효 코어(1번 소울 강타/스킬, 4번 전직 대사신/미스틱) 포함 여부 확인
+    const jobValidCores = bestCombo.filter(inst => inst.core.jobReq === targetJob);
+
+    // 원래 선택 상태로 복구
+    currentConnectJob = prevJob;
+    currentConnectElem = prevElem;
+
+    return {
+      totalOwnedCount: allInstances.length,
+      bestCombo,
+      totalLog10: bestEval.totalLog10,
+      jobValidCores
+    };
+  }
+
   function getUnionSpecByName(type, targetName) {
     const catList = (SUMMON_ITEMS[type] && SUMMON_ITEMS[type].mythic) ? SUMMON_ITEMS[type].mythic : [];
     const idx = catList.findIndex(it => it.name.includes(targetName) || targetName.includes(it.name.split('(')[0].trim()));
@@ -13769,8 +13852,7 @@
     if (!transCheckState.anc2_pierce) missingReasons.push("❌ <strong>[2순위 고패 미완성]</strong> 필수 방무 고패 <strong>[근원관통]</strong>이 없습니다.");
     if (!transCheckState.anc3_elem)   missingReasons.push(`❌ <strong>[3순위 고패 미완성]</strong> ${elemKr} 주속성 고패 <strong>[${elemAncMeta.name}]</strong>이 없습니다.`);
 
-    // ★ 3. [핵심 추가!] 사신 주력 스킬·영웅 각성 < 아크메이지 전용 스킬·영웅 각성 비교 판정!
-    // (1) 앜메 3차 주력기: 10돌 이상 필수 & 사신 썬더 오빗보다 각성이 높아야 함 (단, 이미 3각 풀각이면 통과)
+    // 3. 사신 주력 스킬·영웅 각성 < 아크메이지 전용 스킬·영웅 각성 비교 판정
     const isMageMainAwkHigher = mageMainSkill.owned && mageMainSkill.brk >= 10 && (
       mageMainSkill.awk > reaperSkill.awk ||
       (mageMainSkill.awk === 3 && reaperSkill.awk === 3) ||
@@ -13785,7 +13867,6 @@
       missingReasons.push(`❌ <strong>[주력 스킬 각성 역전 미달]</strong> 아크메이지 <strong>[${mage3rdSkillName}(${mageMainSkill.awk}각)]</strong>의 각성 단계가 지금 끼고 있는 사신 <strong>[썬더 오빗(${reaperSkill.awk}각)]</strong>보다 더 높아야 합니다!`);
     }
 
-    // (2) 지옥불베기: 최소 9~10돌파 및 1각성 이상 권장
     const isHellSlashReady = mageSubSkill.owned && mageSubSkill.brk >= 9 && mageSubSkill.awk >= 1;
     if (!mageSubSkill.owned || mageSubSkill.brk < 9) {
       missingReasons.push(`❌ <strong>[지옥불베기 돌파 부족]</strong> 유니온 미등록 또는 9돌파 미만(현재 ${mageSubSkill.brk}돌)입니다.`);
@@ -13793,7 +13874,6 @@
       missingReasons.push(`❌ <strong>[지옥불베기 각성 부족]</strong> 아크메이지 전용 버프 <strong>[지옥불베기(현재 0각)]</strong>를 최소 1각성 이상 올린 뒤 전환하세요.`);
     }
 
-    // (3) 전용 영웅 맞대결: 카엔 각성이 사신 셀렌보다 높거나(또는 최소 1각+ & 스킬+영웅 총 각성 합 우위)
     const reaperTotalAwk = reaperSkill.awk + reaperHero.awk;
     const mageTotalAwk   = mageMainSkill.awk + mageSubSkill.awk + mageHero.awk;
     const isTotalAwkHigher = (mageTotalAwk > reaperTotalAwk) && (mageMainSkill.awk >= reaperSkill.awk);
@@ -13812,6 +13892,47 @@
 
     if (!isTotalAwkHigher && !(mageMainSkill.awk === 3 && mageSubSkill.awk === 3 && mageHero.awk === 3)) {
       missingReasons.push(`❌ <strong>[총 각성 수 미달]</strong> 현재 착용 중인 사신 주력기(썬더 오빗+셀렌 총 <strong>${reaperTotalAwk}각</strong>)보다 아크메이지 전용기(${mage3rdSkillName}+지옥불베기+카엔 총 <strong>${mageTotalAwk}각</strong>)의 각성 합이 더 높아야 딜이 오릅니다!`);
+    }
+
+    // ★ 4. [신규 핵심 조건!] 소울커넥트 코어 인벤토리 연동: 사신 코어 세팅 vs 아크메이지 코어 세팅 배율 비교!
+    const scReaper = simulateSoulConnectForJob('reaper', guideElem);
+    const scMage   = simulateSoulConnectForJob('mage', guideElem);
+
+    const hasOwnedCores = scMage.totalOwnedCount > 0;
+    const logDiff = scMage.totalLog10 - scReaper.totalLog10; // 양수면 앜메 우위, 음수면 사신 우위
+    const ratioMageVsReaper = Math.pow(10, Math.abs(logDiff));
+
+    let isSoulConnectPassed = false;
+    let scStatusTitle = "";
+    let scReasonDetail = "";
+
+    if (!hasOwnedCores) {
+      isSoulConnectPassed = false;
+      scStatusTitle = "❌ 소울 인벤토리 미입력 (클릭 필요)";
+      scReasonDetail = "소울커넥트 도우미에서 현재 보유 중인 소울(코어)들을 먼저 클릭해 주세요!";
+      missingReasons.push(`❌ <strong>[소울커넥트 보유 코어 미입력]</strong> <strong>[소울커넥트 코어 선택 도우미]</strong>에서 내가 보유한 소울(고대·신화·전설 등)을 먼저 클릭해 등록해 주세요!`);
+    } else if (scReaper.jobValidCores.length > 0 && scMage.jobValidCores.length === 0) {
+      // 사신 전용 유효 코어(소울 강타 / 전직:대사신)는 있는데, 아크메이지 유효 코어(소울 스킬 / 전직:미스틱)가 추천란에 아예 안 뜨는 경우
+      isSoulConnectPassed = false;
+      scStatusTitle = "❌ 아크메이지 유효 소울 부재 (사신 코어만 보유 중)";
+      scReasonDetail = `현재 사신 전용 코어(${scReaper.jobValidCores.map(x=>`${CORE_TIER_META[x.tier].kr} ${x.core.name}`).join(', ')})만 보유 중이며, 아크메이지 추천란에 [소울 스킬]이나 [전직:미스틱] 유효 코어가 없습니다!`;
+      missingReasons.push(`❌ <strong>[아크메이지 유효 소울(코어) 없음]</strong> 현재 사신 전용 소울만 보유 중이고 아크메이지 세팅 시 추천란에 <strong>[소울 스킬 / 전직:미스틱]</strong> 관련 유효 코어가 뜨지 않아 딜이 급감합니다!`);
+    } else if (logDiff >= -0.18) {
+      // 아크메이지 소울 배율이 더 높거나(logDiff >= 0), 사신보다 약간 낮더라도 딜 차이가 1.5배 이내(logDiff >= -0.18)로 거의 안 나는 경우 -> 전환 가능!
+      isSoulConnectPassed = true;
+      if (logDiff > 0.05) {
+        scStatusTitle = `✅ 아크메이지 소울 세팅 우위! (약 ${formatKoreanNumber(Math.round(ratioMageVsReaper))}배 더 강력)`;
+        scReasonDetail = `아크메이지 전환 시 소울커넥트 배율이 사신보다 약 ${formatKoreanNumber(Math.round(ratioMageVsReaper))}배 더 높게 나옵니다!`;
+      } else {
+        scStatusTitle = `✅ 통과 (사신·아크메이지 소울 배율 동급 / 딜 차이 거의 없음)`;
+        scReasonDetail = `사신 세팅과 아크메이지 세팅 간 소울커넥트 배율 차이가 거의 없어(약 ${ratioMageVsReaper.toFixed(2)}배 차이) 바로 전환 가능합니다!`;
+      }
+    } else {
+      // 사신 쪽에 고대 강타 등 고밸류 코어가 몰려 있어 아크메이지 전환 시 배율이 1.5배 이상 크게 떨어지는 경우 -> 전환 불가!
+      isSoulConnectPassed = false;
+      scStatusTitle = `❌ 사신 소울 세팅이 약 ${formatKoreanNumber(Math.round(ratioMageVsReaper))}배 더 강력함 (전환 시 딜 하락)`;
+      scReasonDetail = `보유 중인 사신 소울 세팅(고대 강타/대사신 등)의 배율이 아크메이지 세팅보다 약 ${formatKoreanNumber(Math.round(ratioMageVsReaper))}배 더 높습니다. 아크메이지용 소울(소울 스킬 / 전직:미스틱)을 더 확보한 뒤 전환하세요!`;
+      missingReasons.push(`❌ <strong>[소울커넥트 배율 열세]</strong> 현재 보유 소울 기준 사신 세팅이 아크메이지 세팅보다 <strong>약 ${formatKoreanNumber(Math.round(ratioMageVsReaper))}배</strong> 더 높습니다. 아크메이지 유효 소울(소울 스킬·미스틱)을 맞춘 뒤 전환하세요!`);
     }
 
     const isAllPassed = (missingReasons.length === 0);
@@ -13843,13 +13964,31 @@
       `;
     }
 
+    function renderMiniCoreList(simObj, jobFocus) {
+      if (!simObj || simObj.bestCombo.length === 0) {
+        return `<span style="color:#64748b; font-size:12px;">선택된 보유 소울 없음</span>`;
+      }
+      return simObj.bestCombo.map(inst => {
+        const tMeta = CORE_TIER_META[inst.tier];
+        const isJobCore = inst.core.jobReq === jobFocus;
+        const effStep = getEffectiveCoreStep(inst.core, inst.tier);
+        const tagStyle = isJobCore
+          ? 'border:1.5px solid #fde047; background:rgba(250,204,21,0.15); color:#fef08a;'
+          : (effStep > 0 ? 'border:1px solid #334155; background:#0f172a; color:#e2e8f0;' : 'border:1px dashed #475569; background:#090d16; color:#94a3b8;');
+        return `<span style="display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:6px; font-size:11.5px; font-weight:800; ${tagStyle}">
+          <span class="grade-badge ${tMeta.badge}" style="font-size:9.5px; padding:1px 4px;">${tMeta.kr}</span>
+          <span>${inst.core.num}번 ${inst.core.name}${effStep<=0 && !inst.core.isHyperRate && !inst.core.isHyperDmg ? '(깡공)' : ''}</span>
+        </span>`;
+      }).join(' ');
+    }
+
     const vsPassBool = isTotalAwkHigher || (mageMainSkill.awk === 3 && mageSubSkill.awk === 3 && mageHero.awk === 3);
 
     return `
-      <!-- 🔥⚡🌑 큼직하고 시원한 내 주속성 라디오 스위치 바 -->
+      <!-- 🔥⚡🌑 내 주속성 라디오 스위치 바 -->
       <div style="background:#0b1120; padding:12px 16px; border-radius:14px; border:2px solid #475569; margin-bottom:16px;">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-          <label style="color:#fbbf24; margin:0; font-size:13.5px; font-weight:900;">🔥 내 주속성 선택 (선택 시 주속성 고패 및 3차 딜스킬 자동 변경)</label>
+          <label style="color:#fbbf24; margin:0; font-size:13.5px; font-weight:900;">🔥 내 주속성 선택 (선택 시 주속성 고패 · 3차 딜스킬 · 소울 속성 자동 변경)</label>
           <span style="font-size:11px; color:#cbd5e1;">👆 클릭하여 전환</span>
         </div>
         <div class="radio-pill-group" style="gap:10px;">
@@ -13924,7 +14063,7 @@
       </div>
 
       <!-- STEP 3: 유니온 연동 스킬 & 영웅 각성 역전 비교 -->
-      <div style="background:#0f172a; border:1.5px solid #334155; border-radius:14px; padding:16px; margin-bottom:16px;">
+      <div style="background:#0f172a; border:1.5px solid #334155; border-radius:14px; padding:16px; margin-bottom:14px;">
         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
           <div>
             <div style="font-size:14px; font-weight:900; color:#ffffff;">3️⃣ 사신 주력기 VS 아크메이지 전용 스킬·영웅 각성 비교 (유니온 연동)</div>
@@ -13937,7 +14076,6 @@
           </button>
         </div>
 
-        <!-- ⚔️ 사신 vs 아크메이지 각성 합계 맞대결 바 -->
         <div style="background:#131d33; border:1.5px solid ${vsPassBool ? '#10b981' : '#ef4444'}; border-radius:10px; padding:10px 14px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
           <div style="font-size:12.5px; color:#fda4af; font-weight:800;">
             🗡️ 현재 사신 주력기: <strong style="color:#fff;">썬더 오빗(${reaperSkill.awk}각) + 셀렌(${reaperHero.awk}각) = 총 ${reaperTotalAwk}각</strong>
@@ -13958,15 +14096,49 @@
         </div>
       </div>
 
-      <!-- STEP 4: 최종 판정 결과 -->
+      <!-- ★ STEP 4: 소울커넥트 보유 소울(코어) 인벤토리 연동 비교 (신규 추가!) -->
+      <div style="background:#0f172a; border:1.5px solid #a855f7; border-radius:14px; padding:16px; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+          <div>
+            <div style="font-size:14px; font-weight:900; color:#ffffff;">4️⃣ 소울커넥트 보유 소울(코어) 세팅 비교 (소울 인벤토리 자동 연동)</div>
+            <div style="font-size:11.5px; color:#e9d5ff; font-weight:700; margin-top:2px;">
+              ★ 핵심 조건: <strong>[소울커넥트 도우미]</strong>에서 보유 소울을 모두 클릭해 주세요! 고대 강타만 있고 아크메이지 추천 소울이 없거나 배율이 크게 밀리면 전환 불가로 판정됩니다.
+            </div>
+          </div>
+          <button onclick="jumpToSoulConnectForMageSetup()" style="background:linear-gradient(135deg, #7e22ce 0%, #4c1d95 100%); border:1.5px solid #c084fc; color:#ffffff; padding:8px 14px; border-radius:9px; font-size:12px; font-weight:900; cursor:pointer;">
+            🪐 소울 인벤토리에 보유 소울 클릭하러 가기 ➔
+          </button>
+        </div>
+
+        <div style="background:#131d33; border:2px solid ${isSoulConnectPassed ? '#10b981' : '#ef4444'}; border-radius:12px; padding:12px 14px; margin-bottom:10px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+            <strong style="font-size:13.5px; color:${isSoulConnectPassed ? '#34d399' : '#fca5a5'};">${scStatusTitle}</strong>
+            <span style="font-size:11.5px; color:#cbd5e1;">현재 등록된 보유 소울: <strong style="color:#fde047;">${scMage.totalOwnedCount}개</strong></span>
+          </div>
+          <div style="font-size:12px; color:#e2e8f0; line-height:1.5;">${scReasonDetail}</div>
+        </div>
+
+        <div class="grid-2" style="gap:10px;">
+          <div style="background:#131d33; border:1px solid #334155; border-radius:10px; padding:10px 12px;">
+            <div style="font-size:12px; font-weight:800; color:#fda4af; margin-bottom:6px;">🗡️ [사신] 기준 추천 소울 세팅 (${currentConnectStageSlots || 6}슬롯)</div>
+            <div style="display:flex; flex-wrap:wrap; gap:5px;">${renderMiniCoreList(scReaper, 'reaper')}</div>
+          </div>
+          <div style="background:#131d33; border:1px solid #38bdf8; border-radius:10px; padding:10px 12px;">
+            <div style="font-size:12px; font-weight:800; color:#7dd3fc; margin-bottom:6px;">🔮 [아크메이지] 기준 추천 소울 세팅 (${currentConnectStageSlots || 6}슬롯)</div>
+            <div style="display:flex; flex-wrap:wrap; gap:5px;">${renderMiniCoreList(scMage, 'mage')}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5: 최종 판정 결과 -->
       ${isAllPassed ? `
         <div style="background:linear-gradient(135deg, #064e3b 0%, #022c22 100%); border:2px solid #10b981; border-radius:14px; padding:20px; text-align:center;">
           <div style="font-size:28px; margin-bottom:4px;">🎉</div>
           <div style="font-size:19px; font-weight:900; color:#34d399; margin-bottom:6px;">
-            모든 조건 충족! 지금 바로 [아크메이지(제네시스)]로 갈아타셔도 좋습니다!
+            모든 조건(고패 · 스킬/영웅 각성 · 소울커넥트) 충족! 지금 바로 [아크메이지]로 갈아타셔도 좋습니다!
           </div>
           <p style="font-size:13px; color:#d1fae5;">
-            아크메이지 핵심 스킬·영웅의 각성이 사신 세팅을 넘어섰습니다! 대낫 강타를 <strong>[강타 27단계 (고대 대낫 2 - 스킬 피해량 증폭 1,500%)]</strong>로 맞추고 전환하세요!
+            아크메이지 핵심 스킬·영웅 각성과 소울커넥트 세팅까지 모두 준비되었습니다! 대낫 강타를 <strong>[강타 27단계 (고대 대낫 2 - 스킬 피해량 증폭 1,500%)]</strong>로 맞추고 전환하세요!
           </p>
         </div>
       ` : `
