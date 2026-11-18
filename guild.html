@@ -432,6 +432,39 @@
       border-color: #eab308;
       border-style: dashed;
     }
+
+    /* 깔끔한 접이식 아코디언 공통 스타일 */
+    .acc-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .acc-arrow-pill {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #94a3b8;
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .acc-header-bar:hover .acc-arrow-pill {
+      color: #ffffff;
+      border-color: #38bdf8;
+    }
+    .acc-body-wrap {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .acc-collapsed .acc-body-wrap {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
@@ -473,101 +506,105 @@
       <a href="index.html" class="btn-home">🏠 메인 계산기로 돌아가기</a>
     </div>
 
+    <!-- 상단 시트 동기화 & 시즌 마감 상태 통합 바 -->
     <div class="sync-status-bar">
       <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-        <span id="sync_live_dot" style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
-        <strong id="sync_status_text" style="color:#ffffff;">구글 스프레드시트 실시간 연동 중</strong>
-        <span id="sync_compare_text" style="color:#c084fc; font-size:11.5px; font-weight:800;"></span>
-        <span id="sync_time_text" style="color:#94a3b8; font-size:11.5px;">(최근 동기화: 대기 중)</span>
+        <span id="sync_live_dot" style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
+        <strong id="sync_status_text" style="color:#ffffff;">구글 스프레드시트 연동 중</strong>
+        <span id="season_end_status_badge" style="padding:2px 9px; border-radius:6px; font-size:11.5px; font-weight:800; background:#1e293b; border:1px solid #475569; color:#cbd5e1;">
+          상태 확인 중
+        </span>
+        <span id="sync_time_text" style="color:#64748b; font-size:11.5px;"></span>
       </div>
-      <select id="season_select" onchange="onSeasonChange(this.value)" style="border-color:#38bdf8; font-weight:bold; color:#38bdf8; padding:6px 10px;">
-        <option value="">주차 불러오는 중...</option>
-      </select>
-      <div style="display:flex; align-items:center; gap:8px;">
-        <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; color:#fde047; font-weight:700;">
-          <input type="checkbox" id="chk_auto_refresh" onchange="toggleAutoRefresh(this.checked)" style="accent-color:#f59e0b; width:15px; height:15px;">
-          <span>⚡ 5초 자동 갱신 (마감 눈치싸움 모드)</span>
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <select id="season_select" onchange="onSeasonChange(this.value)" style="border-color:#38bdf8; font-weight:800; color:#38bdf8; padding:5px 10px; font-size:12.5px;">
+          <option value="">주차 불러오는 중...</option>
+        </select>
+        <label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-size:12px; color:#fde047; font-weight:700; background:#131d33; padding:5px 10px; border-radius:7px; border:1px solid #334155;">
+          <input type="checkbox" id="chk_auto_refresh" onchange="toggleAutoRefresh(this.checked)" style="accent-color:#f59e0b; width:14px; height:14px;">
+          <span>5초 자동 갱신</span>
         </label>
-        <button onclick="fetchSheetData(true)" class="action-btn" style="background:#0284c7;">🔄 지금 동기화</button>
+        <button onclick="fetchSheetData(true)" class="action-btn" style="background:#0284c7; padding:6px 12px;">동기화</button>
       </div>
     </div>
 
-    <!-- 👑 우리 길드 [기부랑길보필수] 실시간 브리핑 배너 -->
+    <!-- 우리 길드 [기부랑길보필수] 실시간 브리핑 배너 -->
     <div id="our_guild_briefing_container"></div>
 
-    <!-- 1. 전주 비교 스위치 & 비교 주차 선택 & 자동 스펙업/종료 상태 표시 바 -->
-    <div class="compare-control-bar">
-      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-        <label class="compare-toggle-label">
+    <!-- 깔끔하게 정돈된 분석 옵션 바 (이모티콘 제거, 좌/우 정돈) -->
+    <div class="compare-control-bar" style="padding:10px 16px;">
+      <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+        <label class="compare-toggle-label" style="padding:6px 12px; font-size:13px;">
           <input type="checkbox" id="chk_compare_prev" checked onchange="onGuildCompareConfigChange()">
-          <span>📊 전주 대비 진행률(%) 바 &amp; 스펙업 예측치(노란색) 보기</span>
+          <span>전주 대비 진행률(%) 및 예상치 바 표시</span>
         </label>
 
-        <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:#cbd5e1;">
-          <span>🆚 비교할 이전 주차:</span>
-          <select id="sel_prev_week" onchange="onPrevWeekSelectChange(this.value)" style="background:#0f172a; border:1px solid #475569; color:#fde047; padding:5px 10px; border-radius:8px; font-weight:800;">
+        <div style="display:flex; align-items:center; gap:6px; font-size:12.5px; color:#94a3b8;">
+          <span>비교 기준 주차:</span>
+          <select id="sel_prev_week" onchange="onPrevWeekSelectChange(this.value)" style="background:#0f172a; border:1px solid #475569; color:#fde047; padding:5px 10px; border-radius:7px; font-weight:800; font-size:12.5px;">
             <option value="">자동 탐색 중...</option>
           </select>
         </div>
       </div>
 
-      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:12px;">
-        <span id="season_end_status_badge" style="padding:5px 11px; border-radius:8px; font-weight:900; background:#0f172a; border:1px solid #475569; color:#cbd5e1;">
-          ⏳ 시즌 상태 확인 중...
-        </span>
-        <button type="button" id="btn_major_update_boost" onclick="toggleMajorUpdateBoost()" style="background:#1e293b; border:1.5px solid #64748b; color:#cbd5e1; padding:6px 12px; border-radius:9px; font-size:12px; font-weight:900; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
-          <span>🔥</span>
-          <span id="major_update_btn_text">이번 주 대형 업데이트(스펙업) 상향: OFF (평시 기준)</span>
-        </button>
-      </div>
+      <button type="button" id="btn_major_update_boost" onclick="toggleMajorUpdateBoost()" style="background:#1e293b; border:1.5px solid #475569; color:#cbd5e1; padding:6px 13px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; transition:all 0.2s;">
+        <span id="major_update_btn_text">대형 업데이트 스펙업 상향: OFF (평시 기준)</span>
+      </button>
     </div>
 
-    <!-- 2. 실시간 [기부랑길보필수] 최적 점령 구역 & 안전 컷 & 잔여 화력(참가비 포함) 분배 브리핑 -->
+    <!-- 1. AI 추천 브리핑 (접이식 아코디언) -->
     <div class="strategy-advisor-card" id="guild_strategy_advisor_box"></div>
 
-    <!-- 🎯 전 구역 1위·3위·5위 점수 컷 한눈에 비교 바 -->
+    <!-- 2. 전 구역 커트라인 비교 (접이식 아코디언) -->
     <div id="zone_cutline_summary_container"></div>
 
-    <!-- 🥷 이번 주 미출현(0점) 저번주 강호 길드 존버 감시 배너 -->
+    <!-- 3. 미출현(0점) 존버 감시 배너 -->
     <div id="missing_lurkers_container"></div>
 
+    <!-- 구역 선택 탭 -->
     <div class="zone-tabs-bar">
-      <div class="zone-tab-btn active" id="tab_all" onclick="switchZoneView('all')">🌐 전체 종합 순위</div>
-      <div class="zone-tab-btn tab-fire" id="tab_fire" onclick="switchZoneView('fire')">🔥 불꽃구역</div>
-      <div class="zone-tab-btn tab-ice" id="tab_ice" onclick="switchZoneView('ice')">❄️ 빙하구역</div>
-      <div class="zone-tab-btn tab-heaven" id="tab_heaven" onclick="switchZoneView('heaven')">⚡ 천상구역</div>
-      <div class="zone-tab-btn tab-grass" id="tab_grass" onclick="switchZoneView('grass')">🌱 초원구역</div>
-      <div class="zone-tab-btn tab-dark" id="tab_dark" onclick="switchZoneView('dark')">🌑 암흑구역</div>
-      <div class="zone-tab-btn tab-abyss" id="tab_abyss" onclick="switchZoneView('abyss')">👑 절대구역</div>
+      <div class="zone-tab-btn active" id="tab_all" onclick="switchZoneView('all')">전체 종합 순위</div>
+      <div class="zone-tab-btn tab-fire" id="tab_fire" onclick="switchZoneView('fire')">불꽃구역</div>
+      <div class="zone-tab-btn tab-ice" id="tab_ice" onclick="switchZoneView('ice')">빙하구역</div>
+      <div class="zone-tab-btn tab-heaven" id="tab_heaven" onclick="switchZoneView('heaven')">천상구역</div>
+      <div class="zone-tab-btn tab-grass" id="tab_grass" onclick="switchZoneView('grass')">초원구역</div>
+      <div class="zone-tab-btn tab-dark" id="tab_dark" onclick="switchZoneView('dark')">암흑구역</div>
+      <div class="zone-tab-btn tab-abyss" id="tab_abyss" onclick="switchZoneView('abyss')">절대구역</div>
     </div>
 
+    <!-- 4. 메인 리더보드 & 종합 순위 카드 (접이식 아코디언 적용) -->
     <div class="card" id="main_viewer_card" style="border-left: 4px solid var(--accent);">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+      <div class="acc-header-bar" onclick="toggleGuildSectionAccordion('main_viewer_card', 'main_viewer_acc_btn')">
         <div>
-          <h2 id="view_title" style="font-size:17.5px; font-weight:800; color:#fff;">🌐 길드 전체 종합 순위</h2>
-          <span id="view_subtitle" style="font-size:12.5px; color:#cbd5e1;">저번 주 대비 진행률(%) · 분산/몰빵/정찰 성향 태그 자동 분석</span>
+          <h2 id="view_title" style="font-size:17px; font-weight:800; color:#fff;">길드 전체 종합 순위</h2>
+          <span id="view_subtitle" style="font-size:12px; color:#94a3b8;">저번 주 대비 진행률(%) · 분산/몰빵/정찰 성향 태그 자동 분석</span>
         </div>
-        <div id="zone_search_box" style="display:flex; gap:8px; flex-wrap:wrap;">
-          <input type="text" id="guildSearchInput" placeholder="길드명 검색..." onkeyup="renderAllGuildCards()">
-          <select id="guildSortSelect" onchange="renderAllGuildCards()">
-            <option value="total">총 점수 높은 순</option>
-            <option value="stones">예상 각성석 많은 순</option>
-            <option value="prevTotal">저번 주 총점 높은 순 (체급순)</option>
-            <option value="lowProgress">전주 대비 진행률 낮은 순 (존버 찾기)</option>
-            <option value="count">출현 구역 많은 순</option>
-            <option value="name">길드명 가나다순</option>
-          </select>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;" onclick="event.stopPropagation();">
+          <div id="zone_search_box" style="display:flex; gap:6px; flex-wrap:wrap;">
+            <input type="text" id="guildSearchInput" placeholder="길드명 검색..." onkeyup="renderAllGuildCards()" style="padding:6px 10px; font-size:12.5px;">
+            <select id="guildSortSelect" onchange="renderAllGuildCards()" style="padding:6px 10px; font-size:12.5px;">
+              <option value="total">총 점수 높은 순</option>
+              <option value="stones">예상 각성석 많은 순</option>
+              <option value="prevTotal">저번 주 총점 높은 순 (체급순)</option>
+              <option value="lowProgress">전주 대비 진행률 낮은 순 (존버 찾기)</option>
+              <option value="count">출현 구역 많은 순</option>
+              <option value="name">길드명 가나다순</option>
+            </select>
+          </div>
+          <span class="acc-arrow-pill" id="main_viewer_acc_btn" onclick="toggleGuildSectionAccordion('main_viewer_card', 'main_viewer_acc_btn')">접기 ▲</span>
         </div>
       </div>
 
-      <!-- 태그 필터 칩 바 (전체 뷰 전용) -->
-      <div id="tag_filter_chips_bar" class="filter-chips-bar"></div>
+      <div class="acc-body-wrap">
+        <!-- 태그 필터 칩 바 (전체 뷰 전용) -->
+        <div id="tag_filter_chips_bar" class="filter-chips-bar"></div>
 
-      <!-- 전체 카드 뷰 -->
-      <div id="guildCardContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(335px, 1fr)); gap: 14px;"></div>
+        <!-- 전체 카드 뷰 -->
+        <div id="guildCardContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(335px, 1fr)); gap: 14px;"></div>
 
-      <!-- 구역별 리더보드 테이블 (1~50위) -->
-      <div id="zoneLeaderboardContainer" style="display: none;"></div>
+        <!-- 구역별 리더보드 테이블 (1~50위) -->
+        <div id="zoneLeaderboardContainer" style="display: none;"></div>
+      </div>
     </div>
   </div>
 
@@ -853,6 +890,22 @@
     return false;
   }
 
+  // 섹션별 아코디언 접기/펴기 상태 저장소
+  let guildAccCollapsed = {
+    guild_strategy_advisor_box: false,
+    zone_cutline_card_box: false,
+    main_viewer_card: false
+  };
+
+  function toggleGuildSectionAccordion(boxId, btnId) {
+    const box = document.getElementById(boxId);
+    const btn = document.getElementById(btnId);
+    if (!box) return;
+    const isNowCollapsed = box.classList.toggle('acc-collapsed');
+    guildAccCollapsed[boxId] = isNowCollapsed;
+    if (btn) btn.innerText = isNowCollapsed ? '펴기 ▼' : '접기 ▲';
+  }
+
   function updateSeasonEndBadgeUI() {
     const badgeEl = document.getElementById("season_end_status_badge");
     const liveDot = document.getElementById("sync_live_dot");
@@ -860,15 +913,15 @@
 
     if (badgeEl) {
       if (ended) {
-        badgeEl.style.background = "rgba(239, 68, 68, 0.2)";
+        badgeEl.style.background = "rgba(239, 68, 68, 0.18)";
         badgeEl.style.borderColor = "#ef4444";
         badgeEl.style.color = "#fca5a5";
-        badgeEl.innerHTML = `🔴 [${currentSelectedSheet}] 쟁탈전 종료됨 (일요일 23:50 마감 완료)`;
+        badgeEl.innerText = `마감 완료 (일요일 23:50 종료)`;
       } else {
         badgeEl.style.background = "rgba(16, 185, 129, 0.18)";
         badgeEl.style.borderColor = "#10b981";
         badgeEl.style.color = "#6ee7b7";
-        badgeEl.innerHTML = `🟢 [${currentSelectedSheet}] 쟁탈전 진행 중 (마감: 일요일 23:50)`;
+        badgeEl.innerText = `진행 중 (일요일 23:50 마감)`;
       }
     }
     if (liveDot) {
@@ -1275,18 +1328,22 @@
       return `<option value="${rNum}" ${selectedTargetCutRank === rNum ? 'selected' : ''}>🎯 ${rNum}위 컷 비교 (보상 ${rewardStone}개${bonusTxt})</option>`;
     }).join('');
 
+    const isCutCollapsed = !!guildAccCollapsed['zone_cutline_card_box'];
     box.innerHTML = `
-      <div style="background:#131d33; border:1.5px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:16px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+      <div id="zone_cutline_card_box" class="${isCutCollapsed ? 'acc-collapsed' : ''}" style="background:#131d33; border:1.5px solid #334155; border-radius:12px; padding:12px 16px; margin-bottom:16px;">
+        <div class="acc-header-bar" onclick="toggleGuildSectionAccordion('zone_cutline_card_box', 'cutline_acc_btn')">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <strong style="font-size:14px; color:#ffffff;">📊 전 구역 등수별 커트라인 비교 (1/2/3/4/5/10/20/50위)</strong>
-            <span style="font-size:11.5px; color:#94a3b8;">* 초록색 테두리 = 선택한 목표 등수 진입이 가장 쉬운 구역</span>
+            <strong style="font-size:14.5px; color:#ffffff;">전 구역 등수별 커트라인 비교 (1~50위)</strong>
+            <span style="font-size:11.5px; color:#94a3b8;">* 초록색 테두리 = 목표 등수 진입이 가장 쉬운 구역</span>
           </div>
-          <select onchange="onCutlineRankChange(this.value)" style="background:#0f172a; border:1.5px solid #38bdf8; color:#fde047; font-weight:800; font-size:12.5px; padding:6px 12px; border-radius:8px; cursor:pointer;">
-            ${optionsHtml}
-          </select>
+          <div style="display:flex; align-items:center; gap:8px;" onclick="event.stopPropagation();">
+            <select onchange="onCutlineRankChange(this.value)" style="background:#0f172a; border:1.5px solid #38bdf8; color:#fde047; font-weight:800; font-size:12px; padding:5px 10px; border-radius:7px; cursor:pointer;">
+              ${optionsHtml}
+            </select>
+            <span class="acc-arrow-pill" id="cutline_acc_btn" onclick="toggleGuildSectionAccordion('zone_cutline_card_box', 'cutline_acc_btn')">${isCutCollapsed ? '펴기 ▼' : '접기 ▲'}</span>
+          </div>
         </div>
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(172px, 1fr)); gap:8px;">
+        <div class="acc-body-wrap" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(172px, 1fr)); gap:8px;">
           ${cardsHtml}
         </div>
       </div>
@@ -1366,7 +1423,7 @@
 
     if (tabKey === 'all') {
       mainCard.style.borderLeftColor = "var(--accent)";
-      document.getElementById("view_title").innerText = "🌐 길드 전체 종합 순위";
+      document.getElementById("view_title").innerText = "길드 전체 종합 순위";
       document.getElementById("view_subtitle").innerText = "저번 주 대비 진행률(%) · 분산/몰빵/정찰 성향 태그 자동 분석";
       searchBox.style.display = "flex";
       chipsBar.style.display = "flex";
@@ -1416,14 +1473,14 @@
       btn.style.background = 'linear-gradient(135deg, #dc2626 0%, #991b1b 100%)';
       btn.style.borderColor = '#fde047';
       btn.style.color = '#ffffff';
-      btn.style.boxShadow = '0 0 14px rgba(239, 68, 68, 0.55)';
-      txt.innerHTML = '이번 주 대형 업데이트(v26.0) 스펙업 상향: <strong style="color:#fde047;">ON (+12%~+25% 상향됨)</strong>';
+      btn.style.boxShadow = '0 0 12px rgba(239, 68, 68, 0.45)';
+      txt.innerHTML = '대형 업데이트 스펙업 상향: <strong style="color:#fde047;">ON (+12%~+25%)</strong>';
     } else {
       btn.style.background = '#1e293b';
-      btn.style.borderColor = '#64748b';
+      btn.style.borderColor = '#475569';
       btn.style.color = '#cbd5e1';
       btn.style.boxShadow = 'none';
-      txt.innerHTML = '이번 주 대형 업데이트(스펙업) 상향: <strong>OFF (평시 보수적 +3%~+15%)</strong>';
+      txt.innerHTML = '대형 업데이트 스펙업 상향: <strong>OFF (평시 +3%~+15%)</strong>';
     }
   }
 
@@ -1691,22 +1748,30 @@
       `;
     }).join('');
 
+   if (guildAccCollapsed['guild_strategy_advisor_box']) {
+      box.classList.add('acc-collapsed');
+    } else {
+      box.classList.remove('acc-collapsed');
+    }
+    const isAdvCollapsed = !!guildAccCollapsed['guild_strategy_advisor_box'];
+
     box.innerHTML = `
-      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; border-bottom:1px solid rgba(251, 191, 36, 0.3); padding-bottom:10px;">
-        <div>
-          <span style="font-size:16px; font-weight:900; color:#fde047;">🧭 [${OUR_GUILD_NAME}] 1인 3타 &amp; 타 구역 분산 차감 실전 브리핑</span>
-          <p style="font-size:12px; color:#cbd5e1; margin-top:2px;">
-            경쟁 길드가 다른 구역에 분산 소모한 점수를 전주 총점에서 차감하여 '이 구역 실질 잔여 화력'을 계산하고, 3회 타격권 배분을 안내합니다.
-          </p>
+      <div class="acc-header-bar" onclick="toggleGuildSectionAccordion('guild_strategy_advisor_box', 'advisor_acc_btn')">
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <span style="font-size:16px; font-weight:900; color:#fde047;">AI 추천 브리핑</span>
+          <span style="font-size:12px; color:#94a3b8;">타 구역 분산 차감 예상치 &amp; 1인 3타 분배 가이드</span>
         </div>
-        <div style="background:#0f172a; border:1px solid #475569; border-radius:10px; padding:8px 14px; font-size:12px; color:#e2e8f0;">
-          ⚡ 우리 길드 현재 총합: <strong style="color:#38bdf8;">${ourCurTotal.toLocaleString()}점</strong>
-          <span style="margin:0 6px; color:#475569;">|</span>
-          🎯 <strong>기준 타격 단위: <span style="color:#fde047;">1타 약 5~7만 점 (3타 15~20만 점)</span></strong>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <div style="background:#0f172a; border:1px solid #334155; border-radius:8px; padding:4px 10px; font-size:11.5px; color:#cbd5e1;">
+            우리 길드 총합 <strong style="color:#38bdf8;">${ourCurTotal.toLocaleString()}점</strong> · 1타 기준 <strong style="color:#fde047;">5~7만점</strong>
+          </div>
+          <span class="acc-arrow-pill" id="advisor_acc_btn">${isAdvCollapsed ? '펴기 ▼' : '접기 ▲'}</span>
         </div>
       </div>
-      <div class="strategy-grid">
-        ${cardsHtml}
+      <div class="acc-body-wrap">
+        <div class="strategy-grid" style="margin-top:0;">
+          ${cardsHtml}
+        </div>
       </div>
     `;
   }
@@ -1960,6 +2025,7 @@
       if (tabEl) tabEl.innerHTML = `${ZONE_CONFIG[zk].icon} <span>${ZONE_CONFIG[zk].name}구역</span>`;
     });
     checkGateAuth();
+    updateMajorBoostBtnUI();
   });
 </script>
 
