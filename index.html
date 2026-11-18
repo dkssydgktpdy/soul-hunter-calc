@@ -15028,9 +15028,15 @@
     const styleEl = document.createElement('style');
     styleEl.id = 'shk_v390_patch_styles';
     styleEl.textContent = `
-      header { z-index: 9600 !important; }
-      header .header-content { z-index: 9601 !important; }
-      .global-omni-search-wrap:focus-within { z-index: 9700 !important; }
+     header {
+        z-index: 9600 !important;
+      }
+      header .header-content {
+        z-index: 9601 !important;
+      }
+      .global-omni-search-wrap:focus-within {
+        z-index: 9700 !important;
+      }
       .header-donation-wrap {
         position: relative;
         display: inline-block;
@@ -15050,54 +15056,65 @@
         font-size: 12.5px;
         font-weight: 800;
         cursor: pointer;
-        box-shadow: 0 4px 15px rgba(244, 114, 182, 0.35), inset 0 0 10px rgba(168, 85, 247, 0.25);
+        box-shadow: 0 4px 15px rgba(244, 114, 182, 0.35), inset 0 0 8px rgba(244, 114, 182, 0.2);
         transition: all 0.22s ease;
-        text-decoration: none;
       }
       .header-donation-btn:hover {
         transform: translateY(-2px) scale(1.03);
         border-color: #fde047;
-        box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5), 0 0 14px rgba(56, 189, 248, 0.5);
-        color: #ffffff;
+        box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5), 0 0 14px rgba(244, 114, 182, 0.55);
       }
-      .header-donation-popup {
+      .header-donation-popover {
         position: absolute;
-        top: calc(100% + 12px);
+        top: calc(100% + 10px);
         left: 50%;
-        transform: translateX(-50%) translateY(-8px);
-        width: 245px;
-        background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 100%);
+        width: 310px;
+        background: linear-gradient(160deg, #0f172a 0%, #1e1b4b 60%, #090d16 100%);
         border: 2px solid #38bdf8;
-        border-radius: 16px;
-        padding: 14px 12px;
-        box-shadow: 0 16px 38px rgba(0, 0, 0, 0.88), 0 0 22px rgba(56, 189, 248, 0.45);
+        border-radius: 18px;
+        padding: 16px 16px 14px 16px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.88), 0 0 24px rgba(56, 189, 248, 0.4);
         opacity: 0;
+        visibility: hidden;
+        transform: translateX(-50%) translateY(-8px) scale(0.97);
+        transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
         pointer-events: none;
-        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-        z-index: 999999;
         text-align: center;
+        z-index: 10001;
       }
-      .header-donation-popup::before {
-        content: "";
-        position: absolute;
-        top: -8px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 0 8px 8px 8px;
-        border-style: solid;
-        border-color: transparent transparent #38bdf8 transparent;
-      }
-      @media (hover: hover) and (pointer: fine) {
-        .header-donation-wrap:hover .header-donation-popup {
-          opacity: 1;
-          pointer-events: auto;
-          transform: translateX(-50%) translateY(0);
-        }
-      }
-      .header-donation-wrap.open-mobile .header-donation-popup {
+      .header-donation-wrap:hover .header-donation-popover,
+      .header-donation-wrap.open-mobile .header-donation-popover {
         opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0) scale(1);
         pointer-events: auto;
-        transform: translateX(-50%) translateY(0);
+      }
+      .donation-kakaopay-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        margin: 12px 0 10px 0;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #fee500 0%, #facc15 100%);
+        border: 2px solid #fef08a;
+        color: #191919 !important;
+        text-decoration: none !important;
+        font-size: 14px;
+        font-weight: 900;
+        box-shadow: 0 6px 18px rgba(250, 204, 21, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
+      }
+      .donation-kakaopay-btn:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 24px rgba(254, 229, 0, 0.65), 0 0 14px rgba(250, 204, 21, 0.6);
+        background: linear-gradient(135deg, #fff04d 0%, #fee500 100%);
+      }
+      .donation-kakaopay-btn:active {
+        transform: scale(0.98);
       }
 
       /* ★ [가시성 완벽 복구!] 유니온 스테이지 진행도 선택 라디오 버튼 활성/비활성 색상 */
@@ -17023,75 +17040,718 @@
     }
   }
 
-  // Base64에서 '+' 대신 '.'을 사용하여 하이픈('-') 블록 분리 시 절대 충돌하지 않도록 보정
-  const _origGenCode = generateReadableMasterSpecCode;
-  generateReadableMasterSpecCode = function() {
-    try {
-      const runeIndices = [];
-      if (typeof RUNE_DB !== 'undefined' && typeof ownedRunes !== 'undefined') {
-        RUNE_DB.forEach((r, idx) => { if (ownedRunes.has(r.id)) runeIndices.push(idx); });
-      }
-      const coreList = [];
-      if (typeof ownedCoresMap !== 'undefined') {
-        ownedCoresMap.forEach((cnt, k) => coreList.push([k, cnt]));
-      }
-      const compactUnion = { s: [], h: [] };
-      if (typeof unionUserSpecs !== 'undefined') {
-        Object.entries(unionUserSpecs.skill || {}).forEach(([uid, sp]) => {
-          if (sp && sp.owned) compactUnion.s.push([uid.replace('skill_', ''), sp.lv, sp.brk, sp.awk]);
-        });
-        Object.entries(unionUserSpecs.hero || {}).forEach(([uid, sp]) => {
-          if (sp && sp.owned) compactUnion.h.push([uid.replace('hero_', ''), sp.lv, sp.brk, sp.awk]);
-        });
-      }
-      const payload = {
-        v: 1,
-        j: typeof currentRuneJob !== 'undefined' ? currentRuneJob : 'reaper',
-        e: typeof currentRuneElem !== 'undefined' ? currentRuneElem : 'fire',
-        us: typeof currentUnionStageIdx !== 'undefined' ? currentUnionStageIdx : 9,
-        cs: typeof currentConnectStageSlots !== 'undefined' ? currentConnectStageSlots : 6,
-        rf: [masterEquipRefine.scythe, masterEquipRefine.orb, masterEquipRefine.accessory],
-        r: runeIndices,
-        c: coreList,
-        u: compactUnion,
-        eq: typeof equipInventories !== 'undefined' ? equipInventories : {},
-        inp: JSON.parse(localStorage.getItem(ALL_CALC_INPUTS_STORAGE_KEY) || '{}')
-      };
-      const jsonStr = JSON.stringify(payload);
-      const b64Safe = btoa(unescape(encodeURIComponent(jsonStr)))
-        .replace(/\+/g, '.')
-        .replace(/\//g, '_')
-        .replace(/=+$/, '');
-      const blocks = b64Safe.match(/.{1,6}/g)?.join('-') || b64Safe;
-      const jobKr = payload.j === 'reaper' ? '사신' : (payload.j === 'mage' ? '아크메이지' : '팬텀');
-      const elemKr = payload.e === 'fire' ? '화염' : (payload.e === 'light' ? '번개' : '어둠');
-      return `[소헌키스펙:${jobKr}/${elemKr}/룬${runeIndices.length}/소울${coreList.length}/유니온${compactUnion.s.length + compactUnion.h.length}]\nSHK-V1-${blocks}`;
-    } catch (e) { return ''; }
-  };
-
-  const _origApplyCode = applyMasterSpecCodeFromInput;
-  applyMasterSpecCodeFromInput = function() {
-    const area = document.getElementById('master_spec_code_textarea');
-    if (!area || !area.value.trim()) {
-      _origApplyCode();
-      return;
-    }
-    if (!confirm('⚠️ 스펙 코드를 불러오면 현재 기기에 저장된 기존 기록(유니온·룬·소울·연마·재화 입력값)이 모두 사라지고 새 코드의 데이터로 덮어씌워진 뒤 자동 저장됩니다.\n\n계속 진행하시겠습니까?')) {
-      return;
-    }
-    if (area.value.includes('SHK-V1-')) {
-      const parts = area.value.split('SHK-V1-');
-      const bodyClean = parts[1].replace(/[\s\-]/g, '').replace(/\./g, '-');
-      area.value = `SHK-V1-${bodyClean}`;
-    }
-    _origApplyCode();
-  };
-
+  // ==================== 🚀 [v.4.0.0 최종 완전체 (버그 픽스 완료)] 카톡 송금 배너 & 3슬롯 멀티 프리셋 엔진 ====================
   if (document.readyState === 'loading') {
     window.addEventListener('DOMContentLoaded', injectMasterInventorySystem);
   } else {
     injectMasterInventorySystem();
   }
+
+  (function applyArgonV400FinalCleanPatch() {
+    const SLOT_META_KEY = 'shk_v400_slot_meta';
+    const SLOT_DATA_PREFIX = 'shk_v400_slot_data_';
+
+    window.shkSlotMeta = {
+      activeSlot: 1,
+      names: { 1: '본계정', 2: '부계정', 3: '3계정' }
+    };
+
+    function loadSlotMeta() {
+      try {
+        const raw = localStorage.getItem(SLOT_META_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.activeSlot) window.shkSlotMeta.activeSlot = parseInt(parsed.activeSlot, 10) || 1;
+          if (parsed && parsed.names) {
+            window.shkSlotMeta.names[1] = parsed.names[1] || '본계정';
+            window.shkSlotMeta.names[2] = parsed.names[2] || '부계정';
+            window.shkSlotMeta.names[3] = parsed.names[3] || '3계정';
+          }
+        }
+      } catch (e) {}
+    }
+
+    function saveSlotMeta() {
+      try { localStorage.setItem(SLOT_META_KEY, JSON.stringify(window.shkSlotMeta)); } catch (e) {}
+    }
+
+    // 1. 모바일 vs PC 판별 및 카카오페이 송금 핸들러
+    window.isMobileDonationEnv = function() {
+      const ua = navigator.userAgent || '';
+      const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+      const isIPadOS = (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      return isMobileUA || isIPadOS;
+    };
+
+    window.handleDonationBtnClick = function(e) {
+      if (e) e.stopPropagation();
+      const donWrap = document.getElementById('header_donation_widget');
+      if (donWrap) {
+        if (!window.isMobileDonationEnv()) {
+          if (e) e.preventDefault();
+          alert('📱 카카오페이 송금은 모바일(스마트폰) 환경에서 지원됩니다.\n스마트폰으로 접속하신 뒤 노란색 카카오페이 버튼을 눌러주세요!');
+        } else {
+          donWrap.classList.remove('open-mobile');
+        }
+      }
+    };
+
+    window.donWrapToggleMobile = function(e) {
+      if (e) e.stopPropagation();
+      const donWrap = document.getElementById('header_donation_widget');
+      if (donWrap) donWrap.classList.toggle('open-mobile');
+    };
+
+    // 2. 카카오페이 노란색 그래픽 버튼 & 멀티 슬롯 전용 CSS 주입
+    function injectCleanPatchStyles() {
+      if (document.getElementById('argon_v400_clean_css')) return;
+      const st = document.createElement('style');
+      st.id = 'argon_v400_clean_css';
+      st.textContent = `
+        .donation-kakaopay-btn {
+          display: flex; align-items: center; justify-content: space-between; gap: 10px;
+          width: 100%; margin: 10px 0 8px 0; padding: 12px 16px; border-radius: 14px;
+          background: linear-gradient(135deg, #fee500 0%, #facc15 100%);
+          border: 2px solid #fef08a; color: #191919 !important; text-decoration: none !important;
+          font-size: 13.5px; font-weight: 900;
+          box-shadow: 0 6px 18px rgba(250, 204, 21, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer;
+        }
+        .donation-kakaopay-btn:hover {
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: 0 8px 24px rgba(254, 229, 0, 0.7), 0 0 14px rgba(250, 204, 21, 0.6);
+          background: linear-gradient(135deg, #fff04d 0%, #fee500 100%);
+        }
+        .donation-kakaopay-btn:active { transform: scale(0.98); }
+
+        .slot-switcher-bar {
+          display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+          background: #090d16; padding: 3px; border-radius: 8px; border: 1px solid #334155;
+        }
+        .slot-pill-btn {
+          background: transparent; border: 1px solid transparent; color: #94a3b8;
+          font-size: 10.5px; font-weight: 800; padding: 4px 6px; border-radius: 6px;
+          cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+          transition: all 0.15s; text-align: center;
+        }
+        .slot-pill-btn:hover { color: #e2e8f0; background: rgba(255,255,255,0.05); }
+        .slot-pill-btn.active {
+          background: linear-gradient(135deg, #0284c7 0%, #1e3a8a 100%);
+          border-color: #38bdf8; color: #ffffff; box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+        /* 메인 인벤토리 버튼 우측 슬롯 스위치 박스 */
+        .main-banner-slot-box {
+          display: inline-flex; align-items: center; gap: 6px;
+          background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+          border: 2px solid #38bdf8; border-radius: 14px; padding: 6px 10px;
+          box-shadow: 0 6px 20px rgba(56, 189, 248, 0.25); vertical-align: middle;
+        }
+        /* 모바일에서도 우측 상단에 작게 팝업처럼 고정되어 따라다니도록 강제 적용 */
+        @media (max-width: 768px) {
+          .top-right-floating-widget {
+            position: fixed !important; top: 8px !important; right: 8px !important;
+            width: auto !important; min-width: 175px !important; max-width: 215px !important;
+            flex-direction: column !important; align-items: stretch !important;
+            padding: 6px 8px !important; gap: 4px !important; z-index: 9998 !important;
+            background: rgba(15, 23, 42, 0.95) !important; border: 1.5px solid #38bdf8 !important;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.75) !important;
+          }
+          .slot-widget-row { width: 100% !important; order: -1; }
+          .save-status-row, .save-btn-row { display: none !important; } /* 모바일에선 슬롯 스위치만 작고 깔끔하게 노출 */
+        }
+      `;
+      document.head.appendChild(st);
+    }
+
+    // 3. 후원 위젯 QR -> 카카오페이 그래픽 링크 배너 교체
+    function upgradeDonationAndCleanButtons() {
+      const oldFloatInvBtn = document.getElementById('btn_open_master_inv');
+      if (oldFloatInvBtn) oldFloatInvBtn.remove();
+
+      const donWrap = document.getElementById('header_donation_widget');
+      if (!donWrap) return;
+
+      const kakaoSvgIcon = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;">
+          <rect width="24" height="24" rx="6" fill="#191919"/>
+          <path d="M12 5.5C7.85 5.5 4.5 8.12 4.5 11.35C4.5 13.43 5.88 15.25 7.97 16.29L7.12 19.38C7.05 19.64 7.35 19.85 7.58 19.69L11.23 17.15C11.48 17.18 11.74 17.2 12 17.2C16.15 17.2 19.5 14.58 19.5 11.35C19.5 8.12 16.15 5.5 12 5.5Z" fill="#FEE500"/>
+          <text x="12" y="13.2" text-anchor="middle" fill="#191919" font-size="6.2" font-weight="900" font-family="sans-serif">pay</text>
+        </svg>
+      `;
+
+      donWrap.innerHTML = `
+        <button type="button" class="header-donation-btn" onclick="donWrapToggleMobile(event)">
+          ${typeof CUSTOM_SVG_ART !== 'undefined' && CUSTOM_SVG_ART.donation ? CUSTOM_SVG_ART.donation : '☕'}
+          <span>겨울눈사람에게 따뜻한 커피 한 잔 후원하기</span>
+        </button>
+        <div class="header-donation-popover" onclick="event.stopPropagation()">
+          <div style="font-size:13.5px; font-weight:900; color:#fde047; margin-bottom:5px; display:flex; align-items:center; justify-content:center; gap:5px;">
+            <span>💛</span><span>개발자 후원하기 (카카오페이)</span>
+          </div>
+          <div style="font-size:11.5px; color:#cbd5e1; line-height:1.45; margin-bottom:8px; word-break:keep-all;">
+            보내주시는 따뜻한 커피 한 잔은 더 완벽한 공략 툴과 업데이트 개발에 큰 힘이 됩니다! 진심으로 감사합니다.
+          </div>
+          <a href="https://qr.kakaopay.com/281006011000086242274942" target="_blank" rel="noopener noreferrer"
+             class="donation-kakaopay-btn" onclick="handleDonationBtnClick(event)">
+            <div style="display:flex; align-items:center; gap:8px;">
+              ${kakaoSvgIcon}
+              <div style="text-align:left; line-height:1.2;">
+                <div style="font-size:13.5px; font-weight:900; color:#191919;">카카오페이로 바로 송금</div>
+                <div style="font-size:10px; font-weight:700; color:#4b5563;">모바일 터치 시 송금 창 연결</div>
+              </div>
+            </div>
+            <span style="font-size:15px; font-weight:900; color:#191919;">➔</span>
+          </a>
+          <div style="font-size:10.5px; color:#94a3b8; line-height:1.4; background:rgba(15,23,42,0.7); padding:6px 8px; border-radius:8px; border:1px solid #334155;">
+            📱 <strong style="color:#38bdf8;">모바일:</strong> 위 노란색 버튼 터치 시 카카오톡 송금 바로 연동<br>
+            💻 <strong style="color:#fde047;">PC 환경:</strong> 스마트폰으로 접속 후 터치해 주세요!
+          </div>
+        </div>
+      `;
+    }
+
+    // 4. 스펙 코드 생성기: '+' 대신 '.' 사용하여 하이픈 분리 시 충돌 방지 + 현재 슬롯 이름(sn) 포함!
+    window.generateReadableMasterSpecCode = function() {
+      try {
+        const curSlot = window.shkSlotMeta.activeSlot || 1;
+        const slotName = window.shkSlotMeta.names[curSlot] || `슬롯 ${curSlot}`;
+
+        const runeIndices = [];
+        if (typeof RUNE_DB !== 'undefined' && typeof ownedRunes !== 'undefined') {
+          RUNE_DB.forEach((r, idx) => { if (ownedRunes.has(r.id)) runeIndices.push(idx); });
+        }
+        const coreList = [];
+        if (typeof ownedCoresMap !== 'undefined') {
+          ownedCoresMap.forEach((cnt, k) => coreList.push([k, cnt]));
+        }
+        const compactUnion = { s: [], h: [] };
+        if (typeof unionUserSpecs !== 'undefined') {
+          Object.entries(unionUserSpecs.skill || {}).forEach(([uid, sp]) => {
+            if (sp && sp.owned) compactUnion.s.push([uid.replace('skill_', ''), sp.lv, sp.brk, sp.awk]);
+          });
+          Object.entries(unionUserSpecs.hero || {}).forEach(([uid, sp]) => {
+            if (sp && sp.owned) compactUnion.h.push([uid.replace('hero_', ''), sp.lv, sp.brk, sp.awk]);
+          });
+        }
+        const payload = {
+          v: 1,
+          sn: slotName,
+          j: typeof currentRuneJob !== 'undefined' ? currentRuneJob : 'reaper',
+          e: typeof currentRuneElem !== 'undefined' ? currentRuneElem : 'fire',
+          us: typeof currentUnionStageIdx !== 'undefined' ? currentUnionStageIdx : 9,
+          cs: typeof currentConnectStageSlots !== 'undefined' ? currentConnectStageSlots : 6,
+          rf: [masterEquipRefine.scythe, masterEquipRefine.orb, masterEquipRefine.accessory],
+          r: runeIndices,
+          c: coreList,
+          u: compactUnion,
+          eq: typeof equipInventories !== 'undefined' ? equipInventories : {},
+          inp: JSON.parse(localStorage.getItem(ALL_CALC_INPUTS_STORAGE_KEY) || '{}')
+        };
+        const jsonStr = JSON.stringify(payload);
+        const b64Safe = btoa(unescape(encodeURIComponent(jsonStr)))
+          .replace(/\+/g, '.')
+          .replace(/\//g, '_')
+          .replace(/=+$/, '');
+        const blocks = b64Safe.match(/.{1,6}/g)?.join('-') || b64Safe;
+        const jobKr = payload.j === 'reaper' ? '사신' : (payload.j === 'mage' ? '아크메이지' : '팬텀');
+        const elemKr = payload.e === 'fire' ? '화염' : (payload.e === 'light' ? '번개' : '어둠');
+        return `[소헌키스펙:${slotName}/${jobKr}/${elemKr}/룬${runeIndices.length}/소울${coreList.length}/유니온${compactUnion.s.length + compactUnion.h.length}]\nSHK-V1-${blocks}`;
+      } catch (e) { return ''; }
+    };
+
+    // 5. 현재 슬롯의 4대 로컬 스토리지 스냅샷 캡처 & 복원 엔진
+    function captureCurrentFullState() {
+      return {
+        s300: localStorage.getItem(STORAGE_KEY) || null,
+        union: localStorage.getItem(UNION_STORAGE_KEY_FINAL) || null,
+        calc: localStorage.getItem(ALL_CALC_INPUTS_STORAGE_KEY) || null,
+        minv: localStorage.getItem(MASTER_INV_STORAGE_KEY) || null
+      };
+    }
+
+    function syncActiveSlotStorage() {
+      try {
+        const s = window.shkSlotMeta.activeSlot || 1;
+        localStorage.setItem(SLOT_DATA_PREFIX + s, JSON.stringify(captureCurrentFullState()));
+      } catch (e) {}
+    }
+
+    // 최초 순정 HTML 초기값 백업 (빈 슬롯 전환 시 완벽 리셋용)
+    const INITIAL_DOM_DEFAULTS = {};
+    function recordInitialDomDefaults() {
+      if (Object.keys(INITIAL_DOM_DEFAULTS).length > 0) return;
+      document.querySelectorAll('input[id], select[id]').forEach(el => {
+        if (el.id === 'global_omni_input' || el.id === 'rune_search_input' || el.id === 'union_search_input') return;
+        INITIAL_DOM_DEFAULTS[el.id] = (el.type === 'checkbox') ? el.defaultChecked : el.value;
+      });
+    }
+
+    function resetDomInputsToInitial() {
+      Object.entries(INITIAL_DOM_DEFAULTS).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (el.type === 'checkbox') el.checked = Boolean(val);
+        else el.value = val;
+      });
+    }
+
+    // 현재 열려있는 화면만 스마트하게 1번 갱신하는 초경량 함수
+    function refreshCurrentVisibleViewsOnly() {
+      ['reaper', 'mage', 'lord'].forEach(j => {
+        document.getElementById('rune_job_' + j)?.classList.toggle('selected', j === currentRuneJob);
+        document.getElementById('sc_job_' + j)?.classList.toggle('selected', j === currentConnectJob);
+      });
+      ['fire', 'light', 'dark'].forEach(e => {
+        document.getElementById('rune_elem_' + e)?.classList.toggle('selected', e === currentRuneElem);
+        document.getElementById('sc_elem_' + e)?.classList.toggle('selected', e === currentConnectElem);
+      });
+      [3, 4, 5, 6].forEach(s => {
+        document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === currentConnectStageSlots);
+      });
+
+      // 무거운 도감 아코디언은 해당 탭이 실제로 열려있을 때만 렌더링!
+      if (document.getElementById('newbie_rune_view')?.style.display !== 'none') {
+        if (typeof renderRuneHelperAccordions === 'function') renderRuneHelperAccordions();
+      }
+      if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+
+      if (document.getElementById('tab-connect')?.style.display !== 'none') {
+        if (typeof renderConnectAccordions === 'function') renderConnectAccordions();
+      }
+      if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
+
+      if (document.getElementById('tab-union')?.style.display !== 'none') {
+        if (typeof renderUnionStageButtons === 'function') {
+          renderUnionStageButtons();
+          renderUnionBoardAndSynergy();
+          renderUnionRosterAccordions();
+        }
+      }
+      if (document.getElementById('master_inv_modal_overlay')?.style.display === 'flex') {
+        if (typeof refreshMasterInventoryModalUI === 'function') refreshMasterInventoryModalUI();
+      }
+    }
+
+    function clearMemoryStateForEmptySlot(skipRender) {
+      if (typeof saveDebounceTimer !== 'undefined' && saveDebounceTimer) {
+        clearTimeout(saveDebounceTimer);
+        saveDebounceTimer = null;
+      }
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(UNION_STORAGE_KEY_FINAL);
+      localStorage.removeItem(ALL_CALC_INPUTS_STORAGE_KEY);
+      localStorage.removeItem(MASTER_INV_STORAGE_KEY);
+
+      resetDomInputsToInitial();
+
+      if (typeof selectedAncients !== 'undefined') selectedAncients.clear();
+      if (typeof excludedMaterials !== 'undefined') excludedMaterials.clear();
+      if (typeof ownedRunes !== 'undefined') ownedRunes.clear();
+      if (typeof ownedCoresMap !== 'undefined') ownedCoresMap.clear();
+      if (typeof equipInventories !== 'undefined') equipInventories = { scythe: {}, orb: {}, accessory: {} };
+      if (typeof unionUserSpecs !== 'undefined') unionUserSpecs = { skill: {}, hero: {} };
+      if (typeof currentUnionStageIdx !== 'undefined') currentUnionStageIdx = 0;
+      if (typeof masterEquipRefine !== 'undefined') masterEquipRefine = { scythe: 15, orb: 15, accessory: 15 };
+
+      currentRuneJob = currentConnectJob = guideJob = 'reaper';
+      currentRuneElem = currentConnectElem = guideElem = 'fire';
+      currentConnectStageSlots = 6;
+
+      if (!skipRender) refreshCurrentVisibleViewsOnly();
+    }
+
+    function applySnapshotToLiveApp(snapshot) {
+      const hasData = snapshot && (snapshot.s300 || snapshot.union || snapshot.calc || snapshot.minv);
+      // 데이터가 있는 슬롯이면 빈 화면 렌더링(skipRender = true)을 건너뛰고 바로 로드!
+      clearMemoryStateForEmptySlot(Boolean(hasData));
+
+      if (hasData) {
+        isRestoringState = true;
+        isRestoringCalcInputs = true;
+        try {
+          if (snapshot.s300) { localStorage.setItem(STORAGE_KEY, snapshot.s300); loadUserSettings(); }
+          if (snapshot.union) { localStorage.setItem(UNION_STORAGE_KEY_FINAL, snapshot.union); loadUnionDataFromLocal(); }
+          if (snapshot.calc) { localStorage.setItem(ALL_CALC_INPUTS_STORAGE_KEY, snapshot.calc); loadAllResourceCalcInputs(); }
+          if (snapshot.minv) { localStorage.setItem(MASTER_INV_STORAGE_KEY, snapshot.minv); loadMasterInvExtraState(); }
+        } finally {
+          isRestoringState = false;
+          isRestoringCalcInputs = false;
+        }
+        refreshCurrentVisibleViewsOnly();
+      }
+      updateAllSlotUI();
+    }
+
+    // 6. 슬롯 전환 (1, 2, 3)
+    window.switchAccountSlot = function(slotNum) {
+      const target = parseInt(slotNum, 10);
+      if (![1, 2, 3].includes(target) || target === window.shkSlotMeta.activeSlot) return;
+
+      // 대기 중인 자동 저장 타이머 즉시 취소 후 현재 슬롯 상태 확정 저장
+      if (typeof saveDebounceTimer !== 'undefined' && saveDebounceTimer) {
+        clearTimeout(saveDebounceTimer);
+        saveDebounceTimer = null;
+      }
+      if (typeof saveUserSettings === 'function') saveUserSettings(false);
+      if (typeof saveUnionDataToLocal === 'function') saveUnionDataToLocal(false);
+      if (typeof saveAllResourceCalcInputs === 'function') saveAllResourceCalcInputs();
+      if (typeof saveMasterInvExtraState === 'function') saveMasterInvExtraState();
+      syncActiveSlotStorage();
+
+      // 새 슬롯으로 번호 변경
+      window.shkSlotMeta.activeSlot = target;
+      saveSlotMeta();
+
+      let targetSnap = null;
+      try {
+        const raw = localStorage.getItem(SLOT_DATA_PREFIX + target);
+        if (raw) targetSnap = JSON.parse(raw);
+      } catch (e) {}
+
+      applySnapshotToLiveApp(targetSnap);
+
+      const widget = document.getElementById('floating_save_widget');
+      const ind = document.getElementById('save_status_indicator');
+      if (widget) {
+        widget.classList.add('saved-flash');
+        setTimeout(() => widget.classList.remove('saved-flash'), 700);
+      }
+      if (ind) {
+        const sName = window.shkSlotMeta.names[target] || `슬롯 ${target}`;
+        ind.innerHTML = `<span>✅ [${sName}] 전환됨</span><span style="font-size:10px; font-weight:normal;">슬롯 ${target}</span>`;
+      }
+    };
+
+    window.renameActiveAccountSlot = function() {
+      const cur = window.shkSlotMeta.activeSlot || 1;
+      const curName = window.shkSlotMeta.names[cur] || `슬롯 ${cur}`;
+      const newName = prompt(`✏️ [${cur}번 슬롯]의 새 이름을 입력하세요 (최대 12자, 예: 본계정, 부계정, 사신부계):`, curName);
+      if (newName === null) return;
+      window.shkSlotMeta.names[cur] = newName.trim().slice(0, 12) || `슬롯 ${cur}`;
+      saveSlotMeta();
+      updateAllSlotUI();
+      if (typeof refreshMasterInventoryModalUI === 'function') refreshMasterInventoryModalUI();
+    };
+
+    function updateAllSlotUI() {
+      const cur = window.shkSlotMeta.activeSlot || 1;
+      [1, 2, 3].forEach(n => {
+        const name = window.shkSlotMeta.names[n] || `슬롯 ${n}`;
+        const fBtn = document.getElementById(`float_slot_btn_${n}`);
+        if (fBtn) {
+          fBtn.classList.toggle('active', n === cur);
+          fBtn.innerText = `${n}. ${name}`;
+        }
+        const bBtn = document.getElementById(`banner_slot_btn_${n}`);
+        if (bBtn) {
+          bBtn.classList.toggle('active', n === cur);
+          bBtn.innerText = `${n}. ${name}`;
+        }
+        const mBtn = document.getElementById(`modal_slot_btn_${n}`);
+        if (mBtn) {
+          mBtn.classList.toggle('active', n === cur);
+          mBtn.innerHTML = `<span style="color:#fde047;">#${n}</span> ${name}`;
+        }
+      });
+      const activeBadge = document.getElementById('modal_active_slot_label');
+      if (activeBadge) activeBadge.innerText = `현재 선택: #${cur} ${window.shkSlotMeta.names[cur]}`;
+    }
+
+    function injectMultiSlotUI() {
+      // (A) 우측 상단 플로팅 위젯 (PC·모바일 공통 상단 고정 팝업형)
+      const floatWidget = document.getElementById('floating_save_widget');
+      if (floatWidget && !document.getElementById('float_slot_switcher')) {
+        const slotRow = document.createElement('div');
+        slotRow.id = 'float_slot_switcher';
+        slotRow.className = 'slot-widget-row';
+        slotRow.innerHTML = `
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:4px; margin-bottom:3px;">
+            <span style="font-size:10px; font-weight:800; color:#7dd3fc;">👥 계정 슬롯</span>
+            <button type="button" onclick="renameActiveAccountSlot()" style="background:none; border:none; color:#fde047; font-size:10px; font-weight:800; cursor:pointer; padding:0;">✏️ 이름변경</button>
+          </div>
+          <div class="slot-switcher-bar">
+            <button type="button" class="slot-pill-btn active" id="float_slot_btn_1" onclick="switchAccountSlot(1)">1. 본계정</button>
+            <button type="button" class="slot-pill-btn" id="float_slot_btn_2" onclick="switchAccountSlot(2)">2. 부계정</button>
+            <button type="button" class="slot-pill-btn" id="float_slot_btn_3" onclick="switchAccountSlot(3)">3. 3계정</button>
+          </div>
+        `;
+        floatWidget.insertBefore(slotRow, floatWidget.firstChild);
+      }
+
+      // (B) 메인 배너 [내 통합 인벤토리 열기] 버튼 바로 오른쪽에 슬롯 전환 배너 추가!
+      const mainInvBtn = document.querySelector('button[onclick="openMasterInventoryModal()"]');
+      if (mainInvBtn && mainInvBtn.parentElement && !document.getElementById('main_banner_slot_switcher')) {
+        const parentDiv = mainInvBtn.parentElement;
+        parentDiv.style.cssText = 'display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px; margin-bottom:20px;';
+        const bannerSlot = document.createElement('div');
+        bannerSlot.id = 'main_banner_slot_switcher';
+        bannerSlot.className = 'main-banner-slot-box';
+        bannerSlot.innerHTML = `
+          <span style="font-size:12px; font-weight:900; color:#7dd3fc; padding-left:4px;">👥 슬롯:</span>
+          <div class="slot-switcher-bar" style="min-width:210px;">
+            <button type="button" class="slot-pill-btn active" id="banner_slot_btn_1" onclick="switchAccountSlot(1)" style="font-size:12px; padding:6px 8px;">1. 본계정</button>
+            <button type="button" class="slot-pill-btn" id="banner_slot_btn_2" onclick="switchAccountSlot(2)" style="font-size:12px; padding:6px 8px;">2. 부계정</button>
+            <button type="button" class="slot-pill-btn" id="banner_slot_btn_3" onclick="switchAccountSlot(3)" style="font-size:12px; padding:6px 8px;">3. 3계정</button>
+          </div>
+          <button type="button" onclick="renameActiveAccountSlot()" style="background:#1e293b; border:1px solid #fde047; color:#fef08a; font-size:11.5px; font-weight:800; padding:6px 8px; border-radius:8px; cursor:pointer;" title="현재 슬롯 이름 변경">✏️</button>
+        `;
+        parentDiv.appendChild(bannerSlot);
+      }
+
+      // (C) 통합 인벤토리 모달 내부 상단
+      const modalBox = document.querySelector('#master_inv_modal_overlay .help-modal-box');
+      const modalHeader = modalBox ? modalBox.querySelector('.help-modal-header') : null;
+      if (modalBox && modalHeader && !document.getElementById('modal_slot_manager_box')) {
+        const slotBox = document.createElement('div');
+        slotBox.id = 'modal_slot_manager_box';
+        slotBox.style.cssText = 'border:1.5px solid rgba(16,185,129,0.55); background:linear-gradient(135deg, rgba(6,78,59,0.35) 0%, #0f172a 100%); border-radius:14px; padding:14px 16px; margin-bottom:14px;';
+        slotBox.innerHTML = `
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
+            <strong style="font-size:13.5px; color:#6ee7b7;">👥 부계정 다중 슬롯 관리 (로컬 최대 3슬롯 독립 저장)</strong>
+            <span id="modal_active_slot_label" style="font-size:11.5px; color:#fde047; font-weight:800;">현재 선택: #1 본계정</span>
+          </div>
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr) auto; gap:8px; align-items:center; margin-bottom:10px;">
+            <button type="button" class="slot-pill-btn active" id="modal_slot_btn_1" onclick="switchAccountSlot(1)" style="padding:9px 8px; font-size:13px; border-radius:9px;">#1 본계정</button>
+            <button type="button" class="slot-pill-btn" id="modal_slot_btn_2" onclick="switchAccountSlot(2)" style="padding:9px 8px; font-size:13px; border-radius:9px;">#2 부계정</button>
+            <button type="button" class="slot-pill-btn" id="modal_slot_btn_3" onclick="switchAccountSlot(3)" style="padding:9px 8px; font-size:13px; border-radius:9px;">#3 3계정</button>
+            <button type="button" onclick="renameActiveAccountSlot()" style="background:#1e293b; border:1.5px solid #fde047; color:#fef08a; font-size:12px; font-weight:800; padding:9px 12px; border-radius:9px; cursor:pointer; white-space:nowrap;">✏️ 슬롯 이름 변경</button>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; font-size:11.5px; color:#cbd5e1; background:rgba(15,23,42,0.75); padding:8px 12px; border-radius:8px; border:1px solid #334155;">
+            <span>💡 <strong>개별 슬롯 코드(SHK-V1)</strong>는 슬롯 이름까지 함께 저장되며, <strong>3슬롯 전체 코드(SHK-ALL)</strong>로 본계·부계를 한 번에 백업할 수도 있습니다!</span>
+            <button type="button" onclick="copyAllSlotsBackupCode()" style="background:linear-gradient(135deg, #059669 0%, #047857 100%); border:1px solid #34d399; color:#ffffff; font-size:11.5px; font-weight:800; padding:6px 12px; border-radius:7px; cursor:pointer; white-space:nowrap;">📦 3슬롯 전체 통합 코드 복사</button>
+          </div>
+        `;
+        modalHeader.insertAdjacentElement('afterend', slotBox);
+      }
+      updateAllSlotUI();
+    }
+
+    // 모달을 열 때마다 3슬롯 박스가 확실히 존재하고 최신 슬롯명을 보여주도록 openMasterInventoryModal 래핑
+    if (typeof window.openMasterInventoryModal === 'function') {
+      const _origOpenModal = window.openMasterInventoryModal;
+      window.openMasterInventoryModal = function() {
+        _origOpenModal();
+        injectMultiSlotUI();
+        updateAllSlotUI();
+      };
+    }
+
+    // 7. 3슬롯 전체 통합 코드(SHK-ALL-...) 복사 및 단일/통합 코드 불러오기 완벽 통합
+    window.copyAllSlotsBackupCode = function() {
+      try {
+        if (typeof saveUserSettings === 'function') saveUserSettings(false);
+        if (typeof saveUnionDataToLocal === 'function') saveUnionDataToLocal(false);
+        if (typeof saveAllResourceCalcInputs === 'function') saveAllResourceCalcInputs();
+        if (typeof saveMasterInvExtraState === 'function') saveMasterInvExtraState();
+        syncActiveSlotStorage();
+
+        const allPayload = {
+          v: 'ALL1',
+          activeSlot: window.shkSlotMeta.activeSlot || 1,
+          names: window.shkSlotMeta.names,
+          slots: {
+            1: JSON.parse(localStorage.getItem(SLOT_DATA_PREFIX + '1') || 'null'),
+            2: JSON.parse(localStorage.getItem(SLOT_DATA_PREFIX + '2') || 'null'),
+            3: JSON.parse(localStorage.getItem(SLOT_DATA_PREFIX + '3') || 'null')
+          }
+        };
+        const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(allPayload))))
+          .replace(/\+/g, '.').replace(/\//g, '_').replace(/=+$/, '');
+        const blocks = encoded.match(/.{1,6}/g)?.join('-') || encoded;
+        const fullCode = `[소헌키3슬롯통합백업:${window.shkSlotMeta.names[1]}/${window.shkSlotMeta.names[2]}/${window.shkSlotMeta.names[3]}]\nSHK-ALL-${blocks}`;
+
+        const area = document.getElementById('master_spec_code_textarea');
+        if (area) area.value = fullCode;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(fullCode);
+        } else if (area) {
+          area.select();
+          document.execCommand('copy');
+        }
+
+        const msg = document.getElementById('master_code_status_msg');
+        if (msg) {
+          msg.style.color = '#34d399';
+          msg.innerText = '✅ 1·2·3번 슬롯 전체 통합 코드(SHK-ALL)가 복사되었습니다! 다른 기기에 붙여넣으면 3개 슬롯과 이름이 모두 복원됩니다.';
+        }
+      } catch (e) {
+        alert('통합 코드 생성 중 오류가 발생했습니다.');
+      }
+    };
+
+    window.applyMasterSpecCodeFromInput = function() {
+      const area = document.getElementById('master_spec_code_textarea');
+      const msg = document.getElementById('master_code_status_msg');
+      if (!area) return;
+
+      const raw = area.value.trim();
+      if (!raw) {
+        if (msg) { msg.style.color = '#f87171'; msg.innerText = '⚠️ 불러올 스펙 코드를 입력창에 붙여넣어 주세요.'; }
+        return;
+      }
+
+      // (Case 1) 3슬롯 전체 백업 코드 (SHK-ALL-...)
+      if (raw.includes('SHK-ALL-')) {
+        if (!confirm('📦 [3슬롯 전체 통합 코드]를 감지했습니다!\n불러오면 현재 기기의 1·2·3번 슬롯 이름과 모든 기록이 새 코드의 데이터로 덮어씌워진 뒤 자동 저장됩니다.\n\n계속 진행하시겠습니까?')) return;
+        try {
+          const parts = raw.split('SHK-ALL-');
+          let b64 = parts[1].replace(/[\s\-]/g, '').replace(/\./g, '+').replace(/_/g, '/');
+          while (b64.length % 4) b64 += '=';
+          const decoded = JSON.parse(decodeURIComponent(escape(atob(b64))));
+
+          if (!decoded || !decoded.slots) throw new Error('Invalid ALL code');
+          window.shkSlotMeta.activeSlot = decoded.activeSlot || 1;
+          if (decoded.names) window.shkSlotMeta.names = { ...window.shkSlotMeta.names, ...decoded.names };
+          saveSlotMeta();
+
+          [1, 2, 3].forEach(n => {
+            if (decoded.slots[n]) localStorage.setItem(SLOT_DATA_PREFIX + n, JSON.stringify(decoded.slots[n]));
+            else localStorage.removeItem(SLOT_DATA_PREFIX + n);
+          });
+
+          applySnapshotToLiveApp(decoded.slots[window.shkSlotMeta.activeSlot] || null);
+          if (msg) { msg.style.color = '#34d399'; msg.innerText = '🎉 1·2·3번 전체 슬롯 이름과 스펙을 모두 성공적으로 불러왔습니다!'; }
+          alert('🎉 1·2·3번 슬롯 전체 데이터와 슬롯 이름이 모두 복원되었습니다!');
+        } catch (err) {
+          if (msg) { msg.style.color = '#f87171'; msg.innerText = '❌ 전체 슬롯 코드 형식이 올바르지 않거나 손상되었습니다.'; }
+        }
+        return;
+      }
+
+      // (Case 2) 단일 슬롯 스펙 코드 (SHK-V1-...) 직접 정밀 디코딩
+      const curSlot = window.shkSlotMeta.activeSlot || 1;
+      const curName = window.shkSlotMeta.names[curSlot] || `슬롯 ${curSlot}`;
+      if (!confirm(`⚠️ 스펙 코드를 불러오면 현재 선택된 [#${curSlot} ${curName}] 슬롯의 기존 기록이 사라지고 새 코드의 데이터(슬롯 이름 포함)로 덮어씌워진 뒤 자동 저장됩니다.\n\n계속 진행하시겠습니까?`)) return;
+
+      try {
+        const rawAfterPrefix = raw.includes('SHK-V1-') ? raw.split('SHK-V1-')[1] : raw;
+        let b64 = rawAfterPrefix.replace(/[\s\-]/g, '').replace(/\./g, '+').replace(/_/g, '/');
+        while (b64.length % 4) b64 += '=';
+
+        const payload = JSON.parse(decodeURIComponent(escape(atob(b64))));
+        if (!payload || payload.v !== 1) throw new Error('Invalid code');
+
+        // 0) 슬롯 이름(sn) 복원
+        if (payload.sn && typeof payload.sn === 'string') {
+          window.shkSlotMeta.names[curSlot] = payload.sn.trim().slice(0, 12);
+          saveSlotMeta();
+        }
+
+        // 1) 직업 / 속성 / 스테이지 / 연마 단계 복원
+        if (payload.j) {
+          if (typeof selectRuneJob === 'function') selectRuneJob(payload.j);
+          if (typeof selectConnectJob === 'function') selectConnectJob(payload.j);
+          if (typeof selectGuideJob === 'function') selectGuideJob(payload.j);
+        }
+        if (payload.e) {
+          if (typeof selectRuneElem === 'function') selectRuneElem(payload.e);
+          if (typeof selectConnectElem === 'function') selectConnectElem(payload.e);
+          if (typeof selectGuideElem === 'function') selectGuideElem(payload.e);
+        }
+        if (payload.cs !== undefined && typeof selectConnectStage === 'function') {
+          selectConnectStage(payload.cs);
+        }
+        if (Array.isArray(payload.rf)) {
+          masterEquipRefine = { scythe: payload.rf[0] ?? 15, orb: payload.rf[1] ?? 15, accessory: payload.rf[2] ?? 15 };
+          saveMasterInvExtraState();
+        }
+
+        // 2) 보유 룬 복원
+        if (Array.isArray(payload.r) && typeof ownedRunes !== 'undefined' && typeof RUNE_DB !== 'undefined') {
+          ownedRunes.clear();
+          payload.r.forEach(idx => { if (RUNE_DB[idx]) ownedRunes.add(RUNE_DB[idx].id); });
+        }
+
+        // 3) 소울커넥트 코어 복원
+        if (Array.isArray(payload.c) && typeof ownedCoresMap !== 'undefined') {
+          ownedCoresMap.clear();
+          payload.c.forEach(([k, cnt]) => ownedCoresMap.set(k, cnt));
+        }
+
+        // 4) 유니온 스킬·영웅 스펙 복원
+        if (payload.u && typeof unionUserSpecs !== 'undefined') {
+          unionUserSpecs.skill = {};
+          unionUserSpecs.hero = {};
+          (payload.u.s || []).forEach(([shortUid, lv, brk, awk]) => {
+            unionUserSpecs.skill[`skill_${shortUid}`] = { owned: true, lv, brk, awk };
+          });
+          (payload.u.h || []).forEach(([shortUid, lv, brk, awk]) => {
+            unionUserSpecs.hero[`hero_${shortUid}`] = { owned: true, lv, brk, awk };
+          });
+          if (payload.us !== undefined) currentUnionStageIdx = payload.us;
+          if (typeof saveUnionDataToLocal === 'function') saveUnionDataToLocal(true);
+        }
+
+        // 5) 장비 인벤토리 및 재화 계산기 입력값 복원
+        if (payload.eq && typeof equipInventories !== 'undefined') {
+          equipInventories = payload.eq;
+        }
+        if (payload.inp && payload.inp.fields) {
+          localStorage.setItem(ALL_CALC_INPUTS_STORAGE_KEY, JSON.stringify(payload.inp));
+          if (typeof loadAllResourceCalcInputs === 'function') loadAllResourceCalcInputs();
+        }
+
+        // 전체 UI 및 현재 슬롯 백업 일괄 갱신
+        if (typeof onMasterInvRefineChange === 'function') onMasterInvRefineChange();
+        if (typeof renderRuneHelperAccordions === 'function') renderRuneHelperAccordions();
+        if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+        if (typeof renderConnectAccordions === 'function') renderConnectAccordions();
+        if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
+        if (typeof renderUnionStageButtons === 'function') {
+          renderUnionStageButtons();
+          renderUnionBoardAndSynergy();
+          renderUnionRosterAccordions();
+        }
+        if (typeof saveUserSettings === 'function') saveUserSettings(false);
+        if (typeof saveAllResourceCalcInputs === 'function') saveAllResourceCalcInputs();
+        if (typeof saveMasterInvExtraState === 'function') saveMasterInvExtraState();
+        syncActiveSlotStorage();
+        if (typeof refreshMasterInventoryModalUI === 'function') refreshMasterInventoryModalUI();
+        updateAllSlotUI();
+
+        if (msg) {
+          msg.style.color = '#34d399';
+          msg.innerText = `🎉 [#${curSlot} ${window.shkSlotMeta.names[curSlot]}] 슬롯에 스펙 코드가 완벽히 적용 및 자동 저장되었습니다!`;
+        }
+      } catch (e) {
+        if (msg) { msg.style.color = '#f87171'; msg.innerText = '❌ 스펙 코드가 올바르지 않거나 일부 글자가 누락되었습니다. 전체 코드를 다시 복사해 주세요.'; }
+      }
+    };
+
+    // 8. 자동 저장 및 초기화 버튼 래핑
+    loadSlotMeta();
+
+    if (typeof window.saveUserSettings === 'function') {
+      const _origSaveUser = window.saveUserSettings;
+      window.saveUserSettings = function(isManual) {
+        _origSaveUser(isManual);
+        syncActiveSlotStorage();
+        updateAllSlotUI();
+      };
+    }
+
+    window.resetAllSavedSettings = function() {
+      const cur = window.shkSlotMeta.activeSlot || 1;
+      const sName = window.shkSlotMeta.names[cur] || `슬롯 ${cur}`;
+      if (!confirm(`⚠️ 현재 선택된 [#${cur} ${sName}] 슬롯의 모든 저장 데이터를 초기화하시겠습니까?\n(다른 슬롯의 데이터는 안전하게 유지됩니다)`)) return;
+      localStorage.removeItem(SLOT_DATA_PREFIX + cur);
+      clearMemoryStateForEmptySlot();
+      alert(`✅ [#${cur} ${sName}] 슬롯이 초기화되었습니다.`);
+    };
+
+    function initHotfixUI() {
+      recordInitialDomDefaults();
+      injectCleanPatchStyles();
+      upgradeDonationAndCleanButtons();
+      injectMultiSlotUI();
+      if (!localStorage.getItem(SLOT_DATA_PREFIX + window.shkSlotMeta.activeSlot)) {
+        syncActiveSlotStorage();
+      }
+    }
+
+    window.addEventListener('load', () => setTimeout(initHotfixUI, 60));
+  })();
 </script>
 </body>
 </html>
