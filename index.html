@@ -3516,7 +3516,7 @@
               </div>
               <div>
                 <span class="hub-card-title">소울커넥트 코어 선택 도우미 v.1.4.0</span>
-                <span class="hub-card-desc">스테이지별 해금 슬롯(3~6칸) & 상급~고대 보유 코어(중복 합연산 포함) 최고 배율 배치</span>
+                <span class="hub-card-desc">스테이지별 해금 슬롯(2~6칸) & 상급~고대 보유 코어(중복 합연산 포함) 최고 배율 배치</span>
               </div>
             </div>
             <div class="hub-card-arrow">➔</div>
@@ -4280,11 +4280,12 @@
 
           <!-- 1. 스테이지 진행도 (해금 슬롯 수 선택) -->
           <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:12px;">
-            <label style="color:#c084fc; margin-bottom:8px;">🚩 현재 스테이지 진행도 선택 (시계방향 1~6번 슬롯 해금 조건)</label>
-            <div class="grid-4" style="gap:8px;">
-              <div class="radio-pill" id="sc_stage_3" onclick="selectConnectStage(3)">220-1 이상 ~ 400-1 미만<br><small style="color:#38bdf8;">(1·2·3번 3슬롯 오픈)</small></div>
-              <div class="radio-pill" id="sc_stage_4" onclick="selectConnectStage(4)">400-1 이상 ~ 600-1 미만<br><small style="color:#38bdf8;">(1~4번 4슬롯 오픈)</small></div>
-              <div class="radio-pill" id="sc_stage_5" onclick="selectConnectStage(5)">600-1 이상 ~ 800-1 미만<br><small style="color:#38bdf8;">(1~5번 5슬롯 오픈)</small></div>
+            <label style="color:#c084fc; margin-bottom:8px;">🚩 현재 스테이지 진행도 선택 (기본 1·2번 2슬롯 오픈 / 선택된 버튼 재클릭 시 기본 2슬롯으로 취소 가능)</label>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:8px;">
+              <div class="radio-pill" id="sc_stage_2" onclick="selectConnectStage(2)">300-1 미만 (기본)<br><small style="color:#94a3b8;">(1·2번 기본 2슬롯 오픈)</small></div>
+              <div class="radio-pill" id="sc_stage_3" onclick="selectConnectStage(3)">300-1 ~ 400-1 미만<br><small style="color:#38bdf8;">(1~3번 3슬롯 오픈)</small></div>
+              <div class="radio-pill" id="sc_stage_4" onclick="selectConnectStage(4)">400-1 ~ 500-1 미만<br><small style="color:#38bdf8;">(1~4번 4슬롯 오픈)</small></div>
+              <div class="radio-pill" id="sc_stage_5" onclick="selectConnectStage(5)">500-1 ~ 800-1 미만<br><small style="color:#38bdf8;">(1~5번 5슬롯 오픈)</small></div>
               <div class="radio-pill selected" id="sc_stage_6" onclick="selectConnectStage(6)">800-1 스테이지 이상<br><small style="color:#34d399;">(1~6번 6슬롯 전체 오픈)</small></div>
             </div>
           </div>
@@ -4448,7 +4449,7 @@
             <span class="grade-badge grade-ancient" id="connect_owned_count_badge">총 보유 선택: 0개</span>
           </div>
           <p class="card-subtitle">
-            슬롯 해금 순서는 시계방향으로 <strong>[1번(우상단) ➔ 2번(우중단) ➔ 3번(우하단) ➔ 4번(좌하단, 400-1) ➔ 5번(좌중단, 600-1) ➔ 6번(좌상단, 800-1)]</strong>입니다.
+           슬롯 해금 순서는 시계방향으로 <strong>[1번(우상단, 기본) ➔ 2번(우중단, 기본) ➔ 3번(우하단, 300-1) ➔ 4번(좌하단, 400-1) ➔ 5번(좌중단, 500-1) ➔ 6번(좌상단, 800-1)]</strong>입니다.
           </p>
          <div style="background:linear-gradient(135deg, rgba(245, 158, 11, 0.22) 0%, rgba(180, 83, 9, 0.28) 100%); border:2px solid #fbbf24; border-radius:12px; padding:12px 16px; margin-bottom:16px; font-size:13.5px; color:#fef08a; font-weight:800; text-align:center; box-shadow:0 0 16px rgba(251, 191, 36, 0.35);">
             ✨ <strong style="color:#ffffff; text-decoration:underline;">[코어 장착 위치 중요 안내]</strong> 소울커넥트 코어는 <strong style="color:#34d399;">어느 위치(1~6번 슬롯 중 아무 칸)에 장착하든 대미지 배율과 효과가 100% 동일</strong>합니다! 열린 슬롯에 순서 상관없이 편하게 장착하세요.
@@ -8661,7 +8662,7 @@
 
   function selectConnectStage(slots) {
     currentConnectStageSlots = slots;
-    [3, 4, 5, 6].forEach(s => {
+    [2, 3, 4, 5, 6].forEach(s => {
       document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === slots);
     });
     calculateBestConnectLoadout();
@@ -9068,7 +9069,8 @@
 
     bestCombo.sort((a, b) => a.core.num - b.core.num);
 
-    const unlockReqText = { 1: "기본 오픈(220-1)", 2: "기본 오픈(220-1)", 3: "기본 오픈(220-1)", 4: "400-1 해금", 5: "600-1 해금", 6: "800-1 해금" };
+    // 9693번째 줄 & 9763번째 줄 두 곳 모두 아래로 교체!
+      const unlockReqText = { 1: "기본 오픈(220-1)", 2: "기본 오픈(220-1)", 3: "300-1 해금", 4: "400-1 해금", 5: "500-1 해금", 6: "800-1 해금" };
 
     for (let s = 1; s <= 6; s++) {
       const slotEl = document.getElementById(`sc_slot_${s}`);
@@ -9465,7 +9467,7 @@
       }
       if (state.currentConnectStageSlots) {
         currentConnectStageSlots = state.currentConnectStageSlots;
-        [3, 4, 5, 6].forEach(s => document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === currentConnectStageSlots));
+        [2, 3, 4, 5, 6].forEach(s => document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === currentConnectStageSlots));
       }
       if (state.currentConnectJob) {
         currentConnectJob = state.currentConnectJob;
@@ -15299,7 +15301,7 @@
       donWrap.className = 'header-donation-wrap';
       donWrap.onclick = (e) => e.stopPropagation();
       donWrap.innerHTML = `
-        <a href="https://qr.kakaopay.com/281006011000086242274942" target="_blank" rel="noopener noreferrer"
+        <a href="https://qr.kakaopay.com/FDr52LD99" target="_blank" rel="noopener noreferrer"
            class="header-donation-btn" style="
              display: inline-flex;
              align-items: center;
@@ -17346,7 +17348,7 @@
         document.getElementById('rune_elem_' + e)?.classList.toggle('selected', e === currentRuneElem);
         document.getElementById('sc_elem_' + e)?.classList.toggle('selected', e === currentConnectElem);
       });
-      [3, 4, 5, 6].forEach(s => {
+      [2, 3, 4, 5, 6].forEach(s => {
         document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === currentConnectStageSlots);
       });
 
@@ -17791,9 +17793,8 @@
       }
     }
 
-    // ==================== 🔥 [v.4.0.1 추가 패치] 양방향 완벽 연동 + 타이핑 입력 전환 + 아코디언 최상단 배치 ====================
     function applyV401Enhancements() {
-      initHotfixUI(); // ★ 지워졌던 슬롯 & 후원 UI 초기화 함수 복구!
+      initHotfixUI();
 
       // 1) [1·2·3차 전직 · 드래곤 · 수호신 재화 계산기] 아코디언을 [영원무기 연마 계산기] 바로 위(맨 첫번째)로 이동!
       const jobCostAcc = document.getElementById('acc_calc_job_cost');
@@ -17802,7 +17803,7 @@
         const jobSec = jobCostAcc.closest('.hub-section');
         const weapSec = weaponAcc.closest('.hub-section');
         if (jobSec && weapSec && weapSec.parentNode) {
-          jobSec.style.display = (currentMainMode === 'calcs') ? 'block' : 'none'; // ★ 세팅 도우미 화면에서 안 보이게 숨김!
+          jobSec.style.display = (currentMainMode === 'calcs') ? 'block' : 'none';
           weapSec.parentNode.insertBefore(jobSec, weapSec);
         }
       }
@@ -17820,13 +17821,29 @@
         inp.value = curVal;
         inp.style.cssText = 'padding:10px 12px; font-weight:800; color:#fde047;';
         inp.addEventListener('input', () => {
-          if (inp.value === '') return; // 타이핑 중 빈칸일 때 1로 강제 초기화 방지!
+          if (inp.value === '') return;
           onChangeFn();
-          // 현재 레벨 타이핑 시 통합 인벤토리 값도 양방향 동기화
-          if (id === 'jc1_cur_lv' && document.getElementById('minv_job1_lv')) document.getElementById('minv_job1_lv').value = inp.value;
-          if (id === 'jc2_cur_lv' && document.getElementById('minv_job2_lv')) document.getElementById('minv_job2_lv').value = inp.value;
-          if (id === 'jc3_cur_lv' && document.getElementById('minv_job3_lv')) document.getElementById('minv_job3_lv').value = inp.value;
-          if (id === 'drg_cur_lv' && document.getElementById('minv_drg_lv'))  document.getElementById('minv_drg_lv').value = inp.value;
+          const lv = parseInt(inp.value, 10);
+          if (id === 'jc1_cur_lv' && !isNaN(lv)) {
+            if (document.getElementById('minv_job1_lv')) document.getElementById('minv_job1_lv').value = inp.value;
+            const rcJobLv = document.getElementById('rc_job_lv');
+            if (rcJobLv) rcJobLv.value = lv >= 80 ? '80' : (lv >= 60 ? '60' : '0');
+            if (typeof currentTrait1stLv !== 'undefined') currentTrait1stLv = lv;
+            window.syncSoulConnectJobLv();
+            if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+          }
+          if (id === 'jc2_cur_lv' && !isNaN(lv)) {
+            if (document.getElementById('minv_job2_lv')) document.getElementById('minv_job2_lv').value = inp.value;
+            window.syncSoulConnectJobLv();
+          }
+          if (id === 'jc3_cur_lv' && !isNaN(lv)) {
+            if (document.getElementById('minv_job3_lv')) document.getElementById('minv_job3_lv').value = inp.value;
+            if (typeof currentTrait3rdLv !== 'undefined') currentTrait3rdLv = lv;
+            window.syncSoulConnectJobLv();
+          }
+          if (id === 'drg_cur_lv' && !isNaN(lv)) {
+            if (document.getElementById('minv_drg_lv')) document.getElementById('minv_drg_lv').value = inp.value;
+          }
         });
         inp.addEventListener('blur', () => {
           let v = parseInt(inp.value, 10);
@@ -17850,23 +17867,23 @@
       convertSelectToNumberInput('grd_scr_tar', 2, 120, 120, calculateGuardianAll);
       calculateAllGrowthCalcs();
 
-      // 3) 통합 인벤토리의 유니온 해금 스테이지 셀렉트 옵션 채우기 (UNION_STAGE_MILESTONES 연동)
+      // 3) 통합 인벤토리의 유니온 해금 스테이지 셀렉트 옵션 채우기
       const uStgSel = document.getElementById('minv_union_stage');
       if (uStgSel && typeof UNION_STAGE_MILESTONES !== 'undefined') {
         uStgSel.innerHTML = UNION_STAGE_MILESTONES.map(m => `<option value="${m.idx}">${m.label} (${m.sub})</option>`).join('');
         uStgSel.value = String(currentUnionStageIdx || 0);
       }
 
-      // 4) 인벤토리 내 숫자 타이핑 시 '1'로 강제 덮어써지던 버그 수정 (activeElement 보호)
+      // 4) 인벤토리 내 모든 입력 필드 <-> 전체 도우미/계산기 양방향 동기화
       window.onMasterInvFieldChange = function(fieldType, val) {
-        if (val === '' || val === null || val === undefined) return; // 글자 지우는 중에는 대기!
+        if (val === '' || val === null || val === undefined) return;
         if (fieldType === 'job') {
           window.syncAllJobs(val);
         } else if (fieldType === 'elem') {
           window.syncAllElems(val);
         } else if (fieldType === 'unionStage') {
           const idx = parseInt(val, 10);
-          if (!isNaN(idx) && typeof selectUnionStageIdx === 'function') selectUnionStageIdx(idx);
+          if (!isNaN(idx)) window.syncAllStagesFromUnionIdx(idx);
         } else if (fieldType === 'job1Lv') {
           const lv = parseInt(val, 10);
           if (isNaN(lv)) return;
@@ -17875,17 +17892,20 @@
           const rcJobLv = document.getElementById('rc_job_lv');
           if (rcJobLv) rcJobLv.value = lv >= 80 ? '80' : (lv >= 60 ? '60' : '0');
           if (typeof currentTrait1stLv !== 'undefined') currentTrait1stLv = lv;
+          window.syncSoulConnectJobLv();
         } else if (fieldType === 'job2Lv') {
           const lv = parseInt(val, 10);
           if (isNaN(lv)) return;
           const jc2Cur = document.getElementById('jc2_cur_lv');
           if (jc2Cur) jc2Cur.value = String(Math.min(103, Math.max(1, lv)));
+          window.syncSoulConnectJobLv();
         } else if (fieldType === 'job3Lv') {
           const lv = parseInt(val, 10);
           if (isNaN(lv)) return;
           const jc3Cur = document.getElementById('jc3_cur_lv');
           if (jc3Cur) jc3Cur.value = String(Math.min(44, Math.max(1, lv)));
           if (typeof currentTrait3rdLv !== 'undefined') currentTrait3rdLv = lv;
+          window.syncSoulConnectJobLv();
         } else if (fieldType === 'drgLv') {
           const lv = parseInt(val, 10);
           if (isNaN(lv)) return;
@@ -17902,15 +17922,20 @@
         }
         if (typeof calculateAllGrowthCalcs === 'function') calculateAllGrowthCalcs();
         if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+        if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
         if (typeof triggerAutoSave === 'function') triggerAutoSave();
       };
 
-      // refreshMasterInventoryModalUI 호출 시 현재 타이핑 중인 input은 덮어쓰지 않도록 보호!
+      // refreshMasterInventoryModalUI 호출 시 타이핑 중인 input 보호 & 최신 직업/속성/스테이지 반영
       const _origRefreshModal = window.refreshMasterInventoryModalUI;
       window.refreshMasterInventoryModalUI = function() {
         const activeEl = document.activeElement;
         const activeVal = activeEl ? activeEl.value : null;
         if (typeof _origRefreshModal === 'function') _origRefreshModal();
+        const mJob = document.getElementById('minv_job');
+        if (mJob && activeEl !== mJob) mJob.value = currentRuneJob || 'reaper';
+        const mElem = document.getElementById('minv_elem');
+        if (mElem && activeEl !== mElem) mElem.value = currentRuneElem || 'fire';
         const uSel = document.getElementById('minv_union_stage');
         if (uSel && typeof currentUnionStageIdx !== 'undefined' && activeEl !== uSel) {
           uSel.value = String(currentUnionStageIdx);
@@ -17921,29 +17946,76 @@
       };
     }
 
-    // 5) 룬 도우미 <-> 소울커넥트 <-> 세팅 가이드 <-> 통합 인벤토리 [직업 / 속성 / 스테이지 / 무기연마] 100% 양방향 동기화!
+    // ★ 전직 1·2·3차 레벨 -> 소울커넥트 코어4 [전직 : 레벨] 드롭다운 자동 연동
+    window.syncSoulConnectJobLv = function() {
+      const lv3 = parseInt(document.getElementById('jc3_cur_lv')?.value || '0', 10);
+      const lv2 = parseInt(document.getElementById('jc2_cur_lv')?.value || '0', 10);
+      const lv1 = parseInt(document.getElementById('jc1_cur_lv')?.value || '0', 10);
+      const scJobLvEl = document.getElementById('sc_sel_joblv');
+      if (scJobLvEl) {
+        if (lv3 > 1) scJobLvEl.value = '3';
+        else if (lv2 > 1) scJobLvEl.value = '2';
+        else if (lv1 >= 1) scJobLvEl.value = '1';
+      }
+      if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
+    };
+
+    // ★ 룬 도우미 전직 레벨(rc_job_lv) 변경 시 -> 소울커넥트 & 인벤토리 양방향 연동
+    const rcJobLvEl = document.getElementById('rc_job_lv');
+    if (rcJobLvEl) {
+      rcJobLvEl.addEventListener('change', function() {
+        const v = parseInt(this.value, 10);
+        const jc1 = document.getElementById('jc1_cur_lv');
+        const mJob1 = document.getElementById('minv_job1_lv');
+        if (v >= 80 && jc1 && parseInt(jc1.value, 10) < 80) {
+          jc1.value = '80';
+          if (mJob1) mJob1.value = '80';
+        } else if (v === 60 && jc1 && parseInt(jc1.value, 10) < 60) {
+          jc1.value = '60';
+          if (mJob1) mJob1.value = '60';
+        }
+        if (typeof calculateAllGrowthCalcs === 'function') calculateAllGrowthCalcs();
+      });
+    }
+
+    // ★ [직업] 전 영역(룬 / 소울커넥트 / 세팅가이드 / 고대패시브 / 통합인벤토리) 100% 양방향 동기화!
     let _isSyncingProfile = false;
     window.syncAllJobs = function(job) {
       if (_isSyncingProfile) return;
+      // 고대패시브 버튼('am', 'phantom') 코드도 표준('mage', 'lord')으로 자동 변환
+      const normJob = (job === 'am') ? 'mage' : ((job === 'phantom') ? 'lord' : job);
       _isSyncingProfile = true;
       try {
-        currentRuneJob = currentConnectJob = guideJob = job;
+        currentRuneJob = currentConnectJob = guideJob = normJob;
         ['reaper', 'mage', 'lord'].forEach(j => {
-          document.getElementById('rune_job_' + j)?.classList.toggle('selected', j === job);
-          document.getElementById('sc_job_' + j)?.classList.toggle('selected', j === job);
-          document.getElementById('g_job_' + j)?.classList.toggle('selected', j === job);
+          document.getElementById('rune_job_' + j)?.classList.toggle('selected', j === normJob);
+          document.getElementById('sc_job_' + j)?.classList.toggle('selected', j === normJob);
+          document.getElementById('g_job_' + j)?.classList.toggle('selected', j === normJob);
         });
         const minvJob = document.getElementById('minv_job');
-        if (minvJob) minvJob.value = job;
+        if (minvJob) minvJob.value = normJob;
+
+        // 고대 패시브 1순위(직업 패시브)도 현재 직업에 맞춰 자동 교체!
+        if (typeof selectedAncients !== 'undefined' && selectedAncients.size > 0) {
+          ['frenzy', 'strike_master', 'command'].forEach(id => selectedAncients.delete(id));
+          if (normJob === 'mage') selectedAncients.add('frenzy');
+          else if (normJob === 'reaper') selectedAncients.add('strike_master');
+          else if (normJob === 'lord') selectedAncients.add('command');
+          if (typeof renderAncientCards === 'function') renderAncientCards();
+          if (typeof calculateAncientCost === 'function') calculateAncientCost();
+        }
+
         if (typeof updateJobHeaderAndTabs === 'function') updateJobHeaderAndTabs();
         if (typeof renderBuildGuideContent === 'function' && document.getElementById('guides_detail_view')?.style.display !== 'none') renderBuildGuideContent();
+        if (typeof renderRuneHelperAccordions === 'function' && document.getElementById('newbie_rune_view')?.style.display !== 'none') renderRuneHelperAccordions();
+        if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
         if (typeof renderConnectAccordions === 'function' && document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
         if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
-        if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
         if (typeof triggerAutoSave === 'function') triggerAutoSave();
       } finally { _isSyncingProfile = false; }
     };
 
+    // ★ [주속성] 전 영역(룬 / 소울커넥트 / 세팅가이드 / 고대패시브 / 통합인벤토리) 100% 양방향 동기화!
     window.syncAllElems = function(elem) {
       if (_isSyncingProfile) return;
       _isSyncingProfile = true;
@@ -17956,11 +18028,21 @@
         });
         const minvElem = document.getElementById('minv_elem');
         if (minvElem) minvElem.value = elem;
+
+        // 고대 패시브 3순위(속성 패시브)도 현재 주속성에 맞춰 자동 교체!
+        if (typeof selectedAncients !== 'undefined' && selectedAncients.size > 0) {
+          ['elem_fire', 'elem_light', 'elem_dark'].forEach(id => selectedAncients.delete(id));
+          selectedAncients.add('elem_' + elem);
+          if (typeof renderAncientCards === 'function') renderAncientCards();
+          if (typeof calculateAncientCost === 'function') calculateAncientCost();
+        }
+
         if (typeof updateJobHeaderAndTabs === 'function') updateJobHeaderAndTabs();
         if (typeof renderBuildGuideContent === 'function' && document.getElementById('guides_detail_view')?.style.display !== 'none') renderBuildGuideContent();
+        if (typeof renderRuneHelperAccordions === 'function' && document.getElementById('newbie_rune_view')?.style.display !== 'none') renderRuneHelperAccordions();
+        if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
         if (typeof renderConnectAccordions === 'function' && document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
         if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
-        if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
         if (typeof triggerAutoSave === 'function') triggerAutoSave();
       } finally { _isSyncingProfile = false; }
     };
@@ -17968,12 +18050,126 @@
     window.selectRuneJob = window.selectConnectJob = window.selectGuideJob = function(job) { window.syncAllJobs(job); };
     window.selectRuneElem = window.selectConnectElem = window.selectGuideElem = function(elem) { window.syncAllElems(elem); };
 
-    // 유니온 스테이지 버튼 클릭 시 인벤토리 모달 드롭다운도 즉시 동기화
+    // 고대 패시브에서 직업 버튼(아크메이지/대사신/팬텀)이나 속성 고패 카드를 눌렀을 때도 전체 직업·속성 동기화!
+    const _origSelectJobCore = window.selectJobCore;
+    window.selectJobCore = function(jobType) {
+      if (typeof _origSelectJobCore === 'function') _origSelectJobCore(jobType);
+      const mappedJob = jobType === 'am' ? 'mage' : (jobType === 'phantom' ? 'lord' : 'reaper');
+      window.syncAllJobs(mappedJob);
+      // 현재 선택된 주속성에 맞춰 3순위 고패 유지
+      if (typeof selectedAncients !== 'undefined') {
+        ['elem_fire', 'elem_light', 'elem_dark'].forEach(id => selectedAncients.delete(id));
+        selectedAncients.add('elem_' + (currentRuneElem || 'fire'));
+        if (typeof renderAncientCards === 'function') renderAncientCards();
+        if (typeof calculateAncientCost === 'function') calculateAncientCost();
+      }
+    };
+
+    const _origToggleAncient = window.toggleAncient;
+    window.toggleAncient = function(id) {
+      if (typeof _origToggleAncient === 'function') _origToggleAncient(id);
+      if (typeof selectedAncients !== 'undefined' && selectedAncients.has(id)) {
+        if (id === 'frenzy') window.syncAllJobs('mage');
+        else if (id === 'strike_master') window.syncAllJobs('reaper');
+        else if (id === 'command') window.syncAllJobs('lord');
+        else if (id === 'elem_fire') window.syncAllElems('fire');
+        else if (id === 'elem_light') window.syncAllElems('light');
+        else if (id === 'elem_dark') window.syncAllElems('dark');
+      }
+    };
+
+    // ★ [스테이지] 유니온 해금 스테이지(0~8) <-> 소울커넥트 슬롯(2 / 3 / 4 / 5 / 6칸) <-> 코어6 스테이지 조건 양방향 연동!
+    let _isSyncingStage = false;
     const _origSelectUnionStageIdx = window.selectUnionStageIdx;
-    window.selectUnionStageIdx = function(idx) {
-      if (typeof _origSelectUnionStageIdx === 'function') _origSelectUnionStageIdx(idx);
-      const uSel = document.getElementById('minv_union_stage');
-      if (uSel) uSel.value = String(idx);
+    const _origSelectConnectStage = window.selectConnectStage;
+
+    window.syncAllStagesFromUnionIdx = function(idx) {
+      if (_isSyncingStage) return;
+      _isSyncingStage = true;
+      try {
+        if (typeof _origSelectUnionStageIdx === 'function') _origSelectUnionStageIdx(idx);
+        const uSel = document.getElementById('minv_union_stage');
+        if (uSel) uSel.value = String(idx);
+
+        // 유니온 스테이지 인덱스(UNION_STAGE_MILESTONES)와 소울커넥트 슬롯 정밀 매핑:
+        // idx 0~3 (160-1 ~ 280-1) -> 300-1 미만이므로 기본 2슬롯!
+        // idx 4~5 (320-1 ~ 360-1) -> 300-1 이상이므로 3슬롯!
+        // idx 6~7 (400-1 ~ 440-1) -> 400-1 이상이므로 4슬롯!
+        // idx 8   (480-1 이상)    -> 만약 기존에 5슬롯(500-1)이나 6슬롯(800-1)을 쓰고 있었다면 유지, 아니면 최소 4슬롯!
+        let scSlots = 2;
+        if (idx <= 3) scSlots = 2;
+        else if (idx <= 5) scSlots = 3;
+        else if (idx <= 7) scSlots = 4;
+        else scSlots = (currentConnectStageSlots >= 5) ? currentConnectStageSlots : 6;
+
+        currentConnectStageSlots = scSlots;
+        [2, 3, 4, 5, 6].forEach(s => {
+          document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === scSlots);
+        });
+
+        // 코어6 [콘텐츠 : 스테이지] 350챕터 달성 여부도 스테이지에 맞춰 자동 변경 (idx 5 = 360-1 이상)
+        const scStageCond = document.getElementById('sc_sel_stage');
+        if (scStageCond) scStageCond.value = idx >= 5 ? '3' : (idx >= 2 ? '2' : '1');
+
+        if (typeof renderConnectAccordions === 'function' && document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
+        if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
+        if (typeof triggerAutoSave === 'function') triggerAutoSave();
+      } finally { _isSyncingStage = false; }
+    };
+
+    window.syncAllStagesFromConnectSlots = function(clickedSlots) {
+      if (_isSyncingStage) return;
+      _isSyncingStage = true;
+      try {
+        // ★ 이미 선택된 3/4/5/6번 버튼을 한 번 더 누르면 선택이 취소되면서 기본 2슬롯(300-1 미만)으로 전환!
+        const slots = (clickedSlots > 2 && currentConnectStageSlots === clickedSlots) ? 2 : clickedSlots;
+        currentConnectStageSlots = slots;
+
+        if (typeof _origSelectConnectStage === 'function') _origSelectConnectStage(slots);
+        [2, 3, 4, 5, 6].forEach(s => {
+          document.getElementById('sc_stage_' + s)?.classList.toggle('selected', s === slots);
+        });
+
+        // 소울커넥트 슬롯(2/3/4/5/6) 선택 시 -> 유니온 스테이지 인덱스(0~8)도 해당 구간으로 자동 동기화!
+        let targetUnionIdx = currentUnionStageIdx || 0;
+        if (slots === 2 && targetUnionIdx > 3) targetUnionIdx = 3;             // 300-1 미만 -> 280-1 이하(idx 3)
+        else if (slots === 3 && (targetUnionIdx < 4 || targetUnionIdx > 5)) targetUnionIdx = 4; // 300-1~400-1 미만 -> 320-1(idx 4)
+        else if (slots === 4 && (targetUnionIdx < 6 || targetUnionIdx > 7)) targetUnionIdx = 6; // 400-1~500-1 미만 -> 400-1(idx 6)
+        else if (slots >= 5 && targetUnionIdx < 8) targetUnionIdx = 8;         // 500-1 이상 -> 유니온 전 슬롯 해금(480-1+, idx 8)
+
+        if (targetUnionIdx !== currentUnionStageIdx && typeof _origSelectUnionStageIdx === 'function') {
+          _origSelectUnionStageIdx(targetUnionIdx);
+        }
+        const uSel = document.getElementById('minv_union_stage');
+        if (uSel) uSel.value = String(currentUnionStageIdx);
+
+        const scStageCond = document.getElementById('sc_sel_stage');
+        if (scStageCond) scStageCond.value = slots >= 4 ? '3' : (slots === 3 ? '2' : '1');
+
+        if (typeof renderConnectAccordions === 'function' && document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
+        if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
+        if (typeof triggerAutoSave === 'function') triggerAutoSave();
+      } finally { _isSyncingStage = false; }
+    };
+
+    window.selectUnionStageIdx = function(idx) { window.syncAllStagesFromUnionIdx(idx); };
+    window.selectConnectStage = function(slots) { window.syncAllStagesFromConnectSlots(slots); };
+    // ★ 룬 도우미 고대 보석/코어(rc_anc_gem) <-> 소울커넥트 보유 고대 코어 수 양방향 연동
+    const _origToggleOwnedCore = window.toggleOwnedCore;
+    window.toggleOwnedCore = function(coreId) {
+      if (typeof _origToggleOwnedCore === 'function') _origToggleOwnedCore(coreId);
+      // 보유 고대 코어가 3개 이상이면 룬 도우미 '장전(고대 코어 3개+)' 조건 자동 활성화 보조
+      let ancCoreCnt = 0;
+      if (typeof ownedCoresMap !== 'undefined') {
+        ownedCoresMap.forEach((cnt, cid) => {
+          if (cid.startsWith('anc_') && cnt > 0) ancCoreCnt += cnt;
+        });
+      }
+      const gemSel = document.getElementById('rc_anc_gem');
+      if (gemSel && ancCoreCnt >= 3 && gemSel.value === '0') {
+        gemSel.value = '3';
+        if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+      }
     };
 
     // 룬 도우미에서 대낫/오브/장식 연마 드롭다운 변경 시 인벤토리 & 삼신기/완벽추구 양방향 연동
@@ -18004,6 +18200,16 @@
       if (rO) rO.value = mapToBucket(masterEquipRefine.orb);
       if (rA) rA.value = mapToBucket(masterEquipRefine.accessory);
       calculateBestRuneLoadout();
+    };
+
+    // ★ 인벤토리 모달이 열릴 때도 무조건 통합 동기화 함수(syncAllJobs / syncAllElems)를 타도록 강제 연결!
+    const _v401OrigOpenModal = window.openMasterInventoryModal;
+    window.openMasterInventoryModal = function() {
+      if (typeof _v401OrigOpenModal === 'function') _v401OrigOpenModal();
+      const mJob = document.getElementById('minv_job');
+      const mElem = document.getElementById('minv_elem');
+      if (mJob) { mJob.value = currentRuneJob || 'reaper'; mJob.onchange = function() { window.syncAllJobs(this.value); }; }
+      if (mElem) { mElem.value = currentRuneElem || 'fire'; mElem.onchange = function() { window.syncAllElems(this.value); }; }
     };
 
     window.addEventListener('load', () => setTimeout(applyV401Enhancements, 80));
