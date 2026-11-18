@@ -17221,22 +17221,24 @@
       donWrap.innerHTML = `
         <button type="button" class="header-donation-btn" onclick="donWrapToggleMobile(event)">
           ${typeof CUSTOM_SVG_ART !== 'undefined' && CUSTOM_SVG_ART.donation ? CUSTOM_SVG_ART.donation : '☕'}
-          <span>겨울눈사람에게 따뜻한 커피 한 잔 후원하기</span>
+          <span>겨울눈사람에게 따뜻한 응원 보내기</span>
         </button>
-        <div class="header-donation-popover" onclick="event.stopPropagation()">
-          <div style="font-size:13.5px; font-weight:900; color:#fde047; margin-bottom:5px; display:flex; align-items:center; justify-content:center; gap:5px;">
-            <span>💛</span><span>개발자 후원하기 (카카오페이)</span>
+        <div class="header-donation-popover" onclick="event.stopPropagation()" style="width: 325px;">
+          <div style="font-size:13.5px; font-weight:900; color:#fde047; margin-bottom:7px; display:flex; align-items:center; justify-content:center; gap:5px;">
+            <span>⛄</span><span>겨울눈사람의 1인 개발 응원하기</span>
           </div>
-          <div style="font-size:11.5px; color:#cbd5e1; line-height:1.45; margin-bottom:8px; word-break:keep-all;">
-            보내주시는 따뜻한 커피 한 잔은 더 완벽한 공략 툴과 업데이트 개발에 큰 힘이 됩니다! 진심으로 감사합니다.
+          <div style="font-size:11.5px; color:#e2e8f0; line-height:1.55; margin-bottom:10px; word-break:keep-all; background:rgba(15,23,42,0.55); padding:9px 11px; border-radius:10px; border:1px solid rgba(125,211,252,0.2);">
+            소헌키 시뮬레이터는 유저분들께 조금이나마 도움이 되고자 <strong>1인 개발</strong>로 하나씩 정성껏 가꾸어 나가고 있습니다.<br><br>
+            언제 오셔도 눈 피로 없이 쾌적하게 쓰실 수 있도록, <strong style="color:#7dd3fc;">앞으로도 사이트에 광고는 일절 넣지 않을 예정</strong>이에요.<br><br>
+            툴이 마음에 드셨다면 가벼운 마음으로 건네주시는 따뜻한 커피 한 잔이 다음 업데이트를 준비하는 데 정말 큰 힘과 위로가 됩니다. 늘 찾아주셔서 진심으로 고맙습니다! ❄️
           </div>
           <a href="https://qr.kakaopay.com/281006011000086242274942" target="_blank" rel="noopener noreferrer"
              class="donation-kakaopay-btn" onclick="handleDonationBtnClick(event)">
             <div style="display:flex; align-items:center; gap:8px;">
               ${kakaoSvgIcon}
               <div style="text-align:left; line-height:1.2;">
-                <div style="font-size:13.5px; font-weight:900; color:#191919;">카카오페이로 바로 송금</div>
-                <div style="font-size:10px; font-weight:700; color:#4b5563;">모바일 터치 시 송금 창 연결</div>
+                <div style="font-size:13.5px; font-weight:900; color:#191919;">카카오페이로 따뜻한 커피 한 잔</div>
+                <div style="font-size:10px; font-weight:700; color:#4b5563;">모바일 터치 시 송금 창으로 연결됩니다</div>
               </div>
             </div>
             <span style="font-size:15px; font-weight:900; color:#191919;">➔</span>
