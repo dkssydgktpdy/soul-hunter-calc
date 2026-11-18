@@ -18212,7 +18212,291 @@
       if (mElem) { mElem.value = currentRuneElem || 'fire'; mElem.onchange = function() { window.syncAllElems(this.value); }; }
     };
 
-    window.addEventListener('load', () => setTimeout(applyV401Enhancements, 80));
+    // ==================== 📁 [v.4.0.3] 좌/우 벽면 네온 도킹 서랍(Drawer) & 1·2·3 슬롯 복구 ====================
+    function initEdgeDrawerWidget() {
+      const widget = document.getElementById('floating_save_widget');
+      if (!widget || document.getElementById('float_drawer_tab_btn')) return;
+
+      // 1) 좌/우 가장자리 서랍(Drawer) + 네온 스냅 가이드라인 전용 CSS 주입
+      const st = document.createElement('style');
+      st.textContent = `
+        #floating_save_widget {
+          user-select: none;
+          position: fixed !important;
+          z-index: 9999 !important;
+          min-width: 195px !important;
+          padding: 9px 12px !important;
+          transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s, border-color 0.2s !important;
+          overflow: visible !important;
+        }
+        /* 우측 벽면 도킹 상태 */
+        #floating_save_widget.dock-right {
+          right: 0px !important;
+          left: auto !important;
+          border-top-right-radius: 0 !important;
+          border-bottom-right-radius: 0 !important;
+          border-right: none !important;
+        }
+        #floating_save_widget.dock-right.folded {
+          transform: translateX(100%) !important;
+        }
+        /* 좌측 벽면 도킹 상태 */
+        #floating_save_widget.dock-left {
+          left: 0px !important;
+          right: auto !important;
+          border-top-left-radius: 0 !important;
+          border-bottom-left-radius: 0 !important;
+          border-left: none !important;
+        }
+        #floating_save_widget.dock-left.folded {
+          transform: translateX(-100%) !important;
+        }
+
+        /* ◀ / ▶ 옆으로 튀어나온 작은 네모 서랍 손잡이 탭 */
+        .drawer-edge-tab {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+          border: 1.5px solid #38bdf8;
+          color: #ffffff;
+          padding: 8px 6px;
+          cursor: ns-resize;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 3px;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.75), 0 0 12px rgba(56, 189, 248, 0.4);
+          transition: background 0.2s, box-shadow 0.2s;
+          z-index: 10000;
+        }
+        .drawer-edge-tab:hover {
+          background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+          border-color: #fde047;
+          box-shadow: 0 0 16px rgba(250, 204, 21, 0.7);
+        }
+        /* 우측 도킹일 때는 위젯 왼쪽 바깥에 튀어나옴 */
+        #floating_save_widget.dock-right .drawer-edge-tab {
+          right: 100%;
+          border-right: none;
+          border-radius: 10px 0 0 10px;
+        }
+        /* 좌측 도킹일 때는 위젯 오른쪽 바깥에 튀어나옴 */
+        #floating_save_widget.dock-left .drawer-edge-tab {
+          left: 100%;
+          border-left: none;
+          border-radius: 0 10px 10px 0;
+        }
+        .drawer-tab-arrow {
+          font-size: 13px;
+          font-weight: 900;
+          color: #38bdf8;
+          line-height: 1;
+          cursor: pointer;
+        }
+        .drawer-tab-status {
+          font-size: 9.5px;
+          font-weight: 800;
+          color: #34d399;
+          writing-mode: vertical-rl;
+          text-orientation: upright;
+          letter-spacing: -1px;
+          line-height: 1;
+          cursor: pointer;
+        }
+
+        /* 상단 위아래 이동 & 좌우 도킹 드래그 바 */
+        .float-widget-drag-bar {
+          display: flex; align-items: center; justify-content: space-between; gap: 6px;
+          padding-bottom: 5px; margin-bottom: 4px; border-bottom: 1px dashed #334155;
+          cursor: grab; font-size: 10.5px; font-weight: 800; color: #cbd5e1;
+        }
+        .float-widget-drag-bar:active { cursor: grabbing; }
+
+        /* 🌟 왼쪽/오른쪽으로 드래그할 때 뜨는 네온 스냅 도킹 라인 바 */
+        .neon-snap-guide-bar {
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          width: 6px;
+          background: linear-gradient(180deg, transparent, #38bdf8, #fde047, #38bdf8, transparent);
+          box-shadow: 0 0 24px 6px rgba(56, 189, 248, 0.9), 0 0 40px 12px rgba(250, 204, 21, 0.55);
+          z-index: 10005;
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.18s ease;
+        }
+        .neon-snap-guide-bar.left-line { left: 0; }
+        .neon-snap-guide-bar.right-line { right: 0; }
+        .neon-snap-guide-bar.visible { opacity: 1; }
+
+        @media (max-width: 768px) {
+          #floating_save_widget .save-status-row,
+          #floating_save_widget .save-btn-row { display: flex !important; }
+        }
+      `;
+      document.head.appendChild(st);
+
+      // 2) 좌/우 네온 스냅 가이드라인 생성
+      const leftNeon = document.createElement('div');
+      leftNeon.className = 'neon-snap-guide-bar left-line';
+      const rightNeon = document.createElement('div');
+      rightNeon.className = 'neon-snap-guide-bar right-line';
+      document.body.appendChild(leftNeon);
+      document.body.appendChild(rightNeon);
+
+      // 3) 위젯 내부 상단 드래그 바 & 옆면 작은 네모 버튼(→ / ←) 추가
+      const dragHeader = document.createElement('div');
+      dragHeader.className = 'float-widget-drag-bar';
+      dragHeader.title = '꾹 눌러서 위아래로 이동하거나, 반대쪽 끝으로 끌어서 위치를 바꾸세요!';
+      dragHeader.innerHTML = `
+        <span>✥ 위아래 이동 · 좌우 도킹</span>
+        <span id="drawer_side_badge" style="font-size:9.5px; color:#fde047;">우측 고정</span>
+      `;
+      widget.insertBefore(dragHeader, widget.firstChild);
+
+      const edgeTab = document.createElement('div');
+      edgeTab.id = 'float_drawer_tab_btn';
+      edgeTab.className = 'drawer-edge-tab';
+      edgeTab.title = '클릭하여 슬롯함 펴기/접기 (꾹 눌러서 위아래 이동 가능)';
+      edgeTab.innerHTML = `
+        <span class="drawer-tab-arrow" id="drawer_arrow_icon">→</span>
+        <span class="drawer-tab-status" id="drawer_mini_status">저장됨</span>
+      `;
+      widget.appendChild(edgeTab);
+
+      // 4) 저장된 위치(side: 'left'|'right', top, folded) 불러오기
+      const PREF_KEY = 'shk_drawer_widget_pref_v2';
+      let pref = { side: 'right', top: 18, folded: false };
+      try {
+        const raw = localStorage.getItem(PREF_KEY);
+        if (raw) pref = { ...pref, ...JSON.parse(raw) };
+      } catch (e) {}
+
+      const savePref = () => {
+        try { localStorage.setItem(PREF_KEY, JSON.stringify(pref)); } catch (e) {}
+      };
+
+      const renderDrawerState = () => {
+        widget.classList.toggle('dock-right', pref.side === 'right');
+        widget.classList.toggle('dock-left', pref.side === 'left');
+        widget.classList.toggle('folded', !!pref.folded);
+
+        const safeTop = Math.max(10, Math.min(window.innerHeight - 130, pref.top || 18));
+        widget.style.top = safeTop + 'px';
+
+        const arrowEl = document.getElementById('drawer_arrow_icon');
+        const sideBadge = document.getElementById('drawer_side_badge');
+        if (sideBadge) sideBadge.innerText = pref.side === 'right' ? '우측 고정' : '좌측 고정';
+
+        if (arrowEl) {
+          if (pref.side === 'right') {
+            // 우측에 붙어있을 때: 펴져 있으면 오른쪽으로 쏙 넣기(→), 접혀 있으면 왼쪽으로 꺼내기(←)
+            arrowEl.innerText = pref.folded ? '←' : '→';
+          } else {
+            // 좌측에 붙어있을 때: 펴져 있으면 왼쪽으로 쏙 넣기(←), 접혀 있으면 오른쪽으로 꺼내기(→)
+            arrowEl.innerText = pref.folded ? '→' : '←';
+          }
+        }
+      };
+
+      renderDrawerState();
+
+      // 자동저장 상태가 바뀔 때 접힌 네모 탭의 미니 글자('저장됨')와 색상도 반짝이도록 연동
+      const statusObserver = new MutationObserver(() => {
+        const miniTxt = document.getElementById('drawer_mini_status');
+        if (miniTxt) {
+          miniTxt.style.color = '#fde047';
+          setTimeout(() => { miniTxt.style.color = '#34d399'; }, 600);
+        }
+      });
+      const statusInd = document.getElementById('save_status_indicator');
+      if (statusInd) statusObserver.observe(statusInd, { childList: true, subtree: true });
+
+      // 5) 드래그(위아래 위치 조절 + 반대편으로 쭉 끌면 네온 라인 뜨면서 좌/우 스냅 전환!)
+      let isDragging = false, moved = false, startX = 0, startY = 0, startTop = 0, pendingSide = pref.side;
+
+      const startDrag = (cx, cy) => {
+        isDragging = true;
+        moved = false;
+        startX = cx;
+        startY = cy;
+        startTop = parseInt(widget.style.top, 10) || pref.top || 18;
+        pendingSide = pref.side;
+      };
+
+      const moveDrag = (cx, cy) => {
+        if (!isDragging) return;
+        const dx = cx - startX;
+        const dy = cy - startY;
+        if (Math.abs(dx) > 5 || Math.abs(dy) > 5) moved = true;
+
+        // 오직 위아래(Y축)로만 부드럽게 이동!
+        const nextTop = Math.max(10, Math.min(window.innerHeight - 130, startTop + dy));
+        widget.style.top = nextTop + 'px';
+        pref.top = Math.round(nextTop);
+
+        // 마우스를 왼쪽 절반(화면 35% 이하)이나 오른쪽 절반(화면 65% 이상)으로 쭉 끌면 네온 바 점등!
+        if (cx < window.innerWidth * 0.35) {
+          pendingSide = 'left';
+          leftNeon.classList.add('visible');
+          rightNeon.classList.remove('visible');
+        } else if (cx > window.innerWidth * 0.65) {
+          pendingSide = 'right';
+          rightNeon.classList.add('visible');
+          leftNeon.classList.remove('visible');
+        } else {
+          leftNeon.classList.remove('visible');
+          rightNeon.classList.remove('visible');
+        }
+
+        // 실시간으로 좌/우 도킹 전환 미리보기
+        if (pendingSide !== pref.side) {
+          pref.side = pendingSide;
+          renderDrawerState();
+        }
+      };
+
+      const endDrag = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        leftNeon.classList.remove('visible');
+        rightNeon.classList.remove('visible');
+        savePref();
+      };
+
+      // 작은 네모 손잡이(edgeTab) 클릭 시(드래그 안 했을 때만) 쏙 들어가고 나오기 토글!
+      edgeTab.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (moved) return;
+        pref.folded = !pref.folded;
+        renderDrawerState();
+        savePref();
+      });
+
+      [dragHeader, edgeTab].forEach(el => {
+        el.addEventListener('mousedown', e => startDrag(e.clientX, e.clientY));
+        el.addEventListener('touchstart', e => {
+          if (e.touches.length === 1) startDrag(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: true });
+      });
+
+      window.addEventListener('mousemove', e => moveDrag(e.clientX, e.clientY));
+      window.addEventListener('mouseup', endDrag);
+      window.addEventListener('touchmove', e => {
+        if (isDragging && e.touches.length === 1) moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive: true });
+      window.addEventListener('touchend', endDrag);
+    }
+
+    // ★ [핵심] 아까 실수로 지워졌던 applyV401Enhancements(1·2·3 슬롯 생성 포함)와 새 서랍 위젯을 순서대로 실행!
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        applyV401Enhancements();
+        initEdgeDrawerWidget();
+      }, 80);
+    });
   })();
 </script>
 </body>
