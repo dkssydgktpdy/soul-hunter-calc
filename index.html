@@ -15235,7 +15235,7 @@
     `;
     document.head.appendChild(styleEl);
 
-    // A. 메인 배너 안에 후원 버튼 삽입
+    // 헤더에 후원 버튼 삽입 (링크 다이렉트 연결 방식)
     const authorTag = document.querySelector('header .author-tag');
     if (authorTag && !document.getElementById('header_donation_widget')) {
       const donWrap = document.createElement('div');
@@ -15244,23 +15244,26 @@
       donWrap.onclick = (e) => e.stopPropagation();
       donWrap.innerHTML = `
         <a href="https://qr.kakaopay.com/281006011000086242274942" target="_blank" rel="noopener noreferrer"
-           class="header-donation-btn" onclick="handleDonationBtnClick(event)">
+           class="header-donation-btn" style="
+             display: inline-flex;
+             align-items: center;
+             gap: 7px;
+             padding: 6px 16px;
+             border-radius: 24px;
+             background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+             border: 1.5px solid #f472b6;
+             color: #fdf2f8;
+             font-size: 12.5px;
+             font-weight: 800;
+             cursor: pointer;
+             box-shadow: 0 4px 15px rgba(244, 114, 182, 0.35), inset 0 0 10px rgba(168, 85, 247, 0.25);
+             transition: all 0.22s ease;
+             text-decoration: none;
+             margin-top: 10px;
+           ">
           ${CUSTOM_SVG_ART.donation}
-          <span>겨울눈사람에게 따뜻한 커피 한 잔 후원하기</span>
+          <span>☕ 겨울눈사람에게 따뜻한 커피 한 잔 후원하기</span>
         </a>
-        <div class="header-donation-popup">
-          <div style="font-size:12.5px; font-weight:900; color:#fde047; margin-bottom:6px;">
-            💛 카카오페이 QR 후원
-          </div>
-          <div style="background:#ffffff; padding:8px; border-radius:12px; display:inline-block; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-            <img src="images/Qr.png" alt="후원 QR" style="width:165px; height:165px; object-fit:contain; display:block;"
-                 onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/qr.png';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/QR.png';}else if(this.dataset.f==2){this.dataset.f=3;this.src='Qr.png';}">
-          </div>
-          <div style="font-size:11px; color:#e2e8f0; margin-top:8px; line-height:1.45;">
-            💻 <strong>PC:</strong> 휴대폰 카메라로 QR 스캔<br>
-            📱 <strong>모바일:</strong> 위 버튼을 누르면 바로 연결!
-          </div>
-        </div>
       `;
       authorTag.parentNode.appendChild(donWrap);
     }
