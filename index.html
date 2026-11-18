@@ -3006,6 +3006,29 @@
     <div class="global-omni-dropdown" id="global_omni_dropdown"></div>
   </div>
 
+  <!-- 🎒 검색창 바로 밑에 위치하는 큼직한 통합 인벤토리 & 스펙 코드 버튼 -->
+  <div style="text-align: center; margin-bottom: 20px;">
+    <button onclick="openMasterInventoryModal()" style="
+      background: linear-gradient(135deg, #4f46e5 0%, #0284c7 100%);
+      border: 2px solid #38bdf8;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 900;
+      padding: 12px 28px;
+      border-radius: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45), 0 0 16px rgba(99, 102, 241, 0.4);
+      transition: all 0.2s ease;
+    " onmouseover="this.style.transform='translateY(-2px) scale(1.02)'; this.style.borderColor='#fde047'; this.style.boxShadow='0 8px 24px rgba(250,204,21,0.55), 0 0 20px rgba(56,189,248,0.6)';"
+      onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.borderColor='#38bdf8'; this.style.boxShadow='0 6px 20px rgba(56,189,248,0.45), 0 0 16px rgba(99,102,241,0.4)';">
+      <span style="font-size: 20px;">🎒</span>
+      <span>내 통합 인벤토리 &amp; 스펙 코드 열기 (양방향 연동)</span>
+    </button>
+  </div>
+
   <!-- Top Mode Switcher (직관적 고퀄리티 SVG 아이콘 적용) -->
   <div class="mode-switcher">
     <button class="mode-btn active" id="btn_mode_helpers" onclick="switchMainMode('helpers')">
@@ -5922,8 +5945,9 @@
       12: 37500, 13: 37500, 14: 47500, 15: 50000, 16: 52500, 17: 55000
     },
     orb: {
-      5: 12500, 7: 16250, 10: 25000, 11: 31250, 12: 37500,
-      13: 37500, 14: 43750, 15: 50000, 16: 52500, 17: 105000
+      0: 5000, 1: 6250, 2: 7500, 3: 8750, 4: 12500, 5: 12500,
+      6: 13750, 7: 16250, 8: 20000, 9: 25000, 10: 25000, 11: 31250,
+      12: 37500, 13: 37500, 14: 43750, 15: 50000, 16: 52500, 17: 105000
     },
     accessory: {
       0: 7500, 1: 9375, 2: 11250, 3: 13125, 4: 18750,
@@ -16418,34 +16442,6 @@
 
   function injectMasterInventorySystem() {
     if (document.getElementById('master_inv_modal_overlay')) return;
-
-    // 1. 우측 상단 플로팅 위젯에 [🎒 내 통합 인벤토리 & 코드] 버튼 추가
-    const floatWidget = document.getElementById('floating_save_widget');
-    if (floatWidget && !document.getElementById('btn_open_master_inv')) {
-      const invBtn = document.createElement('button');
-      invBtn.id = 'btn_open_master_inv';
-      invBtn.onclick = () => openMasterInventoryModal();
-      invBtn.style.cssText = `
-        width: 100%;
-        background: linear-gradient(135deg, #4f46e5 0%, #0284c7 100%);
-        border: 1.5px solid #38bdf8;
-        color: #ffffff;
-        font-size: 12px;
-        font-weight: 900;
-        padding: 7px 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
-        margin-bottom: 2px;
-        transition: all 0.2s;
-      `;
-      invBtn.innerHTML = `<span>🎒</span><span>내 통합 인벤토리 &amp; 코드</span>`;
-      floatWidget.insertBefore(invBtn, floatWidget.firstChild);
-    }
 
     // 2. 통합 인벤토리 & 스펙 코드 모달 팝업 DOM 생성
     const modalOverlay = document.createElement('div');
