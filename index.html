@@ -2153,6 +2153,13 @@
     border-color: #94a3b8 !important;
     background: #26354d !important;
   }
+  /* ★ [핵심 추가] 선택된(.selected) 라디오/스테이지 버튼은 선명한 시안-블루 & 골드 네온으로 확실하게 점등! */
+  .radio-pill.selected, .job-pill-btn.selected {
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.45) 0%, rgba(30, 58, 138, 0.75) 100%) !important;
+    border: 2px solid #38bdf8 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.55), inset 0 0 8px rgba(125, 211, 252, 0.35) !important;
+  }
 
   /* 2. '확인하실 가이드 항목 선택' (스킬 / 영웅 / 전직특성 3대 탭) 가시성 강화 */
   #guide_sub_tab_header {
@@ -2896,7 +2903,7 @@
           <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 & 공략 툴</h1>
         </div>
         <div class="author-tag">
-          기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.3.9.2</strong>
+          기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.4.0.0</strong>
         </div>
       </div>
 
@@ -3506,7 +3513,7 @@
                 <img src="images/main_rune.png" alt="룬" onerror="this.onerror=null; this.src='images/main_rune.jpg'; this.onerror=function(){this.parentElement.innerHTML='🛡️';};">
               </div>
               <div>
-                <span class="hub-card-title">🛡️ 룬 착용 도우미 v.1.5.0</span>
+                <span class="hub-card-title">🛡️ 룬 착용 도우미 v.1.5.1</span>
                 <span class="hub-card-desc">고대·영원·불멸 보유 룬 선택 시 최고 배율 10칸(상의/하의/신발/장식/무기) 자동 배치</span>
               </div>
             </div>
@@ -5179,7 +5186,7 @@
   <!-- Footer (모든 탭 하단 고정 노출 + 실시간 방문자 카운터 정상 작동) -->
   <footer>
     <div style="margin-bottom: 12px;">
-      소울헌터키우기 네이버 라운지 전용 계산기 v.3.9.2 | 제작: <strong>29서버 겨울눈사람</strong>
+      소울헌터키우기 네이버 라운지 전용 계산기 v.4.0.0 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
@@ -14737,43 +14744,46 @@
     initAllOnStartup();
   }
 
-  // ==================== 🚀 [v.3.9.0 신규 확장] 배너 후원 QR 팝업 & 드래곤·1/2/3차 전직 재화 계산기 ====================
+  // ==================== 🚀 [v.3.9.3 통합 업데이트] 전직(1·2·3차) · 드래곤 · 수호신(돌파/잠재/강화서) 재화 계산기 ====================
 
-  // 1. 엑셀 원본 데이터 100% 정밀 내장 (Lv별 다음 레벨까지 필요한 정수/영혼 수량)
-  // [1차 전직: 시련의 정수 (Lv.1 ~ Lv.90 -> 목표 최대 Lv.91)]
+  // 1. 엑셀(소헌키 계산.xlsx) 원본 100% 정밀 검증 데이터
+  // [1차 전직: 시련의 정수 (Lv.1 ~ Lv.101 -> 목표 최대 Lv.102)] (Lv.26: 57,500 교정 및 Lv.91~101 확장 반영)
   const JOB1_COST_TABLE = {
     1:1000, 2:1500, 3:2000, 4:2500, 5:3000, 6:3500, 7:4000, 8:4500, 9:5000, 10:5500,
     11:8000, 12:10500, 13:13000, 14:15500, 15:18000, 16:20500, 17:23000, 18:25500, 19:28000, 20:30500,
-    21:35000, 22:39500, 23:44000, 24:48500, 25:53000, 26:57000, 27:62000, 28:66500, 29:71000, 30:75500,
+    21:35000, 22:39500, 23:44000, 24:48500, 25:53000, 26:57500, 27:62000, 28:66500, 29:71000, 30:75500,
     31:80000, 32:90000, 33:100000, 34:110000, 35:120000, 36:130000, 37:140000, 38:150000, 39:160000, 40:170000,
     41:190000, 42:210000, 43:230000, 44:250000, 45:270000, 46:290000, 47:310000, 48:330000, 49:350000, 50:370000,
     51:400000, 52:450000, 53:500000, 54:550000, 55:600000, 56:650000, 57:700000, 58:750000, 59:800000, 60:1000000,
     61:1250000, 62:1500000, 63:1750000, 64:2000000, 65:2250000, 66:2500000, 67:2750000, 68:3000000, 69:3250000, 70:3500000,
     71:4000000, 72:4500000, 73:5000000, 74:5500000, 75:6000000, 76:6500000, 77:7000000, 78:7500000, 79:8000000, 80:8500000,
-    81:9000000, 82:9500000, 83:10000000, 84:11000000, 85:12000000, 86:13000000, 87:14000000, 88:15000000, 89:16000000, 90:17000000
+    81:9000000, 82:9500000, 83:10000000, 84:11000000, 85:12000000, 86:13000000, 87:14000000, 88:15000000, 89:16000000, 90:17000000,
+    91:18000000, 92:19000000, 93:20000000, 94:21000000, 95:22000000, 96:23000000, 97:24000000, 98:25000000, 99:26000000, 100:27000000, 101:28000000
   };
 
-  // [2차 전직: 극한의 정수 (Lv.1 ~ Lv.98 -> 목표 최대 Lv.99)]
+  // [2차 전직: 극한의 정수 (Lv.1 ~ Lv.103 -> 목표 최대 Lv.104)] (Lv.19~24 구간 밀림 완벽 교정!)
   const JOB2_COST_TABLE = {
-    1:1000, 2:1500, 3:2000, 4:2500, 5:3000, 6:3500, 7:4000, 8:4500, 9:5000, 10:5500,
-    11:6000, 12:6500, 13:7000, 14:7500, 15:8000, 16:8500, 17:9000, 18:9500, 19:10000, 20:10500,
-    21:11000, 22:12000, 23:13000, 24:14000, 25:17000, 26:18000, 27:19000, 28:20000, 29:25000, 30:30000,
+    1:1500, 2:2000, 3:2500, 4:3000, 5:3500, 6:4000, 7:4500, 8:5000, 9:5500, 10:6000,
+    11:6500, 12:7000, 13:7500, 14:8000, 15:8500, 16:9000, 17:9500, 18:10000, 19:11000, 20:12000,
+    21:13000, 22:14000, 23:15000, 24:16000, 25:17000, 26:18000, 27:19000, 28:20000, 29:25000, 30:30000,
     31:35000, 32:40000, 33:45000, 34:50000, 35:55000, 36:60000, 37:65000, 38:70000, 39:75000, 40:80000,
     41:85000, 42:90000, 43:95000, 44:100000, 45:105000, 46:110000, 47:115000, 48:120000, 49:125000, 50:130000,
     51:135000, 52:140000, 53:145000, 54:150000, 55:155000, 56:160000, 57:165000, 58:170000, 59:175000, 60:180000,
     61:185000, 62:190000, 63:195000, 64:200000, 65:210000, 66:220000, 67:230000, 68:240000, 69:250000, 70:260000,
     71:270000, 72:280000, 73:290000, 74:300000, 75:310000, 76:320000, 77:330000, 78:340000, 79:350000, 80:360000,
     81:370000, 82:380000, 83:390000, 84:400000, 85:410000, 86:420000, 87:430000, 88:440000, 89:450000, 90:460000,
-    91:470000, 92:480000, 93:490000, 94:500000, 95:510000, 96:520000, 97:530000, 98:540000
+    91:470000, 92:480000, 93:490000, 94:500000, 95:510000, 96:520000, 97:530000, 98:540000, 99:550000, 100:560000,
+    101:570000, 102:580000, 103:590000
   };
 
   // [3차 전직: 절망의 정수 (Lv.1 ~ Lv.44 -> 목표 최대 Lv.45)]
+  // ★ 핵심 수정: Lv.41->42(60만), Lv.42->43(70만), Lv.43->44(80만), Lv.44->45(90만)! (40~45 구간 합계 350만 완벽 일치)
   const JOB3_COST_TABLE = {
     1:2000, 2:4000, 3:6000, 4:8000, 5:10000, 6:12000, 7:14000, 8:16000, 9:18000, 10:20000,
     11:22000, 12:24000, 13:26000, 14:28000, 15:30000, 16:40000, 17:42000, 18:44000, 19:46000, 20:48000,
     21:50000, 22:60000, 23:70000, 24:80000, 25:100000, 26:110000, 27:120000, 28:130000, 29:140000, 30:150000,
     31:170000, 32:190000, 33:210000, 34:230000, 35:250000, 36:300000, 37:350000, 38:400000, 39:450000, 40:500000,
-    41:550000, 42:600000, 43:650000, 44:700000
+    41:600000, 42:700000, 43:800000, 44:900000
   };
 
   // [드래곤 레벨업: 드래곤의 영혼 (Lv.1 ~ Lv.64 -> 목표 최대 Lv.65) & 승급 재화]
@@ -14794,7 +14804,70 @@
     80: 850000
   };
 
-  // 2. 커스텀 고퀄리티 SVG 아트워크 생성기 (후원 아이콘 / 드래곤 / 1차 / 2차 / 3차 전직)
+  // ==================== 🛡️ [수호신 3대 재화 데이터] (소헌키 계산.xlsx '수호신' 시트 100% 반영) ====================
+  // 1) 수호신 돌파 재화 (0돌 -> 10돌: 단계별 필요 수호신 개수 × 개당 수호신의 증표 가격 = 총 525,500 증표)
+  const GUARDIAN_BREAK_TABLE = [
+    { from: 0, to: 1, needUnits: 2, unitTokenCost: 5000,  totalToken: 10000,  cumToken: 10000 },
+    { from: 1, to: 2, needUnits: 2, unitTokenCost: 6000,  totalToken: 12000,  cumToken: 22000 },
+    { from: 2, to: 3, needUnits: 3, unitTokenCost: 6500,  totalToken: 19500,  cumToken: 41500 },
+    { from: 3, to: 4, needUnits: 3, unitTokenCost: 7000,  totalToken: 21000,  cumToken: 62500 },
+    { from: 4, to: 5, needUnits: 4, unitTokenCost: 8000,  totalToken: 32000,  cumToken: 94500 },
+    { from: 5, to: 6, needUnits: 4, unitTokenCost: 9000,  totalToken: 36000,  cumToken: 130500 },
+    { from: 6, to: 7, needUnits: 5, unitTokenCost: 10000, totalToken: 50000,  cumToken: 180500 },
+    { from: 7, to: 8, needUnits: 5, unitTokenCost: 15000, totalToken: 75000,  cumToken: 255500 },
+    { from: 8, to: 9, needUnits: 6, unitTokenCost: 20000, totalToken: 120000, cumToken: 375500 },
+    { from: 9, to: 10, needUnits: 6, unitTokenCost: 25000, totalToken: 150000, cumToken: 525500 }
+  ];
+
+  // 2) 수호신 잠재능력 (Lv.0 ~ Lv.100, 5레벨 단위 구간 / 등불 9개 기준 / 잠재강화석 10,000개 = 수호신의 증표 25,000개 [1개당 2.5증표])
+  const GUARDIAN_POTENTIAL_TABLE = [
+    { startLv: 0,  endLv: 5,   perLampLv: 200,  perLamp5Lv: 1000,  stepStones: 1800,  cumStones: 1800,   stepTokens: 4500,   cumTokens: 4500,   atkPct: 8,    ampPct: 100,  mult: 2.16 },
+    { startLv: 5,  endLv: 10,  perLampLv: 400,  perLamp5Lv: 2000,  stepStones: 3600,  cumStones: 5400,   stepTokens: 9000,   cumTokens: 13500,  atkPct: 24,   ampPct: 130,  mult: 2.852 },
+    { startLv: 10, endLv: 15,  perLampLv: 600,  perLamp5Lv: 3000,  stepStones: 5400,  cumStones: 10800,  stepTokens: 13500,  cumTokens: 27000,  atkPct: 48,   ampPct: 170,  mult: 3.996 },
+    { startLv: 15, endLv: 20,  perLampLv: 800,  perLamp5Lv: 4000,  stepStones: 7200,  cumStones: 18000,  stepTokens: 18000,  cumTokens: 45000,  atkPct: 80,   ampPct: 220,  mult: 5.76 },
+    { startLv: 20, endLv: 25,  perLampLv: 1000, perLamp5Lv: 5000,  stepStones: 9000,  cumStones: 27000,  stepTokens: 22500,  cumTokens: 67500,  atkPct: 120,  ampPct: 280,  mult: 8.36 },
+    { startLv: 25, endLv: 30,  perLampLv: 1200, perLamp5Lv: 6000,  stepStones: 10800, cumStones: 37800,  stepTokens: 27000,  cumTokens: 94500,  atkPct: 168,  ampPct: 350,  mult: 12.06 },
+    { startLv: 30, endLv: 35,  perLampLv: 1400, perLamp5Lv: 7000,  stepStones: 12600, cumStones: 50400,  stepTokens: 31500,  cumTokens: 126000, atkPct: 224,  ampPct: 440,  mult: 17.496 },
+    { startLv: 35, endLv: 40,  perLampLv: 1600, perLamp5Lv: 8000,  stepStones: 14400, cumStones: 64800,  stepTokens: 36000,  cumTokens: 162000, atkPct: 288,  ampPct: 550,  mult: 25.22 },
+    { startLv: 40, endLv: 45,  perLampLv: 1800, perLamp5Lv: 9000,  stepStones: 16200, cumStones: 81000,  stepTokens: 40500,  cumTokens: 202500, atkPct: 360,  ampPct: 690,  mult: 36.34 },
+    { startLv: 45, endLv: 50,  perLampLv: 2000, perLamp5Lv: 10000, stepStones: 18000, cumStones: 99000,  stepTokens: 45000,  cumTokens: 247500, atkPct: 440,  ampPct: 870,  mult: 52.38 },
+    { startLv: 50, endLv: 55,  perLampLv: 2200, perLamp5Lv: 11000, stepStones: 19800, cumStones: 118800, stepTokens: 49500,  cumTokens: 297000, atkPct: 484,  ampPct: 1090, mult: 69.496 },
+    { startLv: 55, endLv: 60,  perLampLv: 2400, perLamp5Lv: 12000, stepStones: 21600, cumStones: 140400, stepTokens: 54000,  cumTokens: 351000, atkPct: 532,  ampPct: 1370, mult: 92.904 },
+    { startLv: 60, endLv: 65,  perLampLv: 2600, perLamp5Lv: 13000, stepStones: 23400, cumStones: 163800, stepTokens: 58500,  cumTokens: 409500, atkPct: 584,  ampPct: 1720, mult: 124.488 },
+    { startLv: 65, endLv: 70,  perLampLv: 2800, perLamp5Lv: 14000, stepStones: 25200, cumStones: 189000, stepTokens: 63000,  cumTokens: 472500, atkPct: 640,  ampPct: 2150, mult: 166.5 },
+    { startLv: 70, endLv: 75,  perLampLv: 3000, perLamp5Lv: 15000, stepStones: 27000, cumStones: 216000, stepTokens: 67500,  cumTokens: 540000, atkPct: 700,  ampPct: 2690, mult: 223.2 },
+    { startLv: 75, endLv: 80,  perLampLv: 3200, perLamp5Lv: 16000, stepStones: 28800, cumStones: 244800, stepTokens: 72000,  cumTokens: 612000, atkPct: 764,  ampPct: 3370, mult: 299.808 },
+    { startLv: 80, endLv: 85,  perLampLv: 3400, perLamp5Lv: 17000, stepStones: 30600, cumStones: 275400, stepTokens: 76500,  cumTokens: 688500, atkPct: 832,  ampPct: 4220, mult: 402.624 },
+    { startLv: 85, endLv: 90,  perLampLv: 3600, perLamp5Lv: 18000, stepStones: 32400, cumStones: 307800, stepTokens: 81000,  cumTokens: 769500, atkPct: 904,  ampPct: 5280, mult: 540.152 },
+    { startLv: 90, endLv: 95,  perLampLv: 3800, perLamp5Lv: 19000, stepStones: 34200, cumStones: 342000, stepTokens: 85500,  cumTokens: 855000, atkPct: 980,  ampPct: 6600, mult: 723.6 },
+    { startLv: 95, endLv: 100, perLampLv: 4000, perLamp5Lv: 20000, stepStones: 36000, cumStones: 378000, stepTokens: 90000,  cumTokens: 945000, atkPct: 1060, ampPct: 8250, mult: 968.6 }
+  ];
+
+  // 3) 수호신 강화서 레벨업 테이블 (Lv.1 ~ Lv.120: 10레벨(돌파) 단위 구간별 1레벨업당 강화서 소모량)
+  // 수호신은 0돌(Max Lv.20)부터 1돌파당 최대 레벨이 +10씩 확장되어 10돌파 시 Lv.120 달성!
+  const GUARDIAN_SCROLL_COST_TABLE = (() => {
+    const tbl = {};
+    // 구간별(10레벨 단위) 1레벨업당 필요 강화서 기본값 (인게임 돌파 구간별 계단식 증가 반영 + 사용자 직접 보정 지원)
+    const tierStepCosts = [
+      { min: 1,   max: 19,  cost: 100 },
+      { min: 20,  max: 29,  cost: 200 },
+      { min: 30,  max: 39,  cost: 400 },
+      { min: 40,  max: 49,  cost: 700 },
+      { min: 50,  max: 59,  cost: 1100 },
+      { min: 60,  max: 69,  cost: 1600 },
+      { min: 70,  max: 79,  cost: 2300 },
+      { min: 80,  max: 89,  cost: 3200 },
+      { min: 90,  max: 99,  cost: 4500 },
+      { min: 100, max: 109, cost: 6500 },
+      { min: 110, max: 119, cost: 9500 }
+    ];
+    tierStepCosts.forEach(b => {
+      for (let lv = b.min; lv <= b.max; lv++) tbl[lv] = b.cost;
+    });
+    return tbl;
+  })();
+
+  // 2. 커스텀 고퀄리티 SVG 아트워크 생성기 (후원 / 드래곤 / 1·2·3차 전직 / 수호신)
   const CUSTOM_SVG_ART = {
     donation: `
       <svg width="26" height="26" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 6px rgba(244,114,182,0.8)); flex-shrink:0;">
@@ -14810,16 +14883,11 @@
             <stop offset="1" stop-color="#e11d48"/>
           </linearGradient>
         </defs>
-        <!-- 반짝이는 별빛 -->
         <circle cx="8" cy="9" r="1.5" fill="#fde047"/>
         <circle cx="31" cy="7" r="1.8" fill="#7dd3fc"/>
-        <!-- 떠오르는 하트 보석 -->
         <path d="M19 17.5C19 17.5 11.5 12.8 11.5 8.2C11.5 5.8 13.4 4 15.7 4C17.2 4 18.4 4.8 19 6C19.6 4.8 20.8 4 22.3 4C24.6 4 26.5 5.8 26.5 8.2C26.5 12.8 19 17.5 19 17.5Z" fill="url(#donHeartGrad)" stroke="#ffffff" stroke-width="1.2"/>
-        <!-- 컵 손잡이 -->
         <path d="M28 21H31.5C33.4 21 35 22.6 35 24.5C35 26.4 33.4 28 31.5 28H28" stroke="#7dd3fc" stroke-width="2.4" stroke-linecap="round"/>
-        <!-- 따뜻한 머그컵 바디 -->
         <path d="M8 19.5C8 18.7 8.7 18 9.5 18H26.5C27.3 18 28 18.7 28 19.5V26.5C28 31.2 24.2 35 19.5 35H16.5C11.8 35 8 31.2 8 26.5V19.5Z" fill="url(#donCupGrad)" stroke="#e0f2fe" stroke-width="1.5"/>
-        <!-- 컵 중앙 눈송이 포인트 -->
         <path d="M18 22V30M14 26H22M15.2 23.2L20.8 28.8M20.8 23.2L15.2 28.8" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round"/>
       </svg>
     `,
@@ -14836,14 +14904,31 @@
             <stop offset="1" stop-color="#1d4ed8"/>
           </linearGradient>
         </defs>
-        <!-- 육각 드래곤 오라 프레임 -->
         <polygon points="22,2 39,11 39,33 22,42 5,33 5,11" fill="rgba(249,115,22,0.14)" stroke="#f59e0b" stroke-width="1.6"/>
-        <!-- 드래곤 날개 & 뿔 실루엣 -->
         <path d="M22 6L27 13L35 9L32 19L37 25L29 27L22 38L15 27L7 25L12 19L9 9L17 13L22 6Z" fill="url(#drgWing)" stroke="#fde047" stroke-width="1.2" stroke-linejoin="round"/>
-        <!-- 드래곤의 영혼 코어 보석 -->
         <polygon points="22,13 28,22 22,31 16,22" fill="url(#drgCore)" stroke="#ffffff" stroke-width="1.3"/>
         <circle cx="18.5" cy="16" r="1.4" fill="#ffffff"/>
         <circle cx="25.5" cy="16" r="1.4" fill="#ffffff"/>
+      </svg>
+    `,
+    guardian: `
+      <svg width="38" height="38" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 7px rgba(16,185,129,0.9));">
+        <defs>
+          <linearGradient id="grdShield" x1="8" y1="4" x2="36" y2="40" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6ee7b7"/>
+            <stop offset="0.5" stop-color="#10b981"/>
+            <stop offset="1" stop-color="#064e3b"/>
+          </linearGradient>
+          <linearGradient id="grdCore" x1="15" y1="12" x2="29" y2="30" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#fde047"/>
+            <stop offset="1" stop-color="#f59e0b"/>
+          </linearGradient>
+        </defs>
+        <!-- 신성한 수호신 날개 & 방패 문장 -->
+        <path d="M6 14C11 11 16 12 22 6C28 12 33 11 38 14C37 26 31 35 22 41C13 35 7 26 6 14Z" fill="url(#grdShield)" stroke="#a7f3d0" stroke-width="1.6" stroke-linejoin="round"/>
+        <!-- 수호신 등불/증표 코어 -->
+        <polygon points="22,11 29,21 22,33 15,21" fill="url(#grdCore)" stroke="#ffffff" stroke-width="1.4"/>
+        <circle cx="22" cy="21" r="2.8" fill="#ffffff"/>
       </svg>
     `,
     job1: `
@@ -14891,7 +14976,6 @@
     `
   };
 
-  // 📱 모바일(안드로이드/아이폰/아이패드) vs 💻 PC 판별
   function isMobileDonationEnv() {
     const ua = navigator.userAgent || '';
     const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
@@ -14899,7 +14983,6 @@
     return isMobileUA || isIPadOS;
   }
 
-  // 📱 모바일: 카톡 송금 링크 바로 이동 / 💻 PC: 모바일 접속 안내 알림
   function handleDonationBtnClick(e) {
     e.stopPropagation();
     const donWrap = document.getElementById('header_donation_widget');
@@ -14911,8 +14994,8 @@
     }
   }
 
-  let currentGrowthSubTab = 'job1'; // 'job1' | 'job2' | 'job3' | 'dragon'
-  let dragonIncludePromoInLv = false;
+  let currentGrowthSubTab = 'job1'; // 'job1' | 'job2' | 'job3' | 'dragon' | 'guardian'
+  let currentGuardianMode = 'break'; // 'break' (돌파 증표) | 'potential' (잠재강화석·증표) | 'scroll' (강화서 레벨업)
 
   // 3. 스타일(CSS) 및 DOM 요소 자동 주입
   function injectGrowthAndDonationUI() {
@@ -14921,16 +15004,9 @@
     const styleEl = document.createElement('style');
     styleEl.id = 'shk_v390_patch_styles';
     styleEl.textContent = `
-      /* 29서버 버전 텍스트 바로 아래 중앙 후원 버튼 & 호버 팝업창 (검색창 z-index:9500 보다 항상 위에 뜨도록 header z-index 부여!) */
-      header {
-        z-index: 9600 !important;
-      }
-      header .header-content {
-        z-index: 9601 !important;
-      }
-      .global-omni-search-wrap:focus-within {
-        z-index: 9700 !important;
-      }
+      header { z-index: 9600 !important; }
+      header .header-content { z-index: 9601 !important; }
+      .global-omni-search-wrap:focus-within { z-index: 9700 !important; }
       .header-donation-wrap {
         position: relative;
         display: inline-block;
@@ -14950,207 +15026,229 @@
         font-size: 12.5px;
         font-weight: 800;
         cursor: pointer;
-        box-shadow: 0 4px 15px rgba(244, 114, 182, 0.35), inset 0 0 8px rgba(244, 114, 182, 0.2);
+        box-shadow: 0 4px 15px rgba(244, 114, 182, 0.35), inset 0 0 10px rgba(168, 85, 247, 0.25);
         transition: all 0.22s ease;
+        text-decoration: none;
       }
       .header-donation-btn:hover {
         transform: translateY(-2px) scale(1.03);
         border-color: #fde047;
-        box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5), 0 0 14px rgba(244, 114, 182, 0.55);
+        box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5), 0 0 14px rgba(56, 189, 248, 0.5);
+        color: #ffffff;
       }
-      .header-donation-popover {
+      .header-donation-popup {
         position: absolute;
-        top: calc(100% + 10px);
+        top: calc(100% + 12px);
         left: 50%;
-        width: 310px;
-        background: linear-gradient(160deg, #0f172a 0%, #1e1b4b 60%, #090d16 100%);
+        transform: translateX(-50%) translateY(-8px);
+        width: 245px;
+        background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 100%);
         border: 2px solid #38bdf8;
-        border-radius: 18px;
-        padding: 16px 16px 14px 16px;
-        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.88), 0 0 24px rgba(56, 189, 248, 0.4);
+        border-radius: 16px;
+        padding: 14px 12px;
+        box-shadow: 0 16px 38px rgba(0, 0, 0, 0.88), 0 0 22px rgba(56, 189, 248, 0.45);
         opacity: 0;
-        visibility: hidden;
-        transform: translateX(-50%) translateY(-8px) scale(0.97);
-        transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
         pointer-events: none;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 999999;
         text-align: center;
-        z-index: 10001;
       }
-      .header-donation-wrap:hover .header-donation-popover,
-      .header-donation-wrap.open-mobile .header-donation-popover {
+      .header-donation-popup::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 0 8px 8px 8px;
+        border-style: solid;
+        border-color: transparent transparent #38bdf8 transparent;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .header-donation-wrap:hover .header-donation-popup {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+      .header-donation-wrap.open-mobile .header-donation-popup {
         opacity: 1;
-        visibility: visible;
-        transform: translateX(-50%) translateY(0) scale(1);
         pointer-events: auto;
-      }
-      /* 카카오페이 바로 송금 링크 버튼 (QR 프레임 대체) */
-      .donation-kakaopay-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        width: 100%;
-        margin: 12px 0 10px 0;
-        padding: 12px 14px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #fee500 0%, #facc15 100%);
-        border: 2px solid #fef08a;
-        color: #191919 !important;
-        text-decoration: none !important;
-        font-size: 14px;
-        font-weight: 900;
-        box-shadow: 0 6px 18px rgba(250, 204, 21, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.7);
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        cursor: pointer;
-      }
-      .donation-kakaopay-btn:hover {
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 8px 24px rgba(254, 229, 0, 0.65), 0 0 14px rgba(250, 204, 21, 0.6);
-        background: linear-gradient(135deg, #fff04d 0%, #fee500 100%);
-      }
-      .donation-kakaopay-btn:active {
-        transform: scale(0.98);
-      }
-      @media (max-width: 768px) {
-        .header-donation-wrap {
-          position: relative;
-          top: 0;
-          left: 0;
-          margin-bottom: 10px;
-          display: inline-block;
-        }
-        .header-donation-popover {
-          left: 50%;
-          transform: translateX(-50%) translateY(-8px) scale(0.97);
-          width: 290px;
-        }
-        .header-donation-wrap:hover .header-donation-popover,
-        .header-donation-wrap.open-mobile .header-donation-popover {
-          transform: translateX(-50%) translateY(0) scale(1);
-        }
+        transform: translateX(-50%) translateY(0);
       }
 
-      /* 전직 & 드래곤 재화 계산기 전용 탭 및 카드 스타일 */
-      .growth-calc-tabs {
+      /* ★ [가시성 완벽 복구!] 유니온 스테이지 진행도 선택 라디오 버튼 활성/비활성 색상 */
+      #union_stage_btns_container button,
+      .union-preset-btn {
+        background: #1e293b !important;
+        border: 1.5px solid #475569 !important;
+        color: #cbd5e1 !important;
+        border-radius: 8px !important;
+        padding: 8px 6px !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        cursor: pointer !important;
+        transition: all 0.18s ease !important;
+      }
+      #union_stage_btns_container button:hover,
+      .union-preset-btn:hover {
+        border-color: #38bdf8 !important;
+        color: #ffffff !important;
+        background: #172554 !important;
+      }
+      #union_stage_btns_container button.active,
+      #union_stage_btns_container button.selected,
+      .union-preset-btn.active,
+      .union-preset-btn.selected {
+        background: linear-gradient(135deg, #0284c7 0%, #1e3a8a 100%) !important;
+        border: 2px solid #fde047 !important;
+        color: #ffffff !important;
+        box-shadow: 0 0 14px rgba(250, 204, 21, 0.55), inset 0 0 8px rgba(56, 189, 248, 0.45) !important;
+        transform: translateY(-1px) !important;
+      }
+
+      /* 전직 & 드래곤 & 수호신 5종 서브 탭 바 */
+      .growth-sub-tabs {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         gap: 8px;
         margin-bottom: 18px;
         background: #0f172a;
         padding: 8px;
         border-radius: 14px;
-        border: 1.5px solid #334155;
+        border: 2px solid #334155;
       }
-      .growth-calc-tab-btn {
+      .growth-sub-tab-btn {
+        background: #1e293b;
+        border: 1.5px solid #475569;
+        border-radius: 10px;
+        padding: 10px 6px;
+        color: #cbd5e1;
+        font-size: 13px;
+        font-weight: 800;
+        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        padding: 10px 8px;
-        border-radius: 10px;
+        gap: 6px;
+        transition: all 0.2s;
+      }
+      .growth-sub-tab-btn:hover {
+        border-color: #94a3b8;
+        color: #ffffff;
+      }
+      .growth-sub-tab-btn.active-job1 {
+        background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, #0f172a 100%);
+        border-color: #38bdf8;
+        color: #ffffff;
+        box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+      }
+      .growth-sub-tab-btn.active-job2 {
+        background: linear-gradient(135deg, rgba(147, 51, 234, 0.35) 0%, #0f172a 100%);
+        border-color: #c084fc;
+        color: #ffffff;
+        box-shadow: 0 0 14px rgba(192, 132, 252, 0.4);
+      }
+      .growth-sub-tab-btn.active-job3 {
+        background: linear-gradient(135deg, rgba(225, 29, 72, 0.35) 0%, #0f172a 100%);
+        border-color: #f43f5e;
+        color: #ffffff;
+        box-shadow: 0 0 14px rgba(244, 63, 94, 0.4);
+      }
+      .growth-sub-tab-btn.active-dragon {
+        background: linear-gradient(135deg, rgba(217, 119, 6, 0.35) 0%, #0f172a 100%);
+        border-color: #f59e0b;
+        color: #fef08a;
+        box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+      }
+      .growth-sub-tab-btn.active-guardian {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, #0f172a 100%);
+        border-color: #10b981;
+        color: #a7f3d0;
+        box-shadow: 0 0 14px rgba(16, 185, 129, 0.45);
+      }
+
+      /* 수호신 내부 3대 라디오 스위치 버튼 */
+      .guardian-mode-radio-bar {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 18px;
+        background: #0b1120;
+        padding: 8px;
+        border-radius: 12px;
         border: 1.5px solid #334155;
+      }
+      .guardian-radio-btn {
         background: #1e293b;
+        border: 2px solid #475569;
+        border-radius: 10px;
+        padding: 12px 10px;
         color: #cbd5e1;
         font-size: 13.5px;
         font-weight: 800;
         cursor: pointer;
+        text-align: center;
         transition: all 0.2s;
       }
-      .growth-calc-tab-btn svg {
-        width: 24px;
-        height: 24px;
-      }
-      .growth-calc-tab-btn.active-job1 {
-        border-color: #38bdf8;
-        background: linear-gradient(135deg, rgba(2,132,199,0.35) 0%, #1e1b4b 100%);
+      .guardian-radio-btn:hover {
+        border-color: #94a3b8;
         color: #ffffff;
-        box-shadow: 0 0 14px rgba(56,189,248,0.4);
       }
-      .growth-calc-tab-btn.active-job2 {
-        border-color: #c084fc;
-        background: linear-gradient(135deg, rgba(147,51,234,0.35) 0%, #1e1b4b 100%);
+      .guardian-radio-btn.selected {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, #1e1b4b 100%);
+        border-color: #34d399;
         color: #ffffff;
-        box-shadow: 0 0 14px rgba(192,132,252,0.4);
+        box-shadow: 0 0 15px rgba(52, 211, 153, 0.4);
       }
-      .growth-calc-tab-btn.active-job3 {
-        border-color: #f43f5e;
-        background: linear-gradient(135deg, rgba(225,29,72,0.35) 0%, #1e1b4b 100%);
-        color: #ffffff;
-        box-shadow: 0 0 14px rgba(244,63,94,0.4);
-      }
-      .growth-calc-tab-btn.active-dragon {
-        border-color: #f59e0b;
-        background: linear-gradient(135deg, rgba(217,119,6,0.35) 0%, #1e1b4b 100%);
-        color: #ffffff;
-        box-shadow: 0 0 14px rgba(245,158,11,0.4);
-      }
-      @media (max-width: 640px) {
-        .growth-calc-tabs {
+      @media (max-width: 720px) {
+        .growth-sub-tabs {
           grid-template-columns: repeat(2, 1fr);
+        }
+        .guardian-mode-radio-bar {
+          grid-template-columns: 1fr;
         }
       }
     `;
     document.head.appendChild(styleEl);
 
-    // A. 배너 왼쪽 위 후원 아이콘 & 호버 팝업 삽입
-    const headerEl = document.querySelector('header');
-    if (headerEl && !document.getElementById('header_donation_widget')) {
+    // A. 메인 배너 안에 후원 버튼 삽입
+    const authorTag = document.querySelector('header .author-tag');
+    if (authorTag && !document.getElementById('header_donation_widget')) {
       const donWrap = document.createElement('div');
-      donWrap.className = 'header-donation-wrap';
       donWrap.id = 'header_donation_widget';
-      donWrap.setAttribute('onclick', "event.stopPropagation(); this.classList.toggle('open-mobile');");
-      const isMobDon = isMobileDonationEnv();
+      donWrap.className = 'header-donation-wrap';
+      donWrap.onclick = (e) => e.stopPropagation();
       donWrap.innerHTML = `
-        <div class="header-donation-btn" title="마우스를 올리시면 개발자 후원 창이 열립니다">
+        <a href="https://qr.kakaopay.com/281006011000086242274942" target="_blank" rel="noopener noreferrer"
+           class="header-donation-btn" onclick="handleDonationBtnClick(event)">
           ${CUSTOM_SVG_ART.donation}
-          <span>개발자 후원하기</span>
-        </div>
-        <div class="header-donation-popover" onclick="event.stopPropagation();">
-          <div style="font-size:13.5px; font-weight:900; color:#fde047; margin-bottom:6px; display:flex; align-items:center; justify-content:center; gap:5px;">
-            <span>⛄</span><span>안녕하세요! 겨울눈사람입니다</span>
+          <span>☕ 겨울눈사람에게 따뜻한 커피 한 잔 후원하기</span>
+        </a>
+        <div class="header-donation-popup">
+          <div style="font-size:12.5px; font-weight:900; color:#fde047; margin-bottom:6px;">
+            💛 카카오페이 QR 후원
           </div>
-          <div style="font-size:12px; color:#e2e8f0; line-height:1.55; word-break:keep-all; background:rgba(15,23,42,0.75); border:1px solid rgba(125,211,252,0.3); border-radius:10px; padding:9px 10px;">
-            잘 사용하고 계신가요? 😊<br>
-            이 시뮬레이터는 <strong>1인 개발</strong>로 꾸준히 만들어지고 있습니다.<br>
-            유용하게 사용하고 계시다면, 작은 후원이 앞으로 더 좋은 기능을 개발하는 데 <strong>정말 큰 힘과 도움</strong>이 됩니다! 💙
+          <div style="background:#ffffff; padding:8px; border-radius:12px; display:inline-block; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+            <img src="images/Qr.png" alt="후원 QR" style="width:165px; height:165px; object-fit:contain; display:block;"
+                 onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/qr.png';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/QR.png';}else if(this.dataset.f==2){this.dataset.f=3;this.src='Qr.png';}">
           </div>
-
-          <!-- 💛 카카오페이 직행 송금 아이콘 버튼 (모바일 클릭 시 바로 이동) -->
-          <a href="https://qr.kakaopay.com/FDr52LD99" target="_blank" rel="noopener noreferrer" class="donation-kakaopay-btn" onclick="handleDonationBtnClick(event)">
-            <svg width="26" height="26" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
-              <rect width="36" height="36" rx="9" fill="#191919"/>
-              <path d="M18 7.5C11.9 7.5 7 11.4 7 16.2C7 19.3 9.05 22.02 12.14 23.54L11.05 27.55C10.95 27.89 11.34 28.15 11.63 27.95L16.36 24.81C16.9 24.87 17.44 24.9 18 24.9C24.1 24.9 29 21 29 16.2C29 11.4 24.1 7.5 18 7.5Z" fill="#FEE500"/>
-              <path d="M18 20.4C18 20.4 13.4 17.3 13.4 14.5C13.4 13.1 14.5 12 15.8 12C16.8 12 17.6 12.6 18 13.4C18.4 12.6 19.2 12 20.2 12C21.5 12 22.6 13.1 22.6 14.5C22.6 17.3 18 20.4 18 20.4Z" fill="#191919"/>
-            </svg>
-            <span>카카오페이로 후원하기 ➔</span>
-          </a>
-
-          <div style="font-size:11px; color:#7dd3fc; font-weight:800; line-height:1.45;">
-            📱 모바일로 위 아이콘을 클릭해 주세요!<br>
-            <span style="color:#94a3b8; font-weight:600;">(모바일에서 클릭 시 카카오톡 송금 바로 연결)</span>
+          <div style="font-size:11px; color:#e2e8f0; margin-top:8px; line-height:1.45;">
+            💻 <strong>PC:</strong> 휴대폰 카메라로 QR 스캔<br>
+            📱 <strong>모바일:</strong> 위 버튼을 누르면 바로 연결!
           </div>
         </div>
       `;
-      const authorTagEl = headerEl.querySelector('.author-tag') || headerEl.querySelector('.header-main-left');
-      if (authorTagEl) {
-        authorTagEl.insertAdjacentElement('afterend', donWrap);
-      } else {
-        headerEl.insertBefore(donWrap, headerEl.firstChild);
-      }
-
-      document.addEventListener('click', () => {
-        donWrap.classList.remove('open-mobile');
-      });
+      authorTag.parentNode.appendChild(donWrap);
     }
 
-    // B. [소환 확률 기댓값 & 재화 계산기] 아코디언은 5개 소환 계산기 유지 (드래곤은 아래 전직·성장 아코디언으로 이동)
+    // B. [소환 확률 기댓값 & 재화 계산기] 아코디언 배지 정리
     const summonAcc = document.getElementById('acc_calc_summon');
     if (summonAcc) {
       const badge = summonAcc.querySelector('.accordion-count-badge');
       if (badge) badge.innerText = '5개 소환 계산기';
     }
 
-    // C. [전직 & 드래곤 육성 재화 계산기] 아코디언 (1차 -> 2차 -> 3차 -> 드래곤 육성 & 승급 바로 밑 배치!)
+    // C. [전직 · 드래곤 · 수호신 재화 계산기] 아코디언 (1차 / 2차 / 3차 / 드래곤 / 수호신 5개 카드!)
     const newbieHub = document.getElementById('newbie_hub_view');
     if (newbieHub && !document.getElementById('acc_calc_job_cost')) {
       const newSec = document.createElement('div');
@@ -15162,19 +15260,17 @@
               <span class="accordion-toggle-icon">▶</span>
               <span class="accordion-title-text" style="display:inline-flex; align-items:center; gap:9px;">
                 <svg width="28" height="28" viewBox="0 0 44 44" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 6px rgba(250,204,21,0.9));">
-                  <!-- 배경 육각 문장 -->
                   <polygon points="22,3 38,12 38,32 22,41 6,32 6,12" fill="rgba(168,85,247,0.22)" stroke="#c084fc" stroke-width="1.8"/>
-                  <!-- 황금 전직·승급 왕관 -->
                   <polygon points="10,29 12,15 18,21 22,11 26,21 32,15 34,29" fill="#f59e0b" stroke="#fef08a" stroke-width="1.6" stroke-linejoin="round"/>
                   <rect x="10" y="31" width="24" height="3.5" rx="1.5" fill="#fde047"/>
                   <circle cx="22" cy="9" r="2" fill="#ffffff"/>
                   <circle cx="11.5" cy="13" r="1.5" fill="#38bdf8"/>
                   <circle cx="32.5" cy="13" r="1.5" fill="#fb7185"/>
                 </svg>
-                <span>전직 &amp; 드래곤 육성 재화 계산기 (1차 · 2차 · 3차 · 드래곤)</span>
+                <span>전직 · 드래곤 · 수호신 재화 계산기 (1·2·3차 / 드래곤 / 수호신)</span>
               </span>
             </div>
-            <div class="accordion-right-info"><span class="accordion-count-badge">4개 성장 계산기</span></div>
+            <div class="accordion-right-info"><span class="grade-badge grade-mythic" style="margin-right:6px;">📊 붉양님 데이터</span></div>
           </div>
           <div class="accordion-content" style="padding: 14px;">
             <div class="hub-grid">
@@ -15185,7 +15281,7 @@
                   </div>
                   <div>
                     <span class="hub-card-title">🌟 1차 전직 재화 계산기</span>
-                    <span class="hub-card-desc">Lv.1~90 시련의 정수 | 보물던전 &amp; 시련의 탑 열쇠 계산</span>
+                    <span class="hub-card-desc">Lv.1~102 시련의 정수 | 시련의 탑 &amp; 보물던전 1 열쇠</span>
                   </div>
                 </div>
                 <div class="hub-card-arrow" style="color:#38bdf8;">➔</div>
@@ -15198,7 +15294,7 @@
                   </div>
                   <div>
                     <span class="hub-card-title">⚡ 2차 전직 재화 계산기</span>
-                    <span class="hub-card-desc">Lv.1~98 극한의 정수 | 극한의 탑 &amp; 보물던전 열쇠 계산</span>
+                    <span class="hub-card-desc">Lv.1~104 극한의 정수 | 극한의 탑 &amp; 보물던전 2 열쇠</span>
                   </div>
                 </div>
                 <div class="hub-card-arrow" style="color:#c084fc;">➔</div>
@@ -15211,7 +15307,7 @@
                   </div>
                   <div>
                     <span class="hub-card-title">🔥 3차 전직 재화 계산기</span>
-                    <span class="hub-card-desc">Lv.1~44 절망의 정수 | 절망의 탑 &amp; 보물던전 열쇠 계산</span>
+                    <span class="hub-card-desc">Lv.1~45 절망의 정수 (44➔45 90만 반영) | 절망의 탑 열쇠</span>
                   </div>
                 </div>
                 <div class="hub-card-arrow" style="color:#f43f5e;">➔</div>
@@ -15224,10 +15320,23 @@
                   </div>
                   <div>
                     <span class="hub-card-title" style="color:#fde68a;">🐉 드래곤 육성 &amp; 승급 재화</span>
-                    <span class="hub-card-desc">Lv.1~64 드래곤의 영혼 &amp; 승급(20/40/60/80) 열쇠 계산기</span>
+                    <span class="hub-card-desc">Lv.1~65 드래곤의 영혼 &amp; 승급(20/40/60/80) 열쇠 계산기</span>
                   </div>
                 </div>
                 <div class="hub-card-arrow" style="color:#f59e0b;">➔</div>
+              </div>
+
+              <div class="hub-card" id="hub_card_guardian_calc" onclick="openGrowthResourceCalculator('guardian')" style="border-color:rgba(16, 185, 129, 0.6);">
+                <div class="hub-card-left">
+                  <div class="hub-card-icon" style="border-color:#10b981; background:radial-gradient(circle, rgba(16,185,129,0.22) 0%, #0f172a 100%);">
+                    ${CUSTOM_SVG_ART.guardian}
+                  </div>
+                  <div>
+                    <span class="hub-card-title" style="color:#6ee7b7;">🛡️ 수호신 재화 (돌파 · 잠재 · 강화서)</span>
+                    <span class="hub-card-desc">수호신의 증표 · 잠재 강화석 · 강화서 레벨업 &amp; 소탕권/보던2</span>
+                  </div>
+                </div>
+                <div class="hub-card-arrow" style="color:#10b981;">➔</div>
               </div>
             </div>
           </div>
@@ -15249,659 +15358,1743 @@
       calculateAllGrowthCalcs();
     }
 
-    // E. 도움말 모달 & 구글 스타일 통합 검색창(GLOBAL_SEARCH_INDEX) 자동 등록
-    HELP_GUIDE_DATA['tab-growth-calc'] = {
-      title: '⚔️ 전직(1·2·3차) & 🐉 드래곤 재화 계산기 사용법',
-      html: `<ol>
-        <li>상단 탭에서 <strong>[1차 전직 / 2차 전직 / 3차 전직 / 드래곤]</strong> 중 계산할 항목을 선택하세요.</li>
-        <li><strong>현재 레벨</strong>과 <strong>목표 레벨</strong>을 지정하면 목표 달성까지 필요한 총 정수(또는 드래곤의 영혼) 요구량이 즉시 합산됩니다.</li>
-        <li>현재 소지 중인 재화와 <strong>탑 열쇠 / 보물던전 열쇠 보유량 및 1회 소탕량</strong>을 입력하면, 목표까지 <strong>추가로 필요한 열쇠 개수</strong>를 정확히 올림(ROUNDUP) 계산해 줍니다!</li>
-      </ol>`
-    };
+    // E. 사용법 가이드 모달 및 구글 스타일 통합 검색 인덱스 등록
+    if (typeof HELP_GUIDE_DATA !== 'undefined') {
+      HELP_GUIDE_DATA['tab-growth-calc'] = {
+        title: '⚔️ 전직 · 드래곤 · 수호신 재화 계산기 사용법',
+        html: `<ol>
+          <li>상단 탭에서 <strong>[1차 전직 / 2차 전직 / 3차 전직 / 드래곤 육성 / 수호신 재화]</strong> 중 원하는 항목을 선택하세요.</li>
+          <li><strong>1차 전직</strong>은 시련의 탑+보물던전 1, <strong>2차 전직</strong>은 극한의 탑+보물던전 2, <strong>3차 전직</strong>은 절망의 탑 기준으로 필요 열쇠를 계산합니다.</li>
+          <li><strong>수호신 재화</strong>에서는 라디오 버튼으로 <strong>[① 돌파 증표 / ② 잠재 강화석(증표 환산 포함) / ③ 강화서 레벨업]</strong>을 전환하며 수호신의 던전 소탕권과 보물던전 2 열쇠 요구량을 확인할 수 있습니다.</li>
+        </ol>`
+      };
+    }
 
-    if (typeof GLOBAL_SEARCH_INDEX !== 'undefined' && !GLOBAL_SEARCH_INDEX.some(x => x.title.includes('드래곤 육성'))) {
+    if (typeof GLOBAL_SEARCH_INDEX !== 'undefined' && !GLOBAL_SEARCH_INDEX.some(x => x.title.includes('수호신 재화'))) {
       GLOBAL_SEARCH_INDEX.push(
-        { title: "🐉 드래곤 육성 & 승급 재화(열쇠) 계산기", cat: "🎲 확률 계산기", badge: "grade-legend", keywords: "드래곤 영혼 승급 20레벨 40레벨 60레벨 드래곤던전 열쇠 소탕량", action: () => { openGrowthResourceCalculator('dragon'); } },
-        { title: "🌟 1차 전직 재화(시련의 정수) & 보물던전 열쇠 계산기", cat: "🎲 확률 계산기", badge: "grade-ancient", keywords: "1차 전직 재화 시련의정수 시련의탑 보물던전 열쇠 소탕량", action: () => { openGrowthResourceCalculator('job1'); } },
-        { title: "⚡ 2차 전직 재화(극한의 정수) & 극한의 탑 열쇠 계산기", cat: "🎲 확률 계산기", badge: "grade-unique", keywords: "2차 전직 재화 극한의정수 극한의탑 보물던전 열쇠 소탕량", action: () => { openGrowthResourceCalculator('job2'); } },
-        { title: "🔥 3차 전직 재화(절망의 정수) & 절망의 탑 열쇠 계산기", cat: "🎲 확률 계산기", badge: "grade-mythic", keywords: "3차 전직 재화 절망의정수 절망의탑 보물던전 열쇠 소탕량", action: () => { openGrowthResourceCalculator('job3'); } }
+        { title: "🐉 드래곤 육성 & 승급 재화(열쇠) 계산기", cat: "🎲 확률 계산기", badge: "grade-legend", keywords: "드래곤 영혼 승급 20레벨 40레벨 60레벨 80레벨 드래곤던전 열쇠", action: () => openGrowthResourceCalculator('dragon') },
+        { title: "🌟 1차 전직 재화(시련의 정수) & 보물던전 1 열쇠 계산기", cat: "🎲 확률 계산기", badge: "grade-ancient", keywords: "1차 전직 재화 시련의정수 시련의탑 보물던전1 열쇠", action: () => openGrowthResourceCalculator('job1') },
+        { title: "⚡ 2차 전직 재화(극한의 정수) & 보물던전 2 열쇠 계산기", cat: "🎲 확률 계산기", badge: "grade-unique", keywords: "2차 전직 재화 극한의정수 극한의탑 보물던전2 열쇠", action: () => openGrowthResourceCalculator('job2') },
+        { title: "🔥 3차 전직 재화(절망의 정수) & 절망의 탑 열쇠 계산기", cat: "🎲 확률 계산기", badge: "grade-mythic", keywords: "3차 전직 재화 절망의정수 절망의탑 열쇠 44 45 90만", action: () => openGrowthResourceCalculator('job3') },
+        { title: "🛡️ 수호신 돌파 · 잠재능력 · 강화서 레벨업 재화 계산기", cat: "🎲 확률 계산기", badge: "grade-eternal", keywords: "수호신 돌파 증표 잠재강화석 등불 강화서 레벨업 수호신의던전 소탕권 보물던전2", action: () => openGrowthResourceCalculator('guardian') }
       );
     }
   }
 
- function openGrowthResourceCalculator(subTab) {
-    if (typeof switchMainMode === 'function') switchMainMode('calcs');
-    openDeepCalculator('tab-growth-calc');
-    switchGrowthSubTab(subTab || 'job1');
-    setFloatingGuideContext('tab-growth-calc', '전직·드래곤 계산기');
-  }
-
-  function switchGrowthSubTab(subTab) {
-    currentGrowthSubTab = subTab;
-    ['job1', 'job2', 'job3', 'dragon'].forEach(k => {
-      const btn = document.getElementById(`gcalc_tab_btn_${k}`);
-      const panel = document.getElementById(`gcalc_panel_${k}`);
-      if (btn) {
-        btn.className = 'growth-calc-tab-btn' + (k === subTab ? ` active-${k}` : '');
-      }
-      if (panel) {
-        panel.style.display = (k === subTab) ? 'block' : 'none';
-      }
-    });
-    calculateAllGrowthCalcs();
-  }
-
+  // 4. 성장 재화 계산기 HTML 템플릿 빌더 (1·2·3차 전직 + 드래곤 + 수호신 3대 라디오)
   function buildGrowthCalcHTML() {
+    // ★ 우측 상단 [붉양님 데이터 제공] 공식 크레딧 배지 (프로필 아이콘 + 네온 테두리)
+    const makeYangCreditHeader = (subBadgeCls, subBadgeText) => `
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <span class="grade-badge ${subBadgeCls}">${subBadgeText}</span>
+        <span style="display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg, rgba(244,63,94,0.22) 0%, rgba(30,27,75,0.95) 100%); border:1.5px solid #fb7185; color:#ffe4e6; padding:3px 10px 3px 5px; border-radius:20px; font-size:11.5px; font-weight:900; box-shadow:0 0 12px rgba(244,63,94,0.35);">
+          <img src="images/yang.png" alt="붉양" style="width:20px; height:20px; border-radius:50%; border:1.5px solid #fde047; object-fit:cover;" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/yang.PNG';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/yang.jpg';}else{this.style.display='none';}">
+          <span>📊 데이터 제공: <strong style="color:#fde047;">붉양</strong>님</span>
+        </span>
+      </div>
+    `;
     return `
-      <!-- 상단 4대 전환 탭 (커스텀 SVG 아이콘 포함) -->
-      <div class="growth-calc-tabs">
-        <button class="growth-calc-tab-btn active-job1" id="gcalc_tab_btn_job1" onclick="switchGrowthSubTab('job1')">
-          ${CUSTOM_SVG_ART.job1}
-          <span>1차 전직 재화</span>
+      <!-- 상단 5종 전환 서브 탭 -->
+      <div class="growth-sub-tabs">
+        <button class="growth-sub-tab-btn active-job1" id="gsub_btn_job1" onclick="switchGrowthSubTab('job1')">
+          <span>🌟 1차 전직 재화</span>
         </button>
-        <button class="growth-calc-tab-btn" id="gcalc_tab_btn_job2" onclick="switchGrowthSubTab('job2')">
-          ${CUSTOM_SVG_ART.job2}
-          <span>2차 전직 재화</span>
+        <button class="growth-sub-tab-btn" id="gsub_btn_job2" onclick="switchGrowthSubTab('job2')">
+          <span>⚡ 2차 전직 재화</span>
         </button>
-        <button class="growth-calc-tab-btn" id="gcalc_tab_btn_job3" onclick="switchGrowthSubTab('job3')">
-          ${CUSTOM_SVG_ART.job3}
-          <span>3차 전직 재화</span>
+        <button class="growth-sub-tab-btn" id="gsub_btn_job3" onclick="switchGrowthSubTab('job3')">
+          <span>🔥 3차 전직 재화</span>
         </button>
-        <button class="growth-calc-tab-btn" id="gcalc_tab_btn_dragon" onclick="switchGrowthSubTab('dragon')">
-          ${CUSTOM_SVG_ART.dragon}
-          <span>드래곤 재화·승급</span>
+        <button class="growth-sub-tab-btn" id="gsub_btn_dragon" onclick="switchGrowthSubTab('dragon')">
+          <span>🐉 드래곤 육성·승급</span>
+        </button>
+        <button class="growth-sub-tab-btn" id="gsub_btn_guardian" onclick="switchGrowthSubTab('guardian')">
+          <span>🛡️ 수호신 재화 (3종)</span>
         </button>
       </div>
 
-      <!-- ==================== [패널 1] 1차 전직 재화 계산기 ==================== -->
-      <div id="gcalc_panel_job1">
+      <!-- ==================== [패널 1] 1차 전직 재화 계산기 (보물던전 1) ==================== -->
+      <div id="gpanel_job1" class="growth-calc-panel">
         <div class="card" style="border-left: 4px solid #38bdf8;">
           <div class="card-title">
             <div style="display:flex; align-items:center; gap:10px;">
               ${CUSTOM_SVG_ART.job1}
-              <span>1차 전직 재화 계산기 (시련의 정수 · 보물던전 & 시련의 탑)</span>
+              <span>1차 전직 재화 계산기 (시련의 정수 · 시련의 탑 &amp; 보물던전 1)</span>
             </div>
-            <span class="grade-badge grade-ancient">Lv.1 ~ Lv.91 전 구간</span>
+            ${makeYangCreditHeader('grade-ancient', 'Lv.1 ~ Lv.102 전체 반영')}
           </div>
-          <p class="card-subtitle">
-            현재 레벨과 목표 레벨, 보유 중인 <strong>시련의 정수</strong> 및 <strong>시련의 탑 / 보물던전 소탕량</strong>을 입력하면 목표까지 필요한 열쇠 개수를 즉시 계산합니다.
-          </p>
-
-          <div class="grid-2" style="margin-bottom:14px;">
-            <div>
-              <label style="color:#38bdf8;">📊 현재 1차 전직 레벨</label>
-              <select id="jc1_cur_lv" onchange="calculateAllGrowthCalcs(); triggerAutoSave();"></select>
-            </div>
-            <div>
-              <label style="color:#fde047;">🎯 목표 1차 전직 레벨</label>
-              <select id="jc1_tar_lv" onchange="calculateAllGrowthCalcs(); triggerAutoSave();"></select>
-            </div>
-          </div>
+          <p class="card-subtitle">현재 1차 전직 레벨과 목표 레벨을 선택하면 필요한 <strong>시련의 정수</strong>와 <strong>시련의 탑 / 보물던전 1 열쇠</strong> 개수를 계산합니다.</p>
 
           <div class="grid-3" style="margin-bottom:14px;">
             <div>
-              <label>💎 소지 중인 시련의 정수</label>
-              <input type="number" id="jc1_hold_ess" value="0" min="0" step="10000" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#38bdf8;">📍 현재 1차 전직 레벨</label>
+              <select id="jc1_cur_lv" onchange="calculateAllGrowthCalcs()"></select>
             </div>
             <div>
-              <label>🗝️ 보유 중인 시련의 탑 열쇠 수</label>
-              <input type="number" id="jc1_tower_keys" value="0" min="0" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#fde047;">🎯 목표 1차 전직 레벨</label>
+              <select id="jc1_tar_lv" onchange="calculateAllGrowthCalcs()"></select>
             </div>
             <div>
-              <label>⚔️ 시련의 탑 1회 소탕량 (정수)</label>
-              <input type="number" id="jc1_tower_sweep" value="19755" min="1" step="100" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label>💰 현재 보유 중인 시련의 정수</label>
+              <input type="number" id="jc1_hold_ess" value="0" min="0" step="10000" oninput="calculateAllGrowthCalcs()">
             </div>
           </div>
 
-          <div class="grid-2">
+          <div class="grid-2" style="background:#0b1120; padding:14px; border-radius:12px; border:1px solid #334155;">
             <div>
-              <label>🗝️ 보유 중인 보물던전 열쇠 수 (선택)</label>
-              <input type="number" id="jc1_treas_keys" value="0" min="0" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#7dd3fc;">🏰 시련의 탑 1회(열쇠 1개)당 획득량</label>
+              <input type="number" id="jc1_tower_reward" value="180000" min="1" step="5000" oninput="calculateAllGrowthCalcs()">
+              <span style="font-size:11px; color:#94a3b8;">* 본인 클리어 층수의 소탕 보상량을 입력하세요</span>
             </div>
             <div>
-              <label>🎁 보물던전 1회 소탕량 (시련의 정수)</label>
-              <input type="number" id="jc1_treas_sweep" value="39630" min="1" step="100" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#fde047;">🗝️ 보물던전 1 1회(열쇠 1개)당 획득량</label>
+              <input type="number" id="jc1_treas_reward" value="350000" min="1" step="10000" oninput="calculateAllGrowthCalcs()">
+              <span style="font-size:11px; color:#94a3b8;">* 1차 전직 재화는 <strong>[보물던전 1]</strong>에서 획득합니다</span>
             </div>
           </div>
         </div>
-
-        <div class="result-dashboard" id="jc1_result_box"></div>
-
-        <div class="accordion-item" id="acc_jc1_table" style="margin-top:18px;">
-          <div class="accordion-header" onclick="toggleNewbieAccordion('acc_jc1_table')">
-            <div class="accordion-left">
-              <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text">📊 [1차 전직] 레벨별 필요 시련의 정수 전체 기준표 펼치기 (Lv.1 ~ 90)</span>
+        <div id="jc1_result_box"></div>
+        <div class="card" style="margin-top:18px; padding:16px 18px;">
+          <div class="accordion-item" id="acc_table_job1">
+            <div class="accordion-header" onclick="toggleNewbieAccordion('acc_table_job1')">
+              <div class="accordion-left">
+                <span class="accordion-toggle-icon">▶</span>
+                <span class="accordion-title-text">📊 [1차 전직] 레벨별 필요 시련의 정수 전체 기준표 펼치기 (Lv.1 ~ 101)</span>
+              </div>
             </div>
-            <span class="accordion-count-badge">90개 구간</span>
-          </div>
-          <div class="accordion-content">
-            <div class="custom-table-container" id="jc1_table_container"></div>
+            <div class="accordion-content">
+              <div class="acc-scroll-box" id="jc1_table_container"></div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- ==================== [패널 2] 2차 전직 재화 계산기 ==================== -->
-      <div id="gcalc_panel_job2" style="display:none;">
+      <!-- ==================== [패널 2] 2차 전직 재화 계산기 (보물던전 2) ==================== -->
+      <div id="gpanel_job2" class="growth-calc-panel" style="display:none;">
         <div class="card" style="border-left: 4px solid #c084fc;">
           <div class="card-title">
             <div style="display:flex; align-items:center; gap:10px;">
               ${CUSTOM_SVG_ART.job2}
-              <span>2차 전직 재화 계산기 (극한의 정수 · 극한의 탑 & 보물던전)</span>
+              <span>2차 전직 재화 계산기 (극한의 정수 · 극한의 탑 &amp; 보물던전 2)</span>
             </div>
-            <span class="grade-badge grade-unique">Lv.1 ~ Lv.99 전 구간</span>
+            ${makeYangCreditHeader('grade-unique', 'Lv.1 ~ Lv.104 전체 반영')}
           </div>
-          <p class="card-subtitle">
-            현재 2차 전직 레벨과 목표 레벨, 보유 중인 <strong>극한의 정수</strong> 및 <strong>극한의 탑 / 보물던전 소탕량</strong>을 바탕으로 필요 열쇠를 계산합니다.
-          </p>
-
-          <div class="grid-2" style="margin-bottom:14px;">
-            <div>
-              <label style="color:#c084fc;">📊 현재 2차 전직 레벨</label>
-              <select id="jc2_cur_lv" onchange="calculateAllGrowthCalcs(); triggerAutoSave();"></select>
-            </div>
-            <div>
-              <label style="color:#fde047;">🎯 목표 2차 전직 레벨</label>
-              <select id="jc2_tar_lv" onchange="calculateAllGrowthCalcs(); triggerAutoSave();"></select>
-            </div>
-          </div>
+          <p class="card-subtitle">현재 2차 전직 레벨과 목표 레벨을 선택하면 필요한 <strong>극한의 정수</strong>와 <strong>극한의 탑 / 보물던전 2 열쇠</strong> 개수를 계산합니다.</p>
 
           <div class="grid-3" style="margin-bottom:14px;">
             <div>
-              <label>🔮 소지 중인 극한의 정수</label>
-              <input type="number" id="jc2_hold_ess" value="0" min="0" step="5000" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#c084fc;">📍 현재 2차 전직 레벨</label>
+              <select id="jc2_cur_lv" onchange="calculateAllGrowthCalcs()"></select>
             </div>
             <div>
-              <label>🗝️ 보유 중인 극한의 탑 열쇠 수</label>
-              <input type="number" id="jc2_tower_keys" value="0" min="0" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#fde047;">🎯 목표 2차 전직 레벨</label>
+              <select id="jc2_tar_lv" onchange="calculateAllGrowthCalcs()"></select>
             </div>
             <div>
-              <label>⚡ 극한의 탑 1회 소탕량 (정수)</label>
-              <input type="number" id="jc2_tower_sweep" value="5460" min="1" step="100" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label>💰 현재 보유 중인 극한의 정수</label>
+              <input type="number" id="jc2_hold_ess" value="0" min="0" step="10000" oninput="calculateAllGrowthCalcs()">
             </div>
           </div>
 
-          <div class="grid-2">
+          <div class="grid-2" style="background:#0b1120; padding:14px; border-radius:12px; border:1px solid #334155;">
             <div>
-              <label>🗝️ 보유 중인 보물던전 열쇠 수 (보물던전 병행 시)</label>
-              <input type="number" id="jc2_treas_keys" value="0" min="0" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#d8b4fe;">🗼 극한의 탑 1회(열쇠 1개)당 획득량</label>
+              <input type="number" id="jc2_tower_reward" value="20000" min="1" step="1000" oninput="calculateAllGrowthCalcs()">
+              <span style="font-size:11px; color:#94a3b8;">* 본인 극한의 탑 소탕 1회당 획득 정수를 입력하세요</span>
             </div>
             <div>
-              <label>🎁 보물던전 1회 소탕량 (극한의 정수)</label>
-              <input type="number" id="jc2_treas_sweep" value="15300" min="1" step="100" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#fde047;">🗝️ 보물던전 2 1회(열쇠 1개)당 획득량</label>
+              <input type="number" id="jc2_treas_reward" value="50000" min="1" step="5000" oninput="calculateAllGrowthCalcs()">
+              <span style="font-size:11px; color:#94a3b8;">* 2차 전직 재화는 <strong>[보물던전 2]</strong>에서 획득합니다</span>
             </div>
           </div>
         </div>
-
-        <div class="result-dashboard" id="jc2_result_box"></div>
-
-        <div class="accordion-item" id="acc_jc2_table" style="margin-top:18px;">
-          <div class="accordion-header" onclick="toggleNewbieAccordion('acc_jc2_table')">
-            <div class="accordion-left">
-              <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text">📊 [2차 전직] 레벨별 필요 극한의 정수 전체 기준표 펼치기 (Lv.1 ~ 98)</span>
+        <div id="jc2_result_box"></div>
+        <div class="card" style="margin-top:18px; padding:16px 18px;">
+          <div class="accordion-item" id="acc_table_job2">
+            <div class="accordion-header" onclick="toggleNewbieAccordion('acc_table_job2')">
+              <div class="accordion-left">
+                <span class="accordion-toggle-icon">▶</span>
+                <span class="accordion-title-text">📊 [2차 전직] 레벨별 필요 극한의 정수 전체 기준표 펼치기 (Lv.1 ~ 103)</span>
+              </div>
             </div>
-            <span class="accordion-count-badge">98개 구간</span>
-          </div>
-          <div class="accordion-content">
-            <div class="custom-table-container" id="jc2_table_container"></div>
+            <div class="accordion-content">
+              <div class="acc-scroll-box" id="jc2_table_container"></div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- ==================== [패널 3] 3차 전직 재화 계산기 ==================== -->
-      <div id="gcalc_panel_job3" style="display:none;">
+      <!-- ==================== [패널 3] 3차 전직 재화 계산기 (보물던전 없음! 절망의 탑 단독) ==================== -->
+      <div id="gpanel_job3" class="growth-calc-panel" style="display:none;">
         <div class="card" style="border-left: 4px solid #f43f5e;">
           <div class="card-title">
             <div style="display:flex; align-items:center; gap:10px;">
               ${CUSTOM_SVG_ART.job3}
-              <span>3차 전직 재화 계산기 (절망의 정수 · 절망의 탑 & 보물던전)</span>
+              <span>3차 전직 재화 계산기 (절망의 정수 · 절망의 탑 전용)</span>
             </div>
-            <span class="grade-badge grade-mythic">Lv.1 ~ Lv.45 전 구간</span>
+            ${makeYangCreditHeader('grade-mythic', 'Lv.1 ~ Lv.45 정밀 반영')}
           </div>
           <p class="card-subtitle">
-            현재 3차 전직 레벨과 목표 레벨, 보유 중인 <strong>절망의 정수</strong> 및 <strong>절망의 탑 / 보물던전 소탕량</strong>을 입력하면 필요한 열쇠 개수를 계산합니다.
+            현재 3차 전직 레벨과 목표 레벨을 선택하면 필요한 <strong>절망의 정수</strong>와 <strong>절망의 탑 열쇠</strong> 개수를 계산합니다.
+            <small style="color:#fda4af;">(※ 3차 전직 재화는 현재 인게임에 보물던전 수급처가 없어 절망의 탑 단독으로 계산됩니다.)</small>
           </p>
-
-          <div class="grid-2" style="margin-bottom:14px;">
-            <div>
-              <label style="color:#fda4af;">📊 현재 3차 전직 레벨</label>
-              <select id="jc3_cur_lv" onchange="calculateAllGrowthCalcs(); triggerAutoSave();"></select>
-            </div>
-            <div>
-              <label style="color:#fde047;">🎯 목표 3차 전직 레벨</label>
-              <select id="jc3_tar_lv" onchange="calculateAllGrowthCalcs(); triggerAutoSave();"></select>
-            </div>
-          </div>
 
           <div class="grid-3" style="margin-bottom:14px;">
             <div>
-              <label>🔥 소지 중인 절망의 정수</label>
-              <input type="number" id="jc3_hold_ess" value="0" min="0" step="5000" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#fb7185;">📍 현재 3차 전직 레벨</label>
+              <select id="jc3_cur_lv" onchange="calculateAllGrowthCalcs()"></select>
             </div>
             <div>
-              <label>🗝️ 보유 중인 절망의 탑 열쇠 수</label>
-              <input type="number" id="jc3_tower_keys" value="0" min="0" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#fde047;">🎯 목표 3차 전직 레벨</label>
+              <select id="jc3_tar_lv" onchange="calculateAllGrowthCalcs()"></select>
             </div>
             <div>
-              <label>⚔️ 절망의 탑 1회 소탕량 (정수)</label>
-              <input type="number" id="jc3_tower_sweep" value="3500" min="1" step="100" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label>💰 현재 보유 중인 절망의 정수</label>
+              <input type="number" id="jc3_hold_ess" value="0" min="0" step="5000" oninput="calculateAllGrowthCalcs()">
             </div>
           </div>
 
-          <div class="grid-2">
-            <div>
-              <label>🗝️ 보유 중인 보물던전 열쇠 수 (보물던전 병행 시)</label>
-              <input type="number" id="jc3_treas_keys" value="0" min="0" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
-            </div>
-            <div>
-              <label>🎁 보물던전 1회 소탕량 (절망의 정수)</label>
-              <input type="number" id="jc3_treas_sweep" value="8000" min="1" step="100" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
-            </div>
+          <div style="background:#0b1120; padding:14px; border-radius:12px; border:1px solid #334155;">
+            <label style="color:#fda4af;">🌋 절망의 탑 1회(열쇠 1개)당 획득량</label>
+            <input type="number" id="jc3_tower_reward" value="10000" min="1" step="1000" oninput="calculateAllGrowthCalcs()">
+            <span style="font-size:11px; color:#94a3b8;">* 본인 절망의 탑 소탕 1회당 획득하는 절망의 정수 수량을 입력하세요</span>
           </div>
         </div>
-
-        <div class="result-dashboard" id="jc3_result_box"></div>
-
-        <div class="accordion-item" id="acc_jc3_table" style="margin-top:18px;">
-          <div class="accordion-header" onclick="toggleNewbieAccordion('acc_jc3_table')">
-            <div class="accordion-left">
-              <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text">📊 [3차 전직] 레벨별 필요 절망의 정수 전체 기준표 펼치기 (Lv.1 ~ 44)</span>
+        <div id="jc3_result_box"></div>
+        <div class="card" style="margin-top:18px; padding:16px 18px;">
+          <div class="accordion-item" id="acc_table_job3">
+            <div class="accordion-header" onclick="toggleNewbieAccordion('acc_table_job3')">
+              <div class="accordion-left">
+                <span class="accordion-toggle-icon">▶</span>
+                <span class="accordion-title-text">📊 [3차 전직] 레벨별 필요 절망의 정수 전체 기준표 펼치기 (Lv.1 ~ 44 ➔ 45)</span>
+              </div>
             </div>
-            <span class="accordion-count-badge">44개 구간</span>
-          </div>
-          <div class="accordion-content">
-            <div class="custom-table-container" id="jc3_table_container"></div>
+            <div class="accordion-content">
+              <div class="acc-scroll-box" id="jc3_table_container"></div>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- ==================== [패널 4] 드래곤 육성 & 승급 재화 계산기 ==================== -->
-      <div id="gcalc_panel_dragon" style="display:none;">
+      <div id="gpanel_dragon" class="growth-calc-panel" style="display:none;">
         <div class="card" style="border-left: 4px solid #f59e0b;">
           <div class="card-title">
             <div style="display:flex; align-items:center; gap:10px;">
               ${CUSTOM_SVG_ART.dragon}
-              <span>드래곤 육성 & 승급 재화 계산기 (드래곤의 영혼 · 드래곤 던전 열쇠)</span>
+              <span>드래곤 육성 &amp; 승급 재화 계산기 (드래곤의 영혼 · 드래곤 던전 열쇠)</span>
             </div>
-            <span class="grade-badge grade-legend">Lv.1 ~ Lv.65 & 1~4단계 승급</span>
+            ${makeYangCreditHeader('grade-legend', 'Lv.1~65 + 승급 반영')}
           </div>
           <p class="card-subtitle">
-            현재 드래곤 레벨과 목표 레벨, 보유 중인 <strong>드래곤의 영혼</strong> 및 <strong>드래곤 던전 1회 소탕량</strong>을 바탕으로 필요한 열쇠 개수를 정밀 계산합니다.
+            현재 드래곤 레벨과 목표 레벨, 그리고 구간 내 <strong>승급(Lv.20 1.5만 / Lv.40 6만 / Lv.60 23.5만 / Lv.80 85만)</strong> 포함 여부를 선택하면 필요한 <strong>드래곤의 영혼</strong>과 <strong>드래곤 던전 열쇠</strong>를 계산합니다.
           </p>
-
-          <div class="grid-2" style="margin-bottom:14px;">
-            <div>
-              <label style="color:#fde047;">🐉 현재 드래곤 레벨</label>
-              <select id="drg_cur_lv" onchange="calculateAllGrowthCalcs(); triggerAutoSave();"></select>
-            </div>
-            <div>
-              <label style="color:#34d399;">🎯 목표 드래곤 레벨</label>
-              <select id="drg_tar_lv" onchange="calculateAllGrowthCalcs(); triggerAutoSave();"></select>
-            </div>
-          </div>
 
           <div class="grid-3" style="margin-bottom:14px;">
             <div>
-              <label>💠 소지 중인 드래곤의 영혼</label>
-              <input type="number" id="drg_hold_soul" value="0" min="0" step="1000" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#fbbf24;">📍 현재 드래곤 레벨</label>
+              <select id="drg_cur_lv" onchange="calculateAllGrowthCalcs()"></select>
             </div>
             <div>
-              <label>🗝️ 보유 중인 드래곤 던전 열쇠 수</label>
-              <input type="number" id="drg_dun_keys" value="0" min="0" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label style="color:#34d399;">🎯 목표 드래곤 레벨</label>
+              <select id="drg_tar_lv" onchange="calculateAllGrowthCalcs()"></select>
             </div>
             <div>
-              <label>🔥 드래곤 던전 1회 소탕량 (영혼)</label>
-              <input type="number" id="drg_dun_sweep" value="1500" min="1" step="50" oninput="calculateAllGrowthCalcs(); triggerAutoSave();">
+              <label>💰 현재 보유 중인 드래곤의 영혼</label>
+              <input type="number" id="drg_hold_soul" value="0" min="0" step="1000" oninput="calculateAllGrowthCalcs()">
             </div>
           </div>
 
-          <div style="background:#0f172a; padding:12px 14px; border-radius:10px; border:1px solid #334155; display:flex; flex-direction:column; gap:8px;">
-            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
-              <label style="margin:0; display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; color:#ffffff;">
-                <input type="checkbox" id="drg_inc_promo" checked onchange="calculateAllGrowthCalcs(); triggerAutoSave();" style="width:18px; height:18px; accent-color:#f59e0b;">
-                <span>👑 <strong>목표 구간 내 1~3단계 승급 비용 자동 합산</strong> <small style="color:#fde047;">(Lv.20: 1.5만 / Lv.40: 6만 / Lv.60: 23.5만)</small></span>
-              </label>
-              <span style="font-size:12px; color:#94a3b8;">* 체크 시 구간 내 승급 영혼까지 합산</span>
+          <div class="grid-2" style="background:#0b1120; padding:14px; border-radius:12px; border:1px solid #334155; margin-bottom:12px;">
+            <div>
+              <label style="color:#fde047;">🐉 드래곤 던전 1회(열쇠 1개)당 획득 영혼</label>
+              <input type="number" id="drg_key_reward" value="2500" min="1" step="100" oninput="calculateAllGrowthCalcs()">
+              <span style="font-size:11px; color:#94a3b8;">* 본인 드래곤 던전 단계의 열쇠 1개당 보상량을 입력하세요</span>
             </div>
-            <div style="border-top:1px dashed #334155; padding-top:8px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
-              <label style="margin:0; display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; color:#ffffff;">
-                <input type="checkbox" id="drg_inc_promo4" onchange="calculateAllGrowthCalcs(); triggerAutoSave();" style="width:18px; height:18px; accent-color:#10b981;">
-                <span>🐉 <strong>4단계 승급 (Lv.80 · 영혼 85만 개) 비용도 목표 계산에 추가 합산</strong></span>
+            <div style="display:flex; flex-direction:column; justify-content:center; gap:6px;">
+              <label style="color:#f97316; margin:0;">👑 구간 내 승급 비용(20/40/60레벨 돌파) 자동 합산</label>
+              <label style="display:inline-flex; align-items:center; gap:8px; cursor:pointer; color:#ffffff; font-size:13.5px; margin:0;">
+                <input type="checkbox" id="drg_inc_promo" checked onchange="calculateAllGrowthCalcs()" style="width:17px; height:17px; accent-color:#f59e0b;">
+                <span>승급 비용 포함 (Lv.20: 1.5만 / Lv.40: 6만 / Lv.60: 23.5만)</span>
               </label>
-              <span style="font-size:11.5px; color:#34d399; font-weight:800;">+850,000 영혼 합산</span>
+              <label style="display:inline-flex; align-items:center; gap:8px; cursor:pointer; color:#cbd5e1; font-size:12px; margin:0;">
+                <input type="checkbox" id="drg_already_promoted_cur" onchange="calculateAllGrowthCalcs()" style="width:15px; height:15px; accent-color:#38bdf8;">
+                <span>현재 레벨이 딱 20/40/60일 때 '이미 승급 완료함' (승급비 제외)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div id="drg_result_box"></div>
+        <div class="card" style="margin-top:18px; padding:16px 18px;">
+          <div class="accordion-item" id="acc_table_dragon">
+            <div class="accordion-header" onclick="toggleNewbieAccordion('acc_table_dragon')">
+              <div class="accordion-left">
+                <span class="accordion-toggle-icon">▶</span>
+                <span class="accordion-title-text">📊 [드래곤 육성] 레벨별 필요 드래곤의 영혼 전체 기준표 펼치기 (Lv.1 ~ 64)</span>
+              </div>
+            </div>
+            <div class="accordion-content">
+              <div class="acc-scroll-box" id="drg_table_container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== [패널 5] 🛡️ 수호신 재화 계산기 (3대 라디오 스위치: 돌파 증표 / 잠재능력 / 강화서 레벨업) ==================== -->
+      <div id="gpanel_guardian" class="growth-calc-panel" style="display:none;">
+        <div class="card" style="border-left: 4px solid #10b981;">
+          <div class="card-title">
+            <div style="display:flex; align-items:center; gap:10px;">
+              ${CUSTOM_SVG_ART.guardian}
+              <span>수호신 종합 재화 계산기 (돌파 증표 · 잠재 강화석 · 강화서 레벨업)</span>
+            </div>
+            ${makeYangCreditHeader('grade-eternal', '돌파 · 잠재 · 강화서 통합')}
+          </div>
+          <p class="card-subtitle">
+            아래 3개의 라디오 버튼 중 계산할 수호신 성장 항목을 선택하세요. <strong>수호신의 증표</strong>와 <strong>수호신 강화서</strong>는 <strong>[수호신의 던전 소탕권]</strong> 및 <strong>[보물던전 2 열쇠]</strong>로 획득할 수 있습니다.
+          </p>
+
+          <!-- 🔘 수호신 3대 라디오 스위치 바 -->
+          <div class="guardian-mode-radio-bar">
+            <div class="guardian-radio-btn selected" id="grd_radio_break" onclick="switchGuardianMode('break')">
+              🛡️ ① 수호신 돌파 재화 계산기<br>
+              <small style="color:#6ee7b7; font-weight:700;">(0돌~10돌 필요 수호신 &amp; 수호신의 증표)</small>
+            </div>
+            <div class="guardian-radio-btn" id="grd_radio_potential" onclick="switchGuardianMode('potential')">
+              🔥 ② 수호신 잠재능력 계산기<br>
+              <small style="color:#fde047; font-weight:700;">(잠재 강화석 &amp; 25,000증표=1만개 환산)</small>
+            </div>
+            <div class="guardian-radio-btn" id="grd_radio_scroll" onclick="switchGuardianMode('scroll')">
+              📜 ③ 수호신 강화서(레벨업) 계산기<br>
+              <small style="color:#7dd3fc; font-weight:700;">(Lv.1~120 구간별 강화서 &amp; 소탕권/보던2)</small>
+            </div>
+          </div>
+
+          <!-- [수호신 서브모드 1] 수호신 돌파 재화 (수호신의 증표) -->
+          <div id="grd_mode_break_view">
+            <div style="background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.35); border-radius:10px; padding:10px 14px; margin-bottom:14px; font-size:12.5px; color:#d1fae5; line-height:1.55;">
+              💡 <strong>수호신 돌파 메커니즘:</strong> 수호신 돌파에는 동일 수호신이 소모되며, 수호신 상점에서 <strong>[수호신의 증표]</strong>로 구매합니다. 돌파 단계가 오를수록 <strong>필요 수호신 개수(2개➔6개)</strong>와 <strong>수호신 1개당 증표 가격(5,000➔25,000증표)</strong>이 함께 증가하여 0➔10돌파까지 총 <strong>525,500 수호신의 증표</strong>가 필요합니다.
+            </div>
+            <div class="grid-3" style="margin-bottom:14px;">
+              <div>
+                <label style="color:#34d399;">📍 현재 수호신 돌파 단계</label>
+                <select id="grd_brk_cur" onchange="calculateGuardianAll()"></select>
+              </div>
+              <div>
+                <label style="color:#fde047;">🎯 목표 수호신 돌파 단계</label>
+                <select id="grd_brk_tar" onchange="calculateGuardianAll()"></select>
+              </div>
+              <div>
+                <label>💰 현재 보유 중인 수호신의 증표</label>
+                <input type="number" id="grd_brk_hold_token" value="0" min="0" step="5000" oninput="calculateGuardianAll()">
+              </div>
+            </div>
+          </div>
+
+          <!-- [수호신 서브모드 2] 수호신 잠재능력 (잠재 강화석 & 수호신의 증표 환산) -->
+          <div id="grd_mode_potential_view" style="display:none;">
+            <div style="background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.4); border-radius:10px; padding:10px 14px; margin-bottom:14px; font-size:12.5px; color:#fef08a; line-height:1.55;">
+              💡 <strong>잠재 강화석 상점 교환 공식:</strong> 상점에서 <strong>[25,000 수호신의 증표 = 10,000 잠재 강화석]</strong>(잠재 강화석 1개 = 2.5 증표)으로 구매할 수 있습니다. 등불 9개 기준 Lv.0➔100 마스터 시 총 <strong>378,000 잠재 강화석 (= 945,000 수호신의 증표)</strong>이 소모되며 최종 <strong>968.6배</strong> 딜 상승 효과를 얻습니다!
+            </div>
+            <div class="grid-4" style="margin-bottom:14px;">
+              <div>
+                <label style="color:#fbbf24;">📍 현재 잠재능력 레벨 (5단위)</label>
+                <select id="grd_pot_cur" onchange="calculateGuardianAll()"></select>
+              </div>
+              <div>
+                <label style="color:#34d399;">🎯 목표 잠재능력 레벨 (5단위)</label>
+                <select id="grd_pot_tar" onchange="calculateGuardianAll()"></select>
+              </div>
+              <div>
+                <label>💎 현재 보유 잠재 강화석</label>
+                <input type="number" id="grd_pot_hold_stone" value="0" min="0" step="5000" oninput="calculateGuardianAll()">
+              </div>
+              <div>
+                <label>🛡️ 현재 보유 수호신의 증표</label>
+                <input type="number" id="grd_pot_hold_token" value="0" min="0" step="10000" oninput="calculateGuardianAll()">
+              </div>
+            </div>
+          </div>
+
+          <!-- [수호신 서브모드 3] 수호신 강화서 (레벨업 Lv.1 ~ 120) -->
+          <div id="grd_mode_scroll_view" style="display:none;">
+            <div style="background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.4); border-radius:10px; padding:10px 14px; margin-bottom:14px; font-size:12.5px; color:#e0f2fe; line-height:1.55;">
+              💡 <strong>수호신 레벨업(강화서) 메커니즘:</strong> 수호신은 0돌파(최대 Lv.20)부터 1돌파당 최대 레벨이 +10씩 늘어나 <strong>10돌파 시 최대 Lv.120</strong>까지 성장합니다. 아래에서 목표 레벨 구간과 1레벨당 평균 소모 강화서(또는 기본 테이블)를 선택하면 필요 <strong>수호신 강화서</strong> 및 <strong>수호신의 던전 소탕권 / 보물던전 2 열쇠</strong>를 계산합니다.
+            </div>
+            <div class="grid-4" style="margin-bottom:14px;">
+              <div>
+                <label style="color:#38bdf8;">📍 현재 수호신 레벨</label>
+                <select id="grd_scr_cur" onchange="calculateGuardianAll()"></select>
+              </div>
+              <div>
+                <label style="color:#fde047;">🎯 목표 수호신 레벨</label>
+                <select id="grd_scr_tar" onchange="calculateGuardianAll()"></select>
+              </div>
+              <div>
+                <label>📜 현재 보유 수호신 강화서</label>
+                <input type="number" id="grd_scr_hold" value="0" min="0" step="1000" oninput="calculateGuardianAll()">
+              </div>
+              <div>
+                <label style="color:#a7f3d0;">⚙️ 구간 평균 1레벨업당 강화서 (직접보정)</label>
+                <input type="number" id="grd_scr_custom_per_lv" value="0" min="0" step="100" placeholder="0 = 기본 테이블 자동적용" oninput="calculateGuardianAll()">
+              </div>
+            </div>
+          </div>
+
+          <!-- 공통 던전 보상 입력창 (수호신의 던전 소탕권 & 보물던전 2 열쇠) -->
+          <div class="grid-2" style="background:#0b1120; padding:14px; border-radius:12px; border:1px solid #334155;">
+            <div>
+              <label style="color:#6ee7b7;" id="grd_dungeon_input_label">🏛️ 수호신의 던전 1회(소탕권 1개)당 획득 증표</label>
+              <input type="number" id="grd_dungeon_reward" value="3000" min="1" step="500" oninput="calculateGuardianAll()">
+              <span style="font-size:11px; color:#94a3b8;">* 본인 수호신의 던전 소탕권 1개당 보상 수량을 입력하세요</span>
+            </div>
+            <div>
+              <label style="color:#fde047;" id="grd_treas2_input_label">🗝️ 보물던전 2 1회(열쇠 1개)당 획득 증표</label>
+              <input type="number" id="grd_treas2_reward" value="5000" min="1" step="500" oninput="calculateGuardianAll()">
+              <span style="font-size:11px; color:#94a3b8;">* 보물던전 2 열쇠 1개당 획득하는 수호신 재화량을 입력하세요</span>
             </div>
           </div>
         </div>
 
-        <div class="result-dashboard" id="drg_result_box"></div>
+        <!-- 수호신 계산 결과 대시보드 -->
+        <div id="grd_result_box"></div>
 
-        <!-- 드래곤 1~4단계 승급 구간별 단독 필요 영혼 & 열쇠 요약 배너 -->
-        <div class="card" style="border-left: 4px solid #eab308; padding: 18px 20px; margin-top: 18px;">
-          <div class="card-title" style="margin-bottom:10px; font-size:16.5px;">
-            <span>👑 드래곤 1~4단계 승급(Lv.20 / 40 / 60 / 80) 필요 영혼 & 열쇠 환산 배너</span>
-            <span class="grade-badge grade-eternal">4단계 승급(85만) 반영</span>
-          </div>
-          <div class="grid-4" id="drg_promo_cards_box"></div>
-          <div id="drg_promo4_highlight_banner" style="margin-top:12px;"></div>
-        </div>
-
-        <div class="accordion-item" id="acc_drg_table" style="margin-top:18px;">
-          <div class="accordion-header" onclick="toggleNewbieAccordion('acc_drg_table')">
-            <div class="accordion-left">
-              <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text">📊 [드래곤 육성] 레벨별 필요 드래곤의 영혼 전체 기준표 펼치기 (Lv.1 ~ 64)</span>
+        <!-- 수호신 기준표 아코디언 -->
+        <div class="card" style="margin-top:18px; padding:16px 18px;">
+          <div class="accordion-item active" id="acc_table_guardian">
+            <div class="accordion-header" onclick="toggleNewbieAccordion('acc_table_guardian')">
+              <div class="accordion-left">
+                <span class="accordion-toggle-icon">▶</span>
+                <span class="accordion-title-text" id="grd_table_acc_title">📊 [수호신 돌파 &amp; 잠재능력] 단계별 필요 재화 기준표</span>
+              </div>
             </div>
-            <span class="accordion-count-badge">64개 구간</span>
-          </div>
-          <div class="accordion-content">
-            <div class="custom-table-container" id="drg_table_container"></div>
+            <div class="accordion-content">
+              <div class="acc-scroll-box" id="grd_table_container"></div>
+            </div>
           </div>
         </div>
       </div>
     `;
   }
 
-  // 4. 셀렉트 박스 옵션 및 기준표 초기화
+  
+
   function initGrowthCalcSelects() {
-    const fillLvSelect = (curId, tarId, maxStartLv, defCur, defTar) => {
+    const setupLvSelects = (curId, tarId, maxLv, defaultCur, defaultTar) => {
       const curEl = document.getElementById(curId);
       const tarEl = document.getElementById(tarId);
       if (!curEl || !tarEl) return;
-
-      let curHtml = '';
-      let tarHtml = '';
-      for (let i = 1; i <= maxStartLv; i++) {
-        curHtml += `<option value="${i}" ${i === defCur ? 'selected' : ''}>Lv.${i}</option>`;
-      }
-      for (let i = 2; i <= maxStartLv + 1; i++) {
-        tarHtml += `<option value="${i}" ${i === defTar ? 'selected' : ''}>Lv.${i}</option>`;
+      let curHtml = '', tarHtml = '';
+      for (let i = 1; i <= maxLv + 1; i++) {
+        if (i <= maxLv) curHtml += `<option value="${i}" ${i === defaultCur ? 'selected' : ''}>Lv.${i}</option>`;
+        if (i >= 2) tarHtml += `<option value="${i}" ${i === defaultTar ? 'selected' : ''}>Lv.${i}</option>`;
       }
       curEl.innerHTML = curHtml;
       tarEl.innerHTML = tarHtml;
     };
 
-    fillLvSelect('jc1_cur_lv', 'jc1_tar_lv', 90, 60, 80);
-    fillLvSelect('jc2_cur_lv', 'jc2_tar_lv', 98, 1, 60);
-    fillLvSelect('jc3_cur_lv', 'jc3_tar_lv', 44, 1, 30);
-    fillLvSelect('drg_cur_lv', 'drg_tar_lv', 64, 1, 60);
+    setupLvSelects('jc1_cur_lv', 'jc1_tar_lv', 101, 60, 80);
+    setupLvSelects('jc2_cur_lv', 'jc2_tar_lv', 103, 70, 90);
+    setupLvSelects('jc3_cur_lv', 'jc3_tar_lv', 44, 40, 45);
+    setupLvSelects('drg_cur_lv', 'drg_tar_lv', 64, 40, 60);
 
-    renderGrowthReferenceTable('jc1_table_container', JOB1_COST_TABLE, '시련의 정수', '#38bdf8');
-    renderGrowthReferenceTable('jc2_table_container', JOB2_COST_TABLE, '극한의 정수', '#c084fc');
-    renderGrowthReferenceTable('jc3_table_container', JOB3_COST_TABLE, '절망의 정수', '#fda4af');
-    renderGrowthReferenceTable('drg_table_container', DRAGON_COST_TABLE, '드래곤의 영혼', '#fde047');
-
-    // 로컬 스토리지에 저장된 입력값이 있으면 복원
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const state = JSON.parse(raw);
-        if (state && state.inputs) {
-          const gIds = [
-            'jc1_cur_lv','jc1_tar_lv','jc1_hold_ess','jc1_tower_keys','jc1_tower_sweep','jc1_treas_keys','jc1_treas_sweep',
-            'jc2_cur_lv','jc2_tar_lv','jc2_hold_ess','jc2_tower_keys','jc2_tower_sweep','jc2_treas_keys','jc2_treas_sweep',
-            'jc3_cur_lv','jc3_tar_lv','jc3_hold_ess','jc3_tower_keys','jc3_tower_sweep','jc3_treas_keys','jc3_treas_sweep',
-            'drg_cur_lv','drg_tar_lv','drg_hold_soul','drg_dun_keys','drg_dun_sweep','drg_inc_promo'
-          ];
-          gIds.forEach(id => {
-            if (state.inputs[id] !== undefined) {
-              const el = document.getElementById(id);
-              if (el) {
-                if (el.type === 'checkbox') el.checked = Boolean(state.inputs[id]);
-                else el.value = state.inputs[id];
-              }
-            }
-          });
-        }
+    // 수호신 1) 돌파 셀렉트 (0돌 ~ 10돌)
+    const brkCur = document.getElementById('grd_brk_cur');
+    const brkTar = document.getElementById('grd_brk_tar');
+    if (brkCur && brkTar) {
+      let bCurH = '', bTarH = '';
+      for (let i = 0; i <= 10; i++) {
+        if (i < 10) bCurH += `<option value="${i}" ${i === 0 ? 'selected' : ''}>${i}돌파 (최대 Lv.${20 + i*10})</option>`;
+        if (i >= 1) bTarH += `<option value="${i}" ${i === 10 ? 'selected' : ''}>${i}돌파 (최대 Lv.${20 + i*10})</option>`;
       }
-    } catch (e) {}
-  }
-
-  function renderGrowthReferenceTable(containerId, costTable, resLabel, colorHex) {
-    const box = document.getElementById(containerId);
-    if (!box) return;
-
-    const keys = Object.keys(costTable).map(Number).sort((a, b) => a - b);
-    const perCol = Math.ceil(keys.length / 3);
-    let rowsHtml = '';
-
-    for (let i = 0; i < perCol; i++) {
-      const k1 = keys[i];
-      const k2 = keys[i + perCol];
-      const k3 = keys[i + perCol * 2];
-
-      const cell = (k) => {
-        if (k === undefined) return `<td>-</td><td>-</td>`;
-        const c = costTable[k];
-        return `
-          <td style="font-weight:700; color:#cbd5e1;">Lv.${k} ➔ ${k + 1}</td>
-          <td style="color:${colorHex}; font-weight:800;">${c.toLocaleString()}개</td>
-        `;
-      };
-
-      rowsHtml += `<tr>${cell(k1)}${cell(k2)}${cell(k3)}</tr>`;
+      brkCur.innerHTML = bCurH;
+      brkTar.innerHTML = bTarH;
     }
 
-    box.innerHTML = `
-      <table class="custom-table" style="font-size:13px;">
-        <thead>
-          <tr>
-            <th>레벨 구간</th><th>필요 ${resLabel}</th>
-            <th>레벨 구간</th><th>필요 ${resLabel}</th>
-            <th>레벨 구간</th><th>필요 ${resLabel}</th>
-          </tr>
-        </thead>
-        <tbody>${rowsHtml}</tbody>
-      </table>
-    `;
+    // 수호신 2) 잠재능력 셀렉트 (Lv.0 ~ Lv.100, 5단위)
+    const potCur = document.getElementById('grd_pot_cur');
+    const potTar = document.getElementById('grd_pot_tar');
+    if (potCur && potTar) {
+      let pCurH = '', pTarH = '';
+      for (let lv = 0; lv <= 100; lv += 5) {
+        if (lv < 100) pCurH += `<option value="${lv}" ${lv === 0 ? 'selected' : ''}>잠재 Lv.${lv}</option>`;
+        if (lv >= 5)  pTarH += `<option value="${lv}" ${lv === 100 ? 'selected' : ''}>잠재 Lv.${lv}</option>`;
+      }
+      potCur.innerHTML = pCurH;
+      potTar.innerHTML = pTarH;
+    }
+
+    // 수호신 3) 강화서 레벨 셀렉트 (Lv.1 ~ Lv.120)
+    setupLvSelects('grd_scr_cur', 'grd_scr_tar', 119, 1, 120);
+
+    renderGrowthReferenceTables();
+    renderGuardianReferenceTable();
   }
 
-  // 5. 1차 / 2차 / 3차 전직 재화 및 열쇠 정밀 계산 함수
-  function calculateSingleJobGrowth(prefix, costTable, essName, towerName, colorHex) {
+  function renderGrowthReferenceTables() {
+    const buildTable = (costTable, maxLv, unitName, promoMap = null) => {
+      let rows = '';
+      let cum = 0;
+      for (let lv = 1; lv <= maxLv; lv++) {
+        const cost = costTable[lv] || 0;
+        cum += cost;
+        let promoNote = '';
+        if (promoMap && promoMap[lv]) {
+          promoNote = ` <span style="color:#fde047; font-size:11px; font-weight:800;">(+Lv.${lv} 승급: ${promoMap[lv].toLocaleString()})</span>`;
+        }
+        rows += `
+          <tr>
+            <td style="font-weight:700;">Lv.${lv} ➔ Lv.${lv + 1}</td>
+            <td style="color:#38bdf8; font-weight:800;">${cost.toLocaleString()}개${promoNote}</td>
+            <td style="color:#cbd5e1;">${formatKoreanNumber(cum)}개 <small style="color:#64748b;">(${cum.toLocaleString()})</small></td>
+          </tr>
+        `;
+      }
+      return `
+        <table class="custom-table" style="font-size:13px;">
+          <thead>
+            <tr><th>레벨 구간</th><th>필요 ${unitName}</th><th>Lv.1부터 누적 합계</th></tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+    };
+
+    const t1 = document.getElementById('jc1_table_container');
+    const t2 = document.getElementById('jc2_table_container');
+    const t3 = document.getElementById('jc3_table_container');
+    const td = document.getElementById('drg_table_container');
+    if (t1) t1.innerHTML = buildTable(JOB1_COST_TABLE, 101, '시련의 정수');
+    if (t2) t2.innerHTML = buildTable(JOB2_COST_TABLE, 103, '극한의 정수');
+    if (t3) t3.innerHTML = buildTable(JOB3_COST_TABLE, 44, '절망의 정수');
+    if (td) td.innerHTML = buildTable(DRAGON_COST_TABLE, 64, '드래곤의 영혼', DRAGON_PROMO_COSTS);
+  }
+
+  // 5. 1차 / 2차 / 3차 전직 재화 및 열쇠 정밀 계산 함수 (3차는 보물던전 미표시!)
+  function calculateSingleJobGrowth(prefix, costTable, essName, towerName, treasName, colorHex, hasTreasureDungeon = true) {
     const curLv = parseInt(document.getElementById(`${prefix}_cur_lv`)?.value || '1', 10);
     const tarLv = parseInt(document.getElementById(`${prefix}_tar_lv`)?.value || '2', 10);
     const holdEss = Math.max(0, parseInt(document.getElementById(`${prefix}_hold_ess`)?.value || '0', 10) || 0);
-    const towerKeys = Math.max(0, parseInt(document.getElementById(`${prefix}_tower_keys`)?.value || '0', 10) || 0);
-    const towerSweep = Math.max(1, parseInt(document.getElementById(`${prefix}_tower_sweep`)?.value || '1', 10) || 1);
-    const treasKeys = Math.max(0, parseInt(document.getElementById(`${prefix}_treas_keys`)?.value || '0', 10) || 0);
-    const treasSweep = Math.max(1, parseInt(document.getElementById(`${prefix}_treas_sweep`)?.value || '1', 10) || 1);
+    const towerRew = Math.max(1, parseInt(document.getElementById(`${prefix}_tower_reward`)?.value || '1', 10) || 1);
+    const treasRew = hasTreasureDungeon ? Math.max(1, parseInt(document.getElementById(`${prefix}_treas_reward`)?.value || '1', 10) || 1) : 1;
 
     const resBox = document.getElementById(`${prefix}_result_box`);
     if (!resBox) return;
 
     if (tarLv <= curLv) {
       resBox.innerHTML = `
-        <div class="res-label">Lv.${curLv} ➔ Lv.${tarLv} 필요 ${essName}</div>
-        <div class="res-value" style="font-size:24px; color:#94a3b8;">목표 레벨을 현재 레벨보다 높게 설정하세요</div>
+        <div class="result-dashboard">
+          <div class="res-label">목표 레벨을 현재 레벨보다 높게 설정해주세요.</div>
+          <div class="res-value" style="font-size:24px; color:#94a3b8;">Lv.${curLv} ➔ Lv.${tarLv}</div>
+        </div>
       `;
       return;
     }
 
-    let totalReq = 0;
+    let totalNeed = 0;
     for (let lv = curLv; lv < tarLv; lv++) {
-      totalReq += (costTable[lv] || 0);
+      totalNeed += (costTable[lv] || 0);
     }
 
-    const fromTowerKeys = towerKeys * towerSweep;
-    const fromTreasKeys = treasKeys * treasSweep;
-    const totalOwnedEquiv = holdEss + fromTowerKeys + fromTreasKeys;
-    const netShortage = Math.max(0, totalReq - totalOwnedEquiv);
+    const netNeed = Math.max(0, totalNeed - holdEss);
+    const towerKeys = Math.ceil(netNeed / towerRew);
+    const treasKeys = Math.ceil(netNeed / treasRew);
 
-    const addTowerKeysNeeded = netShortage > 0 ? Math.ceil(netShortage / towerSweep) : 0;
-    const addTreasKeysNeeded = netShortage > 0 ? Math.ceil(netShortage / treasSweep) : 0;
-
-    const progressPct = totalReq > 0 ? Math.min(100, (totalOwnedEquiv / totalReq) * 100).toFixed(1) : '100.0';
+    const keyCardsHtml = hasTreasureDungeon ? `
+      <div class="grid-2" style="margin-top:14px; text-align:center;">
+        <div style="background:rgba(15,23,42,0.85); border:1.5px solid ${colorHex}; border-radius:12px; padding:14px;">
+          <div style="font-size:13px; color:#cbd5e1; font-weight:800;">🗼 [${towerName}] 열쇠로만 파밍 시</div>
+          <div style="font-size:26px; font-weight:900; color:${colorHex}; margin:6px 0;">${towerKeys.toLocaleString()}개</div>
+          <div style="font-size:12px; color:#94a3b8;">(1회당 ${towerRew.toLocaleString()}개 획득 기준)</div>
+        </div>
+        <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;">
+          <div style="font-size:13px; color:#fde68a; font-weight:800;">🗝️ [${treasName}] 열쇠로만 파밍 시</div>
+          <div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${treasKeys.toLocaleString()}개</div>
+          <div style="font-size:12px; color:#94a3b8;">(1회당 ${treasRew.toLocaleString()}개 획득 기준)</div>
+        </div>
+      </div>
+    ` : `
+      <div style="margin-top:14px; background:rgba(15,23,42,0.85); border:1.5px solid ${colorHex}; border-radius:12px; padding:16px; text-align:center;">
+        <div style="font-size:13.5px; color:#fda4af; font-weight:800;">🌋 [${towerName}] 필요 열쇠 수 (3차 전직 전용 수급처)</div>
+        <div style="font-size:28px; font-weight:900; color:${colorHex}; margin:6px 0;">${towerKeys.toLocaleString()}개</div>
+        <div style="font-size:12px; color:#94a3b8;">(절망의 탑 소탕 1회당 ${towerRew.toLocaleString()}개 획득 기준)</div>
+      </div>
+    `;
 
     resBox.innerHTML = `
-      <div class="res-label">[Lv.${curLv} ➔ Lv.${tarLv}] 목표 달성까지 추가로 필요한 ${essName} (현재 준비율 ${progressPct}%)</div>
-      <div class="res-value" style="color:${colorHex};">
-        ${netShortage > 0 ? `${formatKoreanNumber(netShortage)}개 부족` : '🎉 즉시 달성 가능!'}
-      </div>
-      <div style="font-size:13.5px; color:#cbd5e1; margin-bottom:14px;">
-        구간 총 요구량: <strong style="color:#ffffff;">${totalReq.toLocaleString()}개</strong> (${formatKoreanNumber(totalReq)}개)
-        &nbsp;|&nbsp; 보유+열쇠 환산 합계: <strong style="color:#34d399;">${totalOwnedEquiv.toLocaleString()}개</strong>
-      </div>
-
-      <div class="grid-2" style="text-align:center; margin-top:10px;">
-        <div style="background:rgba(15,23,42,0.85); border:1.5px solid ${colorHex}; border-radius:12px; padding:14px;">
-          <div style="font-size:13px; color:#cbd5e1; font-weight:800;">🗼 [${towerName}] 열쇠로만 채울 시 추가 필요량</div>
-          <div style="font-size:26px; font-weight:900; color:${colorHex}; margin:6px 0;">
-            +${addTowerKeysNeeded.toLocaleString()}개
-          </div>
-          <div style="font-size:12px; color:#94a3b8;">
-            (보유 열쇠 ${towerKeys.toLocaleString()}개 = ${formatKoreanNumber(fromTowerKeys)} 정수 반영됨)
-          </div>
+      <div class="result-dashboard">
+        <div class="res-label">[Lv.${curLv} ➔ Lv.${tarLv}] 목표 달성까지 부족한 ${essName}</div>
+        <div class="res-value" style="color:${colorHex};">${formatKoreanNumber(netNeed)}개 <small style="font-size:16px; color:#cbd5e1;">(${netNeed.toLocaleString()}개)</small></div>
+        <div style="font-size:13.5px; color:#94a3b8; margin-bottom:10px;">
+          구간 총 필요량: <strong style="color:#ffffff;">${totalNeed.toLocaleString()}개</strong> (${formatKoreanNumber(totalNeed)}) | 현재 보유: <strong style="color:#34d399;">${holdEss.toLocaleString()}개</strong>
         </div>
-
-        <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;">
-          <div style="font-size:13px; color:#fde68a; font-weight:800;">🎁 [보물던전] 열쇠로만 채울 시 추가 필요량</div>
-          <div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">
-            +${addTreasKeysNeeded.toLocaleString()}개
-          </div>
-          <div style="font-size:12px; color:#94a3b8;">
-            (보유 열쇠 ${treasKeys.toLocaleString()}개 = ${formatKoreanNumber(fromTreasKeys)} 정수 반영됨)
-          </div>
-        </div>
+        ${keyCardsHtml}
       </div>
     `;
   }
 
- // 6. 드래곤 육성 & 승급 열쇠 계산 함수
-  function calculateDragonGrowthPanel() {
+  // 6. 드래곤 육성 & 승급 열쇠 계산 함수
+  function calculateDragonGrowth() {
     const curLv = parseInt(document.getElementById('drg_cur_lv')?.value || '1', 10);
     const tarLv = parseInt(document.getElementById('drg_tar_lv')?.value || '2', 10);
     const holdSoul = Math.max(0, parseInt(document.getElementById('drg_hold_soul')?.value || '0', 10) || 0);
-    const dunKeys = Math.max(0, parseInt(document.getElementById('drg_dun_keys')?.value || '0', 10) || 0);
-    const dunSweep = Math.max(1, parseInt(document.getElementById('drg_dun_sweep')?.value || '1', 10) || 1);
+    const keyRew = Math.max(1, parseInt(document.getElementById('drg_key_reward')?.value || '2500', 10) || 2500);
     const incPromo = document.getElementById('drg_inc_promo')?.checked ?? true;
-    const incPromo4 = document.getElementById('drg_inc_promo4')?.checked ?? false;
+    const alreadyPromotedCur = document.getElementById('drg_already_promoted_cur')?.checked ?? false;
 
     const resBox = document.getElementById('drg_result_box');
-    const promoBox = document.getElementById('drg_promo_cards_box');
-    const promo4Banner = document.getElementById('drg_promo4_highlight_banner');
+    if (!resBox) return;
 
-    const fromKeys = dunKeys * dunSweep;
-    const totalOwnedEquiv = holdSoul + fromKeys;
-
-    // 승급 1~4단계 요약 카드 업데이트
-    if (promoBox) {
-      promoBox.innerHTML = [
-        { lv: 20, name: '1단계 승급 (Lv.20)', cost: DRAGON_PROMO_COSTS[20], color: '#38bdf8' },
-        { lv: 40, name: '2단계 승급 (Lv.40)', cost: DRAGON_PROMO_COSTS[40], color: '#c084fc' },
-        { lv: 60, name: '3단계 승급 (Lv.60)', cost: DRAGON_PROMO_COSTS[60], color: '#f43f5e' },
-        { lv: 80, name: '4단계 승급 (Lv.80)', cost: DRAGON_PROMO_COSTS[80], color: '#10b981' }
-      ].map(p => {
-        const keysNeed = Math.ceil(p.cost / dunSweep);
-        return `
-          <div style="background:#0f172a; border:1.5px solid ${p.color}; border-radius:12px; padding:12px 10px; text-align:center;">
-            <div style="font-size:12.5px; font-weight:800; color:${p.color};">${p.name}</div>
-            <div style="font-size:17px; font-weight:900; color:#ffffff; margin:4px 0;">영혼 ${formatKoreanNumber(p.cost)}개</div>
-            <div style="font-size:11px; color:#94a3b8; margin-bottom:3px;">(${p.cost.toLocaleString()}개)</div>
-            <div style="font-size:12px; color:#fde047; font-weight:800;">🗝️ 열쇠 약 ${keysNeed.toLocaleString()}개</div>
-          </div>
-        `;
-      }).join('');
+    if (tarLv <= curLv) {
+      resBox.innerHTML = `
+        <div class="result-dashboard">
+          <div class="res-label">목표 레벨을 현재 레벨보다 높게 설정해주세요.</div>
+          <div class="res-value" style="font-size:24px; color:#94a3b8;">Lv.${curLv} ➔ Lv.${tarLv}</div>
+        </div>
+      `;
+      return;
     }
 
-    // 4단계 승급(85만 개) 전용 상세 배너 업데이트 (내 보유 영혼·열쇠 차감 반영!)
-    if (promo4Banner) {
-      const p4Cost = DRAGON_PROMO_COSTS[80] || 850000;
-      const p4PureKeys = Math.ceil(p4Cost / dunSweep);
-      const p4RemainSoul = Math.max(0, p4Cost - totalOwnedEquiv);
-      const p4AddKeys = p4RemainSoul > 0 ? Math.ceil(p4RemainSoul / dunSweep) : 0;
+    let levelUpCost = 0;
+    for (let lv = curLv; lv < tarLv; lv++) {
+      levelUpCost += (DRAGON_COST_TABLE[lv] || 0);
+    }
 
-      promo4Banner.innerHTML = `
-        <div style="background:linear-gradient(135deg, rgba(16,185,129,0.18) 0%, #0f172a 100%); border:2px solid #10b981; border-radius:12px; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; box-shadow:0 4px 15px rgba(16,185,129,0.2);">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="width:44px; height:44px; border-radius:10px; background:rgba(16,185,129,0.2); border:1.5px solid #34d399; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-              ${CUSTOM_SVG_ART.dragon}
+    let promoCost = 0;
+    let includedPromos = [];
+    if (incPromo) {
+      [20, 40, 60].forEach(pLv => {
+        if (pLv > curLv && pLv < tarLv) {
+          promoCost += DRAGON_PROMO_COSTS[pLv];
+          includedPromos.push(`Lv.${pLv}(${formatKoreanNumber(DRAGON_PROMO_COSTS[pLv])})`);
+        } else if (pLv === curLv && !alreadyPromotedCur) {
+          promoCost += DRAGON_PROMO_COSTS[pLv];
+          includedPromos.push(`Lv.${pLv}(${formatKoreanNumber(DRAGON_PROMO_COSTS[pLv])})`);
+        }
+      });
+    }
+
+    const totalNeed = levelUpCost + promoCost;
+    const netNeed = Math.max(0, totalNeed - holdSoul);
+    const needKeys = Math.ceil(netNeed / keyRew);
+
+    resBox.innerHTML = `
+      <div class="result-dashboard">
+        <div class="res-label">🐉 [Lv.${curLv} ➔ Lv.${tarLv}] 목표 달성까지 부족한 드래곤의 영혼</div>
+        <div class="res-value" style="color:#fde047;">${formatKoreanNumber(netNeed)}개 <small style="font-size:16px; color:#cbd5e1;">(${netNeed.toLocaleString()}개)</small></div>
+        <div style="margin: 10px 0 14px 0; font-size:22px; font-weight:900; color:#34d399;">
+          🗝️ 필요 드래곤 던전 열쇠: 약 ${needKeys.toLocaleString()}개 <small style="font-size:13.5px; color:#a7f3d0;">(1회당 ${keyRew.toLocaleString()}개 기준)</small>
+        </div>
+        <div class="res-sub" style="font-size:13px;">
+          <span>순수 레벨업 소모: <strong>${levelUpCost.toLocaleString()}개</strong></span>
+          <span>|</span>
+          <span>구간 승급 소모: <strong style="color:#fb923c;">${promoCost.toLocaleString()}개</strong> ${includedPromos.length > 0 ? `<small>(${includedPromos.join(', ')})</small>` : '<small>(해당 없음)</small>'}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  // 7. 🛡️ 수호신 3대 라디오 모드 전환 & 정밀 계산 함수
+  function switchGuardianMode(mode) {
+    currentGuardianMode = mode;
+    ['break', 'potential', 'scroll'].forEach(m => {
+      document.getElementById(`grd_radio_${m}`)?.classList.toggle('selected', m === mode);
+      const viewEl = document.getElementById(`grd_mode_${m}_view`);
+      if (viewEl) viewEl.style.display = (m === mode) ? 'block' : 'none';
+    });
+
+    const dLabel = document.getElementById('grd_dungeon_input_label');
+    const tLabel = document.getElementById('grd_treas2_input_label');
+    if (mode === 'scroll') {
+      if (dLabel) dLabel.innerHTML = `🏛️ 수호신의 던전 1회(소탕권 1개)당 획득 강화서`;
+      if (tLabel) tLabel.innerHTML = `🗝️ 보물던전 2 1회(열쇠 1개)당 획득 강화서`;
+    } else {
+      if (dLabel) dLabel.innerHTML = `🏛️ 수호신의 던전 1회(소탕권 1개)당 획득 수호신의 증표`;
+      if (tLabel) tLabel.innerHTML = `🗝️ 보물던전 2 1회(열쇠 1개)당 획득 수호신의 증표`;
+    }
+
+    renderGuardianReferenceTable();
+    calculateGuardianAll();
+    saveAllResourceCalcInputs();
+  }
+
+  function calculateGuardianAll() {
+    const resBox = document.getElementById('grd_result_box');
+    if (!resBox) return;
+
+    const dungeonRew = Math.max(1, parseInt(document.getElementById('grd_dungeon_reward')?.value || '3000', 10) || 3000);
+    const treas2Rew  = Math.max(1, parseInt(document.getElementById('grd_treas2_reward')?.value || '5000', 10) || 5000);
+
+    // [모드 1] 수호신 돌파 재화 (수호신의 증표)
+    if (currentGuardianMode === 'break') {
+      const curBrk = parseInt(document.getElementById('grd_brk_cur')?.value || '0', 10);
+      const tarBrk = parseInt(document.getElementById('grd_brk_tar')?.value || '10', 10);
+      const holdToken = Math.max(0, parseInt(document.getElementById('grd_brk_hold_token')?.value || '0', 10) || 0);
+
+      if (tarBrk <= curBrk) {
+        resBox.innerHTML = `<div class="result-dashboard"><div class="res-label">목표 돌파 단계를 현재 돌파보다 높게 설정하세요.</div></div>`;
+        return;
+      }
+
+      let needUnitsSum = 0;
+      let needTokenSum = 0;
+      GUARDIAN_BREAK_TABLE.forEach(row => {
+        if (row.from >= curBrk && row.to <= tarBrk) {
+          needUnitsSum += row.needUnits;
+          needTokenSum += row.totalToken;
+        }
+      });
+
+      const netToken = Math.max(0, needTokenSum - holdToken);
+      const dungeonTickets = Math.ceil(netToken / dungeonRew);
+      const treas2Keys     = Math.ceil(netToken / treas2Rew);
+
+      resBox.innerHTML = `
+        <div class="result-dashboard green">
+          <div class="res-label">🛡️ 수호신 [${curBrk}돌파 ➔ ${tarBrk}돌파] 필요 수호신 <strong style="color:#fde047;">총 ${needUnitsSum}개</strong> 구매 비용</div>
+          <div class="res-value" style="color:#34d399;">${formatKoreanNumber(netToken)} 증표 <small style="font-size:16px; color:#cbd5e1;">(${netToken.toLocaleString()}개)</small></div>
+          <div style="font-size:13.5px; color:#d1fae5; margin-bottom:12px;">
+            구간 총 필요 증표: <strong>${needTokenSum.toLocaleString()}개</strong> | 현재 보유 증표: <strong>${holdToken.toLocaleString()}개</strong>
+          </div>
+          <div class="grid-2" style="text-align:center;">
+            <div style="background:rgba(15,23,42,0.85); border:1.5px solid #10b981; border-radius:12px; padding:14px;">
+              <div style="font-size:13px; color:#a7f3d0; font-weight:800;">🏛️ [수호신의 던전] 소탕권으로만 파밍 시</div>
+              <div style="font-size:26px; font-weight:900; color:#34d399; margin:6px 0;">${dungeonTickets.toLocaleString()}장</div>
+              <div style="font-size:12px; color:#94a3b8;">(소탕권 1장당 ${dungeonRew.toLocaleString()} 증표 기준)</div>
             </div>
-            <div>
-              <div style="font-size:12px; color:#6ee7b7; font-weight:800;">🐉 드래곤 4단계 승급 (Lv.80 돌파) 단독 전직 재화 계산</div>
-              <div style="font-size:15.5px; font-weight:900; color:#ffffff; margin-top:2px;">
-                총 필요 영혼 <span style="color:#fde047;">85만 개 (850,000개)</span> ➔ 순수 열쇠 <span style="color:#38bdf8;">약 ${p4PureKeys.toLocaleString()}개</span> 분량
-              </div>
+            <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;">
+              <div style="font-size:13px; color:#fde68a; font-weight:800;">🗝️ [보물던전 2] 열쇠로만 파밍 시</div>
+              <div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${treas2Keys.toLocaleString()}개</div>
+              <div style="font-size:12px; color:#94a3b8;">(열쇠 1개당 ${treas2Rew.toLocaleString()} 증표 기준)</div>
             </div>
           </div>
-          <div style="background:#090d16; border:1px solid #10b981; border-radius:9px; padding:8px 14px; text-align:right;">
-            <div style="font-size:11px; color:#94a3b8;">내 보유 영혼·열쇠(${formatKoreanNumber(totalOwnedEquiv)}개) 차감 시</div>
-            <div style="font-size:14.5px; font-weight:900; color:#34d399;">
-              ${p4RemainSoul > 0 ? `부족분 ${formatKoreanNumber(p4RemainSoul)}개 (열쇠 +${p4AddKeys.toLocaleString()}개 필요)` : '🎉 4단계 승급 재화 준비 완료!'}
+        </div>
+      `;
+      return;
+    }
+
+    // [모드 2] 수호신 잠재능력 (잠재 강화석 & 25,000증표 = 10,000강화석 환산)
+    if (currentGuardianMode === 'potential') {
+      const curLv = parseInt(document.getElementById('grd_pot_cur')?.value || '0', 10);
+      const tarLv = parseInt(document.getElementById('grd_pot_tar')?.value || '100', 10);
+      const holdStone = Math.max(0, parseInt(document.getElementById('grd_pot_hold_stone')?.value || '0', 10) || 0);
+      const holdToken = Math.max(0, parseInt(document.getElementById('grd_pot_hold_token')?.value || '0', 10) || 0);
+
+      if (tarLv <= curLv) {
+        resBox.innerHTML = `<div class="result-dashboard"><div class="res-label">목표 잠재능력 레벨을 현재 레벨보다 높게 설정하세요.</div></div>`;
+        return;
+      }
+
+      let needStones = 0;
+      let tarRow = null;
+      GUARDIAN_POTENTIAL_TABLE.forEach(row => {
+        if (row.startLv >= curLv && row.endLv <= tarLv) {
+          needStones += row.stepStones;
+        }
+        if (row.endLv === tarLv) tarRow = row;
+      });
+
+      const netStones = Math.max(0, needStones - holdStone);
+      // 잠재 강화석 10,000개 = 25,000 수호신의 증표 (1개당 2.5 증표)
+      const totalTokensForStones = Math.ceil(netStones * 2.5);
+      const netTokensAfterHold   = Math.max(0, totalTokensForStones - holdToken);
+      const packsToBuy           = Math.ceil(netStones / 10000); // 1만개 묶음 구매 횟수
+
+      const dungeonTickets = Math.ceil(netTokensAfterHold / dungeonRew);
+      const treas2Keys     = Math.ceil(netTokensAfterHold / treas2Rew);
+
+      resBox.innerHTML = `
+        <div class="result-dashboard">
+          <div class="res-label">🔥 수호신 잠재능력 [Lv.${curLv} ➔ Lv.${tarLv}] (등불 9개 전체 기준)</div>
+          <div class="res-value" style="color:#fde047;">잠재 강화석 ${netStones.toLocaleString()}개</div>
+          <div style="font-size:16px; font-weight:900; color:#34d399; margin-bottom:10px;">
+            🛡️ 상점 구매 환산 (1만개=2.5만 증표): 추가 필요 증표 <span style="color:#ffffff; font-size:20px;">${netTokensAfterHold.toLocaleString()}개</span>
+            <small style="color:#a7f3d0;">(상점 1만개 묶음 ${packsToBuy}회 구매분 = ${ (packsToBuy * 25000).toLocaleString() } 증표)</small>
+          </div>
+          ${tarRow ? `<div style="font-size:12.5px; color:#cbd5e1; margin-bottom:12px;">✨ Lv.${tarLv} 달성 시 총 효과: 수호신 공격력 <strong style="color:#38bdf8;">+${tarRow.atkPct}%</strong> · 공격력 증폭 <strong style="color:#f472b6;">+${tarRow.ampPct.toLocaleString()}%</strong> (최종 배율 <strong style="color:#fde047;">${tarRow.mult}배</strong>)</div>` : ''}
+          <div class="grid-2" style="text-align:center;">
+            <div style="background:rgba(15,23,42,0.85); border:1.5px solid #10b981; border-radius:12px; padding:14px;">
+              <div style="font-size:13px; color:#a7f3d0; font-weight:800;">🏛️ [수호신의 던전] 소탕권 필요량</div>
+              <div style="font-size:26px; font-weight:900; color:#34d399; margin:6px 0;">${dungeonTickets.toLocaleString()}장</div>
+              <div style="font-size:12px; color:#94a3b8;">(소탕권 1장당 ${dungeonRew.toLocaleString()} 증표 기준)</div>
+            </div>
+            <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;">
+              <div style="font-size:13px; color:#fde68a; font-weight:800;">🗝️ [보물던전 2] 열쇠 필요량</div>
+              <div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${treas2Keys.toLocaleString()}개</div>
+              <div style="font-size:12px; color:#94a3b8;">(열쇠 1개당 ${treas2Rew.toLocaleString()} 증표 기준)</div>
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // [모드 3] 수호신 강화서 (레벨업 Lv.1 ~ 120)
+    if (currentGuardianMode === 'scroll') {
+      const curLv = parseInt(document.getElementById('grd_scr_cur')?.value || '1', 10);
+      const tarLv = parseInt(document.getElementById('grd_scr_tar')?.value || '120', 10);
+      const holdScr = Math.max(0, parseInt(document.getElementById('grd_scr_hold')?.value || '0', 10) || 0);
+      const customPerLv = Math.max(0, parseInt(document.getElementById('grd_scr_custom_per_lv')?.value || '0', 10) || 0);
+
+      if (tarLv <= curLv) {
+        resBox.innerHTML = `<div class="result-dashboard"><div class="res-label">목표 수호신 레벨을 현재 레벨보다 높게 설정하세요.</div></div>`;
+        return;
+      }
+
+      let totalScrolls = 0;
+      for (let lv = curLv; lv < tarLv; lv++) {
+        totalScrolls += (customPerLv > 0 ? customPerLv : (GUARDIAN_SCROLL_COST_TABLE[lv] || 1000));
+      }
+
+      const netScrolls = Math.max(0, totalScrolls - holdScr);
+      const reqBrk = Math.max(0, Math.ceil((tarLv - 20) / 10));
+      const dungeonTickets = Math.ceil(netScrolls / dungeonRew);
+      const treas2Keys     = Math.ceil(netScrolls / treas2Rew);
+
+      resBox.innerHTML = `
+        <div class="result-dashboard">
+          <div class="res-label">📜 수호신 레벨업 [Lv.${curLv} ➔ Lv.${tarLv}] 부족한 수호신 강화서 (최소 <strong style="color:#fde047;">${reqBrk}돌파</strong> 필요)</div>
+          <div class="res-value" style="color:#38bdf8;">${formatKoreanNumber(netScrolls)}개 <small style="font-size:16px; color:#cbd5e1;">(${netScrolls.toLocaleString()}개)</small></div>
+          <div style="font-size:13.5px; color:#94a3b8; margin-bottom:12px;">
+            구간 총 필요 강화서: <strong style="color:#ffffff;">${totalScrolls.toLocaleString()}개</strong> | 현재 보유: <strong style="color:#34d399;">${holdScr.toLocaleString()}개</strong>
+          </div>
+          <div class="grid-2" style="text-align:center;">
+            <div style="background:rgba(15,23,42,0.85); border:1.5px solid #38bdf8; border-radius:12px; padding:14px;">
+              <div style="font-size:13px; color:#7dd3fc; font-weight:800;">🏛️ [수호신의 던전] 소탕권 필요량</div>
+              <div style="font-size:26px; font-weight:900; color:#38bdf8; margin:6px 0;">${dungeonTickets.toLocaleString()}장</div>
+              <div style="font-size:12px; color:#94a3b8;">(소탕권 1장당 강화서 ${dungeonRew.toLocaleString()}개 기준)</div>
+            </div>
+            <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;">
+              <div style="font-size:13px; color:#fde68a; font-weight:800;">🗝️ [보물던전 2] 열쇠 필요량</div>
+              <div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${treas2Keys.toLocaleString()}개</div>
+              <div style="font-size:12px; color:#94a3b8;">(열쇠 1개당 강화서 ${treas2Rew.toLocaleString()}개 기준)</div>
             </div>
           </div>
         </div>
       `;
     }
+  }
 
-    if (!resBox) return;
+  function renderGuardianReferenceTable() {
+    const container = document.getElementById('grd_table_container');
+    const titleEl   = document.getElementById('grd_table_acc_title');
+    if (!container) return;
 
-    if (tarLv <= curLv && !incPromo4) {
-      resBox.innerHTML = `
-        <div class="res-label">드래곤 Lv.${curLv} ➔ Lv.${tarLv}</div>
-        <div class="res-value" style="font-size:24px; color:#94a3b8;">목표 레벨을 현재 레벨보다 높게 설정하세요</div>
+    if (currentGuardianMode === 'break') {
+      if (titleEl) titleEl.innerText = '📊 [수호신 돌파] 0돌 ➔ 10돌 단계별 필요 수호신 개수 & 수호신의 증표 기준표';
+      const rows = GUARDIAN_BREAK_TABLE.map(r => `
+        <tr>
+          <td style="font-weight:800; color:#ffffff;">${r.from}돌 ➔ ${r.to}돌 <small style="color:#94a3b8;">(Max Lv.${20 + r.to*10})</small></td>
+          <td style="color:#38bdf8; font-weight:800;">${r.needUnits}마리</td>
+          <td style="color:#fde047;">${r.unitTokenCost.toLocaleString()} 증표</td>
+          <td style="color:#34d399; font-weight:900;">${r.totalToken.toLocaleString()} 증표</td>
+          <td style="color:#cbd5e1;">${r.cumToken.toLocaleString()} 증표</td>
+        </tr>
+      `).join('');
+      container.innerHTML = `
+        <table class="custom-table" style="font-size:13px;">
+          <thead>
+            <tr><th>돌파 구간</th><th>필요 수호신 개수</th><th>수호신 1개당 가격</th><th>구간 필요 증표</th><th>누적 증표</th></tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
       `;
-      return;
+    } else if (currentGuardianMode === 'potential') {
+      if (titleEl) titleEl.innerText = '📊 [수호신 잠재능력] Lv.0 ➔ Lv.100 (등불 9개 기준) 잠재 강화석 & 증표 환산표';
+      const rows = GUARDIAN_POTENTIAL_TABLE.map(r => `
+        <tr>
+          <td style="font-weight:800; color:#ffffff;">Lv.${r.startLv} ➔ Lv.${r.endLv}</td>
+          <td style="color:#38bdf8; font-weight:800;">${r.stepStones.toLocaleString()}개 <small style="color:#94a3b8;">(${r.cumStones.toLocaleString()})</small></td>
+          <td style="color:#fde047; font-weight:800;">${r.stepTokens.toLocaleString()}개 <small style="color:#94a3b8;">(${r.cumTokens.toLocaleString()})</small></td>
+          <td style="color:#34d399;">공 +${r.atkPct}% / 증폭 +${r.ampPct.toLocaleString()}% (<strong>${r.mult}배</strong>)</td>
+        </tr>
+      `).join('');
+      container.innerHTML = `
+        <table class="custom-table" style="font-size:13px;">
+          <thead>
+            <tr><th>잠재 레벨 구간</th><th>구간 잠재강화석 (누적)</th><th>환산 수호신의 증표 (누적)</th><th>달성 시 누적 효과 (배율)</th></tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+    } else {
+      if (titleEl) titleEl.innerText = '📊 [수호신 강화서] 돌파 단계별 최대 레벨(Lv.20~120) 및 구간별 강화서 기준표';
+      let rows = '';
+      let cum = 0;
+      for (let b = 0; b <= 10; b++) {
+        const sLv = b === 0 ? 1 : (10 + b * 10);
+        const eLv = 20 + b * 10;
+        let stepSum = 0;
+        for (let l = sLv; l < eLv; l++) stepSum += (GUARDIAN_SCROLL_COST_TABLE[l] || 0);
+        cum += stepSum;
+        const perLv = GUARDIAN_SCROLL_COST_TABLE[sLv] || 0;
+        rows += `
+          <tr>
+            <td style="font-weight:800; color:#ffffff;">${b}돌파 구간 (Lv.${sLv} ➔ Lv.${eLv})</td>
+            <td style="color:#38bdf8;">${perLv.toLocaleString()}개 / 1업</td>
+            <td style="color:#34d399; font-weight:800;">${stepSum.toLocaleString()}개</td>
+            <td style="color:#cbd5e1;">${cum.toLocaleString()}개</td>
+          </tr>
+        `;
+      }
+      container.innerHTML = `
+        <table class="custom-table" style="font-size:13px;">
+          <thead>
+            <tr><th>돌파 해금 레벨 구간</th><th>1레벨업당 강화서</th><th>구간 합계</th><th>누적 합계</th></tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
     }
+  }
 
-    let lvSoulReq = 0;
-    for (let lv = curLv; lv < tarLv; lv++) {
-      lvSoulReq += (DRAGON_COST_TABLE[lv] || 0);
-    }
+  // ==================== 💾 [전 분야 재화 계산기 통합 자동 저장 & 복원 엔진] ====================
+  const ALL_CALC_INPUTS_STORAGE_KEY = 'sh_calc_all_resource_inputs_v393';
+  let isRestoringCalcInputs = false;
 
-    let promoSoulReq = 0;
-    const includedPromos = [];
-    if (incPromo) {
-      [20, 40, 60].forEach(pLv => {
-        if (pLv >= curLv && pLv < tarLv) {
-          promoSoulReq += DRAGON_PROMO_COSTS[pLv];
-          includedPromos.push(`Lv.${pLv} 승급`);
-        }
+  // 자동 저장 대상이 되는 모든 재화·확률 계산기 input / select ID 목록
+  const SAVED_CALC_FIELD_IDS = [
+    // 1) 1·2·3차 전직 재화 계산기
+    'jc1_cur_lv', 'jc1_tar_lv', 'jc1_hold_ess', 'jc1_tower_reward', 'jc1_treas_reward',
+    'jc2_cur_lv', 'jc2_tar_lv', 'jc2_hold_ess', 'jc2_tower_reward', 'jc2_treas_reward',
+    'jc3_cur_lv', 'jc3_tar_lv', 'jc3_hold_ess', 'jc3_tower_reward',
+    // 2) 드래곤 육성 & 승급 계산기
+    'drg_cur_lv', 'drg_tar_lv', 'drg_hold_soul', 'drg_key_reward', 'drg_inc_promo', 'drg_already_promoted_cur',
+    // 3) 수호신 3종 계산기 (돌파 / 잠재 / 강화서 + 공통 던전 보상)
+    'grd_brk_cur', 'grd_brk_tar', 'grd_brk_hold_token',
+    'grd_pot_cur', 'grd_pot_tar', 'grd_pot_hold_stone', 'grd_pot_hold_token',
+    'grd_scr_cur', 'grd_scr_tar', 'grd_scr_hold', 'grd_scr_custom_per_lv',
+    'grd_dungeon_reward', 'grd_treas2_reward',
+    // 4) 영원 장비 연마 & 옵션 변환 & 어빌리티 & 고패 파밍 & 시너지 & 소환 레벨
+    'ref_cur_lv', 'ref_tar_lv', 'ref_safe_mode',
+    'orb_tier', 'orb_target_grade1', 'orb_target_grade2',
+    'gaho_locked', 'wonhon_locked',
+    'p_war_gain', 'p_event_gain', 'p_daily_gain', 'p_current_holding',
+    'syn_mythic_p', 'syn_mythic_s', 'syn_mythic_h', 'syn_legend_all', 'syn_unique_all', 'syn_cur_points',
+    'sum_common_level', 'sum_item_holding', 'sum_item_target'
+  ];
+
+  function saveAllResourceCalcInputs() {
+    if (isRestoringCalcInputs) return;
+    try {
+      const data = {
+        currentGrowthSubTab,
+        currentGuardianMode,
+        currentRefineEquip: typeof currentRefineEquip !== 'undefined' ? currentRefineEquip : 'scythe',
+        currentRefineRes: typeof currentRefineRes !== 'undefined' ? currentRefineRes : 'stone',
+        currentGahoType: typeof currentGahoType !== 'undefined' ? currentGahoType : 'star',
+        fields: {}
+      };
+      SAVED_CALC_FIELD_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        data.fields[id] = (el.type === 'checkbox') ? el.checked : el.value;
       });
-    }
-    if (incPromo4) {
-      promoSoulReq += DRAGON_PROMO_COSTS[80];
-      includedPromos.push('4단계 승급(85만)');
-    }
+      localStorage.setItem(ALL_CALC_INPUTS_STORAGE_KEY, JSON.stringify(data));
+      if (typeof triggerAutoSave === 'function') triggerAutoSave();
+    } catch (e) {}
+  }
 
-    const totalReq = lvSoulReq + promoSoulReq;
-    const netShortage = Math.max(0, totalReq - totalOwnedEquiv);
-    const addKeysNeeded = netShortage > 0 ? Math.ceil(netShortage / dunSweep) : 0;
-    const totalKeysIfZero = Math.ceil(totalReq / dunSweep);
-    const progressPct = totalReq > 0 ? Math.min(100, (totalOwnedEquiv / totalReq) * 100).toFixed(1) : '100.0';
+  function loadAllResourceCalcInputs() {
+    try {
+      const raw = localStorage.getItem(ALL_CALC_INPUTS_STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (!data) return;
 
-    resBox.innerHTML = `
-      <div class="res-label">[드래곤 Lv.${curLv} ➔ Lv.${tarLv}${incPromo4 ? ' + 4단계 승급' : ''}] 목표까지 부족한 드래곤의 영혼 (준비율 ${progressPct}%)</div>
-      <div class="res-value" style="color:#fde047;">
-        ${netShortage > 0 ? `${formatKoreanNumber(netShortage)}개 부족` : '🎉 즉시 달성 가능!'}
-      </div>
-      <div style="margin-bottom:12px; font-size:18px; font-weight:900; color:#34d399;">
-        🗝️ 추가로 필요한 드래곤 던전 열쇠: +${addKeysNeeded.toLocaleString()}개 <small style="font-size:13px; color:#cbd5e1; font-weight:normal;">(순수 총합 기준 ${totalKeysIfZero.toLocaleString()}개)</small>
-      </div>
-      <div class="res-sub">
-        <span>순수 레벨업 영혼: <strong>${lvSoulReq.toLocaleString()}개</strong></span>
-        <span>|</span>
-        <span>승급 영혼 합산: <strong style="color:#f472b6;">+${promoSoulReq.toLocaleString()}개</strong> <small>(${includedPromos.length > 0 ? includedPromos.join('·') : '해당 없음'})</small></span>
-        <span>|</span>
-        <span>보유+열쇠 환산: <strong style="color:#38bdf8;">${totalOwnedEquiv.toLocaleString()}개</strong></span>
-      </div>
-    `;
+      isRestoringCalcInputs = true;
+
+      if (data.fields) {
+        Object.keys(data.fields).forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          if (el.type === 'checkbox') {
+            el.checked = Boolean(data.fields[id]);
+          } else {
+            el.value = data.fields[id];
+          }
+        });
+      }
+
+      if (data.currentRefineEquip && typeof selectRefineEquip === 'function') {
+        selectRefineEquip(data.currentRefineEquip);
+      }
+      if (data.currentRefineRes && typeof selectRefineResource === 'function') {
+        selectRefineResource(data.currentRefineRes);
+      }
+      if (data.currentGahoType && typeof selectGahoType === 'function') {
+        selectGahoType(data.currentGahoType);
+      }
+      if (data.currentGuardianMode) {
+        switchGuardianMode(data.currentGuardianMode);
+      }
+      if (data.currentGrowthSubTab) {
+        currentGrowthSubTab = data.currentGrowthSubTab;
+      }
+    } catch (e) {
+    } finally {
+      isRestoringCalcInputs = false;
+    }
+  }
+
+  function bindGlobalCalcAutoSaveListeners() {
+    SAVED_CALC_FIELD_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el || el.dataset.autoSaveBound) return;
+      el.dataset.autoSaveBound = '1';
+      el.addEventListener('change', saveAllResourceCalcInputs);
+      el.addEventListener('input', saveAllResourceCalcInputs);
+    });
   }
 
   function calculateAllGrowthCalcs() {
-    calculateSingleJobGrowth('jc1', JOB1_COST_TABLE, '시련의 정수', '시련의 탑', '#38bdf8');
-    calculateSingleJobGrowth('jc2', JOB2_COST_TABLE, '극한의 정수', '극한의 탑', '#c084fc');
-    calculateSingleJobGrowth('jc3', JOB3_COST_TABLE, '절망의 정수', '절망의 탑', '#fb7185');
-    calculateDragonGrowthPanel();
+    calculateSingleJobGrowth('jc1', JOB1_COST_TABLE, '시련의 정수', '시련의 탑', '보물던전 1', '#38bdf8', true);
+    calculateSingleJobGrowth('jc2', JOB2_COST_TABLE, '극한의 정수', '극한의 탑', '보물던전 2', '#c084fc', true);
+    calculateSingleJobGrowth('jc3', JOB3_COST_TABLE, '절망의 정수', '절망의 탑', '', '#f43f5e', false);
+    calculateDragonGrowth();
+    calculateGuardianAll();
+    saveAllResourceCalcInputs();
   }
 
-  // 스크립트 로드 시 즉시 UI 및 계산기 주입
-  if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', injectGrowthAndDonationUI);
-  } else {
+  function switchGrowthSubTab(subKey) {
+    currentGrowthSubTab = subKey;
+    ['job1', 'job2', 'job3', 'dragon', 'guardian'].forEach(k => {
+      const btn = document.getElementById(`gsub_btn_${k}`);
+      const panel = document.getElementById(`gpanel_${k}`);
+      if (btn) btn.className = 'growth-sub-tab-btn' + (k === subKey ? ` active-${k}` : '');
+      if (panel) panel.style.display = (k === subKey) ? 'block' : 'none';
+    });
+    calculateAllGrowthCalcs();
+  }
+
+  function openGrowthResourceCalculator(subKey) {
     injectGrowthAndDonationUI();
+    document.getElementById('mode_guides_container').style.display = 'none';
+    document.getElementById('mode_newbie_container').style.display = 'none';
+    document.getElementById('mode_deep_container').style.display = 'block';
+
+    openDeepCalculator('tab-growth-calc');
+    switchGrowthSubTab(subKey || currentGrowthSubTab || 'job1');
+
+    const backTxt = document.getElementById('floating_back_text');
+    if (backTxt) backTxt.innerText = '확률·재화 메뉴로 돌아가기';
   }
 
+  const _origHandleFloatingBackV390 = window.handleFloatingBack;
+  window.handleFloatingBack = function() {
+    const growthTab = document.getElementById('tab-growth-calc');
+    if (growthTab && growthTab.style.display === 'block' && document.getElementById('mode_deep_container').style.display !== 'none') {
+      growthTab.style.display = 'none';
+      switchMainMode('calcs');
+      return;
+    }
+    if (typeof _origHandleFloatingBackV390 === 'function') {
+      _origHandleFloatingBackV390();
+    }
+  };
+
+  function initV393GrowthAndAutoSave() {
+    injectGrowthAndDonationUI();
+    loadAllResourceCalcInputs();
+    bindGlobalCalcAutoSaveListeners();
+    calculateAllGrowthCalcs();
+    if (typeof calculateRefineExpected === 'function') calculateRefineExpected();
+    if (typeof calculateOrbExpected === 'function') calculateOrbExpected();
+    if (typeof calculateGaho === 'function') calculateGaho();
+    if (typeof calculateWonhon === 'function') calculateWonhon();
+    if (typeof calculateSynergyDetailed === 'function') calculateSynergyDetailed();
+  }
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', initV393GrowthAndAutoSave);
+  } else {
+    initV393GrowthAndAutoSave();
+  }
+
+    // ==================== 🎒 [v.3.9.4 신규] 양방향 통합 인벤토리 허브 & 가독성 스펙 코드(Deck Code) 시스템 ====================
+  const MASTER_INV_STORAGE_KEY = 'sh_master_inventory_v394';
+  let masterEquipRefine = { scythe: 15, orb: 15, accessory: 15 }; // 영원 장비 3종 현재 연마 단계
+
+  function injectMasterInventorySystem() {
+    if (document.getElementById('master_inv_modal_overlay')) return;
+
+    // 1. 우측 상단 플로팅 위젯에 [🎒 내 통합 인벤토리 & 코드] 버튼 추가
+    const floatWidget = document.getElementById('floating_save_widget');
+    if (floatWidget && !document.getElementById('btn_open_master_inv')) {
+      const invBtn = document.createElement('button');
+      invBtn.id = 'btn_open_master_inv';
+      invBtn.onclick = () => openMasterInventoryModal();
+      invBtn.style.cssText = `
+        width: 100%;
+        background: linear-gradient(135deg, #4f46e5 0%, #0284c7 100%);
+        border: 1.5px solid #38bdf8;
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 900;
+        padding: 7px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+        margin-bottom: 2px;
+        transition: all 0.2s;
+      `;
+      invBtn.innerHTML = `<span>🎒</span><span>내 통합 인벤토리 &amp; 코드</span>`;
+      floatWidget.insertBefore(invBtn, floatWidget.firstChild);
+    }
+
+    // 2. 통합 인벤토리 & 스펙 코드 모달 팝업 DOM 생성
+    const modalOverlay = document.createElement('div');
+    modalOverlay.id = 'master_inv_modal_overlay';
+    modalOverlay.className = 'help-modal-overlay';
+    modalOverlay.style.zIndex = '10005';
+    modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeMasterInventoryModal(); };
+
+    modalOverlay.innerHTML = `
+      <div class="help-modal-box" style="max-width: 780px; max-height: 90vh; overflow-y: auto; border: 2px solid #38bdf8; padding: 22px;" onclick="event.stopPropagation()">
+        <div class="help-modal-header" style="border-bottom: 1.5px solid #334155; padding-bottom: 12px; margin-bottom: 16px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:22px;">🎒</span>
+            <div>
+              <div class="help-modal-title" style="font-size:18px; color:#fde047;">내 캐릭터 통합 인벤토리 &amp; 스펙 코드 센터</div>
+              <div style="font-size:11.5px; color:#94a3b8;">여기서 수정하면 모든 도우미·계산기에 자동 연동되며, 각 도우미에서 수정해도 여기에 즉시 반영됩니다!</div>
+            </div>
+          </div>
+          <button class="help-modal-close" onclick="closeMasterInventoryModal()">✕</button>
+        </div>
+
+        <!-- [구역 1] 가독성 스펙 코드 발급 & 불러오기 -->
+        <div style="background:linear-gradient(135deg, rgba(30,27,75,0.95) 0%, rgba(15,23,42,0.98) 100%); border:1.5px solid #818cf8; border-radius:14px; padding:14px 16px; margin-bottom:16px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+            <strong style="font-size:14px; color:#e0e7ff;">🔑 개인 스펙 코드 발급 &amp; 타 기기(PC↔모바일) 불러오기</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="copyMasterSpecCode()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; font-size:12px; font-weight:800; padding:6px 12px; border-radius:8px; cursor:pointer;">📤 내 스펙 코드 복사</button>
+              <button onclick="applyMasterSpecCodeFromInput()" style="background:#059669; border:1px solid #6ee7b7; color:#fff; font-size:12px; font-weight:800; padding:6px 12px; border-radius:8px; cursor:pointer;">📥 입력한 코드 불러오기</button>
+            </div>
+          </div>
+          <textarea id="master_spec_code_textarea" rows="3" placeholder="여기에 내 스펙 코드가 표시됩니다. 다른 기기에서 복사한 코드를 여기에 붙여넣고 [📥 입력한 코드 불러오기]를 누르세요!"
+            style="width:100%; background:#090d16; border:1.5px solid #475569; border-radius:10px; padding:10px; color:#fde047; font-family:monospace; font-size:12px; line-height:1.45; resize:vertical; outline:none;"></textarea>
+          <div id="master_code_status_msg" style="font-size:11.5px; color:#34d399; margin-top:4px; font-weight:800; min-height:16px;"></div>
+          <div style="margin-top:8px; background:rgba(245, 158, 11, 0.12); border:1px solid rgba(245, 158, 11, 0.4); border-radius:8px; padding:8px 11px; font-size:11.5px; color:#fde68a; line-height:1.55;">
+            ⚠️ <strong>스펙 코드 사용 주의사항:</strong><br>
+            • 발급된 스펙 코드는 <strong>현재 시점의 스펙을 담은 스냅샷(정적 코드)</strong>입니다. 이후 스펙이 바뀌면 새로 발급된 코드를 다시 복사해서 보관해 주세요.<br>
+            • 다른 기기에서 코드를 붙여넣고 불러오기를 누르면 <strong>현재 기기의 기존 세팅은 덮어씌워지며</strong>, 불러온 데이터는 해당 기기에 <strong>실시간 자동 저장</strong>됩니다.
+          </div>
+        </div>
+
+        <!-- [구역 2] 기본 프로필 & 영원 무기 3종 연마 단계 (룬 도우미/연마 계산기 양방향 연동) -->
+        <div style="background:#0f172a; border:1.5px solid #334155; border-radius:14px; padding:14px 16px; margin-bottom:14px;">
+          <div style="font-size:13.5px; font-weight:900; color:#38bdf8; margin-bottom:10px;">⚔️ 1. 기본 직업 · 주속성 &amp; 영원 장비 3종 연마 단계 (연마 계산기 · 룬 도우미 자동 연동)</div>
+          <div class="grid-3" style="gap:10px; margin-bottom:12px;">
+            <div>
+              <label style="font-size:11.5px; color:#cbd5e1;">내 직업 (전체 연동)</label>
+              <select id="minv_job" onchange="onMasterInvFieldChange('job', this.value)" style="padding:7px 10px; font-size:13px; font-weight:800;">
+                <option value="reaper">🗡️ 대사신 (강타)</option>
+                <option value="mage">🧙‍♂️ 아크메이지 (스킬)</option>
+                <option value="lord">⚔️ 팬텀 (영웅스킬)</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:11.5px; color:#cbd5e1;">내 주속성 (전체 연동)</label>
+              <select id="minv_elem" onchange="onMasterInvFieldChange('elem', this.value)" style="padding:7px 10px; font-size:13px; font-weight:800;">
+                <option value="fire">🔥 화염 속성</option>
+                <option value="light">⚡ 번개 속성</option>
+                <option value="dark">🌑 어둠 속성</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:11.5px; color:#cbd5e1;">유니온 해금 스테이지</label>
+              <select id="minv_union_stage" onchange="onMasterInvFieldChange('unionStage', this.value)" style="padding:7px 10px; font-size:13px; font-weight:800;"></select>
+            </div>
+          </div>
+
+          <div class="grid-3" style="gap:10px; background:#131d33; padding:10px 12px; border-radius:10px; border:1px solid #334155;">
+            <div>
+              <label style="font-size:11.5px; color:#fda4af;">🗡️ 영원 대낫 현재 연마</label>
+              <select id="minv_ref_scythe" onchange="onMasterInvRefineChange()" style="padding:6px 8px; font-size:13px; font-weight:800; color:#fde047;"></select>
+            </div>
+            <div>
+              <label style="font-size:11.5px; color:#7dd3fc;">🔮 영원 오브 현재 연마</label>
+              <select id="minv_ref_orb" onchange="onMasterInvRefineChange()" style="padding:6px 8px; font-size:13px; font-weight:800; color:#fde047;"></select>
+            </div>
+            <div>
+              <label style="font-size:11.5px; color:#fde68a;">💍 영원 장식 현재 연마</label>
+              <select id="minv_ref_acc" onchange="onMasterInvRefineChange()" style="padding:6px 8px; font-size:13px; font-weight:800; color:#fde047;"></select>
+            </div>
+          </div>
+          <div id="minv_refine_synergy_badge" style="font-size:11.5px; color:#34d399; margin-top:6px; font-weight:700;"></div>
+        </div>
+
+        <!-- [구역 3] 전직(1·2·3차) · 드래곤 · 수호신 현재 스펙 (재화 계산기 & 특성 가이드 연동) -->
+        <div style="background:#0f172a; border:1.5px solid #334155; border-radius:14px; padding:14px 16px; margin-bottom:14px;">
+          <div style="font-size:13.5px; font-weight:900; color:#c084fc; margin-bottom:10px;">🌟 2. 전직 · 드래곤 · 수호신 현재 진행도 (재화 계산기 &amp; 특성 트리 자동 연동)</div>
+          <div class="grid-3" style="gap:10px;">
+            <div>
+              <label style="font-size:11.5px; color:#38bdf8;">🌟 1차 전직 현재 레벨</label>
+              <input type="number" id="minv_job1_lv" min="1" max="150" value="80" oninput="onMasterInvFieldChange('job1Lv', this.value)" style="padding:7px 10px; font-size:13px; font-weight:800;">
+            </div>
+            <div>
+              <label style="font-size:11.5px; color:#c084fc;">⚡ 2차 전직 현재 레벨</label>
+              <input type="number" id="minv_job2_lv" min="1" max="180" value="90" oninput="onMasterInvFieldChange('job2Lv', this.value)" style="padding:7px 10px; font-size:13px; font-weight:800;">
+            </div>
+            <div>
+              <label style="font-size:11.5px; color:#fb7185;">🔥 3차 전직 현재 레벨</label>
+              <input type="number" id="minv_job3_lv" min="1" max="45" value="40" oninput="onMasterInvFieldChange('job3Lv', this.value)" style="padding:7px 10px; font-size:13px; font-weight:800;">
+            </div>
+            <div>
+              <label style="font-size:11.5px; color:#fbbf24;">🐉 드래곤 현재 레벨</label>
+              <input type="number" id="minv_drg_lv" min="1" max="65" value="40" oninput="onMasterInvFieldChange('drgLv', this.value)" style="padding:7px 10px; font-size:13px; font-weight:800;">
+            </div>
+            <div>
+              <label style="font-size:11.5px; color:#34d399;">🛡️ 수호신 현재 돌파</label>
+              <select id="minv_grd_brk" onchange="onMasterInvFieldChange('grdBrk', this.value)" style="padding:7px 10px; font-size:13px; font-weight:800;"></select>
+            </div>
+            <div>
+              <label style="font-size:11.5px; color:#fde047;">🔥 수호신 잠재능력 레벨</label>
+              <select id="minv_grd_pot" onchange="onMasterInvFieldChange('grdPot', this.value)" style="padding:7px 10px; font-size:13px; font-weight:800;"></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- [구역 4] 도감 보유 현황 요약 & 원클릭 바로가기 (유니온 / 룬 / 소울커넥트 / 장비 인벤토리) -->
+        <div style="background:#0f172a; border:1.5px solid #334155; border-radius:14px; padding:14px 16px;">
+          <div style="font-size:13.5px; font-weight:900; color:#34d399; margin-bottom:10px;">📚 3. 보유 도감 실시간 연동 현황 (클릭 시 해당 도감 편집 화면으로 즉시 이동)</div>
+          <div class="grid-2" style="gap:10px;" id="minv_collection_summary_cards"></div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modalOverlay);
+
+    // 셀렉트 박스 옵션 초기화
+    const fillRefineSel = (id, defVal) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      let h = `<option value="-1">미보유 (영원 제작 전)</option>`;
+      for (let i = 0; i <= 20; i++) h += `<option value="${i}" ${i === defVal ? 'selected' : ''}>Lv.${i} 연마</option>`;
+      el.innerHTML = h;
+    };
+    fillRefineSel('minv_ref_scythe', 15);
+    fillRefineSel('minv_ref_orb', 15);
+    fillRefineSel('minv_ref_acc', 15);
+
+    const uStgSel = document.getElementById('minv_union_stage');
+    if (uStgSel && typeof UNION_STAGE_LIST !== 'undefined') {
+      uStgSel.innerHTML = UNION_STAGE_LIST.map((s, idx) => `<option value="${idx}">${s.label}</option>`).join('');
+    }
+    const gBrkSel = document.getElementById('minv_grd_brk');
+    if (gBrkSel) {
+      let bh = '';
+      for (let i = 0; i <= 10; i++) bh += `<option value="${i}">${i}돌파 (Max Lv.${20 + i*10})</option>`;
+      gBrkSel.innerHTML = bh;
+    }
+    const gPotSel = document.getElementById('minv_grd_pot');
+    if (gPotSel) {
+      let ph = '';
+      for (let lv = 0; lv <= 100; lv += 5) ph += `<option value="${lv}">잠재 Lv.${lv}</option>`;
+      gPotSel.innerHTML = ph;
+    }
+
+    loadMasterInvExtraState();
+  }
+
+  function saveMasterInvExtraState() {
+    try {
+      localStorage.setItem(MASTER_INV_STORAGE_KEY, JSON.stringify({ masterEquipRefine }));
+    } catch (e) {}
+  }
+
+  function loadMasterInvExtraState() {
+    try {
+      const raw = localStorage.getItem(MASTER_INV_STORAGE_KEY);
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      if (d && d.masterEquipRefine) masterEquipRefine = d.masterEquipRefine;
+    } catch (e) {}
+  }
+
+  // ★ 양방향 동기화 1: 유니온 도감(엘리시아/오버드라이브/솔라리스/크림슨웨이브) -> 룬 도우미 조건 자동 반영!
+  function syncUnionToRuneConditions() {
+    if (typeof getUnionSpecByName !== 'function') return;
+    const elisia = getUnionSpecByName('hero', '엘리시아');
+    const over   = getUnionSpecByName('skill', '오버드라이브');
+    const solar  = getUnionSpecByName('hero', '솔라리스');
+    const wave   = getUnionSpecByName('skill', '크림슨 웨이브');
+
+    const elSel = document.getElementById('rune_elisia_awk');
+    if (elSel && elisia.found && elisia.owned) elSel.value = String(elisia.awk);
+
+    const ovSel = document.getElementById('rune_overdrive_awk');
+    if (ovSel && over.found && over.owned) ovSel.value = String(over.awk);
+
+    const solSel = document.getElementById('rune_cond_solaris9');
+    if (solSel && solar.found && solar.owned) solSel.value = solar.brk >= 9 ? '1' : '0';
+
+    const wavSel = document.getElementById('rune_cond_bleed');
+    if (wavSel && wave.found && wave.owned) wavSel.value = '1';
+  }
+
+  // ★ 양방향 동기화 2: 통합 인벤토리의 대낫/오브/장식 연마 단계 -> 연마 계산기 & 룬 도우미(삼신기/극련/완벽추구) 자동 반영!
+  function onMasterInvRefineChange() {
+    const sLv = parseInt(document.getElementById('minv_ref_scythe')?.value ?? '15', 10);
+    const oLv = parseInt(document.getElementById('minv_ref_orb')?.value ?? '15', 10);
+    const aLv = parseInt(document.getElementById('minv_ref_acc')?.value ?? '15', 10);
+    masterEquipRefine = { scythe: sLv, orb: oLv, accessory: aLv };
+    saveMasterInvExtraState();
+
+    // 1) 보유 영원 무기 개수 (삼신기 조건)
+    const ownedWeapCnt = [sLv, oLv, aLv].filter(v => v >= 0).length;
+    const weapCntEl = document.getElementById('rc_eternal_weap_cnt');
+    if (weapCntEl) weapCntEl.value = String(ownedWeapCnt);
+
+    // 2) 15연마 여부 & 연마 총합 35 이상 여부 (극련 & 완벽 추구 조건)
+    const sumRef = Math.max(0, sLv) + Math.max(0, oLv) + Math.max(0, aLv);
+    const any15  = (sLv >= 15 || oLv >= 15 || aLv >= 15);
+    const all15  = (sLv >= 15 && oLv >= 15 && aLv >= 15);
+    const refStateEl = document.getElementById('rc_refine_state');
+    if (refStateEl) {
+      if (all15 && sumRef >= 35) refStateEl.value = 'all';
+      else if (any15) refStateEl.value = '15only';
+      else refStateEl.value = 'none';
+    }
+
+    // 3) 연마 계산기의 현재 선택된 부위 연마 단계 즉시 동기화
+    const curRefEq = typeof currentRefineEquip !== 'undefined' ? currentRefineEquip : 'scythe';
+    const curRefLv = Math.max(0, masterEquipRefine[curRefEq] ?? 10);
+    const refCurSel = document.getElementById('ref_cur_lv');
+    const refTarSel = document.getElementById('ref_tar_lv');
+    if (refCurSel) refCurSel.value = String(curRefLv);
+    if (refTarSel && parseInt(refTarSel.value, 10) <= curRefLv) {
+      refTarSel.value = String(Math.min(20, curRefLv + 1));
+    }
+
+    if (typeof calculateRefineExpected === 'function') calculateRefineExpected();
+    if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+    refreshMasterInventoryModalUI();
+  }
+
+  // 연마 계산기에서 부위(대낫/오브/장식)를 클릭했을 때도 인벤토리 연마 레벨을 자동으로 불러오도록 훅 연결
+  const _origSelectRefineEquipV394 = window.selectRefineEquip;
+  window.selectRefineEquip = function(eqType) {
+    if (typeof _origSelectRefineEquipV394 === 'function') _origSelectRefineEquipV394(eqType);
+    const savedLv = masterEquipRefine[eqType];
+    if (savedLv !== undefined && savedLv >= 0) {
+      const curSel = document.getElementById('ref_cur_lv');
+      const tarSel = document.getElementById('ref_tar_lv');
+      if (curSel) curSel.value = String(savedLv);
+      if (tarSel && parseInt(tarSel.value, 10) <= savedLv) {
+        tarSel.value = String(Math.min(20, savedLv + 1));
+      }
+      if (typeof calculateRefineExpected === 'function') calculateRefineExpected();
+    }
+  };
+
+  function onMasterInvFieldChange(fieldType, val) {
+    if (fieldType === 'job') {
+      if (typeof selectRuneJob === 'function') selectRuneJob(val);
+      if (typeof selectConnectJob === 'function') selectConnectJob(val);
+      if (typeof selectGuideJob === 'function') selectGuideJob(val);
+    } else if (fieldType === 'elem') {
+      if (typeof selectRuneElem === 'function') selectRuneElem(val);
+      if (typeof selectConnectElem === 'function') selectConnectElem(val);
+      if (typeof selectGuideElem === 'function') selectGuideElem(val);
+    } else if (fieldType === 'unionStage') {
+      const idx = parseInt(val, 10) || 0;
+      if (typeof selectUnionStageIdx === 'function') selectUnionStageIdx(idx);
+    } else if (fieldType === 'job1Lv') {
+      const lv = Math.max(1, Math.min(150, parseInt(val, 10) || 1));
+      const jc1Cur = document.getElementById('jc1_cur_lv');
+      if (jc1Cur && lv <= 101) jc1Cur.value = String(lv);
+      const rcJobLv = document.getElementById('rc_job_lv');
+      if (rcJobLv) rcJobLv.value = lv >= 80 ? '80' : (lv >= 60 ? '60' : '0');
+      if (typeof currentTrait1stLv !== 'undefined') currentTrait1stLv = lv;
+    } else if (fieldType === 'job2Lv') {
+      const lv = Math.max(1, Math.min(180, parseInt(val, 10) || 1));
+      const jc2Cur = document.getElementById('jc2_cur_lv');
+      if (jc2Cur && lv <= 103) jc2Cur.value = String(lv);
+      if (typeof currentTrait2ndLv !== 'undefined') currentTrait2ndLv = lv;
+    } else if (fieldType === 'job3Lv') {
+      const lv = Math.max(1, Math.min(45, parseInt(val, 10) || 1));
+      const jc3Cur = document.getElementById('jc3_cur_lv');
+      if (jc3Cur && lv <= 44) jc3Cur.value = String(lv);
+      if (typeof currentTrait3rdLv !== 'undefined') currentTrait3rdLv = lv;
+    } else if (fieldType === 'drgLv') {
+      const lv = Math.max(1, Math.min(65, parseInt(val, 10) || 1));
+      const drgCur = document.getElementById('drg_cur_lv');
+      if (drgCur && lv <= 64) drgCur.value = String(lv);
+    } else if (fieldType === 'grdBrk') {
+      const b = parseInt(val, 10) || 0;
+      const gCur = document.getElementById('grd_brk_cur');
+      if (gCur && b < 10) gCur.value = String(b);
+    } else if (fieldType === 'grdPot') {
+      const p = parseInt(val, 10) || 0;
+      const pCur = document.getElementById('grd_pot_cur');
+      if (pCur && p < 100) pCur.value = String(p);
+    }
+
+    if (typeof calculateAllGrowthCalcs === 'function') calculateAllGrowthCalcs();
+    if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+    refreshMasterInventoryModalUI();
+  }
+
+  function refreshMasterInventoryModalUI() {
+    syncUnionToRuneConditions();
+
+    const jobEl = document.getElementById('minv_job');
+    const elemEl = document.getElementById('minv_elem');
+    if (jobEl && typeof currentRuneJob !== 'undefined') jobEl.value = currentRuneJob;
+    if (elemEl && typeof currentRuneElem !== 'undefined') elemEl.value = currentRuneElem;
+
+    const uStgEl = document.getElementById('minv_union_stage');
+    if (uStgEl && typeof currentUnionStageIdx !== 'undefined') uStgEl.value = String(currentUnionStageIdx);
+
+    const sEl = document.getElementById('minv_ref_scythe');
+    const oEl = document.getElementById('minv_ref_orb');
+    const aEl = document.getElementById('minv_ref_acc');
+    if (sEl) sEl.value = String(masterEquipRefine.scythe ?? 15);
+    if (oEl) oEl.value = String(masterEquipRefine.orb ?? 15);
+    if (aEl) aEl.value = String(masterEquipRefine.accessory ?? 15);
+
+    const sumRef = Math.max(0, masterEquipRefine.scythe) + Math.max(0, masterEquipRefine.orb) + Math.max(0, masterEquipRefine.accessory);
+    const ownedCnt = [masterEquipRefine.scythe, masterEquipRefine.orb, masterEquipRefine.accessory].filter(v => v >= 0).length;
+    const refBadge = document.getElementById('minv_refine_synergy_badge');
+    if (refBadge) {
+      refBadge.innerHTML = `✨ 현재 영원 무기 <strong>${ownedCnt}종 보유</strong> | 연마 총합: <strong style="color:#fde047;">${sumRef}강</strong> ${sumRef >= 35 ? '(완벽 추구 조건 ✅)' : '(완벽 추구 35강 미달)'}`;
+    }
+
+    const j1 = document.getElementById('jc1_cur_lv')?.value;
+    const j2 = document.getElementById('jc2_cur_lv')?.value;
+    const j3 = document.getElementById('jc3_cur_lv')?.value;
+    const dr = document.getElementById('drg_cur_lv')?.value;
+    const gb = document.getElementById('grd_brk_cur')?.value;
+    const gp = document.getElementById('grd_pot_cur')?.value;
+    if (j1 && document.getElementById('minv_job1_lv')) document.getElementById('minv_job1_lv').value = j1;
+    if (j2 && document.getElementById('minv_job2_lv')) document.getElementById('minv_job2_lv').value = j2;
+    if (j3 && document.getElementById('minv_job3_lv')) document.getElementById('minv_job3_lv').value = j3;
+    if (dr && document.getElementById('minv_drg_lv'))  document.getElementById('minv_drg_lv').value = dr;
+    if (gb && document.getElementById('minv_grd_brk')) document.getElementById('minv_grd_brk').value = gb;
+    if (gp && document.getElementById('minv_grd_pot')) document.getElementById('minv_grd_pot').value = gp;
+
+    // 보유 도감 카운트 요약
+    const runeCnt = typeof ownedRunes !== 'undefined' ? ownedRunes.size : 0;
+    let coreCnt = 0;
+    if (typeof ownedCoresMap !== 'undefined') ownedCoresMap.forEach(v => coreCnt += v);
+
+    let uSkillCnt = 0, uHeroCnt = 0;
+    if (typeof unionUserSpecs !== 'undefined') {
+      Object.values(unionUserSpecs.skill || {}).forEach(s => { if (s && s.owned) uSkillCnt++; });
+      Object.values(unionUserSpecs.hero || {}).forEach(s => { if (s && s.owned) uHeroCnt++; });
+    }
+
+    const cardsBox = document.getElementById('minv_collection_summary_cards');
+    if (cardsBox) {
+      cardsBox.innerHTML = `
+        <div onclick="closeMasterInventoryModal(); switchMainMode('helpers'); openDeepCalculator('tab-union');"
+             style="background:#131d33; border:1.5px solid #c084fc; border-radius:10px; padding:10px 12px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:13px; font-weight:900; color:#f3e8ff;">🏛️ 유니온 스킬·영웅 도감</div>
+            <div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">보유 스킬 <strong style="color:#38bdf8;">${uSkillCnt}종</strong> · 영웅 <strong style="color:#fda4af;">${uHeroCnt}종</strong> 등록됨</div>
+          </div>
+          <span style="color:#c084fc; font-weight:900; font-size:12px;">편집 ➔</span>
+        </div>
+
+        <div onclick="closeMasterInventoryModal(); switchMainMode('helpers'); openRuneHelperView();"
+             style="background:#131d33; border:1.5px solid #f43f5e; border-radius:10px; padding:10px 12px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:13px; font-weight:900; color:#ffe4e6;">🛡️ 보유 룬(고대·영원·불멸) 도감</div>
+            <div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">총 <strong style="color:#fde047;">${runeCnt}개</strong> 룬 보유 체크됨</div>
+          </div>
+          <span style="color:#fb7185; font-weight:900; font-size:12px;">편집 ➔</span>
+        </div>
+
+        <div onclick="closeMasterInventoryModal(); switchMainMode('helpers'); openDeepCalculator('tab-connect');"
+             style="background:#131d33; border:1.5px solid #38bdf8; border-radius:10px; padding:10px 12px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:13px; font-weight:900; color:#e0f2fe;">🪐 소울커넥트 보유 코어 도감</div>
+            <div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">총 <strong style="color:#34d399;">${coreCnt}개</strong> 코어 보유 체크됨</div>
+          </div>
+          <span style="color:#38bdf8; font-weight:900; font-size:12px;">편집 ➔</span>
+        </div>
+
+        <div onclick="closeMasterInventoryModal(); openGrowthResourceCalculator('job1');"
+             style="background:#131d33; border:1.5px solid #10b981; border-radius:10px; padding:10px 12px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:13px; font-weight:900; color:#d1fae5;">⚔️ 전직 · 드래곤 · 수호신 계산기</div>
+            <div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">1차 Lv.${j1||1} · 2차 Lv.${j2||1} · 3차 Lv.${j3||1} · 용 Lv.${dr||1}</div>
+          </div>
+          <span style="color:#34d399; font-weight:900; font-size:12px;">이동 ➔</span>
+        </div>
+      `;
+    }
+
+    // 현재 스펙 기준 가독성 코드 자동 생성해 텍스트박스에 표시
+    const codeArea = document.getElementById('master_spec_code_textarea');
+    if (codeArea) {
+      codeArea.value = generateReadableMasterSpecCode();
+    }
+  }
+
+  function openMasterInventoryModal() {
+    injectMasterInventorySystem();
+    refreshMasterInventoryModalUI();
+    const msgEl = document.getElementById('master_code_status_msg');
+    if (msgEl) msgEl.innerText = '';
+    const overlay = document.getElementById('master_inv_modal_overlay');
+    if (overlay) overlay.style.display = 'flex';
+  }
+
+  function closeMasterInventoryModal() {
+    const overlay = document.getElementById('master_inv_modal_overlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+
+  // ==================== 🔑 가독성 블록형 스펙 코드(SHK-V1-...) 인코더 & 디코더 ====================
+  function generateReadableMasterSpecCode() {
+    try {
+      // localStorage의 핵심 스펙 키들을 초경량 배열/객체로 압축 패키징
+      const runeIndices = [];
+      if (typeof RUNE_DB !== 'undefined' && typeof ownedRunes !== 'undefined') {
+        RUNE_DB.forEach((r, idx) => { if (ownedRunes.has(r.id)) runeIndices.push(idx); });
+      }
+
+      const coreList = [];
+      if (typeof ownedCoresMap !== 'undefined') {
+        ownedCoresMap.forEach((cnt, k) => coreList.push([k, cnt]));
+      }
+
+      // 유니온은 owned: true 인 항목만 [uid, lv, brk, awk] 형태로 압축
+      const compactUnion = { s: [], h: [] };
+      if (typeof unionUserSpecs !== 'undefined') {
+        Object.entries(unionUserSpecs.skill || {}).forEach(([uid, sp]) => {
+          if (sp && sp.owned) compactUnion.s.push([uid.replace('skill_', ''), sp.lv, sp.brk, sp.awk]);
+        });
+        Object.entries(unionUserSpecs.hero || {}).forEach(([uid, sp]) => {
+          if (sp && sp.owned) compactUnion.h.push([uid.replace('hero_', ''), sp.lv, sp.brk, sp.awk]);
+        });
+      }
+
+      const payload = {
+        v: 1,
+        j: typeof currentRuneJob !== 'undefined' ? currentRuneJob : 'reaper',
+        e: typeof currentRuneElem !== 'undefined' ? currentRuneElem : 'fire',
+        us: typeof currentUnionStageIdx !== 'undefined' ? currentUnionStageIdx : 9,
+        cs: typeof currentConnectStageSlots !== 'undefined' ? currentConnectStageSlots : 6,
+        rf: [masterEquipRefine.scythe, masterEquipRefine.orb, masterEquipRefine.accessory],
+        r: runeIndices,
+        c: coreList,
+        u: compactUnion,
+        eq: typeof equipInventories !== 'undefined' ? equipInventories : {},
+        inp: JSON.parse(localStorage.getItem(ALL_CALC_INPUTS_STORAGE_KEY) || '{}')
+      };
+
+      const jsonStr = JSON.stringify(payload);
+      const b64 = btoa(unescape(encodeURIComponent(jsonStr)))
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '');
+
+      // 6글자 단위 하이픈(-) 블록으로 가독성 향상
+      const blocks = b64.match(/.{1,6}/g)?.join('-') || b64;
+
+      const jobKr = payload.j === 'reaper' ? '사신' : (payload.j === 'mage' ? '아크메이지' : '팬텀');
+      const elemKr = payload.e === 'fire' ? '화염' : (payload.e === 'light' ? '번개' : '어둠');
+      const headerSummary = `[소헌키스펙:${jobKr}/${elemKr}/룬${runeIndices.length}/소울${coreList.length}/유니온${compactUnion.s.length + compactUnion.h.length}]`;
+
+      return `${headerSummary}\nSHK-V1-${blocks}`;
+    } catch (e) {
+      return '코드 생성 중 오류가 발생했습니다.';
+    }
+  }
+
+  function copyMasterSpecCode() {
+    const area = document.getElementById('master_spec_code_textarea');
+    const msgEl = document.getElementById('master_code_status_msg');
+    if (!area) return;
+    area.value = generateReadableMasterSpecCode();
+    area.select();
+    navigator.clipboard.writeText(area.value).then(() => {
+      if (msgEl) {
+        msgEl.style.color = '#34d399';
+        msgEl.innerText = '✅ 스펙 코드가 클립보드에 복사되었습니다! 카카오톡 등에 붙여넣어 보관·공유하세요.';
+      }
+    }).catch(() => {
+      document.execCommand('copy');
+      if (msgEl) msgEl.innerText = '✅ 스펙 코드가 복사되었습니다!';
+    });
+  }
+
+  function applyMasterSpecCodeFromInput() {
+    const area = document.getElementById('master_spec_code_textarea');
+    const msgEl = document.getElementById('master_code_status_msg');
+    if (!area || !area.value.trim()) {
+      if (msgEl) { msgEl.style.color = '#f87171'; msgEl.innerText = '⚠️ 불러올 스펙 코드를 입력창에 붙여넣어 주세요.'; }
+      return;
+    }
+
+    try {
+      const rawText = area.value.trim();
+      const match = rawText.match(/SHK-V1-([A-Za-z0-9\-_]+)/);
+      const cleanB64Url = (match ? match[1] : rawText).replace(/[^A-Za-z0-9\-_]/g, '').replace(/-/g, '');
+      // 하이픈 블록 구분자를 제거할 때 원래 Base64Url의 '-'까지 지워지지 않도록 블록 단위 복원
+      const rawAfterPrefix = rawText.includes('SHK-V1-') ? rawText.split('SHK-V1-')[1].trim() : rawText;
+      const b64UrlRestored = rawAfterPrefix.split('-').map(seg => seg.trim()).join('');
+
+      let b64 = b64UrlRestored.replace(/_/g, '/');
+      while (b64.length % 4 !== 0) b64 += '=';
+
+      const jsonStr = decodeURIComponent(escape(atob(b64)));
+      const payload = JSON.parse(jsonStr);
+      if (!payload || payload.v !== 1) throw new Error('Invalid code');
+
+      // 1) 직업 / 속성 / 스테이지 복원
+      if (payload.j) {
+        if (typeof selectRuneJob === 'function') selectRuneJob(payload.j);
+        if (typeof selectConnectJob === 'function') selectConnectJob(payload.j);
+        if (typeof selectGuideJob === 'function') selectGuideJob(payload.j);
+      }
+      if (payload.e) {
+        if (typeof selectRuneElem === 'function') selectRuneElem(payload.e);
+        if (typeof selectConnectElem === 'function') selectConnectElem(payload.e);
+        if (typeof selectGuideElem === 'function') selectGuideElem(payload.e);
+      }
+      if (payload.cs !== undefined && typeof selectConnectStage === 'function') {
+        selectConnectStage(payload.cs);
+      }
+      if (Array.isArray(payload.rf)) {
+        masterEquipRefine = { scythe: payload.rf[0] ?? 15, orb: payload.rf[1] ?? 15, accessory: payload.rf[2] ?? 15 };
+        saveMasterInvExtraState();
+      }
+
+      // 2) 보유 룬 복원
+      if (Array.isArray(payload.r) && typeof ownedRunes !== 'undefined' && typeof RUNE_DB !== 'undefined') {
+        ownedRunes.clear();
+        payload.r.forEach(idx => { if (RUNE_DB[idx]) ownedRunes.add(RUNE_DB[idx].id); });
+      }
+
+      // 3) 소울커넥트 코어 복원
+      if (Array.isArray(payload.c) && typeof ownedCoresMap !== 'undefined') {
+        ownedCoresMap.clear();
+        payload.c.forEach(([k, cnt]) => ownedCoresMap.set(k, cnt));
+      }
+
+      // 4) 유니온 스킬·영웅 스펙 복원
+      if (payload.u && typeof unionUserSpecs !== 'undefined') {
+        unionUserSpecs.skill = {};
+        unionUserSpecs.hero = {};
+        (payload.u.s || []).forEach(([shortUid, lv, brk, awk]) => {
+          unionUserSpecs.skill[`skill_${shortUid}`] = { owned: true, lv, brk, awk };
+        });
+        (payload.u.h || []).forEach(([shortUid, lv, brk, awk]) => {
+          unionUserSpecs.hero[`hero_${shortUid}`] = { owned: true, lv, brk, awk };
+        });
+        if (payload.us !== undefined) currentUnionStageIdx = payload.us;
+        if (typeof saveUnionStateToStorage === 'function') saveUnionStateToStorage();
+      }
+
+      // 5) 장비 인벤토리 및 재화 계산기 입력값 복원
+      if (payload.eq && typeof equipInventories !== 'undefined') {
+        equipInventories = payload.eq;
+      }
+      if (payload.inp && payload.inp.fields) {
+        localStorage.setItem(ALL_CALC_INPUTS_STORAGE_KEY, JSON.stringify(payload.inp));
+        loadAllResourceCalcInputs();
+      }
+
+      // 전체 UI 및 로컬 저장소 일괄 갱신
+      onMasterInvRefineChange();
+      if (typeof renderRuneHelperAccordions === 'function') renderRuneHelperAccordions();
+      if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+      if (typeof renderConnectAccordions === 'function') renderConnectAccordions();
+      if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
+      if (typeof saveUserSettings === 'function') saveUserSettings(false);
+      refreshMasterInventoryModalUI();
+
+      if (msgEl) {
+        msgEl.style.color = '#34d399';
+        msgEl.innerText = '🎉 스펙 코드 불러오기 완료! 모든 도우미(유니온·룬·소울·연마·전직)에 즉시 반영되었습니다!';
+      }
+    } catch (err) {
+      if (msgEl) {
+        msgEl.style.color = '#f87171';
+        msgEl.innerText = '❌ 올바르지 않거나 손상된 스펙 코드입니다. 전체 코드를 정확히 복사했는지 확인해주세요.';
+      }
+    }
+  }
+
+  // Base64에서 '+' 대신 '.'을 사용하여 하이픈('-') 블록 분리 시 절대 충돌하지 않도록 보정
+  const _origGenCode = generateReadableMasterSpecCode;
+  generateReadableMasterSpecCode = function() {
+    try {
+      const runeIndices = [];
+      if (typeof RUNE_DB !== 'undefined' && typeof ownedRunes !== 'undefined') {
+        RUNE_DB.forEach((r, idx) => { if (ownedRunes.has(r.id)) runeIndices.push(idx); });
+      }
+      const coreList = [];
+      if (typeof ownedCoresMap !== 'undefined') {
+        ownedCoresMap.forEach((cnt, k) => coreList.push([k, cnt]));
+      }
+      const compactUnion = { s: [], h: [] };
+      if (typeof unionUserSpecs !== 'undefined') {
+        Object.entries(unionUserSpecs.skill || {}).forEach(([uid, sp]) => {
+          if (sp && sp.owned) compactUnion.s.push([uid.replace('skill_', ''), sp.lv, sp.brk, sp.awk]);
+        });
+        Object.entries(unionUserSpecs.hero || {}).forEach(([uid, sp]) => {
+          if (sp && sp.owned) compactUnion.h.push([uid.replace('hero_', ''), sp.lv, sp.brk, sp.awk]);
+        });
+      }
+      const payload = {
+        v: 1,
+        j: typeof currentRuneJob !== 'undefined' ? currentRuneJob : 'reaper',
+        e: typeof currentRuneElem !== 'undefined' ? currentRuneElem : 'fire',
+        us: typeof currentUnionStageIdx !== 'undefined' ? currentUnionStageIdx : 9,
+        cs: typeof currentConnectStageSlots !== 'undefined' ? currentConnectStageSlots : 6,
+        rf: [masterEquipRefine.scythe, masterEquipRefine.orb, masterEquipRefine.accessory],
+        r: runeIndices,
+        c: coreList,
+        u: compactUnion,
+        eq: typeof equipInventories !== 'undefined' ? equipInventories : {},
+        inp: JSON.parse(localStorage.getItem(ALL_CALC_INPUTS_STORAGE_KEY) || '{}')
+      };
+      const jsonStr = JSON.stringify(payload);
+      const b64Safe = btoa(unescape(encodeURIComponent(jsonStr)))
+        .replace(/\+/g, '.')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '');
+      const blocks = b64Safe.match(/.{1,6}/g)?.join('-') || b64Safe;
+      const jobKr = payload.j === 'reaper' ? '사신' : (payload.j === 'mage' ? '아크메이지' : '팬텀');
+      const elemKr = payload.e === 'fire' ? '화염' : (payload.e === 'light' ? '번개' : '어둠');
+      return `[소헌키스펙:${jobKr}/${elemKr}/룬${runeIndices.length}/소울${coreList.length}/유니온${compactUnion.s.length + compactUnion.h.length}]\nSHK-V1-${blocks}`;
+    } catch (e) { return ''; }
+  };
+
+  const _origApplyCode = applyMasterSpecCodeFromInput;
+  applyMasterSpecCodeFromInput = function() {
+    const area = document.getElementById('master_spec_code_textarea');
+    if (!area || !area.value.trim()) {
+      _origApplyCode();
+      return;
+    }
+    if (!confirm('⚠️ 스펙 코드를 불러오면 현재 기기에 저장된 기존 기록(유니온·룬·소울·연마·재화 입력값)이 모두 사라지고 새 코드의 데이터로 덮어씌워진 뒤 자동 저장됩니다.\n\n계속 진행하시겠습니까?')) {
+      return;
+    }
+    if (area.value.includes('SHK-V1-')) {
+      const parts = area.value.split('SHK-V1-');
+      const bodyClean = parts[1].replace(/[\s\-]/g, '').replace(/\./g, '-');
+      area.value = `SHK-V1-${bodyClean}`;
+    }
+    _origApplyCode();
+  };
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', injectMasterInventorySystem);
+  } else {
+    injectMasterInventorySystem();
+  }
 </script>
 </body>
 </html>
+
+ 
