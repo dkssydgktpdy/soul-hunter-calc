@@ -515,9 +515,10 @@
         <span id="season_end_status_badge" style="padding:5px 11px; border-radius:8px; font-weight:900; background:#0f172a; border:1px solid #475569; color:#cbd5e1;">
           ⏳ 시즌 상태 확인 중...
         </span>
-        <div style="background:#0b1120; padding:6px 12px; border-radius:8px; border:1px solid #334155; color:#cbd5e1;">
-          🤖 <strong>AI 자동 스펙업 예측:</strong> <span style="color:#fde047; font-weight:800;">총점 600만↑ 초고점 길드 보수적(+8%)</span> · 일반 성장 길드 체급별(+15%~+35%) 자동 적용
-        </div>
+        <button type="button" id="btn_major_update_boost" onclick="toggleMajorUpdateBoost()" style="background:#1e293b; border:1.5px solid #64748b; color:#cbd5e1; padding:6px 12px; border-radius:9px; font-size:12px; font-weight:900; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
+          <span>🔥</span>
+          <span id="major_update_btn_text">이번 주 대형 업데이트(스펙업) 상향: OFF (평시 기준)</span>
+        </button>
       </div>
     </div>
 
@@ -1404,16 +1405,54 @@
     renderCurrentView();
   }
 
-  // ★ [보수적 자동 판별] 1주차 50위권 미수집 왜곡 방지 & 과투자 방지를 위해 예측 배율을 현실적으로 대폭 낮춤!
-  function getGuildSpecUpMultiplier(guildPrevTotal, isSeasonDone = false) {
-    // 이미 종료된 주차(예: 11월 2주차 마감 완료)를 볼 때는 추가 상승이 없으므로 1.00 고정
-    if (isSeasonDone) return 1.0;
+  // 🔥 대형 업데이트 주간 스펙업 상향 토글 상태 (로컬 저장 지원)
+  let isMajorUpdateWeek = localStorage.getItem('shk_guild_major_update_boost') === 'true';
 
+  function updateMajorBoostBtnUI() {
+    const btn = document.getElementById('btn_major_update_boost');
+    const txt = document.getElementById('major_update_btn_text');
+    if (!btn || !txt) return;
+    if (isMajorUpdateWeek) {
+      btn.style.background = 'linear-gradient(135deg, #dc2626 0%, #991b1b 100%)';
+      btn.style.borderColor = '#fde047';
+      btn.style.color = '#ffffff';
+      btn.style.boxShadow = '0 0 14px rgba(239, 68, 68, 0.55)';
+      txt.innerHTML = '이번 주 대형 업데이트(v26.0) 스펙업 상향: <strong style="color:#fde047;">ON (+12%~+25% 상향됨)</strong>';
+    } else {
+      btn.style.background = '#1e293b';
+      btn.style.borderColor = '#64748b';
+      btn.style.color = '#cbd5e1';
+      btn.style.boxShadow = 'none';
+      txt.innerHTML = '이번 주 대형 업데이트(스펙업) 상향: <strong>OFF (평시 보수적 +3%~+15%)</strong>';
+    }
+  }
+
+  function toggleMajorUpdateBoost() {
+    isMajorUpdateWeek = !isMajorUpdateWeek;
+    localStorage.setItem('shk_guild_major_update_boost', String(isMajorUpdateWeek));
+    updateMajorBoostBtnUI();
+    renderGuildStrategyAdvisor();
+    renderCurrentView();
+  }
+
+  // ★ 평시(보수적: +3%~+15%) vs 대형 업데이트 주간(인챈트·사혼·4차링크·신규신화 반영: +12%~+25%) 자동 전환!
+  function getGuildSpecUpMultiplier(guildPrevTotal, isSeasonDone = false) {
+    if (isSeasonDone) return 1.0;
     const total = guildPrevTotal || 0;
-    if (total >= 6000000) return 1.03; // 총점 600만↑ 초고점 길드: 매우 보수적 (+3%)
-    if (total >= 3000000) return 1.06; // 총점 300만~600만 상위 길드: (+6%)
-    if (total >= 1000000) return 1.10; // 총점 100만~300만 중상위 길드: (+10%)
-    return 1.15;                       // 그 외 성장 길드: (+15%)
+
+    if (isMajorUpdateWeek) {
+      // 🔥 대형 업데이트 주간 ON: 810~900스테이지 이상 고투력 길드들도 인챈트/타나토스/4차링크로 대폭 상승!
+      if (total >= 6000000) return 1.12; // 초고점 길드: 기존 +3% -> +12%로 대폭 상향
+      if (total >= 3000000) return 1.16; // 상위 길드: 기존 +6% -> +16%로 상향
+      if (total >= 1000000) return 1.20; // 중상위 길드: 기존 +10% -> +20%로 상향
+      return 1.25;                       // 성장 길드: 기존 +15% -> +25%로 상향
+    }
+
+    // 평시 OFF: 기존 보수적 기준 유지
+    if (total >= 6000000) return 1.03;
+    if (total >= 3000000) return 1.06;
+    if (total >= 1000000) return 1.10;
+    return 1.15;
   }
 
   /**

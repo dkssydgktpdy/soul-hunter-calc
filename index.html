@@ -18367,8 +18367,9 @@
       widget.appendChild(edgeTab);
 
       // 4) 저장된 위치(side: 'left'|'right', top, folded) 불러오기
-      const PREF_KEY = 'shk_drawer_widget_pref_v2';
-      let pref = { side: 'right', top: 18, folded: false };
+      // 18370~18371번째 줄을 아래처럼 folded: true 로 변경하세요! (키 이름도 v3로 올려서 모든 유저가 즉시 접힌 상태로 시작하게 만듭니다)
+      const PREF_KEY = 'shk_drawer_widget_pref_v3';
+      let pref = { side: 'right', top: 18, folded: true };
       try {
         const raw = localStorage.getItem(PREF_KEY);
         if (raw) pref = { ...pref, ...JSON.parse(raw) };
