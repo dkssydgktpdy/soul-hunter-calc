@@ -5032,28 +5032,45 @@
               <div style="font-size:12.5px; font-weight:800; color:#34d399; margin-bottom:8px;">🗡️ 3. 영원 장비 연마 · 던전/명계 · 모험모드(모험가) 조건</div>
               <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap:10px; margin-bottom:10px;">
                 <div>
-                  <label style="font-size:11.5px;">🔨 영원 대낫/오브/장식 <small style="color:#fde047;">(삼신기)</small></label>
-                  <select id="rc_eternal_weap_cnt" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;">
-                    <option value="3" selected>3종 모두 보유 (삼신기 풀)</option>
-                    <option value="2">2종 보유 (삼신기 2/3)</option>
-                    <option value="1">1종 보유 (삼신기 1/3)</option>
-                    <option value="0">미보유 (삼신기 X)</option>
+                  <label style="font-size:11.5px;">🗡️ 영원 대낫 연마 <small style="color:#fde047;">(극련:대낫/삼신기)</small></label>
+                  <select id="rc_ref_scythe_lv" onchange="onRuneWeapRefineSelectChange()" style="padding:7px 8px; font-size:12.5px;">
+                    <option value="15" selected>15연마 이상 (극련 풀배율 2,750만%)</option>
+                    <option value="10">10~14연마 (극련 기본치 550만%)</option>
+                    <option value="0">0~9연마 (삼신기만 적용 / 극련 X)</option>
+                    <option value="-1">미보유 (영원 대낫 제작 전)</option>
                   </select>
                 </div>
                 <div>
-                  <label style="font-size:11.5px;">🔥 15연마 & 연마합 35 <small style="color:#fde047;">(극련/완벽)</small></label>
+                  <label style="font-size:11.5px;">🔮 영원 오브 연마 <small style="color:#fde047;">(극련:오브/삼신기)</small></label>
+                  <select id="rc_ref_orb_lv" onchange="onRuneWeapRefineSelectChange()" style="padding:7px 8px; font-size:12.5px;">
+                    <option value="15" selected>15연마 이상 (극련 풀배율 2,750만%)</option>
+                    <option value="10">10~14연마 (극련 기본치 550만%)</option>
+                    <option value="0">0~9연마 (삼신기만 적용 / 극련 X)</option>
+                    <option value="-1">미보유 (영원 오브 제작 전)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:11.5px;">💍 영원 장식 연마 <small style="color:#fde047;">(극련:장식/삼신기)</small></label>
+                  <select id="rc_ref_acc_lv" onchange="onRuneWeapRefineSelectChange()" style="padding:7px 8px; font-size:12.5px;">
+                    <option value="15" selected>15연마 이상 (극련 풀배율 2,750만%)</option>
+                    <option value="10">10~14연마 (극련 기본치 550만%)</option>
+                    <option value="0">0~9연마 (삼신기만 적용 / 극련 X)</option>
+                    <option value="-1">미보유 (영원 장식 제작 전)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:11.5px;">🔥 3종 연마 합 35+ <small style="color:#fde047;">(완벽 추구)</small></label>
                   <select id="rc_refine_state" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;">
-                    <option value="all" selected>3종 15연마+ & 합 35+ (극련/완벽 O)</option>
-                    <option value="15only">15연마 무기 있음 / 합 35 미만</option>
-                    <option value="none">15연마 미만 (극련/완벽 미발동)</option>
+                    <option value="all" selected>연마 합 35 이상 (완벽 추구 풀발동)</option>
+                    <option value="15only">연마 합 35 미만 (완벽 추구 기본치만)</option>
                   </select>
                 </div>
                 <div>
-                  <label style="font-size:11.5px;">🏰 룬던전 & 명계 정찰 <small style="color:#fde047;">(명황/일기당천)</small></label>
+                  <label style="font-size:11.5px;">🏰 룬던전(솔로) & 명계 <small style="color:#fde047;">(명황/일기당천)</small></label>
                   <select id="rc_dungeon_hell" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;">
-                    <option value="all" selected>명계 올정찰 & 룬던전 150단계+ (모두 O)</option>
-                    <option value="hell_only">명계 정찰 완료 / 룬던전 100~149단계</option>
-                    <option value="low">명계 미완료 & 룬던전 100 미만 (뉴비)</option>
+                    <option value="all" selected>명계 올정찰 & 룬던전 150단계+ 솔로 클리어</option>
+                    <option value="hell_only">명계 정찰 완료 / 룬던전 100~149단계 솔로 클리어</option>
+                    <option value="low">명계 미완료 & 룬던전 100 미만 솔로 클리어</option>
                   </select>
                 </div>
                 <div>
@@ -7465,8 +7482,7 @@
     { id: "imm_em_jeongryeong", tier: "immortal", part: "emblem", name: "정령의힘", mult: 300001, desc: "모든 정령 돌파 30 이상 시 불멸룬 공증 +30,000,000% (30만 배)", cond: "장착 정령 전원 30돌파" },
     { id: "imm_em_jeoljeong", tier: "immortal", part: "emblem", name: "절정", mult: 450001, desc: "레벨 25,000 달성 시 불멸룬 공증 총 +45,000,000% (45만 배)", cond: "레벨 25,000 달성" },
     { id: "imm_em_golem", tier: "immortal", part: "emblem", name: "골렘화", mult: 450001, desc: "룬골렘 변신, 불멸룬 공증 +45,000,000% (45만 배)", cond: "룬던전 결계석 체력 1 고정" },
-    { id: "imm_em_day", tier: "immortal", part: "emblem", name: "영원의 순환:낮", mult: 2500001, pairWithAbyss: "imm_ab_night", pairMult: 37500001, desc: "'영원의 순환:밤' 장착 시 영구 지속 모든 피해량 총 +3,750,000,000% (3,750만 배, 세트 140조 배!)", cond: "심연장식 '영원의 순환:밤'과 세트 시 영구 지속" },
-    { id: "imm_em_boseok", tier: "immortal", part: "emblem", name: "보석학", mult: 22500001, desc: "고대 보석 15개 장착 시 불멸 룬 공격력 증폭 총 +2,250,000,000% (2,250만 배!)", cond: "소울커넥트 고대 보석 15개 장착 (단독 1티어)" },
+   { id: "imm_em_day", tier: "immortal", part: "emblem", name: "영원의 순환:낮", mult: 1, soloMult: 2500001, pairWithAbyss: "imm_ab_night", pairMult: 37500001, desc: "'영원의 순환:밤' 장착 시 영구 지속 모든 피해량 총 +3,750,000,000% (단독 사용 시 5초만 지속되어 토테미즘 미발동 주의!)", cond: "심연장식 '영원의 순환:밤'과 세트 필수 (단독 5초 제한)" },    { id: "imm_em_boseok", tier: "immortal", part: "emblem", name: "보석학", mult: 22500001, desc: "고대 보석 15개 장착 시 불멸 룬 공격력 증폭 총 +2,250,000,000% (2,250만 배!)", cond: "소울커넥트 고대 보석 15개 장착 (단독 1티어)" },
     { id: "imm_em_samsingi", tier: "immortal", part: "emblem", name: "삼신기", mult: 1500001, desc: "영원 대낫/오브/장식 보유 1개당 불멸룬 공증 5천만% (3개 시 150만 배)", cond: "영원 무기 3종 보유" },
     { id: "imm_em_wonron", tier: "immortal", part: "emblem", name: "원론", mult: 1200001, desc: "장착 고대 패시브 돌파 40 이상 시 불멸룬 공증 총 +120,000,000% (120만 배)", cond: "고대 패시브 돌파 합 40 이상" },
     { id: "imm_em_myeongseong", tier: "immortal", part: "emblem", name: "명성", mult: 750001, desc: "불멸 등급 이상 칭호 장착 시 불멸룬 공증 +75,000,000% (75만 배)", cond: "불멸 칭호 장착" },
@@ -7907,11 +7923,20 @@
       const stacks = Math.min(8, Math.floor(Math.max(0, ctx.immCollect) / 10));
       return Math.max(11000000, stacks * 11000000);
     }
-    if (['imm_wp_geuk_scythe', 'imm_wp_geuk_orb', 'imm_wp_geuk_acc'].includes(r.id)) {
-      if (ctx.refineState === 'none') return 5500000; // 15연마 미달 시 10연마 기본치 적용
+    if (r.id === 'imm_wp_geuk_scythe') {
+      const lv = parseInt(document.getElementById('rc_ref_scythe_lv')?.value ?? (masterEquipRefine?.scythe ?? 15), 10);
+      return lv >= 15 ? 27500000 : (lv >= 10 ? 5500000 : 0);
+    }
+    if (r.id === 'imm_wp_geuk_orb') {
+      const lv = parseInt(document.getElementById('rc_ref_orb_lv')?.value ?? (masterEquipRefine?.orb ?? 15), 10);
+      return lv >= 15 ? 27500000 : (lv >= 10 ? 5500000 : 0);
+    }
+    if (r.id === 'imm_wp_geuk_acc') {
+      const lv = parseInt(document.getElementById('rc_ref_acc_lv')?.value ?? (masterEquipRefine?.accessory ?? 15), 10);
+      return lv >= 15 ? 27500000 : (lv >= 10 ? 5500000 : 0);
     }
     if (r.id === 'imm_wp_wanbyeok') {
-      if (ctx.refineState !== 'all') return 16000000; // 합 35 미달 시 기본치 적용
+      if (ctx.refineState !== 'all') return 16000000;
     }
 
     let rawVal = r.val || r.mult || 0;
@@ -8214,10 +8239,13 @@
     return { ring: bestRing, neck: bestNeck, mult: Math.max(1, Math.round(bestScore)) };
   }
 
-  function findBestEmblemAndAbyss(ownedEmblems, ownedAbyss) {
+  function findBestEmblemAndAbyss(ownedEmblems, ownedAbyss, activeWeaponSlots = [], activeRing = null) {
     const bleedEl = document.getElementById('rune_cond_bleed');
     const hasBleed = bleedEl ? (bleedEl.value === '1' || bleedEl.checked === true) : false;
     const ancientAbyssCnt = parseInt(document.getElementById('rune_ancient_abyss_cnt')?.value ?? '0');
+
+    // ★ 현재 장착될 무기 3칸에 '토테미즘(5초 후 발동)'이 있는지 확인!
+    const isUsingTotem = Array.isArray(activeWeaponSlots) && activeWeaponSlots.some(w => w && w.id === 'imm_wp_totem');
 
     let bestScore = -1;
     let bestEmblem = null;
@@ -8230,21 +8258,19 @@
       for (let a of aList) {
         let eMult = 1;
         if (e) {
-          if (e.jobType && e.jobType !== currentRuneJob) eMult = 1;
-          else if (e.pairWithAbyss && a && a.id === e.pairWithAbyss) eMult = e.pairMult;
-          else eMult = Math.max(1, getEffectiveRuneValue(e, new Set()));
-        }
-
-        let aMult = 1;
-        if (a) {
-          if (a.pairWithEmblem && e && e.id === a.pairWithEmblem) {
-            aMult = a.pairMult;
-          } else if (a.id === 'imm_ab_jeoju2') {
-            aMult = hasBleed ? a.mult : a.noBleedMult;
-          } else if (a.id === 'imm_ab_simyeondolpa') {
-            aMult = ancientAbyssCnt > 0 ? (1 + ancientAbyssCnt * 300000) : 1;
+          if (e.jobType && e.jobType !== currentRuneJob) {
+            eMult = 1;
+          } else if (e.pairWithAbyss && a && a.id === e.pairWithAbyss) {
+            // 1) 낮 + 밤 세트 장착 시: 영구 지속 37.5억%(37,500,001배) 정상 발동!
+            eMult = e.pairMult;
+          } else if (e.id === 'imm_em_day') {
+            // 2) '영원의 순환:밤'이 없을 때의 '영원의 순환:낮' 단독 판정:
+            // - 토테미즘(5초 후 발동)을 쓰고 있으면 5초 만에 꺼지는 '낮'과 정면 충돌하므로 비추천(1배 처리 -> 보석학 깡증폭 1.5억% 등이 우선 선택됨!)
+            // - 토테미즘이 없을 때는 5초 딜 페널티가 없으므로 단독 수치(+2.5억% = 2,500,001배) 정상 적용!
+            eMult = isUsingTotem ? 1 : (e.soloMult || 2500001);
           } else {
-            aMult = Math.max(1, getEffectiveRuneValue(a, new Set()));
+            // 3) 보석학(조건 달성 시 22.5억% / 미달성 시에도 기본 깡증폭 1.5억% = 1,500,001배) 및 기타 엠블렘
+            eMult = Math.max(1, getEffectiveRuneValue(e, new Set()));
           }
         }
 
@@ -8402,8 +8428,8 @@
     const ownedWeapons = ownedList.filter(r => r.part === 'weapon');
 
     const bestAccMixed = findBestRingAndNeck(ownedRings, ownedNecks);
-    const bestEmbAbMixed = findBestEmblemAndAbyss(ownedEmblems, ownedAbyss);
     const bestWeapMixed = findBestWeapon3(ownedWeapons);
+    const bestEmbAbMixed = findBestEmblemAndAbyss(ownedEmblems, ownedAbyss, bestWeapMixed.slots, bestAccMixed.ring);
 
     const other7Slots = [
       bestAccMixed.ring, bestAccMixed.neck,
@@ -17750,7 +17776,219 @@
       }
     }
 
-    window.addEventListener('load', () => setTimeout(initHotfixUI, 60));
+    // ==================== 🔥 [v.4.0.1 추가 패치] 양방향 완벽 연동 + 타이핑 입력 전환 + 아코디언 최상단 배치 ====================
+    function applyV401Enhancements() {
+      // 1) [1·2·3차 전직 · 드래곤 · 수호신 재화 계산기] 아코디언을 [영원무기 연마 계산기] 바로 위(맨 첫번째)로 이동!
+      const jobCostAcc = document.getElementById('acc_calc_job_cost');
+      const weaponAcc = document.getElementById('acc_calc_weapon');
+      if (jobCostAcc && weaponAcc) {
+        const jobSec = jobCostAcc.closest('.hub-section');
+        const weapSec = weaponAcc.closest('.hub-section');
+        if (jobSec && weapSec && weapSec.parentNode) {
+          weapSec.parentNode.insertBefore(jobSec, weapSec);
+        }
+      }
+
+      // 2) 재화 계산기 내 전직(1·2·3차) · 드래곤 · 수호신 강화서 레벨 <select>를 직접 타이핑 가능한 <input type="number">로 교체!
+      const convertSelectToNumberInput = (id, minV, maxV, defV, onChangeFn) => {
+        const sel = document.getElementById(id);
+        if (!sel || sel.tagName !== 'SELECT') return;
+        const curVal = sel.value || String(defV);
+        const inp = document.createElement('input');
+        inp.type = 'number';
+        inp.id = id;
+        inp.min = String(minV);
+        inp.max = String(maxV);
+        inp.value = curVal;
+        inp.style.cssText = 'padding:10px 12px; font-weight:800; color:#fde047;';
+        inp.addEventListener('input', () => {
+          if (inp.value === '') return; // 타이핑 중 빈칸일 때 1로 강제 초기화 방지!
+          onChangeFn();
+          // 현재 레벨 타이핑 시 통합 인벤토리 값도 양방향 동기화
+          if (id === 'jc1_cur_lv' && document.getElementById('minv_job1_lv')) document.getElementById('minv_job1_lv').value = inp.value;
+          if (id === 'jc2_cur_lv' && document.getElementById('minv_job2_lv')) document.getElementById('minv_job2_lv').value = inp.value;
+          if (id === 'jc3_cur_lv' && document.getElementById('minv_job3_lv')) document.getElementById('minv_job3_lv').value = inp.value;
+          if (id === 'drg_cur_lv' && document.getElementById('minv_drg_lv'))  document.getElementById('minv_drg_lv').value = inp.value;
+        });
+        inp.addEventListener('blur', () => {
+          let v = parseInt(inp.value, 10);
+          if (isNaN(v)) v = defV;
+          v = Math.max(minV, Math.min(maxV, v));
+          inp.value = String(v);
+          onChangeFn();
+        });
+        sel.parentNode.replaceChild(inp, sel);
+      };
+
+      convertSelectToNumberInput('jc1_cur_lv', 1, 101, 60, calculateAllGrowthCalcs);
+      convertSelectToNumberInput('jc1_tar_lv', 2, 102, 80, calculateAllGrowthCalcs);
+      convertSelectToNumberInput('jc2_cur_lv', 1, 103, 70, calculateAllGrowthCalcs);
+      convertSelectToNumberInput('jc2_tar_lv', 2, 104, 90, calculateAllGrowthCalcs);
+      convertSelectToNumberInput('jc3_cur_lv', 1, 44, 40, calculateAllGrowthCalcs);
+      convertSelectToNumberInput('jc3_tar_lv', 2, 45, 45, calculateAllGrowthCalcs);
+      convertSelectToNumberInput('drg_cur_lv', 1, 64, 40, calculateAllGrowthCalcs);
+      convertSelectToNumberInput('drg_tar_lv', 2, 65, 60, calculateAllGrowthCalcs);
+      convertSelectToNumberInput('grd_scr_cur', 1, 119, 1, calculateGuardianAll);
+      convertSelectToNumberInput('grd_scr_tar', 2, 120, 120, calculateGuardianAll);
+      calculateAllGrowthCalcs();
+
+      // 3) 통합 인벤토리의 유니온 해금 스테이지 셀렉트 옵션 채우기 (UNION_STAGE_MILESTONES 연동)
+      const uStgSel = document.getElementById('minv_union_stage');
+      if (uStgSel && typeof UNION_STAGE_MILESTONES !== 'undefined') {
+        uStgSel.innerHTML = UNION_STAGE_MILESTONES.map(m => `<option value="${m.idx}">${m.label} (${m.sub})</option>`).join('');
+        uStgSel.value = String(currentUnionStageIdx || 0);
+      }
+
+      // 4) 인벤토리 내 숫자 타이핑 시 '1'로 강제 덮어써지던 버그 수정 (activeElement 보호)
+      window.onMasterInvFieldChange = function(fieldType, val) {
+        if (val === '' || val === null || val === undefined) return; // 글자 지우는 중에는 대기!
+        if (fieldType === 'job') {
+          window.syncAllJobs(val);
+        } else if (fieldType === 'elem') {
+          window.syncAllElems(val);
+        } else if (fieldType === 'unionStage') {
+          const idx = parseInt(val, 10);
+          if (!isNaN(idx) && typeof selectUnionStageIdx === 'function') selectUnionStageIdx(idx);
+        } else if (fieldType === 'job1Lv') {
+          const lv = parseInt(val, 10);
+          if (isNaN(lv)) return;
+          const jc1Cur = document.getElementById('jc1_cur_lv');
+          if (jc1Cur) jc1Cur.value = String(Math.min(101, Math.max(1, lv)));
+          const rcJobLv = document.getElementById('rc_job_lv');
+          if (rcJobLv) rcJobLv.value = lv >= 80 ? '80' : (lv >= 60 ? '60' : '0');
+          if (typeof currentTrait1stLv !== 'undefined') currentTrait1stLv = lv;
+        } else if (fieldType === 'job2Lv') {
+          const lv = parseInt(val, 10);
+          if (isNaN(lv)) return;
+          const jc2Cur = document.getElementById('jc2_cur_lv');
+          if (jc2Cur) jc2Cur.value = String(Math.min(103, Math.max(1, lv)));
+        } else if (fieldType === 'job3Lv') {
+          const lv = parseInt(val, 10);
+          if (isNaN(lv)) return;
+          const jc3Cur = document.getElementById('jc3_cur_lv');
+          if (jc3Cur) jc3Cur.value = String(Math.min(44, Math.max(1, lv)));
+          if (typeof currentTrait3rdLv !== 'undefined') currentTrait3rdLv = lv;
+        } else if (fieldType === 'drgLv') {
+          const lv = parseInt(val, 10);
+          if (isNaN(lv)) return;
+          const drgCur = document.getElementById('drg_cur_lv');
+          if (drgCur) drgCur.value = String(Math.min(64, Math.max(1, lv)));
+        } else if (fieldType === 'grdBrk') {
+          const b = parseInt(val, 10) || 0;
+          const gCur = document.getElementById('grd_brk_cur');
+          if (gCur) gCur.value = String(Math.min(9, b));
+        } else if (fieldType === 'grdPot') {
+          const p = parseInt(val, 10) || 0;
+          const pCur = document.getElementById('grd_pot_cur');
+          if (pCur) pCur.value = String(Math.min(95, p));
+        }
+        if (typeof calculateAllGrowthCalcs === 'function') calculateAllGrowthCalcs();
+        if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+        if (typeof triggerAutoSave === 'function') triggerAutoSave();
+      };
+
+      // refreshMasterInventoryModalUI 호출 시 현재 타이핑 중인 input은 덮어쓰지 않도록 보호!
+      const _origRefreshModal = window.refreshMasterInventoryModalUI;
+      window.refreshMasterInventoryModalUI = function() {
+        const activeEl = document.activeElement;
+        const activeVal = activeEl ? activeEl.value : null;
+        if (typeof _origRefreshModal === 'function') _origRefreshModal();
+        const uSel = document.getElementById('minv_union_stage');
+        if (uSel && typeof currentUnionStageIdx !== 'undefined' && activeEl !== uSel) {
+          uSel.value = String(currentUnionStageIdx);
+        }
+        if (activeEl && activeEl.id && activeEl.id.startsWith('minv_') && activeEl.tagName === 'INPUT') {
+          activeEl.value = activeVal;
+        }
+      };
+    }
+
+    // 5) 룬 도우미 <-> 소울커넥트 <-> 세팅 가이드 <-> 통합 인벤토리 [직업 / 속성 / 스테이지 / 무기연마] 100% 양방향 동기화!
+    let _isSyncingProfile = false;
+    window.syncAllJobs = function(job) {
+      if (_isSyncingProfile) return;
+      _isSyncingProfile = true;
+      try {
+        currentRuneJob = currentConnectJob = guideJob = job;
+        ['reaper', 'mage', 'lord'].forEach(j => {
+          document.getElementById('rune_job_' + j)?.classList.toggle('selected', j === job);
+          document.getElementById('sc_job_' + j)?.classList.toggle('selected', j === job);
+          document.getElementById('g_job_' + j)?.classList.toggle('selected', j === job);
+        });
+        const minvJob = document.getElementById('minv_job');
+        if (minvJob) minvJob.value = job;
+        if (typeof updateJobHeaderAndTabs === 'function') updateJobHeaderAndTabs();
+        if (typeof renderBuildGuideContent === 'function' && document.getElementById('guides_detail_view')?.style.display !== 'none') renderBuildGuideContent();
+        if (typeof renderConnectAccordions === 'function' && document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
+        if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
+        if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+        if (typeof triggerAutoSave === 'function') triggerAutoSave();
+      } finally { _isSyncingProfile = false; }
+    };
+
+    window.syncAllElems = function(elem) {
+      if (_isSyncingProfile) return;
+      _isSyncingProfile = true;
+      try {
+        currentRuneElem = currentConnectElem = guideElem = elem;
+        ['fire', 'light', 'dark'].forEach(e => {
+          document.getElementById('rune_elem_' + e)?.classList.toggle('selected', e === elem);
+          document.getElementById('sc_elem_' + e)?.classList.toggle('selected', e === elem);
+          document.getElementById('g_elem_' + e)?.classList.toggle('selected', e === elem);
+        });
+        const minvElem = document.getElementById('minv_elem');
+        if (minvElem) minvElem.value = elem;
+        if (typeof updateJobHeaderAndTabs === 'function') updateJobHeaderAndTabs();
+        if (typeof renderBuildGuideContent === 'function' && document.getElementById('guides_detail_view')?.style.display !== 'none') renderBuildGuideContent();
+        if (typeof renderConnectAccordions === 'function' && document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
+        if (typeof calculateBestConnectLoadout === 'function') calculateBestConnectLoadout();
+        if (typeof calculateBestRuneLoadout === 'function') calculateBestRuneLoadout();
+        if (typeof triggerAutoSave === 'function') triggerAutoSave();
+      } finally { _isSyncingProfile = false; }
+    };
+
+    window.selectRuneJob = window.selectConnectJob = window.selectGuideJob = function(job) { window.syncAllJobs(job); };
+    window.selectRuneElem = window.selectConnectElem = window.selectGuideElem = function(elem) { window.syncAllElems(elem); };
+
+    // 유니온 스테이지 버튼 클릭 시 인벤토리 모달 드롭다운도 즉시 동기화
+    const _origSelectUnionStageIdx = window.selectUnionStageIdx;
+    window.selectUnionStageIdx = function(idx) {
+      if (typeof _origSelectUnionStageIdx === 'function') _origSelectUnionStageIdx(idx);
+      const uSel = document.getElementById('minv_union_stage');
+      if (uSel) uSel.value = String(idx);
+    };
+
+    // 룬 도우미에서 대낫/오브/장식 연마 드롭다운 변경 시 인벤토리 & 삼신기/완벽추구 양방향 연동
+    window.onRuneWeapRefineSelectChange = function() {
+      const s = parseInt(document.getElementById('rc_ref_scythe_lv')?.value ?? '15', 10);
+      const o = parseInt(document.getElementById('rc_ref_orb_lv')?.value ?? '15', 10);
+      const a = parseInt(document.getElementById('rc_ref_acc_lv')?.value ?? '15', 10);
+      masterEquipRefine = { scythe: s, orb: o, accessory: a };
+      saveMasterInvExtraState();
+
+      const sumRef = Math.max(0, s) + Math.max(0, o) + Math.max(0, a);
+      const refStateEl = document.getElementById('rc_refine_state');
+      if (refStateEl) refStateEl.value = sumRef >= 35 ? 'all' : '15only';
+
+      calculateBestRuneLoadout();
+      triggerAutoSave();
+    };
+
+    // 인벤토리에서 대낫/오브/장식 연마 변경 시 룬 도우미 개별 드롭다운 3종에도 즉시 반영
+    const _origOnMasterRefine = window.onMasterInvRefineChange;
+    window.onMasterInvRefineChange = function() {
+      if (typeof _origOnMasterRefine === 'function') _origOnMasterRefine();
+      const mapToBucket = (lv) => lv < 0 ? '-1' : (lv >= 15 ? '15' : (lv >= 10 ? '10' : '0'));
+      const rS = document.getElementById('rc_ref_scythe_lv');
+      const rO = document.getElementById('rc_ref_orb_lv');
+      const rA = document.getElementById('rc_ref_acc_lv');
+      if (rS) rS.value = mapToBucket(masterEquipRefine.scythe);
+      if (rO) rO.value = mapToBucket(masterEquipRefine.orb);
+      if (rA) rA.value = mapToBucket(masterEquipRefine.accessory);
+      calculateBestRuneLoadout();
+    };
+
+    window.addEventListener('load', () => setTimeout(applyV401Enhancements, 80));
   })();
 </script>
 </body>
