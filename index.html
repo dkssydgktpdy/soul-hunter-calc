@@ -2276,6 +2276,186 @@
       }
     }
 
+    /* ==================== 9.6 영원 장비 연마 전용 UI (대형 장비카드 · 컴팩트 재화 · ON/OFF 토글) ==================== */
+    .refine-equip-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .refine-equip-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #16223b 0%, #0f172a 100%);
+      border: 2px solid #475569;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.18s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .refine-equip-card:hover {
+      transform: translateY(-2px);
+      border-color: #fde047;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45), 0 0 14px rgba(250, 204, 21, 0.3);
+    }
+    .refine-equip-card:active { transform: scale(0.98); }
+    .refine-equip-thumb {
+      width: 46px;
+      height: 46px;
+      border-radius: 11px;
+      background: #0b1120;
+      border: 1.5px solid #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      padding: 3px;
+    }
+    .refine-equip-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .refine-equip-card.selected.job-switch-reaper .refine-equip-thumb { border-color: #fb7185; box-shadow: 0 0 10px rgba(244, 63, 94, 0.45); }
+    .refine-equip-card.selected.job-switch-mage .refine-equip-thumb   { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.45); }
+    .refine-equip-card.selected.job-switch-lord .refine-equip-thumb   { border-color: #c084fc; box-shadow: 0 0 10px rgba(168, 85, 247, 0.45); }
+
+    /* 컴팩트 재화 기준 세그먼트 스위치 */
+    .refine-control-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .refine-res-compact-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #0b1120;
+      border: 1.5px solid #334155;
+      border-radius: 12px;
+      padding: 9px 14px;
+    }
+    .refine-res-seg {
+      display: inline-flex;
+      gap: 6px;
+      background: #070b14;
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+    }
+    .refine-res-seg .radio-pill {
+      flex: initial;
+      min-width: auto;
+      padding: 6px 13px;
+      font-size: 12.5px;
+      border-radius: 8px;
+      gap: 6px;
+    }
+
+    /* 모던 ON/OFF 하락방지 토글 스위치 (체크박스 완벽 연동) */
+    .safe-mode-switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #0b1120;
+      border: 1.5px solid #475569;
+      border-radius: 12px;
+      padding: 11px 15px;
+      margin: 0;
+      cursor: pointer;
+      user-select: none;
+      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+    .safe-mode-switch-row:hover {
+      border-color: #fde047;
+      box-shadow: 0 0 14px rgba(250, 204, 21, 0.2);
+    }
+    .safe-mode-switch-row:has(.neon-toggle-input:checked) {
+      border-color: #10b981;
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.14) 0%, #0b1120 100%);
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.2);
+    }
+    .neon-toggle-input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+    .safe-mode-title { font-size: 14px; font-weight: 800; color: #ffffff; line-height: 1.25; }
+    .safe-mode-sub { font-size: 12px; color: #94a3b8; margin-top: 2px; font-weight: 600; }
+    .neon-toggle-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .neon-toggle-badge-on, .neon-toggle-badge-off {
+      font-size: 11.5px;
+      font-weight: 900;
+      padding: 3px 9px;
+      border-radius: 6px;
+      letter-spacing: 0.2px;
+    }
+    .neon-toggle-badge-on {
+      display: none;
+      background: rgba(16, 185, 129, 0.22);
+      color: #6ee7b7;
+      border: 1px solid #10b981;
+    }
+    .neon-toggle-badge-off {
+      display: inline-block;
+      background: rgba(244, 63, 94, 0.16);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.5);
+    }
+    .neon-toggle-input:checked ~ .neon-toggle-right .neon-toggle-badge-on { display: inline-block; }
+    .neon-toggle-input:checked ~ .neon-toggle-right .neon-toggle-badge-off { display: none; }
+    .neon-toggle-track {
+      width: 50px;
+      height: 26px;
+      border-radius: 26px;
+      background: #1e293b;
+      border: 1.5px solid #64748b;
+      position: relative;
+      display: inline-block;
+      transition: background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+    .neon-toggle-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      position: absolute;
+      top: 1.5px;
+      left: 2px;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), background 0.22s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+    .neon-toggle-input:checked ~ .neon-toggle-right .neon-toggle-track {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border-color: #6ee7b7;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+    }
+    .neon-toggle-input:checked ~ .neon-toggle-right .neon-toggle-thumb {
+      transform: translateX(23px);
+      background: #ffffff;
+    }
+    @media (max-width: 720px) {
+      .refine-equip-grid { grid-template-columns: 1fr; gap: 8px; }
+      .refine-res-compact-row { flex-direction: column; align-items: stretch; }
+      .refine-res-seg { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+    }
+
     /* ==================== 10. 통합 반응형 (태블릿 & 모바일) ==================== */
     @media (max-width: 860px) {
       .union-ingame-body { grid-template-columns: 1fr; }
@@ -2816,7 +2996,7 @@
             <!-- 좌측: 🐣 뉴비 필수 코스 (3개 아이콘 카드) -->
             <div class="guides-split-left">
               <div class="guides-group-label">
-                <span style="color:#fef08a;">🐣 5,000렙 뉴비 필수 코스</span>
+                <span style="color:#fef08a;"> 5,000렙 뉴비 필수 코스</span>
                 <span class="grade-badge" style="font-size:10.5px; background:rgba(250,204,21,0.2); color:#fef08a; border:1px solid #facc15;">필독 입문</span>
               </div>
               <div class="guides-card-grid-3">
@@ -2835,7 +3015,11 @@
                 <!-- 2. 사신 -> 아크메이지 전환 가이드 -->
                 <div class="hub-card" onclick="openSpecialGuideDetail('transition')" style="flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:18px 10px; gap:10px; border:2px solid #22d3ee; background:linear-gradient(160deg, rgba(34,211,238,0.22) 0%, #16223b 100%); box-shadow:0 6px 16px rgba(34,211,238,0.18);">
                   <div class="hub-card-icon" style="width:58px; height:58px; border-radius:14px; border:2px solid #67e8f9; background:radial-gradient(circle, rgba(34,211,238,0.3) 0%, #0f172a 100%); box-shadow:0 0 14px rgba(34,211,238,0.38);">
-                    <span style="font-size:26px;">🔄</span>
+                    <svg width="34" height="34" viewBox="0 0 36 36" fill="none" style="filter:drop-shadow(0 0 6px rgba(34,211,238,0.9));">
+                      <path d="M7 13H26L21.5 8.5" stroke="#67e8f9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M29 23H10L14.5 27.5" stroke="#fef08a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="18" cy="18" r="2.6" fill="#ffffff"/>
+                    </svg>
                   </div>
                   <div>
                     <span class="hub-card-title" style="font-size:14.5px; margin-bottom:4px; color:#cffafe;">사신➔아크메이지<br>전환 공략</span>
@@ -2847,7 +3031,14 @@
                 <!-- 3. 사신 -> 아크메이지 전환 판정기 (v.1.0.0) -->
                 <div class="hub-card" onclick="openTransitionCheckerBeta()" style="flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:18px 10px; gap:10px; border:2px solid #34d399; background:linear-gradient(160deg, rgba(52,211,153,0.22) 0%, #132a2e 100%); box-shadow:0 6px 16px rgba(52,211,153,0.18);">
                   <div class="hub-card-icon" style="width:58px; height:58px; border-radius:14px; border:2px solid #6ee7b7; background:radial-gradient(circle, rgba(16,185,129,0.34) 0%, #0f172a 100%); box-shadow:0 0 14px rgba(52,211,153,0.4);">
-                    <span style="font-size:26px;">⚖️</span>
+                    <svg width="34" height="34" viewBox="0 0 36 36" fill="none" style="filter:drop-shadow(0 0 6px rgba(52,211,153,0.9));">
+                      <line x1="18" y1="6" x2="18" y2="29" stroke="#a7f3d0" stroke-width="2.2" stroke-linecap="round"/>
+                      <line x1="11" y1="29" x2="25" y2="29" stroke="#6ee7b7" stroke-width="2.4" stroke-linecap="round"/>
+                      <line x1="7" y1="11" x2="29" y2="11" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M7 11L4.5 19.5C4.5 21.5 6 22.8 8.2 22.8C10.4 22.8 11.9 21.5 11.9 19.5L9.4 11" stroke="#6ee7b7" stroke-width="1.6" fill="rgba(52,211,153,0.25)"/>
+                      <path d="M29 11L26.5 19.5C26.5 21.5 28 22.8 30.2 22.8C32.4 22.8 33.9 21.5 33.9 19.5L31.4 11" stroke="#fde047" stroke-width="1.6" fill="rgba(250,204,21,0.25)"/>
+                      <circle cx="18" cy="6.5" r="2.2" fill="#fde047"/>
+                    </svg>
                   </div>
                   <div>
                     <span class="hub-card-title" style="font-size:14.5px; margin-bottom:4px; color:#a7f3d0;">아크메이지 전환 판정기</span>
@@ -2864,7 +3055,7 @@
             <!-- 우측: ⚔️ 분야별 핵심 세팅 (2개 아이콘 카드) -->
             <div class="guides-split-right">
               <div class="guides-group-label">
-                <span style="color:#f5d0fe;">⚔️ 분야별 핵심 세팅 가이드</span>
+                <span style="color:#f5d0fe;"> 분야별 핵심 세팅 가이드</span>
                 <span class="grade-badge" style="font-size:10.5px; background:rgba(192,132,252,0.22); color:#f3e8ff; border:1px solid #c084fc;">라디오 통합</span>
               </div>
               <div class="guides-card-grid-2">
@@ -3161,11 +3352,26 @@
         <!-- 0. 전직 · 드래곤 · 수호신 재화 계산기 -->
         <div id="tab-growth-calc" class="tab-content" style="display:none;">
           <div class="growth-sub-tabs">
-            <button type="button" class="growth-sub-tab-btn active-job1" id="gsub_btn_job1" onclick="switchGrowthSubTab('job1')"><span>🌟 1차 전직 재화</span></button>
-            <button type="button" class="growth-sub-tab-btn" id="gsub_btn_job2" onclick="switchGrowthSubTab('job2')"><span>⚡ 2차 전직 재화</span></button>
-            <button type="button" class="growth-sub-tab-btn" id="gsub_btn_job3" onclick="switchGrowthSubTab('job3')"><span>🔥 3차 전직 재화</span></button>
-            <button type="button" class="growth-sub-tab-btn" id="gsub_btn_dragon" onclick="switchGrowthSubTab('dragon')"><span>🐉 드래곤 육성·승급</span></button>
-            <button type="button" class="growth-sub-tab-btn" id="gsub_btn_guardian" onclick="switchGrowthSubTab('guardian')"><span>🛡️ 수호신 재화 (3종)</span></button>
+            <button type="button" class="growth-sub-tab-btn active-job1" id="gsub_btn_job1" onclick="switchGrowthSubTab('job1')">
+              <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><polygon points="14,1.5 26.5,14 14,26.5 1.5,14" fill="rgba(56,189,248,0.28)" stroke="#7dd3fc" stroke-width="1.8"/><text x="14" y="14.5" text-anchor="middle" dominant-baseline="central" fill="#fff" font-family="Georgia, serif" font-size="13" font-weight="900">I</text></svg>
+              <span>1차 전직 재화</span>
+            </button>
+            <button type="button" class="growth-sub-tab-btn" id="gsub_btn_job2" onclick="switchGrowthSubTab('job2')">
+              <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><polygon points="14,1.5 26.5,14 14,26.5 1.5,14" fill="rgba(168,85,247,0.3)" stroke="#d8b4fe" stroke-width="1.8"/><text x="14" y="14.5" text-anchor="middle" dominant-baseline="central" fill="#fff" font-family="Georgia, serif" font-size="12" font-weight="900">II</text></svg>
+              <span>2차 전직 재화</span>
+            </button>
+            <button type="button" class="growth-sub-tab-btn" id="gsub_btn_job3" onclick="switchGrowthSubTab('job3')">
+              <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><polygon points="14,1.5 26.5,14 14,26.5 1.5,14" fill="rgba(244,63,94,0.32)" stroke="#fda4af" stroke-width="1.8"/><text x="14" y="14.5" text-anchor="middle" dominant-baseline="central" fill="#fff" font-family="Georgia, serif" font-size="10.5" font-weight="900">III</text></svg>
+              <span>3차 전직 재화</span>
+            </button>
+            <button type="button" class="growth-sub-tab-btn" id="gsub_btn_dragon" onclick="switchGrowthSubTab('dragon')">
+              <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><path d="M14 3L18 8.5L24 6L21.5 13L25 18L19 19.5L14 25.5L9 19.5L3 18L6.5 13L4 6L10 8.5L14 3Z" fill="rgba(245,158,11,0.32)" stroke="#fde047" stroke-width="1.6" stroke-linejoin="round"/><polygon points="14,9.5 17.5,14.5 14,19.5 10.5,14.5" fill="#fff"/></svg>
+              <span>드래곤 육성·승급</span>
+            </button>
+            <button type="button" class="growth-sub-tab-btn" id="gsub_btn_guardian" onclick="switchGrowthSubTab('guardian')">
+              <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><path d="M5 8.5C9 6.5 11.5 6.8 14 3.5C16.5 6.8 19 6.5 23 8.5C22.5 16.5 19 22 14 25.5C9 22 5.5 16.5 5 8.5Z" fill="rgba(16,185,129,0.32)" stroke="#6ee7b7" stroke-width="1.7" stroke-linejoin="round"/><polygon points="14,8.5 18,14 14,20.5 10,14" fill="#fef08a"/></svg>
+              <span>수호신 재화 (3종)</span>
+            </button>
           </div>
 
           <!-- [패널 1] 1차 전직 재화 -->
@@ -3579,43 +3785,82 @@
         <div id="tab-refine" class="tab-content" style="display:none;">
           <div class="card">
             <div class="card-title">
-              <span>🔨 영원 장비 연마 기댓값 &amp; 재화 시뮬레이터</span>
+              <span>영원 장비 연마 기댓값 &amp; 재화 시뮬레이터</span>
               <span class="grade-badge grade-ancient">Lv.0 ~ Lv.20 마르코프 연쇄 정밀식</span>
             </div>
-            <p class="card-subtitle">인게임 공식 연마 확률과 수집된 부위별 소모량을 바탕으로 목표 단계까지의 평균 시도 횟수 및 예상 재화(영원의 돌 / 블루 다이아)를 계산합니다.</p>
+            <p class="card-subtitle">인게임 공식 연마 확률과 부위별 소모량을 바탕으로 목표 단계까지의 평균 시도 횟수 및 예상 재화(영원의 돌 / 블루 다이아)를 계산합니다.</p>
 
-            <div class="grid-2" style="margin-bottom:14px;">
-              <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
-                <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 연마할 영원 장비 선택</label>
-                <div class="radio-pill-group">
-                  <div class="radio-pill job-pill-btn job-switch-reaper selected" id="ref_eq_scythe" onclick="selectRefineEquip('scythe')" style="padding:7px 8px; font-size:13px;"><span>🗡️ 영원 대낫 <small style="color:#fde047;">(제작 200만💎)</small></span></div>
-                  <div class="radio-pill job-pill-btn job-switch-mage" id="ref_eq_orb" onclick="selectRefineEquip('orb')" style="padding:7px 8px; font-size:13px;"><span>🔮 영원 오브 <small style="color:#fde047;">(제작 200만💎)</small></span></div>
-                  <div class="radio-pill job-pill-btn job-switch-lord" id="ref_eq_accessory" onclick="selectRefineEquip('accessory')" style="padding:7px 8px; font-size:13px;"><span>💍 영원 장식 <small style="color:#fde047;">(제작 300만💎)</small></span></div>
+            <!-- 1. 큼직한 3칸 영원 장비 선택 (대형 썸네일 + 다중 확장자 폴백) -->
+            <label style="color:#7dd3fc; margin-bottom:8px; font-size:13px;">연마할 영원 장비 선택</label>
+            <div class="refine-equip-grid">
+              <div class="refine-equip-card job-switch-reaper selected" id="ref_eq_scythe" onclick="selectRefineEquip('scythe')">
+                <div class="refine-equip-thumb">
+                  <img src="images/scythe.png" alt="영원 대낫" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/scythe.jpg';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/scythe.PNG';}else{this.onerror=null;this.style.display='none';}">
+                </div>
+                <div style="text-align:left; min-width:0;">
+                  <div style="font-size:15px; font-weight:900; color:#ffffff;">영원 대낫</div>
+                  <div style="font-size:11.5px; color:#fde047; font-weight:700; margin-top:2px;">제작 200만 다이아</div>
                 </div>
               </div>
 
-              <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-                  <label style="color:#fbbf24; margin:0;">💎 연마 재화 기준 선택</label>
-                  <span style="font-size:10.5px; color:#fde047; font-weight:800;">👆 눌러서 선택</span>
+              <div class="refine-equip-card job-switch-mage" id="ref_eq_orb" onclick="selectRefineEquip('orb')">
+                <div class="refine-equip-thumb">
+                  <img src="images/orb.png" alt="영원 오브" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/orb.jpg';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/orb.PNG';}else{this.onerror=null;this.style.display='none';}">
                 </div>
-                <div class="radio-pill-group">
-                  <div class="radio-pill job-pill-btn elem-switch-light selected" id="ref_res_stone" onclick="selectRefineResource('stone')" style="padding:8px 10px; font-size:13px;">
-                    <img src="images/eternity_stone.png" alt="영원의 돌" style="width:20px; height:20px; object-fit:contain;" onerror="this.onerror=null; this.src='images/eternity_stone.PNG'; this.onerror=function(){this.style.display='none';};">
-                    <span>영원의 돌로 하기</span>
-                  </div>
-                  <div class="radio-pill job-pill-btn elem-switch-dark" id="ref_res_dia" onclick="selectRefineResource('dia')" style="padding:8px 10px; font-size:13px;"><span>💎 블루 다이아로 하기 (×1,000)</span></div>
+                <div style="text-align:left; min-width:0;">
+                  <div style="font-size:15px; font-weight:900; color:#ffffff;">영원 오브</div>
+                  <div style="font-size:11.5px; color:#fde047; font-weight:700; margin-top:2px;">제작 200만 다이아</div>
+                </div>
+              </div>
+
+              <div class="refine-equip-card job-switch-lord" id="ref_eq_accessory" onclick="selectRefineEquip('accessory')">
+                <div class="refine-equip-thumb">
+                  <img src="images/accessory.png" alt="영원 장식" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/accessory.jpg';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/accessory.PNG';}else{this.onerror=null;this.style.display='none';}">
+                </div>
+                <div style="text-align:left; min-width:0;">
+                  <div style="font-size:15px; font-weight:900; color:#ffffff;">영원 장식</div>
+                  <div style="font-size:11.5px; color:#fde047; font-weight:700; margin-top:2px;">제작 300만 다이아</div>
                 </div>
               </div>
             </div>
 
+            <!-- 2. 현재 / 목표 연마 단계 -->
             <div class="grid-2">
               <div><label>현재 연마 단계</label><select id="ref_cur_lv" onchange="calculateRefineExpected()"></select></div>
               <div><label>목표 연마 단계</label><select id="ref_tar_lv" onchange="calculateRefineExpected()"></select></div>
             </div>
-            <div style="margin-top:16px; display:flex; align-items:center; gap:8px;">
-              <input type="checkbox" id="ref_safe_mode" checked onchange="calculateRefineExpected()" style="width:18px; height:18px; accent-color:var(--accent);">
-              <label for="ref_safe_mode" style="margin-bottom:0; cursor:pointer; font-size:15px; color:#ffffff;">🛡️ <strong>하락 방지 사용 (1회 시도당 소모 재화 2배, 실패 시 단계 하락 0% 고정)</strong></label>
+
+            <!-- 3. 컴팩트 재화 선택 라디오 + 직관적인 ON/OFF 하락 방지 토글 스위치 -->
+            <div class="refine-control-stack">
+              <div class="refine-res-compact-row">
+                <div>
+                  <div style="font-size:13.5px; font-weight:800; color:#ffffff;">연마 재화 기준</div>
+                  <div style="font-size:11.5px; color:#94a3b8;">영원의 돌 또는 블루 다이아 환산(×1,000) 선택</div>
+                </div>
+                <div class="refine-res-seg">
+                  <div class="radio-pill job-pill-btn elem-switch-light selected" id="ref_res_stone" onclick="selectRefineResource('stone')">
+                    <img src="images/eternity_stone.png" alt="영원의 돌" style="width:18px; height:18px; object-fit:contain;" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/eternity_stone.PNG';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/eternity_stone.jpg';}else{this.onerror=null;this.style.display='none';}">
+                    <span>영원의 돌</span>
+                  </div>
+                  <div class="radio-pill job-pill-btn elem-switch-dark" id="ref_res_dia" onclick="selectRefineResource('dia')">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><polygon points="7,4 17,4 22,10 12,21 2,10" fill="rgba(56,189,248,0.35)" stroke="#7dd3fc" stroke-width="1.8" stroke-linejoin="round"/><polyline points="2,10 22,10" stroke="#e0f2fe" stroke-width="1.3"/><polyline points="7,4 9,10 12,21 15,10 17,4" stroke="#bae6fd" stroke-width="1.2"/></svg>
+                    <span>블루 다이아 (×1,000)</span>
+                  </div>
+                </div>
+              </div>
+
+              <label class="safe-mode-switch-row" for="ref_safe_mode">
+                <input type="checkbox" id="ref_safe_mode" class="neon-toggle-input" checked onchange="calculateRefineExpected()">
+                <div>
+                  <div class="safe-mode-title">하락 방지 적용</div>
+                  <div class="safe-mode-sub">1회 시도당 소모 재화 2배 · 실패 시 단계 하락 0% 고정</div>
+                </div>
+                <div class="neon-toggle-right">
+                  <span class="neon-toggle-badge-on">ON · 안전모드</span>
+                  <span class="neon-toggle-badge-off">OFF · 일반연마</span>
+                  <span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span>
+                </div>
+              </label>
             </div>
           </div>
 
@@ -4490,6 +4735,40 @@
   // [SECTION 1] 전역 상태 · 숫자 포맷 · 시즌 테마 · 후원 팝오버
   // =========================================================================
   let currentMainMode = 'helpers'; // 'helpers' | 'guides' | 'calcs'
+  // ==================== 프리미엄 커스텀 SVG 아이콘 팩 (로마숫자 I~V · 스킬 · 영웅) ====================
+  const UI_SVG = {
+    roman(step, size = 22) {
+      const cfg = {
+        1: { txt: 'I',   stroke: '#6ee7b7', fill: 'rgba(16,185,129,0.28)',  glow: 'rgba(52,211,153,0.75)' },
+        2: { txt: 'II',  stroke: '#d8b4fe', fill: 'rgba(147,51,234,0.32)',  glow: 'rgba(192,132,252,0.8)' },
+        3: { txt: 'III', stroke: '#fda4af', fill: 'rgba(225,29,72,0.34)',   glow: 'rgba(251,113,133,0.85)' },
+        4: { txt: 'IV',  stroke: '#fef08a', fill: 'rgba(245,158,11,0.36)',  glow: 'rgba(250,204,21,0.9)' },
+        5: { txt: 'V',   stroke: '#f5d0fe', fill: 'rgba(217,70,239,0.36)',  glow: 'rgba(232,121,249,0.9)' }
+      }[step] || { txt: 'I', stroke: '#7dd3fc', fill: 'rgba(56,189,248,0.25)', glow: 'rgba(56,189,248,0.7)' };
+      const fs = cfg.txt.length >= 3 ? 10.5 : (cfg.txt.length === 2 ? 12 : 13.5);
+      return `<svg width="${size}" height="${size}" viewBox="0 0 28 28" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 5px ${cfg.glow});">
+        <polygon points="14,1.5 26.5,14 14,26.5 1.5,14" fill="${cfg.fill}" stroke="${cfg.stroke}" stroke-width="1.8" stroke-linejoin="round"/>
+        <polygon points="14,4.8 23.2,14 14,23.2 4.8,14" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="0.9"/>
+        <text x="14" y="14.5" text-anchor="middle" dominant-baseline="central" fill="#ffffff" font-family="Georgia, 'Times New Roman', serif" font-size="${fs}" font-weight="900" letter-spacing="-0.4">${cfg.txt}</text>
+      </svg>`;
+    },
+    skill(size = 22) {
+      return `<svg width="${size}" height="${size}" viewBox="0 0 28 28" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 5px rgba(251,191,36,0.85));">
+        <circle cx="14" cy="14" r="12" fill="rgba(245,158,11,0.22)" stroke="#fde047" stroke-width="1.5" stroke-dasharray="3 2"/>
+        <path d="M16.2 3.5L7.8 14.8H13.5L11.6 24.5L20.5 12.6H14.8L16.2 3.5Z" fill="#fef08a" stroke="#ffffff" stroke-width="1.1" stroke-linejoin="round"/>
+      </svg>`;
+    },
+    hero(size = 22) {
+      return `<svg width="${size}" height="${size}" viewBox="0 0 28 28" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 5px rgba(244,114,182,0.85));">
+        <path d="M4.5 9.5L9.5 13.5L14 5L18.5 13.5L23.5 9.5L21.5 21H6.5L4.5 9.5Z" fill="rgba(236,72,153,0.34)" stroke="#f9a8d4" stroke-width="1.6" stroke-linejoin="round"/>
+        <rect x="6.5" y="21.5" width="15" height="2.6" rx="1.2" fill="#fce7f3"/>
+        <polygon points="14,11 16,15 14,19 12,15" fill="#ffffff"/>
+      </svg>`;
+    },
+    imgIcon(src, fallbackSrc = '', size = 22) {
+      return `<img src="${src}" alt="" style="width:${size}px; height:${size}px; border-radius:5px; object-fit:contain; flex-shrink:0;" onerror="this.onerror=null; ${fallbackSrc ? `this.src='${fallbackSrc}';` : `this.style.display='none';`}">`;
+    }
+  };
   let currentActiveGuideKey = 'equip';
   let currentGuideOrigin = 'guides'; // 'guides' | 'helpers' (전직 특성 도우미 진입 경로 추적)
 
@@ -4795,18 +5074,18 @@
       if (calcTabId === 'tab-refine' || calcTabId === 'tab-orb') {
         groupBar.style.display = 'block';
         groupBar.innerHTML = `
-          <div style="font-size:12px; font-weight:800; color:#67e8f9; margin-bottom:8px;">🔨 영원무기 기댓값 계산기 선택 (클릭 시 즉시 전환)</div>
+          <div style="font-size:12px; font-weight:800; color:#67e8f9; margin-bottom:8px;">영원무기 기댓값 계산기 선택 (클릭 시 즉시 전환)</div>
           <div class="radio-pill-group">
-            <div class="radio-pill tier-step-1 ${calcTabId==='tab-refine'?'selected':''}" onclick="openDeepCalculator('tab-refine', true)" style="padding:11px 12px; font-size:14px;">🔨 영원 장비 연마 (Lv.0~20)</div>
-            <div class="radio-pill tier-step-2 ${calcTabId==='tab-orb'?'selected':''}" onclick="openDeepCalculator('tab-orb', true)" style="padding:11px 12px; font-size:14px;">🌌 영원 장비 옵션 변환 (심연정수)</div>
+            <div class="radio-pill tier-step-1 ${calcTabId==='tab-refine'?'selected':''}" onclick="openDeepCalculator('tab-refine', true)" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:10px 12px; font-size:14px;">${UI_SVG.imgIcon('images/elem_buffing.png','images/scythe.png',24)}<span>영원 장비 연마 (Lv.0~20)</span></div>
+            <div class="radio-pill tier-step-2 ${calcTabId==='tab-orb'?'selected':''}" onclick="openDeepCalculator('tab-orb', true)" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:10px 12px; font-size:14px;">${UI_SVG.imgIcon('images/elem_option.png','images/orb.png',24)}<span>영원 장비 옵션 변환 (심연정수)</span></div>
           </div>`;
       } else if (calcTabId === 'tab-passive' || calcTabId === 'tab-synergy') {
         groupBar.style.display = 'block';
         groupBar.innerHTML = `
-          <div style="font-size:12px; font-weight:800; color:#d8b4fe; margin-bottom:8px;">🔮 고대 패시브 &amp; 각성석 계산기 선택 (클릭 시 즉시 전환)</div>
+          <div style="font-size:12px; font-weight:800; color:#d8b4fe; margin-bottom:8px;">고대 패시브 &amp; 각성석 계산기 선택 (클릭 시 즉시 전환)</div>
           <div class="radio-pill-group">
-            <div class="radio-pill tier-step-2 ${calcTabId==='tab-passive'?'selected':''}" onclick="openDeepCalculator('tab-passive', true)" style="padding:11px 12px; font-size:14px;">🔮 고대 패시브 제작 &amp; 파밍 계산</div>
-            <div class="radio-pill tier-step-4 ${calcTabId==='tab-synergy'?'selected':''}" onclick="openDeepCalculator('tab-synergy', true)" style="padding:11px 12px; font-size:14px;">✨ 각성 시너지 점수 &amp; 공격력(%)</div>
+            <div class="radio-pill tier-step-2 ${calcTabId==='tab-passive'?'selected':''}" onclick="openDeepCalculator('tab-passive', true)" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:10px 12px; font-size:14px;">${UI_SVG.imgIcon('images/ancient_passive.png','images/frenzy.jpg',24)}<span>고대 패시브 제작 &amp; 파밍 계산</span></div>
+            <div class="radio-pill tier-step-4 ${calcTabId==='tab-synergy'?'selected':''}" onclick="openDeepCalculator('tab-synergy', true)" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:10px 12px; font-size:14px;">${UI_SVG.imgIcon('images/synergy.png','images/command.jpg',24)}<span>각성 시너지 점수 &amp; 공격력(%)</span></div>
           </div>`;
       } else {
         groupBar.style.display = 'none';
@@ -6278,9 +6557,9 @@
   ];
 
   const REFINE_STONE_COSTS = {
-    scythe: { 0:5000, 1:6250, 2:7500, 3:8750, 4:12500, 5:12500, 6:13750, 7:16250, 8:20000, 9:25000, 10:25000, 11:31250, 12:37500, 13:37500, 14:47500, 15:50000, 16:52500, 17:55000 },
-    orb:    { 0:5000, 1:6250, 2:7500, 3:8750, 4:12500, 5:12500, 6:13750, 7:16250, 8:20000, 9:25000, 10:25000, 11:31250, 12:37500, 13:37500, 14:43750, 15:50000, 16:52500, 17:105000 },
-    accessory: { 0:7500, 1:9375, 2:11250, 3:13125, 4:18750, 5:18750, 6:20625, 7:24375, 8:30000, 10:37500, 12:56250, 13:56250, 14:65625, 15:75000 }
+    scythe:    { 0:5000, 1:6250, 2:7500, 3:8750, 4:12500, 5:12500, 6:13750, 7:16250, 8:20000, 9:25000, 10:25000, 11:31250, 12:37500, 13:37500, 14:47500, 15:50000, 16:52500, 17:55000 },
+    orb:       { 0:5000, 1:6250, 2:7500, 3:8750, 4:12500, 5:12500, 6:13750, 7:16250, 8:20000, 9:25000, 10:25000, 11:31250, 12:37500, 13:37500, 14:43750, 15:50000, 16:52500, 17:52500 },
+    accessory: { 0:7500, 1:9375, 2:11250, 3:13125, 4:18750, 5:18750, 6:20625, 7:24375, 8:30000, 10:37500, 12:56250, 13:56250, 14:65625, 15:75000, 16:78750, 17:82500 }
   };
 
   function selectRefineEquip(eqType, skipAutoLv = false) {
@@ -7178,12 +7457,12 @@
     document.getElementById("floating_back_text").innerText = "계산기 메뉴로 돌아가기";
 
     const meta = {
-      equip:   { guide: '장비 소환', title: '🗡️ 장비 소환 기댓값 계산기', badge: '🗡️ 장비 (대낫/오브/장식)' },
-      passive: { guide: '패시브 소환', title: '📜 패시브 소환 기댓값 계산기', badge: '📜 패시브 (200 다이아)' },
-      skill:   { guide: '스킬 소환', title: '⚡ 스킬 소환 기댓값 계산기', badge: '⚡ 스킬 (200 다이아)' },
-      hero:    { guide: '영웅 소환', title: '🦸 영웅 소환 기댓값 계산기', badge: '🦸 영웅 (500 다이아)' },
-      spirit:  { guide: '정령 소환', title: '🧚 정령 소환 기댓값 계산기', badge: '🧚 정령 (200 정령석)' }
-    }[cat] || { guide: '소환 계산기', title: '🎲 소환 확률 기댓값 계산기', badge: '소환' };
+      equip:   { guide: '장비 소환', title: '장비 소환 기댓값 계산기', badge: '장비 (대낫/오브/장식)' },
+      passive: { guide: '패시브 소환', title: '패시브 소환 기댓값 계산기', badge: '패시브 (200 다이아)' },
+      skill:   { guide: '스킬 소환', title: '스킬 소환 기댓값 계산기', badge: '스킬 (200 다이아)' },
+      hero:    { guide: '영웅 소환', title: '영웅 소환 기댓값 계산기', badge: '영웅 (500 다이아)' },
+      spirit:  { guide: '정령 소환', title: '정령 소환 기댓값 계산기', badge: '정령 (200 정령석)' }
+    }[cat] || { guide: '소환 계산기', title: '소환 확률 기댓값 계산기', badge: '소환' };
 
     setFloatingGuideContext(cat, meta.guide);
     document.getElementById("newbie_detail_title").innerText = meta.title;
@@ -7193,16 +7472,16 @@
     const sumRadioBar = document.getElementById('summon_cat_radio_bar');
     if (sumRadioBar) {
       const cats = [
-        { k:'equip',   label:'🗡️ 장비 소환',   cls:'tier-step-1' },
-        { k:'passive', label:'📜 패시브 소환', cls:'tier-step-2' },
-        { k:'skill',   label:'⚡ 스킬 소환',   cls:'tier-step-4' },
-        { k:'hero',    label:'🦸 영웅 소환',   cls:'tier-step-3' },
-        { k:'spirit',  label:'🧚 정령 소환',   cls:'tier-step-5' }
+        { k:'equip',   label:'장비 소환',   img:'images/main_equip.png',   cls:'tier-step-1' },
+        { k:'passive', label:'패시브 소환', img:'images/main_passive.png', cls:'tier-step-2' },
+        { k:'skill',   label:'스킬 소환',   img:'images/main_skill.png',   cls:'tier-step-4' },
+        { k:'hero',    label:'영웅 소환',   img:'images/main_hero.png',    cls:'tier-step-3' },
+        { k:'spirit',  label:'정령 소환',   img:'images/main_spirit.png',  cls:'tier-step-5' }
       ];
       sumRadioBar.innerHTML = `
-        <div style="font-size:12px; font-weight:800; color:#fda4af; margin-bottom:8px;">💎 소환 항목 선택 (장비 · 패시브 · 스킬 · 영웅 · 정령)</div>
+        <div style="font-size:12px; font-weight:800; color:#fda4af; margin-bottom:8px;">소환 항목 선택 (장비 · 패시브 · 스킬 · 영웅 · 정령)</div>
         <div class="radio-pill-group">
-          ${cats.map(c => `<div class="radio-pill ${c.cls} ${cat===c.k?'selected':''}" onclick="openNewbieCalculator('${c.k}', true)" style="padding:10px 8px; font-size:13px;">${c.label}</div>`).join('')}
+          ${cats.map(c => `<div class="radio-pill ${c.cls} ${cat===c.k?'selected':''}" onclick="openNewbieCalculator('${c.k}', true)" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:9px 8px; font-size:13px;">${UI_SVG.imgIcon(c.img,'',22)}<span>${c.label}</span></div>`).join('')}
         </div>`;
     }
 
@@ -9886,21 +10165,21 @@
       const radioControlsHtml = `
         <div style="background:#131d33; border:1.5px solid #475569; border-radius:14px; padding:14px 16px; margin-bottom:16px; display:flex; flex-direction:column; gap:12px;">
           <div>
-            <label style="color:#fde047; font-size:12.5px; font-weight:800; margin-bottom:8px;">🔥 1. 전직 차수 선택 (1차 ➔ 4차로 갈수록 강렬해지는 단계 컬러)</label>
+            <label style="color:#fde047; font-size:12.5px; font-weight:800; margin-bottom:8px;">1. 전직 차수 선택 (I ~ IV)</label>
             <div class="radio-pill-group">
               ${[
-                { s:1, label:`🌟 1차 (${jMeta.c1})` },
-                { s:2, label:`⚡ 2차 (${jMeta.c2})` },
-                { s:3, label:`🔥 3차 (${jMeta.c3})` },
-                { s:4, label:`👑 4차 (${jMeta.c4})` }
-              ].map(it => `<div class="radio-pill tier-step-${it.s} ${guideBuildStep===it.s?'selected':''}" onclick="selectGuideBuildStep(${it.s})" style="padding:11px 8px; font-size:13.5px; font-weight:800;">${it.label}</div>`).join('')}
+                { s:1, label:`1차 (${jMeta.c1})` },
+                { s:2, label:`2차 (${jMeta.c2})` },
+                { s:3, label:`3차 (${jMeta.c3})` },
+                { s:4, label:`4차 (${jMeta.c4})` }
+              ].map(it => `<div class="radio-pill tier-step-${it.s} ${guideBuildStep===it.s?'selected':''}" onclick="selectGuideBuildStep(${it.s})" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:10px 8px; font-size:13.5px; font-weight:800;">${UI_SVG.roman(it.s, 22)}<span>${it.label}</span></div>`).join('')}
             </div>
           </div>
           <div>
-            <label style="color:#e2e8f0; font-size:12.5px; font-weight:800; margin-bottom:8px;">🎯 2. 확인할 세팅 분야 선택 (스킬 / 영웅)</label>
+            <label style="color:#e2e8f0; font-size:12.5px; font-weight:800; margin-bottom:8px;">2. 확인할 세팅 분야 선택 (스킬 / 영웅)</label>
             <div class="radio-pill-group">
-              <div class="radio-pill cat-skill ${guideBuildTab==='skill'?'selected':''}" onclick="selectGuideBuildTab('skill')" style="padding:11px 12px; font-size:14px; font-weight:800;">⚡ 스킬 세팅 보기</div>
-              <div class="radio-pill cat-hero ${guideBuildTab==='hero'?'selected':''}" onclick="selectGuideBuildTab('hero')" style="padding:11px 12px; font-size:14px; font-weight:800;">🦸 영웅 세팅 보기</div>
+              <div class="radio-pill cat-skill ${guideBuildTab==='skill'?'selected':''}" onclick="selectGuideBuildTab('skill')" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:10px 12px; font-size:14px; font-weight:800;">${UI_SVG.skill(22)}<span>스킬 세팅 보기</span></div>
+              <div class="radio-pill cat-hero ${guideBuildTab==='hero'?'selected':''}" onclick="selectGuideBuildTab('hero')" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:10px 12px; font-size:14px; font-weight:800;">${UI_SVG.hero(22)}<span>영웅 세팅 보기</span></div>
             </div>
           </div>
         </div>
@@ -10118,13 +10397,13 @@
         }
       }[guideElem];
 
-      const spStepBtns = [
+     const spStepBtns = [
         { s:1, label:"1단계", sub:"3차 이전" },
         { s:2, label:"2단계", sub:"200점 미만" },
         { s:3, label:"3단계", sub:"200점+" },
         { s:4, label:"4단계", sub:"300점+" },
         { s:5, label:"5단계", sub:"4차·400점+" }
-      ].map(b => `<div class="radio-pill tier-step-${b.s} ${guideSpiritStep===b.s?'selected':''}" onclick="selectGuideSpiritStep(${b.s})" style="padding:10px 6px; font-size:13px; line-height:1.25;"><strong>${b.label}</strong><br><small style="color:${guideSpiritStep===b.s?'#fef08a':'#cbd5e1'}; font-size:10.5px;">${b.sub}</small></div>`).join('');
+      ].map(b => `<div class="radio-pill tier-step-${b.s} ${guideSpiritStep===b.s?'selected':''}" onclick="selectGuideSpiritStep(${b.s})" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:9px 6px; font-size:12.5px; line-height:1.25;">${UI_SVG.roman(b.s, 22)}<div style="text-align:left;"><strong>${b.label}</strong><br><small style="color:${guideSpiritStep===b.s?'#fef08a':'#cbd5e1'}; font-size:10.5px;">${b.sub}</small></div></div>`).join('');
 
       const curSpiritData = sMap[guideSpiritStep] || sMap[1];
       body.innerHTML = `<div class="stage-build-card" style="border-left-color:#6366f1;">
@@ -10527,10 +10806,10 @@
           • <strong style="color:#fda4af;">3차 전직 (적정 주차: Lv.45) :</strong> Lv.45까지만 달성하시면 충분합니다!
         </div>
         <div class="grid-2" style="gap:16px;">
-          <div class="hub-card" onclick="changeTraitTabStep(1)" style="border:2px solid #38bdf8; background:linear-gradient(135deg, rgba(56,189,248,0.18) 0%, #0f172a 100%); padding:20px 22px;"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#38bdf8; background:#0c4a6e;">I</div><div><span class="hub-card-title">1차 전직 특성 (${jMeta.c1})</span><span class="hub-card-desc">Lv.1 ~ Lv.150 레벨별 해금 슬롯 &amp; 등급 색상 자동 추천기</span></div></div><div class="hub-card-arrow" style="color:#38bdf8;">➔</div></div>
-          <div class="hub-card" onclick="changeTraitTabStep(2)" style="border:2px solid #eab308; background:linear-gradient(135deg, rgba(234,179,8,0.18) 0%, #0f172a 100%); padding:20px 22px;"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#facc15; background:#713f12;">II</div><div><span class="hub-card-title">2차 전직 특성 (전 직업 공통)</span><span class="hub-card-desc">Lv.1 ~ Lv.180 표식 &amp; 크리티컬 TP 자동 배분 시뮬레이터</span></div></div><div class="hub-card-arrow" style="color:#fde047;">➔</div></div>
-          <div class="hub-card" onclick="changeTraitTabStep(3)" style="border:2px solid #f43f5e; background:linear-gradient(135deg, rgba(244,63,94,0.18) 0%, #0f172a 100%); padding:20px 22px;"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#fb7185; background:#881337;">III</div><div><span class="hub-card-title">3차 전직 특화 (${jMeta.c3})</span><span class="hub-card-desc">Lv.0 ~ Lv.40 구간별 특화 트리 &amp; 일반 특성 마스터 가이드</span></div></div><div class="hub-card-arrow" style="color:#f43f5e;">➔</div></div>
-          <div class="hub-card" onclick="alert('4차 전직 특성 시뮬레이터는 현재 데이터 수집 중입니다.')" style="border:2px dashed #475569; background:#090d16; opacity:0.72; cursor:not-allowed; padding:20px 22px;"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#475569;">🔒</div><div><span class="hub-card-title" style="color:#94a3b8;">4차 전직 특성 (${jMeta.c4})</span><span class="hub-card-desc">4차 전직 전용 특성 (데이터 수집 중)</span></div></div><span class="grade-badge" style="background:#1e293b; color:#94a3b8;">준비 중</span></div>
+          <div class="hub-card" onclick="changeTraitTabStep(1)" style="border:2px solid #34d399; background:linear-gradient(135deg, rgba(16,185,129,0.2) 0%, #0f172a 100%); padding:20px 22px;"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#6ee7b7; background:#064e3b;">${UI_SVG.roman(1, 34)}</div><div><span class="hub-card-title">1차 전직 특성 (${jMeta.c1})</span><span class="hub-card-desc">Lv.1 ~ Lv.150 레벨별 해금 슬롯 &amp; 등급 색상 자동 추천기</span></div></div><div class="hub-card-arrow" style="color:#34d399;">➔</div></div>
+          <div class="hub-card" onclick="changeTraitTabStep(2)" style="border:2px solid #c084fc; background:linear-gradient(135deg, rgba(168,85,247,0.22) 0%, #0f172a 100%); padding:20px 22px;"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#d8b4fe; background:#3b0764;">${UI_SVG.roman(2, 34)}</div><div><span class="hub-card-title">2차 전직 특성 (전 직업 공통)</span><span class="hub-card-desc">Lv.1 ~ Lv.180 표식 &amp; 크리티컬 TP 자동 배분 시뮬레이터</span></div></div><div class="hub-card-arrow" style="color:#c084fc;">➔</div></div>
+          <div class="hub-card" onclick="changeTraitTabStep(3)" style="border:2px solid #f43f5e; background:linear-gradient(135deg, rgba(244,63,94,0.22) 0%, #0f172a 100%); padding:20px 22px;"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#fda4af; background:#881337;">${UI_SVG.roman(3, 34)}</div><div><span class="hub-card-title">3차 전직 특화 (${jMeta.c3})</span><span class="hub-card-desc">Lv.0 ~ Lv.40 구간별 특화 트리 &amp; 일반 특성 마스터 가이드</span></div></div><div class="hub-card-arrow" style="color:#f43f5e;">➔</div></div>
+          <div class="hub-card" onclick="alert('4차 전직 특성 시뮬레이터는 현재 데이터 수집 중입니다.')" style="border:2px dashed #eab308; background:#090d16; opacity:0.72; cursor:not-allowed; padding:20px 22px;"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#fde047; background:#422006;">${UI_SVG.roman(4, 34)}</div><div><span class="hub-card-title" style="color:#fef08a;">4차 전직 특성 (${jMeta.c4})</span><span class="hub-card-desc">4차 전직 전용 특성 (데이터 수집 중)</span></div></div><span class="grade-badge" style="background:#1e293b; color:#fde047; border:1px solid #eab308;">준비 중</span></div>
         </div>
         <div onclick="jumpToPassiveSlotGuide('${guideJob}')" style="margin-top:18px; background:linear-gradient(135deg, rgba(6,182,212,0.22) 0%, #0f172a 100%); border:1.5px solid #06b6d4; border-radius:12px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; cursor:pointer;">
           <div><div style="font-size:12px; color:#67e8f9; font-weight:800;">📜 고대 패시브 개수(0~3고패)별 패시브 5칸 교체표가 궁금하시다면?</div><div style="font-size:14.5px; font-weight:900; color:#ffffff; margin-top:2px;">[${jMeta.c1}] 0고패 ➔ 3고패 단계별 패시브 편성표 바로가기</div></div>
@@ -10542,14 +10821,14 @@
 
     const stepTabs = `<div style="background:#131d33; border:1.5px solid #475569; border-radius:14px; padding:13px 15px; margin-bottom:16px;">
       <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-        <span style="font-size:13px; font-weight:900; color:#fde047;">🔥 전직 차수 바로 전환 (클릭 시 즉시 이동)</span>
-        <button type="button" onclick="changeTraitTabStep(0)" style="background:linear-gradient(135deg, #334155 0%, #1e293b 100%); border:1.5px solid #94a3b8; color:#f8fafc; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">🔙 차수 선택 허브로</button>
+        <span style="font-size:13px; font-weight:900; color:#fde047;">전직 차수 바로 전환 (클릭 시 즉시 이동)</span>
+        <button type="button" onclick="changeTraitTabStep(0)" style="background:linear-gradient(135deg, #334155 0%, #1e293b 100%); border:1.5px solid #94a3b8; color:#f8fafc; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">차수 선택 허브로</button>
       </div>
       <div class="radio-pill-group">
-        <div class="radio-pill tier-step-1 ${currentTraitTabStep===1?'selected':''}" onclick="changeTraitTabStep(1)" style="padding:11px 8px; font-size:13.5px; font-weight:800;">🌟 1차 전직 (${jMeta.c1})</div>
-        <div class="radio-pill tier-step-2 ${currentTraitTabStep===2?'selected':''}" onclick="changeTraitTabStep(2)" style="padding:11px 8px; font-size:13.5px; font-weight:800;">⚡ 2차 전직 (공통 트리)</div>
-        <div class="radio-pill tier-step-3 ${currentTraitTabStep===3?'selected':''}" onclick="changeTraitTabStep(3)" style="padding:11px 8px; font-size:13.5px; font-weight:800;">🔥 3차 전직 (${jMeta.c3})</div>
-        <div class="radio-pill tier-step-4" onclick="alert('4차 전직 특성 시뮬레이터는 현재 데이터 수집 중입니다.')" style="padding:11px 8px; font-size:13.5px; font-weight:800; opacity:0.55; border-style:dashed;">👑 4차 (${jMeta.c4} · 준비중)</div>
+        <div class="radio-pill tier-step-1 ${currentTraitTabStep===1?'selected':''}" onclick="changeTraitTabStep(1)" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:10px 8px; font-size:13.5px; font-weight:800;">${UI_SVG.roman(1, 22)}<span>1차 전직 (${jMeta.c1})</span></div>
+        <div class="radio-pill tier-step-2 ${currentTraitTabStep===2?'selected':''}" onclick="changeTraitTabStep(2)" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:10px 8px; font-size:13.5px; font-weight:800;">${UI_SVG.roman(2, 22)}<span>2차 전직 (공통 트리)</span></div>
+        <div class="radio-pill tier-step-3 ${currentTraitTabStep===3?'selected':''}" onclick="changeTraitTabStep(3)" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:10px 8px; font-size:13.5px; font-weight:800;">${UI_SVG.roman(3, 22)}<span>3차 전직 (${jMeta.c3})</span></div>
+        <div class="radio-pill tier-step-4" onclick="alert('4차 전직 특성 시뮬레이터는 현재 데이터 수집 중입니다.')" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:10px 8px; font-size:13.5px; font-weight:800; opacity:0.55; border-style:dashed;">${UI_SVG.roman(4, 22)}<span>4차 (${jMeta.c4} · 준비중)</span></div>
       </div>
     </div>`;
 
