@@ -3411,11 +3411,23 @@
             </div>
             <p class="card-subtitle">원하는 추천 빌드를 누르면 해당 고패 및 재료가 자동으로 세팅됩니다. (1~3순위는 순위당 1개만 선택 가능합니다)</p>
 
-            <div class="grid-4" style="margin-bottom:18px;">
-              <button type="button" onclick="selectJobCore('am')" style="background:linear-gradient(135deg, #4338ca 0%, #312e81 100%); border:1px solid #6366f1; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; text-align:center;">🧙‍♂️ 아크메이지(제네시스)</button>
-              <button type="button" onclick="selectJobCore('reaper')" style="background:linear-gradient(135deg, #991b1b 0%, #450a0a 100%); border:1px solid #ef4444; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; text-align:center;">🗡️ 대사신(소울리퍼)</button>
-              <button type="button" onclick="selectJobCore('phantom')" style="background:linear-gradient(135deg, #0369a1 0%, #082f49 100%); border:1px solid #38bdf8; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; text-align:center;">⚔️ 팬텀(오버로드)</button>
-              <button type="button" onclick="selectEndgamePassives()" style="background:linear-gradient(135deg, #86198f 0%, #4a044e 100%); border:1px solid #d946ef; color:#ffffff; padding:10px 8px; border-radius:10px; font-size:13.5px; font-weight:700; cursor:pointer; text-align:center;">👑 종결패시브(1·2·3순위제외)</button>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap:10px; margin-bottom:18px;">
+              <div class="radio-pill job-pill-btn job-switch-mage" id="ap_preset_am" onclick="selectJobCore('am')" style="padding:11px 10px; font-size:13.5px;">
+                <img src="images/mystic.png" alt="아크메이지" style="width:26px; height:26px;" onerror="this.onerror=null; this.src='mystic.png';">
+                <span>아크메이지 (제네시스)</span>
+              </div>
+              <div class="radio-pill job-pill-btn job-switch-reaper" id="ap_preset_reaper" onclick="selectJobCore('reaper')" style="padding:11px 10px; font-size:13.5px;">
+                <img src="images/reaper.png" alt="대사신" style="width:26px; height:26px;" onerror="this.onerror=null; this.src='reaper.png';">
+                <span>대사신 (소울리퍼)</span>
+              </div>
+              <div class="radio-pill job-pill-btn job-switch-lord" id="ap_preset_phantom" onclick="selectJobCore('phantom')" style="padding:11px 10px; font-size:13.5px;">
+                <img src="images/overload.png" alt="팬텀" style="width:26px; height:26px;" onerror="this.onerror=null; this.src='overload.png';">
+                <span>팬텀 (오버로드)</span>
+              </div>
+              <div class="radio-pill job-pill-btn tier-step-4" id="ap_preset_endgame" onclick="selectEndgamePassives()" style="padding:11px 10px; font-size:13.5px;">
+                <img src="images/ancient_mem.jpg" alt="종결패시브" style="width:26px; height:26px; border-radius:6px; object-fit:cover; border:1px solid #fde047;" onerror="this.onerror=null; this.src='images/elem_create.jpg'; this.onerror=function(){this.style.display='none';};">
+                <span>종결패시브 (1~3순위 제외)</span>
+              </div>
             </div>
 
             <div class="accordion-group">
@@ -4811,21 +4823,17 @@
     } else if (calcTabId === 'tab-union') {
       switchUnionType(currentUnionType || 'skill');
     }
-
-    if (!skipScroll) window.scrollTo({ top: 120, behavior: 'smooth' });
   }
 
   function handleFloatingBack() {
     // 1) 전직 특성 도우미 상세(1~3차)에서 뒤로가기 -> 1~4차 차수 선택 허브로 복귀
     if (currentGuideType === 'trait' && currentTraitTabStep !== 0 && document.getElementById("guides_detail_view")?.style.display === "block") {
       changeTraitTabStep(0);
-      window.scrollTo({ top: 100, behavior: 'smooth' });
       return;
     }
     // 2) 전직 특성 1~4차 허브에서 뒤로가기 -> 도우미 모음으로 복귀
     if (currentGuideType === 'trait' && currentGuideOrigin === 'helpers' && document.getElementById("guides_detail_view")?.style.display === "block") {
       switchMainMode('helpers');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     // 3) 각성 우선순위 세부 화면에서 뒤로가기 -> 각성 우선순위 허브(1.~3.)로 복귀
@@ -4836,11 +4844,9 @@
     // 4) 각성 우선순위 허브에서 뒤로가기 -> 진입 경로(helpers)로 복귀
     if (currentGuideType === 'awakening_order' && currentGuideOrigin === 'helpers' && document.getElementById("guides_detail_view")?.style.display === "block") {
       switchMainMode('helpers');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     switchMainMode(currentMainMode);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // =========================================================================
@@ -5999,6 +6005,13 @@
     });
     updateAccordionBadges();
     renderMaterialList();
+
+    const isEndgameOnly = (selectedAncients.has('elem_create') || selectedAncients.has('ancient_mem'))
+      && !selectedAncients.has('frenzy') && !selectedAncients.has('strike_master') && !selectedAncients.has('command');
+    document.getElementById('ap_preset_am')?.classList.toggle('selected', selectedAncients.has('frenzy'));
+    document.getElementById('ap_preset_reaper')?.classList.toggle('selected', selectedAncients.has('strike_master'));
+    document.getElementById('ap_preset_phantom')?.classList.toggle('selected', selectedAncients.has('command'));
+    document.getElementById('ap_preset_endgame')?.classList.toggle('selected', isEndgameOnly);
   }
 
   function toggleAncient(id) {
@@ -7205,7 +7218,6 @@
 
     renderNewbieCategoryUI();
     renderSummonRatesTable();
-    if (!skipScroll) window.scrollTo({ top: 100, behavior: 'smooth' });
   }
 
   function onSummonLevelChange() {
@@ -7795,7 +7807,6 @@
 
     renderRuneHelperAccordions();
     calculateBestRuneLoadout();
-    window.scrollTo({ top: 100, behavior: 'smooth' });
   }
 
   function switchRuneTierTab(tier) {
@@ -9368,7 +9379,6 @@
       }
     }
     renderBuildGuideContent();
-    window.scrollTo({ top: 100, behavior: 'smooth' });
   }
 
   function openAwakeningHelperFromHub() {
@@ -9406,7 +9416,6 @@
     document.getElementById("floating_back_text").innerText = "각성 가이드 메뉴로 돌아가기";
 
     renderBuildGuideContent();
-    window.scrollTo({ top: 100, behavior: 'smooth' });
   }
 
   function openSpecialGuideDetail(type) {
@@ -9439,7 +9448,6 @@
     }
 
     renderBuildGuideContent();
-    window.scrollTo({ top: 100, behavior: 'smooth' });
   }
 
   function openCategoryGuideDirect(catType) {
@@ -9478,7 +9486,6 @@
     if (catType === 'trait') currentTraitTabStep = 0;
     updateJobHeaderAndTabs();
     renderBuildGuideContent();
-    window.scrollTo({ top: 100, behavior: 'smooth' });
   }
 
   function openTraitHelperFromHub() {
@@ -9648,15 +9655,16 @@
         return;
       }
 
-      const topCtrl = `<div style="background:#131d33; border:1.5px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:12px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px; border-bottom:1px solid #1e293b; padding-bottom:10px;">
-          <button type="button" onclick="openAwkSubView('hub')" style="background:linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border:1.5px solid #38bdf8; color:#e0f2fe; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:900; cursor:pointer;">🔙 메뉴 선택으로</button>
-          <div style="display:flex; gap:6px; flex-wrap:wrap;">
-            <button type="button" onclick="openAwkSubView('recipe')" style="padding:6px 11px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='recipe'?'#38bdf8':'#334155'}; background:${awkSubView==='recipe'?'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)':'#0f172a'}; color:${awkSubView==='recipe'?'#ffffff':'#cbd5e1'};">1. 고패 제작식</button>
-            <button type="button" onclick="openAwkSubView('passive_slot')" style="padding:6px 11px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='passive_slot'?'#818cf8':'#334155'}; background:${awkSubView==='passive_slot'?'linear-gradient(135deg, #2563eb 0%, #4338ca 100%)':'#0f172a'}; color:${awkSubView==='passive_slot'?'#ffffff':'#cbd5e1'};">1.1 0~3고패 슬롯표</button>
-            <button type="button" onclick="openAwkSubView('skill_hero_awk')" style="padding:6px 11px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='skill_hero_awk'?'#a78bfa':'#334155'}; background:${awkSubView==='skill_hero_awk'?'linear-gradient(135deg, #4f46e5 0%, #6d28d9 100%)':'#0f172a'}; color:${awkSubView==='skill_hero_awk'?'#ffffff':'#cbd5e1'};">2. 스킬·영웅 3각 순위</button>
-            <button type="button" onclick="openAwkSubView('endgame_5anc')" style="padding:6px 11px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='endgame_5anc'?'#c084fc':'#334155'}; background:${awkSubView==='endgame_5anc'?'linear-gradient(135deg, #7c3aed 0%, #9333ea 100%)':'#0f172a'}; color:${awkSubView==='endgame_5anc'?'#ffffff':'#cbd5e1'};">3. 심화: 5고패 순서</button>
-          </div>
+      const topCtrl = `<div style="background:#131d33; border:1.5px solid #475569; border-radius:14px; padding:13px 15px; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <span style="font-size:13px; font-weight:900; color:#fde047;">💎 각성 &amp; 패시브 단계 전환 (클릭 시 즉시 이동)</span>
+          <button type="button" onclick="openAwkSubView('hub')" style="background:linear-gradient(135deg, #334155 0%, #1e293b 100%); border:1.5px solid #94a3b8; color:#f8fafc; padding:5px 11px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">🔙 메뉴 선택 허브로</button>
+        </div>
+        <div class="radio-pill-group" style="margin-bottom:12px; padding-bottom:12px; border-bottom:1px dashed #334155;">
+          <div class="radio-pill tier-step-1 ${awkSubView==='recipe'?'selected':''}" onclick="openAwkSubView('recipe')" style="padding:9px 8px; font-size:12.5px; font-weight:800;"><span style="opacity:0.85; font-size:11px; margin-right:3px;">1.</span>고패 제작식</div>
+          <div class="radio-pill tier-step-2 ${awkSubView==='passive_slot'?'selected':''}" onclick="openAwkSubView('passive_slot')" style="padding:9px 8px; font-size:12.5px; font-weight:800;"><span style="opacity:0.85; font-size:11px; margin-right:3px;">1.1</span>0~3고패 슬롯표</div>
+          <div class="radio-pill tier-step-3 ${awkSubView==='skill_hero_awk'?'selected':''}" onclick="openAwkSubView('skill_hero_awk')" style="padding:9px 8px; font-size:12.5px; font-weight:800;"><span style="opacity:0.85; font-size:11px; margin-right:3px;">2.</span>스킬·영웅 3각 순위</div>
+          <div class="radio-pill tier-step-4 ${awkSubView==='endgame_5anc'?'selected':''}" onclick="openAwkSubView('endgame_5anc')" style="padding:9px 8px; font-size:12.5px; font-weight:800;"><span style="opacity:0.85; font-size:11px; margin-right:3px;">3.</span>심화: 5고패 순서</div>
         </div>
         <div class="grid-2" style="gap:10px;">
           <div style="background:#0b1120; padding:8px 10px; border-radius:9px; border:1px solid #334155;">
@@ -10286,7 +10294,6 @@
     if (innerCtrl && currentGuideType === 'trait') innerCtrl.style.display = (step === 2) ? "none" : "block";
     updateJobHeaderAndTabs();
     renderBuildGuideContent();
-    window.scrollTo({ top: 100, behavior: 'smooth' });
   }
   function changeTrait1stLevel(lv) { currentTrait1stLv = parseInt(lv, 10); renderBuildGuideContent(); }
   function changeTrait3rdLevel(lv) { currentTrait3rdLv = parseInt(lv, 10); renderBuildGuideContent(); }
