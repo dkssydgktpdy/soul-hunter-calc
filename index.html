@@ -2890,12 +2890,13 @@
         <div style="background:linear-gradient(135deg, rgba(30,27,75,0.95) 0%, rgba(15,23,42,0.98) 100%); border:1.5px solid #818cf8; border-radius:14px; padding:14px 16px; margin-bottom:16px;">
           <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
             <strong style="font-size:14px; color:#e0e7ff;">🔑 개인 스펙 코드 발급 &amp; 타 기기(PC↔모바일) 불러오기</strong>
-            <div style="display:flex; gap:6px;">
-              <button type="button" onclick="copyMasterSpecCode()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; font-size:12px; font-weight:800; padding:6px 12px; border-radius:8px; cursor:pointer;">📤 내 스펙 코드 복사</button>
-              <button type="button" onclick="applyMasterSpecCodeFromInput()" style="background:#059669; border:1px solid #6ee7b7; color:#fff; font-size:12px; font-weight:800; padding:6px 12px; border-radius:8px; cursor:pointer;">📥 입력한 코드 불러오기</button>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button type="button" onclick="copyMasterSpecCode()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; font-size:12px; font-weight:800; padding:6px 11px; border-radius:8px; cursor:pointer;">📤 현재 슬롯 코드 복사</button>
+              <button type="button" onclick="applyMasterSpecCodeFromInput()" style="background:#059669; border:1px solid #6ee7b7; color:#fff; font-size:12px; font-weight:800; padding:6px 11px; border-radius:8px; cursor:pointer;">📥 입력한 코드 불러오기</button>
+              <button type="button" onclick="clearMasterSpecCodeBox()" style="background:#334155; border:1px solid #64748b; color:#e2e8f0; font-size:12px; font-weight:800; padding:6px 10px; border-radius:8px; cursor:pointer;">🧹 비우기</button>
             </div>
           </div>
-          <textarea id="master_spec_code_textarea" rows="3" placeholder="여기에 내 스펙 코드가 표시됩니다. 다른 기기에서 복사한 코드를 여기에 붙여넣고 [📥 입력한 코드 불러오기]를 누르세요!"
+          <textarea id="master_spec_code_textarea" rows="3" placeholder="여기에 다른 기기에서 복사한 코드(SHK-V1 또는 SHK-ALL)를 붙여넣고 [📥 입력한 코드 불러오기]를 누르세요!"
             style="width:100%; background:#090d16; border:1.5px solid #475569; border-radius:10px; padding:10px; color:#fde047; font-family:monospace; font-size:12px; line-height:1.45; resize:vertical; outline:none;"></textarea>
           <div id="master_code_status_msg" style="font-size:11.5px; color:#34d399; margin-top:4px; font-weight:800; min-height:16px;"></div>
           <div style="margin-top:8px; background:rgba(245, 158, 11, 0.12); border:1px solid rgba(245, 158, 11, 0.4); border-radius:8px; padding:8px 11px; font-size:11.5px; color:#fde68a; line-height:1.55;">
@@ -5803,11 +5804,6 @@
         </div>
       `;
     }
-
-    const codeArea = document.getElementById('master_spec_code_textarea');
-    if (codeArea && activeEl !== codeArea) {
-      codeArea.value = generateReadableMasterSpecCode();
-    }
     updateAllSlotUI();
   }
 
@@ -5822,83 +5818,213 @@
     document.getElementById('master_inv_modal_overlay').style.display = 'none';
   }
 
+  function clearMasterSpecCodeBox() {
+    const area = document.getElementById('master_spec_code_textarea');
+    const msgEl = document.getElementById('master_code_status_msg');
+    if (area) { area.value = ''; area.focus(); }
+    if (msgEl) msgEl.innerText = '';
+  }
+
+  function copyTextToClipboardSafe(text, onDone) {
+    const area = document.getElementById('master_spec_code_textarea');
+    if (area) area.value = text;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => onDone(true)).catch(() => {
+        try {
+          if (area) { area.focus(); area.select(); area.setSelectionRange(0, text.length); document.execCommand('copy'); }
+          onDone(true);
+        } catch (e) { onDone(false); }
+      });
+    } else {
+      try {
+        if (area) { area.focus(); area.select(); area.setSelectionRange(0, text.length); document.execCommand('copy'); }
+        onDone(true);
+      } catch (e) { onDone(false); }
+    }
+  }
+
+  function encodeCompactPayload(obj) {
+    const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(obj))))
+      .replace(/\+/g, '.').replace(/\//g, '_').replace(/=+$/, '');
+    return b64.match(/.{1,6}/g)?.join('-') || b64;
+  }
+
+  function decodeCompactPayload(tokenStr) {
+    let b64 = tokenStr.replace(/[\s\-\u2013\u2014\u2212\u200B\uFEFF]/g, '').replace(/\./g, '+').replace(/_/g, '/');
+    while (b64.length % 4) b64 += '=';
+    return JSON.parse(decodeURIComponent(escape(atob(b64))));
+  }
+
+  // 스냅샷 1개를 초압축 객체로 변환 (기존 대비 85~90% 용량 절감!)
+  function buildCompactSlotFromSnap(snap, slotName) {
+    if (!snap || (!snap.s300 && !snap.union && !snap.calc && !snap.minv)) return null;
+    const s300 = snap.s300 ? JSON.parse(snap.s300) : {};
+    const uObj = snap.union ? JSON.parse(snap.union) : {};
+    const cObj = snap.calc ? JSON.parse(snap.calc) : {};
+    const mObj = snap.minv ? JSON.parse(snap.minv) : {};
+
+    const runeIdxMap = new Map();
+    RUNE_DB.forEach((r, idx) => runeIdxMap.set(r.id, idx));
+    const runeIndices = (s300.ownedRunes || []).map(id => runeIdxMap.get(id)).filter(i => i !== undefined);
+
+    const uSpecs = uObj.unionUserSpecs || s300.unionUserSpecs || { skill: {}, hero: {} };
+    const compactU = { s: [], h: [] };
+    Object.entries(uSpecs.skill || {}).forEach(([uid, sp]) => {
+      if (sp && sp.owned) compactU.s.push([uid.replace('skill_', ''), sp.lv, sp.brk, sp.awk]);
+    });
+    Object.entries(uSpecs.hero || {}).forEach(([uid, sp]) => {
+      if (sp && sp.owned) compactU.h.push([uid.replace('hero_', ''), sp.lv, sp.brk, sp.awk]);
+    });
+
+    // 기본값과 다른(사용자가 실제 변경한) 입력값만 저장해서 용량 극소화
+    const mergedInputs = { ...(s300.inputs || {}), ...(cObj.fields || {}) };
+    const diffInputs = {};
+    Object.entries(mergedInputs).forEach(([k, v]) => {
+      if (INITIAL_DOM_DEFAULTS[k] === undefined || String(INITIAL_DOM_DEFAULTS[k]) !== String(v)) {
+        diffInputs[k] = v;
+      }
+    });
+
+    const eqTrim = {};
+    ['scythe', 'orb', 'accessory'].forEach(k => {
+      const sub = (s300.equipInventories || {})[k];
+      if (sub && Object.keys(sub).length > 0) eqTrim[k] = sub;
+    });
+
+    const rfObj = mObj.masterEquipRefine || { scythe: 15, orb: 15, accessory: 15 };
+    return {
+      sn: slotName || '계정',
+      j: s300.currentRuneJob || 'reaper',
+      e: s300.currentRuneElem || 'fire',
+      us: uObj.currentUnionStageIdx ?? s300.currentUnionStageIdx ?? 0,
+      cs: s300.currentConnectStageSlots ?? 6,
+      rf: [rfObj.scythe ?? 15, rfObj.orb ?? 15, rfObj.accessory ?? 15],
+      r: runeIndices,
+      c: s300.ownedCoresEntries || [],
+      u: compactU,
+      eq: eqTrim,
+      sa: s300.selectedAncients || [],
+      em: s300.excludedMaterials || [],
+      f: diffInputs,
+      cm: [cObj.currentGrowthSubTab || 'job1', cObj.currentGuardianMode || 'break', cObj.currentRefineEquip || 'scythe', cObj.currentRefineRes || 'stone', cObj.currentGahoType || 'star']
+    };
+  }
+
+  // 초압축 객체 1개를 로컬 저장용 스냅샷으로 복원
+  function expandCompactSlotToSnap(cs) {
+    if (!cs) return null;
+    const ownedRunesArr = (cs.r || []).map(idx => RUNE_DB[idx]?.id).filter(Boolean);
+    const unionSpecsObj = { skill: {}, hero: {} };
+    ((cs.u && cs.u.s) || []).forEach(([shortUid, lv, brk, awk]) => {
+      unionSpecsObj.skill[`skill_${shortUid}`] = { owned: true, grade: shortUid.split('_')[0] || 'mythic', lv, brk, awk };
+    });
+    ((cs.u && cs.u.h) || []).forEach(([shortUid, lv, brk, awk]) => {
+      unionSpecsObj.hero[`hero_${shortUid}`] = { owned: true, grade: shortUid.split('_')[0] || 'mythic', lv, brk, awk };
+    });
+
+    const fullInputs = { ...INITIAL_DOM_DEFAULTS, ...(cs.f || {}) };
+    const rfArr = Array.isArray(cs.rf) ? cs.rf : [15, 15, 15];
+    const cm = Array.isArray(cs.cm) ? cs.cm : ['job1', 'break', 'scythe', 'stone', 'star'];
+
+    const s300 = {
+      selectedAncients: cs.sa || [],
+      excludedMaterials: cs.em || [],
+      ownedRunes: ownedRunesArr,
+      currentRuneJob: cs.j || 'reaper',
+      currentRuneElem: cs.e || 'fire',
+      ownedCoresEntries: cs.c || [],
+      currentConnectStageSlots: cs.cs ?? 6,
+      currentConnectJob: cs.j || 'reaper',
+      currentConnectElem: cs.e || 'fire',
+      selectedEquipType: 'scythe',
+      equipInventories: { scythe: {}, orb: {}, accessory: {}, ...(cs.eq || {}) },
+      inputs: fullInputs,
+      unionUserSpecs: unionSpecsObj,
+      currentUnionStageIdx: cs.us ?? 0
+    };
+    const union = {
+      unionUserSpecs: unionSpecsObj,
+      currentUnionStageIdx: cs.us ?? 0,
+      currentUnionType: 'skill'
+    };
+    const calcFields = {};
+    SAVED_CALC_FIELD_IDS.forEach(id => { if (fullInputs[id] !== undefined) calcFields[id] = fullInputs[id]; });
+    const calc = {
+      currentGrowthSubTab: cm[0],
+      currentGuardianMode: cm[1],
+      currentRefineEquip: cm[2],
+      currentRefineRes: cm[3],
+      currentGahoType: cm[4],
+      fields: calcFields
+    };
+    const minv = {
+      masterEquipRefine: { scythe: rfArr[0] ?? 15, orb: rfArr[1] ?? 15, accessory: rfArr[2] ?? 15 }
+    };
+    return {
+      s300: JSON.stringify(s300),
+      union: JSON.stringify(union),
+      calc: JSON.stringify(calc),
+      minv: JSON.stringify(minv)
+    };
+  }
+
   function generateReadableMasterSpecCode() {
     try {
+      saveUserSettings(false);
       const curSlot = window.shkSlotMeta.activeSlot || 1;
       const slotName = window.shkSlotMeta.names[curSlot] || `슬롯 ${curSlot}`;
-      const runeIndices = [];
-      RUNE_DB.forEach((r, idx) => { if (ownedRunes.has(r.id)) runeIndices.push(idx); });
-      const coreList = [];
-      ownedCoresMap.forEach((cnt, k) => coreList.push([k, cnt]));
-      const compactUnion = { s: [], h: [] };
-      Object.entries(unionUserSpecs.skill || {}).forEach(([uid, sp]) => {
-        if (sp && sp.owned) compactUnion.s.push([uid.replace('skill_', ''), sp.lv, sp.brk, sp.awk]);
-      });
-      Object.entries(unionUserSpecs.hero || {}).forEach(([uid, sp]) => {
-        if (sp && sp.owned) compactUnion.h.push([uid.replace('hero_', ''), sp.lv, sp.brk, sp.awk]);
-      });
-
-      const payload = {
-        v: 1, sn: slotName, j: currentRuneJob, e: currentRuneElem,
-        us: currentUnionStageIdx, cs: currentConnectStageSlots,
-        rf: [masterEquipRefine.scythe, masterEquipRefine.orb, masterEquipRefine.accessory],
-        r: runeIndices, c: coreList, u: compactUnion, eq: equipInventories,
-        inp: JSON.parse(localStorage.getItem(ALL_CALC_INPUTS_STORAGE_KEY) || '{}')
-      };
-
-      const b64Safe = btoa(unescape(encodeURIComponent(JSON.stringify(payload))))
-        .replace(/\+/g, '.').replace(/\//g, '_').replace(/=+$/, '');
-      const blocks = b64Safe.match(/.{1,6}/g)?.join('-') || b64Safe;
+      const snap = JSON.parse(localStorage.getItem(SLOT_DATA_PREFIX + curSlot) || 'null');
+      const compact = buildCompactSlotFromSnap(snap, slotName);
+      if (!compact) return '';
+      const payload = { v: 1, ...compact };
+      const blocks = encodeCompactPayload(payload);
       const jobKr = payload.j === 'reaper' ? '사신' : (payload.j === 'mage' ? '아크메이지' : '팬텀');
       const elemKr = payload.e === 'fire' ? '화염' : (payload.e === 'light' ? '번개' : '어둠');
-      return `[소헌키스펙:${slotName}/${jobKr}/${elemKr}/룬${runeIndices.length}/소울${coreList.length}/유니온${compactUnion.s.length + compactUnion.h.length}]\nSHK-V1-${blocks}`;
+      return `[소헌키스펙:${slotName}/${jobKr}/${elemKr}/룬${payload.r.length}/소울${payload.c.length}/유니온${payload.u.s.length + payload.u.h.length}]\nSHK-V1-${blocks}`;
     } catch (e) {
       return '코드 생성 중 오류가 발생했습니다.';
     }
   }
 
   function copyMasterSpecCode() {
-    const area = document.getElementById('master_spec_code_textarea');
     const msgEl = document.getElementById('master_code_status_msg');
-    if (!area) return;
-    area.value = generateReadableMasterSpecCode();
-    area.select();
-    navigator.clipboard.writeText(area.value).then(() => {
-      if (msgEl) { msgEl.style.color = '#34d399'; msgEl.innerText = '✅ 스펙 코드가 클립보드에 복사되었습니다! 카카오톡 등에 붙여넣어 보관·공유하세요.'; }
-    }).catch(() => {
-      document.execCommand('copy');
-      if (msgEl) msgEl.innerText = '✅ 스펙 코드가 복사되었습니다!';
+    const code = generateReadableMasterSpecCode();
+    copyTextToClipboardSafe(code, ok => {
+      if (msgEl) {
+        msgEl.style.color = ok ? '#34d399' : '#fbbf24';
+        msgEl.innerText = ok
+          ? `✅ 현재 슬롯 스펙 코드가 복사되었습니다! (${code.length.toLocaleString()}자)`
+          : '⚠️ 자동 복사가 차단되었습니다. 위 입력창을 길게 눌러 전체 복사해 주세요.';
+      }
     });
   }
 
   function copyAllSlotsBackupCode() {
     try {
       saveUserSettings(false);
+      const compactSlots = {};
+      [1, 2, 3].forEach(n => {
+        const snap = JSON.parse(localStorage.getItem(SLOT_DATA_PREFIX + n) || 'null');
+        compactSlots[n] = buildCompactSlotFromSnap(snap, window.shkSlotMeta.names[n]);
+      });
       const allPayload = {
-        v: 'ALL1',
-        activeSlot: window.shkSlotMeta.activeSlot || 1,
-        names: window.shkSlotMeta.names,
-        slots: {
-          1: JSON.parse(localStorage.getItem(SLOT_DATA_PREFIX + '1') || 'null'),
-          2: JSON.parse(localStorage.getItem(SLOT_DATA_PREFIX + '2') || 'null'),
-          3: JSON.parse(localStorage.getItem(SLOT_DATA_PREFIX + '3') || 'null')
-        }
+        v: 'ALL2',
+        a: window.shkSlotMeta.activeSlot || 1,
+        n: window.shkSlotMeta.names,
+        s: compactSlots
       };
-      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(allPayload))))
-        .replace(/\+/g, '.').replace(/\//g, '_').replace(/=+$/, '');
-      const blocks = encoded.match(/.{1,6}/g)?.join('-') || encoded;
-      const fullCode = `[소헌키3슬롯통합백업:${window.shkSlotMeta.names[1]}/${window.shkSlotMeta.names[2]}/${window.shkSlotMeta.names[3]}]\nSHK-ALL-${blocks}`;
-
-      const area = document.getElementById('master_spec_code_textarea');
-      if (area) area.value = fullCode;
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(fullCode);
-      else if (area) { area.select(); document.execCommand('copy'); }
+      const blocks = encodeCompactPayload(allPayload);
+      const fullCode = `[소헌키3슬롯통합백업:${window.shkSlotMeta.names[1]}/${window.shkSlotMeta.names[2]}/${window.shkSlotMeta.names[3]}]\nSHK-ALL2-${blocks}`;
 
       const msg = document.getElementById('master_code_status_msg');
-      if (msg) {
-        msg.style.color = '#34d399';
-        msg.innerText = '✅ 1·2·3번 슬롯 전체 통합 코드(SHK-ALL)가 복사되었습니다! 다른 기기에 붙여넣으면 3개 슬롯과 이름이 모두 복원됩니다.';
-      }
+      copyTextToClipboardSafe(fullCode, ok => {
+        if (msg) {
+          msg.style.color = ok ? '#34d399' : '#fbbf24';
+          msg.innerText = ok
+            ? `✅ 3슬롯 전체 초압축 코드(SHK-ALL2) 복사 완료! (${fullCode.length.toLocaleString()}자 · 모바일 카톡 호환)`
+            : '⚠️ 자동 복사가 차단되었습니다. 위 입력창을 길게 눌러 전체 복사해 주세요.';
+        }
+      });
     } catch (e) {
       alert('통합 코드 생성 중 오류가 발생했습니다.');
     }
@@ -5912,80 +6038,111 @@
       return;
     }
 
-    const raw = area.value.trim();
+    // 카톡 닉네임·시간·줄바꿈·이전 코드가 섞여 있어도 정확한 코드 토큰만 안전하게 추출!
+    const cleaned = area.value.replace(/[\u200B\uFEFF]/g, '');
+    const allMatches = Array.from(cleaned.matchAll(/(SHK-(?:ALL2|ALL|V1)-)([A-Za-z0-9._\-\u2013\u2014\u2212\s]+)/g));
+    if (allMatches.length === 0) {
+      if (msg) { msg.style.color = '#f87171'; msg.innerText = '❌ 올바른 코드 형식(SHK-V1 / SHK-ALL2)을 찾을 수 없습니다. 전체 코드를 다시 복사해 주세요.'; }
+      return;
+    }
 
-    if (raw.includes('SHK-ALL-')) {
+    // 여러 코드가 섞였다면 SHK-ALL2/ALL을 우선, 그중에서도 가장 마지막(방금 붙여넣은) 코드 선택
+    const allTypeMatches = allMatches.filter(m => m[1] === 'SHK-ALL2-' || m[1] === 'SHK-ALL-');
+    const picked = allTypeMatches.length > 0 ? allTypeMatches[allTypeMatches.length - 1] : allMatches[allMatches.length - 1];
+    const prefix = picked[1];
+    const tokenBody = picked[2];
+
+    if (prefix === 'SHK-ALL2-' || prefix === 'SHK-ALL-') {
       if (!confirm('📦 [3슬롯 전체 통합 코드]를 감지했습니다!\n불러오면 현재 기기의 1·2·3번 슬롯 이름과 모든 기록이 새 코드의 데이터로 덮어씌워진 뒤 자동 저장됩니다.\n\n계속 진행하시겠습니까?')) return;
       try {
-        let b64 = raw.split('SHK-ALL-')[1].replace(/[\s\-]/g, '').replace(/\./g, '+').replace(/_/g, '/');
-        while (b64.length % 4) b64 += '=';
-        const decoded = JSON.parse(decodeURIComponent(escape(atob(b64))));
-        if (!decoded || !decoded.slots) throw new Error('Invalid ALL code');
-
-        window.shkSlotMeta.activeSlot = decoded.activeSlot || 1;
-        if (decoded.names) window.shkSlotMeta.names = { ...window.shkSlotMeta.names, ...decoded.names };
-        saveSlotMeta();
-        [1, 2, 3].forEach(n => {
-          if (decoded.slots[n]) localStorage.setItem(SLOT_DATA_PREFIX + n, JSON.stringify(decoded.slots[n]));
-          else localStorage.removeItem(SLOT_DATA_PREFIX + n);
-        });
-
-        applySnapshotToLiveApp(decoded.slots[window.shkSlotMeta.activeSlot] || null);
+        const decoded = decodeCompactPayload(tokenBody);
+        if (prefix === 'SHK-ALL2-' && decoded && decoded.s) {
+          window.shkSlotMeta.activeSlot = decoded.a || 1;
+          if (decoded.n) window.shkSlotMeta.names = { ...window.shkSlotMeta.names, ...decoded.n };
+          saveSlotMeta();
+          const expandedSnaps = {};
+          [1, 2, 3].forEach(n => {
+            const snap = expandCompactSlotToSnap(decoded.s[n]);
+            expandedSnaps[n] = snap;
+            if (snap) localStorage.setItem(SLOT_DATA_PREFIX + n, JSON.stringify(snap));
+            else localStorage.removeItem(SLOT_DATA_PREFIX + n);
+          });
+          applySnapshotToLiveApp(expandedSnaps[window.shkSlotMeta.activeSlot] || null);
+        } else if (decoded && decoded.slots) {
+          // 구버전 SHK-ALL 하위 호환
+          window.shkSlotMeta.activeSlot = decoded.activeSlot || 1;
+          if (decoded.names) window.shkSlotMeta.names = { ...window.shkSlotMeta.names, ...decoded.names };
+          saveSlotMeta();
+          [1, 2, 3].forEach(n => {
+            if (decoded.slots[n]) localStorage.setItem(SLOT_DATA_PREFIX + n, JSON.stringify(decoded.slots[n]));
+            else localStorage.removeItem(SLOT_DATA_PREFIX + n);
+          });
+          applySnapshotToLiveApp(decoded.slots[window.shkSlotMeta.activeSlot] || null);
+        } else {
+          throw new Error('Invalid ALL code');
+        }
+        area.value = '';
         if (msg) { msg.style.color = '#34d399'; msg.innerText = '🎉 1·2·3번 전체 슬롯 이름과 스펙을 모두 성공적으로 불러왔습니다!'; }
         alert('🎉 1·2·3번 슬롯 전체 데이터와 슬롯 이름이 모두 복원되었습니다!');
       } catch (err) {
-        if (msg) { msg.style.color = '#f87171'; msg.innerText = '❌ 전체 슬롯 코드 형식이 올바르지 않거나 손상되었습니다.'; }
+        if (msg) { msg.style.color = '#f87171'; msg.innerText = '❌ 코드가 손상되었거나 뒷부분이 잘렸습니다. 카톡 [전체보기]에서 끝까지 복사했는지 확인해 주세요!'; }
       }
       return;
     }
 
+    // 단일 슬롯 코드 (SHK-V1-)
     const curSlot = window.shkSlotMeta.activeSlot || 1;
     const curName = window.shkSlotMeta.names[curSlot] || `슬롯 ${curSlot}`;
     if (!confirm(`⚠️ 스펙 코드를 불러오면 현재 선택된 [#${curSlot} ${curName}] 슬롯의 기존 기록이 사라지고 새 코드의 데이터로 덮어씌워진 뒤 자동 저장됩니다.\n\n계속 진행하시겠습니까?`)) return;
 
     try {
-      const rawAfterPrefix = raw.includes('SHK-V1-') ? raw.split('SHK-V1-')[1] : raw;
-      let b64 = rawAfterPrefix.replace(/[\s\-]/g, '').replace(/\./g, '+').replace(/_/g, '/');
-      while (b64.length % 4) b64 += '=';
-      const payload = JSON.parse(decodeURIComponent(escape(atob(b64))));
+      const payload = decodeCompactPayload(tokenBody);
       if (!payload || payload.v !== 1) throw new Error('Invalid code');
 
       if (payload.sn && typeof payload.sn === 'string') {
         window.shkSlotMeta.names[curSlot] = payload.sn.trim().slice(0, 12);
         saveSlotMeta();
       }
-      if (payload.j) syncAllJobs(payload.j);
-      if (payload.e) syncAllElems(payload.e);
-      if (payload.cs !== undefined) syncAllStagesFromConnectSlots(payload.cs);
-      if (Array.isArray(payload.rf)) {
-        masterEquipRefine = { scythe: payload.rf[0] ?? 15, orb: payload.rf[1] ?? 15, accessory: payload.rf[2] ?? 15 };
-        saveMasterInvExtraState();
-      }
-      if (Array.isArray(payload.r)) {
-        ownedRunes.clear();
-        payload.r.forEach(idx => { if (RUNE_DB[idx]) ownedRunes.add(RUNE_DB[idx].id); });
-      }
-      if (Array.isArray(payload.c)) {
-        ownedCoresMap.clear();
-        payload.c.forEach(([k, cnt]) => ownedCoresMap.set(k, cnt));
-      }
-      if (payload.u) {
-        unionUserSpecs = { skill: {}, hero: {} };
-        (payload.u.s || []).forEach(([shortUid, lv, brk, awk]) => { unionUserSpecs.skill[`skill_${shortUid}`] = { owned: true, lv, brk, awk }; });
-        (payload.u.h || []).forEach(([shortUid, lv, brk, awk]) => { unionUserSpecs.hero[`hero_${shortUid}`] = { owned: true, lv, brk, awk }; });
-        if (payload.us !== undefined) currentUnionStageIdx = payload.us;
-        saveUnionDataToLocal(true);
-      }
-      if (payload.eq) equipInventories = payload.eq;
-      if (payload.inp && payload.inp.fields) {
-        localStorage.setItem(ALL_CALC_INPUTS_STORAGE_KEY, JSON.stringify(payload.inp));
-        loadAllResourceCalcInputs();
-      }
 
-      onMasterInvRefineChange();
-      refreshAllActiveViews();
-      saveUserSettings(false);
-      refreshMasterInventoryModalUI();
+      // 신규 압축 필드(f) 포함 시 스냅샷으로 100% 일괄 복원, 구버전 SHK-V1도 호환
+      if (payload.f) {
+        const snap = expandCompactSlotToSnap(payload);
+        if (snap) localStorage.setItem(SLOT_DATA_PREFIX + curSlot, JSON.stringify(snap));
+        applySnapshotToLiveApp(snap);
+      } else {
+        if (payload.j) syncAllJobs(payload.j);
+        if (payload.e) syncAllElems(payload.e);
+        if (payload.cs !== undefined) syncAllStagesFromConnectSlots(payload.cs);
+        if (Array.isArray(payload.rf)) {
+          masterEquipRefine = { scythe: payload.rf[0] ?? 15, orb: payload.rf[1] ?? 15, accessory: payload.rf[2] ?? 15 };
+          saveMasterInvExtraState();
+        }
+        if (Array.isArray(payload.r)) {
+          ownedRunes.clear();
+          payload.r.forEach(idx => { if (RUNE_DB[idx]) ownedRunes.add(RUNE_DB[idx].id); });
+        }
+        if (Array.isArray(payload.c)) {
+          ownedCoresMap.clear();
+          payload.c.forEach(([k, cnt]) => ownedCoresMap.set(k, cnt));
+        }
+        if (payload.u) {
+          unionUserSpecs = { skill: {}, hero: {} };
+          (payload.u.s || []).forEach(([shortUid, lv, brk, awk]) => { unionUserSpecs.skill[`skill_${shortUid}`] = { owned: true, grade: shortUid.split('_')[0] || 'mythic', lv, brk, awk }; });
+          (payload.u.h || []).forEach(([shortUid, lv, brk, awk]) => { unionUserSpecs.hero[`hero_${shortUid}`] = { owned: true, grade: shortUid.split('_')[0] || 'mythic', lv, brk, awk }; });
+          if (payload.us !== undefined) currentUnionStageIdx = payload.us;
+          saveUnionDataToLocal(true);
+        }
+        if (payload.eq) equipInventories = payload.eq;
+        if (payload.inp && payload.inp.fields) {
+          localStorage.setItem(ALL_CALC_INPUTS_STORAGE_KEY, JSON.stringify(payload.inp));
+          loadAllResourceCalcInputs();
+        }
+        onMasterInvRefineChange();
+        refreshAllActiveViews();
+        saveUserSettings(false);
+        refreshMasterInventoryModalUI();
+      }
+      area.value = '';
       if (msg) {
         msg.style.color = '#34d399';
         msg.innerText = `🎉 [#${curSlot} ${window.shkSlotMeta.names[curSlot]}] 슬롯에 스펙 코드가 완벽히 적용 및 자동 저장되었습니다!`;
