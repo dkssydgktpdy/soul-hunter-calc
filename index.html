@@ -2604,7 +2604,7 @@
           <div class="accordion-header" onclick="toggleNewbieAccordion('acc_guide_newbie')">
             <div class="accordion-left">
               <span class="accordion-toggle-icon">▶</span>
-              <span class="accordion-title-text" style="color: #fef08a;">🐣 5,000렙 달성 뉴비 필수 코스 (극초반 빌드 · 각성 우선순위 · 사신➔앜메 전환)</span>
+              <span class="accordion-title-text" style="color: #fef08a;">🐣 5,000렙 달성 뉴비 필수 코스 (극초반 빌드 · 사신➔앜메 전환 & 진단)</span>
             </div>
             <div class="accordion-right-info">
               <span class="accordion-count-badge has-selected">필독 입문</span>
@@ -2612,58 +2612,48 @@
           </div>
           <div class="accordion-content" style="padding: 12px;">
             <div class="hub-grid" style="gap: 10px;">
-              <div class="hub-card" onclick="openSpecialGuideDetail('early')" style="padding: 12px 14px;">
-                <div class="hub-card-left" style="gap: 10px;">
-                  <div class="hub-card-icon" style="width:40px; height:40px; border-radius:10px; border-color:#eab308; background:#0f172a; font-size:18px;">
-                    <img src="images/chick.png" alt="극초반" onerror="this.onerror=null; this.parentElement.innerHTML='🐣';">
-                  </div>
-                  <div>
-                    <span class="hub-card-title" style="font-size:14.5px; margin-bottom:2px;">🐣 극초반 스킬 &amp; 영웅 추천 빌드</span>
-                    <span class="hub-card-desc" style="font-size:11.5px;">5,000레벨 달성 후(스킬 4➔5칸 &amp; 영웅 3➔4칸) 필수 입문 세팅</span>
-                  </div>
+            <!-- 1. 극초반 입문 빌드 -->
+            <div class="hub-card" onclick="openSpecialGuideDetail('early')" style="padding: 12px 14px;">
+              <div class="hub-card-left" style="gap: 10px;">
+                <div class="hub-card-icon" style="width:40px; height:40px; border-radius:10px; border-color:#eab308; background:#0f172a; font-size:18px;">
+                  <img src="images/chick.png" alt="극초반" onerror="this.onerror=null; this.parentElement.innerHTML='🐣';">
                 </div>
-                <div class="hub-card-arrow" style="font-size:15px;">➔</div>
-              </div>
-
-              <div class="hub-card" onclick="openSpecialGuideDetail('awakening_order')" style="padding: 12px 14px; border-color:rgba(168,85,247,0.55);">
-                <div class="hub-card-left" style="gap: 10px;">
-                  <div class="hub-card-icon" style="width:40px; height:40px; border-radius:10px; border-color:#a855f7; background:rgba(168,85,247,0.14); font-size:18px;">
-                    <img src="images/upgrade_stone.png" alt="각성우선순위" onerror="this.onerror=null; this.src='images/frenzy.jpg'; this.onerror=function(){this.parentElement.innerHTML='🔮';};">
-                  </div>
-                  <div>
-                    <span class="hub-card-title" style="font-size:14.5px; margin-bottom:2px;">🔮 각성 우선순위 &amp; 패시브 세팅 가이드</span>
-                    <span class="hub-card-desc" style="font-size:11.5px;">0순위 고대 패시브 제작 &amp; 1~3고패 슬롯 교체표 / 스킬·영웅 각성</span>
-                  </div>
+                <div>
+                  <span class="hub-card-title" style="font-size:14.5px; margin-bottom:2px;">🐣 극초반 스킬 &amp; 영웅 추천 빌드</span>
+                  <span class="hub-card-desc" style="font-size:11.5px;">5,000레벨 달성 후(스킬 4➔5칸 &amp; 영웅 3➔4칸) 필수 입문 세팅</span>
                 </div>
-                <div class="hub-card-arrow" style="font-size:15px;">➔</div>
               </div>
-
-              <div class="hub-card" onclick="openSpecialGuideDetail('transition')" style="padding: 12px 14px; border-color:rgba(56,189,248,0.45);">
-                <div class="hub-card-left" style="gap: 10px;">
-                  <div class="hub-card-icon" style="width:40px; height:40px; border-radius:10px; border-color:#38bdf8; background:rgba(56,189,248,0.12); font-size:18px;">
-                    <span>🔄</span>
-                  </div>
-                  <div>
-                    <span class="hub-card-title" style="font-size:14.5px; margin-bottom:2px;">🔄 사신 ➔ 아크메이지 전환 가이드</span>
-                    <span class="hub-card-desc" style="font-size:11.5px;">1차 60렙 이전 사신 육성 이유 &amp; 미스틱 전환 타이밍·필수 준비물</span>
-                  </div>
-                </div>
-                <div class="hub-card-arrow" style="font-size:15px;">➔</div>
-              </div>
-
-              <div class="hub-card" onclick="openTransitionCheckerBeta()" style="padding: 12px 14px; border-color:rgba(52,211,153,0.6); background:linear-gradient(135deg, rgba(16,185,129,0.15) 0%, #0f172a 100%);">
-                <div class="hub-card-left" style="gap: 10px;">
-                  <div class="hub-card-icon" style="width:40px; height:40px; border-radius:10px; border-color:#10b981; background:rgba(16,185,129,0.2); font-size:18px;">
-                    <span>⚖️</span>
-                  </div>
-                  <div>
-                    <span class="hub-card-title" style="font-size:14.5px; margin-bottom:2px; color:#6ee7b7;">⚖️ 내가 사신에서 아크메이지로 갈아탈 수 있을까? <small style="background:#059669; color:#fff; padding:1px 5px; border-radius:4px; font-size:10px;">Beta</small></span>
-                    <span class="hub-card-desc" style="font-size:11.5px;">유니온·소울커넥트 자동 연동 &amp; 3차·고패 체크리스트 실시간 판정기</span>
-                  </div>
-                </div>
-                <div class="hub-card-arrow" style="font-size:15px; color:#34d399;">➔</div>
-              </div>
+              <div class="hub-card-arrow" style="font-size:15px;">➔</div>
             </div>
+
+            <!-- 2. 사신 -> 아크메이지 전환 가이드 -->
+            <div class="hub-card" onclick="openSpecialGuideDetail('transition')" style="padding: 12px 14px; border-color:rgba(56,189,248,0.45);">
+              <div class="hub-card-left" style="gap: 10px;">
+                <div class="hub-card-icon" style="width:40px; height:40px; border-radius:10px; border-color:#38bdf8; background:rgba(56,189,248,0.12); font-size:18px;">
+                  <span>🔄</span>
+                </div>
+                <div>
+                  <span class="hub-card-title" style="font-size:14.5px; margin-bottom:2px;">🔄 사신 ➔ 아크메이지 전환 가이드</span>
+                  <span class="hub-card-desc" style="font-size:11.5px;">1차 60렙 이전 사신 육성 이유 &amp; 미스틱 전환 타이밍·필수 준비물</span>
+                </div>
+              </div>
+              <div class="hub-card-arrow" style="font-size:15px;">➔</div>
+            </div>
+
+            <!-- 3. 내가 사신에서 아크메이지로 갈아탈 수 있을까? (v.1.0.0 정식 승격) -->
+            <div class="hub-card" onclick="openTransitionCheckerBeta()" style="padding: 12px 14px; border-color:rgba(52,211,153,0.6); background:linear-gradient(135deg, rgba(16,185,129,0.15) 0%, #0f172a 100%);">
+              <div class="hub-card-left" style="gap: 10px;">
+                <div class="hub-card-icon" style="width:40px; height:40px; border-radius:10px; border-color:#10b981; background:rgba(16,185,129,0.2); font-size:18px;">
+                  <span>⚖️</span>
+                </div>
+                <div>
+                  <span class="hub-card-title" style="font-size:14.5px; margin-bottom:2px; color:#6ee7b7;">⚖️ 내가 사신에서 아크메이지로 갈아탈 수 있을까? <small style="background:#059669; color:#fff; padding:1px 6px; border-radius:4px; font-size:10px;">v.1.0.0</small></span>
+                  <span class="hub-card-desc" style="font-size:11.5px;">유니온·소울커넥트 자동 연동 &amp; 3차·고패 체크리스트 실시간 판정기</span>
+                </div>
+              </div>
+              <div class="hub-card-arrow" style="font-size:15px; color:#34d399;">➔</div>
+            </div>
+          </div>
           </div>
         </div>
 
@@ -3044,7 +3034,7 @@
 
         <!-- ==================== 🛠️ 세팅 도우미 모음 (4대 도우미 메인 그리드) ==================== -->
         <div class="hub-section" id="helper_icons_accordion_section">
-          <div class="hub-grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px;">
+          <div class="hub-grid" style="grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 12px;">
             <!-- 1. 소울커넥트 코어 도우미 -->
             <div class="hub-card" onclick="openDeepCalculator('tab-connect')" style="flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px 14px; gap:10px; border-color:rgba(168,85,247,0.55);">
               <div class="hub-card-icon" style="width:60px; height:60px; border-radius:14px; border-color:#a855f7; background:rgba(168,85,247,0.14);">
@@ -3104,6 +3094,28 @@
                 <span class="grade-badge grade-legend" style="font-size:10.5px; margin-bottom:5px;">v.2.0.0</span>
                 <span class="hub-card-desc" style="display:block; font-size:11.5px;">1차 레벨별 추천 &amp; 2·3차 트리</span>
                 <span style="display:block; font-size:10.5px; color:#fbbf24; margin-top:2px; opacity:0.9;">(4차는 아직 준비 중)</span>
+              </div>
+            </div>
+
+            <!-- 5. 각성 우선순위 & 패시브 도우미 (메인 도우미 탭 승격!) -->
+            <div class="hub-card" onclick="openAwakeningHelperFromHub()" style="flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px 14px; gap:10px; border-color:rgba(129,140,248,0.6);">
+              <div class="hub-card-icon" style="width:60px; height:60px; border-radius:14px; border-color:#818cf8; background:radial-gradient(circle, #312e81 0%, #090d16 100%); box-shadow:0 0 14px rgba(129,140,248,0.35);">
+                <svg width="38" height="38" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 6px rgba(129,140,248,0.9));">
+                  <defs>
+                    <linearGradient id="awkHubGem" x1="12" y1="5" x2="32" y2="39" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#e0f2fe"/><stop offset="0.45" stop-color="#818cf8"/><stop offset="1" stop-color="#4f46e5"/>
+                    </linearGradient>
+                  </defs>
+                  <polygon points="22,3 38,12 38,32 22,41 6,32 6,12" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="3 2" fill="rgba(99,102,241,0.12)"/>
+                  <polygon points="22,7 33,22 22,37 11,22" fill="url(#awkHubGem)" stroke="#e0e7ff" stroke-width="1.6" stroke-linejoin="round"/>
+                  <polygon points="22,12 27.5,22 22,32 16.5,22" fill="rgba(255,255,255,0.28)"/>
+                  <path d="M22 14L24 20L30 22L24 24L22 30L20 24L14 22L20 20L22 14Z" fill="#ffffff"/>
+                </svg>
+              </div>
+              <div>
+                <span class="hub-card-title" style="font-size:15.5px; margin-bottom:3px;">💎 각성 &amp; 패시브 도우미</span>
+                <span class="grade-badge grade-ancient" style="font-size:10.5px; margin-bottom:5px;">v.1.2.0</span>
+                <span class="hub-card-desc" style="display:block; font-size:11.5px;">0~5고패 슬롯 &amp; 3각 우선순위</span>
               </div>
             </div>
           </div>
@@ -4756,9 +4768,15 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    // 3) 각성 우선순위 세부 화면에서 뒤로가기 -> 각성 우선순위 허브로 복귀
-    if (currentMainMode === 'guides' && currentGuideType === 'awakening_order' && awkSubView !== 'hub' && document.getElementById("guides_detail_view")?.style.display === "block") {
+    // 3) 각성 우선순위 세부 화면에서 뒤로가기 -> 각성 우선순위 허브(1.~3.)로 복귀
+    if (currentGuideType === 'awakening_order' && awkSubView !== 'hub' && document.getElementById("guides_detail_view")?.style.display === "block") {
       openAwkSubView('hub');
+      return;
+    }
+    // 4) 각성 우선순위 허브에서 뒤로가기 -> 진입 경로(helpers)로 복귀
+    if (currentGuideType === 'awakening_order' && currentGuideOrigin === 'helpers' && document.getElementById("guides_detail_view")?.style.display === "block") {
+      switchMainMode('helpers');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     switchMainMode(currentMainMode);
@@ -9222,12 +9240,50 @@
   function changeAwkGuideJob(jVal) { awkGuideJob = jVal; renderBuildGuideContent(); }
   function changeAwkGuideElem(eVal) { awkGuideElem = eVal; renderBuildGuideContent(); }
 
+  // ✨ 스킬 & 영웅 통합 3각성 가이드 전용 고퀄리티 SVG 생성 함수 (⭐ 이모티콘 대체)
+  function getAwkSkillHeroSvg() {
+    return `
+      <svg width="36" height="36" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 7px rgba(129,140,248,0.85));">
+        <defs>
+          <linearGradient id="awkSHBg" x1="4" y1="4" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#38bdf8"/><stop offset="0.5" stop-color="#818cf8"/><stop offset="1" stop-color="#c084fc"/>
+          </linearGradient>
+          <linearGradient id="awkSHCore" x1="14" y1="10" x2="30" y2="34" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#ffffff"/><stop offset="0.5" stop-color="#bae6fd"/><stop offset="1" stop-color="#818cf8"/>
+          </linearGradient>
+        </defs>
+        <!-- 외곽 마법진 팔각 오라 -->
+        <polygon points="22,2 30,6 38,6 38,14 42,22 38,30 38,38 30,38 22,42 14,38 6,38 6,30 2,22 6,14 6,6 14,6" stroke="url(#awkSHBg)" stroke-width="1.4" fill="rgba(79,70,229,0.18)"/>
+        <!-- 중앙 승천 각성 검 + 방패 실루엣 -->
+        <path d="M22 7L27 17L35 22L27 27L22 37L17 27L9 22L17 17L22 7Z" fill="url(#awkSHCore)" stroke="#e0f2fe" stroke-width="1.2" stroke-linejoin="round"/>
+        <!-- 3각성(★★★)을 상징하는 3개의 빛나는 노바 다이아 -->
+        <polygon points="22,15 24.5,19.5 22,24 19.5,19.5" fill="#1e1b4b"/>
+        <circle cx="15" cy="11" r="1.8" fill="#7dd3fc"/>
+        <circle cx="29" cy="11" r="1.8" fill="#c084fc"/>
+        <circle cx="22" cy="5.5" r="2" fill="#ffffff"/>
+      </svg>
+    `;
+  }
+
   function openAwkSubView(viewName) {
     awkSubView = viewName;
     const floatTxt = document.getElementById("floating_back_text");
-    if (floatTxt) floatTxt.innerText = (viewName === 'hub') ? "가이드 목록으로 돌아가기" : "각성 가이드 메뉴로 돌아가기";
+    if (floatTxt) {
+      if (viewName === 'hub') {
+        floatTxt.innerText = (currentGuideOrigin === 'helpers') ? "도우미 모음으로 돌아가기" : "가이드 목록으로 돌아가기";
+      } else {
+        floatTxt.innerText = "각성 도우미 메뉴로 돌아가기";
+      }
+    }
     renderBuildGuideContent();
     window.scrollTo({ top: 100, behavior: 'smooth' });
+  }
+
+  function openAwakeningHelperFromHub() {
+    currentMainMode = 'helpers';
+    openSpecialGuideDetail('awakening_order');
+    currentGuideOrigin = 'helpers';
+    document.getElementById("floating_back_text").innerText = "도우미 모음으로 돌아가기";
   }
 
   function jumpToPassiveSlotGuide(targetJob) {
@@ -9280,7 +9336,7 @@
       early:           { t:"🐣 5,000렙 이후 극초반 스킬 & 영웅 세팅", b:"Lv.5,000+ 입문", s:"캐릭터 5,000레벨 달성 후 해금되는 스킬 5번째 칸과 영웅 4번째 칸의 정석 세팅 빌드입니다." },
       awakening_order: { t:"🔮 각성 우선순위 & 패시브 세팅 가이드", b:"0순위 고패 & 패시브 편성", s:"원하시는 가이드를 아래 배너에서 선택하세요. (초반 각성석 0순위는 무조건 1~3순위 고대 패시브 제작입니다!)" },
       transition:      { t:"🔄 사신 ➔ 아크메이지 전환 완벽 가이드", b:"직업 전환 타이밍", s:"초반 사신으로 시작해 3차 전직 이후 아크메이지(제네시스)로 공백 없이 넘어가는 핵심 로드맵입니다." },
-      transition_beta: { t:"⚖️ 내가 사신에서 아크메이지로 갈아탈 수 있을까?", b:"Beta · 전환 판정기", s:"내 주속성과 체크리스트, 유니온·소울커넥트 스펙을 비교해 아크메이지 전환 가능 여부를 즉시 판정합니다." }
+      transition_beta: { t:"⚖️ 내가 사신에서 아크메이지로 갈아탈 수 있을까?", b:"v.1.0.0 · 전환 판정기", s:"내 주속성과 체크리스트, 유니온·소울커넥트 스펙을 비교해 아크메이지 전환 가능 여부를 즉시 판정합니다." }
     }[type];
 
     if (type === 'awakening_order') { awkGuideJob = 'reaper'; awkSubView = 'hub'; }
@@ -9430,22 +9486,85 @@
 
       if (awkSubView === 'hub') {
         body.innerHTML = `<div style="display:flex; flex-direction:column; gap:12px;">
-          <div class="hub-card" onclick="openAwkSubView('recipe')" style="border:2px solid #a855f7; background:linear-gradient(135deg, rgba(168,85,247,0.18) 0%, #0f172a 100%); padding:16px 18px;"><div class="hub-card-left" style="gap:14px;"><div class="hub-card-icon" style="width:48px; height:48px; border-color:#c084fc; background:#1e1b4b;"><img src="images/ancient_passive.png" alt="0순위고패" onerror="this.onerror=null;this.src='images/strike_master.jpg';"></div><div><div style="display:flex; align-items:center; gap:6px; margin-bottom:3px;"><span class="grade-badge grade-ancient" style="font-size:11px;">0순위 최우선</span><span class="hub-card-title" style="font-size:16px; margin:0;">직업별 고대 패시브 (1~3순위) 제작 로드맵 &amp; 각성석</span></div><span class="hub-card-desc" style="color:#cbd5e1;">무엇+무엇으로 만들고 각성석이 몇 개 드는지 한눈에 보기</span></div></div><div class="hub-card-arrow" style="color:#c084fc; font-weight:900;">보러가기 ➔</div></div>
-          <div class="hub-card" onclick="openAwkSubView('passive_slot')" style="border:2px solid #06b6d4; background:linear-gradient(135deg, rgba(6,182,212,0.16) 0%, #0f172a 100%); padding:16px 18px;"><div class="hub-card-left" style="gap:14px;"><div class="hub-card-icon" style="width:48px; height:48px; border-color:#22d3ee; background:#083344;"><img src="images/main_passive.png" alt="패시브세팅" onerror="this.onerror=null;this.src='images/pierce.jpg';"></div><div><div style="display:flex; align-items:center; gap:6px; margin-bottom:3px;"><span class="grade-badge grade-eternal" style="font-size:11px;">슬롯 편성 도우미</span><span class="hub-card-title" style="font-size:16px; margin:0;">0고패 ➔ 1고패 ➔ 2고패 ➔ 3고패 패시브 5슬롯 장착 가이드</span></div><span class="hub-card-desc" style="color:#cbd5e1;">고패를 하나씩 만들 때마다 기존 패시브 중 무엇을 빼고 끼는지 확인!</span></div></div><div class="hub-card-arrow" style="color:#22d3ee; font-weight:900;">보러가기 ➔</div></div>
-          <div class="hub-card" onclick="openAwkSubView('skill_hero_awk')" style="border:2px solid #eab308; background:linear-gradient(135deg, rgba(234,179,8,0.18) 0%, #0f172a 100%); padding:16px 18px;"><div class="hub-card-left" style="gap:14px;"><div class="hub-card-icon" style="width:48px; height:48px; border-color:#fde047; background:radial-gradient(circle at center, #3b0764 0%, #090d16 100%);"><span style="font-size:24px;">⭐</span></div><div><div style="display:flex; align-items:center; gap:6px; margin-bottom:3px;"><span class="grade-badge grade-legend" style="font-size:11px;">통합 3각 로드맵</span><span class="hub-card-title" style="font-size:16px; margin:0;">스킬 &amp; 영웅 통합 3각성 우선순위 가이드</span></div><span class="hub-card-desc" style="color:#cbd5e1;">직업별 1순위~5순위 통합 추천 (1각 도배 정석 포함)</span></div></div><div class="hub-card-arrow" style="color:#fde047; font-weight:900;">보러가기 ➔</div></div>
-          <div class="hub-card" onclick="openAwkSubView('endgame_5anc')" style="border:2px solid #f43f5e; background:linear-gradient(135deg, rgba(244,63,94,0.18) 0%, #0f172a 100%); padding:16px 18px;"><div class="hub-card-left" style="gap:14px;"><div class="hub-card-icon" style="width:48px; height:48px; border-color:#fb7185; background:#4c0519;"><img src="images/ancient_mem.jpg" alt="5고패" onerror="this.onerror=null;this.src='images/elem_create.jpg';"></div><div><div style="display:flex; align-items:center; gap:6px; margin-bottom:3px;"><span class="grade-badge grade-mythic" style="font-size:11px;">엔드 스펙 심화</span><span class="hub-card-title" style="font-size:16px; margin:0;">👑 [심화 공략] 5고패 완성 &amp; 돌파·각성 최적화 순서</span></div><span class="hub-card-desc" style="color:#cbd5e1;">졸업 유저를 위한 [원소창조 10돌 ➔ 3·6·9 균등 돌파 ➔ 고대의 기억 각성] 정석 로드맵</span></div></div><div class="hub-card-arrow" style="color:#fb7185; font-weight:900;">보러가기 ➔</div></div>
+          <!-- 1. 고대 패시브 (1~3순위) 제작 로드맵 -->
+          <div class="hub-card" onclick="openAwkSubView('recipe')" style="border:1.5px solid #38bdf8; background:linear-gradient(135deg, rgba(14,165,233,0.16) 0%, rgba(30,27,75,0.85) 100%); padding:16px 18px; box-shadow:0 4px 16px rgba(14,165,233,0.14);">
+            <div class="hub-card-left" style="gap:14px;">
+              <div class="hub-card-icon" style="width:48px; height:48px; border-color:#38bdf8; background:#0c4a6e;">
+                <img src="images/ancient_passive.png" alt="0순위고패" onerror="this.onerror=null;this.src='images/strike_master.jpg';">
+              </div>
+              <div>
+                <div style="display:flex; align-items:center; gap:7px; margin-bottom:3px; flex-wrap:wrap;">
+                  <span style="background:linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color:#ffffff; font-size:11px; font-weight:900; padding:2px 8px; border-radius:6px; letter-spacing:0.3px;">1.</span>
+                  <span class="hub-card-title" style="font-size:15.5px; margin:0; color:#f8fafc;">직업별 고대 패시브 (1~3순위) 제작 로드맵 &amp; 각성석</span>
+                </div>
+                <span class="hub-card-desc" style="color:#cbd5e1;">0순위 최우선! 무엇+무엇으로 만들고 각성석이 몇 개 드는지 한눈에 보기</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow" style="color:#38bdf8; font-weight:900;">➔</div>
+          </div>
+
+          <!-- 1.1 0~3고패 단계별 패시브 5슬롯 교체표 (1번의 하위 연동 메뉴 느낌으로 살짝 깊이감 있는 그라데이션) -->
+          <div class="hub-card" onclick="openAwkSubView('passive_slot')" style="border:1.5px solid #6366f1; background:linear-gradient(135deg, rgba(59,130,246,0.16) 0%, rgba(49,46,129,0.82) 100%); padding:16px 18px; box-shadow:0 4px 16px rgba(99,102,241,0.14);">
+            <div class="hub-card-left" style="gap:14px;">
+              <div class="hub-card-icon" style="width:48px; height:48px; border-color:#818cf8; background:#1e1b4b;">
+                <img src="images/main_passive.png" alt="패시브세팅" onerror="this.onerror=null;this.src='images/pierce.jpg';">
+              </div>
+              <div>
+                <div style="display:flex; align-items:center; gap:7px; margin-bottom:3px; flex-wrap:wrap;">
+                  <span style="background:linear-gradient(135deg, #2563eb 0%, #4f46e5 100%); color:#ffffff; font-size:11px; font-weight:900; padding:2px 8px; border-radius:6px; letter-spacing:0.3px;">1.1</span>
+                  <span class="hub-card-title" style="font-size:15.5px; margin:0; color:#f8fafc;">0고패 ➔ 1고패 ➔ 2고패 ➔ 3고패 패시브 5슬롯 장착 가이드</span>
+                </div>
+                <span class="hub-card-desc" style="color:#cbd5e1;">고패를 하나씩 만들 때마다 기존 패시브 중 무엇을 빼고 끼는지 확인!</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow" style="color:#818cf8; font-weight:900;">➔</div>
+          </div>
+
+          <!-- 2. 스킬 & 영웅 통합 3각성 우선순위 (이모티콘 제거 & 커스텀 SVG 함수 적용!) -->
+          <div class="hub-card" onclick="openAwkSubView('skill_hero_awk')" style="border:1.5px solid #8b5cf6; background:linear-gradient(135deg, rgba(99,102,241,0.18) 0%, rgba(76,29,149,0.72) 100%); padding:16px 18px; box-shadow:0 4px 16px rgba(139,92,246,0.16);">
+            <div class="hub-card-left" style="gap:14px;">
+              <div class="hub-card-icon" style="width:48px; height:48px; border-color:#a78bfa; background:radial-gradient(circle at center, #312e81 0%, #090d16 100%);">
+                ${getAwkSkillHeroSvg()}
+              </div>
+              <div>
+                <div style="display:flex; align-items:center; gap:7px; margin-bottom:3px; flex-wrap:wrap;">
+                  <span style="background:linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color:#ffffff; font-size:11px; font-weight:900; padding:2px 8px; border-radius:6px; letter-spacing:0.3px;">2.</span>
+                  <span class="hub-card-title" style="font-size:15.5px; margin:0; color:#f8fafc;">스킬 &amp; 영웅 통합 3각성 우선순위 가이드</span>
+                </div>
+                <span class="hub-card-desc" style="color:#cbd5e1;">직업별 1순위~5순위 통합 추천 (착용 슬롯 골고루 1각 도배 정석 포함)</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow" style="color:#a78bfa; font-weight:900;">➔</div>
+          </div>
+
+          <!-- 3. 심화 공략: 5고패 완성 & 돌파·각성 순서 -->
+          <div class="hub-card" onclick="openAwkSubView('endgame_5anc')" style="border:1.5px solid #a855f7; background:linear-gradient(135deg, rgba(139,92,246,0.2) 0%, rgba(88,28,135,0.78) 100%); padding:16px 18px; box-shadow:0 4px 16px rgba(168,85,247,0.18);">
+            <div class="hub-card-left" style="gap:14px;">
+              <div class="hub-card-icon" style="width:48px; height:48px; border-color:#c084fc; background:#3b0764;">
+                <img src="images/ancient_mem.jpg" alt="5고패" onerror="this.onerror=null;this.src='images/elem_create.jpg';">
+              </div>
+              <div>
+                <div style="display:flex; align-items:center; gap:7px; margin-bottom:3px; flex-wrap:wrap;">
+                  <span style="background:linear-gradient(135deg, #7c3aed 0%, #9333ea 100%); color:#ffffff; font-size:11px; font-weight:900; padding:2px 8px; border-radius:6px; letter-spacing:0.3px;">3.</span>
+                  <span class="hub-card-title" style="font-size:15.5px; margin:0; color:#f8fafc;">[심화 공략] 5고패 완성 &amp; 돌파·각성 최적화 순서</span>
+                </div>
+                <span class="hub-card-desc" style="color:#cbd5e1;">졸업 유저용 [원소창조 10돌 ➔ 3·6·9 균등 돌파 ➔ 고대의 기억 각성] 정석 로드맵</span>
+              </div>
+            </div>
+            <div class="hub-card-arrow" style="color:#c084fc; font-weight:900;">➔</div>
+          </div>
         </div>`;
         return;
       }
 
       const topCtrl = `<div style="background:#131d33; border:1.5px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:12px;">
         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px; border-bottom:1px solid #1e293b; padding-bottom:10px;">
-          <button type="button" onclick="openAwkSubView('hub')" style="background:linear-gradient(135deg, #d97706 0%, #92400e 100%); border:1.5px solid #fbbf24; color:#ffffff; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:900; cursor:pointer;">🔙 메뉴 선택으로</button>
+          <button type="button" onclick="openAwkSubView('hub')" style="background:linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border:1.5px solid #38bdf8; color:#e0f2fe; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:900; cursor:pointer;">🔙 메뉴 선택으로</button>
           <div style="display:flex; gap:6px; flex-wrap:wrap;">
-            <button type="button" onclick="openAwkSubView('recipe')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='recipe'?'#a855f7':'#475569'}; background:${awkSubView==='recipe'?'#3b0764':'#0f172a'}; color:#fff;">🥇 0순위 고패 제작식</button>
-            <button type="button" onclick="openAwkSubView('passive_slot')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='passive_slot'?'#06b6d4':'#475569'}; background:${awkSubView==='passive_slot'?'#083344':'#0f172a'}; color:#fff;">📜 0~3고패 슬롯표</button>
-            <button type="button" onclick="openAwkSubView('skill_hero_awk')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='skill_hero_awk'?'#eab308':'#475569'}; background:${awkSubView==='skill_hero_awk'?'#422006':'#0f172a'}; color:#fde047;">⚡🦸 스킬·영웅 3각 순위</button>
-            <button type="button" onclick="openAwkSubView('endgame_5anc')" style="padding:6px 10px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='endgame_5anc'?'#f43f5e':'#475569'}; background:${awkSubView==='endgame_5anc'?'#881337':'#0f172a'}; color:#fda4af;">👑 심화: 5고패 순서</button>
+            <button type="button" onclick="openAwkSubView('recipe')" style="padding:6px 11px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='recipe'?'#38bdf8':'#334155'}; background:${awkSubView==='recipe'?'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)':'#0f172a'}; color:${awkSubView==='recipe'?'#ffffff':'#cbd5e1'};">1. 고패 제작식</button>
+            <button type="button" onclick="openAwkSubView('passive_slot')" style="padding:6px 11px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='passive_slot'?'#818cf8':'#334155'}; background:${awkSubView==='passive_slot'?'linear-gradient(135deg, #2563eb 0%, #4338ca 100%)':'#0f172a'}; color:${awkSubView==='passive_slot'?'#ffffff':'#cbd5e1'};">1.1 0~3고패 슬롯표</button>
+            <button type="button" onclick="openAwkSubView('skill_hero_awk')" style="padding:6px 11px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='skill_hero_awk'?'#a78bfa':'#334155'}; background:${awkSubView==='skill_hero_awk'?'linear-gradient(135deg, #4f46e5 0%, #6d28d9 100%)':'#0f172a'}; color:${awkSubView==='skill_hero_awk'?'#ffffff':'#cbd5e1'};">2. 스킬·영웅 3각 순위</button>
+            <button type="button" onclick="openAwkSubView('endgame_5anc')" style="padding:6px 11px; border-radius:7px; font-size:12px; font-weight:800; cursor:pointer; border:1.5px solid ${awkSubView==='endgame_5anc'?'#c084fc':'#334155'}; background:${awkSubView==='endgame_5anc'?'linear-gradient(135deg, #7c3aed 0%, #9333ea 100%)':'#0f172a'}; color:${awkSubView==='endgame_5anc'?'#ffffff':'#cbd5e1'};">3. 심화: 5고패 순서</button>
           </div>
         </div>
         <div class="grid-2" style="gap:10px;">
@@ -9646,7 +9765,7 @@
             4. <strong>착용 스킬·영웅 골고루 1각성 도배 후 주력기 3각 진행</strong>
           </div>
           <div onclick="openTransitionCheckerBeta()" style="margin-top:16px; background:linear-gradient(135deg, rgba(16,185,129,0.2) 0%, #0f172a 100%); border:2px solid #10b981; border-radius:12px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; cursor:pointer;">
-            <div><div style="font-size:12px; color:#6ee7b7; font-weight:800;">⚖️ 내 현재 스펙으로 지금 당장 아크메이지로 넘어가도 될까?</div><div style="font-size:15px; font-weight:900; color:#ffffff; margin-top:2px;">[내가 사신에서 아크메이지로 갈아탈 수 있을까? (Beta)] 시뮬레이터 실행하기</div></div>
+            <div><div style="font-size:12px; color:#6ee7b7; font-weight:800;">⚖️ 내 현재 스펙으로 지금 당장 아크메이지로 넘어가도 될까?</div><div style="font-size:15px; font-weight:900; color:#ffffff; margin-top:2px;">[내가 사신에서 아크메이지로 갈아탈 수 있을까? (v.1.0.0)] 시뮬레이터 실행하기</div></div>
             <span style="background:#059669; color:#fff; font-weight:900; font-size:12.5px; padding:8px 14px; border-radius:8px;">진단하러 가기 ➔</span>
           </div>
         </div>`;
@@ -10473,9 +10592,9 @@
     { title:"⚡ 2차 전직 특성 표식 & 크리티컬 트리 도우미 (Lv.1~180)", cat:"🛠️ 세팅 도우미", badge:"grade-legend", keywords:"2차 전직 특성 도우미 표식 크리티컬 2차저주 포인트 TP", action:()=>{ switchMainMode('helpers'); openTraitHelperFromHub(); changeTraitTabStep(2); } },
     { title:"🔥 3차 전직 특화 트리 도우미 (Lv.0~40)", cat:"🛠️ 세팅 도우미", badge:"grade-mythic", keywords:"3차 전직 특화 도우미 속성버프 중첩 전환", action:()=>{ switchMainMode('helpers'); openTraitHelperFromHub(); changeTraitTabStep(3); } },
     { title:"🐣 5,000렙 뉴비 극초반 스킬 & 영웅 추천 빌드", cat:"⚔️ 세팅 가이드", badge:"grade-legend", keywords:"뉴비 극초반 5000렙 입문 전투태세 집중모드 오로라 나찰 바토리", action:()=>{ switchMainMode('guides'); openSpecialGuideDetail('early'); } },
-    { title:"🔮 각성 우선순위 & 0~3고패 패시브 슬롯 교체표", cat:"⚔️ 세팅 가이드", badge:"grade-unique", keywords:"각성 우선순위 고대패시브 고패 슬롯 교체표 3각 순위 5고패 원소창조 고대의기억", action:()=>{ switchMainMode('guides'); openSpecialGuideDetail('awakening_order'); } },
+    { title:"💎 각성 우선순위 & 0~5고패 패시브 도우미 v.1.2.0", cat:"🛠️ 세팅 도우미", badge:"grade-ancient", keywords:"각성 우선순위 고대패시브 고패 슬롯 교체표 3각 순위 5고패 원소창조 고대의기억", action:()=>{ openAwakeningHelperFromHub(); } },
     { title:"🔄 사신 ➔ 아크메이지(미스틱) 전환 가이드", cat:"⚔️ 세팅 가이드", badge:"grade-ancient", keywords:"사신 아크메이지 미스틱 제네시스 직변 전환 타이밍", action:()=>{ switchMainMode('guides'); openSpecialGuideDetail('transition'); } },
-    { title:"⚖️ 내가 사신에서 아크메이지로 갈아탈 수 있을까? (Beta)", cat:"⚔️ 세팅 가이드", badge:"grade-eternal", keywords:"사신 아크메이지 갈아탈 전환 진단 판정기 유니온 소울커넥트", action:()=>{ switchMainMode('guides'); openTransitionCheckerBeta(); } },
+    { title:"⚖️ 내가 사신에서 아크메이지로 갈아탈 수 있을까? (v.1.0.0)", cat:"⚔️ 세팅 가이드", badge:"grade-eternal", keywords:"사신 아크메이지 갈아탈 전환 진단 판정기 유니온 소울커넥트", action:()=>{ switchMainMode('guides'); openTransitionCheckerBeta(); } },
     { title:"⚡ 직업·속성별 스킬 세팅 가이드 (1차~4차)", cat:"⚔️ 세팅 가이드", badge:"grade-legend", keywords:"스킬 세팅 사신 아크메이지 오버로드 다크로드 오버드라이브 플레어필라 볼트스파이럴 블랙베일 크림슨웨이브", action:()=>{ switchMainMode('guides'); openCategoryGuideDirect('skill'); } },
     { title:"🦸 직업·속성별 영웅 세팅 가이드 (초기~4차)", cat:"⚔️ 세팅 가이드", badge:"grade-mythic", keywords:"영웅 세팅 셀렌 나리타 엘리시아 솔라리스 카엔 카엘 백운귀 이그니스 제논 다미안 칼리아 카이렌 모르반", action:()=>{ switchMainMode('guides'); openCategoryGuideDirect('hero'); } },
     { title:"🧚 속성별 정령 5단계 세팅 가이드", cat:"⚔️ 세팅 가이드", badge:"grade-eternal", keywords:"정령 세팅 피라 루미아 녹시아 홍련 라이자 릴리스 아인 헤라 베스타 라바나", action:()=>{ switchMainMode('guides'); openCategoryGuideDirect('spirit'); } },
