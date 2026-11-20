@@ -41,7 +41,7 @@
   </script>
 
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -77,7 +77,7 @@
       --gold: #fbbf24;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
@@ -11033,7 +11033,10 @@
         const newElemHero = awkGuideElem === 'fire' ? '이그니스' : (awkGuideElem === 'light' ? '제논' : '다미안');
         const debSk = awkGuideElem === 'fire' ? '불벼락' : (awkGuideElem === 'light' ? '뇌전검무' : '암흑붕괴');
         const m3Sk = awkGuideElem === 'fire' ? '플레어 필라' : (awkGuideElem === 'light' ? '볼트 스파이럴' : '블랙 베일');
+        const m4Sk = awkGuideElem === 'fire' ? '블레이즈 이럽션' : (awkGuideElem === 'light' ? '플라즈마 이럽션' : '어비스 이럽션');
         const l3Hr = awkGuideElem === 'fire' ? '칼리아' : (awkGuideElem === 'light' ? '카이렌' : '모르반');
+        const l4Hr = awkGuideElem === 'fire' ? '화련' : (awkGuideElem === 'light' ? '청운' : '자월');
+
         const tiers = awkGuideJob === 'reaper' ? [
           { num:"1순위", color:"#38bdf8", items:[{ name:"오버드라이브", isSkill:true, badge:"전 직업 필수", desc:"영구 지속 레벨 뻥튀기 + 과성장 졸업의 필수 열쇠" }] },
           { num:"2순위", color:"#f43f5e", items:[{ name:"셀렌", isSkill:false, badge:"3각 1,012.5배", desc:"각성 시너지 100점 달성 시 1천배 폭등" }] },
@@ -11042,17 +11045,24 @@
           { num:"5순위", color:"#64748b", items:[{ name:newElemHero, isSkill:false, badge:"신규 디버퍼", desc:"주속성 피해량 증폭 및 디버프 지원" }, { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", desc:"오버드라이브 3각 달성 시 엘리시아 대체" }, { name:"그림자 포효", isSkill:true, badge:"2각 혼돈", desc:"2각 혼돈 상태이상 해금이 핵심" }, { name:debSk, isSkill:true, badge:"2각 디버프", desc:"주속성 디버퍼" }, { name:"루비", isSkill:false, badge:"격화 세트", desc:"격화 룬 3상태이상 유지용" }] }
         ] : (awkGuideJob === 'mage' ? [
           { num:"1순위", color:"#38bdf8", items:[{ name:"오버드라이브", isSkill:true, badge:"전 직업 필수", desc:"스킬 빌드의 심장이자 룬 과성장 졸업의 핵심" }] },
-          { num:"2순위", color:"#f43f5e", items:[{ name:m3Sk, isSkill:true, badge:"3차 메인딜", desc:"1번 슬롯 배치 ➔ 강화스킬 받는 주력 딜링기 풀각" }, { name:"지옥불베기", isSkill:true, badge:"4차 필수급", desc:"스킬 피해량 버프 극대화" }] },
-          { num:"3순위", color:"#a855f7", items:[{ name:"나리타", isSkill:false, badge:"상시 501배", desc:"조건 없는 상시 501배 곱연산" }] },
+          { num:"2순위", color:"#f43f5e", items:[{ name:m3Sk, isSkill:true, badge:"3차 메인딜 (선행)", desc:"1번 슬롯 배치 ➔ 4차까지 시간이 오래 걸리므로 3차 메인딜을 먼저 3각성해 사용!" }, { name:"지옥불베기", isSkill:true, badge:"4차 필수급", desc:"스킬 피해량 버프 극대화" }] },
+          { num:"3순위", color:"#a855f7", items:[{ name:"나리타", isSkill:false, badge:"상시 501배", desc:"조건 없는 상시 501배 곱연산" }, { name:m4Sk, isSkill:true, badge:"★4차 메인딜 (전환)", desc:"3차➔4차는 1차 80렙을 찍어야 해 오래 걸리므로, 3차를 먼저 쓰고 4차 메인스킬로 넘어가세요!" }] },
           { num:"4순위", color:"#eab308", items:[{ name:"카엔", isSkill:false, badge:"3각 302.4배", desc:"앜메 전용 영웅" }, { name:"엘리멘탈 차지", isSkill:true, badge:"3차 300배", desc:"3차 전직 시 300배 버프" }, { name:"크림슨 웨이브", isSkill:true, badge:"불멸 출혈용", desc:"불멸 저주 II 출혈 조건" }, { name:"환영나비", isSkill:true, badge:awkGuideElem==='fire'?'화염 제외❌':'번개/어둠 필수', desc:awkGuideElem==='fire'?'화염 속성은 크림슨/포효/불베기 사용':'3각 시 241배' }] },
           { num:"5순위", color:"#64748b", items:[{ name:newElemHero, isSkill:false, badge:"신규 디버퍼", desc:"주속성 피해량 증폭" }, { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", desc:"오버드라이브 3각 시 투입" }, { name:"그림자 포효", isSkill:true, badge:"2각 혼돈", desc:"2각 혼돈 해금" }, { name:debSk, isSkill:true, badge:"2각 디버프", desc:"주속성 디버퍼" }] }
         ] : [
           { num:"1순위", color:"#38bdf8", items:[{ name:"오버드라이브", isSkill:true, badge:"전 직업 필수", desc:"과성장 졸업 및 공용 버프 코어" }, { name:"백운귀", isSkill:false, badge:"상시 501배", desc:"다크로드 필수 버퍼 (3각 필수)" }] },
-          { num:"2순위", color:"#f43f5e", items:[{ name:l3Hr, isSkill:false, badge:"3차 메인딜러", desc:"다크로드 주력 딜러 10돌 3각 필수" }] },
-          { num:"3순위", color:"#a855f7", items:[{ name:"카엘", isSkill:false, badge:"3각 346.25배", desc:"다크로드 전용 영웅" }, { name:"나리타", isSkill:false, badge:"상시 501배", desc:"조건 없는 상시 501배" }] },
+          { num:"2순위", color:"#f43f5e", items:[{ name:l3Hr, isSkill:false, badge:"3차 메인딜러 (선행)", desc:"4차까지 시간이 오래 걸리므로 3차 주력 딜러를 먼저 10돌·3각성해 사용!" }] },
+          { num:"3순위", color:"#a855f7", items:[{ name:"카엘", isSkill:false, badge:"3각 346.25배", desc:"다크로드 전용 영웅" }, { name:"나리타", isSkill:false, badge:"상시 501배", desc:"조건 없는 상시 501배" }, { name:l4Hr, isSkill:false, badge:"★4차 메인딜러 (전환)", desc:"3차➔4차는 1차 80렙을 찍어야 해 오래 걸리므로, 3차를 먼저 쓰고 4차 메인영웅으로 넘어가세요!" }] },
           { num:"4순위", color:"#eab308", items:[{ name:"보이드 펄스", isSkill:true, badge:"닼로 전용", desc:"영웅 스킬 피해량 버프" }, { name:"환영나비", isSkill:true, badge:"3각 241배", desc:"241배 버프 지원" }, { name:"크림슨 웨이브", isSkill:true, badge:"불멸 출혈용", desc:"출혈 조건" }, { name:"엘리멘탈 차지", isSkill:true, badge:"3차 300배", desc:"300배 버프" }] },
           { num:"5순위", color:"#64748b", items:[{ name:newElemHero, isSkill:false, badge:"신규 디버퍼", desc:"주속성 디버프" }, { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", desc:"오버드라이브 3각 시 투입" }] }
         ]);
+
+        const fourthTransitionTip = (awkGuideJob === 'mage' || awkGuideJob === 'lord')
+          ? `<div style="background:linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, #0f172a 100%); border:1.5px solid #fbbf24; border-radius:12px; padding:11px 15px; margin-bottom:10px; font-size:12.5px; color:#fef08a; line-height:1.55;">
+              💡 <strong>3차 ➔ 4차 주력기(${awkGuideJob==='mage'?m4Sk:l4Hr}) 전환 타이밍 안내:</strong><br>
+              <span style="color:#ffffff;">3차에서 4차 전직까지는 <strong>1차 전직 80레벨</strong>을 찍어야 하기 때문에 시간이 꽤 오래 걸립니다. 따라서 <strong>2순위 3차 주력기(${awkGuideJob==='mage'?m3Sk:l3Hr})를 먼저 각성해서 쓰다가 4차 전직 달성 후 4차 메인(${awkGuideJob==='mage'?m4Sk:l4Hr})으로 넘어가시는 것</strong>이 정석입니다!</span>
+            </div>`
+          : '';
 
         const bandsHtml = tiers.map(t => `<div style="background:#0f172a; border:1px solid #334155; border-left:4px solid ${t.color}; border-radius:10px; padding:10px 14px; margin-bottom:9px;">
           <div style="font-size:14px; font-weight:900; margin-bottom:7px; display:flex; justify-content:space-between;"><strong style="color:${t.color}; font-size:15px;">${t.num}</strong><span style="font-size:11px; color:#94a3b8;">(먼저 풀돌된 것 우선 3각)</span></div>
@@ -11067,6 +11077,7 @@
 
         body.innerHTML = `${topCtrl}
           <div style="background:linear-gradient(135deg, rgba(16, 185, 129, 0.22) 0%, #0f172a 100%); border:2px solid #10b981; border-radius:12px; padding:12px 16px; margin-bottom:10px;"><div style="font-size:14.5px; font-weight:900; color:#34d399; margin-bottom:4px;">💎 [각성 기본 원칙] 3각성 하나 달리기 전 ➔ 착용 슬롯 '골고루 1각성(개당 10만)'부터 도배하세요!</div><div style="font-size:12px; color:#ffffff;">신화 3각성(115만) 1개 비용이면 신화 11개를 1각성해 각성 시너지 +165점을 먼저 챙길 수 있습니다.</div></div>
+          ${fourthTransitionTip}
           ${bandsHtml}`;
         return;
       }
