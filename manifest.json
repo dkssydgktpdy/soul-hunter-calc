@@ -1,0 +1,25 @@
+{
+  "name": "소헌키 종합 시뮬레이터 & 공략 툴",
+  "short_name": "소헌키 툴",
+  "description": "소울 헌터 키우기 종합 시뮬레이터, 세팅 도우미 & 확률 계산기 - 29서버 겨울눈사람",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1120",
+  "theme_color": "#0b1120",
+  "icons": [
+    {
+      "src": "images/app_icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/app_icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
