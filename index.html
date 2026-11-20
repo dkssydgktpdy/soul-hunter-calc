@@ -2522,6 +2522,196 @@
       background: #ffffff;
     }
 
+    /* ==================== 9.7 소울커넥트 4보석 궤도 UI & 심연장비 인챈트 시뮬레이터 ==================== */
+    .sc-gem-orbit-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .sc-gem-socket {
+      background: #090d16;
+      border: 1px solid #334155;
+      border-radius: 7px;
+      padding: 4px 6px;
+      font-size: 10.5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #94a3b8;
+    }
+    .sc-gem-socket.filled {
+      background: rgba(15, 23, 42, 0.95);
+      border-color: #475569;
+      color: #f8fafc;
+      font-weight: 800;
+    }
+    .sc-gem-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+    .sc-gem-dot.g-ancient  { background: #06b6d4; box-shadow: 0 0 6px #22d3ee; }
+    .sc-gem-dot.g-mythic   { background: #f43f5e; box-shadow: 0 0 6px #fb7185; }
+    .sc-gem-dot.g-legend   { background: #f97316; box-shadow: 0 0 5px #fb923c; }
+    .sc-gem-dot.g-unique   { background: #a855f7; }
+    .sc-gem-dot.g-advanced { background: #3b82f6; }
+
+    .sc-gem-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #131d33;
+      border: 1.5px solid #334155;
+      border-radius: 9px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #e2e8f0;
+    }
+    .sc-gem-chip button {
+      background: none;
+      border: none;
+      color: #f87171;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 0 2px;
+      font-size: 12px;
+    }
+
+    /* 심연장비 인챈트 인게임 시뮬레이터 보드 */
+    .ench-game-window {
+      background: linear-gradient(180deg, #131c31 0%, #090e1a 100%);
+      border: 2.5px solid #3b82f6;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.85), 0 10px 26px rgba(0, 0, 0, 0.6);
+      color: #f8fafc;
+    }
+    .ench-part-tabs {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .ench-part-btn {
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      border-radius: 9px;
+      padding: 8px 4px;
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.16s;
+    }
+    .ench-part-btn.active {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+      border-color: #60a5fa;
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+    }
+    .ench-slots-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #0b111e;
+      border: 1.5px solid #334155;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .ench-7slots-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    .ench-slot-cell {
+      width: 54px;
+      height: 62px;
+      border-radius: 9px;
+      background: #162033;
+      border: 2px solid #334155;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      position: relative;
+      user-select: none;
+      transition: all 0.18s;
+    }
+    .ench-slot-cell.success-70 { border-color: #4ade80; background: linear-gradient(180deg, rgba(34,197,94,0.25) 0%, #0f172a 100%); color: #86efac; }
+    .ench-slot-cell.success-40 { border-color: #38bdf8; background: linear-gradient(180deg, rgba(56,189,248,0.25) 0%, #0f172a 100%); color: #7dd3fc; }
+    .ench-slot-cell.success-15 { border-color: #facc15; background: linear-gradient(180deg, rgba(250,204,21,0.3) 0%, #0f172a 100%); color: #fef08a; box-shadow: 0 0 12px rgba(250,204,21,0.35); }
+    .ench-slot-cell.failed {
+      border-color: #ef4444;
+      background: linear-gradient(180deg, rgba(239,68,68,0.28) 0%, #1a0b12 100%);
+      color: #fca5a5;
+      cursor: pointer;
+    }
+    .ench-slot-cell.failed:hover {
+      border-color: #fde047;
+      transform: scale(1.06);
+      box-shadow: 0 0 12px rgba(250,204,21,0.5);
+    }
+    .ench-amp-box {
+      min-width: 115px;
+      background: linear-gradient(135deg, rgba(147,51,234,0.3) 0%, #170d2b 100%);
+      border: 2px solid #c084fc;
+      border-radius: 10px;
+      padding: 8px 12px;
+      text-align: center;
+      box-shadow: 0 0 14px rgba(168,85,247,0.35);
+    }
+    .ench-main-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 14px;
+    }
+    .ench-scroll-picker {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .ench-scroll-card {
+      background: #162033;
+      border: 2px solid #334155;
+      border-radius: 10px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.16s;
+    }
+    .ench-scroll-card:hover { border-color: #94a3b8; transform: translateY(-2px); }
+    .ench-scroll-card.selected {
+      border-color: #facc15;
+      background: linear-gradient(180deg, rgba(250,204,21,0.22) 0%, #162033 100%);
+      box-shadow: 0 0 14px rgba(250,204,21,0.35);
+    }
+    .ench-grade-pill {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 6px;
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+    @media (max-width: 720px) {
+      .ench-part-tabs { grid-template-columns: repeat(3, 1fr); }
+      .ench-main-grid { grid-template-columns: 1fr; }
+      .ench-slot-cell { width: 42px; height: 52px; }
+    }
+
     /* ==================== 10. 통합 반응형 (태블릿 & 모바일) ==================== */
     @media (max-width: 860px) {
       .union-ingame-body { grid-template-columns: 1fr; }
@@ -2681,7 +2871,7 @@
             <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 &amp; 공략 툴</h1>
           </div>
           <div class="author-tag">
-            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.4.3.0</strong>
+            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.4.4.0</strong>
           </div>
 
           <!-- 카카오페이 후원 팝오버 위젯 -->
@@ -3271,7 +3461,7 @@
 
         <!-- ==================== 🎲 확률 기댓값 & 재화 계산기 (5대 아이콘 통합 허브) ==================== -->
         <div class="hub-section" id="calc_icons_hub_section" style="display:none;">
-          <div class="hub-grid" style="grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 12px;">
+          <div class="helper-grid-6">
             <!-- 1. 전직 · 드래곤 · 수호신 재화 (5종 통합) -->
             <div class="hub-card" onclick="openGrowthResourceCalculator('job1')" style="flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px 12px; gap:10px; border:2px solid #34d399; background:linear-gradient(160deg, rgba(16,185,129,0.22) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(16,185,129,0.2);">
               <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #6ee7b7; background:radial-gradient(circle, rgba(16,185,129,0.34) 0%, #0f172a 100%); box-shadow:0 0 16px rgba(16,185,129,0.4);">
@@ -3325,7 +3515,24 @@
               </div>
             </div>
 
-            <!-- 5. 소환 확률 기댓값 (5종 통합) -->
+            <!-- 5. 심연장비 인챈트 기댓값 & 실전 시뮬레이터 (신설!) -->
+            <div class="hub-card" onclick="openDeepCalculator('tab-enchant')" style="flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px 12px; gap:10px; border:2px solid #60a5fa; background:linear-gradient(160deg, rgba(59,130,246,0.24) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(59,130,246,0.22);">
+              <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #93c5fd; background:radial-gradient(circle, rgba(59,130,246,0.34) 0%, #0f172a 100%); box-shadow:0 0 16px rgba(59,130,246,0.45);">
+                <svg width="38" height="38" viewBox="0 0 44 44" fill="none" style="filter:drop-shadow(0 0 7px rgba(147,197,253,0.95));">
+                  <rect x="9" y="6" width="26" height="32" rx="4" fill="rgba(37,99,235,0.28)" stroke="#93c5fd" stroke-width="2"/>
+                  <path d="M14 14H30M14 22H26M14 30H22" stroke="#e0f2fe" stroke-width="2.2" stroke-linecap="round"/>
+                  <circle cx="31" cy="29" r="7" fill="#7c3aed" stroke="#fde047" stroke-width="1.8"/>
+                  <path d="M31 25.5L32.3 28.2L35 29L32.3 29.8L31 32.5L29.7 29.8L27 29L29.7 28.2L31 25.5Z" fill="#fef08a"/>
+                </svg>
+              </div>
+              <div>
+                <span class="hub-card-title" style="font-size:15px; margin-bottom:4px; color:#ffffff;">심연장비 인챈트 계산기</span>
+                <span class="grade-badge" style="font-size:10.5px; margin-bottom:5px; background:rgba(59,130,246,0.25); color:#dbeafe; border:1px solid #60a5fa;">기댓값 · 미니게임</span>
+                <span class="hub-card-desc" style="display:block; font-size:11.5px; color:#cbd5e1;">7칸 강화·회귀·증폭 &amp; 실전 시뮬</span>
+              </div>
+            </div>
+
+            <!-- 6. 소환 확률 기댓값 (5종 통합) -->
             <div class="hub-card" onclick="openNewbieCalculator('equip')" style="flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px 12px; gap:10px; border:2px solid #fb7185; background:linear-gradient(160deg, rgba(244,63,94,0.24) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(244,63,94,0.22);">
               <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #fda4af; background:radial-gradient(circle, rgba(244,63,94,0.34) 0%, #1f1022 100%); box-shadow:0 0 16px rgba(244,63,94,0.45);">
                 <svg width="38" height="38" viewBox="0 0 44 44" fill="none" style="filter:drop-shadow(0 0 7px rgba(253,164,175,0.95));">
@@ -3341,6 +3548,8 @@
                 <span class="hub-card-desc" style="display:block; font-size:11.5px; color:#cbd5e1;">장비·패시브·스킬·영웅·정령</span>
               </div>
             </div>
+
+            
           </div>
         </div>
       
@@ -4294,6 +4503,178 @@
           </div>
         </div>
 
+        <!-- 5.5 심연장비 인챈트 기댓값 계산기 & 인게임 미니게임 시뮬레이터 -->
+        <div id="tab-enchant" class="tab-content" style="display:none;">
+          <div class="card" style="border-left: 4px solid #3b82f6;">
+            <div class="card-title">
+              <span>심연장비 인챈트 기댓값 &amp; 재화 계산기 (강화 · 회귀 · 증폭)</span>
+              <span class="grade-badge grade-advanced">v26.0.0 신규 시스템</span>
+            </div>
+            <p class="card-subtitle">목표 최종 등급(D~UR 70점)과 현재 진행 상태를 입력하면 필요한 <strong>스크롤 조각 · 회귀 스크롤(흰색) · 증폭 스크롤(보라)</strong> 기댓값을 계산합니다.</p>
+
+            <div class="grid-3" style="margin-bottom:14px;">
+              <div>
+                <label style="color:#60a5fa;">목표 최종 인챈트 등급 (최종 점수)</label>
+                <select id="ench_calc_target_pts" onchange="calculateEnchantExpected()" style="font-weight:800; color:#fde047;">
+                  <option value="70" selected>UR 등급 (70점 · 인챈트 공격력 +20억%)</option>
+                  <option value="65">SSR 등급 (65점 · 인챈트 공격력 +1억%)</option>
+                  <option value="60">SR 등급 (60점 · 인챈트 공격력 +700만%)</option>
+                  <option value="55">SSS 등급 (55점 · 인챈트 공격력 +70만%)</option>
+                  <option value="50">SS 등급 (50점 · 인챈트 공격력 +16만%)</option>
+                  <option value="45">SS 등급 (45점 · 인챈트 공격력 +8만%)</option>
+                  <option value="40">S 등급 (40점 · 인챈트 공격력 +2.6만%)</option>
+                  <option value="35">S 등급 (35점 · 인챈트 공격력 +8,000%)</option>
+                  <option value="30">A 등급 (30점 · 인챈트 공격력 +4,000%)</option>
+                  <option value="25">A 등급 (25점 · 인챈트 공격력 +1,400%)</option>
+                </select>
+              </div>
+              <div>
+                <label style="color:#fde047;">주력 사용할 강화 스크롤 선택</label>
+                <select id="ench_calc_scroll_type" onchange="calculateEnchantExpected()" style="font-weight:800;">
+                  <option value="15" selected>15% 스크롤 (+5점 · 1만 조각 · 만점 35점)</option>
+                  <option value="40">40% 스크롤 (+3점 · 2,500 조각 · 만점 21점)</option>
+                  <option value="70">70% 스크롤 (+2점 · 1,000 조각 · 만점 14점)</option>
+                </select>
+              </div>
+              <div>
+                <label style="color:#c084fc;">회귀 스크롤(실패 복구) 사용 전략</label>
+                <select id="ench_calc_use_reg" onchange="calculateEnchantExpected()" style="font-weight:800;">
+                  <option value="1" selected>실패 시 회귀 스크롤로 끝까지 복구 (정석)</option>
+                  <option value="0">회귀 미사용 (7회 그냥 시도 후 초기화 반복)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 현재 진행 상태 및 보유 재화 입력 -->
+            <div style="background:#0b1120; padding:14px; border-radius:12px; border:1px solid #334155;">
+              <div style="font-size:12.5px; font-weight:800; color:#93c5fd; margin-bottom:10px;">현재 내 프리셋 진행 상태 &amp; 보유 스크롤 입력 (0부터 시작 시 기본값 유지)</div>
+              <div class="grid-4" style="gap:10px; margin-bottom:10px;">
+                <div>
+                  <label style="font-size:11.5px;">현재 성공한 칸 수 (0~7)</label>
+                  <input type="number" id="ench_cur_succ_cnt" value="0" min="0" max="7" oninput="calculateEnchantExpected()">
+                </div>
+                <div>
+                  <label style="font-size:11.5px;">현재 누적 기본 점수 (0~35)</label>
+                  <input type="number" id="ench_cur_base_pts" value="0" min="0" max="35" oninput="calculateEnchantExpected()">
+                </div>
+                <div>
+                  <label style="font-size:11.5px; color:#fca5a5;">현재 실패한(❌) 칸 수 (0~7)</label>
+                  <input type="number" id="ench_cur_fail_cnt" value="0" min="0" max="7" oninput="calculateEnchantExpected()">
+                </div>
+                <div>
+                  <label style="font-size:11.5px; color:#d8b4fe;">현재 달성한 증폭률(%)</label>
+                  <select id="ench_cur_amp_pct" onchange="calculateEnchantExpected()">
+                    <option value="0" selected>0% (미증폭)</option>
+                    <option value="10">+10%</option><option value="20">+20%</option><option value="30">+30%</option>
+                    <option value="40">+40%</option><option value="50">+50%</option><option value="60">+60%</option>
+                    <option value="70">+70%</option><option value="80">+80%</option><option value="90">+90%</option>
+                    <option value="100">+100% (MAX)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid-4" style="gap:10px;">
+                <div>
+                  <label style="font-size:11.5px; color:#fde047;">보유 스크롤 조각</label>
+                  <input type="number" id="ench_hold_frag" value="0" min="0" step="10000" oninput="calculateEnchantExpected()">
+                </div>
+                <div>
+                  <label style="font-size:11.5px; color:#f8fafc;">보유 회귀 스크롤(흰색)</label>
+                  <input type="number" id="ench_hold_reg" value="0" min="0" oninput="calculateEnchantExpected()">
+                </div>
+                <div>
+                  <label style="font-size:11.5px; color:#c084fc;">보유 증폭 스크롤(보라)</label>
+                  <input type="number" id="ench_hold_amp" value="0" min="0" oninput="calculateEnchantExpected()">
+                </div>
+                <div>
+                  <label style="font-size:11.5px; color:#34d399;">던전 1회 소탕당 조각 보상</label>
+                  <input type="number" id="ench_dungeon_frag" value="1000" min="100" step="500" oninput="calculateEnchantExpected()">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="ench_calc_result_box"></div>
+
+          <!-- 🎮 파트 2: 인게임 100% 재현 실전 미니게임 시뮬레이터 -->
+          <div class="card" style="border-left: 4px solid #a855f7; margin-top:22px;">
+            <div class="card-title">
+              <span>실전 감각 체험! 심연장비 인챈트 미니게임 시뮬레이터</span>
+              <span class="grade-badge grade-unique">인게임 UI 재현</span>
+            </div>
+            <p class="card-subtitle">인게임에서 스크롤을 쓰기 전에 실제 확률(70%/40%/15% 및 증폭 -50%~+100%)로 직접 강화·회귀·증폭을 시뮬레이션해 보세요!</p>
+
+            <div class="ench-game-window">
+              <!-- 6부위 선택 탭 -->
+              <div class="ench-part-tabs" id="ench_sim_part_tabs"></div>
+
+              <!-- 7칸 스크롤 슬롯 & 점수 증폭 표시 바 -->
+              <div class="ench-slots-bar">
+                <div>
+                  <div style="font-size:11.5px; font-weight:800; color:#93c5fd; margin-bottom:6px;">인챈트 슬롯 (총 7회 · 실패한 ❌ 칸 클릭 시 회귀 스크롤로 즉시 복구 가능!)</div>
+                  <div class="ench-7slots-row" id="ench_sim_7slots"></div>
+                </div>
+                <div class="ench-amp-box">
+                  <div style="font-size:11px; color:#e9d5ff; font-weight:800;">점수 증폭</div>
+                  <div id="ench_sim_amp_display" style="font-size:22px; font-weight:900; color:#fde047; margin-top:2px;">0%</div>
+                </div>
+              </div>
+
+              <!-- 좌: 강화/증폭 조작 패널 | 우: 인챈트 정보 패널 -->
+              <div class="ench-main-grid">
+                <div style="background:#0b111e; border:1.5px solid #334155; border-radius:12px; padding:14px; display:flex; flex-direction:column; justify-content:space-between;">
+                  <div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+                      <button type="button" id="ench_sim_mode_enh" onclick="switchEnchantSimMode('enhance')" style="padding:8px; border-radius:8px; font-weight:900; font-size:13px; cursor:pointer; border:1.5px solid #60a5fa; background:#1d4ed8; color:#fff;">강화 / 회귀 탭</button>
+                      <button type="button" id="ench_sim_mode_amp" onclick="switchEnchantSimMode('amp')" style="padding:8px; border-radius:8px; font-weight:900; font-size:13px; cursor:pointer; border:1.5px solid #334155; background:#162033; color:#94a3b8;">점수 증폭 탭</button>
+                    </div>
+                    <div id="ench_sim_control_area"></div>
+                  </div>
+                  <div id="ench_sim_action_msg" style="margin-top:10px; min-height:22px; font-size:12.5px; font-weight:800; color:#fde047; text-align:center;">주문서를 선택하고 [스크롤 사용]을 눌러주세요!</div>
+                </div>
+
+                <!-- 우측 인챈트 정보 & 초기화 -->
+                <div style="background:#0b111e; border:1.5px solid #334155; border-radius:12px; padding:14px; display:flex; flex-direction:column; justify-content:space-between;">
+                  <div>
+                    <div style="font-size:13.5px; font-weight:900; color:#93c5fd; margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid #1e293b;">인챈트 정보</div>
+                    <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px;"><span style="color:#94a3b8;">인챈트 점수 (기본)</span><strong id="ench_sim_info_base" style="color:#ffffff;">0점</strong></div>
+                    <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px;"><span style="color:#94a3b8;">점수 증폭</span><strong id="ench_sim_info_amp" style="color:#c084fc;">0%</strong></div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:13.5px; margin-bottom:10px;"><span style="color:#94a3b8;">최종 점수</span><div id="ench_sim_info_final"></div></div>
+                    <div style="background:#131d33; border:1px solid #334155; border-radius:8px; padding:9px 10px; text-align:center;">
+                      <div style="font-size:11px; color:#94a3b8;">획득 능력치</div>
+                      <div id="ench_sim_info_stat" style="font-size:14px; font-weight:900; color:#fb923c; margin-top:2px;">상의 인챈트 공격력(%) +0%</div>
+                    </div>
+                  </div>
+
+                  <div style="display:flex; gap:8px; margin-top:12px;">
+                    <button type="button" onclick="autoCompleteEnchant35()" style="flex:1.3; background:linear-gradient(135deg, #059669 0%, #047857 100%); border:1px solid #6ee7b7; color:#fff; font-weight:900; font-size:12px; padding:10px 8px; border-radius:8px; cursor:pointer;">⚡ 15%+회귀 35점 자동완성</button>
+                    <button type="button" onclick="resetEnchantSimCurrentPart()" style="flex:0.8; background:linear-gradient(135deg, #dc2626 0%, #991b1b 100%); border:1px solid #fca5a5; color:#fff; font-weight:900; font-size:12.5px; padding:10px 8px; border-radius:8px; cursor:pointer;">초기화</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 시뮬레이션 누적 소모 재화 트래커 -->
+              <div style="margin-top:14px; background:rgba(15,23,42,0.9); border:1px solid #334155; border-radius:10px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:12.5px;">
+                <div style="display:flex; gap:14px; flex-wrap:wrap;">
+                  <span>📜 누적 소모 조각: <strong id="ench_sim_spent_frag" style="color:#fde047;">0개</strong></span>
+                  <span>🏳️ 사용한 회귀 스크롤: <strong id="ench_sim_spent_reg" style="color:#ffffff;">0개</strong></span>
+                  <span>🔮 사용한 증폭 스크롤: <strong id="ench_sim_spent_amp" style="color:#c084fc;">0개</strong></span>
+                </div>
+                <button type="button" onclick="resetEnchantSimSpentCounter()" style="background:#1e293b; border:1px solid #475569; color:#cbd5e1; font-size:11px; font-weight:800; padding:4px 9px; border-radius:6px; cursor:pointer;">누적 소모량 리셋</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 점수대별 능력치 & 증폭 확률 기준표 -->
+          <div class="card" style="margin-top:18px; padding:16px 18px;">
+            <div class="accordion-item" id="acc_table_enchant">
+              <div class="accordion-header" onclick="toggleNewbieAccordion('acc_table_enchant')">
+                <div class="accordion-left"><span class="accordion-toggle-icon">▶</span><span class="accordion-title-text">📊 [심연장비 인챈트] 점수대별 등급(D~UR) 능력치 &amp; 증폭 확률 기준표 펼치기</span></div>
+              </div>
+              <div class="accordion-content"><div class="grid-2" id="ench_reference_tables_box"></div></div>
+            </div>
+          </div>
+        </div>
+
         <!-- 6. 소울커넥트 코어 선택 도우미 -->
         <div id="tab-connect" class="tab-content" style="display:none;">
           <div class="card" style="border-left: 4px solid #a855f7;">
@@ -4367,6 +4748,75 @@
             <div style="background:rgba(168, 85, 247, 0.1); border:1px solid rgba(168, 85, 247, 0.35); border-radius:8px; padding:9px 14px; margin-bottom:14px; font-size:12.5px; color:#e9d5ff; line-height:1.55;">
               📌 <strong>계산 기준 안내:</strong> 세공 보석 자체 스탯은 제외하며 각 코어 등급의 최대 포인트 해금 효과를 기준으로 계산합니다.<br>
               💡 <strong>고대 코어 중복 장착 자동 판별:</strong> 카드 우측 상단 <strong>[+중복]</strong> 버튼으로 2개 보유를 표시하면 동일 번호 고대 코어 중복 장착(합연산 4배 증폭)까지 자동 비교합니다!
+            </div>
+
+            <!-- 💎 보유 세공 보석 인벤토리 & 24칸 자동 배분 도우미 -->
+            <div class="accordion-item" id="acc_sc_gem_inventory" style="margin-bottom:14px; border:1.5px solid #38bdf8; border-left:4px solid #22d3ee;">
+              <div class="accordion-header" onclick="toggleNewbieAccordion('acc_sc_gem_inventory')" style="background:linear-gradient(90deg, rgba(34,211,238,0.16) 0%, #131d33 100%);">
+                <div class="accordion-left">
+                  <span class="accordion-toggle-icon" style="color:#22d3ee;">▶</span>
+                  <span class="accordion-title-text" style="font-size:14.5px; color:#e0f2fe;">💎 보유 보석(세공) 인벤토리 등록 &amp; 코어별 4칸 자동 배분 (선택 기능)</span>
+                </div>
+                <div class="accordion-right-info">
+                  <span class="accordion-count-badge has-selected" id="sc_gem_inv_count_badge">미등록 시 최대P 자동 가정</span>
+                </div>
+              </div>
+              <div class="accordion-content" style="padding:14px; background:#0b1120;">
+                <div style="background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.35); border-radius:9px; padding:9px 12px; margin-bottom:12px; font-size:12px; color:#bae6fd; line-height:1.55;">
+                  💡 <strong>보석 세공 &amp; 합연산 핵심 원리:</strong> 장착된 24개 보석의 <strong>[보석 공격력%]</strong>과 <strong>[보석 공격력 증폭%]</strong>은 각각 <strong>24개 전체 합연산</strong>으로 들어가며, 코어의 <strong>포인트 해금(12P~32P)만 곱연산</strong>입니다.<br>
+                  • 따라서 <strong>[사슬(🔗용량)]</strong>과 <strong>[포인트(🅿️)]</strong>만 입력해 등록하셔도 각 코어의 용량 한도(고대 20 / 신화 17 / 전설 14)에 맞춰 <strong>최고 포인트(32P/28P/20P)가 켜지도록 최적의 보석 4개씩을 자동 배분</strong>해 줍니다! <small style="color:#fde047;">(보석 미등록 시에는 모든 코어가 최대 포인트를 달성한 것으로 자동 계산합니다)</small>
+                </div>
+
+                <!-- 보석 빠른 추가 입력 바 -->
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap:8px; align-items:end; background:#131d33; padding:11px 12px; border-radius:10px; border:1px solid #334155; margin-bottom:10px;">
+                  <div>
+                    <label style="font-size:11px; color:#7dd3fc;">보석 등급</label>
+                    <select id="sc_gem_add_tier" style="padding:6px 8px; font-size:12.5px; font-weight:800;">
+                      <option value="ancient" selected>고대 보석</option>
+                      <option value="mythic">신화 보석</option>
+                      <option value="legend">전설 보석</option>
+                      <option value="unique">특급 보석</option>
+                      <option value="advanced">상급 보석</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="font-size:11px; color:#4ade80;">🔗 사슬 (용량 1~8)</label>
+                    <input type="number" id="sc_gem_add_chain" value="5" min="1" max="10" style="padding:6px 8px; font-size:13px; font-weight:800; color:#86efac;">
+                  </div>
+                  <div>
+                    <label style="font-size:11px; color:#fde047;">🅿️ 포인트 (1~12)</label>
+                    <input type="number" id="sc_gem_add_pt" value="8" min="1" max="15" style="padding:6px 8px; font-size:13px; font-weight:800; color:#fef08a;">
+                  </div>
+                  <div>
+                    <label style="font-size:11px; color:#cbd5e1;">보석공% (선택)</label>
+                    <input type="number" id="sc_gem_add_atk" value="0" min="0" step="500" placeholder="0" style="padding:6px 8px; font-size:12.5px;">
+                  </div>
+                  <div>
+                    <label style="font-size:11px; color:#cbd5e1;">보석공증% (선택)</label>
+                    <input type="number" id="sc_gem_add_amp" value="0" min="0" step="500" placeholder="0" style="padding:6px 8px; font-size:12.5px;">
+                  </div>
+                  <div>
+                    <label style="font-size:11px; color:#f9a8d4;">동일 스펙 수량</label>
+                    <input type="number" id="sc_gem_add_qty" value="1" min="1" max="24" style="padding:6px 8px; font-size:13px; font-weight:800;">
+                  </div>
+                  <div>
+                    <button type="button" onclick="addSoulConnectGemFromInput()" style="width:100%; background:linear-gradient(135deg, #0284c7 0%, #2563eb 100%); border:1px solid #7dd3fc; color:#fff; font-weight:900; font-size:12.5px; padding:8px 10px; border-radius:8px; cursor:pointer;">+ 보석 추가</button>
+                  </div>
+                </div>
+
+                <!-- 원클릭 예시 프리셋 & 전체 삭제 -->
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
+                  <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <button type="button" onclick="addPresetSoulGems('ancient', 5, 8, 4)" style="background:#1e293b; border:1px solid #06b6d4; color:#67e8f9; font-size:11px; font-weight:800; padding:4px 9px; border-radius:6px; cursor:pointer;">+ 고대(🔗5/🅿️8) 4개 빠른추가</button>
+                    <button type="button" onclick="addPresetSoulGems('mythic', 4, 7, 4)" style="background:#1e293b; border:1px solid #f43f5e; color:#fda4af; font-size:11px; font-weight:800; padding:4px 9px; border-radius:6px; cursor:pointer;">+ 신화(🔗4/🅿️7) 4개 빠른추가</button>
+                    <button type="button" onclick="addPresetSoulGems('legend', 3, 5, 4)" style="background:#1e293b; border:1px solid #f97316; color:#fdba74; font-size:11px; font-weight:800; padding:4px 9px; border-radius:6px; cursor:pointer;">+ 전설(🔗3/🅿️5) 4개 빠른추가</button>
+                  </div>
+                  <button type="button" onclick="clearAllSoulConnectGems()" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; font-size:11px; font-weight:800; padding:4px 9px; border-radius:6px; cursor:pointer;">보석 전체 비우기</button>
+                </div>
+
+                <!-- 등록된 보석 칩 리스트 -->
+                <div id="sc_gem_inventory_list" style="display:flex; flex-wrap:wrap; gap:6px; min-height:32px; padding:8px; background:#070a12; border-radius:8px; border:1px dashed #334155;"></div>
+              </div>
             </div>
 
             <div class="connect-tier-tabs">
@@ -4856,7 +5306,7 @@
   <!-- ==================== 6. 푸터 (길보길 분석실 & 방문자 카운터) ==================== -->
   <footer>
     <div style="margin-bottom: 12px;">
-      소울헌터키우기 네이버 라운지 전용 계산기 v.4.3.0 | 제작: <strong>29서버 겨울눈사람</strong>
+      소울헌터키우기 네이버 라운지 전용 계산기 v.4.4.0 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
       <button type="button" onclick="location.href='guild.html'"
@@ -5048,6 +5498,13 @@
         <li>보유 중인 코어를 모두 클릭하고(2개 보유 시 우측 상단 <strong>[+중복]</strong> 클릭), 도우미가 계산하는 최고 배율 조합을 시계방향 1~6번 슬롯에서 확인하세요.</li>
       </ol>`
     },
+    'tab-enchant': {
+      title: '📜 심연장비 인챈트 계산기 & 시뮬레이터 사용법',
+      html: `<ol>
+        <li>상단 계산기에서 <strong>목표 등급(UR 70점 ~ A 25점)</strong>과 주력 강화 스크롤(15%/40%/70%), 현재 진행 상태를 입력하면 <strong>필요 스크롤 조각 · 회귀 스크롤(흰색) · 증폭 스크롤(보라) 기댓값</strong>을 계산합니다.</li>
+        <li>하단 미니게임에서 실제 확률로 7칸 강화·회귀 복구(실패한 ❌ 칸 직접 클릭 가능)·증폭을 미리 체험해 보세요!</li>
+      </ol>`
+    },
     'tab-union': {
       title: '🏛️ 유니온 세팅 도우미 v.1.1.0 사용법',
       html: `<ol>
@@ -5208,6 +5665,7 @@
       'tab-passive': '고대 패시브',
       'tab-synergy': '각성 시너지',
       'tab-ability': '어빌리티',
+      'tab-enchant': '심연장비 인챈트',
       'tab-connect': '소울커넥트 도우미',
       'tab-union': '유니온 도우미'
     };
@@ -5247,6 +5705,7 @@
     } else if (calcTabId === 'tab-union') {
       switchUnionType(currentUnionType || 'skill');
     }
+    else if (calcTabId === 'tab-enchant') { initEnchantSystemUI(); }
   }
 
   function handleFloatingBack() {
@@ -9252,7 +9711,163 @@
     return evaluateConnectCombo([inst]).groupMults[inst.core.num] || 1;
   }
 
+  const SC_GEMS_STORAGE_KEY = 'shk_sc_gems_inv_v1';
+  let ownedSoulGems = [];
+  try {
+    const rawGems = localStorage.getItem(SC_GEMS_STORAGE_KEY);
+    if (rawGems) ownedSoulGems = JSON.parse(rawGems) || [];
+  } catch (e) {}
+
+  function saveSoulGemsToLocal() {
+    try { localStorage.setItem(SC_GEMS_STORAGE_KEY, JSON.stringify(ownedSoulGems)); } catch (e) {}
+  }
+
+  function addSoulConnectGemFromInput() {
+    const tier = document.getElementById('sc_gem_add_tier')?.value || 'ancient';
+    const chain = Math.max(1, Math.min(12, parseInt(document.getElementById('sc_gem_add_chain')?.value || '5', 10) || 5));
+    const pt = Math.max(1, Math.min(16, parseInt(document.getElementById('sc_gem_add_pt')?.value || '8', 10) || 8));
+    const atk = Math.max(0, parseInt(document.getElementById('sc_gem_add_atk')?.value || '0', 10) || 0);
+    const amp = Math.max(0, parseInt(document.getElementById('sc_gem_add_amp')?.value || '0', 10) || 0);
+    const qty = Math.max(1, Math.min(24, parseInt(document.getElementById('sc_gem_add_qty')?.value || '1', 10) || 1));
+
+    for (let i = 0; i < qty; i++) {
+      ownedSoulGems.push({ id: `gem_${Date.now()}_${Math.random().toString(36).slice(2, 6)}_${i}`, tier, chain, pt, atk, amp });
+    }
+    saveSoulGemsToLocal();
+    renderSoulGemInventoryList();
+    calculateBestConnectLoadout();
+  }
+
+  function addPresetSoulGems(tier, chain, pt, qty) {
+    for (let i = 0; i < qty; i++) {
+      ownedSoulGems.push({ id: `gem_${Date.now()}_${Math.random().toString(36).slice(2, 6)}_${i}`, tier, chain, pt, atk: 0, amp: 0 });
+    }
+    saveSoulGemsToLocal();
+    renderSoulGemInventoryList();
+    calculateBestConnectLoadout();
+  }
+
+  function removeSoulConnectGem(gemId) {
+    ownedSoulGems = ownedSoulGems.filter(g => g.id !== gemId);
+    saveSoulGemsToLocal();
+    renderSoulGemInventoryList();
+    calculateBestConnectLoadout();
+  }
+
+  function clearAllSoulConnectGems() {
+    if (!ownedSoulGems.length) return;
+    ownedSoulGems = [];
+    saveSoulGemsToLocal();
+    renderSoulGemInventoryList();
+    calculateBestConnectLoadout();
+  }
+
+  function renderSoulGemInventoryList() {
+    const listEl = document.getElementById('sc_gem_inventory_list');
+    const badgeEl = document.getElementById('sc_gem_inv_count_badge');
+    if (badgeEl) {
+      badgeEl.innerText = ownedSoulGems.length > 0 ? `보석 ${ownedSoulGems.length}개 등록됨 (자동 배분 ON)` : '미등록 시 최대P 자동 가정';
+    }
+    if (!listEl) return;
+    if (ownedSoulGems.length === 0) {
+      listEl.innerHTML = `<span style="font-size:11.5px; color:#64748b;">등록된 보석이 없습니다. 위에서 보석을 추가하면 코어별 사슬(🔗) 용량에 맞춰 최적의 보석 4개씩을 자동 배분합니다.</span>`;
+      return;
+    }
+    const tierKr = { ancient:'고대', mythic:'신화', legend:'전설', unique:'특급', advanced:'상급' };
+    listEl.innerHTML = ownedSoulGems.map((g, idx) => {
+      const statTxt = (g.atk > 0 || g.amp > 0) ? ` · 공+${formatKoreanNumber(g.atk)}%/증+${formatKoreanNumber(g.amp)}%` : '';
+      return `<div class="sc-gem-chip">
+        <span class="sc-gem-dot g-${g.tier}"></span>
+        <span>#${idx + 1} ${tierKr[g.tier] || '보석'} <strong style="color:#86efac;">🔗${g.chain}</strong> · <strong style="color:#fde047;">🅿️${g.pt}</strong>${statTxt}</span>
+        <button type="button" onclick="removeSoulConnectGem('${g.id}')" title="삭제">✕</button>
+      </div>`;
+    }).join('');
+  }
+
+  // 코어 1개에 할당된 포인트(totalP)에 따른 실제 해금 스탯 계산
+  function getCoreUnlockedStatsByPoints(tier, coreDef, totalP) {
+    const tMeta = CORE_TIER_META[tier];
+    const effP = Math.min(tMeta.maxP, totalP);
+    const atkPct = effP >= 18 ? 1000 : (effP >= 14 ? 500 : (effP >= 10 ? 200 : 0));
+    let ampPct = 0;
+    if (tier === 'ancient') {
+      ampPct = effP >= 32 ? 546000 : (effP >= 28 ? 6000 : (effP >= 24 ? 1000 : 0));
+    } else if (tier === 'mythic') {
+      ampPct = effP >= 28 ? 6000 : (effP >= 24 ? 1000 : 0);
+    }
+    const pointStep = effP >= 20 ? 3 : (effP >= 16 ? 2 : (effP >= 12 ? 1 : 0));
+    const effStep = Math.min(pointStep, getCoreUserMaxStep(coreDef));
+    return { effP, atkPct, ampPct, effStep };
+  }
+
+  // 보유 보석을 장착된 코어들에 최적 배분 (각 코어 최대 4개, 사슬 합 <= maxCap, 코어 해금 단계 최우선)
+  function allocateGemsToCores(equippedCores) {
+    if (!ownedSoulGems.length || !equippedCores.length) return null;
+    const pool = [...ownedSoulGems].sort((a, b) => {
+      if (b.pt !== a.pt) return b.pt - a.pt;
+      if (a.chain !== b.chain) return a.chain - b.chain;
+      return (b.atk + b.amp) - (a.atk + a.amp);
+    });
+
+    const tierPriority = { ancient: 5, mythic: 4, legend: 3, unique: 2, advanced: 1 };
+    const coreIndices = equippedCores.map((_, i) => i).sort((a, b) => {
+      const ca = equippedCores[a], cb = equippedCores[b];
+      if (tierPriority[cb.tier] !== tierPriority[ca.tier]) return tierPriority[cb.tier] - tierPriority[ca.tier];
+      return getSingleInstanceScore(cb) - getSingleInstanceScore(ca);
+    });
+
+    const usedGemIds = new Set();
+    const assignments = Array.from({ length: equippedCores.length }, () => []);
+
+    // 1차 배분: 각 코어의 목표 포인트(32/28/24/20/16/12)를 사슬 한도(maxCap) 내에서 달성하는 최적 4개 조합 탐색
+    coreIndices.forEach(cIdx => {
+      const inst = equippedCores[cIdx];
+      const maxCap = CORE_TIER_META[inst.tier].maxCap;
+      const targetP = CORE_TIER_META[inst.tier].maxP;
+      const avail = pool.filter(g => !usedGemIds.has(g.id)).slice(0, 18);
+      if (!avail.length) return;
+
+      let bestSubset = [];
+      let bestScore = -1;
+
+      function scoreSubset(sub) {
+        let cSum = 0, pSum = 0, statSum = 0;
+        for (const g of sub) { cSum += g.chain; pSum += g.pt; statSum += (g.atk + g.amp) * 1e-6; }
+        if (cSum > maxCap) return -1;
+        const unlocked = getCoreUnlockedStatsByPoints(inst.tier, inst.core, pSum);
+        let tierScore = unlocked.effStep * 1000 + (unlocked.ampPct >= 546000 ? 50000 : (unlocked.ampPct >= 6000 ? 8000 : (unlocked.ampPct >= 1000 ? 2000 : 0))) + unlocked.atkPct;
+        const overflowPenalty = pSum > targetP ? (pSum - targetP) * 2 : pSum * 15;
+        return tierScore + overflowPenalty - cSum * 0.5 + statSum;
+      }
+
+      // 크기 1~4 조합 중 최고 점수 탐색
+      const N = avail.length;
+      for (let i = 0; i < N; i++) {
+        const s1 = [avail[i]]; const sc1 = scoreSubset(s1);
+        if (sc1 > bestScore) { bestScore = sc1; bestSubset = s1; }
+        for (let j = i + 1; j < N; j++) {
+          const s2 = [avail[i], avail[j]]; const sc2 = scoreSubset(s2);
+          if (sc2 > bestScore) { bestScore = sc2; bestSubset = s2; }
+          for (let k = j + 1; k < N; k++) {
+            const s3 = [avail[i], avail[j], avail[k]]; const sc3 = scoreSubset(s3);
+            if (sc3 > bestScore) { bestScore = sc3; bestSubset = s3; }
+            for (let l = k + 1; l < N; l++) {
+              const s4 = [avail[i], avail[j], avail[k], avail[l]]; const sc4 = scoreSubset(s4);
+              if (sc4 > bestScore) { bestScore = sc4; bestSubset = s4; }
+            }
+          }
+        }
+      }
+
+      bestSubset.forEach(g => usedGemIds.add(g.id));
+      assignments[cIdx] = bestSubset;
+    });
+
+    return assignments;
+  }
+
   function calculateBestConnectLoadout() {
+    renderSoulGemInventoryList();
     const allInstances = [];
     ownedCoresMap.forEach((cnt, key) => {
       const [tier, coreId] = key.split('__');
@@ -9291,6 +9906,10 @@
     }
     bestCombo.sort((a, b) => a.core.num - b.core.num);
 
+    // 보석 인벤토리가 등록되어 있으면 코어별 4소켓 최적 배분 수행
+    const gemAssignments = allocateGemsToCores(bestCombo);
+    const tierKrMap = { ancient:'고대', mythic:'신화', legend:'전설', unique:'특급', advanced:'상급' };
+
     const unlockReqText = { 1:"기본 오픈(220-1)", 2:"기본 오픈(220-1)", 3:"300-1 해금", 4:"400-1 해금", 5:"500-1 해금", 6:"800-1 해금" };
     for (let s = 1; s <= 6; s++) {
       const slotEl = document.getElementById(`sc_slot_${s}`);
@@ -9308,27 +9927,60 @@
       }
       const tMeta = CORE_TIER_META[inst.tier], c = inst.core, isValid = isCoreValidForUser(c);
       const dupCnt = bestCombo.filter(x => x.core.num === c.num).length;
+
+      // 4개 보석 소켓 궤도 렌더링
+      const assignedGems = gemAssignments ? (gemAssignments[s - 1] || []) : [];
+      const curChainSum = gemAssignments ? assignedGems.reduce((a, g) => a + g.chain, 0) : tMeta.maxCap;
+      const curPtSum = gemAssignments ? assignedGems.reduce((a, g) => a + g.pt, 0) : tMeta.maxP;
+
+      const socketsHtml = [0, 1, 2, 3].map(gIdx => {
+        const g = assignedGems[gIdx];
+        if (g) {
+          return `<div class="sc-gem-socket filled"><span style="display:inline-flex;align-items:center;"><span class="sc-gem-dot g-${g.tier}"></span>${tierKrMap[g.tier]}</span><span><strong style="color:#86efac;">🔗${g.chain}</strong> <strong style="color:#fde047;">🅿️${g.pt}</strong></span></div>`;
+        }
+        if (!gemAssignments) {
+          const avgC = Math.floor(tMeta.maxCap / 4), avgP = Math.ceil(tMeta.maxP / 4);
+          return `<div class="sc-gem-socket filled" style="opacity:0.75;"><span style="display:inline-flex;align-items:center;"><span class="sc-gem-dot g-${inst.tier}"></span>보석${gIdx + 1}</span><span>🔗${avgC} 🅿️${avgP}</span></div>`;
+        }
+        return `<div class="sc-gem-socket"><span>+ 빈 소켓</span><span>-</span></div>`;
+      }).join('');
+
+      const ptColor = curPtSum >= tMeta.maxP ? '#fde047' : '#f87171';
       slotEl.className = `connect-slot-card tier-${inst.tier}`;
       slotEl.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:11px; font-weight:800; color:#94a3b8;">${s}번 슬롯</span><div style="display:flex; gap:4px;">${dupCnt >= 2 ? '<span class="mini-tag" style="background:#e11d48; color:#fff;">코어중복 합연산</span>' : ''}<span class="grade-badge ${tMeta.badge}" style="font-size:10.5px; padding:1px 6px;">${tMeta.kr} ${tMeta.maxP}P</span></div></div>
-        <div style="display:flex; align-items:center; gap:10px; margin:6px 0;"><div class="core-hex-badge core-color-${c.num}">코어${c.num}</div><div style="text-align:left;"><div style="font-size:14.5px; font-weight:900; color:#ffffff; line-height:1.2;">${c.name}</div><div style="font-size:11px; color:${isValid ? '#34d399' : '#f87171'}; font-weight:700; margin-top:2px;">${isValid ? '✅ 유효 코어 발동' : '⚠️ 잡코어 (공격력·증폭만 적용)'}</div></div></div>
-        <div style="font-size:11px; color:#fde047; background:rgba(0,0,0,0.35); padding:4px 8px; border-radius:6px; text-align:center; font-weight:700;">🔗${tMeta.maxCap}/${tMeta.maxCap} · 🅿️${tMeta.maxP}/${tMeta.maxP} | ${getCoreThemeSummary(c, inst.tier)}</div>`;
+        <div style="display:flex; align-items:center; gap:10px; margin:5px 0;"><div class="core-hex-badge core-color-${c.num}">코어${c.num}</div><div style="text-align:left;"><div style="font-size:14.5px; font-weight:900; color:#ffffff; line-height:1.2;">${c.name}</div><div style="font-size:11px; color:${isValid ? '#34d399' : '#f87171'}; font-weight:700; margin-top:2px;">${isValid ? '✅ 유효 코어 발동' : '⚠️ 잡코어 (공격력·증폭만 적용)'}</div></div></div>
+        <div class="sc-gem-orbit-grid">${socketsHtml}</div>
+        <div style="font-size:11px; color:${ptColor}; background:rgba(0,0,0,0.45); padding:4px 8px; border-radius:6px; text-align:center; font-weight:800; margin-top:6px;">🔗 ${curChainSum}/${tMeta.maxCap} · 🅿️ ${curPtSum}/${tMeta.maxP} | ${getCoreThemeSummary(c, inst.tier)}</div>`;
     }
+
+    // 보석 24개 합연산 총합 보너스 계산
+    let totalGemAtk = 0, totalGemAmp = 0, totalEquippedGems = 0;
+    if (gemAssignments) {
+      gemAssignments.forEach(list => list.forEach(g => { totalEquippedGems++; totalGemAtk += (g.atk || 0); totalGemAmp += (g.amp || 0); }));
+    }
+    const gemBonusLog10 = (totalGemAtk > 0 || totalGemAmp > 0) ? Math.log10((1 + totalGemAtk / 100) * (1 + totalGemAmp / 100)) : 0;
+    const finalLog10 = bestEval.totalLog10 + gemBonusLog10;
 
     const grandEl = document.getElementById('sc_grand_total_mult');
     if (grandEl) {
-      grandEl.innerText = bestEval.totalLog10 <= 0 ? "1배 (보유 코어를 선택하세요)"
-        : (bestEval.totalLog10 < 32 ? formatKoreanNumber(Math.pow(10, bestEval.totalLog10)) + "배" : `약 ${Math.pow(10, bestEval.totalLog10 - Math.floor(bestEval.totalLog10)).toFixed(2)} × 10^${Math.floor(bestEval.totalLog10)}배`);
+      grandEl.innerText = finalLog10 <= 0 ? "1배 (보유 코어를 선택하세요)"
+        : (finalLog10 < 32 ? formatKoreanNumber(Math.pow(10, finalLog10)) + "배" : `약 ${Math.pow(10, finalLog10 - Math.floor(finalLog10)).toFixed(2)} × 10^${Math.floor(finalLog10)}배`);
     }
 
     const breakEl = document.getElementById('sc_mult_breakdown');
     if (breakEl) {
-      breakEl.innerHTML = [1, 2, 3, 4, 5, 6].map(num => {
+      let rowsHtml = [1, 2, 3, 4, 5, 6].map(num => {
         const m = Math.round(bestEval.groupMults[num] || 1);
         const cntInNum = bestCombo.filter(x => x.core.num === num).length;
         const cntLabel = cntInNum >= 2 ? ` <span style="color:#fda4af; font-size:12px;">(${cntInNum}개 중복 합연산 적용!)</span>` : (cntInNum === 0 ? ` <span style="color:#64748b; font-size:12px;">(미장착)</span>` : '');
         return `<div class="rune-mult-row"><span><strong>코어 ${num}</strong> (${CORE_GROUPS_META[num - 1].colorName}) 배율${cntLabel}</span><strong style="color:${m > 1 ? '#38bdf8' : '#64748b'};">${formatKoreanNumber(m)}배</strong></div>`;
       }).join('');
+      if (gemAssignments && totalEquippedGems > 0) {
+        const gemMult = Math.round((1 + totalGemAtk / 100) * (1 + totalGemAmp / 100));
+        rowsHtml += `<div class="rune-mult-row"><span>💎 <strong>장착 보석 ${totalEquippedGems}개 합연산</strong> (공 +${formatKoreanNumber(totalGemAtk)}% / 증폭 +${formatKoreanNumber(totalGemAmp)}%)</span><strong style="color:#fde047;">${gemMult > 1 ? formatKoreanNumber(gemMult) + '배' : '포인트 전용'}</strong></div>`;
+      }
+      breakEl.innerHTML = rowsHtml;
     }
 
     const reportEl = document.getElementById('sc_detail_report_list');
@@ -9338,12 +9990,16 @@
       : bestCombo.map((inst, idx) => {
           const tMeta = CORE_TIER_META[inst.tier], c = inst.core, isValid = isCoreValidForUser(c);
           const ampStr = tMeta.ampPct > 0 ? ` / 코어${c.num} 공격력 증폭 +${tMeta.ampPct.toLocaleString()}%` : '';
+          const assigned = gemAssignments ? (gemAssignments[idx] || []) : [];
+          const gemDetailStr = assigned.length > 0
+            ? `<br>• 추천 보석 배분 (${assigned.length}개): <span style="color:#fde047; font-weight:700;">${assigned.map(g => `[${tierKrMap[g.tier]} 🔗${g.chain}·🅿️${g.pt}]`).join(' + ')}</span>`
+            : '';
           return `<div style="background:#0f172a; border:1px solid #334155; border-radius:10px; padding:12px 16px; line-height:1.55;">
             <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
               <div style="display:flex; align-items:center; gap:6px;"><span style="font-size:12px; background:#1e293b; color:#cbd5e1; padding:2px 8px; border-radius:6px; font-weight:700;">${idx + 1}번 슬롯 · 코어${c.num}</span><span class="grade-badge ${tMeta.badge}">${tMeta.kr} (${tMeta.maxP}P)</span><strong style="font-size:15px; color:#ffffff;">${c.name}</strong></div>
               <span style="font-size:12.5px; color:#cbd5e1;">상태: <strong style="color:${isValid ? '#34d399' : '#fbbf24'};">${isValid ? c.cond : (c.isAwkSkill ? '각성기 봉인 상태 (깡공증 용도)' : '타 직업/속성 잡코어 (깡공증 용도)')}</strong></span>
             </div>
-            <div style="font-size:13px; color:#94a3b8;">• 기본/증폭 해금: <span style="color:#e2e8f0;">코어${c.num} 공격력 총 +${tMeta.atkPct.toLocaleString()}%${ampStr}</span><br>• 고유 테마 효과: <span style="color:${isValid ? '#38bdf8' : '#64748b'}; font-weight:700;">${getCoreThemeSummary(c, inst.tier)}</span></div>
+            <div style="font-size:13px; color:#94a3b8;">• 기본/증폭 해금: <span style="color:#e2e8f0;">코어${c.num} 공격력 총 +${tMeta.atkPct.toLocaleString()}%${ampStr}</span><br>• 고유 테마 효과: <span style="color:${isValid ? '#38bdf8' : '#64748b'}; font-weight:700;">${getCoreThemeSummary(c, inst.tier)}</span>${gemDetailStr}</div>
           </div>`;
         }).join('');
   }
@@ -11503,6 +12159,440 @@
   }
 
   // =========================================================================
+  // [SECTION 16.5] 심연장비 인챈트 기댓값 계산기 & 인게임 미니게임 시뮬레이터
+  // =========================================================================
+  const ENCHANT_GRADE_TABLE = [
+    { minPts: 70, grade: 'UR',  atkPct: 2000000000, color: '#f43f5e', bg: 'linear-gradient(135deg,#e11d48,#881337)' },
+    { minPts: 65, grade: 'SSR', atkPct: 100000000,  color: '#fb923c', bg: 'linear-gradient(135deg,#ea580c,#7c2d12)' },
+    { minPts: 60, grade: 'SR',  atkPct: 7000000,    color: '#facc15', bg: 'linear-gradient(135deg,#ca8a04,#713f12)' },
+    { minPts: 55, grade: 'SSS', atkPct: 700000,     color: '#c084fc', bg: 'linear-gradient(135deg,#9333ea,#581c87)' },
+    { minPts: 50, grade: 'SS',  atkPct: 160000,     color: '#38bdf8', bg: 'linear-gradient(135deg,#0284c7,#1e3a8a)' },
+    { minPts: 45, grade: 'SS',  atkPct: 80000,      color: '#38bdf8', bg: 'linear-gradient(135deg,#0284c7,#1e3a8a)' },
+    { minPts: 40, grade: 'S',   atkPct: 26000,      color: '#4ade80', bg: 'linear-gradient(135deg,#16a34a,#064e3b)' },
+    { minPts: 35, grade: 'S',   atkPct: 8000,       color: '#4ade80', bg: 'linear-gradient(135deg,#16a34a,#064e3b)' },
+    { minPts: 30, grade: 'A',   atkPct: 4000,       color: '#60a5fa', bg: '#1e3a8a' },
+    { minPts: 25, grade: 'A',   atkPct: 1400,       color: '#60a5fa', bg: '#1e3a8a' },
+    { minPts: 20, grade: 'B',   atkPct: 800,        color: '#a78bfa', bg: '#3b0764' },
+    { minPts: 15, grade: 'B',   atkPct: 400,        color: '#a78bfa', bg: '#3b0764' },
+    { minPts: 10, grade: 'C',   atkPct: 200,        color: '#cbd5e1', bg: '#334155' },
+    { minPts: 5,  grade: 'C',   atkPct: 100,        color: '#cbd5e1', bg: '#334155' },
+    { minPts: 0,  grade: 'D',   atkPct: 0,          color: '#94a3b8', bg: '#1e293b' }
+  ];
+
+  const ENCHANT_AMP_RATES = [
+    { val: -50, prob: 0.10 }, { val: -30, prob: 0.10 }, { val: -10, prob: 0.10 },
+    { val: 10,  prob: 0.12 }, { val: 20,  prob: 0.12 }, { val: 30,  prob: 0.11 },
+    { val: 40,  prob: 0.10 }, { val: 50,  prob: 0.09 }, { val: 60,  prob: 0.06 },
+    { val: 70,  prob: 0.055 }, { val: 80, prob: 0.02 }, { val: 90,  prob: 0.015 },
+    { val: 100, prob: 0.01 }
+  ];
+
+  const ENCHANT_SCROLL_META = {
+    70: { prob: 0.70, pts: 2, cost: 1000,  name: '70% 스크롤', cls: 'success-70' },
+    40: { prob: 0.40, pts: 3, cost: 2500,  name: '40% 스크롤', cls: 'success-40' },
+    15: { prob: 0.15, pts: 5, cost: 10000, name: '15% 스크롤', cls: 'success-15' }
+  };
+
+  function getEnchantGradeInfo(finalPts) {
+    for (const row of ENCHANT_GRADE_TABLE) {
+      if (finalPts >= row.minPts) return row;
+    }
+    return ENCHANT_GRADE_TABLE[ENCHANT_GRADE_TABLE.length - 1];
+  }
+
+  function getAmpCumulativeProb(targetAmp) {
+    if (targetAmp <= 0) return 1;
+    let sum = 0;
+    ENCHANT_AMP_RATES.forEach(r => { if (r.val >= targetAmp) sum += r.prob; });
+    return sum;
+  }
+
+  function calculateEnchantExpected() {
+    const resBox = document.getElementById('ench_calc_result_box');
+    if (!resBox) return;
+
+    const targetFinalPts = parseInt(document.getElementById('ench_calc_target_pts')?.value || '70', 10);
+    const scrollKey = parseInt(document.getElementById('ench_calc_scroll_type')?.value || '15', 10);
+    const useReg = document.getElementById('ench_calc_use_reg')?.value === '1';
+
+    const curSucc = Math.max(0, Math.min(7, parseInt(document.getElementById('ench_cur_succ_cnt')?.value || '0', 10) || 0));
+    const curBase = Math.max(0, Math.min(35, parseInt(document.getElementById('ench_cur_base_pts')?.value || '0', 10) || 0));
+    const curFail = Math.max(0, Math.min(7 - curSucc, parseInt(document.getElementById('ench_cur_fail_cnt')?.value || '0', 10) || 0));
+    const curAmp  = parseInt(document.getElementById('ench_cur_amp_pct')?.value || '0', 10) || 0;
+
+    const holdFrag = Math.max(0, parseInt(document.getElementById('ench_hold_frag')?.value || '0', 10) || 0);
+    const holdReg  = Math.max(0, parseInt(document.getElementById('ench_hold_reg')?.value || '0', 10) || 0);
+    const holdAmp  = Math.max(0, parseInt(document.getElementById('ench_hold_amp')?.value || '0', 10) || 0);
+    const dungeonFrag = Math.max(1, parseInt(document.getElementById('ench_dungeon_frag')?.value || '1000', 10) || 1000);
+
+    const sc = ENCHANT_SCROLL_META[scrollKey] || ENCHANT_SCROLL_META[15];
+    const remainSlots = Math.max(0, 7 - curSucc);
+    const maxPossibleBase = curBase + remainSlots * sc.pts;
+    const maxPossibleFinal = Math.floor(maxPossibleBase * 2.0);
+    const targetGradeInfo = getEnchantGradeInfo(targetFinalPts);
+
+    if (maxPossibleFinal < targetFinalPts) {
+      resBox.innerHTML = `<div class="result-dashboard" style="border-color:#ef4444;">
+        <div class="res-label" style="color:#fca5a5;">⚠️ 선택한 스크롤(${sc.name}, 칸당 +${sc.pts}점)로는 목표 점수(${targetFinalPts}점) 달성이 불가능합니다!</div>
+        <div style="font-size:14px; color:#e2e8f0; margin-top:6px;">남은 ${remainSlots}칸을 모두 성공해도 기본 최대 <strong>${maxPossibleBase}점</strong> (증폭 +100% 시 최대 <strong>${maxPossibleFinal}점</strong>)입니다. 더 높은 등급의 스크롤(15% 또는 40%)을 선택해 주세요.</div>
+      </div>`;
+      return;
+    }
+
+    // 목표 최종 점수를 달성하기 위해 필요한 최소 증폭률(10% 단위) 역산
+    const validAmps = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    let reqAmp = 100;
+    for (const a of validAmps) {
+      if (Math.floor(maxPossibleBase * (1 + a / 100)) >= targetFinalPts) { reqAmp = a; break; }
+    }
+
+    let expAttempts = 0, expFragments = 0, expRegScrolls = 0;
+    if (useReg) {
+      // 회귀 스크롤로 실패 복구 시: 남은 각 슬롯 성공까지 평균 (1/p)회 시도, 실패 횟수 = (1-p)/p
+      expAttempts = remainSlots * (1 / sc.prob);
+      expFragments = expAttempts * sc.cost;
+      expRegScrolls = curFail + remainSlots * ((1 - sc.prob) / sc.prob);
+    } else {
+      // 무회귀 초기화 반복 시: 7칸 전부 성공 확률 = p^7
+      const allSuccProb = Math.pow(sc.prob, remainSlots);
+      expAttempts = remainSlots / allSuccProb;
+      expFragments = expAttempts * sc.cost;
+      expRegScrolls = 0;
+    }
+
+    const ampCumProb = getAmpCumulativeProb(reqAmp);
+    const expAmpScrolls = (curAmp >= reqAmp || reqAmp <= 0) ? 0 : (1 / ampCumProb);
+
+    const netFrag = Math.max(0, Math.round(expFragments) - holdFrag);
+    const netReg  = Math.max(0, Math.ceil(expRegScrolls) - holdReg);
+    const netAmp  = Math.max(0, Math.ceil(expAmpScrolls) - holdAmp);
+
+    const dungeonRunsByFrag = Math.ceil(netFrag / dungeonFrag);
+
+    resBox.innerHTML = `<div class="result-dashboard">
+      <div class="res-label">[${targetGradeInfo.grade} 등급 · ${targetFinalPts}점 (+${formatKoreanNumber(targetGradeInfo.atkPct)}%)] 달성 평균 기댓값</div>
+      <div class="res-value" style="color:${targetGradeInfo.color};">스크롤 조각 약 ${formatKoreanNumber(netFrag)}개</div>
+      <div style="font-size:13.5px; color:#cbd5e1; margin-bottom:14px;">
+        권장 세팅 목표: <strong>기본 인챈트 ${maxPossibleBase}점</strong> (${sc.name} ${remainSlots}칸 성공) × <strong>점수 증폭 +${reqAmp}% 이상</strong> (등장 확률 ${(ampCumProb * 100).toFixed(1)}%)
+      </div>
+      <div class="grid-3" style="text-align:center;">
+        <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:12px;">
+          <div style="font-size:12px; color:#fde68a; font-weight:800;">📜 총 필요 스크롤 조각 (보유 차감)</div>
+          <div style="font-size:21px; font-weight:900; color:#fde047; margin:4px 0;">${netFrag.toLocaleString()}개</div>
+          <div style="font-size:11.5px; color:#94a3b8;">평균 강화 시도: 약 ${expAttempts.toFixed(1)}회 (던전 ${dungeonRunsByFrag.toLocaleString()}회분)</div>
+        </div>
+        <div style="background:rgba(15,23,42,0.85); border:1.5px solid #e2e8f0; border-radius:12px; padding:12px;">
+          <div style="font-size:12px; color:#f8fafc; font-weight:800;">🏳️ 필요 회귀 스크롤 (흰색·실패복구)</div>
+          <div style="font-size:21px; font-weight:900; color:#ffffff; margin:4px 0;">약 ${expRegScrolls.toFixed(1)}개 <small style="font-size:13px; color:#94a3b8;">(부족 ${netReg}개)</small></div>
+          <div style="font-size:11.5px; color:#94a3b8;">${useReg ? `현재 실패 ${curFail}칸 + 예상 실패 ${(expRegScrolls - curFail).toFixed(1)}회` : '무회귀 초기화 전략 선택됨'}</div>
+        </div>
+        <div style="background:rgba(15,23,42,0.85); border:1.5px solid #c084fc; border-radius:12px; padding:12px;">
+          <div style="font-size:12px; color:#e9d5ff; font-weight:800;">🔮 필요 증폭 스크롤 (보라·+${reqAmp}% 목표)</div>
+          <div style="font-size:21px; font-weight:900; color:#d8b4fe; margin:4px 0;">약 ${expAmpScrolls.toFixed(1)}개 <small style="font-size:13px; color:#94a3b8;">(부족 ${netAmp}개)</small></div>
+          <div style="font-size:11.5px; color:#94a3b8;">+${reqAmp}% 이상 등장 확률: ${(ampCumProb * 100).toFixed(1)}%</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ==================== 심연장비 인챈트 인게임 미니게임 시뮬레이터 상태 & 로직 ====================
+  const ENCH_PARTS_LIST = ['상의', '하의', '신발', '반지', '목걸이', '엠블렘'];
+  let enchSimCurPartIdx = 0;
+  let enchSimMode = 'enhance'; // 'enhance' | 'amp'
+  let enchSimSelectedScroll = 15; // 70 | 40 | 15 | 'reg'
+  let enchSimSpent = { frag: 0, reg: 0, amp: 0 };
+  let enchSimPartData = ENCH_PARTS_LIST.map(() => ({
+    slots: [null, null, null, null, null, null, null], // { status:'success'|'fail', type:70|40|15, pts:2|3|5 }
+    ampPct: 0
+  }));
+
+  function initEnchantSystemUI() {
+    calculateEnchantExpected();
+    renderEnchantReferenceTables();
+    renderEnchantSimulatorAll();
+  }
+
+  function renderEnchantReferenceTables() {
+    const box = document.getElementById('ench_reference_tables_box');
+    if (!box || box.innerHTML.trim() !== '') return;
+    const gradeRows = [...ENCHANT_GRADE_TABLE].reverse().map(r => `
+      <tr>
+        <td><span class="ench-grade-pill" style="background:${r.bg}; color:#fff;">${r.grade}</span></td>
+        <td style="font-weight:800; color:#fde047;">${r.minPts}점 이상</td>
+        <td style="font-weight:800; color:#38bdf8;">+${formatKoreanNumber(r.atkPct)}% <small style="color:#64748b;">(${r.atkPct.toLocaleString()}%)</small></td>
+      </tr>`).join('');
+
+    const ampRows = ENCHANT_AMP_RATES.map(r => {
+      const cum = (getAmpCumulativeProb(r.val) * 100).toFixed(1);
+      return `<tr>
+        <td style="font-weight:800; color:${r.val > 0 ? '#c084fc' : '#f87171'};">${r.val > 0 ? '+' + r.val : r.val}%</td>
+        <td>${(r.prob * 100).toFixed(1)}%</td>
+        <td style="color:#fde047; font-weight:700;">${r.val > 0 ? cum + '% (평균 ' + (1 / getAmpCumulativeProb(r.val)).toFixed(1) + '회)' : '-'}</td>
+      </tr>`;
+    }).join('');
+
+    box.innerHTML = `
+      <div class="custom-table-container"><table class="custom-table" style="font-size:12.5px;"><thead><tr><th>등급</th><th>최종 점수</th><th>부위 인챈트 공격력(%)</th></tr></thead><tbody>${gradeRows}</tbody></table></div>
+      <div class="custom-table-container"><table class="custom-table" style="font-size:12.5px;"><thead><tr><th>증폭 수치</th><th>단일 등장 확률</th><th>해당 수치 이상 누적 확률</th></tr></thead><tbody>${ampRows}</tbody></table></div>
+    `;
+  }
+
+  function selectEnchantSimPart(idx) {
+    enchSimCurPartIdx = idx;
+    renderEnchantSimulatorAll();
+  }
+
+  function switchEnchantSimMode(mode) {
+    enchSimMode = mode;
+    renderEnchantSimulatorAll();
+  }
+
+  function selectEnchantSimScroll(scType) {
+    enchSimSelectedScroll = scType;
+    renderEnchantSimulatorAll();
+  }
+
+  function useEnchantScrollInSim() {
+    const pData = enchSimPartData[enchSimCurPartIdx];
+    const msgEl = document.getElementById('ench_sim_action_msg');
+
+    if (enchSimMode === 'enhance') {
+      if (enchSimSelectedScroll === 'reg') {
+        const failIdx = pData.slots.findIndex(s => s && s.status === 'fail');
+        if (failIdx === -1) {
+          if (msgEl) { msgEl.style.color = '#f87171'; msgEl.innerText = '⚠️ 복구할 실패(❌) 슬롯이 없습니다!'; }
+          return;
+        }
+        pData.slots[failIdx] = null;
+        enchSimSpent.reg++;
+        if (msgEl) { msgEl.style.color = '#6ee7b7'; msgEl.innerText = `✨ 회귀 스크롤 사용! ${failIdx + 1}번 슬롯의 실패 기록을 복구했습니다.`; }
+        renderEnchantSimulatorAll();
+        return;
+      }
+
+      const emptyIdx = pData.slots.findIndex(s => s === null);
+      if (emptyIdx === -1) {
+        if (msgEl) { msgEl.style.color = '#f87171'; msgEl.innerText = '⚠️ 7칸을 모두 시도했습니다! [회귀 스크롤]로 실패를 복구하거나 [초기화]하세요.'; }
+        return;
+      }
+
+      const sc = ENCHANT_SCROLL_META[enchSimSelectedScroll] || ENCHANT_SCROLL_META[15];
+      enchSimSpent.frag += sc.cost;
+      const isSucc = Math.random() < sc.prob;
+      if (isSucc) {
+        pData.slots[emptyIdx] = { status: 'success', type: enchSimSelectedScroll, pts: sc.pts };
+        if (msgEl) { msgEl.style.color = '#4ade80'; msgEl.innerText = `🎉 [${sc.name}] 강화 성공! (${emptyIdx + 1}번 슬롯 +${sc.pts}점 획득!)`; }
+      } else {
+        pData.slots[emptyIdx] = { status: 'fail', type: enchSimSelectedScroll, pts: 0 };
+        if (msgEl) { msgEl.style.color = '#f87171'; msgEl.innerText = `💥 [${sc.name}] 강화 실패... (${emptyIdx + 1}번 슬롯 ❌ 표시 — 클릭 시 회귀 복구)`; }
+      }
+      renderEnchantSimulatorAll();
+    } else {
+      // 증폭 스크롤 굴리기
+      enchSimSpent.amp++;
+      const r = Math.random();
+      let acc = 0, rolledVal = -50;
+      for (const item of ENCHANT_AMP_RATES) {
+        acc += item.prob;
+        if (r <= acc) { rolledVal = item.val; break; }
+      }
+      if (rolledVal > pData.ampPct) {
+        const old = pData.ampPct;
+        pData.ampPct = rolledVal;
+        if (msgEl) { msgEl.style.color = '#c084fc'; msgEl.innerText = `🔮 증폭 대성공! 점수 증폭률이 +${old}% ➔ +${rolledVal}%로 상승했습니다!`; }
+      } else {
+        if (msgEl) { msgEl.style.color = '#94a3b8'; msgEl.innerText = `💨 증폭 결과 [${rolledVal > 0 ? '+' + rolledVal : rolledVal}%] — 기존(+${pData.ampPct}%) 이하라 적용되지 않고 기존 수치가 유지됩니다.`; }
+      }
+      renderEnchantSimulatorAll();
+    }
+  }
+
+  function recoverFailedSlotByClick(slotIdx) {
+    const pData = enchSimPartData[enchSimCurPartIdx];
+    if (!pData.slots[slotIdx] || pData.slots[slotIdx].status !== 'fail') return;
+    pData.slots[slotIdx] = null;
+    enchSimSpent.reg++;
+    const msgEl = document.getElementById('ench_sim_action_msg');
+    if (msgEl) { msgEl.style.color = '#6ee7b7'; msgEl.innerText = `✨ 회귀 스크롤 1개 사용! 클릭한 ${slotIdx + 1}번 실패(❌) 슬롯을 즉시 복구했습니다.`; }
+    renderEnchantSimulatorAll();
+  }
+
+  function autoCompleteEnchant35() {
+    const pData = enchSimPartData[enchSimCurPartIdx];
+    const sc = ENCHANT_SCROLL_META[15];
+    let tries = 0, regressions = 0;
+    for (let i = 0; i < 7; i++) {
+      if (pData.slots[i] && pData.slots[i].status === 'success' && pData.slots[i].pts === 5) continue;
+      if (pData.slots[i] && pData.slots[i].status === 'fail') { pData.slots[i] = null; regressions++; enchSimSpent.reg++; }
+      while (true) {
+        tries++;
+        enchSimSpent.frag += sc.cost;
+        if (Math.random() < sc.prob) {
+          pData.slots[i] = { status: 'success', type: 15, pts: 5 };
+          break;
+        } else {
+          regressions++;
+          enchSimSpent.reg++;
+        }
+      }
+    }
+    const msgEl = document.getElementById('ench_sim_action_msg');
+    if (msgEl) {
+      msgEl.style.color = '#fde047';
+      msgEl.innerText = `⚡ 35점 만점 달성 완료! (이번 자동완성에서 15% 스크롤 ${tries}회 · 회귀 스크롤 ${regressions}개 소모)`;
+    }
+    renderEnchantSimulatorAll();
+  }
+
+  function autoRollEnchantAmpUntil(targetAmp) {
+    const pData = enchSimPartData[enchSimCurPartIdx];
+    const msgEl = document.getElementById('ench_sim_action_msg');
+    if (pData.ampPct >= targetAmp) {
+      if (msgEl) { msgEl.style.color = '#fde047'; msgEl.innerText = `이미 +${pData.ampPct}%로 목표(+${targetAmp}%) 이상입니다!`; }
+      return;
+    }
+    let rolls = 0;
+    while (pData.ampPct < targetAmp && rolls < 2000) {
+      rolls++;
+      enchSimSpent.amp++;
+      const r = Math.random();
+      let acc = 0, rolledVal = -50;
+      for (const item of ENCHANT_AMP_RATES) {
+        acc += item.prob;
+        if (r <= acc) { rolledVal = item.val; break; }
+      }
+      if (rolledVal > pData.ampPct) pData.ampPct = rolledVal;
+    }
+    if (msgEl) {
+      msgEl.style.color = '#c084fc';
+      msgEl.innerText = `🔮 증폭 스크롤 ${rolls}개 연속 사용 ➔ 최종 증폭률 [+${pData.ampPct}%] 달성!`;
+    }
+    renderEnchantSimulatorAll();
+  }
+
+  function resetEnchantSimCurrentPart() {
+    enchSimPartData[enchSimCurPartIdx] = { slots: [null, null, null, null, null, null, null], ampPct: 0 };
+    const msgEl = document.getElementById('ench_sim_action_msg');
+    if (msgEl) { msgEl.style.color = '#fca5a5'; msgEl.innerText = `🔄 [${ENCH_PARTS_LIST[enchSimCurPartIdx]}] 프리셋의 강화와 증폭이 모두 초기화되었습니다.`; }
+    renderEnchantSimulatorAll();
+  }
+
+  function resetEnchantSimSpentCounter() {
+    enchSimSpent = { frag: 0, reg: 0, amp: 0 };
+    renderEnchantSimulatorAll();
+  }
+
+  function renderEnchantSimulatorAll() {
+    const pData = enchSimPartData[enchSimCurPartIdx];
+    const partName = ENCH_PARTS_LIST[enchSimCurPartIdx];
+
+    // 1. 부위 탭
+    const tabsEl = document.getElementById('ench_sim_part_tabs');
+    if (tabsEl) {
+      tabsEl.innerHTML = ENCH_PARTS_LIST.map((name, idx) => {
+        const pd = enchSimPartData[idx];
+        const bPts = pd.slots.reduce((a, s) => a + (s ? s.pts : 0), 0);
+        const fPts = Math.floor(bPts * (1 + pd.ampPct / 100));
+        const gInfo = getEnchantGradeInfo(fPts);
+        return `<button type="button" class="ench-part-btn ${idx === enchSimCurPartIdx ? 'active' : ''}" onclick="selectEnchantSimPart(${idx})">
+          <div>${name} <span style="color:#4ade80;">+30</span></div>
+          <div style="font-size:10px; color:${fPts > 0 ? gInfo.color : '#64748b'}; margin-top:2px;">${gInfo.grade} (${fPts}점)</div>
+        </button>`;
+      }).join('');
+    }
+
+    // 2. 7칸 슬롯
+    const slotsEl = document.getElementById('ench_sim_7slots');
+    if (slotsEl) {
+      slotsEl.innerHTML = pData.slots.map((s, idx) => {
+        if (!s) return `<div class="ench-slot-cell"><span style="font-size:18px; opacity:0.35;">📜</span><span style="font-size:9.5px; color:#64748b;">${idx + 1}번</span></div>`;
+        if (s.status === 'fail') {
+          return `<div class="ench-slot-cell failed" onclick="recoverFailedSlotByClick(${idx})" title="클릭 시 회귀 스크롤 1개를 사용해 즉시 복구합니다!"><span style="font-size:18px;">❌</span><span style="font-size:9px; color:#fecdd3;">클릭복구</span></div>`;
+        }
+        return `<div class="ench-slot-cell success-${s.type}"><span style="font-size:14px;">📜${s.type}%</span><span style="font-size:10.5px; margin-top:2px;">+${s.pts}점</span></div>`;
+      }).join('');
+    }
+
+    const ampDisp = document.getElementById('ench_sim_amp_display');
+    if (ampDisp) ampDisp.innerText = `+${pData.ampPct}%`;
+
+    // 3. 모드 버튼 & 컨트롤 영역
+    const btnEnh = document.getElementById('ench_sim_mode_enh');
+    const btnAmp = document.getElementById('ench_sim_mode_amp');
+    if (btnEnh && btnAmp) {
+      const isEnh = (enchSimMode === 'enhance');
+      btnEnh.style.background = isEnh ? '#1d4ed8' : '#162033';
+      btnEnh.style.borderColor = isEnh ? '#60a5fa' : '#334155';
+      btnEnh.style.color = isEnh ? '#ffffff' : '#94a3b8';
+      btnAmp.style.background = !isEnh ? '#7e22ce' : '#162033';
+      btnAmp.style.borderColor = !isEnh ? '#c084fc' : '#334155';
+      btnAmp.style.color = !isEnh ? '#ffffff' : '#94a3b8';
+    }
+
+    const ctrlArea = document.getElementById('ench_sim_control_area');
+    if (ctrlArea) {
+      if (enchSimMode === 'enhance') {
+        const curSc = ENCHANT_SCROLL_META[enchSimSelectedScroll];
+        const costTxt = enchSimSelectedScroll === 'reg' ? '회귀 스크롤 1개' : `스크롤 조각 ${(curSc?.cost || 10000).toLocaleString()}개`;
+        ctrlArea.innerHTML = `
+          <div class="ench-scroll-picker">
+            <div class="ench-scroll-card ${enchSimSelectedScroll===70?'selected':''}" onclick="selectEnchantSimScroll(70)">
+              <div style="font-size:18px;">📜</div><div style="font-size:12.5px; font-weight:900; color:#86efac;">70%</div><div style="font-size:10px; color:#cbd5e1;">+2점 · 1,000조각</div>
+            </div>
+            <div class="ench-scroll-card ${enchSimSelectedScroll===40?'selected':''}" onclick="selectEnchantSimScroll(40)">
+              <div style="font-size:18px;">📜</div><div style="font-size:12.5px; font-weight:900; color:#7dd3fc;">40%</div><div style="font-size:10px; color:#cbd5e1;">+3점 · 2,500조각</div>
+            </div>
+            <div class="ench-scroll-card ${enchSimSelectedScroll===15?'selected':''}" onclick="selectEnchantSimScroll(15)">
+              <div style="font-size:18px;">📜</div><div style="font-size:12.5px; font-weight:900; color:#fde047;">15%</div><div style="font-size:10px; color:#cbd5e1;">+5점 · 1만조각</div>
+            </div>
+            <div class="ench-scroll-card ${enchSimSelectedScroll==='reg'?'selected':''}" onclick="selectEnchantSimScroll('reg')">
+              <div style="font-size:18px;">🏳️</div><div style="font-size:12px; font-weight:900; color:#ffffff;">회귀</div><div style="font-size:10px; color:#fca5a5;">실패(❌) 복구</div>
+            </div>
+          </div>
+          <button type="button" onclick="useEnchantScrollInSim()" style="width:100%; background:linear-gradient(135deg, #f59e0b 0%, #b45309 100%); border:1.5px solid #fef08a; color:#ffffff; font-weight:900; font-size:14px; padding:11px; border-radius:10px; cursor:pointer; box-shadow:0 4px 14px rgba(245,158,11,0.4);">
+            스크롤 사용 (${costTxt})
+          </button>`;
+      } else {
+        ctrlArea.innerHTML = `
+          <div style="background:#162033; border:1px solid #475569; border-radius:10px; padding:10px; margin:10px 0; font-size:12px; color:#e2e8f0; text-align:center;">
+            🔮 <strong>증폭 스크롤:</strong> -50% ~ +100% 중 무작위 등장<br>
+            <span style="color:#c084fc; font-size:11px;">(현재 +${pData.ampPct}%보다 낮게 나오면 실패 처리되어 기존 최고 증폭률이 유지됩니다!)</span>
+          </div>
+          <button type="button" onclick="useEnchantScrollInSim()" style="width:100%; background:linear-gradient(135deg, #9333ea 0%, #581c87 100%); border:1.5px solid #e9d5ff; color:#ffffff; font-weight:900; font-size:14px; padding:10px; border-radius:10px; cursor:pointer; margin-bottom:8px; box-shadow:0 4px 14px rgba(147,51,234,0.45);">
+            🔮 증폭 스크롤 1회 사용
+          </button>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px;">
+            <button type="button" onclick="autoRollEnchantAmpUntil(70)" style="background:#1e293b; border:1px solid #a855f7; color:#e9d5ff; font-size:11px; font-weight:800; padding:6px 4px; border-radius:7px; cursor:pointer;">⚡ +70%까지 연타</button>
+            <button type="button" onclick="autoRollEnchantAmpUntil(90)" style="background:#1e293b; border:1px solid #e879f9; color:#f5d0fe; font-size:11px; font-weight:800; padding:6px 4px; border-radius:7px; cursor:pointer;">⚡ +90%까지 연타</button>
+            <button type="button" onclick="autoRollEnchantAmpUntil(100)" style="background:#3b0764; border:1px solid #fde047; color:#fef08a; font-size:11px; font-weight:900; padding:6px 4px; border-radius:7px; cursor:pointer;">⚡ +100% 종결 연타</button>
+          </div>`;
+      }
+    }
+
+    // 4. 우측 인챈트 정보 업데이트
+    const basePts = pData.slots.reduce((a, s) => a + (s ? s.pts : 0), 0);
+    const finalPts = Math.floor(basePts * (1 + pData.ampPct / 100));
+    const gInfo = getEnchantGradeInfo(finalPts);
+
+    const elBase = document.getElementById('ench_sim_info_base');
+    const elAmp  = document.getElementById('ench_sim_info_amp');
+    const elFin  = document.getElementById('ench_sim_info_final');
+    const elStat = document.getElementById('ench_sim_info_stat');
+    if (elBase) elBase.innerText = `${basePts}점 / 35점`;
+    if (elAmp)  elAmp.innerText  = `+${pData.ampPct}%`;
+    if (elFin)  elFin.innerHTML  = `<span class="ench-grade-pill" style="background:${gInfo.bg}; color:#fff; margin-right:6px;">${gInfo.grade}</span><strong style="color:#fde047; font-size:16px;">${finalPts}점</strong>`;
+    if (elStat) elStat.innerText = `${partName} 인챈트 공격력(%) +${formatKoreanNumber(gInfo.atkPct)}%`;
+
+    // 5. 누적 소모 재화 트래커
+    const spFrag = document.getElementById('ench_sim_spent_frag');
+    const spReg  = document.getElementById('ench_sim_spent_reg');
+    const spAmp  = document.getElementById('ench_sim_spent_amp');
+    if (spFrag) spFrag.innerText = `${formatKoreanNumber(enchSimSpent.frag)}개 (${enchSimSpent.frag.toLocaleString()})`;
+    if (spReg)  spReg.innerText  = `${enchSimSpent.reg.toLocaleString()}개`;
+    if (spAmp)  spAmp.innerText  = `${enchSimSpent.amp.toLocaleString()}개`;
+  }
+
+  // =========================================================================
   // [SECTION 17] 구글 스타일 통합 검색 & 단일 클린 초기화
   // =========================================================================
   const GLOBAL_SEARCH_INDEX = [
@@ -11528,6 +12618,7 @@
     { title:"🌙 가호(별·달·해·유성) & 원혼 어빌리티 주사위 계산기", cat:"🎲 확률 계산기", badge:"grade-eternal", keywords:"가호 별의가호 달의가호 해의가호 유성의가호 원혼 어빌리티 옵션주사위 옵공증", action:()=>{ switchMainMode('calcs'); openDeepCalculator('tab-ability'); } },
     { title:"🗡️ 장비 소환 & 27슬롯 인벤토리 자동 합성 계산기", cat:"🎲 확률 계산기", badge:"grade-ancient", keywords:"장비 소환 뽑기 대낫 오브 장식 고대 1등급 합성", action:()=>{ switchMainMode('calcs'); openNewbieCalculator('equip'); } },
     { title:"📜 패시브 / ⚡ 스킬 / 🦸 영웅 / 🧚 정령 소환 기댓값 계산기", cat:"🎲 확률 계산기", badge:"grade-mythic", keywords:"소환 확률 픽업 통상 다이아 정령석 10돌파 70개", action:()=>{ switchMainMode('calcs'); openNewbieCalculator('skill'); } },
+    { title:"📜 심연장비 인챈트 기댓값 계산기 & 실전 미니게임 시뮬레이터", cat:"🎲 확률 계산기", badge:"grade-advanced", keywords:"심연장비 인챈트 강화 회귀 증폭 스크롤 조각 UR SSR SR 70점 인챈트던전", action:()=>{ switchMainMode('calcs'); openDeepCalculator('tab-enchant'); } },
     { title:"📲 모바일 앱(홈 화면 바로가기) 설치 방법 안내", cat:"🛠️ 세팅 도우미", badge:"grade-ancient", keywords:"앱 설치 홈화면 바로가기 아이폰 갤럭시 사파리 크롬 PWA", action:()=>{ openPwaInstallModal(true); } }
   ];
 
