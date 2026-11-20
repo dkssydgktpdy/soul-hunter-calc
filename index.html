@@ -12783,6 +12783,7 @@
 
   function openPwaInstallModal(forceOpen = false) {
     const dev = detectUserDeviceForPwa();
+    if (!dev.isIOS && !dev.isAndroid) return;
     if (!forceOpen) {
       if (dev.isStandalone) return;
       try {
@@ -12790,7 +12791,6 @@
         if (sessionStorage.getItem('shk_pwa_session_closed') === '1') return;
       } catch (e) {}
     }
-    if (!dev.isIOS && !dev.isAndroid) return;
 
     const badge = document.getElementById('pwa_detected_device_badge');
     if (dev.isIOS) {
