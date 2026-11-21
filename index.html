@@ -1916,6 +1916,65 @@
     .t4-card-abyss    { border-color: rgba(129,140,248,0.9); background: linear-gradient(180deg, rgba(79,70,229,0.32) 0%, #0b1120 65%); box-shadow: 0 0 16px rgba(129,140,248,0.3); }
     .t4-card-origin   { border-color: rgba(248,250,252,0.9); background: linear-gradient(180deg, rgba(148,163,184,0.32) 0%, #0b1120 65%); box-shadow: 0 0 16px rgba(248,250,252,0.28); }
 
+    /* 4차 그림리퍼(사신) 전용 딥 크림슨 보드 & Lv.55 초가속 시안 알림 */
+    .trait4-link-board.reaper-theme {
+      background: radial-gradient(circle at 20% 20%, #3a0d16 0%, #19070b 70%, #0b0406 100%);
+      border-color: #be123c;
+    }
+    .trait4-reaper-target-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid #fb7185;
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+    }
+    .t4-speed-cyan-alert {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(15, 23, 42, 0.94) 100%);
+      border: 1.5px solid #22d3ee;
+      border-left: 4px solid #34d399;
+      border-radius: 11px;
+      padding: 11px 14px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      color: #e0f2fe;
+      line-height: 1.55;
+      box-shadow: 0 4px 16px rgba(6, 182, 212, 0.22);
+    }
+
+    /* 📱 모바일 아이폰식 좌측➔우측 스와이프 뒤로가기 인디케이터 */
+    #ios_swipe_back_indicator {
+      position: fixed;
+      left: 0;
+      top: 50%;
+      transform: translate(-110%, -50%);
+      z-index: 10020;
+      background: rgba(15, 23, 42, 0.92);
+      border: 2px solid #38bdf8;
+      border-left: none;
+      border-radius: 0 28px 28px 0;
+      padding: 10px 15px 10px 10px;
+      color: #7dd3fc;
+      font-size: 14px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      pointer-events: none;
+      box-shadow: 4px 0 20px rgba(56, 189, 248, 0.45);
+      transition: transform 0.18s ease, border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    #ios_swipe_back_indicator.ready {
+      background: linear-gradient(135deg, #0284c7 0%, #10b981 100%);
+      border-color: #fde047;
+      color: #ffffff;
+      box-shadow: 4px 0 24px rgba(16, 185, 129, 0.65);
+    }
+
     /* ==================== 9. 유니온 세팅 도우미 & 성장·수호신 계산기 ==================== */
     .union-ingame-window {
       background: linear-gradient(180deg, #102a45 0%, #091526 100%);
@@ -3493,6 +3552,7 @@
   <!-- ==================== 1. 좌/우 네온 도킹 가이드라인 & 서랍형 3슬롯 저장 위젯 ==================== -->
   <div class="neon-snap-guide-bar left-line" id="neon_snap_left"></div>
   <div class="neon-snap-guide-bar right-line" id="neon_snap_right"></div>
+  <div id="ios_swipe_back_indicator">‹ <span>뒤로</span></div>
 
   <div class="top-right-floating-widget dock-right folded" id="floating_save_widget">
     <div class="float-widget-drag-bar" id="float_widget_drag_bar" title="꾹 눌러서 위아래로 이동하거나, 반대쪽 끝으로 끌어서 위치를 바꾸세요!">
@@ -3558,7 +3618,7 @@
             <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 &amp; 공략 툴</h1>
           </div>
           <div class="author-tag">
-            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.4.4.0</strong>
+            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.5.0.0</strong>
           </div>
 
           <!-- 카카오페이 후원 팝오버 위젯 -->
@@ -6132,7 +6192,7 @@
   <!-- ==================== 6. 푸터 (길보길 분석실 & 방문자 카운터) ==================== -->
   <footer>
     <div style="margin-bottom: 12px;">
-      소울헌터키우기 네이버 라운지 전용 계산기 v.4.4.0 | 제작: <strong>29서버 겨울눈사람</strong>
+      소울헌터키우기 네이버 라운지 전용 계산기 v.5.0.0 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
       <button type="button" onclick="location.href='guild.html'"
@@ -13037,176 +13097,145 @@
   function toggleReaperAncientCount(is3) { reaperHas3Ancient = Boolean(is3); renderBuildGuideContent(); }
 
   // ==================== 2차 전직 특성 TP 계산 & 전역 최적 배분 (Global DP) ====================
-  function get2ndJobPerLvTP(lv) {
-    if (lv >= 131) return 15;
-    return Math.min(13, Math.floor((Math.max(1, lv) - 1) / 10) + 1);
+  function get2ndJobPointPerLv(lv) {
+    if (lv >= 121) return 16;
+    if (lv >= 91) return 10;
+    return Math.max(1, Math.floor((lv - 1) / 10) + 1);
   }
 
   function get2ndJobTotalTP(lv) {
     let sum = 0;
     const clamped = Math.max(1, Math.min(180, parseInt(lv, 10) || 1));
-    for (let i = 1; i <= clamped; i++) sum += get2ndJobPerLvTP(i);
+    for (let i = 1; i <= clamped; i++) sum += get2ndJobPointPerLv(i);
     return sum;
   }
 
   function simulate2ndJobTree(lv) {
-    const L = Math.max(1, Math.min(180, parseInt(lv, 10) || 1));
-    const totalTP = get2ndJobTotalTP(L);
-    const perLvTP = get2ndJobPerLvTP(L);
-
-    const tierClasses = [
-      't2c-brown','t2c-green','t2c-blue','t2c-purple','t2c-yellow','t2c-orange',
-      't2c-cyan','t2c-mint','t2c-pink','t2c-sky-silv','t2c-blu-silv',
-      't2c-silver1','t2c-silver2','t2c-emerald1','t2c-emerald2','t2c-crimson1','t2c-crimson2'
-    ];
-    const r2ReqLvs   = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160];
-    const r2Costs    = [1,  2,  3,  4,  5,  6,  8, 10, 12, 15,  18,  22,  26,  32,  38,  45,  55];
-    const markR2Step = [2,  4,  8, 16, 30, 55, 100, 180, 320, 560, 960, 1600, 2600, 4200, 6800, 11000, 18000];
-    const critR2Step = [40, 80, 160, 320, 600, 1100, 2000, 3600, 6400, 11200, 19200, 32000, 52000, 84000, 136000, 220000, 360000];
-
-    const markRoot = { name: '2차 표식', desc: '공격 시 10% 확률로 표식 1개 획득 · 표식 1개당 피해량 +10% (최대 50중첩)', cur: 0 };
-    const critRoot = { name: '2차 크리티컬', desc: '공격 시 10% 확률로 2차 크리티컬 발동 · 2차 저주 영구 부여 (받는 피해 +100% 곱연산)', cur: 0 };
-
-    const makeR1 = (label) => [1, 10, 20, 30, 40, 50].map((reqLv, i) => ({
-      reqLv, cost: i + 1, cur: 0, max: 5, cls: tierClasses[i],
-      desc: `${label} 레벨당 +3% (마스터 시 +15%)`
-    }));
-    const makeR2 = (isMark) => r2ReqLvs.map((reqLv, i) => ({
-      reqLv, cost: r2Costs[i], cur: 0, max: 5, cls: tierClasses[i],
-      stepPct: isMark ? markR2Step[i] : critR2Step[i],
-      desc: isMark
-        ? `표식 1개당 피해량 레벨당 +${markR2Step[i].toLocaleString()}% (마스터 시 +${(markR2Step[i]*5).toLocaleString()}%)`
-        : `2차 크리티컬 피해량 레벨당 +${critR2Step[i].toLocaleString()}% (마스터 시 +${(critR2Step[i]*5).toLocaleString()}%)`
-    }));
-
-    const mark = {
-      r1: makeR1('표식 획득 확률'),
-      r2: makeR2(true),
-      r3: [
-        { reqLv: 10,  cost: 3,  cur: 0, max: 1, cls: 't2c-green',    addStack: 10, desc: '표식 최대 중첩 +10 (총 60중첩 · 1·2번 칸 우선 투자)' },
-        { reqLv: 30,  cost: 5,  cur: 0, max: 1, cls: 't2c-purple',   addStack: 15, desc: '표식 최대 중첩 +15 (총 75중첩 · 1·2번 칸 우선 투자)' },
-        { reqLv: 50,  cost: 8,  cur: 0, max: 1, cls: 't2c-yellow',   addStack: 15, desc: '표식 최대 중첩 +15 (가성비 대비 고비용으로 다이어트 권장)' },
-        { reqLv: 65,  cost: 12, cur: 0, max: 1, cls: 't2c-cyan',     addStack: 20, desc: '표식 최대 중첩 +20 (후순위)' },
-        { reqLv: 80,  cost: 16, cur: 0, max: 1, cls: 't2c-pink',     addStack: 20, desc: '표식 최대 중첩 +20 (후순위)' },
-        { reqLv: 100, cost: 22, cur: 0, max: 1, cls: 't2c-sky-silv', addStack: 30, desc: '표식 최대 중첩 +30 (후순위)' }
-      ],
-      r4: [
-        { reqLv: 20, cost: 4,  cur: 0, max: 1, cls: 't2c-blue',   ampMult: 1.5, desc: '표식 피해 증폭 ×1.5배' },
-        { reqLv: 40, cost: 6,  cur: 0, max: 1, cls: 't2c-yellow', ampMult: 2.0, desc: '표식 피해 증폭 ×2.0배' },
-        { reqLv: 60, cost: 10, cur: 0, max: 1, cls: 't2c-cyan',   ampMult: 2.5, desc: '표식 피해 증폭 ×2.5배' },
-        { reqLv: 90, cost: 15, cur: 0, max: 1, cls: 't2c-pink',   ampMult: 3.0, desc: '표식 피해 증폭 ×3.0배' }
-      ]
-    };
-
-    const crit = {
-      r1: makeR1('2차 크리티컬 확률'),
-      r2: makeR2(false),
-      r3: [
-        { reqLv: 10,  cost: 3,  cur: 0, max: 1, cls: 't2c-green',    cursePct: 300,   desc: '2차 저주 상태 적이 입는 피해량 +300% (0순위 마스터)' },
-        { reqLv: 30,  cost: 5,  cur: 0, max: 1, cls: 't2c-purple',   cursePct: 900,   desc: '2차 저주 상태 적이 입는 피해량 +900% (0순위 마스터)' },
-        { reqLv: 50,  cost: 8,  cur: 0, max: 1, cls: 't2c-yellow',   cursePct: 2400,  desc: '2차 저주 상태 적이 입는 피해량 +2,400% (0순위 마스터)' },
-        { reqLv: 65,  cost: 12, cur: 0, max: 1, cls: 't2c-cyan',     cursePct: 6000,  desc: '2차 저주 상태 적이 입는 피해량 +6,000% (0순위 마스터)' },
-        { reqLv: 80,  cost: 16, cur: 0, max: 1, cls: 't2c-pink',     cursePct: 15000, desc: '2차 저주 상태 적이 입는 피해량 +15,000% (0순위 마스터)' },
-        { reqLv: 100, cost: 22, cur: 0, max: 1, cls: 't2c-sky-silv', cursePct: 34000, desc: '2차 저주 상태 적이 입는 피해량 +34,000% (0순위 마스터)' }
-      ],
-      r4: [
-        { reqLv: 20, cost: 5,  cur: 0, max: 1, cls: 't2c-blue',   ampMult: 1.0, isAwkNode: true, desc: '각성기 2차 크리티컬 강화 (각성기 봉인 사용 시 미투자 5P 절약)' },
-        { reqLv: 40, cost: 6,  cur: 0, max: 1, cls: 't2c-yellow', ampMult: 2.0, desc: '2차 크리티컬 피해 증폭 ×2.0배' },
-        { reqLv: 60, cost: 10, cur: 0, max: 1, cls: 't2c-cyan',   ampMult: 2.5, desc: '2차 크리티컬 피해 증폭 ×2.5배' },
-        { reqLv: 90, cost: 15, cur: 0, max: 1, cls: 't2c-pink',   ampMult: 3.0, desc: '2차 크리티컬 피해 증폭 ×3.0배' }
-      ]
-    };
-
+    const totalTP = get2ndJobTotalTP(lv);
     let remTP = totalTP;
-    const spend = (node, times = 1) => {
-      for (let t = 0; t < times; t++) {
-        if (node.cur < node.max && L >= (node.reqLv || 1) && remTP >= node.cost) {
-          node.cur++; remTP -= node.cost;
-        }
-      }
-    };
+    const markRoot = { reqLv:1, max:1, cost:1, cur:0, name:"2차 표식 개방", desc:"공격 시 10% 확률로 표식 1개 획득 / 표식 1개당 피해량 10% 증가 (기본 최대 중첩: 50)" };
+    const critRoot = { reqLv:1, max:1, cost:1, cur:0, name:"2차 크리티컬 개방", desc:"공격 시 10% 확률로 2차 크리티컬 발동 / 적에게 '2차 저주' 영구 부여 (받는 피해 +100% 곱연산)" };
 
-    // 1. 루트 개방
-    if (remTP >= 1) { markRoot.cur = 1; remTP -= 1; }
-    if (remTP >= 1) { critRoot.cur = 1; remTP -= 1; }
+    const row1Meta = [
+      { reqLv:1, max:5, cost:1, cls:"t2c-brown", maxVal:15 }, { reqLv:10, max:5, cost:1, cls:"t2c-green", maxVal:15 },
+      { reqLv:20, max:5, cost:1, cls:"t2c-blue", maxVal:15 }, { reqLv:30, max:5, cost:1, cls:"t2c-purple", maxVal:15 },
+      { reqLv:40, max:5, cost:2, cls:"t2c-yellow", maxVal:15 }, { reqLv:50, max:5, cost:3, cls:"t2c-orange", maxVal:15 }
+    ];
+    const markRow2Meta = [
+      { reqLv:1, max:5, cost:1, cls:"t2c-brown", maxVal:10 }, { reqLv:10, max:5, cost:1, cls:"t2c-green", maxVal:20 },
+      { reqLv:20, max:5, cost:1, cls:"t2c-blue", maxVal:30 }, { reqLv:30, max:5, cost:1, cls:"t2c-purple", maxVal:50 },
+      { reqLv:40, max:5, cost:2, cls:"t2c-yellow", maxVal:100 }, { reqLv:50, max:5, cost:3, cls:"t2c-orange", maxVal:200 },
+      { reqLv:60, max:5, cost:3, cls:"t2c-cyan", maxVal:350 }, { reqLv:70, max:10, cost:5, cls:"t2c-mint", maxVal:1000 },
+      { reqLv:80, max:10, cost:7, cls:"t2c-pink", maxVal:1400 }, { reqLv:90, max:10, cost:10, cls:"t2c-purple", maxVal:2000 },
+      { reqLv:100, max:10, cost:10, cls:"t2c-sky-silv", maxVal:2800 }, { reqLv:110, max:10, cost:10, cls:"t2c-blu-silv", maxVal:4000 },
+      { reqLv:120, max:10, cost:10, cls:"t2c-silver1", maxVal:6000 }, { reqLv:130, max:10, cost:15, cls:"t2c-silver2", maxVal:9000 },
+      { reqLv:140, max:10, cost:15, cls:"t2c-emerald1", maxVal:13500 }, { reqLv:150, max:10, cost:15, cls:"t2c-emerald2", maxVal:20250 },
+      { reqLv:160, max:10, cost:15, cls:"t2c-crimson1", maxVal:30380 }, { reqLv:170, max:10, cost:15, cls:"t2c-crimson2", maxVal:45570 }
+    ];
+    const critRow2Meta = [
+      { reqLv:1, max:5, cost:1, cls:"t2c-brown", maxVal:50 }, { reqLv:10, max:5, cost:1, cls:"t2c-green", maxVal:100 },
+      { reqLv:20, max:5, cost:1, cls:"t2c-blue", maxVal:150 }, { reqLv:30, max:5, cost:1, cls:"t2c-purple", maxVal:200 },
+      { reqLv:40, max:5, cost:2, cls:"t2c-yellow", maxVal:350 }, { reqLv:50, max:5, cost:3, cls:"t2c-orange", maxVal:750 },
+      { reqLv:60, max:5, cost:3, cls:"t2c-cyan", maxVal:3500 }, { reqLv:70, max:10, cost:5, cls:"t2c-mint", maxVal:18000 },
+      { reqLv:80, max:10, cost:7, cls:"t2c-pink", maxVal:70000 }, { reqLv:90, max:10, cost:10, cls:"t2c-purple", maxVal:300000 },
+      { reqLv:100, max:10, cost:10, cls:"t2c-sky-silv", maxVal:1200000 }, { reqLv:110, max:10, cost:10, cls:"t2c-blu-silv", maxVal:3000000 },
+      { reqLv:120, max:10, cost:10, cls:"t2c-silver1", maxVal:7500000 }, { reqLv:130, max:10, cost:15, cls:"t2c-silver2", maxVal:18800000 },
+      { reqLv:140, max:10, cost:15, cls:"t2c-emerald1", maxVal:47000000 }, { reqLv:150, max:10, cost:15, cls:"t2c-emerald2", maxVal:117500000 },
+      { reqLv:160, max:10, cost:15, cls:"t2c-crimson1", maxVal:293800000 }, { reqLv:170, max:10, cost:15, cls:"t2c-crimson2", maxVal:734500000 }
+    ];
+    const mark3 = [
+      { reqLv:10, max:1, cost:2, cls:"t2c-green", maxVal:1, cur:0, desc:"표식 획득 시 +1개 추가 획득" },
+      { reqLv:30, max:1, cost:2, cls:"t2c-purple", maxVal:1, cur:0, desc:"표식 획득 시 +1개 추가 획득" },
+      { reqLv:45, max:1, cost:10, cls:"t2c-yellow", maxVal:2, cur:0, desc:"표식 획득 시 +2개 추가 획득 (비효율)" },
+      { reqLv:60, max:1, cost:10, cls:"t2c-cyan", maxVal:2, cur:0, desc:"표식 획득 시 +2개 추가 획득 (비효율)" },
+      { reqLv:80, max:1, cost:20, cls:"t2c-pink", maxVal:3, cur:0, desc:"표식 획득 시 +3개 추가 획득 (비효율)" },
+      { reqLv:100, max:1, cost:20, cls:"t2c-sky-silv", maxVal:3, cur:0, desc:"표식 획득 시 +3개 추가 획득 (비효율)" }
+    ];
+    const crit3 = [
+      { reqLv:10, max:1, cost:2, cls:"t2c-green", maxVal:100, cur:0, desc:"2차 저주 상태 적이 입는 피해 +100%" },
+      { reqLv:30, max:1, cost:2, cls:"t2c-purple", maxVal:300, cur:0, desc:"2차 저주 상태 적이 입는 피해 +300%" },
+      { reqLv:45, max:1, cost:10, cls:"t2c-yellow", maxVal:1000, cur:0, desc:"2차 저주 상태 적이 입는 피해 +1,000%" },
+      { reqLv:60, max:1, cost:10, cls:"t2c-cyan", maxVal:4500, cur:0, desc:"2차 저주 상태 적이 입는 피해 +4,500%" },
+      { reqLv:80, max:1, cost:20, cls:"t2c-pink", maxVal:13000, cur:0, desc:"2차 저주 상태 적이 입는 피해 +13,000%" },
+      { reqLv:100, max:1, cost:20, cls:"t2c-sky-silv", maxVal:40000, cur:0, desc:"2차 저주 상태 적이 입는 피해 +40,000%" }
+    ];
+    const mark4 = [
+      { reqLv:1, max:1, cost:5, cls:"t2c-blue", cur:0, desc:"2차 크리티컬 발동 시 표식 4배 획득" },
+      { reqLv:40, max:1, cost:10, cls:"t2c-yellow", cur:0, desc:"표식 최대 중첩 5배 증가 (50➔250개)" },
+      { reqLv:60, max:1, cost:20, cls:"t2c-cyan", cur:0, desc:"모든 스킬 돌파 60 이상 시 표식 피해량 +1,000% 증폭 (곱연산)" },
+      { reqLv:90, max:1, cost:30, cls:"t2c-pink", cur:0, desc:"표식 최대 중첩(250개) 달성 시 피해량 +1,500% 증가 (곱연산)" }
+    ];
+    const crit4 = [
+      { reqLv:1, max:1, cost:5, cls:"t2c-blue", cur:0, desc:"각성기 사용 후 다음 공격 1회 2차 크리티컬 확정 (각성기 봉인 시 미사용!)" },
+      { reqLv:40, max:1, cost:10, cls:"t2c-yellow", cur:0, desc:"2차 저주 상태 적이 입는 피해량 +700% 증폭 (곱연산)" },
+      { reqLv:60, max:1, cost:20, cls:"t2c-cyan", cur:0, desc:"표식 1개당 2차 저주 상태 피해량 +6% 증폭 (250개 시 +1,500%)" },
+      { reqLv:90, max:1, cost:30, cls:"t2c-pink", cur:0, desc:"크리티컬 확률 100% 달성 시 피해량 +2,000% 증가 (곱연산)" }
+    ];
 
-    // 2. 0순위: 크리티컬 3줄(2차 저주) 전부 마스터
-    crit.r3.forEach(n => spend(n, 1));
+    const mark1 = row1Meta.map(m => ({ ...m, cur:0, desc:`표식 획득 확률 최대 +${m.maxVal}% (레벨당 +3%)` }));
+    const crit1 = row1Meta.map(m => ({ ...m, cur:0, desc:`2차 크리티컬 확률 최대 +${m.maxVal}% (레벨당 +3%)` }));
+    const mark2 = markRow2Meta.map(m => ({ ...m, cur:0, desc:`표식 1개당 피해량 최대 +${m.maxVal.toLocaleString()}% (레벨당 +${(m.maxVal/m.max).toLocaleString()}%)` }));
+    const crit2 = critRow2Meta.map(m => ({ ...m, cur:0, desc:`2차 크리티컬 피해량 최대 +${formatKoreanNumber(m.maxVal)}% (레벨당 +${formatKoreanNumber(m.maxVal/m.max)}%)` }));
 
-    // 3. 1순위: 표식 3줄 1·2번 칸만 다이어트 투자 + 4줄 증폭 노드(각성기 봉인 시 crit.r4[0] 제외)
-    spend(mark.r3[0], 1);
-    spend(mark.r3[1], 1);
-    mark.r4.forEach(n => spend(n, 1));
-    crit.r4.forEach(n => { if (n.isAwkNode && trait2SealAwk65) return; spend(n, 1); });
+    const tryInv = (node, tar) => { if (lv < node.reqLv) return; while (node.cur < tar && remTP >= node.cost) { node.cur++; remTP -= node.cost; } };
 
-    // 4. 2순위: 확률 노드 (표식 1줄 최소 1~2칸 확보 + 크리 1줄 Lv.90부터 100% 우선)
-    const targetCritProbLv = L >= 90 ? 30 : (L >= 60 ? 15 : (L >= 30 ? 10 : 5));
-    const targetMarkProbLv = L >= 110 ? 20 : (L >= 60 ? 10 : 5);
-    let cProbRem = targetCritProbLv;
-    for (const n of crit.r1) { if (cProbRem <= 0) break; const add = Math.min(n.max, cProbRem); spend(n, add); cProbRem -= add; }
-    let mProbRem = targetMarkProbLv;
-    for (const n of mark.r1) { if (mProbRem <= 0) break; const add = Math.min(n.max, mProbRem); spend(n, add); mProbRem -= add; }
+    tryInv(markRoot, 1); tryInv(critRoot, 1);
+    if (!trait2SealAwk65) tryInv(crit4[0], 1);
+    tryInv(mark4[0], 1);
+    for (let i = 1; i < 4; i++) { tryInv(crit4[i], 1); tryInv(mark4[i], 1); }
+    crit3.forEach(n => tryInv(n, 1));
+    tryInv(mark3[0], 1); tryInv(mark3[1], 1);
 
-    // 5. 전역 DP: 남은 TP로 [표식 2줄 체인] vs [크리티컬 2줄 체인] 곱연산 최대화
-    const buildChainTable = (nodes, basePct) => {
-      const states = [{ cost: 0, pct: basePct, counts: nodes.map(() => 0) }];
-      let cumCost = 0, cumPct = basePct;
-      const curCnts = nodes.map(() => 0);
-      for (let i = 0; i < nodes.length; i++) {
-        if (L < nodes[i].reqLv) break;
-        for (let lvStep = 1; lvStep <= nodes[i].max; lvStep++) {
-          cumCost += nodes[i].cost;
-          cumPct += nodes[i].stepPct;
-          curCnts[i] = lvStep;
-          states.push({ cost: cumCost, pct: cumPct, counts: [...curCnts] });
-        }
-      }
-      return states;
-    };
-
-    const mStates = buildChainTable(mark.r2, 10);
-    const cStates = buildChainTable(crit.r2, 100);
-    let bestScore = -1, bestM = mStates[0], bestC = cStates[0];
-
-    for (const ms of mStates) {
-      if (ms.cost > remTP) break;
-      const left = remTP - ms.cost;
-      let chosenC = cStates[0];
-      for (const cs of cStates) {
-        if (cs.cost <= left) chosenC = cs; else break;
-      }
-      const sc = ms.pct * chosenC.pct;
-      if (sc > bestScore) { bestScore = sc; bestM = ms; bestC = chosenC; }
+    if (lv >= 90) {
+      crit1.forEach(n => tryInv(n, 5));
+      [5,1,0,0,0,0].forEach((t, i) => tryInv(mark1[i], t));
+    } else if (lv >= 70) {
+      [5,5,0,0,0,0].forEach((t, i) => tryInv(crit1[i], t));
+      [5,1,0,0,0,0].forEach((t, i) => tryInv(mark1[i], t));
     }
 
-    bestM.counts.forEach((c, i) => { mark.r2[i].cur = c; });
-    bestC.counts.forEach((c, i) => { crit.r2[i].cur = c; });
-    remTP -= (bestM.cost + bestC.cost);
-
-    // 6. 자투리 TP 남으면 확률 노드 -> 표식 3줄 잔여분 순서로 소진
-    for (const n of crit.r1) spend(n, n.max - n.cur);
-    for (const n of mark.r1) spend(n, n.max - n.cur);
-    for (const n of mark.r3) spend(n, n.max - n.cur);
-
-    // 최종 배율 집계
-    const maxStacks = 50 + mark.r3.reduce((a, n) => a + (n.cur > 0 ? n.addStack : 0), 0);
-    const markAmp = mark.r4.reduce((a, n) => a * (n.cur > 0 ? n.ampMult : 1), 1);
-    const critAmp = crit.r4.reduce((a, n) => a * (n.cur > 0 ? n.ampMult : 1), 1);
-    const markPerStackPct = 10 + mark.r2.reduce((a, n) => a + n.cur * n.stepPct, 0);
-    const critDmgPct = 100 + crit.r2.reduce((a, n) => a + n.cur * n.stepPct, 0);
-    const cursePct = (critRoot.cur ? 100 : 0) + crit.r3.reduce((a, n) => a + (n.cur > 0 ? n.cursePct : 0), 0);
-
-    const markProbPct = Math.min(100, (markRoot.cur ? 10 : 0) + mark.r1.reduce((a, n) => a + n.cur * 3, 0));
-    const critProbPct = Math.min(100, (critRoot.cur ? 10 : 0) + crit.r1.reduce((a, n) => a + n.cur * 3, 0));
-
-    return {
-      perLvTP, totalTP, usedTP: totalTP - remTP, remTP,
-      markRoot, critRoot, mark, crit,
-      maxStacks, markProbPct, critProbPct,
-      totalMarkMult: (1 + (markPerStackPct * maxStacks) / 100) * markAmp,
-      totalCritMult: (1 + critDmgPct / 100) * critAmp,
-      totalCurseMult: 1 + cursePct / 100
+    const maxStacks = mark4[1].cur > 0 ? 250 : 50;
+    const buildCurve = meta => {
+      const curve = [{ tp:0, val:0, counts:new Array(meta.length).fill(0) }];
+      let cTp = 0, cVal = 0; const cnts = new Array(meta.length).fill(0);
+      for (let i = 0; i < meta.length && lv >= meta[i].reqLv; i++) {
+        for (let s = 0; s < meta[i].max; s++) { cTp += meta[i].cost; cVal += meta[i].maxVal / meta[i].max; cnts[i]++; curve.push({ tp:cTp, val:cVal, counts:[...cnts] }); }
+      }
+      return curve;
     };
+    const mC = buildCurve(markRow2Meta), cC = buildCurve(critRow2Meta);
+    let bestP = -1, bestM = mC[0], bestC = cC[0], ci = cC.length - 1;
+    for (const me of mC) {
+      if (me.tp > remTP) break;
+      while (ci > 0 && cC[ci].tp > remTP - me.tp) ci--;
+      const prod = (1 + ((10 + me.val) * maxStacks) / 100) * (1 + (100 + cC[ci].val) / 100);
+      if (prod > bestP) { bestP = prod; bestM = me; bestC = cC[ci]; }
+    }
+    bestM.counts.forEach((c, i) => mark2[i].cur = c);
+    bestC.counts.forEach((c, i) => crit2[i].cur = c);
+    remTP -= (bestM.tp + bestC.tp);
+
+    [5,5,0,0,0,0].forEach((t, i) => tryInv(crit1[i], t));
+    [5,1,0,0,0,0].forEach((t, i) => tryInv(mark1[i], t));
+    for (let st = 0; st < 30; st++) {
+      let prog = false;
+      for (const arr of [crit1, mark1]) {
+        for (const n of arr) { if (lv >= n.reqLv && n.cur < n.max && remTP >= n.cost) { n.cur++; remTP -= n.cost; prog = true; break; } }
+      }
+      if (!prog) break;
+    }
+    for (let i = 2; i < 6; i++) tryInv(mark3[i], 1);
+
+    const markProbPct = (markRoot.cur ? 10 : 0) + mark1.reduce((a, n) => a + n.cur * 3, 0);
+    const critProbPct = (critRoot.cur ? 10 : 0) + crit1.reduce((a, n) => a + n.cur * 3, 0);
+    const markPerStackPct = (markRoot.cur ? 10 : 0) + mark2.reduce((a, n) => a + (n.maxVal / n.max) * n.cur, 0);
+    const totalMarkMult = markRoot.cur ? (1 + (markPerStackPct * maxStacks) / 100) * (mark4[2].cur ? 11 : 1) * (mark4[3].cur ? 16 : 1) : 1;
+    const critDmgPct = 100 + crit2.reduce((a, n) => a + (n.maxVal / n.max) * n.cur, 0);
+    const totalCritMult = critRoot.cur ? (1 + critDmgPct / 100) * (crit4[3].cur ? 21 : 1) : 1;
+    const curseBasePct = (critRoot.cur ? 100 : 0) + crit3.reduce((a, n) => a + (n.cur ? n.maxVal : 0), 0);
+    const totalCurseMult = critRoot.cur ? (1 + curseBasePct / 100) * (crit4[1].cur ? 8 : 1) * (crit4[2].cur ? (1 + 6 * maxStacks / 100) : 1) : 1;
+
+    return { totalTP, usedTP: totalTP - remTP, remTP, perLvTP: get2ndJobPointPerLv(lv), maxStacks, markProbPct, critProbPct, markPerStackPct, totalMarkMult, totalCritMult, totalCurseMult, markRoot, critRoot, mark:{ r1:mark1, r2:mark2, r3:mark3, r4:mark4 }, crit:{ r1:crit1, r2:crit2, r3:crit3, r4:crit4 } };
   }
 
   function changeTrait2ndLevel(lv) {
@@ -13442,8 +13471,61 @@
     return `<svg ${base}><path d="M14 5C17 9 20 11.5 19.5 16.5C19 20 16.5 22 14 22C11.5 22 9 20 8.5 16.5C8 11.5 11 9 14 5Z" fill="#fef08a" stroke="#ffffff" stroke-width="1.2"/><path d="M19 8V15M16.5 10.5L19 8L21.5 10.5" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   }
 
+  const TRAIT_4TH_REAPER_LINKS_DB = [
+    { id:'rp_goyang1',     name:'고양 I',        reqLv:0,  tier:'normal',   desc:'강타 발동 시 5초간 4차 강타 피해량 +30% (최대 10중첩, +300%)' },
+    { id:'rp_fixed_beat',  name:'일정한 박자',   reqLv:0,  tier:'normal',   desc:'강타 발동 필요 타수 3회 고정 (초반 강타 회전율 0순위!)' },
+    { id:'rp_skilled',     name:'숙련된 일격',   reqLv:15, tier:'middle',   desc:'강타 26단계 이상일 때 강타 피해량 +1,000% (곱연산)' },
+    { id:'rp_goyang2',     name:'고양 II',       reqLv:15, tier:'middle',   desc:'강타 발동 시 5초간 4차 강타 피해량 +50% (최대 10중첩, +500%)' },
+    { id:'rp_might_fire',  name:'화염의 맹위',   reqLv:25, tier:'advanced', desc:'강타 속성이 화염일 때 화염 피해량 +1,500% (곱연산)' },
+    { id:'rp_might_light', name:'번개의 맹위',   reqLv:25, tier:'advanced', desc:'강타 속성이 번개일 때 번개 피해량 +1,500% (곱연산)' },
+    { id:'rp_might_dark',  name:'어둠의 맹위',   reqLv:25, tier:'advanced', desc:'강타 속성이 어둠일 때 어둠 피해량 +1,500% (곱연산)' },
+    { id:'rp_stack_pow',   name:'쌓이는 힘',     reqLv:35, tier:'unique',   desc:'강타 발동 시 그림리퍼의 기운 1개 획득 · 기운 1개당 강타 피해량 +30% (곱연산, 최대 100개)' },
+    { id:'rp_critical_pt', name:'임계점',        reqLv:35, tier:'unique',   desc:'그림리퍼의 기운 100개 이상일 때 강타 피해량 +5,000% (곱연산)' },
+    { id:'rp_momentum1',   name:'기세 증폭',     reqLv:35, tier:'unique',   desc:'강타 버프 효과 +2,000% 증가' },
+    { id:'rp_brand_fire',  name:'작열의 낙인',   reqLv:45, tier:'legend',   desc:'강타가 화염 속성일 때 화상 부여 · 모든 강타 피해량 +5,000% (곱연산)' },
+    { id:'rp_brand_light', name:'뇌전의 낙인',   reqLv:45, tier:'legend',   desc:'강타가 번개 속성일 때 감전 부여 · 모든 강타 피해량 +5,000% (곱연산)' },
+    { id:'rp_brand_dark',  name:'혼돈의 낙인',   reqLv:45, tier:'legend',   desc:'강타가 어둠 속성일 때 혼돈 부여 · 모든 강타 피해량 +5,000% (곱연산)' },
+    { id:'rp_link_strike', name:'연계 강타',     reqLv:50, tier:'mythic',   desc:'스킬 또는 영웅 스킬 발동 시 강타 3회 추가 발동' },
+    { id:'rp_hyper_spd',   name:'초가속',        reqLv:55, tier:'ancient',  desc:'강타 발동 시 공속 +100% · 공속 100% 초과분 1%당 강타 피해량 +50% (곱연산!)' },
+    { id:'rp_harvest',     name:'사신의 수확',   reqLv:60, tier:'eternal',  desc:'강타 발동 시 영혼 1개 획득 · 20개마다 초강타 발동 (피해량 +500,000% 강화!)' },
+    { id:'rp_eternal_hit', name:'영원한 일격',   reqLv:65, tier:'immortal', desc:'강타가 영원 등급 강타로 변경 (기본 공격 150회마다 자동 발동, 피해량 240,000,000%, 타격 수 4)' },
+    { id:'rp_momentum2',   name:'기세 증폭 II',  reqLv:70, tier:'heaven',   desc:'강타 버프 효과 +50,000% 증가 (기세 증폭 상위!)' },
+    { id:'rp_brand2_fire', name:'열상의 낙인',   reqLv:75, tier:'abyss',    desc:'화상 부여 · 기본 +20,000% + 열상 적 추가 +80,000% (곱연산 약 16만 배!)' },
+    { id:'rp_brand2_light',name:'과부하의 낙인', reqLv:75, tier:'abyss',    desc:'감전 부여 · 기본 +20,000% + 과부하 적 추가 +80,000% (곱연산 약 16만 배!)' },
+    { id:'rp_brand2_dark', name:'공포의 낙인',   reqLv:75, tier:'abyss',    desc:'혼돈 부여 · 기본 +20,000% + 공포 적 추가 +80,000% (곱연산 약 16만 배!)' },
+    { id:'rp_chain_strike',name:'연쇄 강타',     reqLv:80, tier:'origin',   desc:'스킬 또는 영웅 스킬 발동 시 강타 3회 발동 · 강타 피해량 +150,000% (곱연산!)' }
+  ];
+
+  function getTrait4ReaperLinkById(id) {
+    return TRAIT_4TH_REAPER_LINKS_DB.find(x => x.id === id) || TRAIT_4TH_REAPER_LINKS_DB[0];
+  }
+
+  function getTrait4ReaperSvg(linkId) {
+    const base = `width="30" height="30" viewBox="0 0 28 28" fill="none" style="filter:drop-shadow(0 0 4px rgba(254,205,211,0.75));"`;
+    const scythe = `<path d="M18.5 5C12 5 7 9.5 6.5 15.5C9.5 12 13 10.5 17 10.5L18.5 5Z" fill="#ffffff"/><line x1="17.5" y1="6" x2="10" y2="23.5" stroke="#fecdd3" stroke-width="2.1" stroke-linecap="round"/>`;
+    if (linkId === 'rp_eternal_hit') {
+      return `<svg ${base}><path d="M14 3.5L16.8 10L23.5 11.5L18 16L19.5 23L14 19.2L8.5 23L10 16L4.5 11.5L11.2 10L14 3.5Z" fill="rgba(255,255,255,0.28)" stroke="#ffffff" stroke-width="1.4"/>${scythe}</svg>`;
+    }
+    if (linkId === 'rp_hyper_spd') {
+      return `<svg ${base}>${scythe}<path d="M17 19L23 13M23 13H18.5M23 13V17.5" stroke="#67e8f9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 23L19 18" stroke="#fef08a" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+    }
+    if (linkId === 'rp_harvest') {
+      return `<svg ${base}>${scythe}<path d="M18 15L20 19L24 20.5L20 22L18 25.5L16 22L12 20.5L16 19L18 15Z" fill="#fef08a"/></svg>`;
+    }
+    if (linkId === 'rp_chain_strike' || linkId === 'rp_link_strike') {
+      return `<svg ${base}>${scythe}<circle cx="20" cy="18.5" r="4.5" stroke="#fef08a" stroke-width="1.7" stroke-dasharray="6 2.5"/><path d="M20 15.8V21.2M17.3 18.5H22.7" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+    }
+    if (linkId.startsWith('rp_brand')) {
+      return `<svg ${base}>${scythe}<path d="M20 12C22 14.5 23.5 16.5 23.5 19C23.5 21 22 22.5 20 22.5C18 22.5 16.5 21 16.5 19C16.5 16.5 18 14.5 20 12Z" fill="#fde047" stroke="#ffffff" stroke-width="1"/></svg>`;
+    }
+    if (linkId.startsWith('rp_momentum')) {
+      return `<svg ${base}>${scythe}<path d="M16 21L20 17L24 21M16 17L20 13L24 17" stroke="#f0abfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    }
+    return `<svg ${base}>${scythe}<path d="M19 13V21M16.5 15.5L19 13L21.5 15.5" stroke="#fde047" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  }
+
   function changeTrait4thLevel(lv) {
-    currentTrait4thLv = Math.max(0, Math.min(81, parseInt(lv, 10) || 0));
+    currentTrait4thLv = Math.max(0, Math.min(80, parseInt(lv, 10) || 0));
     const sl = document.getElementById('trait4_lv_slider'); if (sl) sl.value = String(currentTrait4thLv);
     const el = document.getElementById('jc4_cur_lv'); if (el) el.value = String(currentTrait4thLv);
     updateTrait4thBoardOnly();
@@ -13455,6 +13537,116 @@
   function setTrait4thSkillOverride(mode) {
     trait4thSkillOverride = mode;
     renderBuildGuideContent();
+  }
+
+  function getRecommended4thReaperLinks(lv, elem) {
+    const mightId  = elem === 'fire' ? 'rp_might_fire'  : (elem === 'light' ? 'rp_might_light'  : 'rp_might_dark');
+    const brand1Id = elem === 'fire' ? 'rp_brand_fire'  : (elem === 'light' ? 'rp_brand_light'  : 'rp_brand_dark');
+    const brand2Id = elem === 'fire' ? 'rp_brand2_fire' : (elem === 'light' ? 'rp_brand2_light' : 'rp_brand2_dark');
+    const elemKr   = elem === 'fire' ? '화염' : (elem === 'light' ? '번개' : '어둠');
+
+    const unlockedSlots = lv >= 80 ? 5 : (lv >= 60 ? 4 : (lv >= 40 ? 3 : (lv >= 20 ? 2 : (lv >= 5 ? 1 : 0))));
+    let slots = [], tip = '', isEstimated = false;
+
+    if (unlockedSlots === 0) {
+      tip = '4차 전직 Lv.5 달성 시 강타 소울 링크 1단계 슬롯이 최초로 해금됩니다. Lv.5까지 먼저 육성해 주세요.';
+    } else if (lv < 15) {
+      slots = [{ linkId: 'rp_fixed_beat', note: '강타 타수 3회 고정 (고양 I보다 우수!)' }];
+      tip = 'Lv.5~14 (1슬롯): 초반에는 고양 I보다 강타 발동 타수를 3회로 고정해 주는 [일정한 박자]가 훨씬 강력합니다!';
+    } else if (lv < 20) {
+      slots = [{ linkId: 'rp_skilled', note: '강타 26단계↑ +1,000% 곱연산' }];
+      tip = 'Lv.15~19 (1슬롯): 강타 26단계 기준 곱연산 +1,000%인 [숙련된 일격]으로 교체합니다.';
+    } else if (lv < 25) {
+      slots = [
+        { linkId: 'rp_skilled', note: '강타 +1,000% 곱연산' },
+        { linkId: 'rp_goyang2', note: '4차 강타 피해 +500%' }
+      ];
+      tip = 'Lv.20~24 (2슬롯): 2번째 슬롯 해금! [숙련된 일격 + 고양 II] 조합을 사용합니다.';
+    } else if (lv < 35) {
+      slots = [
+        { linkId: 'rp_skilled', note: '강타 +1,000% 곱연산' },
+        { linkId: mightId,      note: `${elemKr} 속성 +1,500% 곱연산` }
+      ];
+      tip = `Lv.25~34 (2슬롯): 고양 II를 빼고 주속성 곱연산(+1,500%)인 [${getTrait4ReaperLinkById(mightId).name}]를 장착합니다.`;
+    } else if (lv < 40) {
+      slots = [
+        { linkId: 'rp_stack_pow',   note: '기운 100스택 +3,000%' },
+        { linkId: 'rp_critical_pt', note: '기운100 강타 +5,000%' }
+      ];
+      tip = 'Lv.35~39 (2슬롯): [쌓이는 힘(31배) × 임계점(51배) = 약 1,581배] 시너지로 갈아탑니다! (Lv.40에 3슬롯이 열리면 기세 증폭이 합류합니다.)';
+    } else if (lv < 45) {
+      slots = [
+        { linkId: 'rp_stack_pow',   note: '기운 100스택 생성' },
+        { linkId: 'rp_critical_pt', note: '기운100 강타 +5,000%' },
+        { linkId: 'rp_momentum1',   note: '강타 버프 +2,000%' }
+      ];
+      tip = 'Lv.40~44 (3슬롯): 3번째 슬롯 해금! [쌓이는 힘 + 임계점 + 기세 증폭] 3종 세트로 딜을 끌어올립니다.';
+    } else if (lv < 50) {
+      slots = [
+        { linkId: 'rp_stack_pow',   note: '기운 100스택 생성' },
+        { linkId: 'rp_critical_pt', note: '기운100 강타 +5,000%' },
+        { linkId: brand1Id,         note: '상태이상 + 강타 +5,000%' }
+      ];
+      tip = `Lv.45~49 (3슬롯): [기세 증폭(+2,000%)]을 빼고 주속성 45렙 [${getTrait4ReaperLinkById(brand1Id).name}(+5,000% 곱연산)]을 투입합니다.`;
+    } else if (lv < 55) {
+      slots = [
+        { linkId: 'rp_stack_pow',   note: '기운 100스택 +3,000%' },
+        { linkId: brand1Id,         note: '상태이상 + 강타 +5,000%' },
+        { linkId: 'rp_link_strike', note: '스킬/영웅 시 강타 3회!' }
+      ];
+      tip = 'Lv.50~54 (3슬롯): [임계점]을 빼고 스킬·영웅 발동마다 강타가 3회씩 쏟아지는 [연계 강타]를 투입합니다.';
+    } else if (lv < 60) {
+      slots = [
+        { linkId: 'rp_hyper_spd', note: '공속 초과 1%당 +50% 곱연산!' },
+        { linkId: brand1Id,       note: '강타 +5,000% 곱연산' },
+        { linkId: 'rp_stack_pow', note: '기운 100스택 +3,000%' }
+      ];
+      tip = 'Lv.55~59 (3슬롯): [초가속] 해금! 대낫·오브·장식·속성·어빌리티를 모두 공격속도로 전환하여 [초가속 + 낙인 + 쌓이는 힘]으로 세팅합니다.';
+    } else if (lv < 65) {
+      slots = [
+        { linkId: 'rp_hyper_spd', note: '공속 올인 곱연산' },
+        { linkId: brand1Id,       note: '강타 +5,000% 곱연산' },
+        { linkId: 'rp_stack_pow', note: '기운 100스택 +3,000%' },
+        { linkId: 'rp_harvest',   note: '20회당 초강타 +50만%!' }
+      ];
+      tip = 'Lv.60~64 (4슬롯): 4번째 슬롯 해금! 20타마다 50만% 초강타가 터지는 [사신의 수확]을 추가합니다.';
+    } else if (lv < 70) {
+      slots = [
+        { linkId: 'rp_eternal_hit', note: '2.4억% 4타 영원 강타!' },
+        { linkId: 'rp_hyper_spd',   note: '공속 올인 + 회전율↑' },
+        { linkId: brand1Id,         note: '강타 +5,000% 곱연산' },
+        { linkId: 'rp_harvest',     note: '20회당 초강타 +50만%' }
+      ];
+      tip = 'Lv.65~69 (4슬롯 · 실측 검증): [쌓이는 힘]을 빼고 강타 자체를 2.4억% 4타로 바꿔주는 핵심 링크 [영원한 일격]을 장착합니다!';
+    } else if (lv < 75) {
+      slots = [
+        { linkId: 'rp_eternal_hit', note: '2.4억% 4타 영원 강타!' },
+        { linkId: 'rp_hyper_spd',   note: '공속 올인 + 회전율↑' },
+        { linkId: 'rp_harvest',     note: '20회당 초강타 +50만%' },
+        { linkId: 'rp_momentum2',   note: '강타 버프 +50,000%!' }
+      ];
+      tip = 'Lv.70~74 (4슬롯): 45렙 낙인(+5,000%)을 빼고 강타 버프 효율을 10배 끌어올리는 [기세 증폭 II (+50,000%)]로 교체합니다!';
+    } else if (lv < 80) {
+      isEstimated = true;
+      slots = [
+        { linkId: 'rp_eternal_hit', note: '2.4억% 4타 영원 강타' },
+        { linkId: 'rp_hyper_spd',   note: '공속 올인 (기세II 비교)' },
+        { linkId: 'rp_harvest',     note: '20회당 초강타 +50만%' },
+        { linkId: brand2Id,         note: '+2만% × +8만% (약 16만배!)' }
+      ];
+      tip = `Lv.75~79 (4슬롯 · 이론 최적 계산): 75렙 상위 낙인[${getTrait4ReaperLinkById(brand2Id).name}]이 약 16만 배 곱연산으로 기세 증폭 II(501배)를 압도합니다! ※ 공속 세팅이 낮다면 [초가속] 대신 [기세 증폭 II]와 비석 비교 권장.`;
+    } else {
+      isEstimated = true;
+      slots = [
+        { linkId: 'rp_eternal_hit',  note: '2.4억% 4타 영원 강타' },
+        { linkId: brand2Id,          note: '75렙 상위 낙인 (약 16만배)' },
+        { linkId: 'rp_chain_strike', note: '강타 3회 + 15만% 곱연산!' },
+        { linkId: 'rp_harvest',      note: '연쇄강타×초강타 회전율↑' },
+        { linkId: 'rp_hyper_spd',    note: '공속 올인 (기세II 비교)' }
+      ];
+      tip = 'Lv.80 (5슬롯 최종 종결 · 이론 최적 계산): [영원한 일격 · 75렙 상위 낙인 · 연쇄 강타(+15만% & 3회 발동) · 사신의 수확 · 초가속] 5종 완성! ※ 공속 수치가 낮을 경우 5번 칸은 [초가속]과 [기세 증폭 II]를 비석으로 비교해 선택하세요.';
+    }
+    return { unlockedSlots, slots, tip, isEstimated, isEternalStrike: lv >= 65 };
   }
 
   function getRecommended4thLinks(lv, elem) {
@@ -13563,15 +13755,61 @@
         { skill: '지옥불베기', linkId: 'brand_fire', note: '화염 스킬이라 전속성 발동!' },
         { skill: '엘리멘탈 차지', linkId: 'flash_focus', note: '5슬롯 모스피 +15,000%' }
       ];
-      tip = 'Lv.80+ (5슬롯 최종 종결): 주스킬 [주기 전환 II] · 옵드 [한계 초월] · 주속성 디버프 [75렙 상위 낙인] · 지옥불베기 [작열의 낙인(불베기가 화염 속성이라 번개/어둠 앜메도 발동!)] · 5슬롯 [엘리멘탈 차지 + 찰나의 집중]으로 최종 완성됩니다!';
+      tip = 'Lv.80 (5슬롯 최종 종결): 주스킬 [주기 전환 II] · 옵드 [한계 초월] · 주속성 디버프 [75렙 상위 낙인] · 지옥불베기 [작열의 낙인(불베기가 화염 속성이라 번개/어둠 앜메도 발동!)] · 5슬롯 [엘리멘탈 차지 + 찰나의 집중]으로 최종 완성됩니다!';
     }
     return { unlockedSlots, slots, tip, mainSk, use4th, has4thInInv, sk3, sk4 };
   }
 
   function buildTrait4thDynamicHtml() {
-    const rec = getRecommended4thLinks(currentTrait4thLv, guideElem);
     const unlockLvs = [5, 20, 40, 60, 80];
 
+    if (guideJob === 'reaper') {
+      const rec = getRecommended4thReaperLinks(currentTrait4thLv, guideElem);
+      const slotCardsHtml = [0, 1, 2, 3, 4].map(idx => {
+        const reqLv = unlockLvs[idx];
+        if (currentTrait4thLv < reqLv) {
+          return `<div class="trait4-slot-card is-locked">
+            ${getTrait2NodeSvg(true, 1, 0, true)}
+            <div style="font-size:12.5px; font-weight:900; color:#f87171;">강타 링크 ${idx + 1}</div>
+            <div style="font-size:11px; color:#94a3b8;">4차 Lv.${reqLv} 해금</div>
+          </div>`;
+        }
+        const item = rec.slots[idx];
+        if (!item) return '';
+        const linkObj = getTrait4ReaperLinkById(item.linkId);
+        const tMeta = getTraitTierMeta(linkObj.tier);
+        return `<div class="trait4-slot-card t4-card-${linkObj.tier}">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
+            <span style="font-size:11px; font-weight:800; color:#fda4af;">링크 슬롯 ${idx + 1}</span>
+            <span class="trait-tier-badge ${tMeta.cls}" style="font-size:10px; padding:1px 6px;">${tMeta.kr} · Lv.${linkObj.reqLv}</span>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; padding:6px 0;">
+            <div class="trait4-icon-box t4-box-${linkObj.tier}" style="width:52px; height:52px;">${getTrait4ReaperSvg(linkObj.id)}</div>
+            <span style="font-size:12.5px; font-weight:900; color:#fef08a; text-align:center;">${linkObj.name}</span>
+          </div>
+          <div class="trait4-link-desc"><strong style="color:#ffffff;">${item.note}</strong><br><span style="color:#cbd5e1;">${linkObj.desc}</span></div>
+        </div>`;
+      }).join('');
+
+      const allLinksHtml = TRAIT_4TH_REAPER_LINKS_DB.map(lk => {
+        const tm = getTraitTierMeta(lk.tier);
+        const unlocked = currentTrait4thLv >= lk.reqLv;
+        return `<div style="background:#0f172a; border:1px solid ${unlocked?'#334155':'#1e293b'}; opacity:${unlocked?1:0.55}; border-radius:9px; padding:9px 11px; display:flex; align-items:center; gap:10px;">
+          <div class="trait4-icon-box t4-box-${lk.tier}" style="width:38px; height:38px;">${getTrait4ReaperSvg(lk.id)}</div>
+          <div style="flex:1; min-width:0;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; flex-wrap:wrap;">
+              <strong style="font-size:12.5px; color:#ffffff;">${lk.name}</strong>
+              <span class="trait-tier-badge ${tm.cls}" style="font-size:10px; padding:1px 6px;">${tm.kr} · Lv.${lk.reqLv} 개방</span>
+            </div>
+            <div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">${lk.desc}</div>
+          </div>
+        </div>`;
+      }).join('');
+
+      return { rec, slotCardsHtml, allLinksHtml, isReaper: true };
+    }
+
+    const rec = getRecommended4thLinks(currentTrait4thLv, guideElem);
     const slotCardsHtml = [0, 1, 2, 3, 4].map(idx => {
       const reqLv = unlockLvs[idx];
       if (currentTrait4thLv < reqLv) {
@@ -13627,23 +13865,32 @@
       </div>`;
     }).join('');
 
-    return { rec, slotCardsHtml, allLinksHtml };
+    return { rec, slotCardsHtml, allLinksHtml, isReaper: false };
   }
 
   function updateTrait4thBoardOnly() {
     const lvEl = document.getElementById('t4_cur_lv_text');
     if (!lvEl) { renderBuildGuideContent(); return; }
-    const { rec, slotCardsHtml, allLinksHtml } = buildTrait4thDynamicHtml();
+    const { rec, slotCardsHtml, allLinksHtml, isReaper } = buildTrait4thDynamicHtml();
 
     lvEl.innerText = `Lv.${currentTrait4thLv}`;
     const slotChip = document.getElementById('t4_slot_cnt_chip');
     if (slotChip) slotChip.innerText = `해금 슬롯 ${rec.unlockedSlots} / 5칸`;
     const boardTitle = document.getElementById('t4_board_title_text');
-    if (boardTitle) boardTitle.innerText = `소울 링크 추천 배치 (Lv.${currentTrait4thLv} · 주력기: ${rec.mainSk})`;
+    if (boardTitle) {
+      boardTitle.innerText = isReaper
+        ? `그림리퍼 강타 소울 링크 추천 (Lv.${currentTrait4thLv} · ${rec.isEternalStrike ? '영원 등급 강타' : '강타 26단계'})`
+        : `소울 링크 추천 배치 (Lv.${currentTrait4thLv} · 주력기: ${rec.mainSk})`;
+    }
+    const rpTargetTxt = document.getElementById('t4_reaper_strike_stage');
+    if (rpTargetTxt) rpTargetTxt.innerText = rec.isEternalStrike ? '영원 등급 강타 (240,000,000% · 4타)' : '강타 26단계 (고대 대낫 3)';
+    const spdAlert = document.getElementById('t4_reaper_speed_alert');
+    if (spdAlert) spdAlert.style.display = (isReaper && currentTrait4thLv >= 55) ? 'block' : 'none';
+
     const gridEl = document.getElementById('t4_slot_grid_wrap');
     if (gridEl) gridEl.innerHTML = slotCardsHtml;
     const tipEl = document.getElementById('t4_tip_text_wrap');
-    if (tipEl) tipEl.innerHTML = `<span class="mini-tag" style="background:#b45309; color:#fef08a; margin-right:6px;">핵심 해설</span>${rec.tip}`;
+    if (tipEl) tipEl.innerHTML = `<span class="mini-tag" style="background:${isReaper?'#be123c':'#b45309'}; color:#fef08a; margin-right:6px;">${rec.isEstimated ? '이론 계산' : '핵심 해설'}</span>${rec.tip}`;
     const allEl = document.getElementById('t4_all_links_grid');
     if (allEl) allEl.innerHTML = allLinksHtml;
 
@@ -13656,7 +13903,9 @@
   }
 
   function renderTrait4thSection(stepTabs, jMeta) {
-    // 4차 상단 전용 직업 & 주속성 라디오 스위치 바
+    const clampedLv = Math.min(80, currentTrait4thLv);
+    if (currentTrait4thLv > 80) currentTrait4thLv = 80;
+
     const jobElemSwitchBar = `
       <div class="grid-2" style="gap:10px; margin-bottom:14px;">
         <div style="background:#0b1120; padding:10px 12px; border-radius:11px; border:1px solid #26334a;">
@@ -13689,75 +13938,118 @@
         </div>
       </div>`;
 
-    if (guideJob !== 'mage') {
-      return `${stepTabs}<div class="stage-build-card" style="border-left-color:#facc15;">
+    if (guideJob === 'lord') {
+      return `${stepTabs}<div class="stage-build-card" style="border-left-color:#a855f7;">
         <div class="stage-build-header">
           <span class="stage-build-title">4차 전직 (${jMeta.c4}) 소울 링크 도우미</span>
-          <span class="grade-badge grade-legend">데이터 수집 중</span>
+          <span class="grade-badge grade-unique">데이터 수집 중</span>
         </div>
         ${jobElemSwitchBar}
         <div style="text-align:center; padding:26px 14px; background:#0b1120; border-radius:12px; border:1px dashed #475569;">
           <div style="margin-bottom:10px;">${UI_SVG.roman(4, 42)}</div>
-          <div style="font-size:16px; font-weight:900; color:#fef08a; margin-bottom:6px;">[${jMeta.c4}] 4차 소울 링크 데이터 수집 중</div>
-          <p style="font-size:13px; color:#cbd5e1; margin-bottom:16px;">현재 4차 전직 소울 링크 도우미는 <strong>아크메이지(슈프림)</strong>가 먼저 오픈되었으며, 그림리퍼·소울이터 데이터는 확보되는 대로 바로 개방됩니다.</p>
-          <button type="button" onclick="selectGuideJob('mage')" class="cond-open-btn" style="padding:10px 18px;">슈프림 (아크메이지) 4차 소울 링크 보기 ➔</button>
+          <div style="font-size:16px; font-weight:900; color:#e9d5ff; margin-bottom:6px;">[${jMeta.c4}] 4차 소울 링크 데이터 수집 중</div>
+          <p style="font-size:13px; color:#cbd5e1; margin-bottom:16px;">현재 <strong>그림리퍼(사신)</strong>와 <strong>슈프림(아크메이지)</strong> 4차 소울 링크 도우미가 오픈되었으며, 소울이터 데이터는 확보되는 대로 바로 추가됩니다.</p>
+          <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
+            <button type="button" onclick="selectGuideJob('reaper')" class="cond-open-btn" style="padding:9px 16px; background:linear-gradient(135deg,#e11d48 0%,#9f1239 100%); border-color:#fda4af;">그림리퍼(사신) 보기 ➔</button>
+            <button type="button" onclick="selectGuideJob('mage')" class="cond-open-btn" style="padding:9px 16px;">슈프림(아크메이지) 보기 ➔</button>
+          </div>
         </div>
       </div>`;
     }
 
-    const { rec, slotCardsHtml, allLinksHtml } = buildTrait4thDynamicHtml();
+    const { rec, slotCardsHtml, allLinksHtml, isReaper } = buildTrait4thDynamicHtml();
     const quickLvs = [0, 5, 15, 20, 25, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
-    const quickBtns = quickLvs.map(q => `<button type="button" class="t4-quick-lv-btn" data-lv="${q}" onclick="changeTrait4thLevel(${q})" style="padding:5px 4px; font-size:11.5px; font-weight:800; border-radius:6px; cursor:pointer; border:1.5px solid ${currentTrait4thLv===q?'#fbbf24':'#334155'}; background:${currentTrait4thLv===q?'#b45309':'#0f172a'}; color:${currentTrait4thLv===q?'#fff':'#cbd5e1'};">Lv.${q}</button>`).join('');
+    const quickBtns = quickLvs.map(q => `<button type="button" class="t4-quick-lv-btn" data-lv="${q}" onclick="changeTrait4thLevel(${q})" style="padding:5px 4px; font-size:11.5px; font-weight:800; border-radius:6px; cursor:pointer; border:1.5px solid ${clampedLv===q?'#fbbf24':'#334155'}; background:${clampedLv===q?'#b45309':'#0f172a'}; color:${clampedLv===q?'#fff':'#cbd5e1'};">Lv.${q}</button>`).join('');
 
-    return `${stepTabs}<div class="stage-build-card" style="border-left-color:#facc15;">
+    const okiShoutoutBadge = isReaper
+      ? `<span style="display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg, rgba(168,85,247,0.24) 0%, rgba(15,23,42,0.95) 100%); border:1.5px solid #c084fc; color:#f3e8ff; padding:3px 10px 3px 5px; border-radius:20px; font-size:11.5px; font-weight:900;">
+          <img src="images/oki.png" alt="영웅오키V" style="width:20px; height:20px; border-radius:50%; border:1.5px solid #fde047; object-fit:cover;" onerror="this.onerror=null; this.src='images/oki.jpg'; this.onerror=function(){this.style.display='none';};">
+          <span>데이터 제공: <strong style="color:#fde047;">영웅오키V</strong>님</span>
+        </span>`
+      : '';
+
+    const rightSwitcher = isReaper
+      ? `<span class="cond-chip is-on" style="border-color:#fb7185; color:#fecdd3;">링크 대상 · 강타 1개에 5슬롯 장착</span>`
+      : `<div style="display:inline-flex; align-items:center; gap:4px; background:#090e1a; padding:3px; border-radius:8px; border:1px solid #334155;">
+          <button type="button" onclick="setTrait4thSkillOverride('auto')" class="seg-pill-btn ${trait4thSkillOverride==='auto'?'active':''}" style="padding:4px 8px; font-size:11px;">자동 (${rec.has4thInInv?'4차 보유':'3차 기준'})</button>
+          <button type="button" onclick="setTrait4thSkillOverride('3rd')" class="seg-pill-btn ${trait4thSkillOverride==='3rd'?'active':''}" style="padding:4px 8px; font-size:11px;">${rec.sk3}</button>
+          <button type="button" onclick="setTrait4thSkillOverride('4th')" class="seg-pill-btn ${trait4thSkillOverride==='4th'?'active':''}" style="padding:4px 8px; font-size:11px;">${rec.sk4}</button>
+        </div>`;
+
+    const reaperSpeedAlertHtml = isReaper
+      ? `<div id="t4_reaper_speed_alert" class="t4-speed-cyan-alert" style="display:${clampedLv >= 55 ? 'block' : 'none'};">
+          <span class="mini-tag" style="background:#0891b2; color:#ecfeff; margin-right:6px;">Lv.55+ 필수 전환</span>
+          <strong style="color:#67e8f9;">초가속 세팅 공속 올인 가이드:</strong>
+          초가속은 공격속도 100% 초과분 1%당 강타 피해가 <strong style="color:#fde047;">+50% 곱연산</strong>됩니다.
+          <strong>Lv.55부터 대낫 · 오브 · 장식 · 속성 · 어빌리티를 모두 공격속도(공속)로 변경</strong>해 주세요!
+        </div>`
+      : '';
+
+    const reaperTargetBarHtml = isReaper
+      ? `<div class="trait4-reaper-target-bar">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="trait4-icon-box" style="width:42px; height:42px; border-color:#38bdf8; background:radial-gradient(circle, rgba(56,189,248,0.35), #082f49);">${getTrait4ReaperSvg('rp_eternal_hit')}</div>
+            <div>
+              <div style="font-size:11px; color:#94a3b8; font-weight:700;">링크 대상 (강타 전용)</div>
+              <strong id="t4_reaper_strike_stage" style="font-size:13.5px; color:#7dd3fc;">${rec.isEternalStrike ? '영원 등급 강타 (240,000,000% · 4타)' : '강타 26단계 (고대 대낫 3)'}</strong>
+            </div>
+          </div>
+          <span style="font-size:11.5px; color:#fde68a; font-weight:800;">아래 해금된 슬롯에 링크를 순서대로 장착하세요</span>
+        </div>`
+      : '';
+
+    const dbCount = isReaper ? TRAIT_4TH_REAPER_LINKS_DB.length : TRAIT_4TH_LINKS_DB.length;
+
+    return `${stepTabs}<div class="stage-build-card" style="border-left-color:${isReaper ? '#f43f5e' : '#facc15'};">
       <div class="stage-build-header">
         <span class="stage-build-title">4차 전직 (${jMeta.c4}) 소울 링크 레벨별 자동 추천</span>
-        <span class="grade-badge grade-legend">Lv.0 ~ Lv.81 (최대 5슬롯)</span>
+        <div style="display:flex; align-items:center; gap:7px; flex-wrap:wrap;">
+          ${okiShoutoutBadge}
+          <span class="grade-badge ${isReaper ? 'grade-mythic' : 'grade-legend'}">Lv.0 ~ Lv.80 (최대 5슬롯)</span>
+        </div>
       </div>
 
       ${jobElemSwitchBar}
 
-      <!-- 4차 레벨 컨트롤 + 슬라이더 + 3/4차 주력기 스위처 -->
+      <!-- 4차 레벨 컨트롤 + 슬라이더 (Lv.0~80) -->
       <div style="background:#131d33; padding:14px 16px; border-radius:12px; border:1.5px solid #334155; margin-bottom:14px;">
         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:8px;">
           <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
             <span style="color:#fde047; font-size:14px; font-weight:900; white-space:nowrap;">4차 레벨</span>
             <div style="display:inline-flex; align-items:center; gap:6px; background:#090e1a; border:1.5px solid #475569; border-radius:10px; padding:3px 6px; flex-shrink:0;">
               <button type="button" onclick="stepTrait4thLevel(-1)" style="min-width:36px; height:30px; background:#1e293b; border:1px solid #64748b; color:#fff; border-radius:7px; font-size:13px; font-weight:900; cursor:pointer;">-1</button>
-              <span id="t4_cur_lv_text" style="color:#38bdf8; font-size:17px; font-weight:900; min-width:64px; text-align:center; font-variant-numeric:tabular-nums; white-space:nowrap;">Lv.${currentTrait4thLv}</span>
+              <span id="t4_cur_lv_text" style="color:#38bdf8; font-size:17px; font-weight:900; min-width:64px; text-align:center; font-variant-numeric:tabular-nums; white-space:nowrap;">Lv.${clampedLv}</span>
               <button type="button" onclick="stepTrait4thLevel(1)" style="min-width:36px; height:30px; background:#1e293b; border:1px solid #64748b; color:#fff; border-radius:7px; font-size:13px; font-weight:900; cursor:pointer;">+1</button>
             </div>
             <span id="t4_slot_cnt_chip" class="cond-chip is-on" style="color:#fde047;">해금 슬롯 ${rec.unlockedSlots} / 5칸</span>
           </div>
-
-          <div style="display:inline-flex; align-items:center; gap:4px; background:#090e1a; padding:3px; border-radius:8px; border:1px solid #334155;">
-            <button type="button" onclick="setTrait4thSkillOverride('auto')" class="seg-pill-btn ${trait4thSkillOverride==='auto'?'active':''}" style="padding:4px 8px; font-size:11px;">자동 (${rec.has4thInInv?'4차 보유':'3차 기준'})</button>
-            <button type="button" onclick="setTrait4thSkillOverride('3rd')" class="seg-pill-btn ${trait4thSkillOverride==='3rd'?'active':''}" style="padding:4px 8px; font-size:11px;">${rec.sk3}</button>
-            <button type="button" onclick="setTrait4thSkillOverride('4th')" class="seg-pill-btn ${trait4thSkillOverride==='4th'?'active':''}" style="padding:4px 8px; font-size:11px;">${rec.sk4}</button>
-          </div>
+          ${rightSwitcher}
         </div>
 
-        <input type="range" id="trait4_lv_slider" class="trait2-range-slider" min="0" max="81" value="${currentTrait4thLv}" oninput="changeTrait4thLevel(this.value);">
+        <input type="range" id="trait4_lv_slider" class="trait2-range-slider" min="0" max="80" value="${clampedLv}" oninput="changeTrait4thLevel(this.value);">
         <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(54px, 1fr)); gap:5px;">${quickBtns}</div>
       </div>
 
+      ${reaperSpeedAlertHtml}
+
       <!-- 인게임 소울 링크 5슬롯 보드 -->
-      <div class="trait4-link-board">
-        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid rgba(217,119,6,0.35);">
-          <strong id="t4_board_title_text" style="font-size:14.5px; color:#fef08a;">소울 링크 추천 배치 (Lv.${currentTrait4thLv} · 주력기: ${rec.mainSk})</strong>
+      <div class="trait4-link-board ${isReaper ? 'reaper-theme' : ''}">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid ${isReaper ? 'rgba(244,63,94,0.35)' : 'rgba(217,119,6,0.35)'};">
+          <strong id="t4_board_title_text" style="font-size:14.5px; color:#fef08a;">${isReaper ? `그림리퍼 강타 소울 링크 추천 (Lv.${clampedLv} · ${rec.isEternalStrike ? '영원 등급 강타' : '강타 26단계'})` : `소울 링크 추천 배치 (Lv.${clampedLv} · 주력기: ${rec.mainSk})`}</strong>
           <span style="font-size:11px; color:#fdba74;">해금 구간: Lv.5 / Lv.20 / Lv.40 / Lv.60 / Lv.80</span>
         </div>
+        ${reaperTargetBarHtml}
         <div class="trait4-slot-grid" id="t4_slot_grid_wrap">${slotCardsHtml}</div>
-        <div class="build-tip-box" id="t4_tip_text_wrap" style="margin-top:12px; border-color:#92400e; background:rgba(15,23,42,0.88);">
-          <span class="mini-tag" style="background:#b45309; color:#fef08a; margin-right:6px;">핵심 해설</span>${rec.tip}
+        <div class="build-tip-box" id="t4_tip_text_wrap" style="margin-top:12px; border-color:${isReaper ? '#be123c' : '#92400e'}; background:rgba(15,23,42,0.88);">
+          <span class="mini-tag" style="background:${isReaper ? '#be123c' : '#b45309'}; color:#fef08a; margin-right:6px;">${rec.isEstimated ? '이론 계산' : '핵심 해설'}</span>${rec.tip}
         </div>
       </div>
 
-      <!-- 4차 소울 링크 25종 전체 도감 아코디언 -->
+      <!-- 4차 소울 링크 전체 도감 아코디언 -->
       <div class="accordion-item" id="acc_all_4th_links" style="margin-top:14px;">
         <div class="accordion-header" onclick="toggleNewbieAccordion('acc_all_4th_links')">
-          <div class="accordion-left"><span class="accordion-toggle-icon">▶</span><span class="accordion-title-text" style="font-size:13.5px;">4차 소울 링크 전체 효과 도감 펼치기 (Lv.0 ~ Lv.80)</span></div>
-          <span class="accordion-count-badge">${TRAIT_4TH_LINKS_DB.length}종</span>
+          <div class="accordion-left"><span class="accordion-toggle-icon">▶</span><span class="accordion-title-text" style="font-size:13.5px;">[${jMeta.c4}] 4차 소울 링크 전체 효과 도감 펼치기 (Lv.0 ~ Lv.80)</span></div>
+          <span class="accordion-count-badge">${dbCount}종</span>
         </div>
         <div class="accordion-content"><div class="grid-2" id="t4_all_links_grid" style="gap:8px;">${allLinksHtml}</div></div>
       </div>
@@ -14588,6 +14880,7 @@
     { title:"🌟 1차 전직 특성 자동 추천 도우미 (Lv.1~150)", cat:"🛠️ 세팅 도우미", badge:"grade-ancient", keywords:"1차 전직 특성 도우미 강화강타 각성기봉인 강타타수감소 버프효과", action:()=>{ switchMainMode('helpers'); openTraitHelperFromHub(); changeTraitTabStep(1); } },
     { title:"⚡ 2차 전직 특성 표식 & 크리티컬 트리 도우미 (Lv.1~180)", cat:"🛠️ 세팅 도우미", badge:"grade-legend", keywords:"2차 전직 특성 도우미 표식 크리티컬 2차저주 포인트 TP", action:()=>{ switchMainMode('helpers'); openTraitHelperFromHub(); changeTraitTabStep(2); } },
     { title:"🔥 3차 전직 특화 트리 도우미 (Lv.0~40)", cat:"🛠️ 세팅 도우미", badge:"grade-mythic", keywords:"3차 전직 특화 도우미 속성버프 중첩 전환", action:()=>{ switchMainMode('helpers'); openTraitHelperFromHub(); changeTraitTabStep(3); } },
+    { title:"4차 전직 소울 링크 도우미 (슈프림 · 그림리퍼)", cat:"🛠️ 세팅 도우미", badge:"grade-legend", keywords:"4차 전직 소울링크 슈프림 그림리퍼 아크메이지 사신 초가속 영원한일격 사신의수확 연쇄강타 주기전환 한계초월 각성증폭", action:()=>{ switchMainMode('helpers'); openTraitHelperFromHub(); changeTraitTabStep(4); } },
     { title:"🐣 5,000렙 뉴비 극초반 스킬 & 영웅 추천 빌드", cat:"⚔️ 세팅 가이드", badge:"grade-legend", keywords:"뉴비 극초반 5000렙 입문 전투태세 집중모드 오로라 나찰 바토리", action:()=>{ switchMainMode('guides'); openSpecialGuideDetail('early'); } },
     { title:"💎 각성 우선순위 & 0~5고패 패시브 도우미 v.1.2.0", cat:"🛠️ 세팅 도우미", badge:"grade-ancient", keywords:"각성 우선순위 고대패시브 고패 슬롯 교체표 3각 순위 5고패 원소창조 고대의기억", action:()=>{ openAwakeningHelperFromHub(); } },
     { title:"🔄 사신 ➔ 아크메이지(미스틱) 전환 가이드", cat:"⚔️ 세팅 가이드", badge:"grade-ancient", keywords:"사신 아크메이지 미스틱 제네시스 직변 전환 타이밍", action:()=>{ switchMainMode('guides'); openSpecialGuideDetail('transition'); } },
@@ -14808,6 +15101,87 @@
   }
 
   // ==================== 단일 클린 부팅 초기화 (중복 실행·덧씌우기 0%) ====================
+  // ==================== 📱 모바일 아이폰식 왼쪽➔오른쪽 스와이프 뒤로가기 제스처 ====================
+  function initMobileSwipeBackGesture() {
+    const ind = document.getElementById('ios_swipe_back_indicator');
+    let tracking = false, startX = 0, startY = 0, lastDx = 0;
+
+    function getTopOpenModalCloseFn() {
+      const modals = [
+        ['pwa_install_modal_overlay', () => closePwaInstallModal(false)],
+        ['sc_gem_modal_overlay',      () => closeScGemModal()],
+        ['sc_cond_modal_overlay',     () => closeScCondModal()],
+        ['rune_cond_modal_overlay',   () => closeRuneCondModal()],
+        ['master_inv_modal_overlay',  () => closeMasterInventoryModal()],
+        ['help_modal_overlay',        () => closeHelpModal()]
+      ];
+      for (const [id, fn] of modals) {
+        const el = document.getElementById(id);
+        if (el && el.style.display === 'flex') return fn;
+      }
+      return null;
+    }
+
+    function canSwipeBackNow() {
+      if (getTopOpenModalCloseFn()) return true;
+      const backBtn = document.getElementById('floating_back_btn');
+      return Boolean(backBtn && backBtn.style.display !== 'none');
+    }
+
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      // 화면 좌측 끝 38px 이내에서 시작 & 슬라이더/좌측 서랍 위젯은 제외
+      if (t.clientX > 38) return;
+      if (e.target.closest('input[type="range"], #floating_save_widget')) return;
+      if (!canSwipeBackNow()) return;
+      tracking = true;
+      startX = t.clientX;
+      startY = t.clientY;
+      lastDx = 0;
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e) => {
+      if (!tracking || e.touches.length !== 1) return;
+      const t = e.touches[0];
+      const dx = t.clientX - startX;
+      const dy = Math.abs(t.clientY - startY);
+      if (dy > 48 && dx < dy * 1.4) {
+        tracking = false;
+        if (ind) { ind.style.transform = 'translate(-110%, -50%)'; ind.classList.remove('ready'); }
+        return;
+      }
+      if (dx > 8 && ind) {
+        lastDx = dx;
+        const pct = Math.min(1, dx / 75);
+        ind.style.transition = 'none';
+        ind.style.transform = `translate(${Math.round(-110 + pct * 110)}%, -50%)`;
+        ind.classList.toggle('ready', dx >= 68);
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchend', () => {
+      if (!tracking) return;
+      tracking = false;
+      if (ind) {
+        ind.style.transition = 'transform 0.18s ease, border-color 0.15s, background 0.15s';
+        ind.style.transform = 'translate(-110%, -50%)';
+        ind.classList.remove('ready');
+      }
+      if (lastDx >= 68) {
+        const closeModalFn = getTopOpenModalCloseFn();
+        if (closeModalFn) closeModalFn();
+        else handleFloatingBack();
+      }
+      lastDx = 0;
+    }, { passive: true });
+
+    document.addEventListener('touchcancel', () => {
+      tracking = false; lastDx = 0;
+      if (ind) { ind.style.transform = 'translate(-110%, -50%)'; ind.classList.remove('ready'); }
+    }, { passive: true });
+  }
+
   let hasBooted = false;
   function initAllOnStartup() {
     if (hasBooted) return;
@@ -14835,6 +15209,7 @@
     }
     switchMainMode('helpers');
     initPwaInstallPrompt();
+    initMobileSwipeBackGesture();
   }
 
   if (document.readyState === 'loading') window.addEventListener('DOMContentLoaded', initAllOnStartup);
