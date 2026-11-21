@@ -2701,13 +2701,6 @@
     }
 
    /* ==================== 9.8 보석 세공 · 룬/코어 라디오 · 조건 요약 바 (통일 톤) ==================== */
-    .sc-gem-panel-bright {
-      background: #0d1424;
-      border: 1.5px solid #334155;
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-bottom: 14px;
-    }
     .sc-gem-input-bar {
       display: grid;
       grid-template-columns: 0.9fr 0.9fr 1fr 1fr 0.75fr 1.1fr;
@@ -2841,20 +2834,81 @@
     .minv-mini-card.owned { border-color: #38bdf8; background: linear-gradient(145deg, rgba(56,189,248,0.16) 0%, #0f172a 100%); }
 
     /* ==================== 9.9 조건 요약 바 (CTA 강조형) & 모달 스텝 버튼 ==================== */
-    .cond-summary-bar {
-      background: linear-gradient(135deg, #131d33 0%, #0d1424 100%);
-      border: 1.5px solid #334155;
-      border-left: 4px solid #38bdf8;
-      border-radius: 12px;
-      padding: 12px 15px;
-      margin-bottom: 14px;
+    
+    /* STEP 섹션 점선 구분선 & 단계 헤더 */
+    .step-section-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0 12px 0;
+    }
+    .step-section-divider::after {
+      content: "";
+      flex: 1;
+      border-top: 1.5px dashed #3b4c6b;
+    }
+    .step-num-badge {
+      background: #172554;
+      border: 1px solid #38bdf8;
+      color: #7dd3fc;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 5px;
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+    }
+    .step-section-title {
+      font-size: 13px;
+      font-weight: 900;
+      color: #e2e8f0;
+      white-space: nowrap;
+    }
+    .step-section-sub {
+      font-size: 11.5px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    /* STEP 2 유도형 클릭 액션 카드 (조건 설정 / 보석 설정) */
+    .cond-action-card {
+      background: linear-gradient(145deg, rgba(14, 165, 233, 0.14) 0%, #0f172a 70%);
+      border: 1.5px solid #38bdf8;
+      border-radius: 13px;
+      padding: 13px 15px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(14, 165, 233, 0.16);
+      transition: all 0.18s ease;
+    }
+    .cond-action-card:hover {
+      border-color: #fde047;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(56, 189, 248, 0.3);
+    }
+    .cond-action-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+      gap: 8px;
     }
+    .cond-action-cta {
+      background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+      border: 1px solid #7dd3fc;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 6px 12px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    
     .cond-summary-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; flex: 1; min-width: 220px; }
     .cond-chip {
       display: inline-flex;
@@ -2889,6 +2943,7 @@
       gap: 8px;
       box-shadow: 0 4px 18px rgba(14, 165, 233, 0.42), inset 0 1px 0 rgba(255,255,255,0.25);
       transition: all 0.18s ease;
+      justify-content: center;
     }
     .cond-open-btn:hover { transform: translateY(-2px); border-color: #fde047; box-shadow: 0 6px 22px rgba(56, 189, 248, 0.6); }
     .cond-cta-dot {
@@ -3100,6 +3155,7 @@
       .trait2-node-lv { font-size: 9.5px; padding: 0 3px; }
       .trait2-node-cost { font-size: 8px; }
       .trait2-root-col { padding-top: 68px !important; }
+      .step-section-sub { display: none; }
     }
   </style>
 </head>
@@ -3580,7 +3636,75 @@
       </div>
     </div>
 
-    <!-- 소울커넥트 코어 조건 설정 팝업 모달 -->
+    <!-- 소울커넥트 보유 보석(세공) 등록 팝업 모달 -->
+    <div class="help-modal-overlay" id="sc_gem_modal_overlay" style="z-index: 10006;" onclick="if(event.target===this) closeScGemModal()">
+      <div class="help-modal-box" style="max-width: 720px; max-height: 88vh; overflow-y: auto; border: 2px solid #22d3ee; padding: 20px;" onclick="event.stopPropagation()">
+        <div class="help-modal-header" style="margin-bottom: 12px;">
+          <div>
+            <div class="help-modal-title" style="color:#67e8f9;">보유 보석(세공) 등록 &amp; 24칸 자동 배분</div>
+            <div style="font-size:11.5px; color:#94a3b8;">사슬과 포인트 숫자만 연속 입력하면 자동 추가되며, 코어별 사슬 한도에 맞춰 4개씩 배분됩니다.</div>
+          </div>
+          <button type="button" class="help-modal-close" onclick="closeScGemModal()">✕</button>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <span class="cond-chip is-on" id="sc_gem_inv_count_badge">미등록 시 최대P 자동 가정</span>
+          <label style="margin:0; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:#0f172a; border:1px solid #334155; padding:5px 10px; border-radius:7px; font-size:11.5px; color:#cbd5e1; font-weight:700;">
+            <input type="checkbox" id="sc_gem_autotab_chk" checked style="width:14px; height:14px; accent-color:#38bdf8;">
+            <span>오토탭 연속입력 (사슬➔포인트➔자동추가)</span>
+          </label>
+        </div>
+
+        <div class="radio-pill-group" style="margin-bottom:10px;" id="sc_gem_tier_radio_bar">
+          <div class="radio-pill gem-tier-pill gt-ancient selected" data-gtier="ancient" onclick="selectScGemAddTier('ancient')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-ancient"></span>고대 보석</div>
+          <div class="radio-pill gem-tier-pill gt-mythic" data-gtier="mythic" onclick="selectScGemAddTier('mythic')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-mythic"></span>신화 보석</div>
+          <div class="radio-pill gem-tier-pill gt-legend" data-gtier="legend" onclick="selectScGemAddTier('legend')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-legend"></span>전설 보석</div>
+          <div class="radio-pill gem-tier-pill gt-unique" data-gtier="unique" onclick="selectScGemAddTier('unique')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-unique"></span>특급 보석</div>
+          <div class="radio-pill gem-tier-pill gt-advanced" data-gtier="advanced" onclick="selectScGemAddTier('advanced')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-advanced"></span>상급 보석</div>
+        </div>
+
+        <div class="sc-gem-input-bar">
+          <div>
+            <label style="font-size:11px; color:#94a3b8;">사슬 (1~8)</label>
+            <input type="text" inputmode="numeric" id="sc_gem_add_chain" placeholder="5" maxlength="1" onfocus="this.select()" oninput="onScGemChainInput(this)" onkeydown="onScGemKeyDown(event,'chain')" style="padding:8px; font-size:15px; font-weight:900; text-align:center; color:#f8fafc;">
+          </div>
+          <div>
+            <label style="font-size:11px; color:#94a3b8;">포인트 (1~12)</label>
+            <input type="text" inputmode="numeric" id="sc_gem_add_pt" placeholder="8" maxlength="2" onfocus="this.select()" oninput="onScGemPtInput(this)" onkeydown="onScGemKeyDown(event,'pt')" style="padding:8px; font-size:15px; font-weight:900; text-align:center; color:#fde047;">
+          </div>
+          <div>
+            <label style="font-size:11px; color:#94a3b8;">보석공% (선택)</label>
+            <input type="number" id="sc_gem_add_atk" value="" min="0" step="500" placeholder="생략가능" onkeydown="onScGemKeyDown(event,'other')" style="padding:8px; font-size:12.5px;">
+          </div>
+          <div>
+            <label style="font-size:11px; color:#94a3b8;">보석공증% (선택)</label>
+            <input type="number" id="sc_gem_add_amp" value="" min="0" step="500" placeholder="생략가능" onkeydown="onScGemKeyDown(event,'other')" style="padding:8px; font-size:12.5px;">
+          </div>
+          <div>
+            <label style="font-size:11px; color:#94a3b8;">수량</label>
+            <input type="number" id="sc_gem_add_qty" value="1" min="1" max="24" onkeydown="onScGemKeyDown(event,'other')" style="padding:8px; font-size:13.5px; font-weight:800; text-align:center;">
+          </div>
+          <div>
+            <button type="button" onclick="addSoulConnectGemFromInput(false)" style="width:100%; background:linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); border:1px solid #38bdf8; color:#fff; font-weight:900; font-size:13px; padding:9px 10px; border-radius:8px; cursor:pointer;">+ 추가</button>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="sc-gem-preset-btn" onclick="addPresetSoulGems('ancient', 5, 8, 4)"><span class="sc-gem-dot g-ancient" style="margin:0;"></span>고대 (5 / 8P) 4개</button>
+            <button type="button" class="sc-gem-preset-btn" onclick="addPresetSoulGems('mythic', 4, 7, 4)"><span class="sc-gem-dot g-mythic" style="margin:0;"></span>신화 (4 / 7P) 4개</button>
+            <button type="button" class="sc-gem-preset-btn" onclick="addPresetSoulGems('legend', 3, 5, 4)"><span class="sc-gem-dot g-legend" style="margin:0;"></span>전설 (3 / 5P) 4개</button>
+          </div>
+          <button type="button" onclick="clearAllSoulConnectGems()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:7px; cursor:pointer;">전체 비우기</button>
+        </div>
+
+        <div id="sc_gem_inventory_list" style="display:flex; flex-wrap:wrap; gap:7px; min-height:46px; max-height:220px; overflow-y:auto; padding:10px; background:#090e1a; border-radius:9px; border:1px solid #1e293b;"></div>
+
+        <div style="margin-top:14px;">
+          <button type="button" onclick="closeScGemModal()" class="cond-open-btn" style="width:100%; justify-content:center; padding:10px;">설정 완료 (배치도에 반영)</button>
+        </div>
+      </div>
+    </div>
     <div class="help-modal-overlay" id="sc_cond_modal_overlay" style="z-index: 10006;" onclick="if(event.target===this) closeScCondModal()">
       <div class="help-modal-box" style="max-width: 660px; max-height: 88vh; overflow-y: auto; border: 2px solid #a855f7; padding: 20px;" onclick="event.stopPropagation()">
         <div class="help-modal-header" style="margin-bottom: 12px;">
@@ -5184,20 +5308,26 @@
             </div>
             <p class="card-subtitle">현재 진행 스테이지(해금 슬롯 수)와 내 직업·속성을 고르고 보유 중인 코어를 모두 선택하세요. (※ 보석 등록 시 코어별 24칸 자동 배분 및 보석 합연산 스탯이 함께 반영됩니다.)</p>
 
-            <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:12px;">
-              <label style="color:#c084fc; margin-bottom:8px;">🚩 현재 스테이지 진행도 선택 (기본 1·2번 2슬롯 오픈 / 선택된 버튼 재클릭 시 기본 2슬롯으로 취소 가능)</label>
+            <!-- STEP 1 -->
+            <div class="step-section-divider" style="margin-top:4px;">
+              <span class="step-num-badge">STEP 01</span>
+              <span class="step-section-title">스테이지 해금 슬롯 · 직업 · 주속성</span>
+            </div>
+
+            <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #26334a; margin-bottom:10px;">
+              <label style="color:#cbd5e1; margin-bottom:8px; font-size:12.5px;">현재 스테이지 진행도 (선택된 버튼 재클릭 시 기본 2슬롯으로 취소)</label>
               <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:8px;">
-                <div class="radio-pill" id="sc_stage_2" onclick="selectConnectStage(2)">300-1 미만 (기본)<br><small style="color:#94a3b8;">(1·2번 기본 2슬롯 오픈)</small></div>
-                <div class="radio-pill" id="sc_stage_3" onclick="selectConnectStage(3)">300-1 ~ 400-1 미만<br><small style="color:#38bdf8;">(1~3번 3슬롯 오픈)</small></div>
-                <div class="radio-pill" id="sc_stage_4" onclick="selectConnectStage(4)">400-1 ~ 500-1 미만<br><small style="color:#38bdf8;">(1~4번 4슬롯 오픈)</small></div>
-                <div class="radio-pill" id="sc_stage_5" onclick="selectConnectStage(5)">500-1 ~ 800-1 미만<br><small style="color:#38bdf8;">(1~5번 5슬롯 오픈)</small></div>
-                <div class="radio-pill selected" id="sc_stage_6" onclick="selectConnectStage(6)">800-1 스테이지 이상<br><small style="color:#34d399;">(1~6번 6슬롯 전체 오픈)</small></div>
+                <div class="radio-pill" id="sc_stage_2" onclick="selectConnectStage(2)">300-1 미만 (기본)<br><small style="color:#94a3b8;">(1·2번 2슬롯)</small></div>
+                <div class="radio-pill" id="sc_stage_3" onclick="selectConnectStage(3)">300-1 ~ 400-1 미만<br><small style="color:#38bdf8;">(1~3번 3슬롯)</small></div>
+                <div class="radio-pill" id="sc_stage_4" onclick="selectConnectStage(4)">400-1 ~ 500-1 미만<br><small style="color:#38bdf8;">(1~4번 4슬롯)</small></div>
+                <div class="radio-pill" id="sc_stage_5" onclick="selectConnectStage(5)">500-1 ~ 800-1 미만<br><small style="color:#38bdf8;">(1~5번 5슬롯)</small></div>
+                <div class="radio-pill selected" id="sc_stage_6" onclick="selectConnectStage(6)">800-1 스테이지 이상<br><small style="color:#34d399;">(1~6번 6슬롯)</small></div>
               </div>
             </div>
 
-            <div class="grid-2" style="margin-bottom:12px;">
-              <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #334155;">
-                <label style="color:#38bdf8; margin-bottom:7px;">⚔️ 내 직업 선택 (택 1)</label>
+            <div class="grid-2" style="margin-bottom:4px;">
+              <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #26334a;">
+                <label style="color:#94a3b8; margin-bottom:7px; font-size:12px;">내 직업 선택 (택 1)</label>
                 <div class="radio-pill-group">
                   <div class="radio-pill job-pill-btn selected" id="sc_job_reaper" onclick="selectConnectJob('reaper')">
                     <img src="images/reaper.png" alt="대사신" onerror="this.onerror=null; this.src='reaper.png';">
@@ -5214,8 +5344,8 @@
                 </div>
               </div>
 
-              <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #334155;">
-                <label style="color:#fbbf24; margin-bottom:7px;">🔥 내 주속성 선택 (택 1)</label>
+              <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #26334a;">
+                <label style="color:#94a3b8; margin-bottom:7px; font-size:12px;">내 주속성 선택 (택 1)</label>
                 <div class="radio-pill-group">
                   <div class="radio-pill job-pill-btn selected" id="sc_elem_fire" onclick="selectConnectElem('fire')"><span class="elem-orb orb-fire"></span><span>화염</span></div>
                   <div class="radio-pill job-pill-btn" id="sc_elem_light" onclick="selectConnectElem('light')"><span class="elem-orb orb-light"></span><span>번개</span></div>
@@ -5224,81 +5354,48 @@
               </div>
             </div>
 
-            <!-- 소울커넥트 조건 1줄 요약 바 -->
-            <div class="cond-summary-bar">
-              <div style="flex:1; min-width:220px;">
-                <div style="font-size:12px; font-weight:800; color:#94a3b8; margin-bottom:6px;">내 코어 발동 조건 현황</div>
+            <!-- STEP 2: 조건 & 보석 팝업 진입 카드 2열 -->
+            <div class="step-section-divider">
+              <span class="step-num-badge" style="border-color:#fde047; color:#fde047; background:#422006;">STEP 02</span>
+              <span class="step-section-title">내 스펙 조건 &amp; 보유 보석 설정</span>
+              <span class="step-section-sub">카드를 눌러 팝업에서 설정하세요</span>
+            </div>
+
+            <div class="grid-2" style="gap:10px; margin-bottom:4px;">
+              <!-- 좌: 코어 조건 설정 카드 -->
+              <div class="cond-action-card" onclick="openScCondModal()">
+                <div class="cond-action-head">
+                  <div>
+                    <div style="font-size:13.5px; font-weight:900; color:#ffffff;">1. 코어 발동 조건 설정</div>
+                    <div style="font-size:11px; color:#94a3b8;">도감 · 전직 · 승급 · 보스 · 스테이지 · 던전</div>
+                  </div>
+                  <span class="cond-action-cta"><span class="cond-cta-dot"></span><span>조건 설정 ➔</span></span>
+                </div>
                 <div class="cond-summary-chips" id="sc_cond_summary_chips">
                   <span class="cond-chip">조건 불러오는 중...</span>
                 </div>
               </div>
-              <button type="button" class="cond-open-btn" onclick="openScCondModal()">
-                <span class="cond-cta-dot"></span>
-                <span>코어 조건 설정하기 ➔</span>
-              </button>
+
+              <!-- 우: 보유 보석 관리 카드 -->
+              <div class="cond-action-card" onclick="openScGemModal()" style="border-color:#22d3ee; background:linear-gradient(145deg, rgba(6,182,212,0.14) 0%, #0f172a 70%);">
+                <div class="cond-action-head">
+                  <div>
+                    <div style="font-size:13.5px; font-weight:900; color:#ffffff;">2. 보유 보석(세공) 24칸 자동 배분</div>
+                    <div style="font-size:11px; color:#94a3b8;">보유 보석 등록 시 코어별 4소켓 자동 추천</div>
+                  </div>
+                  <span class="cond-action-cta" style="background:linear-gradient(135deg,#0891b2 0%,#0284c7 100%); border-color:#67e8f9;"><span>보석 관리 ➔</span></span>
+                </div>
+                <div class="cond-summary-chips" id="sc_gem_summary_chips">
+                  <span class="cond-chip">미등록 시 최대P 자동 가정</span>
+                </div>
+              </div>
             </div>
 
-            <!-- 보유 세공 보석 인벤토리 & 24칸 자동 배분 -->
-            <div class="sc-gem-panel-bright" id="sc_gem_inventory_panel">
-              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #1e293b;">
-                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  <strong style="font-size:14.5px; color:#f1f5f9;">보유 보석(세공) 등록 &amp; 24칸 자동 배분</strong>
-                  <span class="cond-chip" id="sc_gem_inv_count_badge">미등록 시 최대P 자동 가정</span>
-                </div>
-                <label style="margin:0; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:#131d33; border:1px solid #334155; padding:4px 10px; border-radius:7px; font-size:11.5px; color:#cbd5e1; font-weight:700;">
-                  <input type="checkbox" id="sc_gem_autotab_chk" checked style="width:14px; height:14px; accent-color:#38bdf8;">
-                  <span>오토탭 연속입력 (사슬➔포인트➔자동추가)</span>
-                </label>
-              </div>
-
-              <!-- 1. 보석 등급 라디오 (고대 = 하늘색!) -->
-              <div class="radio-pill-group" style="margin-bottom:10px;" id="sc_gem_tier_radio_bar">
-                <div class="radio-pill gem-tier-pill gt-ancient selected" data-gtier="ancient" onclick="selectScGemAddTier('ancient')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-ancient"></span>고대 보석</div>
-                <div class="radio-pill gem-tier-pill gt-mythic" data-gtier="mythic" onclick="selectScGemAddTier('mythic')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-mythic"></span>신화 보석</div>
-                <div class="radio-pill gem-tier-pill gt-legend" data-gtier="legend" onclick="selectScGemAddTier('legend')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-legend"></span>전설 보석</div>
-                <div class="radio-pill gem-tier-pill gt-unique" data-gtier="unique" onclick="selectScGemAddTier('unique')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-unique"></span>특급 보석</div>
-                <div class="radio-pill gem-tier-pill gt-advanced" data-gtier="advanced" onclick="selectScGemAddTier('advanced')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-advanced"></span>상급 보석</div>
-              </div>
-
-              <!-- 2. 오토탭 입력 바 -->
-              <div class="sc-gem-input-bar">
-                <div>
-                  <label style="font-size:11px; color:#94a3b8;">사슬 (1~8)</label>
-                  <input type="text" inputmode="numeric" id="sc_gem_add_chain" placeholder="5" maxlength="1" onfocus="this.select()" oninput="onScGemChainInput(this)" onkeydown="onScGemKeyDown(event,'chain')" style="padding:8px; font-size:15px; font-weight:900; text-align:center; color:#f8fafc;">
-                </div>
-                <div>
-                  <label style="font-size:11px; color:#94a3b8;">포인트 (1~12)</label>
-                  <input type="text" inputmode="numeric" id="sc_gem_add_pt" placeholder="8" maxlength="2" onfocus="this.select()" oninput="onScGemPtInput(this)" onkeydown="onScGemKeyDown(event,'pt')" style="padding:8px; font-size:15px; font-weight:900; text-align:center; color:#fde047;">
-                </div>
-                <div>
-                  <label style="font-size:11px; color:#94a3b8;">보석공% (선택)</label>
-                  <input type="number" id="sc_gem_add_atk" value="" min="0" step="500" placeholder="생략가능" onkeydown="onScGemKeyDown(event,'other')" style="padding:8px; font-size:12.5px;">
-                </div>
-                <div>
-                  <label style="font-size:11px; color:#94a3b8;">보석공증% (선택)</label>
-                  <input type="number" id="sc_gem_add_amp" value="" min="0" step="500" placeholder="생략가능" onkeydown="onScGemKeyDown(event,'other')" style="padding:8px; font-size:12.5px;">
-                </div>
-                <div>
-                  <label style="font-size:11px; color:#94a3b8;">수량</label>
-                  <input type="number" id="sc_gem_add_qty" value="1" min="1" max="24" onkeydown="onScGemKeyDown(event,'other')" style="padding:8px; font-size:13.5px; font-weight:800; text-align:center;">
-                </div>
-                <div>
-                  <button type="button" onclick="addSoulConnectGemFromInput(false)" style="width:100%; background:linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); border:1px solid #38bdf8; color:#fff; font-weight:900; font-size:13px; padding:9px 10px; border-radius:8px; cursor:pointer;">+ 보석 추가</button>
-                </div>
-              </div>
-
-              <!-- 3. 빠른 프리셋 & 전체 비우기 -->
-              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
-                <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                  <button type="button" class="sc-gem-preset-btn" onclick="addPresetSoulGems('ancient', 5, 8, 4)"><span class="sc-gem-dot g-ancient" style="margin:0;"></span>고대 (5 / 8P) 4개</button>
-                  <button type="button" class="sc-gem-preset-btn" onclick="addPresetSoulGems('mythic', 4, 7, 4)"><span class="sc-gem-dot g-mythic" style="margin:0;"></span>신화 (4 / 7P) 4개</button>
-                  <button type="button" class="sc-gem-preset-btn" onclick="addPresetSoulGems('legend', 3, 5, 4)"><span class="sc-gem-dot g-legend" style="margin:0;"></span>전설 (3 / 5P) 4개</button>
-                </div>
-                <button type="button" onclick="clearAllSoulConnectGems()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:7px; cursor:pointer;">보석 비우기</button>
-              </div>
-
-              <!-- 4. 등록된 보석 리스트 -->
-              <div id="sc_gem_inventory_list" style="display:flex; flex-wrap:wrap; gap:7px; min-height:36px; padding:10px; background:#090e1a; border-radius:9px; border:1px solid #1e293b;"></div>
+            <!-- STEP 3 -->
+            <div class="step-section-divider">
+              <span class="step-num-badge">STEP 03</span>
+              <span class="step-section-title">보유 중인 코어 선택</span>
+              <span class="step-section-sub">클릭 시 아래 추천 배치도가 자동 갱신됩니다</span>
             </div>
 
             <div class="connect-tier-tabs">
@@ -5495,9 +5592,15 @@
           </div>
           <p class="card-subtitle">내 직업과 주속성을 고르고 보유 중인 룬(고대·영원·불멸)을 클릭하면, 합연산/곱연산과 세트 페널티를 모두 계산하여 최선의 10칸 세팅과 동일 배율 대체 룬을 추천합니다.</p>
 
-          <div class="grid-2" style="margin-bottom:12px;">
-            <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #334155;">
-              <label style="color:#38bdf8; margin-bottom:7px;">내 직업 선택 (택 1)</label>
+          <!-- STEP 1 -->
+          <div class="step-section-divider" style="margin-top:4px;">
+            <span class="step-num-badge">STEP 01</span>
+            <span class="step-section-title">내 직업 &amp; 주속성 선택</span>
+          </div>
+
+          <div class="grid-2" style="margin-bottom:4px;">
+            <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #26334a;">
+              <label style="color:#94a3b8; margin-bottom:7px; font-size:12px;">내 직업 선택 (택 1)</label>
               <div class="radio-pill-group">
                 <div class="radio-pill job-pill-btn selected" id="rune_job_reaper" onclick="selectRuneJob('reaper')">
                   <img src="images/reaper.png" alt="대사신" onerror="this.onerror=null; this.src='reaper.png';">
@@ -5514,8 +5617,8 @@
               </div>
             </div>
 
-            <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #334155;">
-              <label style="color:#fbbf24; margin-bottom:7px;">내 주속성 선택 (택 1)</label>
+            <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #26334a;">
+              <label style="color:#94a3b8; margin-bottom:7px; font-size:12px;">내 주속성 선택 (택 1)</label>
               <div class="radio-pill-group">
                 <div class="radio-pill job-pill-btn selected" id="rune_elem_fire" onclick="selectRuneElem('fire')"><span class="elem-orb orb-fire"></span><span>화염</span></div>
                 <div class="radio-pill job-pill-btn" id="rune_elem_light" onclick="selectRuneElem('light')"><span class="elem-orb orb-light"></span><span>번개</span></div>
@@ -5524,30 +5627,41 @@
             </div>
           </div>
 
-          <!-- 룬 스펙 조건 요약 바 + 원클릭 프리셋 -->
-          <div class="cond-summary-bar" style="border-color:#38bdf8;">
-            <div style="flex:1; min-width:230px;">
-              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:7px;">
-                <span style="font-size:12.5px; font-weight:900; color:#bae6fd;">내 캐릭터 룬 발동 조건 <small style="color:#34d399; font-weight:700;">(자동저장 · 불멸도감 <span id="rc_imm_collect_display">0</span>종)</small></span>
-                <div style="display:flex; gap:5px; flex-wrap:wrap;">
-                  <button type="button" onclick="applyRuneSpecPreset('mid')" class="seg-pill-btn" style="padding:3px 9px; font-size:11px;">중반 프리셋</button>
-                  <button type="button" onclick="applyRuneSpecPreset('late')" class="seg-pill-btn" style="padding:3px 9px; font-size:11px;">후반 프리셋</button>
-                  <button type="button" onclick="applyRuneSpecPreset('end')" class="seg-pill-btn" style="padding:3px 9px; font-size:11px; border-color:#fbbf24; color:#fde047;">올 풀달성</button>
-                </div>
-              </div>
-              <div class="cond-summary-chips" id="rune_cond_summary_chips">
-                <span class="cond-chip">조건 불러오는 중...</span>
-              </div>
-            </div>
-            <button type="button" class="cond-open-btn" onclick="openRuneCondModal()">
-              <span class="cond-cta-dot"></span>
-              <span>상세 조건 편집하기 ➔</span>
-            </button>
+          <!-- STEP 2: 조건 설정 유도 카드 -->
+          <div class="step-section-divider">
+            <span class="step-num-badge" style="border-color:#fde047; color:#fde047; background:#422006;">STEP 02</span>
+            <span class="step-section-title">내 캐릭터 룬 발동 조건 맞추기</span>
+            <span class="step-section-sub">정확한 룬 추천을 위해 먼저 설정하세요</span>
           </div>
 
-          <div style="font-size:11.5px; color:#fde68a; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.35); border-radius:8px; padding:7px 12px; margin-bottom:12px;">
+          <div class="cond-action-card" onclick="openRuneCondModal()" style="margin-bottom:10px;">
+            <div class="cond-action-head" style="flex-wrap:wrap;">
+              <div>
+                <div style="font-size:13.5px; font-weight:900; color:#ffffff;">내 캐릭터 스펙 조건 <small style="color:#34d399; font-weight:700;">(자동저장 · 불멸도감 <span id="rc_imm_collect_display">0</span>종)</small></div>
+                <div style="font-size:11px; color:#94a3b8;">엘리시아 · 오버드라이브 · 가호 · 연마 · 출혈 등 미달성 룬 자동 필터링</div>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                <button type="button" onclick="event.stopPropagation(); applyRuneSpecPreset('mid');" class="seg-pill-btn" style="padding:5px 9px; font-size:11px;">중반 프리셋</button>
+                <button type="button" onclick="event.stopPropagation(); applyRuneSpecPreset('late');" class="seg-pill-btn" style="padding:5px 9px; font-size:11px;">후반 프리셋</button>
+                <button type="button" onclick="event.stopPropagation(); applyRuneSpecPreset('end');" class="seg-pill-btn" style="padding:5px 9px; font-size:11px; border-color:#fbbf24; color:#fde047;">올 풀달성</button>
+                <span class="cond-action-cta"><span class="cond-cta-dot"></span><span>상세 조건 편집 ➔</span></span>
+              </div>
+            </div>
+            <div class="cond-summary-chips" id="rune_cond_summary_chips">
+              <span class="cond-chip">조건 불러오는 중...</span>
+            </div>
+          </div>
+
+          <div style="font-size:11.5px; color:#fde68a; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:8px; padding:7px 12px; margin-bottom:4px;">
             <span class="mini-tag" style="background:#b45309; color:#fef08a; margin-right:6px;">TIP</span>
             <strong>[오버드라이브 각성 &gt; 엘리시아 각성 + 솔라리스 9돌↑]</strong> 시 마마 세트가 과성장을 역전하며, 영원 <strong>[공명+공진]</strong>은 10칸 올 영원 세팅일 때만 발동합니다.
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="step-section-divider">
+            <span class="step-num-badge">STEP 03</span>
+            <span class="step-section-title">보유 중인 룬 선택</span>
+            <span class="step-section-sub">클릭 시 아래 10칸 추천 배치도가 자동 계산됩니다</span>
           </div>
 
           <div class="rune-tier-tabs">
@@ -6235,7 +6349,7 @@
       const inputsData = {};
       document.querySelectorAll('input[id], select[id]').forEach(el => {
         if (['rune_search_input', 'union_search_input', 'global_omni_input', 'trait2_lv_slider', 'ui_tog_solaris9', 'ui_tog_bleed'].includes(el.id)) return;
-        if (el.id.startsWith('eq_inv_') || el.id.startsWith('u_brk_')) return;
+        if (el.id.startsWith('eq_inv_') || el.id.startsWith('u_brk_') || el.id.startsWith('sc_gem_add_')) return;
         inputsData[el.id] = (el.type === 'checkbox') ? el.checked : el.value;
       });
 
@@ -9637,9 +9751,13 @@
     const atkSumByTier = { ancient: 0, eternal: 0, immortal: 0 };
     let jobSum = 0, dmgDealSum = 0, allDmgProduct = 1;
 
+    // ★ [핵심 버그 수정] 케르베로스 3세트는 자체 영원 룬공(1,000만%) × 자체 영원 룬공 증폭을 지닌 독립 곱연산 세트!
+    // 불멸 엠블렘 착용 시 atkSumByTier.eternal * 0.0005 페널티에 휘말려 5만 배로 토막나던 버그를 차단합니다.
+    if (kerberosCount === 3) {
+      return (activeEmblemTier === 'eternal') ? 105001 : 1000000001; // 불멸 엠블렘 기준 독립 10억 배 (불멸 레트로+영원 삼위+영원 양날검 3.76억 배 역전 반영)
+    }
     if (kerberosCount === 1) atkSumByTier.eternal += 15000;
     else if (kerberosCount === 2) atkSumByTier.eternal += 10000000;
-    else if (kerberosCount === 3) atkSumByTier.eternal += (activeEmblemTier === 'eternal') ? 10500000 : 10000000000;
 
     for (const r of validRunes) {
       if (r.id === 'ete_ar_kerberos') continue;
@@ -10304,6 +10422,7 @@
     saveSoulGemsToLocal();
     renderSoulGemInventoryList();
     calculateBestConnectLoadout();
+    triggerAutoSave();
 
     if (isAutoTab || document.getElementById('sc_gem_autotab_chk')?.checked) {
       if (chEl) chEl.value = '';
@@ -10319,6 +10438,7 @@
     saveSoulGemsToLocal();
     renderSoulGemInventoryList();
     calculateBestConnectLoadout();
+    triggerAutoSave();
   }
 
   function removeSoulConnectGem(gemId) {
@@ -10326,6 +10446,7 @@
     saveSoulGemsToLocal();
     renderSoulGemInventoryList();
     calculateBestConnectLoadout();
+    triggerAutoSave();
   }
 
   function clearAllSoulConnectGems() {
@@ -10334,6 +10455,16 @@
     saveSoulGemsToLocal();
     renderSoulGemInventoryList();
     calculateBestConnectLoadout();
+    triggerAutoSave();
+  }
+
+  function openScGemModal() {
+    renderSoulGemInventoryList();
+    document.getElementById('sc_gem_modal_overlay').style.display = 'flex';
+    setTimeout(() => { document.getElementById('sc_gem_add_chain')?.focus(); }, 60);
+  }
+  function closeScGemModal() {
+    document.getElementById('sc_gem_modal_overlay').style.display = 'none';
   }
 
   function renderSoulGemInventoryList() {
@@ -10341,6 +10472,22 @@
     const badgeEl = document.getElementById('sc_gem_inv_count_badge');
     if (badgeEl) {
       badgeEl.innerText = ownedSoulGems.length > 0 ? `보석 ${ownedSoulGems.length}개 등록됨 (자동 배분 ON)` : '미등록 시 최대P 자동 가정';
+    }
+    const sumChips = document.getElementById('sc_gem_summary_chips');
+    if (sumChips) {
+      if (ownedSoulGems.length === 0) {
+        sumChips.innerHTML = `<span class="cond-chip">보석 미등록 (코어별 최대P 자동 가정)</span>`;
+      } else {
+        const cnts = { ancient:0, mythic:0, legend:0, unique:0, advanced:0 };
+        ownedSoulGems.forEach(g => { if (cnts[g.tier] !== undefined) cnts[g.tier]++; });
+        const parts = [
+          cnts.ancient ? `<span class="cond-chip is-on"><span class="sc-gem-dot g-ancient" style="margin:0;"></span>고대 ${cnts.ancient}</span>` : '',
+          cnts.mythic  ? `<span class="cond-chip is-on"><span class="sc-gem-dot g-mythic" style="margin:0;"></span>신화 ${cnts.mythic}</span>` : '',
+          cnts.legend  ? `<span class="cond-chip is-on"><span class="sc-gem-dot g-legend" style="margin:0;"></span>전설 ${cnts.legend}</span>` : '',
+          (cnts.unique + cnts.advanced) ? `<span class="cond-chip">기타 ${cnts.unique + cnts.advanced}</span>` : ''
+        ].filter(Boolean).join('');
+        sumChips.innerHTML = `<span class="cond-chip is-warn">총 ${ownedSoulGems.length}개 등록</span>${parts}`;
+      }
     }
     if (!listEl) return;
     if (ownedSoulGems.length === 0) {
