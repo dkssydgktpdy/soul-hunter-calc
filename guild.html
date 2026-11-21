@@ -564,12 +564,12 @@
     <!-- 구역 선택 탭 -->
     <div class="zone-tabs-bar">
       <div class="zone-tab-btn active" id="tab_all" onclick="switchZoneView('all')">전체 종합 순위</div>
-      <div class="zone-tab-btn tab-fire" id="tab_fire" onclick="switchZoneView('fire')">불꽃구역</div>
       <div class="zone-tab-btn tab-ice" id="tab_ice" onclick="switchZoneView('ice')">빙하구역</div>
+      <div class="zone-tab-btn tab-fire" id="tab_fire" onclick="switchZoneView('fire')">불꽃구역</div>
       <div class="zone-tab-btn tab-heaven" id="tab_heaven" onclick="switchZoneView('heaven')">천상구역</div>
+      <div class="zone-tab-btn tab-abyss" id="tab_abyss" onclick="switchZoneView('abyss')">절대구역</div>
       <div class="zone-tab-btn tab-grass" id="tab_grass" onclick="switchZoneView('grass')">초원구역</div>
       <div class="zone-tab-btn tab-dark" id="tab_dark" onclick="switchZoneView('dark')">암흑구역</div>
-      <div class="zone-tab-btn tab-abyss" id="tab_abyss" onclick="switchZoneView('abyss')">절대구역</div>
     </div>
 
     <!-- 4. 메인 리더보드 & 종합 순위 카드 (접이식 아코디언 적용) -->
@@ -649,7 +649,7 @@
     dark:   { name: "암흑", icon: ZONE_SVG.dark,   title: `${ZONE_SVG.dark} 암흑구역 실시간 1~50위 리더보드`, color: "var(--dark)" },
     abyss:  { name: "절대", icon: ZONE_SVG.abyss,  title: `${ZONE_SVG.abyss} 절대구역 실시간 1~50위 리더보드`, color: "var(--abyss)" }
   };
-  const ZONE_KEYS = ["fire", "ice", "heaven", "grass", "dark", "abyss"];
+  const ZONE_KEYS = ["ice", "fire", "heaven", "abyss", "grass", "dark"];
 
   const TAG_FILTER_OPTIONS = [
     { key: "all",     label: "🌐 전체 보기" },

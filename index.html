@@ -2560,18 +2560,6 @@
     .sc-gem-dot.g-unique   { background: #a855f7; }
     .sc-gem-dot.g-advanced { background: #3b82f6; }
 
-    .sc-gem-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #131d33;
-      border: 1.5px solid #334155;
-      border-radius: 9px;
-      padding: 5px 10px;
-      font-size: 12px;
-      font-weight: 800;
-      color: #e2e8f0;
-    }
     .sc-gem-chip button {
       background: none;
       border: none;
@@ -2712,60 +2700,89 @@
       .ench-slot-cell { width: 42px; height: 52px; }
     }
 
-    /* ==================== 9.8 보석 세공 고대비 UI · 룬/코어 라디오 스위치 · 인벤토리 인라인 에디터 ==================== */
+   /* ==================== 9.8 보석 세공 · 룬/코어 라디오 · 조건 요약 바 (통일 톤) ==================== */
     .sc-gem-panel-bright {
-      background: linear-gradient(155deg, rgba(14, 116, 144, 0.24) 0%, #142038 55%, #0f172a 100%);
-      border: 2px solid #22d3ee;
+      background: #0d1424;
+      border: 1.5px solid #334155;
       border-radius: 14px;
-      padding: 15px 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 24px rgba(34, 211, 238, 0.18), inset 0 1px 12px rgba(103, 232, 249, 0.1);
+      padding: 14px 16px;
+      margin-bottom: 14px;
     }
     .sc-gem-input-bar {
       display: grid;
       grid-template-columns: 0.9fr 0.9fr 1fr 1fr 0.75fr 1.1fr;
       gap: 8px;
       align-items: end;
-      background: rgba(15, 23, 42, 0.92);
-      border: 1.5px solid rgba(56, 189, 248, 0.45);
-      border-radius: 12px;
-      padding: 11px 12px;
+      background: #090e1a;
+      border: 1px solid #26334a;
+      border-radius: 10px;
+      padding: 10px 12px;
       margin-bottom: 10px;
     }
+    .sc-gem-input-bar input {
+      border: 1px solid #334155 !important;
+      background: #11192c !important;
+    }
+    .sc-gem-input-bar input:focus {
+      border-color: #38bdf8 !important;
+    }
+    /* 보석 등급 라디오 (인게임 등급 색상 정확 매칭: 고대=하늘색) */
+    .gem-tier-pill.gt-ancient.selected  { background: linear-gradient(135deg, rgba(6,182,212,0.34), #0e3a4a); border: 2px solid #22d3ee !important; color: #cffafe; box-shadow: 0 0 14px rgba(34,211,238,0.45); }
+    .gem-tier-pill.gt-mythic.selected   { background: linear-gradient(135deg, rgba(244,63,94,0.34), #4c0519); border: 2px solid #fb7185 !important; color: #ffe4e6; box-shadow: 0 0 14px rgba(244,63,94,0.45); }
+    .gem-tier-pill.gt-legend.selected   { background: linear-gradient(135deg, rgba(249,115,22,0.34), #431407); border: 2px solid #fb923c !important; color: #ffedd5; box-shadow: 0 0 14px rgba(249,115,22,0.45); }
+    .gem-tier-pill.gt-unique.selected   { background: linear-gradient(135deg, rgba(168,85,247,0.34), #3b0764); border: 2px solid #c084fc !important; color: #f3e8ff; box-shadow: 0 0 14px rgba(168,85,247,0.45); }
+    .gem-tier-pill.gt-advanced.selected { background: linear-gradient(135deg, rgba(59,130,246,0.34), #172554); border: 2px solid #60a5fa !important; color: #dbeafe; box-shadow: 0 0 14px rgba(59,130,246,0.45); }
+
+    .sc-gem-preset-btn {
+      background: #131d33;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s;
+    }
+    .sc-gem-preset-btn:hover { border-color: #64748b; color: #ffffff; background: #1e293b; }
+
     .sc-gem-chip {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      border-radius: 9px;
-      padding: 6px 10px;
+      border-radius: 8px;
+      padding: 5px 10px;
       font-size: 12px;
       font-weight: 800;
-      color: #ffffff;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+      color: #f1f5f9;
+      background: #131d33;
+      border: 1px solid #334155;
     }
-    .sc-gem-chip.gt-ancient  { background: linear-gradient(135deg, rgba(6,182,212,0.32), #0f172a);  border: 1.5px solid #22d3ee; }
-    .sc-gem-chip.gt-mythic   { background: linear-gradient(135deg, rgba(244,63,94,0.32), #0f172a);  border: 1.5px solid #fb7185; }
-    .sc-gem-chip.gt-legend   { background: linear-gradient(135deg, rgba(249,115,22,0.32), #0f172a); border: 1.5px solid #fb923c; }
-    .sc-gem-chip.gt-unique   { background: linear-gradient(135deg, rgba(168,85,247,0.32), #0f172a); border: 1.5px solid #c084fc; }
-    .sc-gem-chip.gt-advanced { background: linear-gradient(135deg, rgba(59,130,246,0.32), #0f172a); border: 1.5px solid #60a5fa; }
+    .sc-gem-chip.gt-ancient  { border-color: rgba(34,211,238,0.65); }
+    .sc-gem-chip.gt-mythic   { border-color: rgba(251,113,133,0.65); }
+    .sc-gem-chip.gt-legend   { border-color: rgba(251,146,60,0.65); }
+    .sc-gem-chip.gt-unique   { border-color: rgba(192,132,252,0.65); }
+    .sc-gem-chip.gt-advanced { border-color: rgba(96,165,250,0.65); }
 
-    /* 룬/코어 부위 전환 6칸 라디오 바 */
     .part-radio-bar-6 {
       display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 7px;
-      background: #131d33;
-      padding: 8px;
+      background: #0d1424;
+      padding: 7px;
       border-radius: 12px;
-      border: 1.5px solid #475569;
+      border: 1px solid #26334a;
       margin-bottom: 12px;
     }
     .part-radio-btn {
-      background: #0f172a;
-      border: 1.5px solid #334155;
+      background: #131d33;
+      border: 1.5px solid #2d3b54;
       border-radius: 9px;
-      padding: 9px 5px;
-      color: #cbd5e1;
+      padding: 8px 5px;
+      color: #94a3b8;
       font-size: 12px;
       font-weight: 800;
       cursor: pointer;
@@ -2776,21 +2793,20 @@
       gap: 3px;
       transition: all 0.16s ease;
     }
-    .part-radio-btn:hover { border-color: #fde047; color: #ffffff; transform: translateY(-1px); }
+    .part-radio-btn:hover { border-color: #64748b; color: #ffffff; }
     .part-radio-btn.active {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.34) 0%, #1e3a8a 100%);
-      border: 2px solid #38bdf8;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.28) 0%, #172554 100%);
+      border: 1.5px solid #38bdf8;
       color: #ffffff;
-      box-shadow: 0 0 14px rgba(56, 189, 248, 0.45);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
     }
     .part-panel-box {
       background: #0b1120;
-      border: 1.5px solid #334155;
+      border: 1px solid #26334a;
       border-radius: 12px;
       padding: 13px;
     }
 
-    /* 통합 인벤토리 인라인 도감 탭 바 */
     .minv-tab-bar {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -2819,26 +2835,145 @@
       color: #ffffff;
       box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
     }
-    .minv-inline-scroll {
-      max-height: 310px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-    .minv-unit-row {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-    }
-    .minv-mini-card {
-      background: #131d33;
-      border: 1.5px solid #334155;
-      border-radius: 10px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    .minv-inline-scroll { max-height: 310px; overflow-y: auto; padding-right: 4px; }
+    .minv-unit-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .minv-mini-card { background: #131d33; border: 1.5px solid #334155; border-radius: 10px; padding: 8px; display: flex; flex-direction: column; gap: 6px; }
     .minv-mini-card.owned { border-color: #38bdf8; background: linear-gradient(145deg, rgba(56,189,248,0.16) 0%, #0f172a 100%); }
+
+    /* ==================== 9.9 조건 요약 바 (CTA 강조형) & 모달 스텝 버튼 ==================== */
+    .cond-summary-bar {
+      background: linear-gradient(135deg, #131d33 0%, #0d1424 100%);
+      border: 1.5px solid #334155;
+      border-left: 4px solid #38bdf8;
+      border-radius: 12px;
+      padding: 12px 15px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+    }
+    .cond-summary-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; flex: 1; min-width: 220px; }
+    .cond-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #0b1120;
+      border: 1px solid #2d3b54;
+      color: #94a3b8;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .cond-chip.is-on   { border-color: #334155; color: #e2e8f0; background: #162238; }
+    .cond-chip.is-warn { border-color: rgba(250,204,21,0.45); color: #fde047; background: rgba(250,204,21,0.08); }
+    .cond-chip.is-off  { border-color: #243045; color: #64748b; }
+
+    /* 세팅창 진입 유도용 메인 강조 CTA 버튼 */
+    .cond-open-btn {
+      background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+      border: 1.5px solid #7dd3fc;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 900;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 18px rgba(14, 165, 233, 0.42), inset 0 1px 0 rgba(255,255,255,0.25);
+      transition: all 0.18s ease;
+    }
+    .cond-open-btn:hover { transform: translateY(-2px); border-color: #fde047; box-shadow: 0 6px 22px rgba(56, 189, 248, 0.6); }
+    .cond-cta-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #fde047;
+      box-shadow: 0 0 8px #fde047;
+      animation: ctaPulse 1.8s infinite;
+    }
+    @keyframes ctaPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(0.8); } }
+
+    .cond-modal-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: #090d16; padding: 5px; border-radius: 10px; border: 1px solid #334155; margin-bottom: 14px; }
+    .cond-modal-tab-btn { background: transparent; border: 1.5px solid transparent; color: #94a3b8; font-size: 12.5px; font-weight: 800; padding: 8px 6px; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+    .cond-modal-tab-btn.active { background: linear-gradient(135deg, #0284c7 0%, #3730a3 100%); border-color: #7dd3fc; color: #ffffff; }
+    .cond-modal-row { background: #0f172a; border: 1px solid #26334a; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .cond-modal-label { font-size: 12.5px; font-weight: 800; color: #f1f5f9; min-width: 145px; }
+    .cond-modal-label small { display: block; font-size: 10.5px; color: #94a3b8; font-weight: 600; }
+    .seg-pill-row { display: flex; flex-wrap: wrap; gap: 5px; flex: 1; justify-content: flex-end; }
+    .seg-pill-btn { background: #162033; border: 1px solid #334155; color: #94a3b8; font-size: 11.5px; font-weight: 800; padding: 5px 10px; border-radius: 7px; cursor: pointer; transition: all 0.14s; white-space: nowrap; }
+    .seg-pill-btn:hover { border-color: #64748b; color: #ffffff; }
+    .seg-pill-btn.active { background: linear-gradient(135deg, #0284c7 0%, #1e40af 100%); border-color: #38bdf8; color: #ffffff; box-shadow: 0 0 10px rgba(56, 189, 248, 0.35); }
+    .cond-toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #0f172a; border: 1.5px solid #2d3b54; border-radius: 10px; padding: 9px 12px; margin: 0; cursor: pointer; user-select: none; }
+    .cond-toggle-row:has(.neon-toggle-input:checked) { border-color: #10b981; background: linear-gradient(90deg, rgba(16, 185, 129, 0.14) 0%, #0f172a 100%); }
+
+    /* ==================== 딤(dim.png) Special Thanks 빼꼼 이스터에그 ==================== */
+    .header-thanks-box { position: relative; }
+    .dim-easter-egg {
+      position: absolute;
+      bottom: calc(100% - 2px);
+      right: 16px;
+      width: 96px;
+      height: 82px;
+      cursor: pointer;
+      z-index: 9700;
+      user-select: none;
+    }
+    .dim-mask {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .dim-img {
+      width: 86px;
+      height: auto;
+      display: block;
+      transform: translateY(56px);
+      transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+    }
+    .dim-easter-egg:hover .dim-img { transform: translateY(46px); }
+    .dim-easter-egg.popped .dim-img { transform: translateY(2px) rotate(-3deg); }
+    .dim-bubble {
+      position: absolute;
+      bottom: calc(100% + 2px);
+      left: 50%;
+      transform: translateX(-50%) translateY(8px) scale(0.75);
+      background: #ffffff;
+      color: #0f172a;
+      border: 2px solid #f97316;
+      border-radius: 12px;
+      padding: 3px 11px;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .dim-bubble::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px 5px 0 5px;
+      border-style: solid;
+      border-color: #f97316 transparent transparent transparent;
+    }
+    .dim-easter-egg.popped .dim-bubble {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+
     @media (max-width: 720px) {
       .sc-gem-input-bar { grid-template-columns: repeat(2, 1fr); }
       .part-radio-bar-6 { grid-template-columns: repeat(3, 1fr); }
@@ -3062,6 +3197,13 @@
 
         <!-- 우측 Special Thanks 크레딧 박스 -->
         <div class="header-thanks-box" onclick="event.stopPropagation();">
+          <!-- 딤(dim.png) 빼꼼 이스터에그 -->
+          <div class="dim-easter-egg" id="dim_easter_egg" onclick="triggerDimMascot(event)" title="누구지...? 눌러보세요!">
+            <div class="dim-bubble">딤!</div>
+            <div class="dim-mask">
+              <img src="images/dim.png" alt="딤" class="dim-img" onerror="this.onerror=null; this.src='dim.png';">
+            </div>
+          </div>
           <div class="thanks-title">✨ Special Thanks (공략 데이터 제공)</div>
           <div class="thanks-avatars-row">
             <div class="thanks-person speech-bubble-wrap" data-bubble="💬 룡은 하루에 하나만 준다">
@@ -3398,6 +3540,173 @@
           </div>
           <div id="minv_collection_summary_cards" class="grid-2" style="gap:10px;"></div>
           <div id="minv_inline_editor_body" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 소울커넥트 코어 조건 설정 팝업 모달 -->
+    <div class="help-modal-overlay" id="sc_cond_modal_overlay" style="z-index: 10006;" onclick="if(event.target===this) closeScCondModal()">
+      <div class="help-modal-box" style="max-width: 660px; max-height: 88vh; overflow-y: auto; border: 2px solid #a855f7; padding: 20px;" onclick="event.stopPropagation()">
+        <div class="help-modal-header" style="margin-bottom: 12px;">
+          <div>
+            <div class="help-modal-title" style="color:#e9d5ff;">소울커넥트 코어 조건 설정</div>
+            <div style="font-size:11.5px; color:#94a3b8;">스위치와 단계 버튼을 눌러 내 달성도를 맞추세요 (자동 저장 · 즉시 반영)</div>
+          </div>
+          <button type="button" class="help-modal-close" onclick="closeScCondModal()">✕</button>
+        </div>
+
+        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;">
+          <button type="button" onclick="applyScCondPreset(3)" class="seg-pill-btn" style="border-color:#10b981; color:#6ee7b7;">전체 20P 풀달성</button>
+          <button type="button" onclick="applyScCondPreset(2)" class="seg-pill-btn" style="border-color:#38bdf8; color:#bae6fd;">중·후반 (16P 기준)</button>
+          <button type="button" onclick="applyScCondPreset(0)" class="seg-pill-btn" style="border-color:#64748b; color:#cbd5e1;">초기화 (미달)</button>
+        </div>
+
+        <div class="grid-2" style="gap:8px; margin-bottom:12px;">
+          <label class="cond-toggle-row" for="sc_cond_awk_seal">
+            <input type="checkbox" id="sc_cond_awk_seal" class="neon-toggle-input" checked onchange="onAwkSealChange()">
+            <div>
+              <div style="font-size:13px; font-weight:800; color:#fff;">각성기 봉인 사용</div>
+              <div style="font-size:11px; color:#94a3b8;">코어4 각성기 제외</div>
+            </div>
+            <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+          </label>
+          <label class="cond-toggle-row" for="sc_cond_no_mark">
+            <input type="checkbox" id="sc_cond_no_mark" class="neon-toggle-input" checked onchange="onAwkSealChange()">
+            <div>
+              <div style="font-size:13px; font-weight:800; color:#fff;">표식(적운영) 미사용</div>
+              <div style="font-size:11px; color:#94a3b8;">코어3 표식 제외</div>
+            </div>
+            <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+          </label>
+        </div>
+
+        <div style="display:none;">
+          <select id="sc_sel_book" onchange="onAwkSealChange()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select>
+          <select id="sc_sel_joblv" onchange="onAwkSealChange()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select>
+          <select id="sc_sel_promo" onchange="onAwkSealChange()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select>
+          <select id="sc_sel_boss" onchange="onAwkSealChange()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select>
+          <select id="sc_sel_stage" onchange="onAwkSealChange()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select>
+          <select id="sc_sel_dungeon" onchange="onAwkSealChange()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select>
+        </div>
+
+        <div id="sc_cond_step_rows"></div>
+
+        <div style="margin-top:14px;">
+          <button type="button" onclick="closeScCondModal()" class="cond-open-btn" style="width:100%; padding:10px; background:linear-gradient(135deg,#7c3aed 0%,#4f46e5 100%); border-color:#c4b5fd;">설정 완료 (닫기)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 룬 착용 도우미 상세 조건 3탭 팝업 모달 -->
+    <div class="help-modal-overlay" id="rune_cond_modal_overlay" style="z-index: 10006;" onclick="if(event.target===this) closeRuneCondModal()">
+      <div class="help-modal-box" style="max-width: 720px; max-height: 88vh; overflow-y: auto; border: 2px solid #38bdf8; padding: 20px;" onclick="event.stopPropagation()">
+        <div class="help-modal-header" style="margin-bottom: 12px;">
+          <div>
+            <div class="help-modal-title" style="color:#7dd3fc;">내 캐릭터 룬 발동 조건 설정</div>
+            <div style="font-size:11.5px; color:#94a3b8;">버튼과 스위치 클릭 시 즉시 저장 및 추천 배치도에 반영됩니다</div>
+          </div>
+          <button type="button" class="help-modal-close" onclick="closeRuneCondModal()">✕</button>
+        </div>
+
+        <div class="cond-modal-tabs">
+          <button type="button" class="cond-modal-tab-btn active" id="rmtab_btn_core" onclick="switchRuneCondTab('core')">01. 핵심 영웅·스킬</button>
+          <button type="button" class="cond-modal-tab-btn" id="rmtab_btn_stat" onclick="switchRuneCondTab('stat')">02. 스탯·가호·도감</button>
+          <button type="button" class="cond-modal-tab-btn" id="rmtab_btn_etc" onclick="switchRuneCondTab('etc')">03. 연마·던전·토글</button>
+        </div>
+
+        <div style="display:none;">
+          <select id="rune_elisia_awk"><option value="-1" selected>-1</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+          <select id="rune_overdrive_awk"><option value="-1" selected>-1</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+          <select id="rune_ancient_abyss_cnt"><option value="0" selected>0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+          <select id="rune_cond_solaris9"><option value="0" selected>0</option><option value="1">1</option></select>
+          <select id="rune_cond_bleed"><option value="0" selected>0</option><option value="1">1</option></select>
+          <select id="rc_char_lv"><option value="0">0</option><option value="22000">22000</option><option value="24000">24000</option><option value="25000" selected>25000</option></select>
+          <select id="rc_job_lv"><option value="0">0</option><option value="60">60</option><option value="80" selected>80</option></select>
+          <select id="rc_star_gaho"><option value="0">0</option><option value="30">30</option><option value="40" selected>40</option></select>
+          <select id="rc_moon_gaho"><option value="0">0</option><option value="20">20</option><option value="30" selected>30</option></select>
+          <select id="rc_anc_gem"><option value="0">0</option><option value="3">3</option><option value="15" selected>15</option></select>
+          <select id="rc_anc_passive"><option value="none">none</option><option value="awk6">awk6</option><option value="brk40">brk40</option><option value="both" selected>both</option></select>
+          <select id="rc_ref_scythe_lv"><option value="-1">-1</option><option value="0">0</option><option value="10">10</option><option value="15" selected>15</option></select>
+          <select id="rc_ref_orb_lv"><option value="-1">-1</option><option value="0">0</option><option value="10">10</option><option value="15" selected>15</option></select>
+          <select id="rc_ref_acc_lv"><option value="-1">-1</option><option value="0">0</option><option value="10">10</option><option value="15" selected>15</option></select>
+          <select id="rc_refine_state"><option value="15only">15only</option><option value="all" selected>all</option></select>
+          <select id="rc_dungeon_hell"><option value="low">low</option><option value="hell_only">hell_only</option><option value="all" selected>all</option></select>
+          <select id="rc_dragon_status"><option value="none">none</option><option value="dragon_only">dragon_only</option><option value="status_only">status_only</option><option value="all" selected>all</option></select>
+          <select id="rc_adventure_mode"><option value="none">none</option><option value="easy">easy</option><option value="hard" selected>hard</option></select>
+        </div>
+
+        <!-- 탭 1: 핵심 영웅·스킬 (실제 아이콘 + 스텝 버튼 + ON/OFF 토글) -->
+        <div id="rmtab_panel_core">
+          <div id="rune_modal_core_rows"></div>
+          <div class="grid-2" style="gap:8px; margin-top:8px;">
+            <label class="cond-toggle-row" for="ui_tog_solaris9">
+              <input type="checkbox" id="ui_tog_solaris9" class="neon-toggle-input" onchange="setRuneSelectVal('rune_cond_solaris9', this.checked ? '1' : '0')">
+              <div style="display:flex; align-items:center; gap:9px;">
+                <img src="images/solaris.png" alt="솔라리스" style="width:30px; height:30px; border-radius:7px; object-fit:cover; border:1px solid #475569;" onerror="this.style.display='none';">
+                <div><div style="font-size:13px; font-weight:800; color:#fff;">솔라리스 9돌파 이상</div><div style="font-size:11px; color:#fde047;">과성장 졸업 조건</div></div>
+              </div>
+              <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+            </label>
+            <label class="cond-toggle-row" for="ui_tog_bleed">
+              <input type="checkbox" id="ui_tog_bleed" class="neon-toggle-input" onchange="setRuneSelectVal('rune_cond_bleed', this.checked ? '1' : '0')">
+              <div style="display:flex; align-items:center; gap:9px;">
+                <img src="images/wave.png" alt="크림슨 웨이브" style="width:30px; height:30px; border-radius:7px; object-fit:cover; border:1px solid #475569;" onerror="this.style.display='none';">
+                <div><div style="font-size:13px; font-weight:800; color:#fff;">크림슨 웨이브 (출혈)</div><div style="font-size:11px; color:#fca5a5;">불멸 저주 II 풀배율</div></div>
+              </div>
+              <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- 탭 2: 스탯·가호·도감 -->
+        <div id="rmtab_panel_stat" style="display:none;">
+          <div class="grid-2" style="gap:8px; margin-bottom:10px;">
+            <div class="cond-modal-row" style="margin:0;">
+              <div class="cond-modal-label">인게임 공격속도 (%)<small>광풍 룬 (100% 풀발동)</small></div>
+              <input type="number" id="rc_atk_spd" value="100" min="0" max="500" step="10" oninput="calculateBestRuneLoadout(); triggerAutoSave();" style="width:92px; padding:6px 8px; text-align:center; font-weight:800; color:#fde047;">
+            </div>
+            <div class="cond-modal-row" style="margin:0;">
+              <div class="cond-modal-label">인게임 이동속도 (%)<small>광속 룬 (200% 풀발동)</small></div>
+              <input type="number" id="rc_mov_spd" value="200" min="0" max="500" step="10" oninput="calculateBestRuneLoadout(); triggerAutoSave();" style="width:92px; padding:6px 8px; text-align:center; font-weight:800; color:#fde047;">
+            </div>
+          </div>
+          <div id="rune_modal_stat_rows"></div>
+        </div>
+
+        <!-- 탭 3: 연마·던전·기타 토글 스위치 -->
+        <div id="rmtab_panel_etc" style="display:none;">
+          <div id="rune_modal_etc_rows"></div>
+          <div class="grid-2" style="gap:8px; margin-top:10px;">
+            <label class="cond-toggle-row" for="rc_chk_gaehwa">
+              <input type="checkbox" id="rc_chk_gaehwa" class="neon-toggle-input" checked onchange="calculateBestRuneLoadout(); triggerAutoSave();">
+              <div><div style="font-size:12.5px; font-weight:800; color:#fff;">개화 10일 출석 완료</div><div style="font-size:10.5px; color:#94a3b8;">불멸 개화 풀발동</div></div>
+              <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+            </label>
+            <label class="cond-toggle-row" for="rc_chk_abyss23">
+              <input type="checkbox" id="rc_chk_abyss23" class="neon-toggle-input" checked onchange="calculateBestRuneLoadout(); triggerAutoSave();">
+              <div><div style="font-size:12.5px; font-weight:800; color:#fff;">심연슬롯 23강 이상</div><div style="font-size:10.5px; color:#94a3b8;">심판 / 비전 / 지휘</div></div>
+              <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+            </label>
+            <label class="cond-toggle-row" for="rc_chk_spirit30">
+              <input type="checkbox" id="rc_chk_spirit30" class="neon-toggle-input" checked onchange="calculateBestRuneLoadout(); triggerAutoSave();">
+              <div><div style="font-size:12.5px; font-weight:800; color:#fff;">정령 전원 25~30돌 이상</div><div style="font-size:10.5px; color:#94a3b8;">정령의힘 풀발동</div></div>
+              <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+            </label>
+            <label class="cond-toggle-row" for="rc_chk_title_card">
+              <input type="checkbox" id="rc_chk_title_card" class="neon-toggle-input" checked onchange="calculateBestRuneLoadout(); triggerAutoSave();">
+              <div><div style="font-size:12.5px; font-weight:800; color:#fff;">불멸칭호 &amp; 신화카드 3+</div><div style="font-size:10.5px; color:#94a3b8;">명성 / 골드카드</div></div>
+              <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+            </label>
+            <label class="cond-toggle-row" for="rc_chk_no_penalty" style="grid-column: 1 / -1; border-color:rgba(244,63,94,0.45);">
+              <input type="checkbox" id="rc_chk_no_penalty" class="neon-toggle-input" onchange="calculateBestRuneLoadout(); triggerAutoSave();">
+              <div><div style="font-size:12.5px; font-weight:800; color:#fca5a5;">페널티 룬 전체 제외</div><div style="font-size:10.5px; color:#94a3b8;">기면증 · 절제 · 저격수 · 골렘화 · 완력 · 난타 등</div></div>
+              <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+            </label>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <button type="button" onclick="closeRuneCondModal()" class="cond-open-btn" style="width:100%; padding:10px;">설정 완료 (닫기)</button>
         </div>
       </div>
     </div>
@@ -4837,7 +5146,7 @@
                 <button type="button" onclick="clearAllOwnedCores()" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer; font-weight:700;">전체 초기화</button>
               </div>
             </div>
-            <p class="card-subtitle">현재 진행 스테이지(해금 슬롯 수)와 내 직업·속성을 고르고 보유 중인 코어를 모두 선택하세요. (※ 보석 자체 공격력 수치는 제외하고 코어 포인트(P) 최대 해금 효과 기준으로 정밀 계산합니다.)</p>
+            <p class="card-subtitle">현재 진행 스테이지(해금 슬롯 수)와 내 직업·속성을 고르고 보유 중인 코어를 모두 선택하세요. (※ 보석 등록 시 코어별 24칸 자동 배분 및 보석 합연산 스탯이 함께 반영됩니다.)</p>
 
             <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155; margin-bottom:12px;">
               <label style="color:#c084fc; margin-bottom:8px;">🚩 현재 스테이지 진행도 선택 (기본 1·2번 2슬롯 오픈 / 선택된 버튼 재클릭 시 기본 2슬롯으로 취소 가능)</label>
@@ -4850,119 +5159,110 @@
               </div>
             </div>
 
-            <div class="grid-2" style="margin-bottom:14px;">
-              <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
-                <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 내 직업 선택 (택 1)</label>
+            <div class="grid-2" style="margin-bottom:12px;">
+              <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #334155;">
+                <label style="color:#38bdf8; margin-bottom:7px;">⚔️ 내 직업 선택 (택 1)</label>
                 <div class="radio-pill-group">
-                  <div class="radio-pill job-pill-btn selected" id="sc_job_reaper" onclick="selectConnectJob('reaper')"><img src="images/reaper.png" alt="대사신" onerror="this.onerror=null; this.src='reaper.png';"><span>대사신 (강타)</span></div>
-                  <div class="radio-pill job-pill-btn" id="sc_job_mage" onclick="selectConnectJob('mage')"><img src="images/mystic.png" alt="아크메이지" onerror="this.onerror=null; this.src='mystic.png';"><span>아크메이지 (스킬)</span></div>
-                  <div class="radio-pill job-pill-btn" id="sc_job_lord" onclick="selectConnectJob('lord')"><img src="images/overload.png" alt="팬텀" onerror="this.onerror=null; this.src='overload.png';"><span>팬텀 (영웅스킬)</span></div>
+                  <div class="radio-pill job-pill-btn selected" id="sc_job_reaper" onclick="selectConnectJob('reaper')">
+                    <img src="images/reaper.png" alt="대사신" onerror="this.onerror=null; this.src='reaper.png';">
+                    <div style="text-align:left; line-height:1.15;"><div>대사신</div><div style="font-size:10px; color:#94a3b8;">강타</div></div>
+                  </div>
+                  <div class="radio-pill job-pill-btn" id="sc_job_mage" onclick="selectConnectJob('mage')">
+                    <img src="images/mystic.png" alt="아크메이지" onerror="this.onerror=null; this.src='mystic.png';">
+                    <div style="text-align:left; line-height:1.15;"><div>아크메이지</div><div style="font-size:10px; color:#94a3b8;">스킬</div></div>
+                  </div>
+                  <div class="radio-pill job-pill-btn" id="sc_job_lord" onclick="selectConnectJob('lord')">
+                    <img src="images/overload.png" alt="팬텀" onerror="this.onerror=null; this.src='overload.png';">
+                    <div style="text-align:left; line-height:1.15;"><div>팬텀</div><div style="font-size:10px; color:#94a3b8;">영웅스킬</div></div>
+                  </div>
                 </div>
               </div>
 
-              <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
-                <label style="color:#fbbf24; margin-bottom:8px;">🔥 내 주속성 선택 (택 1)</label>
+              <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #334155;">
+                <label style="color:#fbbf24; margin-bottom:7px;">🔥 내 주속성 선택 (택 1)</label>
                 <div class="radio-pill-group">
-                  <div class="radio-pill job-pill-btn selected" id="sc_elem_fire" onclick="selectConnectElem('fire')"><span class="elem-orb orb-fire"></span><span>화염 속성</span></div>
-                  <div class="radio-pill job-pill-btn" id="sc_elem_light" onclick="selectConnectElem('light')"><span class="elem-orb orb-light"></span><span>번개 속성</span></div>
-                  <div class="radio-pill job-pill-btn" id="sc_elem_dark" onclick="selectConnectElem('dark')"><span class="elem-orb orb-dark"></span><span>어둠 속성</span></div>
+                  <div class="radio-pill job-pill-btn selected" id="sc_elem_fire" onclick="selectConnectElem('fire')"><span class="elem-orb orb-fire"></span><span>화염</span></div>
+                  <div class="radio-pill job-pill-btn" id="sc_elem_light" onclick="selectConnectElem('light')"><span class="elem-orb orb-light"></span><span>번개</span></div>
+                  <div class="radio-pill job-pill-btn" id="sc_elem_dark" onclick="selectConnectElem('dark')"><span class="elem-orb orb-dark"></span><span>어둠</span></div>
                 </div>
               </div>
             </div>
 
-            <div style="background:#131d33; padding:14px 16px; border-radius:12px; border:1px solid #334155; margin-bottom:12px; display:flex; flex-direction:column; gap:10px;">
-              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; border-bottom:1px solid #1e293b; padding-bottom:8px;">
-                <span style="font-size:14px; font-weight:800; color:#c084fc;">⚙️ 내 캐릭터 코어 조건 달성 단계 설정 (상급 12P ➔ 특급 16P ➔ 전설·신화·고대 20P 해금)</span>
-                <span style="font-size:11.5px; color:#34d399; font-weight:700;">💾 선택 상태는 자동 저장됩니다</span>
+            <!-- 소울커넥트 조건 1줄 요약 바 -->
+            <div class="cond-summary-bar">
+              <div style="flex:1; min-width:220px;">
+                <div style="font-size:12px; font-weight:800; color:#94a3b8; margin-bottom:6px;">내 코어 발동 조건 현황</div>
+                <div class="cond-summary-chips" id="sc_cond_summary_chips">
+                  <span class="cond-chip">조건 불러오는 중...</span>
+                </div>
               </div>
-
-              <div class="grid-2" style="gap:8px;">
-                <label style="margin:0; background:#0f172a; padding:8px 12px; border-radius:8px; border:1px solid #334155; display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:#f8fafc;">
-                  <input type="checkbox" id="sc_cond_awk_seal" checked onchange="onAwkSealChange()" style="width:16px; height:16px; accent-color:#a855f7;">
-                  <span>🔒 <strong>전직 특성 [각성기 봉인] 사용 중</strong> <small style="color:#94a3b8;">(코어4 각성기 제외)</small></span>
-                </label>
-                <label style="margin:0; background:#0f172a; padding:8px 12px; border-radius:8px; border:1px solid #334155; display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:#f8fafc;">
-                  <input type="checkbox" id="sc_cond_no_mark" checked onchange="onAwkSealChange()" style="width:16px; height:16px; accent-color:#ef4444;">
-                  <span>🚫 <strong>표식 수호신(적운영) 미사용 / 변신 수호신 사용</strong> <small style="color:#94a3b8;">(코어3 표식 제외)</small></span>
-                </label>
-              </div>
-
-              <div class="grid-3" style="gap:10px; padding-top:4px;">
-                <div><label style="font-size:11.5px; color:#fda4af;">📕 코어3 [수호신 : 도감] 달성도</label><select id="sc_sel_book" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;"><option value="3" selected>5개 이상 달성 (20P: 전설~고대 풀발동)</option><option value="2">3~4개 달성 (16P: 특급 수치까지만 발동)</option><option value="1">1~2개 달성 (12P: 상급 수치까지만 발동)</option><option value="0">0개 미달성 (잡코어 처리)</option></select></div>
-                <div><label style="font-size:11.5px; color:#86efac;">⚔️ 코어4 [전직 : 레벨] 달성도</label><select id="sc_sel_joblv" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;"><option value="3" selected>3차 전직 이상 (20P: 전설~고대 풀발동)</option><option value="2">2차 전직 달성 (16P: 특급 수치까지만 발동)</option><option value="1">1차 전직 달성 (12P: 상급 수치까지만 발동)</option><option value="0">전직 전 (잡코어 처리)</option></select></div>
-                <div><label style="font-size:11.5px; color:#f9a8d4;">🏆 코어5 [콘텐츠 : 승급전] 달성도</label><select id="sc_sel_promo" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;"><option value="3" selected>고대급 소울헌터 1단+ (20P: 풀발동)</option><option value="2">신화급 소울헌터 클리어 (16P까지만 발동)</option><option value="1">전설급 이하 클리어 (12P까지만 발동)</option><option value="0">미달성 (잡코어 처리)</option></select></div>
-                <div><label style="font-size:11.5px; color:#f9a8d4;">👹 코어5 [콘텐츠 : 보스전] 달성도</label><select id="sc_sel_boss" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;"><option value="3" selected>하데스 10단계+ 클리어 (20P: 풀발동)</option><option value="2">보스전 2단계 조건 클리어 (16P까지만 발동)</option><option value="1">보스전 1단계 조건 클리어 (12P까지만 발동)</option><option value="0">미달성 (잡코어 처리)</option></select></div>
-                <div><label style="font-size:11.5px; color:#d8b4fe;">🚩 코어6 [콘텐츠 : 스테이지] 도달</label><select id="sc_sel_stage" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;"><option value="3" selected>350챕터 이상 도달 (20P: 풀발동)</option><option value="2">중간 챕터 도달 (16P: 특급 수치까지만)</option><option value="1">초반 챕터 도달 (12P: 상급 수치까지만)</option><option value="0">미달성 (잡코어 처리)</option></select></div>
-                <div><label style="font-size:11.5px; color:#d8b4fe;">🏰 코어6 [콘텐츠 : 던전] 룬던전</label><select id="sc_sel_dungeon" onchange="onAwkSealChange()" style="padding:7px 8px; font-size:12.5px;"><option value="3" selected>룬 던전 154단계+ 클리어 (20P: 풀발동)</option><option value="2">룬 던전 2단계 조건 클리어 (16P까지만)</option><option value="1">룬 던전 1단계 조건 클리어 (12P까지만)</option><option value="0">미달성 (잡코어 처리)</option></select></div>
-              </div>
+              <button type="button" class="cond-open-btn" onclick="openScCondModal()">
+                <span class="cond-cta-dot"></span>
+                <span>코어 조건 설정하기 ➔</span>
+              </button>
             </div>
 
-            <div style="background:rgba(168, 85, 247, 0.1); border:1px solid rgba(168, 85, 247, 0.35); border-radius:8px; padding:9px 14px; margin-bottom:14px; font-size:12.5px; color:#e9d5ff; line-height:1.55;">
-              📌 <strong>계산 기준 안내:</strong> 세공 보석 자체 스탯은 제외하며 각 코어 등급의 최대 포인트 해금 효과를 기준으로 계산합니다.<br>
-              💡 <strong>고대 코어 중복 장착 자동 판별:</strong> 카드 우측 상단 <strong>[+중복]</strong> 버튼으로 2개 보유를 표시하면 동일 번호 고대 코어 중복 장착(합연산 4배 증폭)까지 자동 비교합니다!
-            </div>
-
-            <!-- 💎 보유 세공 보석 인벤토리 & 24칸 자동 배분 (고대비 + Auto-Tab) -->
+            <!-- 보유 세공 보석 인벤토리 & 24칸 자동 배분 -->
             <div class="sc-gem-panel-bright" id="sc_gem_inventory_panel">
-              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px; padding-bottom:8px; border-bottom:1px dashed rgba(103,232,249,0.35);">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #1e293b;">
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  <strong style="font-size:15px; color:#ffffff;">💎 보유 보석(세공) 등록 &amp; 코어별 24칸 자동 배분</strong>
-                  <span class="grade-badge grade-ancient" id="sc_gem_inv_count_badge" style="font-size:11px;">미등록 시 최대P 자동 가정</span>
+                  <strong style="font-size:14.5px; color:#f1f5f9;">보유 보석(세공) 등록 &amp; 24칸 자동 배분</strong>
+                  <span class="cond-chip" id="sc_gem_inv_count_badge">미등록 시 최대P 자동 가정</span>
                 </div>
-                <label style="margin:0; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:rgba(16,185,129,0.2); border:1px solid #34d399; padding:4px 10px; border-radius:8px; font-size:11.5px; color:#a7f3d0; font-weight:800;">
-                  <input type="checkbox" id="sc_gem_autotab_chk" checked style="width:14px; height:14px; accent-color:#10b981;">
-                  <span>⚡ 오토탭 연속입력 (사슬➔포인트➔자동추가)</span>
+                <label style="margin:0; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:#131d33; border:1px solid #334155; padding:4px 10px; border-radius:7px; font-size:11.5px; color:#cbd5e1; font-weight:700;">
+                  <input type="checkbox" id="sc_gem_autotab_chk" checked style="width:14px; height:14px; accent-color:#38bdf8;">
+                  <span>오토탭 연속입력 (사슬➔포인트➔자동추가)</span>
                 </label>
               </div>
 
-              <!-- 1. 보석 등급 라디오 스위치 -->
+              <!-- 1. 보석 등급 라디오 (고대 = 하늘색!) -->
               <div class="radio-pill-group" style="margin-bottom:10px;" id="sc_gem_tier_radio_bar">
-                <div class="radio-pill tier-step-1 selected" data-gtier="ancient" onclick="selectScGemAddTier('ancient')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-ancient"></span>고대 보석</div>
-                <div class="radio-pill tier-step-3" data-gtier="mythic" onclick="selectScGemAddTier('mythic')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-mythic"></span>신화 보석</div>
-                <div class="radio-pill tier-step-4" data-gtier="legend" onclick="selectScGemAddTier('legend')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-legend"></span>전설 보석</div>
-                <div class="radio-pill tier-step-2" data-gtier="unique" onclick="selectScGemAddTier('unique')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-unique"></span>특급 보석</div>
-                <div class="radio-pill" data-gtier="advanced" onclick="selectScGemAddTier('advanced')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-advanced"></span>상급 보석</div>
+                <div class="radio-pill gem-tier-pill gt-ancient selected" data-gtier="ancient" onclick="selectScGemAddTier('ancient')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-ancient"></span>고대 보석</div>
+                <div class="radio-pill gem-tier-pill gt-mythic" data-gtier="mythic" onclick="selectScGemAddTier('mythic')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-mythic"></span>신화 보석</div>
+                <div class="radio-pill gem-tier-pill gt-legend" data-gtier="legend" onclick="selectScGemAddTier('legend')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-legend"></span>전설 보석</div>
+                <div class="radio-pill gem-tier-pill gt-unique" data-gtier="unique" onclick="selectScGemAddTier('unique')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-unique"></span>특급 보석</div>
+                <div class="radio-pill gem-tier-pill gt-advanced" data-gtier="advanced" onclick="selectScGemAddTier('advanced')" style="padding:7px 6px; font-size:12.5px;"><span class="sc-gem-dot g-advanced"></span>상급 보석</div>
               </div>
 
-              <!-- 2. 오토탭 입력 바 (사슬 -> 포인트 입력만 치면 자동 추가!) -->
+              <!-- 2. 오토탭 입력 바 -->
               <div class="sc-gem-input-bar">
                 <div>
-                  <label style="font-size:11px; color:#6ee7b7;">🔗 사슬 (1~8)</label>
-                  <input type="text" inputmode="numeric" id="sc_gem_add_chain" placeholder="예: 5" maxlength="1" onfocus="this.select()" oninput="onScGemChainInput(this)" onkeydown="onScGemKeyDown(event,'chain')" style="padding:8px; font-size:15px; font-weight:900; text-align:center; color:#6ee7b7; border:1.5px solid #10b981;">
+                  <label style="font-size:11px; color:#94a3b8;">사슬 (1~8)</label>
+                  <input type="text" inputmode="numeric" id="sc_gem_add_chain" placeholder="5" maxlength="1" onfocus="this.select()" oninput="onScGemChainInput(this)" onkeydown="onScGemKeyDown(event,'chain')" style="padding:8px; font-size:15px; font-weight:900; text-align:center; color:#f8fafc;">
                 </div>
                 <div>
-                  <label style="font-size:11px; color:#fde047;">🅿️ 포인트 (1~12)</label>
-                  <input type="text" inputmode="numeric" id="sc_gem_add_pt" placeholder="예: 8" maxlength="2" onfocus="this.select()" oninput="onScGemPtInput(this)" onkeydown="onScGemKeyDown(event,'pt')" style="padding:8px; font-size:15px; font-weight:900; text-align:center; color:#fde047; border:1.5px solid #facc15;">
+                  <label style="font-size:11px; color:#94a3b8;">포인트 (1~12)</label>
+                  <input type="text" inputmode="numeric" id="sc_gem_add_pt" placeholder="8" maxlength="2" onfocus="this.select()" oninput="onScGemPtInput(this)" onkeydown="onScGemKeyDown(event,'pt')" style="padding:8px; font-size:15px; font-weight:900; text-align:center; color:#fde047;">
                 </div>
                 <div>
-                  <label style="font-size:11px; color:#cbd5e1;">보석공% (선택)</label>
+                  <label style="font-size:11px; color:#94a3b8;">보석공% (선택)</label>
                   <input type="number" id="sc_gem_add_atk" value="" min="0" step="500" placeholder="생략가능" onkeydown="onScGemKeyDown(event,'other')" style="padding:8px; font-size:12.5px;">
                 </div>
                 <div>
-                  <label style="font-size:11px; color:#cbd5e1;">보석공증% (선택)</label>
+                  <label style="font-size:11px; color:#94a3b8;">보석공증% (선택)</label>
                   <input type="number" id="sc_gem_add_amp" value="" min="0" step="500" placeholder="생략가능" onkeydown="onScGemKeyDown(event,'other')" style="padding:8px; font-size:12.5px;">
                 </div>
                 <div>
-                  <label style="font-size:11px; color:#f9a8d4;">수량</label>
+                  <label style="font-size:11px; color:#94a3b8;">수량</label>
                   <input type="number" id="sc_gem_add_qty" value="1" min="1" max="24" onkeydown="onScGemKeyDown(event,'other')" style="padding:8px; font-size:13.5px; font-weight:800; text-align:center;">
                 </div>
                 <div>
-                  <button type="button" onclick="addSoulConnectGemFromInput(false)" style="width:100%; background:linear-gradient(135deg, #06b6d4 0%, #2563eb 100%); border:1.5px solid #a5f3fc; color:#fff; font-weight:900; font-size:13px; padding:9px 10px; border-radius:9px; cursor:pointer; box-shadow:0 4px 12px rgba(6,182,212,0.35);">+ 보석 추가</button>
+                  <button type="button" onclick="addSoulConnectGemFromInput(false)" style="width:100%; background:linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%); border:1px solid #38bdf8; color:#fff; font-weight:900; font-size:13px; padding:9px 10px; border-radius:8px; cursor:pointer;">+ 보석 추가</button>
                 </div>
               </div>
 
               <!-- 3. 빠른 프리셋 & 전체 비우기 -->
               <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
                 <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                  <button type="button" onclick="addPresetSoulGems('ancient', 5, 8, 4)" style="background:rgba(6,182,212,0.2); border:1.5px solid #22d3ee; color:#cffafe; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:7px; cursor:pointer;">+ 고대(🔗5/🅿️8) 4개</button>
-                  <button type="button" onclick="addPresetSoulGems('mythic', 4, 7, 4)" style="background:rgba(244,63,94,0.2); border:1.5px solid #fb7185; color:#ffe4e6; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:7px; cursor:pointer;">+ 신화(🔗4/🅿️7) 4개</button>
-                  <button type="button" onclick="addPresetSoulGems('legend', 3, 5, 4)" style="background:rgba(249,115,22,0.2); border:1.5px solid #fb923c; color:#ffedd5; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:7px; cursor:pointer;">+ 전설(🔗3/🅿️5) 4개</button>
+                  <button type="button" class="sc-gem-preset-btn" onclick="addPresetSoulGems('ancient', 5, 8, 4)"><span class="sc-gem-dot g-ancient" style="margin:0;"></span>고대 (5 / 8P) 4개</button>
+                  <button type="button" class="sc-gem-preset-btn" onclick="addPresetSoulGems('mythic', 4, 7, 4)"><span class="sc-gem-dot g-mythic" style="margin:0;"></span>신화 (4 / 7P) 4개</button>
+                  <button type="button" class="sc-gem-preset-btn" onclick="addPresetSoulGems('legend', 3, 5, 4)"><span class="sc-gem-dot g-legend" style="margin:0;"></span>전설 (3 / 5P) 4개</button>
                 </div>
-                <button type="button" onclick="clearAllSoulConnectGems()" style="background:#7f1d1d; border:1px solid #f87171; color:#fecaca; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:7px; cursor:pointer;">보석 전체 비우기</button>
+                <button type="button" onclick="clearAllSoulConnectGems()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:7px; cursor:pointer;">보석 비우기</button>
               </div>
 
-              <!-- 4. 등록된 보석 리스트 (등급별 밝은 네온 칩) -->
-              <div id="sc_gem_inventory_list" style="display:flex; flex-wrap:wrap; gap:7px; min-height:36px; padding:10px; background:rgba(9,13,22,0.85); border-radius:10px; border:1.5px solid rgba(56,189,248,0.3);"></div>
+              <!-- 4. 등록된 보석 리스트 -->
+              <div id="sc_gem_inventory_list" style="display:flex; flex-wrap:wrap; gap:7px; min-height:36px; padding:10px; background:#090e1a; border-radius:9px; border:1px solid #1e293b;"></div>
             </div>
 
             <div class="connect-tier-tabs">
@@ -4997,7 +5297,7 @@
             </div>
 
             <div class="result-dashboard" style="margin-top:18px;">
-              <div class="res-label">추천 코어 세팅 총합 대미지 배율 (보석 자체 스탯 제외)</div>
+              <div class="res-label">추천 코어 세팅 총합 대미지 배율 (보석 등록 시 보석 합연산 스탯 자동 반영)</div>
               <div class="res-value" id="sc_grand_total_mult" style="font-size:30px; color:#38bdf8;">1배</div>
               <div class="rune-mult-breakdown-list" id="sc_mult_breakdown"></div>
             </div>
@@ -5096,79 +5396,7 @@
 
     <!-- ==================== [MODE: SUMMON & RUNE] 소환 계산기 & 룬 착용 도우미 ==================== -->
     <div id="mode_newbie_container" style="display:none;">
-      <div id="newbie_hub_view">
-        <div class="hub-section">
-          <div class="accordion-item" id="acc_calc_summon" style="border-left: 4px solid #f59e0b;">
-            <div class="accordion-header" onclick="toggleNewbieAccordion('acc_calc_summon')">
-              <div class="accordion-left">
-                <span class="accordion-toggle-icon">▶</span>
-                <span class="accordion-title-text" style="display:inline-flex; align-items:center; gap:9px;">
-                  <svg width="28" height="28" viewBox="0 0 44 44" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 6px rgba(56,189,248,0.9));">
-                    <polygon points="14,9 30,9 38,18 22,38 6,18" fill="rgba(56,189,248,0.32)" stroke="#38bdf8" stroke-width="2" stroke-linejoin="round"/>
-                    <polyline points="6,18 38,18" stroke="#bae6fd" stroke-width="1.5"/>
-                    <polyline points="14,9 17,18 22,38 27,18 30,9" stroke="#bae6fd" stroke-width="1.4" stroke-linejoin="round"/>
-                    <path d="M35 4L36.5 7.5L40 9L36.5 10.5L35 14L33.5 10.5L30 9L33.5 7.5L35 4Z" fill="#fde047"/>
-                  </svg>
-                  <span>소환 확률 기댓값 &amp; 재화 계산기</span>
-                </span>
-              </div>
-              <div class="accordion-right-info"><span class="accordion-count-badge">5개 소환 계산기</span></div>
-            </div>
-            <div class="accordion-content" style="padding: 14px;">
-              <div class="hub-grid">
-                <div class="hub-card" onclick="openNewbieCalculator('equip')">
-                  <div class="hub-card-left">
-                    <div class="hub-card-icon" style="border-color:#38bdf8;"><img src="images/main_equip.png" alt="장비" onerror="this.onerror=null; this.src='images/main_equip.jpg'; this.onerror=function(){this.parentElement.innerHTML='🗡️';};"></div>
-                    <div><span class="hub-card-title">🗡️ 장비 소환</span><span class="hub-card-desc">대낫/오브(100)·장식(200) | 전 등급 27슬롯 일괄 합성</span></div>
-                  </div>
-                  <div class="hub-card-arrow">➔</div>
-                </div>
-
-                <div class="hub-card" onclick="openNewbieCalculator('passive')">
-                  <div class="hub-card-left">
-                    <div class="hub-card-icon" style="border-color:#a855f7;"><img src="images/main_passive.png" alt="패시브" onerror="this.onerror=null; this.src='images/main_passive.jpg'; this.onerror=function(){this.parentElement.innerHTML='📜';};"></div>
-                    <div><span class="hub-card-title">📜 패시브 소환</span><span class="hub-card-desc">200 다이아 | 등급별 아코디언 &amp; 특정 패시브 10돌파</span></div>
-                  </div>
-                  <div class="hub-card-arrow">➔</div>
-                </div>
-
-                <div class="hub-card" onclick="openNewbieCalculator('skill')">
-                  <div class="hub-card-left">
-                    <div class="hub-card-icon" style="border-color:#fbbf24;"><img src="images/main_skill.png" alt="스킬" onerror="this.onerror=null; this.src='images/main_skill.jpg'; this.onerror=function(){this.parentElement.innerHTML='⚡';};"></div>
-                    <div><span class="hub-card-title">⚡ 스킬 소환</span><span class="hub-card-desc">200 다이아 | 픽업(0.1%+15장) vs 통상(상시) 비교</span></div>
-                  </div>
-                  <div class="hub-card-arrow">➔</div>
-                </div>
-
-                <div class="hub-card" onclick="openNewbieCalculator('hero')">
-                  <div class="hub-card-left">
-                    <div class="hub-card-icon" style="border-color:#f43f5e;"><img src="images/main_hero.png" alt="영웅" onerror="this.onerror=null; this.src='images/main_hero.jpg'; this.onerror=function(){this.parentElement.innerHTML='🦸';};"></div>
-                    <div><span class="hub-card-title">🦸 영웅 소환</span><span class="hub-card-desc">500 다이아 | 신영웅 픽업(0.1%+15장) vs 통상 비교</span></div>
-                  </div>
-                  <div class="hub-card-arrow">➔</div>
-                </div>
-
-                <div class="hub-card" onclick="openNewbieCalculator('spirit')">
-                  <div class="hub-card-left">
-                    <div class="hub-card-icon" style="border-color:#22c55e;"><img src="images/main_spirit.png" alt="정령" onerror="this.onerror=null; this.src='images/main_spirit.jpg'; this.onerror=function(){this.parentElement.innerHTML='🧚';};"></div>
-                    <div><span class="hub-card-title">🧚 정령 소환</span><span class="hub-card-desc">200 정령석 | 4차 신규 리더(홍련/라이자/릴리스) 반영</span></div>
-                  </div>
-                  <div class="hub-card-arrow">➔</div>
-                </div>
-
-                <div class="hub-card" style="opacity:0.6; cursor:not-allowed;">
-                  <div class="hub-card-left">
-                    <div class="hub-card-icon" style="border-color:#64748b; background:#1e293b;"><span>🃏</span></div>
-                    <div><span class="hub-card-title">🃏 몬스터 카드 🔒</span><span class="hub-card-desc">개발 중 (몬스터 정수 및 돌파 데이터 수집 중)</span></div>
-                  </div>
-                  <span class="grade-badge" style="background:#334155; color:#cbd5e1; border:1px solid #475569;">준비 중</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      
       <!-- 소환 상세 계산기 뷰 -->
       <div id="newbie_calc_view" style="display:none;">
         <div class="card" style="border-left: 4px solid #f59e0b;">
@@ -5231,152 +5459,59 @@
           </div>
           <p class="card-subtitle">내 직업과 주속성을 고르고 보유 중인 룬(고대·영원·불멸)을 클릭하면, 합연산/곱연산과 세트 페널티를 모두 계산하여 최선의 10칸 세팅과 동일 배율 대체 룬을 추천합니다.</p>
 
-          <div class="grid-2" style="margin-bottom:14px;">
-            <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
-              <label style="color:#38bdf8; margin-bottom:8px;">⚔️ 내 직업 선택 (택 1)</label>
+          <div class="grid-2" style="margin-bottom:12px;">
+            <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #334155;">
+              <label style="color:#38bdf8; margin-bottom:7px;">내 직업 선택 (택 1)</label>
               <div class="radio-pill-group">
-                <div class="radio-pill job-pill-btn selected" id="rune_job_reaper" onclick="selectRuneJob('reaper')"><img src="images/reaper.png" alt="대사신" onerror="this.onerror=null; this.src='reaper.png';"><span>대사신 (강타)</span></div>
-                <div class="radio-pill job-pill-btn" id="rune_job_mage" onclick="selectRuneJob('mage')"><img src="images/mystic.png" alt="아크메이지" onerror="this.onerror=null; this.src='mystic.png';"><span>아크메이지 (스킬)</span></div>
-                <div class="radio-pill job-pill-btn" id="rune_job_lord" onclick="selectRuneJob('lord')"><img src="images/overload.png" alt="팬텀" onerror="this.onerror=null; this.src='overload.png';"><span>팬텀 (영웅스킬)</span></div>
+                <div class="radio-pill job-pill-btn selected" id="rune_job_reaper" onclick="selectRuneJob('reaper')">
+                  <img src="images/reaper.png" alt="대사신" onerror="this.onerror=null; this.src='reaper.png';">
+                  <div style="text-align:left; line-height:1.15;"><div>대사신</div><div style="font-size:10px; color:#94a3b8;">강타</div></div>
+                </div>
+                <div class="radio-pill job-pill-btn" id="rune_job_mage" onclick="selectRuneJob('mage')">
+                  <img src="images/mystic.png" alt="아크메이지" onerror="this.onerror=null; this.src='mystic.png';">
+                  <div style="text-align:left; line-height:1.15;"><div>아크메이지</div><div style="font-size:10px; color:#94a3b8;">스킬</div></div>
+                </div>
+                <div class="radio-pill job-pill-btn" id="rune_job_lord" onclick="selectRuneJob('lord')">
+                  <img src="images/overload.png" alt="팬텀" onerror="this.onerror=null; this.src='overload.png';">
+                  <div style="text-align:left; line-height:1.15;"><div>팬텀</div><div style="font-size:10px; color:#94a3b8;">영웅스킬</div></div>
+                </div>
               </div>
             </div>
 
-            <div style="background:#0b1120; padding:12px 14px; border-radius:10px; border:1px solid #334155;">
-              <label style="color:#fbbf24; margin-bottom:8px;">🔥 내 주속성 선택 (택 1)</label>
+            <div style="background:#0b1120; padding:11px 13px; border-radius:10px; border:1px solid #334155;">
+              <label style="color:#fbbf24; margin-bottom:7px;">내 주속성 선택 (택 1)</label>
               <div class="radio-pill-group">
-                <div class="radio-pill job-pill-btn selected" id="rune_elem_fire" onclick="selectRuneElem('fire')"><span class="elem-orb orb-fire"></span><span>화염 속성</span></div>
-                <div class="radio-pill job-pill-btn" id="rune_elem_light" onclick="selectRuneElem('light')"><span class="elem-orb orb-light"></span><span>번개 속성</span></div>
-                <div class="radio-pill job-pill-btn" id="rune_elem_dark" onclick="selectRuneElem('dark')"><span class="elem-orb orb-dark"></span><span>어둠 속성</span></div>
+                <div class="radio-pill job-pill-btn selected" id="rune_elem_fire" onclick="selectRuneElem('fire')"><span class="elem-orb orb-fire"></span><span>화염</span></div>
+                <div class="radio-pill job-pill-btn" id="rune_elem_light" onclick="selectRuneElem('light')"><span class="elem-orb orb-light"></span><span>번개</span></div>
+                <div class="radio-pill job-pill-btn" id="rune_elem_dark" onclick="selectRuneElem('dark')"><span class="elem-orb orb-dark"></span><span>어둠</span></div>
               </div>
             </div>
           </div>
 
-          <div style="background:#0f172a; padding:18px 20px; border-radius:14px; border:1px solid #334155; margin-bottom:18px;">
-            <div style="font-size:15px; font-weight:800; color:#38bdf8; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-              <div>💡 핵심 룬 발동 &amp; 내 캐릭터 상세 스펙 조건 설정</div>
-              <span style="font-size:11.5px; color:#94a3b8; font-weight:600;">* 입력한 모든 내 스펙은 자동 저장됩니다</span>
-            </div>
-
-            <div style="background:linear-gradient(90deg, rgba(16, 185, 129, 0.16) 0%, rgba(15, 23, 42, 0.9) 100%); border:1.5px solid #10b981; border-radius:10px; padding:10px 14px; margin-bottom:14px; display:flex; align-items:center; gap:10px; font-size:12.5px; color:#d1fae5; line-height:1.5;">
-              <span style="font-size:20px; flex-shrink:0;">💾</span>
-              <div><strong style="color:#34d399; font-size:13px;">처음엔 설정할 항목이 많아 보이지만 안심하세요!</strong><br>체크하신 보유 룬과 아래 캐릭터 스펙 설정은 <strong>브라우저에 실시간 자동 저장</strong>되므로, <strong>최초 1회만 세팅</strong>해 두시면 다음부터 새로 얻은 룬만 클릭해 바로 비교하실 수 있습니다!</div>
-            </div>
-
-            <div class="grid-3" style="gap:12px; margin-bottom:12px;">
-              <div style="background:#1e293b; padding:12px 14px; border-radius:12px; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between;">
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                  <img src="images/elisia.png" alt="엘리시아" style="width:36px; height:36px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/elisia.PNG'; this.onerror=function(){this.style.display='none';};">
-                  <span style="font-size:13.5px; font-weight:800; color:#ffffff; line-height:1.3;">엘리시아(영웅)<br>각성 단계</span>
+          <!-- 룬 스펙 조건 요약 바 + 원클릭 프리셋 -->
+          <div class="cond-summary-bar" style="border-color:#38bdf8;">
+            <div style="flex:1; min-width:230px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:7px;">
+                <span style="font-size:12.5px; font-weight:900; color:#bae6fd;">내 캐릭터 룬 발동 조건 <small style="color:#34d399; font-weight:700;">(자동저장 · 불멸도감 <span id="rc_imm_collect_display">0</span>종)</small></span>
+                <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                  <button type="button" onclick="applyRuneSpecPreset('mid')" class="seg-pill-btn" style="padding:3px 9px; font-size:11px;">중반 프리셋</button>
+                  <button type="button" onclick="applyRuneSpecPreset('late')" class="seg-pill-btn" style="padding:3px 9px; font-size:11px;">후반 프리셋</button>
+                  <button type="button" onclick="applyRuneSpecPreset('end')" class="seg-pill-btn" style="padding:3px 9px; font-size:11px; border-color:#fbbf24; color:#fde047;">올 풀달성</button>
                 </div>
-                <select id="rune_elisia_awk" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:8px 10px; font-size:13.5px; border-radius:8px;">
-                  <option value="-1" selected>미보유 (과성장 미사용)</option><option value="0">명함 / 0각성</option><option value="1">1각성</option><option value="2">2각성</option><option value="3">3각성 (풀각)</option>
-                </select>
               </div>
-
-              <div style="background:#1e293b; padding:12px 14px; border-radius:12px; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between;">
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                  <img src="images/overdrive.png" alt="오버드라이브" style="width:36px; height:36px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/overdrive.PNG'; this.onerror=function(){this.style.display='none';};">
-                  <span style="font-size:13.5px; font-weight:800; color:#ffffff; line-height:1.3;">오버드라이브(스킬)<br>각성 단계</span>
-                </div>
-                <select id="rune_overdrive_awk" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:8px 10px; font-size:13.5px; border-radius:8px;">
-                  <option value="-1" selected>미보유</option><option value="0">명함 / 0각성</option><option value="1">1각성</option><option value="2">2각성</option><option value="3">3각성 (풀각)</option>
-                </select>
-              </div>
-
-              <div style="background:#1e293b; padding:12px 14px; border-radius:12px; border:1px solid #334155; display:flex; flex-direction:column; justify-content:space-between;">
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                  <img src="images/simyeon_acc.png" alt="심연장식" style="width:36px; height:36px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/simyeon_acc.jpg'; this.onerror=function(){this.style.display='none';};">
-                  <div><span style="font-size:13.5px; font-weight:800; color:#ffffff; display:block; line-height:1.3;">고대 이상 심연장식</span><span style="font-size:11px; color:#94a3b8;">해·별·달·숲 장착 수</span></div>
-                </div>
-                <select id="rune_ancient_abyss_cnt" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:8px 10px; font-size:13.5px; border-radius:8px;">
-                  <option value="0" selected>0개 (고대 미보유)</option><option value="1">1개 장착 (+3,000만%)</option><option value="2">2개 장착 (+6,000만%)</option><option value="3">3개 장착 (+9,000만%)</option><option value="4">4개 모두 고대 (+1억 2,000만%)</option>
-                </select>
+              <div class="cond-summary-chips" id="rune_cond_summary_chips">
+                <span class="cond-chip">조건 불러오는 중...</span>
               </div>
             </div>
+            <button type="button" class="cond-open-btn" onclick="openRuneCondModal()">
+              <span class="cond-cta-dot"></span>
+              <span>상세 조건 편집하기 ➔</span>
+            </button>
+          </div>
 
-            <div class="grid-2" style="gap:12px; margin-bottom:14px;">
-              <div style="background:#1e293b; padding:12px 14px; border-radius:12px; border:1px solid #334155;">
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-                  <div style="display:flex; align-items:center; gap:10px;">
-                    <img src="images/solaris.png" alt="솔라리스" style="width:36px; height:36px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/solaris.PNG'; this.onerror=function(){this.style.display='none';};">
-                    <div><span style="font-size:13.5px; font-weight:800; color:#ffffff; display:block;">솔라리스(영웅) 9돌파 여부</span><span style="font-size:11px; color:#94a3b8;">영웅 9돌파 달성 시 모피증</span></div>
-                  </div>
-                  <span style="font-size:11px; font-weight:700; color:#fde047; background:rgba(253, 224, 71, 0.12); border:1px solid rgba(253, 224, 71, 0.35); padding:2px 8px; border-radius:6px;">과성장 졸업 조건</span>
-                </div>
-                <select id="rune_cond_solaris9" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:8px 10px; font-size:13.5px; border-radius:8px;">
-                  <option value="0" selected>9돌 미만 (과성장 졸업 미달성)</option><option value="1">9돌 이상 (과성장 졸업 조건 달성)</option>
-                </select>
-              </div>
-
-              <div style="background:#1e293b; padding:12px 14px; border-radius:12px; border:1px solid #334155;">
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-                  <div style="display:flex; align-items:center; gap:10px;">
-                    <img src="images/wave.png" alt="크림슨 웨이브" style="width:36px; height:36px; border-radius:8px; object-fit:cover; border:1.5px solid #475569; flex-shrink:0;" onerror="this.onerror=null; this.src='images/wave.PNG'; this.onerror=function(){this.style.display='none';};">
-                    <div><span style="font-size:13.5px; font-weight:800; color:#ffffff; display:block;">크림슨 웨이브(출혈 스킬🩸) 보유</span><span style="font-size:11px; color:#94a3b8;">출혈 디버프 상시 부여</span></div>
-                  </div>
-                  <span style="font-size:11px; font-weight:700; color:#fca5a5; background:rgba(244, 63, 94, 0.15); border:1px solid rgba(244, 63, 94, 0.35); padding:2px 8px; border-radius:6px;">불멸 저주 II 조건</span>
-                </div>
-                <select id="rune_cond_bleed" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:8px 10px; font-size:13.5px; border-radius:8px;">
-                  <option value="0" selected>미보유 (출혈 미적용)</option><option value="1">보유 (출혈 상시 발동 / 풀배율)</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="accordion-item active" id="acc_rune_spec_conds" style="margin-bottom:14px; border-color:#38bdf8;">
-              <div class="accordion-header" onclick="toggleNewbieAccordion('acc_rune_spec_conds')" style="background:#131d33;">
-                <div class="accordion-left"><span class="accordion-toggle-icon">▶</span><span class="accordion-title-text" style="font-size:14.5px; color:#bae6fd;">⚙️ 내 캐릭터 스탯 · 진행도 · 장비 조건 상세 설정 (공속/이속/레벨/가호/보석/연마 등)</span></div>
-                <div class="accordion-right-info"><span class="accordion-count-badge has-selected">미달성 룬 자동 필터링</span></div>
-              </div>
-              <div class="accordion-content" style="padding:14px; background:#0b1120;">
-                <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin-bottom:8px;">📊 1. 기본 스탯 &amp; 레벨 / 전직 / 정찰 조건</div>
-                <div class="grid-4" style="gap:10px; margin-bottom:14px;">
-                  <div><label style="font-size:11.5px;">⚡ 인게임 공격속도(%) <small style="color:#fde047;">(광풍)</small></label><input type="number" id="rc_atk_spd" value="100" min="0" max="500" step="10" oninput="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 10px; font-size:13px;"></div>
-                  <div><label style="font-size:11.5px;">🏃 인게임 이동속도(%) <small style="color:#fde047;">(광속)</small></label><input type="number" id="rc_mov_spd" value="200" min="0" max="500" step="10" oninput="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 10px; font-size:13px;"></div>
-                  <div><label style="font-size:11.5px;">🆙 캐릭터 레벨 <small style="color:#fde047;">(절정)</small></label><select id="rc_char_lv" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;"><option value="25000" selected>25,000 이상 (절정 100%)</option><option value="24000">24,000 이상 (절정 약 66%)</option><option value="22000">22,000 이상 (절정 약 33%)</option><option value="0">22,000 미만 (절정 미발동)</option></select></div>
-                  <div><label style="font-size:11.5px;">⚔️ 전직 레벨 <small style="color:#fde047;">(신의경지/사신 등)</small></label><select id="rc_job_lv" onchange="onRuneJobLvChanged(this.value)" style="padding:7px 8px; font-size:12.5px;"><option value="80" selected>80레벨 이상 (불멸 신의경지 O)</option><option value="60">60 ~ 79레벨 (영원/고대만 O)</option><option value="0">60레벨 미만 (전직렙 룬 미발동)</option></select></div>
-                </div>
-
-                <div style="font-size:12.5px; font-weight:800; color:#c084fc; margin-bottom:8px;">🔮 2. 가호 · 소울커넥트 · 고대 패시브 · 던전/명계 진행도</div>
-                <div class="grid-4" style="gap:10px; margin-bottom:14px;">
-                  <div><label style="font-size:11.5px;">⭐ 별의 가호 단계 <small style="color:#fde047;">(성좌/천상)</small></label><select id="rc_star_gaho" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;"><option value="40" selected>40단계 이상 (성좌 II 발동)</option><option value="30">30 ~ 39단계 (성좌 I / 천상:별)</option><option value="0">30단계 미만 (미발동)</option></select></div>
-                  <div><label style="font-size:11.5px;">🌙 달/해 가호 <small style="color:#fde047;">(월광/천상)</small></label><select id="rc_moon_gaho" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;"><option value="30" selected>달 30+ &amp; 해 10+ (모두 발동)</option><option value="20">달 20~29 &amp; 해 10+ (천상만 O)</option><option value="0">조건 미달성 (월광/천상 X)</option></select></div>
-                  <div><label style="font-size:11.5px;">💎 고대 보석/코어 <small style="color:#fde047;">(보석학/장전)</small></label><select id="rc_anc_gem" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;"><option value="15" selected>고대보석 15개+ &amp; 코어 3개+ (풀발동)</option><option value="3">고대보석 15미만 / 고대코어 3개+ (장전만)</option><option value="0">둘 다 미달성 (보석학/장전 X)</option></select></div>
-                  <div><label style="font-size:11.5px;">📜 고대 패시브 <small style="color:#fde047;">(원론/극한저력)</small></label><select id="rc_anc_passive" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;"><option value="both" selected>돌파합 40+ &amp; 각성합 6+ (모두 O)</option><option value="brk40">돌파합 40+ 만 달성 (원론만 O)</option><option value="awk6">각성합 6+ 만 달성 (극한만 O)</option><option value="none">둘 다 미달성</option></select></div>
-                </div>
-
-                <div style="font-size:12.5px; font-weight:800; color:#34d399; margin-bottom:8px;">🗡️ 3. 영원 장비 연마 · 던전/명계 · 모험모드(모험가) 조건</div>
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap:10px; margin-bottom:10px;">
-                  <div><label style="font-size:11.5px;">🗡️ 영원 대낫 연마 <small style="color:#fde047;">(극련:대낫/삼신기)</small></label><select id="rc_ref_scythe_lv" onchange="onRuneWeapRefineSelectChange()" style="padding:7px 8px; font-size:12.5px;"><option value="15" selected>15연마 이상 (극련 풀배율 2,750만%)</option><option value="10">10~14연마 (극련 기본치 550만%)</option><option value="0">0~9연마 (삼신기만 적용 / 극련 X)</option><option value="-1">미보유 (영원 대낫 제작 전)</option></select></div>
-                  <div><label style="font-size:11.5px;">🔮 영원 오브 연마 <small style="color:#fde047;">(극련:오브/삼신기)</small></label><select id="rc_ref_orb_lv" onchange="onRuneWeapRefineSelectChange()" style="padding:7px 8px; font-size:12.5px;"><option value="15" selected>15연마 이상 (극련 풀배율 2,750만%)</option><option value="10">10~14연마 (극련 기본치 550만%)</option><option value="0">0~9연마 (삼신기만 적용 / 극련 X)</option><option value="-1">미보유 (영원 오브 제작 전)</option></select></div>
-                  <div><label style="font-size:11.5px;">💍 영원 장식 연마 <small style="color:#fde047;">(극련:장식/삼신기)</small></label><select id="rc_ref_acc_lv" onchange="onRuneWeapRefineSelectChange()" style="padding:7px 8px; font-size:12.5px;"><option value="15" selected>15연마 이상 (극련 풀배율 2,750만%)</option><option value="10">10~14연마 (극련 기본치 550만%)</option><option value="0">0~9연마 (삼신기만 적용 / 극련 X)</option><option value="-1">미보유 (영원 장식 제작 전)</option></select></div>
-                  <div><label style="font-size:11.5px;">🔥 3종 연마 합 35+ <small style="color:#fde047;">(완벽 추구)</small></label><select id="rc_refine_state" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;"><option value="all" selected>연마 합 35 이상 (완벽 추구 풀발동)</option><option value="15only">연마 합 35 미만 (완벽 추구 기본치만)</option></select></div>
-                  <div><label style="font-size:11.5px;">🏰 룬던전(솔로) &amp; 명계 <small style="color:#fde047;">(명황/일기당천)</small></label><select id="rc_dungeon_hell" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;"><option value="all" selected>명계 올정찰 &amp; 룬던전 150단계+ 솔로 클리어</option><option value="hell_only">명계 정찰 완료 / 룬던전 100~149단계 솔로 클리어</option><option value="low">명계 미완료 &amp; 룬던전 100 미만 솔로 클리어</option></select></div>
-                  <div><label style="font-size:11.5px;">🐉 드래곤3단 / 9돌상태이상 <small style="color:#fde047;">(용기사/홍염류)</small></label><select id="rc_dragon_status" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;"><option value="all" selected>드래곤 승급3단+ &amp; 주속성 9돌스킬 O</option><option value="status_only">드래곤 미달성 / 주속성 9돌스킬만 O</option><option value="dragon_only">드래곤 3단+ / 주속성 9돌스킬 미달성</option><option value="none">둘 다 미달성 (뉴비)</option></select></div>
-                  <div><label style="font-size:11.5px;">🗺️ 모험모드 모든 별 획득 <small style="color:#fde047;">(모험가 I·II)</small></label><select id="rc_adventure_mode" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="padding:7px 8px; font-size:12.5px;"><option value="hard" selected>Easy &amp; Hard 올클리어 (영원·불멸 모두 풀발동)</option><option value="easy">Easy만 올클리어 (영원 풀발동 / 불멸 기본치만)</option><option value="none">미달성 (모험가 추가효과 미발동)</option></select></div>
-                </div>
-
-                <div style="background:#131d33; padding:10px 12px; border-radius:8px; border:1px solid #334155; display:flex; flex-wrap:wrap; gap:14px; align-items:center; font-size:12px; color:#e2e8f0;">
-                  <label style="margin:0; display:inline-flex; align-items:center; gap:5px; cursor:pointer;"><input type="checkbox" id="rc_chk_gaehwa" checked onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="width:15px; height:15px; accent-color:#38bdf8;"><span>🌸 <strong>개화 10일 출석 완료</strong></span></label>
-                  <label style="margin:0; display:inline-flex; align-items:center; gap:5px; cursor:pointer;"><input type="checkbox" id="rc_chk_abyss23" checked onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="width:15px; height:15px; accent-color:#38bdf8;"><span>🔨 <strong>심연슬롯 23강+ (심판/비전/지휘)</strong></span></label>
-                  <label style="margin:0; display:inline-flex; align-items:center; gap:5px; cursor:pointer;"><input type="checkbox" id="rc_chk_spirit30" checked onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="width:15px; height:15px; accent-color:#38bdf8;"><span>🧚 <strong>정령 전원 25~30돌+ (정령의힘)</strong></span></label>
-                  <label style="margin:0; display:inline-flex; align-items:center; gap:5px; cursor:pointer;"><input type="checkbox" id="rc_chk_title_card" checked onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="width:15px; height:15px; accent-color:#38bdf8;"><span>👑 <strong>불멸칭호(명성) &amp; 신화카드3+(골드카드)</strong></span></label>
-                  <label style="margin:0; display:inline-flex; align-items:center; gap:5px; cursor:pointer; color:#fca5a5;"><input type="checkbox" id="rc_chk_no_penalty" onchange="calculateBestRuneLoadout(); triggerAutoSave();" style="width:15px; height:15px; accent-color:#ef4444;"><span>🚫 <strong>페널티 룬 제외 (기면증/절제/저격수/골렘화/완력 등)</strong></span></label>
-                  <div style="display:inline-flex; align-items:center; gap:6px; margin-left:auto; background:rgba(56, 189, 248, 0.1); border:1px solid rgba(56, 189, 248, 0.3); padding:4px 10px; border-radius:6px;">
-                    <span>📚 보유한 불멸룬 도감 수:</span>
-                    <strong id="rc_imm_collect_display" style="color:#38bdf8; font-size:13.5px;">0</strong>
-                    <span>종 (자동 카운팅)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div style="background:linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(15, 23, 42, 0.95) 100%); border:1.5px solid #f59e0b; padding:13px 18px; border-radius:10px; display:flex; align-items:center; gap:12px; width:100%;">
-              <span style="font-size:24px; flex-shrink:0;">👑</span>
-              <div style="font-size:13.5px; color:#fef08a; line-height:1.65;">
-                <strong>과성장 졸업 &amp; 공명·공진 주의 안내:</strong>
-                <span style="color:#ffffff;">[오버드라이브 각성 &gt; 엘리시아 각성] + [솔라리스 9돌파↑]</span> 달성 시 마마 세트가 과성장을 역전합니다! 또한 <strong>영원 [공명+공진]</strong> 세트는 나머지 8칸에 고대·불멸 룬이 단 1개라도 섞이면 세트 옵션이 증발하므로 <strong>10칸 올 영원 세팅일 때만</strong> 활성화됩니다.
-              </div>
-            </div>
+          <div style="font-size:11.5px; color:#fde68a; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.35); border-radius:8px; padding:7px 12px; margin-bottom:12px;">
+            <span class="mini-tag" style="background:#b45309; color:#fef08a; margin-right:6px;">TIP</span>
+            <strong>[오버드라이브 각성 &gt; 엘리시아 각성 + 솔라리스 9돌↑]</strong> 시 마마 세트가 과성장을 역전하며, 영원 <strong>[공명+공진]</strong>은 10칸 올 영원 세팅일 때만 발동합니다.
           </div>
 
           <div class="rune-tier-tabs">
@@ -5545,6 +5680,18 @@
     if (e) e.stopPropagation();
     const donWrap = document.getElementById('header_donation_widget');
     if (donWrap) donWrap.classList.toggle('open-mobile');
+  }
+
+  let dimPopTimer = null;
+  function triggerDimMascot(e) {
+    if (e) e.stopPropagation();
+    const el = document.getElementById('dim_easter_egg');
+    if (!el) return;
+    if (dimPopTimer) { clearTimeout(dimPopTimer); dimPopTimer = null; }
+    const isNowPopped = el.classList.toggle('popped');
+    if (isNowPopped) {
+      dimPopTimer = setTimeout(() => { el.classList.remove('popped'); }, 2800);
+    }
   }
 
   function handleDonationBtnClick(e) {
@@ -5751,7 +5898,6 @@
 
     const deepHub = document.getElementById("deep_hub_view");
     const deepSections = deepHub ? Array.from(deepHub.children).filter(el => el.classList.contains("hub-section")) : [];
-    const newbieHub = document.getElementById("newbie_hub_view");
 
     document.getElementById("floating_back_btn").style.display = "none";
     document.getElementById("floating_guide_btn").style.display = (mode === 'guides') ? "none" : "flex";
@@ -5979,7 +6125,8 @@
         s300: localStorage.getItem(STORAGE_KEY) || null,
         union: localStorage.getItem(UNION_STORAGE_KEY_FINAL) || null,
         calc: localStorage.getItem(ALL_CALC_INPUTS_STORAGE_KEY) || null,
-        minv: localStorage.getItem(MASTER_INV_STORAGE_KEY) || null
+        minv: localStorage.getItem(MASTER_INV_STORAGE_KEY) || null,
+        gems: localStorage.getItem(SC_GEMS_STORAGE_KEY) || null
       };
       localStorage.setItem(SLOT_DATA_PREFIX + s, JSON.stringify(snap));
     } catch (e) {}
@@ -6047,10 +6194,11 @@
       saveUnionDataToLocal(false);
       saveAllResourceCalcInputs();
       saveMasterInvExtraState();
+      saveSoulGemsToLocal();
 
       const inputsData = {};
       document.querySelectorAll('input[id], select[id]').forEach(el => {
-        if (['rune_search_input', 'union_search_input', 'global_omni_input', 'trait2_lv_slider'].includes(el.id)) return;
+        if (['rune_search_input', 'union_search_input', 'global_omni_input', 'trait2_lv_slider', 'ui_tog_solaris9', 'ui_tog_bleed'].includes(el.id)) return;
         if (el.id.startsWith('eq_inv_') || el.id.startsWith('u_brk_')) return;
         inputsData[el.id] = (el.type === 'checkbox') ? el.checked : el.value;
       });
@@ -6233,6 +6381,8 @@
     localStorage.removeItem(UNION_STORAGE_KEY_FINAL);
     localStorage.removeItem(ALL_CALC_INPUTS_STORAGE_KEY);
     localStorage.removeItem(MASTER_INV_STORAGE_KEY);
+    localStorage.removeItem(SC_GEMS_STORAGE_KEY);
+    ownedSoulGems = [];
 
     resetDomInputsToInitial();
     selectedAncients.clear();
@@ -6251,7 +6401,7 @@
   }
 
   function applySnapshotToLiveApp(snapshot) {
-    const hasData = snapshot && (snapshot.s300 || snapshot.union || snapshot.calc || snapshot.minv);
+    const hasData = snapshot && (snapshot.s300 || snapshot.union || snapshot.calc || snapshot.minv || snapshot.gems);
     clearMemoryStateForEmptySlot(Boolean(hasData));
     if (hasData) {
       isRestoringState = true;
@@ -6260,6 +6410,10 @@
         if (snapshot.union) { localStorage.setItem(UNION_STORAGE_KEY_FINAL, snapshot.union); loadUnionDataFromLocal(); }
         if (snapshot.calc) { localStorage.setItem(ALL_CALC_INPUTS_STORAGE_KEY, snapshot.calc); loadAllResourceCalcInputs(); }
         if (snapshot.minv) { localStorage.setItem(MASTER_INV_STORAGE_KEY, snapshot.minv); loadMasterInvExtraState(); }
+        if (snapshot.gems) {
+        localStorage.setItem(SC_GEMS_STORAGE_KEY, snapshot.gems);
+        try { ownedSoulGems = JSON.parse(snapshot.gems) || []; } catch (e) { ownedSoulGems = []; }
+        }
       } finally {
         isRestoringState = false;
       }
@@ -6768,7 +6922,7 @@
 
   // 스냅샷 1개를 초압축 객체로 변환 (기존 대비 85~90% 용량 절감!)
   function buildCompactSlotFromSnap(snap, slotName) {
-    if (!snap || (!snap.s300 && !snap.union && !snap.calc && !snap.minv)) return null;
+    if (!snap || (!snap.s300 && !snap.union && !snap.calc && !snap.minv && !snap.gems)) return null;
     const s300 = snap.s300 ? JSON.parse(snap.s300) : {};
     const uObj = snap.union ? JSON.parse(snap.union) : {};
     const cObj = snap.calc ? JSON.parse(snap.calc) : {};
@@ -6803,7 +6957,11 @@
     });
 
     const rfObj = mObj.masterEquipRefine || { scythe: 15, orb: 15, accessory: 15 };
+    const gMap = { ancient:'a', mythic:'m', legend:'l', unique:'u', advanced:'d' };
+    const gArr = snap.gems ? JSON.parse(snap.gems) : [];
+    const compactGems = gArr.map(g => [gMap[g.tier] || 'a', g.chain, g.pt, g.atk || 0, g.amp || 0]);
     return {
+      gm: compactGems,
       sn: slotName || '계정',
       j: s300.currentRuneJob || 'reaper',
       e: s300.currentRuneElem || 'fire',
@@ -6871,11 +7029,16 @@
     const minv = {
       masterEquipRefine: { scythe: rfArr[0] ?? 15, orb: rfArr[1] ?? 15, accessory: rfArr[2] ?? 15 }
     };
+    const gRev = { a:'ancient', m:'mythic', l:'legend', u:'unique', d:'advanced' };
+    const expGems = (cs.gm || []).map((x, i) => ({
+    id: `gem_imp_${Date.now()}_${i}`, tier: gRev[x[0]] || 'ancient', chain: x[1], pt: x[2], atk: x[3] || 0, amp: x[4] || 0
+    }));
     return {
       s300: JSON.stringify(s300),
       union: JSON.stringify(union),
       calc: JSON.stringify(calc),
-      minv: JSON.stringify(minv)
+      minv: JSON.stringify(minv),
+      gems: JSON.stringify(expGems)
     };
   }
 
@@ -8533,7 +8696,6 @@
     document.getElementById("mode_deep_container").style.display = "none";
     document.getElementById("mode_guides_container").style.display = "none";
     document.getElementById("mode_newbie_container").style.display = "block";
-    document.getElementById("newbie_hub_view").style.display = "none";
     document.getElementById("newbie_rune_view").style.display = "none";
     document.getElementById("newbie_calc_view").style.display = "block";
 
@@ -9160,7 +9322,6 @@
     document.getElementById("mode_deep_container").style.display = "none";
     document.getElementById("mode_guides_container").style.display = "none";
     document.getElementById("mode_newbie_container").style.display = "block";
-    document.getElementById("newbie_hub_view").style.display = "none";
     document.getElementById("newbie_calc_view").style.display = "none";
     document.getElementById("newbie_rune_view").style.display = "block";
 
@@ -9655,6 +9816,7 @@
   }
 
   function calculateBestRuneLoadout() {
+    syncRuneCondUI();
     const ownedList = RUNE_DB.filter(r => ownedRunes.has(r.id));
     const ownedArmor = ownedList.filter(r => r.part === 'armor');
     const ownedRings = ownedList.filter(r => r.part === 'ring');
@@ -10242,7 +10404,196 @@
     return assignments;
   }
 
+  // ==================== 소울커넥트 & 룬 조건 팝업 모달 + 요약 바 엔진 ====================
+  const SC_COND_DEFS = [
+    { id: 'sc_sel_book',    num: 3, title: '수호신 도감', sub: '도감 100% 달성 수 · 12P(1~2개) / 16P(3~4개) / 20P(5개 이상)', opts: [['0','미달'],['1','12P (1~2개)'],['2','16P (3~4개)'],['3','20P (5개+)']] },
+    { id: 'sc_sel_joblv',   num: 4, title: '전직 레벨',   sub: '현재 전직 차수 · 12P(1차) / 16P(2차) / 20P(3차 이상)',         opts: [['0','미달'],['1','12P (1차)'],['2','16P (2차)'],['3','20P (3차+)']] },
+    { id: 'sc_sel_promo',   num: 5, title: '승급전',      sub: '소울헌터 승급전 · 12P(전설 이하) / 16P(신화급) / 20P(고대 1단+)', opts: [['0','미달'],['1','12P (전설↓)'],['2','16P (신화)'],['3','20P (고대1+)']] },
+    { id: 'sc_sel_boss',    num: 5, title: '보스전',      sub: '보스전 클리어 · 12P(1단계) / 16P(2단계) / 20P(하데스 10단+)',   opts: [['0','미달'],['1','12P (1단)'],['2','16P (2단)'],['3','20P (하데스10+)']] },
+    { id: 'sc_sel_stage',   num: 6, title: '스테이지',    sub: '최고 도달 챕터 · 12P(초반) / 16P(중반) / 20P(350챕터 이상)',   opts: [['0','미달'],['1','12P (초반)'],['2','16P (중반)'],['3','20P (350+)']] },
+    { id: 'sc_sel_dungeon', num: 6, title: '룬 던전',     sub: '룬 던전 클리어 · 12P(초반) / 16P(중반) / 20P(154단계 이상)',   opts: [['0','미달'],['1','12P (초반)'],['2','16P (중반)'],['3','20P (154+)']] }
+  ];
+
+  function openScCondModal() {
+    syncScCondUI();
+    document.getElementById('sc_cond_modal_overlay').style.display = 'flex';
+  }
+  function closeScCondModal() {
+    document.getElementById('sc_cond_modal_overlay').style.display = 'none';
+  }
+  function setScSelectVal(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.value = String(val);
+    onAwkSealChange();
+  }
+  function applyScCondPreset(levelVal) {
+    SC_COND_DEFS.forEach(d => {
+      const el = document.getElementById(d.id);
+      if (el) el.value = String(levelVal);
+    });
+    onAwkSealChange();
+  }
+  function syncScCondUI() {
+    const rowsEl = document.getElementById('sc_cond_step_rows');
+    if (rowsEl) {
+      rowsEl.innerHTML = SC_COND_DEFS.map(d => {
+        const cur = document.getElementById(d.id)?.value ?? '3';
+        const btns = d.opts.map(([v, label]) =>
+          `<button type="button" class="seg-pill-btn ${cur === v ? 'active' : ''}" onclick="setScSelectVal('${d.id}','${v}')">${label}</button>`
+        ).join('');
+        return `<div class="cond-modal-row">
+          <div class="cond-modal-label" style="display:flex; align-items:center; gap:9px;">
+            <span class="core-hex-badge core-color-${d.num}" style="width:26px; height:26px; font-size:10px;">${d.num}</span>
+            <div>코어${d.num} · ${d.title}<small>${d.sub}</small></div>
+          </div>
+          <div class="seg-pill-row">${btns}</div>
+        </div>`;
+      }).join('');
+    }
+
+    const chipsEl = document.getElementById('sc_cond_summary_chips');
+    if (chipsEl) {
+      const awkSeal = document.getElementById('sc_cond_awk_seal')?.checked ?? true;
+      const noMark  = document.getElementById('sc_cond_no_mark')?.checked ?? true;
+      let full20 = 0, part = 0;
+      SC_COND_DEFS.forEach(d => {
+        const v = parseInt(document.getElementById(d.id)?.value ?? '3', 10);
+        if (v >= 3) full20++; else if (v > 0) part++;
+      });
+      chipsEl.innerHTML = `
+        <span class="cond-chip ${awkSeal ? 'is-on' : 'is-off'}">각성기 봉인 ${awkSeal ? 'ON' : 'OFF'}</span>
+        <span class="cond-chip ${noMark ? 'is-on' : 'is-off'}">표식 제외 ${noMark ? 'ON' : 'OFF'}</span>
+        <span class="cond-chip ${full20 === 6 ? 'is-on' : 'is-warn'}">20P 풀달성 ${full20}/6${part > 0 ? ` · 부분 ${part}` : ''}</span>
+      `;
+    }
+  }
+
+  const RUNE_MODAL_DEFS = {
+    core: [
+      { id: 'rune_elisia_awk',        img: 'images/elisia.png',      title: '엘리시아 각성',     sub: '과성장 핵심 (유니온 연동)', opts: [['-1','미보유'],['0','명함'],['1','1각'],['2','2각'],['3','3각']] },
+      { id: 'rune_overdrive_awk',     img: 'images/overdrive.png',   title: '오버드라이브 각성', sub: '과성장 졸업 기준',          opts: [['-1','미보유'],['0','명함'],['1','1각'],['2','2각'],['3','3각']] },
+      { id: 'rune_ancient_abyss_cnt', img: 'images/simyeon_acc.png', title: '고대 심연장식 수',  sub: '해·별·달·숲 장착 수',       opts: [['0','0개'],['1','1개'],['2','2개'],['3','3개'],['4','4개']] }
+    ],
+    stat: [
+      { id: 'rc_char_lv',     title: '캐릭터 레벨',    sub: '절정 룬',       opts: [['0','2.2만↓'],['22000','2.2만+'],['24000','2.4만+'],['25000','2.5만+']] },
+      { id: 'rc_job_lv',      title: '전직 레벨',      sub: '신의경지/사신', opts: [['0','60↓'],['60','60~79'],['80','80+']] },
+      { id: 'rc_star_gaho',   title: '별의 가호',      sub: '성좌 / 천상',   opts: [['0','30↓'],['30','30~39'],['40','40+']] },
+      { id: 'rc_moon_gaho',   title: '달·해 가호',     sub: '월광 / 천상',   opts: [['0','미달'],['20','달20+해10'],['30','달30+해10']] },
+      { id: 'rc_anc_gem',     title: '고대 보석·코어', sub: '보석학 / 장전', opts: [['0','미달'],['3','코어3+'],['15','보석15+코어3']] },
+      { id: 'rc_anc_passive', title: '고대 패시브',    sub: '원론 / 극한',   opts: [['none','미달'],['brk40','돌파40+'],['awk6','각성6+'],['both','둘 다 O']] }
+    ],
+    etc: [
+      { id: 'rc_ref_scythe_lv', title: '영원 대낫 연마',  sub: '극련:대낫',    opts: [['-1','미보유'],['0','0~9'],['10','10~14'],['15','15+']] },
+      { id: 'rc_ref_orb_lv',    title: '영원 오브 연마',  sub: '극련:오브',    opts: [['-1','미보유'],['0','0~9'],['10','10~14'],['15','15+']] },
+      { id: 'rc_ref_acc_lv',    title: '영원 장식 연마',  sub: '극련:장식',    opts: [['-1','미보유'],['0','0~9'],['10','10~14'],['15','15+']] },
+      { id: 'rc_refine_state',  title: '3종 연마 합 35+', sub: '완벽 추구',    opts: [['15only','35 미만'],['all','35 이상']] },
+      { id: 'rc_dungeon_hell',  title: '룬던전·명계',     sub: '명황/일기당천', opts: [['low','미달'],['hell_only','명계O/100+'],['all','명계O/150+']] },
+      { id: 'rc_dragon_status', title: '드래곤·9돌스킬',  sub: '용기사/홍염',  opts: [['none','미달'],['dragon_only','용3단만'],['status_only','9돌만'],['all','둘 다 O']] },
+      { id: 'rc_adventure_mode',title: '모험모드 올별',   sub: '모험가 I·II',  opts: [['none','미달'],['easy','Easy 올클'],['hard','Hard 올클']] }
+    ]
+  };
+
+  function openRuneCondModal() {
+    syncRuneCondUI();
+    document.getElementById('rune_cond_modal_overlay').style.display = 'flex';
+  }
+  function closeRuneCondModal() {
+    document.getElementById('rune_cond_modal_overlay').style.display = 'none';
+  }
+  function switchRuneCondTab(tabKey) {
+    ['core', 'stat', 'etc'].forEach(k => {
+      document.getElementById('rmtab_btn_' + k)?.classList.toggle('active', k === tabKey);
+      const p = document.getElementById('rmtab_panel_' + k);
+      if (p) p.style.display = (k === tabKey) ? 'block' : 'none';
+    });
+  }
+  function setRuneSelectVal(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.value = String(val);
+    if (id === 'rc_job_lv') onRuneJobLvChanged(val);
+    else if (['rc_ref_scythe_lv', 'rc_ref_orb_lv', 'rc_ref_acc_lv'].includes(id)) onRuneWeapRefineSelectChange();
+    else { calculateBestRuneLoadout(); triggerAutoSave(); }
+  }
+  function applyRuneSpecPreset(mode) {
+    const setV = (id, v) => { const e = document.getElementById(id); if (e) e.value = String(v); };
+    const setC = (id, c) => { const e = document.getElementById(id); if (e) e.checked = Boolean(c); };
+    if (mode === 'mid') {
+      setV('rc_char_lv','22000'); setV('rc_job_lv','60'); setV('rc_star_gaho','0'); setV('rc_moon_gaho','0');
+      setV('rc_anc_gem','0'); setV('rc_anc_passive','none'); setV('rc_ref_scythe_lv','10'); setV('rc_ref_orb_lv','10');
+      setV('rc_ref_acc_lv','0'); setV('rc_refine_state','15only'); setV('rc_dungeon_hell','hell_only');
+      setV('rc_dragon_status','status_only'); setV('rc_adventure_mode','easy');
+      setC('rc_chk_gaehwa',false); setC('rc_chk_abyss23',false); setC('rc_chk_spirit30',false); setC('rc_chk_title_card',false);
+    } else if (mode === 'late') {
+      setV('rc_char_lv','24000'); setV('rc_job_lv','80'); setV('rc_star_gaho','30'); setV('rc_moon_gaho','20');
+      setV('rc_anc_gem','3'); setV('rc_anc_passive','brk40'); setV('rc_ref_scythe_lv','15'); setV('rc_ref_orb_lv','15');
+      setV('rc_ref_acc_lv','10'); setV('rc_refine_state','all'); setV('rc_dungeon_hell','all');
+      setV('rc_dragon_status','all'); setV('rc_adventure_mode','hard');
+      setC('rc_chk_gaehwa',true); setC('rc_chk_abyss23',true); setC('rc_chk_spirit30',true); setC('rc_chk_title_card',true);
+    } else {
+      setV('rc_char_lv','25000'); setV('rc_job_lv','80'); setV('rc_star_gaho','40'); setV('rc_moon_gaho','30');
+      setV('rc_anc_gem','15'); setV('rc_anc_passive','both'); setV('rc_ref_scythe_lv','15'); setV('rc_ref_orb_lv','15');
+      setV('rc_ref_acc_lv','15'); setV('rc_refine_state','all'); setV('rc_dungeon_hell','all');
+      setV('rc_dragon_status','all'); setV('rc_adventure_mode','hard');
+      setC('rc_chk_gaehwa',true); setC('rc_chk_abyss23',true); setC('rc_chk_spirit30',true); setC('rc_chk_title_card',true);
+    }
+    onRuneWeapRefineSelectChange();
+  }
+  function syncRuneCondUI() {
+    const renderGroup = (list, targetId) => {
+      const el = document.getElementById(targetId);
+      if (!el) return;
+      el.innerHTML = list.map(d => {
+        const cur = document.getElementById(d.id)?.value ?? '';
+        const btns = d.opts.map(([v, label]) =>
+          `<button type="button" class="seg-pill-btn ${cur === v ? 'active' : ''}" onclick="setRuneSelectVal('${d.id}','${v}')">${label}</button>`
+        ).join('');
+        const thumb = d.img
+          ? `<img src="${d.img}" alt="" style="width:30px; height:30px; border-radius:7px; object-fit:cover; border:1px solid #475569; flex-shrink:0;" onerror="this.style.display='none';">`
+          : '';
+        return `<div class="cond-modal-row">
+          <div class="cond-modal-label" style="display:flex; align-items:center; gap:9px;">
+            ${thumb}
+            <div>${d.title}<small>${d.sub}</small></div>
+          </div>
+          <div class="seg-pill-row">${btns}</div>
+        </div>`;
+      }).join('');
+    };
+    renderGroup(RUNE_MODAL_DEFS.core, 'rune_modal_core_rows');
+    renderGroup(RUNE_MODAL_DEFS.stat, 'rune_modal_stat_rows');
+    renderGroup(RUNE_MODAL_DEFS.etc,  'rune_modal_etc_rows');
+
+    const tSol = document.getElementById('ui_tog_solaris9');
+    if (tSol) tSol.checked = (document.getElementById('rune_cond_solaris9')?.value === '1');
+    const tBld = document.getElementById('ui_tog_bleed');
+    if (tBld) tBld.checked = (document.getElementById('rune_cond_bleed')?.value === '1');
+
+    const chipsEl = document.getElementById('rune_cond_summary_chips');
+    if (chipsEl) {
+      const elV = document.getElementById('rune_elisia_awk')?.value ?? '-1';
+      const ovV = document.getElementById('rune_overdrive_awk')?.value ?? '-1';
+      const bld = document.getElementById('rune_cond_bleed')?.value === '1';
+      const sG  = parseInt(document.getElementById('rc_star_gaho')?.value ?? '0', 10);
+      const mG  = parseInt(document.getElementById('rc_moon_gaho')?.value ?? '0', 10);
+      const rS  = document.getElementById('rc_ref_scythe_lv')?.value ?? '15';
+      const rO  = document.getElementById('rc_ref_orb_lv')?.value ?? '15';
+      const rA  = document.getElementById('rc_ref_acc_lv')?.value ?? '15';
+      const noP = document.getElementById('rc_chk_no_penalty')?.checked ?? false;
+      const fmtAwk = v => v === '-1' ? '미보유' : (v === '0' ? '명함' : `${v}각`);
+      const fmtRef = v => v === '-1' ? 'X' : `${v}+`;
+      chipsEl.innerHTML = `
+        <span class="cond-chip ${elV !== '-1' ? 'is-on' : 'is-off'}">엘리시아 ${fmtAwk(elV)}</span>
+        <span class="cond-chip ${ovV !== '-1' ? 'is-on' : 'is-off'}">오버드라이브 ${fmtAwk(ovV)}</span>
+        <span class="cond-chip ${bld ? 'is-on' : 'is-off'}">출혈 ${bld ? 'ON' : 'OFF'}</span>
+        <span class="cond-chip ${sG >= 30 && mG >= 20 ? 'is-on' : 'is-warn'}">가호 별${sG}/달${mG}</span>
+        <span class="cond-chip is-on">연마 ${fmtRef(rS)}/${fmtRef(rO)}/${fmtRef(rA)}</span>
+        ${noP ? '<span class="cond-chip is-warn">페널티 제외 ON</span>' : ''}
+      `;
+    }
+  }
+
   function calculateBestConnectLoadout() {
+    syncScCondUI();
     renderSoulGemInventoryList();
     const allInstances = [];
     ownedCoresMap.forEach((cnt, key) => {
