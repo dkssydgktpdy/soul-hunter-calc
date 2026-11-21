@@ -2916,9 +2916,9 @@
     .dim-easter-egg {
       position: absolute;
       bottom: calc(100% - 2px);
-      right: 16px;
-      width: 96px;
-      height: 82px;
+      right: 12px;
+      width: 68px;
+      height: 58px;
       cursor: pointer;
       z-index: 9700;
       user-select: none;
@@ -2932,46 +2932,48 @@
       justify-content: center;
     }
     .dim-img {
-      width: 86px;
+      width: 62px;
       height: auto;
       display: block;
-      transform: translateY(56px);
-      transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
-      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+      transform: translateY(38px);
+      transition: transform 0.36s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.6));
     }
-    .dim-easter-egg:hover .dim-img { transform: translateY(46px); }
+    .dim-easter-egg:hover .dim-img { transform: translateY(30px); }
     .dim-easter-egg.popped .dim-img { transform: translateY(2px) rotate(-3deg); }
+
+    /* 말풍선을 위쪽이 아닌 딤의 왼쪽으로 띄워 화면 상단 잘림 원천 차단! */
     .dim-bubble {
       position: absolute;
-      bottom: calc(100% + 2px);
-      left: 50%;
-      transform: translateX(-50%) translateY(8px) scale(0.75);
+      top: 10px;
+      right: calc(100% + 5px);
+      transform: translateX(8px) scale(0.75);
       background: #ffffff;
       color: #0f172a;
       border: 2px solid #f97316;
       border-radius: 12px;
-      padding: 3px 11px;
-      font-size: 13px;
+      padding: 3px 10px;
+      font-size: 12.5px;
       font-weight: 900;
       white-space: nowrap;
       opacity: 0;
       pointer-events: none;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.55);
+      transition: all 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .dim-bubble::after {
       content: "";
       position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border-width: 6px 5px 0 5px;
+      top: 50%;
+      left: 100%;
+      transform: translateY(-50%);
+      border-width: 5px 0 5px 6px;
       border-style: solid;
-      border-color: #f97316 transparent transparent transparent;
+      border-color: transparent transparent transparent #f97316;
     }
     .dim-easter-egg.popped .dim-bubble {
       opacity: 1;
-      transform: translateX(-50%) translateY(0) scale(1);
+      transform: translateX(0) scale(1);
     }
 
     @media (max-width: 720px) {
