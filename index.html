@@ -2911,14 +2911,16 @@
     .cond-toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #0f172a; border: 1.5px solid #2d3b54; border-radius: 10px; padding: 9px 12px; margin: 0; cursor: pointer; user-select: none; }
     .cond-toggle-row:has(.neon-toggle-input:checked) { border-color: #10b981; background: linear-gradient(90deg, rgba(16, 185, 129, 0.14) 0%, #0f172a 100%); }
 
-    /* ==================== 딤(dim.png) Special Thanks 빼꼼 이스터에그 ==================== */
+    /* ==================== 딤(dim.png) Special Thanks 빼꼼 이스터에그 (PC:좌측 / 모바일:우측) ==================== */
     .header-thanks-box { position: relative; }
+
+    /* 💻 PC 기본: Special Thanks 왼쪽 벽에서 왼쪽으로 쇽! */
     .dim-easter-egg {
       position: absolute;
-      bottom: calc(100% - 2px);
-      right: 12px;
-      width: 68px;
-      height: 58px;
+      top: 26px;
+      right: calc(100% - 2px);
+      width: 66px;
+      height: 64px;
       cursor: pointer;
       z-index: 9700;
       user-select: none;
@@ -2928,26 +2930,25 @@
       height: 100%;
       overflow: hidden;
       display: flex;
-      align-items: flex-end;
-      justify-content: center;
+      align-items: center;
+      justify-content: flex-end;
     }
     .dim-img {
-      width: 62px;
+      width: 60px;
       height: auto;
       display: block;
-      transform: translateY(38px);
+      transform: translateX(42px) rotate(-18deg);
       transition: transform 0.36s cubic-bezier(0.34, 1.56, 0.64, 1);
-      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.6));
+      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.65));
     }
-    .dim-easter-egg:hover .dim-img { transform: translateY(30px); }
-    .dim-easter-egg.popped .dim-img { transform: translateY(2px) rotate(-3deg); }
+    .dim-easter-egg:hover .dim-img { transform: translateX(32px) rotate(-12deg); }
+    .dim-easter-egg.popped .dim-img { transform: translateX(2px) rotate(-6deg); }
 
-    /* 말풍선을 위쪽이 아닌 딤의 왼쪽으로 띄워 화면 상단 잘림 원천 차단! */
     .dim-bubble {
       position: absolute;
-      top: 10px;
-      right: calc(100% + 5px);
-      transform: translateX(8px) scale(0.75);
+      bottom: calc(100% + 4px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px) scale(0.75);
       background: #ffffff;
       color: #0f172a;
       border: 2px solid #f97316;
@@ -2964,16 +2965,49 @@
     .dim-bubble::after {
       content: "";
       position: absolute;
-      top: 50%;
-      left: 100%;
-      transform: translateY(-50%);
-      border-width: 5px 0 5px 6px;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px 5px 0 5px;
       border-style: solid;
-      border-color: transparent transparent transparent #f97316;
+      border-color: #f97316 transparent transparent transparent;
     }
     .dim-easter-egg.popped .dim-bubble {
       opacity: 1;
-      transform: translateX(0) scale(1);
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+
+    /* 📱 모바일 (768px 이하): Special Thanks 오른쪽 벽에서 오른쪽으로 쇽! */
+    @media (max-width: 768px) {
+      .header-thanks-box { max-width: 268px !important; }
+      .dim-easter-egg {
+        left: calc(100% - 6px);
+        right: auto;
+        top: 24px;
+        width: 56px;
+        height: 56px;
+      }
+      .dim-mask { justify-content: flex-start; }
+      .dim-img {
+        width: 52px;
+        transform: translateX(-36px) rotate(18deg);
+      }
+      .dim-easter-egg:hover .dim-img { transform: translateX(-26px) rotate(12deg); }
+      .dim-easter-egg.popped .dim-img { transform: translateX(-2px) rotate(6deg); }
+      .dim-bubble {
+        left: auto;
+        right: 2px;
+        transform: translateY(6px) scale(0.75);
+      }
+      .dim-bubble::after {
+        left: auto;
+        right: 16px;
+        transform: none;
+      }
+      .dim-easter-egg.popped .dim-bubble {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     @media (max-width: 720px) {
