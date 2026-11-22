@@ -738,6 +738,7 @@
         const rankStr = String(cols[baseCol] ?? "").trim();
         const rawNameStr = String(cols[baseCol + 1] ?? "").trim();
         const scoreStr = String(cols[baseCol + 2] ?? "").trim();
+        const deltaStr = String(cols[baseCol + 3] ?? "").trim();
 
         const nameStr = cleanGuildName(rawNameStr);
         if (nameStr && nameStr !== "" && nameStr !== "-" && nameStr !== "길드명" && !nameStr.includes("불꽃") && !nameStr.includes("빙하")) {
@@ -753,6 +754,7 @@
             guildName: nameStr,
             rank: currentRank,
             score: score,
+            delta: deltaStr,
             zoneKey: zk,
             zone: ZONE_CONFIG[zk].name,
             isScout: false
@@ -1961,9 +1963,31 @@
             ? `<span style="color:#f9a8d4; font-size:11.5px;">전주 ${ZONE_CONFIG[prevG.maxZoneKey].name} ${prevG.maxZoneRank}위<br><small>(총점 ${prevTotalScore.toLocaleString()}점)</small></span>`
             : `<span style="color:#64748b; font-size:11.5px;">미출현</span>`);
 
+      // ★ 실시간 변동 문자열 파싱 (예: "▲2|+150,000|14:55", "▼1|+0|14:55", "NEW|+3,766,814|14:47")
+      let rankDeltaHtml = '';
+      let scoreDeltaHtml = '';
+      if (item.delta && item.delta.includes('|')) {
+        const [rPart, sPart, tPart] = item.delta.split('|').map(s => s.trim());
+        if (rPart && rPart !== '-') {
+          if (rPart.startsWith('▲')) {
+            rankDeltaHtml = `<div style="font-size:10.5px; font-weight:900; color:#4ade80; margin-top:2px;">${escHtml(rPart)}</div>`;
+          } else if (rPart.startsWith('▼')) {
+            rankDeltaHtml = `<div style="font-size:10.5px; font-weight:900; color:#f87171; margin-top:2px;">${escHtml(rPart)}</div>`;
+          } else if (rPart === 'NEW') {
+            rankDeltaHtml = `<div style="font-size:9.5px; font-weight:900; color:#38bdf8; margin-top:2px;">NEW</div>`;
+          }
+        }
+        if (sPart && sPart !== '+0' && rPart !== 'NEW') {
+          scoreDeltaHtml = `<div style="font-size:10.5px; font-weight:800; color:#4ade80;">${escHtml(sPart)} <span style="color:#64748b; font-weight:normal;">(${escHtml(tPart || '')})</span></div>`;
+        }
+      }
+
       return `
         <tr class="${rowClass}" style="${isOurs ? '' : rowStyle}">
-          <td><span class="rank-badge ${rankBadgeCls}">${item.rank}위</span></td>
+          <td>
+            <span class="rank-badge ${rankBadgeCls}">${item.rank}위</span>
+            ${rankDeltaHtml}
+          </td>
           <td style="text-align:left; min-width:280px;">
             <div style="font-size:14.5px; color:${isOurs ? '#fde047' : (isTop5 ? '#ffffff' : '#cbd5e1')}; font-weight:900;">
               ${isOurs ? '👑 ' : ''}${escHtml(item.guildName)}
@@ -1974,6 +1998,7 @@
           </td>
           <td style="color:#38bdf8; font-weight:800; font-size:14px;">
             <div>${item.score.toLocaleString()}점</div>
+            ${scoreDeltaHtml}
             ${otherZonesSum > 0
               ? `<div style="font-size:10.5px; color:#7dd3fc; font-weight:normal;">이번주 총점 ${(gObj.totalScore/10000).toFixed(1)}만 중 ${Math.round((item.score/gObj.totalScore)*100)}%</div>`
               : (gObj && gObj.progressPct !== null ? `<div style="font-size:10.5px; color:#94a3b8; font-weight:normal;">전주 총점 대비 ${gObj.progressPct}%</div>` : '')}
