@@ -10328,18 +10328,13 @@
       const starOk = ctx.starGaho >= 30;
       const moonSunOk = ctx.moonGaho >= 20; // 달 20+ & 해 10+
       const activeGahoCnt = (starOk ? 1 : 0) + (moonSunOk ? 2 : 0);
+      const baseAtkMult = 1 + ((activeGahoCnt * 2000000) / 100); // 3개 달성 시 60,001배
 
-      // 1) 켜진 가호 수에 따른 실제 기본 불멸 룬 공격력 합계 (개당 +2,000,000%)
-      const baseImmAtkPct = activeGahoCnt * 2000000;
-      const baseAtkMult = 1 + (baseImmAtkPct / 100); // 0개: 1배, 1개: 2만배, 2개: 4만배, 3개: 6만배
-
-      // 2) 세트 추가 효과: 불멸 룬 공격력 증폭 +750,000,000% (750만 배)
-      // - 가호 3종을 모두 충족했을 때는 명황+명황전용+양날검(약 1.3경) 다음가는 방어구 종결 세트(약 450조 배)로 작동
-      // - 가호가 0~2개로 미달성일 때는 불멸 엠블렘(보석학/원론 등) 증폭과의 합연산 희석을 반영하여,
-      //   [불멸 깡공(유행/중과부적) + 불멸 양날검 + 영원 명왕(약 1,514조 배)]이 정상적으로 우위를 점하도록 실전 배율 적용!
       if (activeGahoCnt >= 3) {
-        return baseAtkMult * 7500001; // 가호 3종 모두 달성 시 약 450조 배
+        // ★ 가호 3종 모두 달성 시 약 450조 배 (6.0e4 * 7.5e9 = 4.5e14) -> 명황+명황전용+중과부적(66.8조 배)을 정상적으로 상회!
+        return baseAtkMult * 7500000001;
       } else {
+        // 가호 미달성 시에는 명황 세트나 [불멸깡공+양날검+명왕]이 우선 추천되도록 감쇠
         const emblemDilution = (activeEmblemTier === 'immortal') ? 0.15 : 1;
         return Math.max(1, baseAtkMult * (1 + (7500000 * emblemDilution)));
       }
@@ -10464,7 +10459,13 @@
         if ((r && r.pairReq && (!n || n.id !== r.pairReq)) || (n && n.pairReq && (!r || r.id !== n.pairReq))) continue;
         let rMult = 1;
         if (r && (!r.elem || r.elem === currentRuneElem) && (!r.jobType || r.jobType === currentRuneJob)) {
-          rMult = (r.id === 'ete_rg_gwaseong') ? (elisiaAwk < 0 ? 1 : (!isGrad ? 6600690 * (1 + elisiaAwk * 0.2) : 36111)) : Math.max(1, getEffectiveRuneValue(r, new Set()));
+          if (r.id === 'ete_rg_gwaseong') {
+            rMult = (elisiaAwk < 0 || isGrad) ? 1 : (6600690 * (1 + elisiaAwk * 0.2));
+          } else if (r.id === 'anc_rg_gwaseong') {
+            rMult = (elisiaAwk < 0 || isGrad) ? 1 : r.mult;
+          } else {
+            rMult = Math.max(1, getEffectiveRuneValue(r, new Set()));
+          }
         }
         let nMult = 1;
         if (n && (!n.elem || n.elem === currentRuneElem) && (!n.jobType || n.jobType === currentRuneJob)) {
@@ -10565,7 +10566,7 @@
       return;
     }
     el.className = `rune-slot-block tier-${runeObj.tier}`;
-    el.innerHTML = `<div class="rune-slot-part-tag"><span>${partLabel}</span><span class="grade-badge ${getRuneTierBadgeClass(runeObj.tier)}" style="font-size:10px; padding:1px 5px;">${getRuneTierKr(runeObj.tier)}</span></div><div class="rune-slot-name">${runeObj.name}</div><div class="rune-slot-stat">${runeObj.desc.split(',')[0]}</div>`;
+    el.innerHTML = `<div class="rune-slot-part-tag"><span>${partLabel}</span><span class="grade-badge ${getRuneTierBadgeClass(runeObj.tier)}" style="font-size:10px; padding:1px 5px;">${getRuneTierKr(runeObj.tier)}</span></div><div class="rune-slot-name">${runeObj.name}</div><div class="rune-slot-stat">${runeObj.desc.split(/\s*\(|,\s+/)[0]}</div>`;
   }
 
   function calculateBestRuneLoadout() {
