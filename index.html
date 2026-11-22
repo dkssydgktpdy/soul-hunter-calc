@@ -3452,39 +3452,6 @@
       }
     }
 
-    /* 📱 모바일 (768px 이하): Special Thanks 오른쪽 벽에서 오른쪽으로 쇽! */
-    @media (max-width: 768px) {
-      .header-thanks-box { max-width: 268px !important; }
-      .dim-easter-egg {
-        left: calc(100% - 6px);
-        right: auto;
-        top: 24px;
-        width: 56px;
-        height: 56px;
-      }
-      .dim-mask { justify-content: flex-start; }
-      .dim-img {
-        width: 52px;
-        transform: translateX(-36px) rotate(18deg);
-      }
-      .dim-easter-egg:hover .dim-img { transform: translateX(-26px) rotate(12deg); }
-      .dim-easter-egg.popped .dim-img { transform: translateX(-2px) rotate(6deg); }
-      .dim-bubble {
-        left: auto;
-        right: 2px;
-        transform: translateY(6px) scale(0.75);
-      }
-      .dim-bubble::after {
-        left: auto;
-        right: 16px;
-        transform: none;
-      }
-      .dim-easter-egg.popped .dim-bubble {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
     @media (max-width: 720px) {
       .sc-gem-input-bar { grid-template-columns: repeat(2, 1fr); }
       .part-radio-bar-6 { grid-template-columns: repeat(3, 1fr); }
