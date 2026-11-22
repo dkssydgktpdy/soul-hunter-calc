@@ -9084,7 +9084,8 @@
     const includedPromos = [];
     if (incPromo) {
       [20, 40, 60].forEach(pLv => {
-        if ((pLv > curLv && pLv < tarLv) || (pLv === curLv && !alreadyPromotedCur)) {
+        // 기존: if ((pLv > curLv && pLv < tarLv) || (pLv === curLv && !alreadyPromotedCur)) {
+        if ((pLv > curLv && pLv <= tarLv) || (pLv === curLv && !alreadyPromotedCur)) {
           promoCost += DRAGON_PROMO_COSTS[pLv];
           includedPromos.push(`Lv.${pLv}(${formatKoreanNumber(DRAGON_PROMO_COSTS[pLv])})`);
         }
@@ -10451,7 +10452,8 @@
     const elisiaAwk = parseInt(document.getElementById('rune_elisia_awk')?.value ?? '-1', 10);
     const overdriveAwk = parseInt(document.getElementById('rune_overdrive_awk')?.value ?? '-1', 10);
     const hasSolaris9 = (document.getElementById('rune_cond_solaris9')?.value === '1');
-    const isGrad = (overdriveAwk > elisiaAwk) && hasSolaris9;
+    // 기존: const isGrad = (overdriveAwk > elisiaAwk) && hasSolaris9;
+    const isGrad = hasSolaris9 && (overdriveAwk >= 3 || overdriveAwk > elisiaAwk);
 
     let bestScore = -1, bestRing = null, bestNeck = null;
     for (const r of (ownedRings.length ? ownedRings : [null])) {
