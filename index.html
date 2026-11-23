@@ -11920,29 +11920,30 @@
   }
 
  // 보유 보석을 장착된 코어들에 최적 배분 (사슬 한도 maxCap 내 4칸 꽉 채움 · 포인트 맥스/맥스오버 허용 · 공/증폭 최대화)
+  // 보유 보석을 장착된 코어들에 최적 배분 (사슬 리밋 내 실제 log10 곱연산 최대화 · 포인트 맥스오버 허용 · 24칸 공×증폭 밸런싱)
   function allocateGemsToCores(equippedCores) {
     if (!ownedSoulGems.length || !equippedCores.length) return null;
     const tierWeight = { ancient: 5, mythic: 4, legend: 3, unique: 2, advanced: 1 };
 
-    const tierPriority = { ancient: 5, mythic: 4, legend: 3, unique: 2, advanced: 1 };
     const coreIndices = equippedCores.map((_, i) => i).sort((a, b) => {
       const ca = equippedCores[a], cb = equippedCores[b];
-      if (tierPriority[cb.tier] !== tierPriority[ca.tier]) return tierPriority[cb.tier] - tierPriority[ca.tier];
+      if (tierWeight[cb.tier] !== tierWeight[ca.tier]) return tierWeight[cb.tier] - tierWeight[ca.tier];
       return getSingleInstanceScore(cb) - getSingleInstanceScore(ca);
     });
 
     const usedGemIds = new Set();
     const assignments = Array.from({ length: equippedCores.length }, () => []);
+    let runningAtkSum = 0;
+    let runningAmpSum = 0;
 
     coreIndices.forEach(cIdx => {
       const inst = equippedCores[cIdx];
       const maxCap = CORE_TIER_META[inst.tier].maxCap;
-      const targetP = CORE_TIER_META[inst.tier].maxP;
 
       const remaining = ownedSoulGems.filter(g => !usedGemIds.has(g.id));
       if (!remaining.length) return;
 
-      // 후보 풀 구성: 높은 스탯(공+증폭) / 높은 포인트 / 낮은 사슬 보석이 빠지지 않도록 최대 24개 균형 선별
+      // 후보 풀 구성: 높은 스탯 / 높은 포인트 / 낮은 사슬 균형 선별 (최대 24개)
       const byStat = [...remaining].sort((a, b) => ((b.atk || 0) + (b.amp || 0)) - ((a.atk || 0) + (a.amp || 0)) || tierWeight[b.tier] - tierWeight[a.tier] || b.pt - a.pt);
       const byPt   = [...remaining].sort((a, b) => b.pt - a.pt || tierWeight[b.tier] - tierWeight[a.tier] || a.chain - b.chain);
       const byCh   = [...remaining].sort((a, b) => a.chain - b.chain || b.pt - a.pt);
@@ -11953,6 +11954,7 @@
       pushTop(byCh, 8);
       const avail = Array.from(candSet);
 
+      const baseGemLog10 = Math.log10(1 + runningAtkSum / 100) + Math.log10(1 + runningAmpSum / 100);
       let bestSubset = [];
       let bestScore = -1;
 
@@ -11968,19 +11970,27 @@
         // 사슬 한도 초과만 유일한 하드 제한! (포인트 맥스 오버는 100% 허용)
         if (cSum > maxCap) return -1;
 
+        // 1) 이 코어에서 pSum으로 실제 해금되는 코어 배율 (log10)
         const unlocked = getCoreUnlockedStatsByPoints(inst.tier, inst.core, pSum);
-        // 1순위: 코어 단계별 해금 (32P/28P/24P 증폭, 20P/16P/12P 테마, 18P/14P/10P 공격력) + 목표 포인트 달성
-        const ampTierScore = unlocked.ampPct >= 546000 ? 500000 : (unlocked.ampPct >= 6000 ? 80000 : (unlocked.ampPct >= 1000 ? 20000 : 0));
-        const unlockScore = ampTierScore + (unlocked.effStep * 15000) + (unlocked.atkPct * 5) + (Math.min(pSum, targetP) * 100);
+        const c = inst.core;
+        let themeMult = 1;
+        if (unlocked.effStep > 0) {
+          if (c.isHyperRate) themeMult = unlocked.effStep === 1 ? 150 : (unlocked.effStep === 2 ? 500 : 2000);
+          else if (c.isHyperDmg) themeMult = unlocked.effStep === 1 ? 25 : (unlocked.effStep === 2 ? 925 : 123425);
+          else if (c.isMark) themeMult = unlocked.effStep === 1 ? 5 : (unlocked.effStep === 2 ? 1000 : 1200000);
+          else if (c.isAwkSkill) themeMult = (unlocked.effStep === 1 ? 50 : (unlocked.effStep === 2 ? 350 : 3850)) / 100;
+          else themeMult = Math.max(1, (unlocked.effStep === 1 ? c.p12 : (unlocked.effStep === 2 ? (c.p12 + c.p16) : (c.p12 + c.p16 + c.p20))) / 100);
+        }
+        const coreLog10 = Math.log10(1 + unlocked.atkPct / 100) + Math.log10(1 + unlocked.ampPct / 100) + Math.log10(Math.max(1, themeMult));
 
-        // 2순위: 보석 공격력 + 공격력 증폭 최대화 (절대 코어 해금을 깨지 않으면서 스탯 최우선 선택)
-        const statLogScore = (atkSum > 0 || ampSum > 0) ? Math.log10((1 + atkSum / 100) * (1 + ampSum / 100)) * 450 : 0;
-        const statTieScore = Math.min(800, (atkSum + ampSum) * 1e-4);
+        // 2) 전체 24칸 기준 (누적 보석 공%) × (누적 보석 증폭%) 실제 곱연산 상승분 (log10)
+        const nextGemLog10 = Math.log10(1 + (runningAtkSum + atkSum) / 100) + Math.log10(1 + (runningAmpSum + ampSum) / 100);
+        const gemDeltaLog10 = nextGemLog10 - baseGemLog10;
 
-        // 3순위: 4칸 꽉 채우기 + 높은 보석 등급 + 사슬 한도 꽉 활용(저사슬 보석을 하위 코어용으로 보존) + 포인트 오버 보너스
-        const fillAndTierScore = (sub.length * 120) + (tierSum * 40) + (cSum * 0.8) + (Math.max(0, pSum - targetP) * 2);
+        // 3) 동률(또는 공/증폭 미입력)일 때만 작용하는 보조 정렬: 4칸 풀충전 ➔ 고등급 보석 ➔ 포인트 맥스/오버 ➔ 사슬 한도 풀활용
+        const tieBreaker = (sub.length * 0.001) + (tierSum * 0.0002) + (pSum * 0.00005) + (cSum * 0.00001);
 
-        return unlockScore + statLogScore + statTieScore + fillAndTierScore;
+        return coreLog10 + gemDeltaLog10 + tieBreaker;
       }
 
       const N = avail.length;
@@ -12001,7 +12011,11 @@
         }
       }
 
-      bestSubset.forEach(g => usedGemIds.add(g.id));
+      bestSubset.forEach(g => {
+        usedGemIds.add(g.id);
+        runningAtkSum += (g.atk || 0);
+        runningAmpSum += (g.amp || 0);
+      });
       assignments[cIdx] = bestSubset;
     });
 
