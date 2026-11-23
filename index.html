@@ -380,6 +380,31 @@
     }
     .donation-kakaopay-btn:active { transform: scale(0.98); }
 
+    .donation-toss-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      margin: 0 0 10px 0;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #3182f6 0%, #1b64da 100%);
+      border: 2px solid #93c5fd;
+      color: #ffffff !important;
+      font-size: 13.5px;
+      font-weight: 900;
+      box-shadow: 0 6px 18px rgba(49, 130, 246, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    .donation-toss-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(49, 130, 246, 0.7), 0 0 14px rgba(147, 197, 253, 0.55);
+      background: linear-gradient(135deg, #4b94ff 0%, #2563eb 100%);
+    }
+    .donation-toss-btn:active { transform: scale(0.98); }
+
     /* ==================== 3. 링크 바 · 통합 검색 · 멀티 슬롯 · 서랍 위젯 ==================== */
     .lounge-link-banner {
       background: linear-gradient(90deg, rgba(30, 27, 75, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
@@ -3781,9 +3806,22 @@
                 </div>
                 <span style="font-size:15px; font-weight:900; color:#191919;">➔</span>
               </a>
-              <div style="font-size:10.5px; color:#94a3b8; line-height:1.4; background:rgba(15,23,42,0.7); padding:6px 8px; border-radius:8px; border:1px solid #334155;">
-                📱 <strong style="color:#38bdf8;">모바일:</strong> 위 노란색 버튼 터치 시 카카오톡 송금 바로 연동<br>
-                💻 <strong style="color:#fde047;">PC 환경:</strong> 스마트폰으로 접속 후 터치해 주세요!
+              <button type="button" class="donation-toss-btn" onclick="openTossQrModal(event)">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;">
+                    <rect width="24" height="24" rx="6" fill="#ffffff"/>
+                    <path d="M16.8 9.2C16.2 7.2 14.3 5.8 12.1 5.8C9.3 5.8 7 8 7 10.8C7 12.3 7.7 13.7 8.8 14.6C8.6 15.8 8 16.9 7.2 17.6C8.8 17.5 10.4 16.8 11.4 15.8C11.6 15.8 11.9 15.8 12.1 15.8C14.9 15.8 17.2 13.6 17.2 10.8C17.2 10.2 17.1 9.7 16.8 9.2Z" fill="#0064FF"/>
+                  </svg>
+                  <div style="text-align:left; line-height:1.2;">
+                    <div style="font-size:13.5px; font-weight:900; color:#ffffff;">토스(Toss)로 따뜻한 커피 한 잔</div>
+                    <div style="font-size:10px; font-weight:700; color:#dbeafe;">PC·모바일 클릭 시 토스 QR코드 표시</div>
+                  </div>
+                </div>
+                <span style="font-size:15px; font-weight:900; color:#ffffff;">➔</span>
+              </button>
+              <div style="font-size:10.5px; color:#94a3b8; line-height:1.45; background:rgba(15,23,42,0.7); padding:6px 8px; border-radius:8px; border:1px solid #334155;">
+                <strong style="color:#fde047;">카카오페이:</strong> 모바일 터치 시 카카오톡 송금 바로 연동<br>
+                <strong style="color:#60a5fa;">토스(Toss):</strong> PC·모바일 모두 QR코드 스캔으로 간편 응원
               </div>
             </div>
           </div>
@@ -4446,6 +4484,32 @@
         <div style="margin-top:14px;">
           <button type="button" onclick="closeRuneCondModal()" class="cond-open-btn" style="width:100%; padding:10px;">설정 완료 (닫기)</button>
         </div>
+      </div>
+    </div>
+
+    <!-- 토스(Toss) 후원 QR코드 팝업 모달 -->
+    <div class="help-modal-overlay" id="toss_qr_modal_overlay" style="z-index: 10012;" onclick="if(event.target===this) closeTossQrModal()">
+      <div class="help-modal-box" style="max-width: 380px; border: 2px solid #3182f6; background: linear-gradient(165deg, #0f172a 0%, #172554 60%, #0b1120 100%); padding: 22px 20px; text-align: center; box-shadow: 0 22px 50px rgba(0,0,0,0.85), 0 0 26px rgba(49,130,246,0.45);" onclick="event.stopPropagation()">
+        <div class="help-modal-header" style="margin-bottom: 14px; border-bottom-color: rgba(147,197,253,0.3);">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#3182f6; box-shadow:0 0 10px #60a5fa;"></span>
+            <span class="help-modal-title" style="font-size:16.5px; color:#dbeafe;">토스(Toss) 후원 QR코드</span>
+          </div>
+          <button type="button" class="help-modal-close" onclick="closeTossQrModal()">✕</button>
+        </div>
+
+        <div style="background:#ffffff; border-radius:16px; padding:12px; display:inline-block; box-shadow:0 8px 24px rgba(0,0,0,0.5); margin-bottom:14px;">
+          <img src="images/donation.jpg" alt="토스 후원 QR코드"
+               onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/donation.JPG';}else if(this.dataset.f==1){this.dataset.f=2;this.src='donation.jpg';}else if(this.dataset.f==2){this.dataset.f=3;this.src='images/donation.png';}else{this.onerror=null;}"
+               style="width:240px; max-width:100%; height:auto; display:block; border-radius:10px;">
+        </div>
+
+        <div style="font-size:12.5px; color:#cbd5e1; line-height:1.55; margin-bottom:14px; word-break:keep-all;">
+          스마트폰 카메라 또는 <strong style="color:#60a5fa;">토스 앱 QR 스캔</strong>으로 간편하게 응원해 주실 수 있습니다.<br>
+          <span style="color:#fde047; font-weight:700;">따뜻한 응원 정말 감사합니다!</span>
+        </div>
+
+        <button type="button" onclick="closeTossQrModal()" style="width:100%; background:linear-gradient(135deg, #3182f6 0%, #1b64da 100%); border:1.5px solid #93c5fd; color:#ffffff; font-size:13.5px; font-weight:900; padding:10px; border-radius:10px; cursor:pointer;">닫기</button>
       </div>
     </div>
 
@@ -6437,6 +6501,19 @@
     } else if (donWrap) {
       donWrap.classList.remove('open-mobile');
     }
+  }
+
+  function openTossQrModal(e) {
+    if (e) e.stopPropagation();
+    const donWrap = document.getElementById('header_donation_widget');
+    if (donWrap) donWrap.classList.remove('open-mobile');
+    const modal = document.getElementById('toss_qr_modal_overlay');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  function closeTossQrModal() {
+    const modal = document.getElementById('toss_qr_modal_overlay');
+    if (modal) modal.style.display = 'none';
   }
 
   function getAutoSeasonByMonth() {
@@ -15596,6 +15673,7 @@
         ['sc_cond_modal_overlay',     () => closeScCondModal()],
         ['rune_cond_modal_overlay',   () => closeRuneCondModal()],
         ['master_inv_modal_overlay',  () => closeMasterInventoryModal()],
+        ['toss_qr_modal_overlay',     () => closeTossQrModal()],
         ['help_modal_overlay',        () => closeHelpModal()]
       ];
       for (const [id, fn] of modals) {
