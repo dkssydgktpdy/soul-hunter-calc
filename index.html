@@ -3783,6 +3783,95 @@
       color: #fecdd3 !important;
       font-weight: 900;
     }
+    /* 진단실 1~4차 특성 전용 서브탭 (선택된 1개만 명확하게 점등) */
+    .diag-subtab-bar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+      background: #090d16;
+      padding: 6px;
+      border-radius: 11px;
+      border: 1.5px solid #26334a;
+      margin-bottom: 14px;
+    }
+    .diag-subtab-btn {
+      background: #11192c;
+      border: 1.5px solid #2d3b54;
+      border-radius: 8px;
+      padding: 9px 6px;
+      color: #94a3b8;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .diag-subtab-btn:hover { border-color: #64748b; color: #e2e8f0; }
+    .diag-subtab-btn.active {
+      background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
+      border: 2px solid #fde047;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.5);
+    }
+
+    /* 룬 등급별 선명한 색상 구분 (고대=하늘 / 영원=초록 / 불멸=빨강) */
+    #mode_stage_diag_container .rune-slot-block.tier-ancient {
+      border: 2px solid #22d3ee;
+      border-left: 5px solid #06b6d4;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.34) 0%, #0b1929 100%);
+    }
+    #mode_stage_diag_container .rune-slot-block.tier-ancient .rune-slot-name { color: #a5f3fc; }
+
+    #mode_stage_diag_container .rune-slot-block.tier-eternal {
+      border: 2px solid #34d399;
+      border-left: 5px solid #10b981;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.34) 0%, #071f1a 100%);
+    }
+    #mode_stage_diag_container .rune-slot-block.tier-eternal .rune-slot-name { color: #a7f3d0; }
+
+    #mode_stage_diag_container .rune-slot-block.tier-immortal {
+      border: 2px solid #fb7185;
+      border-left: 5px solid #f43f5e;
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.36) 0%, #260a14 100%);
+    }
+    #mode_stage_diag_container .rune-slot-block.tier-immortal .rune-slot-name { color: #fecdd3; }
+
+    /* 룬 선택 팝업 모달 카드 등급 색상 */
+    .diag-rune-card.tier-ancient {
+      border-color: rgba(34, 211, 238, 0.72) !important;
+      border-left: 4px solid #06b6d4 !important;
+      background: linear-gradient(145deg, rgba(6, 182, 212, 0.24) 0%, #0f172a 100%) !important;
+    }
+    .diag-rune-card.tier-ancient .item-box-name { color: #a5f3fc !important; }
+
+    .diag-rune-card.tier-eternal {
+      border-color: rgba(52, 211, 153, 0.72) !important;
+      border-left: 4px solid #10b981 !important;
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.24) 0%, #0f172a 100%) !important;
+    }
+    .diag-rune-card.tier-eternal .item-box-name { color: #a7f3d0 !important; }
+
+    .diag-rune-card.tier-immortal {
+      border-color: rgba(251, 113, 133, 0.78) !important;
+      border-left: 4px solid #f43f5e !important;
+      background: linear-gradient(145deg, rgba(244, 63, 94, 0.28) 0%, #1c0b12 100%) !important;
+    }
+    .diag-rune-card.tier-immortal .item-box-name { color: #fecdd3 !important; }
+    .diag-rune-card.selected {
+      border-color: #fde047 !important;
+      box-shadow: 0 0 14px rgba(250, 204, 21, 0.55) !important;
+    }
+
+    .diag-tier-pill-immortal.selected { background: linear-gradient(135deg, #e11d48, #881337) !important; border-color: #fda4af !important; }
+    .diag-tier-pill-eternal.selected  { background: linear-gradient(135deg, #059669, #064e3b) !important; border-color: #6ee7b7 !important; }
+    .diag-tier-pill-ancient.selected  { background: linear-gradient(135deg, #0891b2, #164e63) !important; border-color: #67e8f9 !important; }
+
+    @media (max-width: 720px) {
+      .diag-subtab-bar { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 720px) {
       .diag-stage-input-grid, .diag-dual-dash { grid-template-columns: 1fr; }
       .diag-switch-bar { grid-template-columns: 1fr; gap: 6px; }
@@ -14661,14 +14750,19 @@
       ];
       tip = `Lv.75~79 (4슬롯): 4번 슬롯의 일반 낙인을 상위 75렙 [${getTrait4LinkById(brand2Id).name}(+2만% + 상태이상 +8만% 곱연산)]으로 교체합니다!`;
     } else {
+      const slot5 = elem === 'fire'
+        ? { skill: '그림자 포효', linkId: 'brand_dark', note: '불앜메 5슬롯 종결! (발견: 탑팀x라온·탑팀x노자님)' }
+        : { skill: '엘리멘탈 차지', linkId: 'flash_focus', note: '5슬롯 모스피 +15,000%' };
       slots = [
         { skill: mainSk, linkId: 'cycle_shift2', note: '4차 주력기 최종 종결' },
         { skill: '오버드라이브', linkId: 'trans_limit', note: '돌파+100% · 각성+700%' },
         { skill: debSk, linkId: brand2Id, note: '주속성 75렙 상위 낙인' },
         { skill: '지옥불베기', linkId: 'brand_fire', note: '화염 스킬이라 전속성 발동!' },
-        { skill: '엘리멘탈 차지', linkId: 'flash_focus', note: '5슬롯 모스피 +15,000%' }
+        slot5
       ];
-      tip = 'Lv.80 (5슬롯 최종 종결): 주스킬 [주기 전환 II] · 옵드 [한계 초월] · 주속성 디버프 [75렙 상위 낙인] · 지옥불베기 [작열의 낙인(불베기가 화염 속성이라 번개/어둠 앜메도 발동!)] · 5슬롯 [엘리멘탈 차지 + 찰나의 집중]으로 최종 완성됩니다!';
+      tip = elem === 'fire'
+        ? 'Lv.80 (5슬롯 불속성 최종 종결): 주스킬 [주기 전환 II] · 옵드 [한계 초월] · 불벼락 [열상의 낙인] · 지옥불베기 [작열의 낙인] · 5슬롯은 기존 [엘리멘탈 차지 + 찰나의 집중]보다 실전 효율이 훨씬 높은 [그림자 포효 + 혼돈의 낙인(Lv.45)]으로 최종 완성됩니다! (발견 제보: 탑팀x라온님 · 탑팀x노자님)'
+        : 'Lv.80 (5슬롯 최종 종결): 주스킬 [주기 전환 II] · 옵드 [한계 초월] · 주속성 디버프 [75렙 상위 낙인] · 지옥불베기 [작열의 낙인(불베기가 화염 속성이라 번개/어둠 앜메도 발동!)] · 5슬롯 [엘리멘탈 차지 + 찰나의 집중]으로 최종 완성됩니다!';
     }
     return { unlockedSlots, slots, tip, mainSk, use4th, has4thInInv, sk3, sk4 };
   }
@@ -16689,9 +16783,26 @@
     triggerAutoSave();
   }
 
+  function clampStageInputEl(el, maxVal) {
+    if (!el) return '';
+    const raw = (el.value || '').trim();
+    if (raw === '') return '';
+    const num = parseInt(raw, 10);
+    if (isNaN(num)) return '';
+    if (num > maxVal) {
+      el.value = String(maxVal);
+      return String(maxVal);
+    }
+    if (num < 1) {
+      el.value = '1';
+      return '1';
+    }
+    return String(num);
+  }
+
   function onMasterInvStageInput() {
-    const rawC = (document.getElementById('minv_cur_chap')?.value || '').trim();
-    const rawS = (document.getElementById('minv_cur_sub')?.value || '').trim();
+    const rawC = clampStageInputEl(document.getElementById('minv_cur_chap'), 1510);
+    const rawS = clampStageInputEl(document.getElementById('minv_cur_sub'), 50);
     if (rawC === '' || rawS === '') return;
     syncStageEverywhere(rawC, rawS, 'minv');
   }
@@ -16702,12 +16813,12 @@
   }
 
   function onStageDiagInputChange() {
-    const rawC = (document.getElementById('diag_cur_chap')?.value || '').trim();
-    const rawS = (document.getElementById('diag_cur_sub')?.value || '').trim();
-    const rawTC = (document.getElementById('diag_tar_chap')?.value || '').trim();
-    const rawTS = (document.getElementById('diag_tar_sub')?.value || '').trim();
-    if (rawTC !== '') stageDiagState.tarC = Math.max(1, Math.min(1510, parseInt(rawTC, 10) || 1));
-    if (rawTS !== '') stageDiagState.tarS = Math.max(1, Math.min(50, parseInt(rawTS, 10) || 1));
+    const rawC  = clampStageInputEl(document.getElementById('diag_cur_chap'), 1510);
+    const rawS  = clampStageInputEl(document.getElementById('diag_cur_sub'), 50);
+    const rawTC = clampStageInputEl(document.getElementById('diag_tar_chap'), 1510);
+    const rawTS = clampStageInputEl(document.getElementById('diag_tar_sub'), 50);
+    if (rawTC !== '') stageDiagState.tarC = parseInt(rawTC, 10);
+    if (rawTS !== '') stageDiagState.tarS = parseInt(rawTS, 10);
     if (rawC !== '' && rawS !== '') {
       syncStageEverywhere(rawC, rawS, 'diag');
     } else {
@@ -17132,20 +17243,28 @@
       return;
     }
 
-    // 3. 내 현재 특성 (1·2·3·4차 서브 스위치)
+    // 3. 내 현재 특성 (1·2·3·4차 전용 서브 스위치 + 인라인 레벨 조절)
     const jMeta = JOB_NAMES_FULL[guideJob];
     const tStep = stageDiagState.activeTraitStep;
-    const subTabs = `<div class="radio-pill-group" style="margin-bottom:14px;">
+    const subTabs = `<div class="diag-subtab-bar">
       ${[
         { s:1, l:`1차 특성 (Lv.${currentTrait1stLv})`, diff: rep.t1Diff },
         { s:2, l:`2차 트리 (Lv.${currentTrait2ndLv})`, diff: rep.t2DeltaLog > 0.002 },
         { s:3, l:`3차 특화 (Lv.${currentTrait3rdLv})`, diff: rep.t3DiffCnt > 0 },
         { s:4, l:`4차 링크 (Lv.${currentTrait4thLv})`, diff: rep.t4Diff }
-      ].map(it => `<div class="radio-pill tier-step-${it.s} ${tStep===it.s?'selected':''}" onclick="switchStageDiagTraitStep(${it.s})" style="display:flex; align-items:center; justify-content:center; gap:6px; padding:9px 6px; font-size:12.5px;">
-        ${UI_SVG.roman(it.s, 20)}<span>${it.l}</span>
+      ].map(it => `<button type="button" class="diag-subtab-btn ${tStep===it.s?'active':''}" onclick="switchStageDiagTraitStep(${it.s})">
+        ${UI_SVG.roman(it.s, 18)}<span>${it.l}</span>
         ${it.diff ? `<span class="mini-tag" style="background:#e11d48; color:#fff;">변경</span>` : ''}
-      </div>`).join('')}
+      </button>`).join('')}
     </div>`;
+
+    const mkLvInlineCtrl = (step, curVal, minV, maxV, stepAmt) => `
+      <div style="display:inline-flex; align-items:center; gap:5px; background:#090e1a; border:1px solid #334155; border-radius:8px; padding:3px 6px;">
+        <span style="font-size:11px; color:#94a3b8; font-weight:800;">${step}차 Lv</span>
+        <button type="button" class="minv-step-btn" style="width:24px; height:24px; font-size:12px;" onclick="setDiagTraitLv(${step}, ${curVal - stepAmt})">-</button>
+        <input type="number" min="${minV}" max="${maxV}" value="${curVal}" onchange="setDiagTraitLv(${step}, this.value)" style="width:52px; padding:2px 4px; text-align:center; font-size:13px; font-weight:900; color:#fde047; background:#131d33; border:1px solid #475569;">
+        <button type="button" class="minv-step-btn" style="width:24px; height:24px; font-size:12px;" onclick="setDiagTraitLv(${step}, ${curVal + stepAmt})">+</button>
+      </div>`;
 
     if (tStep === 1) {
       const rec1 = getRecommended1stTraits(guideJob, currentTrait1stLv, traitUseOvergrowth);
@@ -17174,7 +17293,10 @@
 
       body.innerHTML = `${subTabs}
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-          <span style="font-size:12.5px; color:#cbd5e1;">[${jMeta.c1} · 1차 Lv.${currentTrait1stLv}] 현재 장착 중인 1차 특성 5슬롯을 클릭해 선택하세요.</span>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            ${mkLvInlineCtrl(1, currentTrait1stLv, 1, 150, 5)}
+            <span style="font-size:12px; color:#cbd5e1;">[${jMeta.c1}] 슬롯을 클릭해 장착 특성을 선택하세요.</span>
+          </div>
           <div style="display:flex; gap:6px;">
             <button type="button" onclick="copyRecTrait1ToDiag()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">추천 그대로 복사</button>
             <button type="button" onclick="clearDiagTrait1()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">비우기</button>
@@ -17217,8 +17339,9 @@
 
       body.innerHTML = `${subTabs}
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-          <div style="display:flex; gap:6px; flex-wrap:wrap; font-size:12px; font-weight:800;">
-            <span class="cond-chip is-on">2차 Lv.${lv} 총 TP: <strong style="color:#fde047;">${totalTP}P</strong></span>
+          <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; font-size:12px; font-weight:800;">
+            ${mkLvInlineCtrl(2, lv, 1, 180, 5)}
+            <span class="cond-chip is-on">총 TP: <strong style="color:#fde047;">${totalTP}P</strong></span>
             <span class="cond-chip ${remTP<0?'is-warn':'is-on'}">사용 ${userT2.usedTP}P · 잔여 <strong style="color:${remTP<0?'#f87171':'#34d399'};">${remTP}P</strong></span>
           </div>
           <div style="display:flex; gap:6px;">
@@ -17270,7 +17393,10 @@
 
       body.innerHTML = `${subTabs}
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-          <span style="font-size:12.5px; color:#cbd5e1;">[${jMeta.c3} · 3차 Lv.${currentTrait3rdLv}] 현재 찍어둔 칸을 직접 클릭해 선택하세요.</span>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            ${mkLvInlineCtrl(3, currentTrait3rdLv, 0, 45, 5)}
+            <span style="font-size:12px; color:#cbd5e1;">[${jMeta.c3}] 현재 찍어둔 칸을 직접 클릭해 선택하세요.</span>
+          </div>
           <div style="display:flex; gap:6px;">
             <button type="button" onclick="copyRecTrait3ToDiag()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">추천 그대로 복사</button>
             <button type="button" onclick="clearDiagTrait3()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">비우기</button>
@@ -17306,7 +17432,7 @@
     const unlockLvs = [5, 20, 40, 60, 80];
     const cards4 = [0, 1, 2, 3, 4].map(idx => {
       if (currentTrait4thLv < unlockLvs[idx]) {
-        return `<div class="trait4-slot-card is-locked"><div style="font-size:12px; font-weight:900; color:#f87171;">슬롯 ${idx + 1}</div><div style="font-size:11px; color:#94a3b8;">Lv.${unlockLvs[idx]} 해금</div></div>`;
+        return `<div class="trait4-slot-card is-locked"><div style="font-size:12px; font-weight:900; color:#f87171;">슬롯 ${idx + 1}</div><div style="font-size:11px; color:#94a3b8;">4차 Lv.${unlockLvs[idx]} 해금</div></div>`;
       }
       const cur = stageDiagState.trait4[idx];
       if (!cur || !cur.linkId) {
@@ -17326,13 +17452,18 @@
       </div>`;
     }).join('');
 
-    const b4 = rep.t4Diff
-      ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13.5px;">4차 소울 링크 추천 변경사항 발생!</strong></div><button type="button" class="diag-goto-btn" onclick="openTraitHelperFromHub(); changeTraitTabStep(4);">4차 소울 링크 도우미로 이동 ➔</button></div>`
-      : (rep.t4FilledCnt > 0 ? `<div class="diag-alert-banner all-good"><strong style="color:#6ee7b7; font-size:13px;">현재 4차 소울 링크가 추천 조합과 일치합니다.</strong></div>` : '');
+    const b4 = currentTrait4thLv < 5
+      ? `<div style="background:rgba(250,204,21,0.1); border:1px solid rgba(250,204,21,0.45); border-radius:10px; padding:9px 12px; margin-bottom:10px; font-size:12px; color:#fde047;">현재 4차 레벨이 Lv.${currentTrait4thLv}로 설정되어 슬롯이 잠겨 있습니다. 위 <strong>[4차 Lv]</strong> 입력칸에서 본인 4차 레벨(Lv.5~80)을 먼저 입력해 주세요!</div>`
+      : (rep.t4Diff
+        ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13.5px;">4차 소울 링크 추천 변경사항 발생!</strong></div><button type="button" class="diag-goto-btn" onclick="openTraitHelperFromHub(); changeTraitTabStep(4);">4차 소울 링크 도우미로 이동 ➔</button></div>`
+        : (rep.t4FilledCnt > 0 ? `<div class="diag-alert-banner all-good"><strong style="color:#6ee7b7; font-size:13px;">현재 4차 소울 링크가 추천 조합과 일치합니다.</strong></div>` : ''));
 
     body.innerHTML = `${subTabs}
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-        <span style="font-size:12.5px; color:#cbd5e1;">[${jMeta.c4} · 4차 Lv.${currentTrait4thLv}] 현재 장착 중인 소울 링크 슬롯을 클릭해 선택하세요.</span>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          ${mkLvInlineCtrl(4, currentTrait4thLv, 0, 80, 5)}
+          <span style="font-size:12px; color:#cbd5e1;">[${jMeta.c4}] 슬롯을 클릭해 장착 링크를 선택하세요.</span>
+        </div>
         <div style="display:flex; gap:6px;">
           <button type="button" onclick="copyRecTrait4ToDiag()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">추천 그대로 복사</button>
           <button type="button" onclick="clearDiagTrait4()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">비우기</button>
@@ -17340,6 +17471,31 @@
       </div>
       ${b4}
       <div class="trait4-link-board ${isReaper?'reaper-theme':''}"><div class="trait4-slot-grid">${cards4}</div></div>`;
+  }
+
+  function setDiagTraitLv(step, rawVal) {
+    const val = parseInt(rawVal, 10);
+    if (isNaN(val)) return;
+    if (step === 1) {
+      currentTrait1stLv = Math.max(1, Math.min(150, val));
+      const el = document.getElementById('jc1_cur_lv'); if (el) el.value = String(currentTrait1stLv);
+      const mv = document.getElementById('minv_job1_lv'); if (mv) mv.value = String(currentTrait1stLv);
+    } else if (step === 2) {
+      currentTrait2ndLv = Math.max(1, Math.min(180, val));
+      const el = document.getElementById('jc2_cur_lv'); if (el) el.value = String(currentTrait2ndLv);
+      const mv = document.getElementById('minv_job2_lv'); if (mv) mv.value = String(currentTrait2ndLv);
+    } else if (step === 3) {
+      currentTrait3rdLv = Math.max(0, Math.min(45, val));
+      const el = document.getElementById('jc3_cur_lv'); if (el) el.value = String(currentTrait3rdLv);
+      const mv = document.getElementById('minv_job3_lv'); if (mv) mv.value = String(currentTrait3rdLv);
+    } else if (step === 4) {
+      currentTrait4thLv = Math.max(0, Math.min(80, val));
+      const el = document.getElementById('jc4_cur_lv'); if (el) el.value = String(currentTrait4thLv);
+      const mv = document.getElementById('minv_job4_lv'); if (mv) mv.value = String(currentTrait4thLv);
+    }
+    if (typeof syncSoulConnectJobLv === 'function') syncSoulConnectJobLv();
+    renderStageDiagAll();
+    triggerAutoSave();
   }
 
   function clickDiagT2Root(tab) {
@@ -17428,9 +17584,14 @@
     const q = (document.getElementById('diag_picker_search_input')?.value || '').trim().toLowerCase();
 
     if (diagPickerCtx.type === 'rune') {
-      const tiers = [{ k:'all', l:'전체 등급' }, { k:'immortal', l:'불멸' }, { k:'eternal', l:'영원' }, { k:'ancient', l:'고대' }];
+      const tiers = [
+        { k:'all',      l:'전체 등급', cls:'' },
+        { k:'immortal', l:'불멸',     cls:'diag-tier-pill-immortal' },
+        { k:'eternal',  l:'영원',     cls:'diag-tier-pill-eternal' },
+        { k:'ancient',  l:'고대',     cls:'diag-tier-pill-ancient' }
+      ];
       ctrlEl.innerHTML = `<div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;">
-        <div class="radio-pill-group" style="flex:1;">${tiers.map(t => `<div class="radio-pill ${diagPickerCtx.tierFilter===t.k?'selected':''}" onclick="diagPickerCtx.tierFilter='${t.k}'; renderDiagPickerList();" style="padding:6px; font-size:12px;">${t.l}</div>`).join('')}</div>
+        <div class="radio-pill-group" style="flex:1;">${tiers.map(t => `<div class="radio-pill ${t.cls} ${diagPickerCtx.tierFilter===t.k?'selected':''}" onclick="diagPickerCtx.tierFilter='${t.k}'; renderDiagPickerList();" style="padding:6px; font-size:12px;">${t.l}</div>`).join('')}</div>
         <button type="button" onclick="pickDiagRune(null)" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:6px 11px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">장착 해제</button>
       </div>`;
 
@@ -17440,7 +17601,7 @@
       wrapEl.innerHTML = `<div class="item-compact-grid">${list.map(r => {
         const isSel = stageDiagState.runes[diagPickerCtx.slotKey] === r.id;
         const isOwned = ownedRunes.has(r.id);
-        return `<div class="item-select-box ${isSel?'selected':''}" onclick="pickDiagRune('${r.id}')">
+        return `<div class="item-select-box diag-rune-card tier-${r.tier} ${isSel?'selected':''}" onclick="pickDiagRune('${r.id}')">
           <div class="item-box-badges">
             ${isOwned ? `<span class="mini-tag" style="background:#059669; color:#fff;">보유</span>` : ''}
             <span class="grade-badge ${getRuneTierBadgeClass(r.tier)}" style="font-size:9px; padding:1px 4px;">${getRuneTierKr(r.tier)}</span>
