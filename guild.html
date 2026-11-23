@@ -547,6 +547,25 @@
         </div>
       </div>
 
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:5px; font-size:12px; color:#6ee7b7; background:#0b1120; border:1px solid #059669; padding:4px 9px; border-radius:8px;">
+          <span>우리길드 참여인원 변동:</span>
+          <select id="sel_our_member_delta" onchange="onOurMemberDeltaChange(this.value)" style="background:#0f172a; border:1px solid #10b981; color:#fde047; padding:2px 6px; border-radius:5px; font-weight:800; font-size:12px;">
+            <option value="-3">-3명 (-50만)</option>
+            <option value="-2">-2명 (-33만)</option>
+            <option value="-1">-1명 (-16.5만)</option>
+            <option value="0" selected>0명 (전주 동일)</option>
+            <option value="1">+1명 (+16.5만)</option>
+            <option value="2">+2명 (+33만)</option>
+            <option value="3">+3명 (+50만)</option>
+          </select>
+        </div>
+
+        <button type="button" id="btn_major_update_boost" onclick="toggleMajorUpdateBoost()" style="background:#1e293b; border:1.5px solid #475569; color:#cbd5e1; padding:6px 13px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; transition:all 0.2s;">
+          <span id="major_update_btn_text">대형 업데이트 스펙업 상향: OFF (평시 기준)</span>
+        </button>
+      </div>
+
       <button type="button" id="btn_major_update_boost" onclick="toggleMajorUpdateBoost()" style="background:#1e293b; border:1.5px solid #475569; color:#cbd5e1; padding:6px 13px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; transition:all 0.2s;">
         <span id="major_update_btn_text">대형 업데이트 스펙업 상향: OFF (평시 기준)</span>
       </button>
@@ -1467,22 +1486,34 @@
   // 🔥 대형 업데이트 주간 스펙업 상향 토글 상태 (로컬 저장 지원)
   let isMajorUpdateWeek = localStorage.getItem('shk_guild_major_update_boost') === 'true';
 
+  let ourMemberDelta = parseInt(localStorage.getItem('shk_guild_our_member_delta') || '0', 10) || 0;
+  const ONE_MEMBER_3HIT_SCORE = 165000; // 1인 3타 평균 실측치 (약 16.5만점)
+
+  function onOurMemberDeltaChange(val) {
+    ourMemberDelta = parseInt(val, 10) || 0;
+    localStorage.setItem('shk_guild_our_member_delta', String(ourMemberDelta));
+    renderGuildStrategyAdvisor();
+    renderCurrentView();
+  }
+
   function updateMajorBoostBtnUI() {
     const btn = document.getElementById('btn_major_update_boost');
     const txt = document.getElementById('major_update_btn_text');
+    const memSel = document.getElementById('sel_our_member_delta');
+    if (memSel) memSel.value = String(ourMemberDelta);
     if (!btn || !txt) return;
     if (isMajorUpdateWeek) {
       btn.style.background = 'linear-gradient(135deg, #dc2626 0%, #991b1b 100%)';
       btn.style.borderColor = '#fde047';
       btn.style.color = '#ffffff';
       btn.style.boxShadow = '0 0 12px rgba(239, 68, 68, 0.45)';
-      txt.innerHTML = '대형 업데이트 스펙업 상향: <strong style="color:#fde047;">ON (+12%~+25%)</strong>';
+      txt.innerHTML = '대형 업데이트 스펙업 상향: <strong style="color:#fde047;">ON (+5%~+12% 실측)</strong>';
     } else {
       btn.style.background = '#1e293b';
       btn.style.borderColor = '#475569';
       btn.style.color = '#cbd5e1';
       btn.style.boxShadow = 'none';
-      txt.innerHTML = '대형 업데이트 스펙업 상향: <strong>OFF (평시 +3%~+15%)</strong>';
+      txt.innerHTML = '대형 업데이트 스펙업 상향: <strong>OFF (평시 +2%~+8% 실측)</strong>';
     }
   }
 
@@ -1494,24 +1525,23 @@
     renderCurrentView();
   }
 
-  // ★ 평시(보수적: +3%~+15%) vs 대형 업데이트 주간(인챈트·사혼·4차링크·신규신화 반영: +12%~+25%) 자동 전환!
+  // ★ 11월 2주차->3주차 114개 길드 전수 실측 기반 스펙업 배율 (인원 이탈/미참여 변동성 반영)
   function getGuildSpecUpMultiplier(guildPrevTotal, isSeasonDone = false) {
     if (isSeasonDone) return 1.0;
     const total = guildPrevTotal || 0;
 
     if (isMajorUpdateWeek) {
-      // 🔥 대형 업데이트 주간 ON: 810~900스테이지 이상 고투력 길드들도 인챈트/타나토스/4차링크로 대폭 상승!
-      if (total >= 6000000) return 1.12; // 초고점 길드: 기존 +3% -> +12%로 대폭 상향
-      if (total >= 3000000) return 1.16; // 상위 길드: 기존 +6% -> +16%로 상향
-      if (total >= 1000000) return 1.20; // 중상위 길드: 기존 +10% -> +20%로 상향
-      return 1.25;                       // 성장 길드: 기존 +15% -> +25%로 상향
+      if (total >= 5000000) return 1.05; // 500만+ 최상위 실측 중앙 +3.7% / P75 +5.7%
+      if (total >= 3000000) return 1.07; // 300~500만 상위 실측 중앙 +5.2%
+      if (total >= 1500000) return 1.09; // 150~300만 중상위 안정권 중앙 +7.2%
+      return 1.12;                       // 150만 미만 성장 구간
     }
 
-    // 평시 OFF: 기존 보수적 기준 유지
-    if (total >= 6000000) return 1.03;
-    if (total >= 3000000) return 1.06;
-    if (total >= 1000000) return 1.10;
-    return 1.15;
+    // 평시 OFF (자연 스펙업 기준)
+    if (total >= 5000000) return 1.02;
+    if (total >= 3000000) return 1.04;
+    if (total >= 1500000) return 1.06;
+    return 1.08;
   }
 
   /**
@@ -1605,7 +1635,9 @@
 
     const ONE_HIT_UNIT = 55000; // 중고투력 1회 타격(1타) 평균 기준치 (약 5.5만 점)
 
-    const ourExpectedCapacity = Math.max(Math.round(ourPrevTotal * ourSpecMult), ourCurTotal);
+    // 기존: const ourExpectedCapacity = Math.max(Math.round(ourPrevTotal * ourSpecMult), ourCurTotal);
+    const ourMemberAdj = ended ? 0 : (ourMemberDelta * ONE_MEMBER_3HIT_SCORE);
+    const ourExpectedCapacity = Math.max(Math.round(ourPrevTotal * ourSpecMult) + ourMemberAdj, ourCurTotal);
     const ourRemainingPower = ended ? 0 : Math.max(0, ourExpectedCapacity - ourCurTotal);
 
     const analyzedZones = ZONE_KEYS.map(zk => {
