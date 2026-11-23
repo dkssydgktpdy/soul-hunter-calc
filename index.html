@@ -3459,6 +3459,120 @@
       .minv-unit-row { grid-template-columns: repeat(2, 1fr); }
     }
 
+    /* ==================== 9.98 추천 배치 변경 인디케이터 & 스르륵 복사 토스트 ==================== */
+    @keyframes diffPulseGlow {
+      0%, 100% { box-shadow: 0 0 14px rgba(250, 204, 21, 0.72), inset 0 0 10px rgba(250, 204, 21, 0.22); }
+      50%      { box-shadow: 0 0 24px rgba(250, 204, 21, 0.98), inset 0 0 14px rgba(250, 204, 21, 0.35); }
+    }
+    .slot-diff-changed {
+      border: 2.5px solid #fde047 !important;
+      animation: diffPulseGlow 1.9s ease-in-out infinite;
+      position: relative;
+      z-index: 3;
+    }
+    .slot-diff-gem-only {
+      border-color: #22d3ee !important;
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.65) !important;
+    }
+    .slot-diff-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      margin-top: 4px;
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: rgba(250, 204, 21, 0.18);
+      border: 1px solid rgba(250, 204, 21, 0.75);
+      color: #fef08a;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1.25;
+      max-width: 100%;
+      word-break: keep-all;
+      text-align: center;
+    }
+    .slot-diff-pill.is-new {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: #34d399;
+      color: #a7f3d0;
+    }
+    .slot-diff-pill.is-gem {
+      background: rgba(34, 211, 238, 0.2);
+      border-color: #22d3ee;
+      color: #a5f3fc;
+    }
+    .diff-summary-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(250, 204, 21, 0.16) 0%, rgba(15, 23, 42, 0.96) 100%);
+      border: 1.5px solid #facc15;
+      border-left: 4px solid #fde047;
+      border-radius: 11px;
+      padding: 9px 13px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: #fef9c3;
+      box-shadow: 0 4px 16px rgba(250, 204, 21, 0.2);
+    }
+    .diff-summary-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      flex: 1;
+      min-width: 200px;
+    }
+    .diff-summary-chip {
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(250, 204, 21, 0.5);
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 11.5px;
+      color: #e2e8f0;
+      font-weight: 700;
+    }
+    .diff-summary-chip strong { color: #fde047; }
+    .diff-clear-btn {
+      background: #1e293b;
+      border: 1px solid #facc15;
+      color: #fef08a;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .diff-clear-btn:hover { background: #ca8a04; color: #ffffff; }
+
+    /* 스펙 코드 복사 완료 스르륵 토스트 팝업 */
+    #global_copy_toast {
+      position: fixed;
+      top: 26px;
+      left: 50%;
+      transform: translate(-50%, -18px) scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10050;
+      max-width: 92vw;
+      background: linear-gradient(135deg, #064e3b 0%, #0f172a 70%, #172554 100%);
+      border: 2px solid #34d399;
+      border-radius: 14px;
+      padding: 13px 20px;
+      color: #ffffff;
+      text-align: center;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.85), 0 0 22px rgba(16, 185, 129, 0.55);
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #global_copy_toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+
     /* ==================== 10. 통합 반응형 (태블릿 & 모바일) ==================== */
     @media (max-width: 860px) {
       .union-ingame-body { grid-template-columns: 1fr; }
@@ -3620,7 +3734,7 @@
             <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 &amp; 공략 툴</h1>
           </div>
           <div class="author-tag">
-            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.5.0.0</strong>
+            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.5.1.0</strong>
           </div>
 
           <!-- 카카오페이 후원 팝오버 위젯 -->
@@ -3898,31 +4012,38 @@
           </div>
         </div>
 
-        <!-- 스펙 코드 발급 & 불러오기 (2단계 명확 분리 UI) -->
+        <!-- 스펙 코드 발급 & 불러오기 (시뮬레이터 전용 저장 코드 명확 안내) -->
         <div style="background:linear-gradient(135deg, rgba(30,27,75,0.95) 0%, rgba(15,23,42,0.98) 100%); border:1.5px solid #818cf8; border-radius:14px; padding:14px 16px; margin-bottom:16px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px; padding-bottom:10px; border-bottom:1px dashed rgba(129,140,248,0.35);">
-            <strong style="font-size:14px; color:#e0e7ff;">개인 스펙 코드 발급 &amp; 타 기기(PC↔모바일) 불러오기</strong>
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:9px; padding-bottom:9px; border-bottom:1px dashed rgba(129,140,248,0.35);">
+            <div style="display:flex; align-items:center; gap:7px; flex-wrap:wrap;">
+              <strong style="font-size:14px; color:#e0e7ff;">시뮬레이터 전용 백업 스펙 코드 (PC ↔ 모바일 이동용)</strong>
+              <span class="mini-tag" style="background:#dc2626; color:#ffffff; font-size:10.5px; padding:2px 7px;">인게임 ID·쿠폰 아님</span>
+            </div>
             <div style="display:flex; gap:6px; flex-wrap:wrap;">
               <button type="button" onclick="copyMasterSpecCode()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; font-size:12px; font-weight:800; padding:6px 11px; border-radius:8px; cursor:pointer;">현재 슬롯 코드 복사</button>
               <button type="button" onclick="clearMasterSpecCodeBox()" style="background:#334155; border:1px solid #64748b; color:#e2e8f0; font-size:12px; font-weight:800; padding:6px 10px; border-radius:8px; cursor:pointer;">입력창 비우기</button>
             </div>
           </div>
 
-          <div style="font-size:12px; font-weight:800; color:#7dd3fc; margin-bottom:5px;">
-            STEP 1. 다른 기기에서 복사한 코드(<code style="color:#fde047;">SHK-V1</code> / <code style="color:#fde047;">SHK-ALL2</code>)를 아래 칸에 직접 붙여넣으세요
+          <div style="background:rgba(239, 68, 68, 0.14); border:1px solid rgba(248, 113, 113, 0.55); border-radius:8px; padding:8px 11px; margin-bottom:10px; font-size:11.5px; color:#fecdd3; line-height:1.55;">
+            <strong style="color:#ffffff;">※ 주의: 인게임 아이디(UID)나 계정 연동 코드가 아닙니다!</strong><br>
+            이 툴에 입력하신 스펙을 다른 기기(PC↔폰)로 옮기거나 백업하기 위해 자동으로 생성되는 <strong style="color:#fde047;">단순 저장용 동적 코드(SHK-V1 / SHK-ALL2)</strong>입니다. 게임 아이디를 붙여넣어도 불러와지지 않습니다.
           </div>
-          <textarea id="master_spec_code_textarea" rows="3" oninput="onMasterSpecTextareaInput(this.value)" placeholder="여기를 터치(클릭)한 뒤 복사해 둔 코드를 직접 붙여넣기(Ctrl+V / 길게 눌러 붙여넣기) 하세요!"
+
+          <div style="font-size:12px; font-weight:800; color:#7dd3fc; margin-bottom:5px;">
+            STEP 1. 이 툴에서 복사해 둔 저장 코드(<code style="color:#fde047;">SHK-V1</code> / <code style="color:#fde047;">SHK-ALL2</code>)를 아래 칸에 붙여넣으세요
+          </div>
+          <textarea id="master_spec_code_textarea" rows="3" oninput="onMasterSpecTextareaInput(this.value)" placeholder="게임 아이디(UID) 입력란이 아닙니다! 이 시뮬레이터에서 [코드 복사] 버튼으로 발급받은 SHK-V1 또는 SHK-ALL2 코드를 붙여넣으세요."
             style="width:100%; background:#090d16; border:1.5px solid #475569; border-radius:10px; padding:10px; color:#fde047; font-family:monospace; font-size:12px; line-height:1.45; resize:vertical; outline:none;"></textarea>
 
           <button type="button" id="btn_apply_master_code" onclick="applyMasterSpecCodeFromInput()" style="width:100%; margin-top:8px; background:#1e293b; border:1.5px solid #64748b; color:#cbd5e1; font-size:13px; font-weight:900; padding:10px 12px; border-radius:10px; cursor:pointer; transition:all 0.2s;">
-            STEP 2. 위 칸에 코드를 붙여넣은 뒤 여기를 눌러 불러오기
+            STEP 2. 위 칸에 저장 코드를 붙여넣은 뒤 여기를 눌러 불러오기
           </button>
 
           <div id="master_code_status_msg" style="font-size:11.5px; color:#34d399; margin-top:6px; font-weight:800; min-height:16px;"></div>
-          <div style="margin-top:8px; background:rgba(245, 158, 11, 0.12); border:1px solid rgba(245, 158, 11, 0.4); border-radius:8px; padding:8px 11px; font-size:11.5px; color:#fde68a; line-height:1.55;">
-            <strong>스펙 코드 사용 안내:</strong><br>
-            • 불러오기 버튼만 누르면 자동으로 붙여넣어지지 않습니다. 반드시 <strong>위 입력창에 먼저 붙여넣기</strong> 하신 뒤 아래 버튼을 눌러주세요.<br>
-            • 발급된 코드는 현재 시점의 스냅샷이므로 스펙 변경 시 새로 복사해 보관하셔야 하며, 불러오기 시 현재 기기 데이터에 덮어씌워집니다.
+          <div style="margin-top:8px; background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.35); border-radius:8px; padding:8px 11px; font-size:11.5px; color:#fde68a; line-height:1.55;">
+            • 발급된 코드는 복사 시점의 스냅샷이므로, 스펙을 수정하셨다면 다시 <strong>[코드 복사]</strong>해서 보관하세요.<br>
+            • 불러오기 시 현재 선택된 슬롯의 기존 데이터에 덮어씌워진 뒤 자동 저장됩니다.
           </div>
         </div>
 
@@ -5876,6 +5997,8 @@
               ✨ <strong style="color:#ffffff; text-decoration:underline;">[코어 장착 위치 중요 안내]</strong> 소울커넥트 코어는 <strong style="color:#34d399;">어느 위치(1~6번 슬롯 중 아무 칸)에 장착하든 대미지 배율과 효과가 100% 동일</strong>합니다!
             </div>
 
+            <div id="sc_diff_summary_bar" class="diff-summary-banner"></div>
+
             <div class="connect-hex-stage">
               <div class="connect-hex-row"><div id="sc_slot_6" class="connect-slot-card"></div><div id="sc_slot_1" class="connect-slot-card"></div></div>
               <div class="connect-hex-row mid-row">
@@ -5933,6 +6056,8 @@
                 <div style="font-size:11.5px; color:#fde047; font-weight:700;">💡 보라색 특수칸(5➔1번 역순) &amp; 회색 일반칸(구간 컷 스왑) 자동 배치 완료</div>
               </div>
 
+              <div id="union_diff_summary_bar" class="diff-summary-banner"></div>
+              
               <div class="union-ingame-body">
                 <div class="union-left-nav">
                   <div style="width:100%;">
@@ -6142,6 +6267,8 @@
           </div>
           <p class="card-subtitle">왼쪽 위부터 <strong>[상의 / 하의 / 신발]</strong>, 중앙 아래 <strong>[심연장식]</strong>, 오른쪽 <strong>[반지 / 목걸이 / 엠블렘]</strong>, 최하단 <strong>[무기 3슬롯]</strong>입니다.</p>
 
+          <div id="rune_diff_summary_bar" class="diff-summary-banner"></div>
+          
           <div class="rune-equip-stage">
             <div class="rune-stage-upper">
               <div class="rune-col-left">
@@ -6194,7 +6321,7 @@
   <!-- ==================== 6. 푸터 (길보길 분석실 & 방문자 카운터) ==================== -->
   <footer>
     <div style="margin-bottom: 12px;">
-      소울헌터키우기 네이버 라운지 전용 계산기 v.5.0.0 | 제작: <strong>29서버 겨울눈사람</strong>
+      소울헌터키우기 네이버 라운지 전용 계산기 v.5.1.0 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
       <button type="button" onclick="location.href='guild.html'"
@@ -7009,6 +7136,7 @@
     localStorage.removeItem(SC_GEMS_STORAGE_KEY);
     ownedSoulGems = [];
 
+    resetAllHelperDiffBaselines();
     resetDomInputsToInitial();
     selectedAncients.clear();
     excludedMaterials.clear();
@@ -7811,14 +7939,33 @@
     }
   }
 
+  let globalCopyToastTimer = null;
+  function showGlobalCopyToast(title, subText = '') {
+    let el = document.getElementById('global_copy_toast');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'global_copy_toast';
+      document.body.appendChild(el);
+    }
+    el.innerHTML = `<div style="font-size:14px; font-weight:900; color:#6ee7b7;">${title}</div>${subText ? `<div style="font-size:11.5px; color:#cbd5e1; margin-top:3px;">${subText}</div>` : ''}`;
+    el.classList.remove('show');
+    void el.offsetWidth;
+    el.classList.add('show');
+    if (globalCopyToastTimer) clearTimeout(globalCopyToastTimer);
+    globalCopyToastTimer = setTimeout(() => { el.classList.remove('show'); }, 2400);
+  }
+
   function copyMasterSpecCode() {
     const msgEl = document.getElementById('master_code_status_msg');
     const code = generateReadableMasterSpecCode();
     copyTextToClipboardSafe(code, ok => {
+      if (ok) {
+        showGlobalCopyToast('복사 완료되었습니다!', '시뮬레이터 전용 저장 코드(SHK-V1) · 카톡/메모장에 붙여넣어 보관하세요.');
+      }
       if (msgEl) {
         msgEl.style.color = ok ? '#34d399' : '#fbbf24';
         msgEl.innerText = ok
-          ? `✅ 현재 슬롯 스펙 코드가 복사되었습니다! (${code.length.toLocaleString()}자)`
+          ? `✅ 현재 슬롯 저장 코드가 복사되었습니다! (${code.length.toLocaleString()}자)`
           : '⚠️ 자동 복사가 차단되었습니다. 위 입력창을 길게 눌러 전체 복사해 주세요.';
       }
     });
@@ -7843,6 +7990,9 @@
 
       const msg = document.getElementById('master_code_status_msg');
       copyTextToClipboardSafe(fullCode, ok => {
+        if (ok) {
+          showGlobalCopyToast('3슬롯 전체 코드 복사 완료되었습니다!', '시뮬레이터 전용 통합 저장 코드(SHK-ALL2) · 카톡/메모장에 보관하세요.');
+        }
         if (msg) {
           msg.style.color = ok ? '#34d399' : '#fbbf24';
           msg.innerText = ok
@@ -7859,7 +8009,7 @@
     const area = document.getElementById('master_spec_code_textarea');
     const msg = document.getElementById('master_code_status_msg');
     if (!area || !area.value.trim()) {
-      if (msg) { msg.style.color = '#f87171'; msg.innerText = '⚠️ 불러올 스펙 코드를 입력창에 붙여넣어 주세요.'; }
+      if (msg) { msg.style.color = '#f87171'; msg.innerText = '❌ 먼저 위 입력창에 저장 코드(SHK-V1 / SHK-ALL2)를 붙여넣어 주세요.'; }
       return;
     }
 
@@ -7867,7 +8017,7 @@
     const cleaned = area.value.replace(/[\u200B\uFEFF]/g, '');
     const allMatches = Array.from(cleaned.matchAll(/(SHK-(?:ALL2|ALL|V1)-)([A-Za-z0-9._\-\u2013\u2014\u2212\s]+)/g));
     if (allMatches.length === 0) {
-      if (msg) { msg.style.color = '#f87171'; msg.innerText = '❌ 올바른 코드 형식(SHK-V1 / SHK-ALL2)을 찾을 수 없습니다. 전체 코드를 다시 복사해 주세요.'; }
+      if (msg) { msg.style.color = '#f87171'; msg.innerText = '❌ 인게임 아이디(UID)·닉네임은 불러올 수 없습니다! 이 툴에서 [코드 복사] 버튼으로 발급받은 SHK-V1 / SHK-ALL2 코드를 붙여넣어 주세요.'; }
       return;
     }
 
@@ -10565,16 +10715,65 @@
     return ownedPartList.filter(r => r.id !== targetRune.id && !equippedIds.has(r.id) && r.tier === targetRune.tier && (!r.cat || r.cat === targetRune.cat) && (!r.wCat || r.wCat === targetRune.wCat) && (!r.elem || r.elem === currentRuneElem) && (!r.jobType || r.jobType === 'all' || r.jobType === currentRuneJob) && getVal(r) === tv).map(r => r.name);
   }
 
+  // ==================== 추천 배치 변경 실시간 인디케이터 엔진 (룬 · 소울 · 유니온) ====================
+  const HELPER_DIFF_STATE = {
+    rune:    { prev: null, diffs: {} },
+    connect: { prev: null, diffs: {} },
+    union:   { prev: { skill: null, hero: null }, diffs: { skill: {}, hero: {} } }
+  };
+
+  function resetAllHelperDiffBaselines() {
+    HELPER_DIFF_STATE.rune    = { prev: null, diffs: {} };
+    HELPER_DIFF_STATE.connect = { prev: null, diffs: {} };
+    HELPER_DIFF_STATE.union   = { prev: { skill: null, hero: null }, diffs: { skill: {}, hero: {} } };
+    ['rune_diff_summary_bar', 'sc_diff_summary_bar', 'union_diff_summary_bar'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+  }
+
+  function clearHelperDiffHighlights(kind) {
+    if (kind === 'rune') {
+      HELPER_DIFF_STATE.rune.diffs = {};
+      calculateBestRuneLoadout();
+    } else if (kind === 'connect') {
+      HELPER_DIFF_STATE.connect.diffs = {};
+      calculateBestConnectLoadout();
+    } else if (kind === 'union') {
+      HELPER_DIFF_STATE.union.diffs[currentUnionType] = {};
+      calculateAndRenderUnionBoard();
+    }
+  }
+
+  function renderHelperDiffBanner(barId, kind, diffMap) {
+    const bar = document.getElementById(barId);
+    if (!bar) return;
+    const entries = Object.values(diffMap || {});
+    if (entries.length === 0) { bar.style.display = 'none'; return; }
+    const chips = entries.map(d => {
+      if (d.gemOnly) return `<span class="diff-summary-chip">[${d.slotLabel}] <strong>보석 재배분</strong></span>`;
+      const arrow = d.oldName ? `<span style="color:#94a3b8; text-decoration:line-through;">${d.oldName}</span> ➔ <strong>${d.newName}</strong>` : `<strong>${d.newName} (신규)</strong>`;
+      return `<span class="diff-summary-chip">[${d.slotLabel}] ${arrow}</span>`;
+    }).join('');
+    bar.innerHTML = `<div class="diff-summary-items"><span style="color:#fde047; font-weight:900; white-space:nowrap;">추천 변경 (${entries.length}칸)</span>${chips}</div><button type="button" class="diff-clear-btn" onclick="clearHelperDiffHighlights('${kind}')">확인 완료</button>`;
+    bar.style.display = 'flex';
+  }
+
   function renderSlotBlock(slotElId, partLabel, runeObj) {
     const el = document.getElementById(slotElId);
     if (!el) return;
+    const diff = HELPER_DIFF_STATE.rune.diffs[slotElId];
+    const diffCls = diff ? ' slot-diff-changed' : '';
+    const diffTagHtml = diff
+      ? `<div class="slot-diff-pill ${diff.oldName ? '' : 'is-new'}">${diff.oldName ? `변경 · 이전: ${diff.oldName}` : '신규 추천'}</div>`
+      : '';
     if (!runeObj) {
-      el.className = 'rune-slot-block';
-      el.innerHTML = `<div class="rune-slot-part-tag"><span>${partLabel}</span><span>미장착</span></div><div class="rune-slot-name" style="color:#64748b; font-size:13px;">보유 룬 없음</div><div class="rune-slot-stat" style="color:#475569;">-</div>`;
+      el.className = 'rune-slot-block' + diffCls;
+      el.innerHTML = `<div class="rune-slot-part-tag"><span>${partLabel}</span><span>미장착</span></div><div class="rune-slot-name" style="color:#64748b; font-size:13px;">보유 룬 없음</div><div class="rune-slot-stat" style="color:#475569;">-</div>${diffTagHtml}`;
       return;
     }
-    el.className = `rune-slot-block tier-${runeObj.tier}`;
-    el.innerHTML = `<div class="rune-slot-part-tag"><span>${partLabel}</span><span class="grade-badge ${getRuneTierBadgeClass(runeObj.tier)}" style="font-size:10px; padding:1px 5px;">${getRuneTierKr(runeObj.tier)}</span></div><div class="rune-slot-name">${runeObj.name}</div><div class="rune-slot-stat">${runeObj.desc.split(/\s*\(|,\s+/)[0]}</div>`;
+    el.className = `rune-slot-block tier-${runeObj.tier}` + diffCls;
+    el.innerHTML = `<div class="rune-slot-part-tag"><span>${partLabel}</span><span class="grade-badge ${getRuneTierBadgeClass(runeObj.tier)}" style="font-size:10px; padding:1px 5px;">${getRuneTierKr(runeObj.tier)}</span></div><div class="rune-slot-name">${runeObj.name}</div><div class="rune-slot-stat">${runeObj.desc.split(/\s*\(|,\s+/)[0]}</div>${diffTagHtml}`;
   }
 
   function calculateBestRuneLoadout() {
@@ -10603,6 +10802,36 @@
         if (logEte > combinedLog10) { finalArmor = bA; finalAcc = bAc; finalEmbAb = bEm; finalWeap = bW; combinedLog10 = logEte; }
       }
     }
+
+    // 룬 추천 변경 감지 (10칸 비교)
+    const curRuneSnap = {
+      slot_armor_top: { label:'상의',    r: finalArmor.slots[0] },
+      slot_armor_mid: { label:'하의',    r: finalArmor.slots[1] },
+      slot_armor_bot: { label:'신발',    r: finalArmor.slots[2] },
+      slot_abyss:     { label:'심연장식', r: finalEmbAb.abyss },
+      slot_ring:      { label:'반지',    r: finalAcc.ring },
+      slot_neck:      { label:'목걸이',  r: finalAcc.neck },
+      slot_emblem:    { label:'엠블렘',  r: finalEmbAb.emblem },
+      slot_weap_1:    { label:'무기1',   r: finalWeap.slots[0] },
+      slot_weap_2:    { label:'무기2',   r: finalWeap.slots[1] },
+      slot_weap_3:    { label:'무기3',   r: finalWeap.slots[2] }
+    };
+    const fmtRuneKey = r => r ? `${r.tier}_${r.name}` : '';
+    const fmtRuneLbl = r => r ? `[${getRuneTierKr(r.tier)}] ${r.name}` : '';
+    if (!isRestoringState && HELPER_DIFF_STATE.rune.prev) {
+      const nextDiffs = {};
+      Object.entries(curRuneSnap).forEach(([sid, info]) => {
+        const oldR = HELPER_DIFF_STATE.rune.prev[sid];
+        if (fmtRuneKey(oldR) !== fmtRuneKey(info.r)) {
+          nextDiffs[sid] = { slotLabel: info.label, oldName: fmtRuneLbl(oldR), newName: fmtRuneLbl(info.r) || '미장착' };
+        }
+      });
+      if (Object.keys(nextDiffs).length > 0) HELPER_DIFF_STATE.rune.diffs = nextDiffs;
+    }
+    const nextRunePrev = {};
+    Object.entries(curRuneSnap).forEach(([sid, info]) => { nextRunePrev[sid] = info.r ? { tier: info.r.tier, name: info.r.name } : null; });
+    HELPER_DIFF_STATE.rune.prev = nextRunePrev;
+    renderHelperDiffBanner('rune_diff_summary_bar', 'rune', HELPER_DIFF_STATE.rune.diffs);
 
     renderSlotBlock('slot_armor_top', '🧥 방어구 (상의)', finalArmor.slots[0]);
     renderSlotBlock('slot_armor_mid', '👖 방어구 (하의)', finalArmor.slots[1]);
@@ -11428,6 +11657,29 @@
     const gemAssignments = allocateGemsToCores(bestCombo);
     const tierKrMap = { ancient:'고대', mythic:'신화', legend:'전설', unique:'특급', advanced:'상급' };
 
+    // 소울커넥트 추천 변경 감지 (코어 변경 + 보석 재배분)
+    const curCoreSnap = {};
+    for (let s = 1; s <= 6; s++) {
+      const inst = (s <= currentConnectStageSlots) ? (bestCombo[s - 1] || null) : null;
+      const gList = (gemAssignments && inst) ? (gemAssignments[s - 1] || []) : [];
+      const gemSig = gList.map(g => `${g.tier[0]}${g.chain}_${g.pt}`).sort().join(',');
+      curCoreSnap[s] = inst ? { key: `${inst.tier}_${inst.core.id}`, label: `[${CORE_TIER_META[inst.tier].kr}] ${inst.core.name}`, gemSig } : null;
+    }
+    if (!isRestoringState && HELPER_DIFF_STATE.connect.prev) {
+      const nextDiffs = {};
+      for (let s = 1; s <= 6; s++) {
+        const o = HELPER_DIFF_STATE.connect.prev[s], n = curCoreSnap[s];
+        if ((o?.key || '') !== (n?.key || '')) {
+          nextDiffs[s] = { slotLabel: `${s}번 슬롯`, oldName: o ? o.label : '', newName: n ? n.label : '비어있음', gemOnly: false };
+        } else if (o && n && o.gemSig !== n.gemSig) {
+          nextDiffs[s] = { slotLabel: `${s}번 슬롯`, oldName: '', newName: '보석 재배분', gemOnly: true };
+        }
+      }
+      if (Object.keys(nextDiffs).length > 0) HELPER_DIFF_STATE.connect.diffs = nextDiffs;
+    }
+    HELPER_DIFF_STATE.connect.prev = curCoreSnap;
+    renderHelperDiffBanner('sc_diff_summary_bar', 'connect', HELPER_DIFF_STATE.connect.diffs);
+
     const unlockReqText = { 1:"기본 오픈(220-1)", 2:"기본 오픈(220-1)", 3:"300-1 해금", 4:"400-1 해금", 5:"500-1 해금", 6:"800-1 해금" };
     for (let s = 1; s <= 6; s++) {
       const slotEl = document.getElementById(`sc_slot_${s}`);
@@ -11464,12 +11716,20 @@
       }).join('');
 
       const ptColor = curPtSum >= tMeta.maxP ? '#fde047' : '#f87171';
-      slotEl.className = `connect-slot-card tier-${inst.tier}`;
+      const cDiff = HELPER_DIFF_STATE.connect.diffs[s];
+      const cDiffCls = cDiff ? (cDiff.gemOnly ? ' slot-diff-gem-only' : ' slot-diff-changed') : '';
+      const cDiffPill = cDiff
+        ? `<div class="slot-diff-pill ${cDiff.gemOnly ? 'is-gem' : (cDiff.oldName ? '' : 'is-new')}">${cDiff.gemOnly ? '보석 배분 변경됨' : (cDiff.oldName ? `변경 · 이전: ${cDiff.oldName}` : '신규 추천')}</div>`
+        : '';
+
+      slotEl.className = `connect-slot-card tier-${inst.tier}` + cDiffCls;
       slotEl.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:11px; font-weight:800; color:#94a3b8;">${s}번 슬롯</span><div style="display:flex; gap:4px;">${dupCnt >= 2 ? '<span class="mini-tag" style="background:#e11d48; color:#fff;">코어중복 합연산</span>' : ''}<span class="grade-badge ${tMeta.badge}" style="font-size:10.5px; padding:1px 6px;">${tMeta.kr} ${tMeta.maxP}P</span></div></div>
         <div style="display:flex; align-items:center; gap:10px; margin:5px 0;"><div class="core-hex-badge core-color-${c.num}">코어${c.num}</div><div style="text-align:left;"><div style="font-size:14.5px; font-weight:900; color:#ffffff; line-height:1.2;">${c.name}</div><div style="font-size:11px; color:${isValid ? '#34d399' : '#f87171'}; font-weight:700; margin-top:2px;">${isValid ? '✅ 유효 코어 발동' : '⚠️ 잡코어 (공격력·증폭만 적용)'}</div></div></div>
         <div class="sc-gem-orbit-grid">${socketsHtml}</div>
-        <div style="font-size:11px; color:${ptColor}; background:rgba(0,0,0,0.45); padding:4px 8px; border-radius:6px; text-align:center; font-weight:800; margin-top:6px;">🔗 ${curChainSum}/${tMeta.maxCap} · 🅿️ ${curPtSum}/${tMeta.maxP} | ${getCoreThemeSummary(c, inst.tier)}</div>`;
+        <div style="font-size:11px; color:${ptColor}; background:rgba(0,0,0,0.45); padding:4px 8px; border-radius:6px; text-align:center; font-weight:800; margin-top:6px;">🔗 ${curChainSum}/${tMeta.maxCap} · 🅿️ ${curPtSum}/${tMeta.maxP} | ${getCoreThemeSummary(c, inst.tier)}</div>
+        ${cDiffPill}`;
+    
     }
 
     // 보석 24개 합연산 총합 보너스 계산
@@ -11869,9 +12129,13 @@
     if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  function renderUnionSlotCell(unit, isSpecial) {
+  function renderUnionSlotCell(unit, isSpecial, diffInfo = null) {
+    const diffCls = diffInfo ? ' slot-diff-changed' : '';
+    const diffTag = diffInfo
+      ? `<div class="slot-diff-pill ${diffInfo.oldName ? '' : 'is-new'}" style="font-size:8.5px; padding:1px 4px; margin-top:2px;">${diffInfo.oldName ? `← ${diffInfo.oldName}` : 'NEW'}</div>`
+      : '';
     if (!unit) {
-      return `<div class="union-slot-card ${isSpecial ? 'special-slot' : ''}"><div style="flex:1; display:flex; align-items:center; justify-content:center; font-size:18px; color:${isSpecial ? '#f0abfc' : '#64748b'};">+</div><div class="union-score-bar"><div class="union-score-fill" style="width:0%;"></div><div class="union-score-text">0/0</div></div></div>`;
+      return `<div class="union-slot-card ${isSpecial ? 'special-slot' : ''}${diffCls}"><div style="flex:1; display:flex; align-items:center; justify-content:center; font-size:18px; color:${isSpecial ? '#f0abfc' : '#64748b'};">+</div><div class="union-score-bar"><div class="union-score-fill" style="width:0%;"></div><div class="union-score-text">0/0</div></div>${diffTag}</div>`;
     }
     const pctWidth = Math.min(100, Math.round((unit.score / unit.maxScore) * 100));
     const starsHtml = unit.awk > 0
@@ -11881,10 +12145,11 @@
       ? `<img src="${unit.img}" alt="${unit.name}" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';"><span style="display:none; font-size:8.5px; color:#94a3b8; font-weight:800;">준비중</span>`
       : `<span style="font-size:8.5px; color:#94a3b8; font-weight:800;">준비중</span>`;
 
-    return `<div class="union-slot-card ${isSpecial ? 'special-slot' : `tier-${unit.grade}`}" title="[${getGradeKrName(unit.grade)}] ${unit.name} (Lv.${unit.lv} / ${unit.brk}돌 / ${unit.awk}각 = ${unit.score}점)">
+    return `<div class="union-slot-card ${isSpecial ? 'special-slot' : `tier-${unit.grade}`}${diffCls}" title="[${getGradeKrName(unit.grade)}] ${unit.name} (Lv.${unit.lv} / ${unit.brk}돌 / ${unit.awk}각 = ${unit.score}점)">
       <div class="union-slot-thumb"><div class="union-slot-stars">${starsHtml}</div>${imgHtml}<span class="union-slot-lv">Lv.${unit.lv}</span></div>
       <div style="font-size:9.5px; font-weight:800; color:#e2e8f0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; margin-top:2px;">${unit.name.split('(')[0]}</div>
       <div class="union-score-bar"><div class="union-score-fill" style="width:${pctWidth}%;"></div><div class="union-score-text">${unit.score}/${unit.maxScore}</div></div>
+      ${diffTag}
     </div>`;
   }
 
@@ -12024,12 +12289,35 @@
     if (boardTitleEl) boardTitleEl.innerText = `[${currentUnionType === 'skill' ? '스킬' : '영웅'} 유니온 · ${activeRes.unlockedRows}/5줄 해금]`;
 
     const rowsContainer = document.getElementById('union_ingame_rows_container');
+    // 유니온 추천 변경 감지 (스킬/영웅 독립 추적)
+    const curUSnap = {};
+    activeRes.rowsData.forEach(row => {
+      row.normalSlots.forEach((u, ci) => {
+        curUSnap[`r${row.rowNum}_n${ci}`] = (row.unlocked && u) ? { uid: u.uid, name: u.name.split('(')[0], label: `${row.rowNum}줄 일반${ci+1}` } : null;
+      });
+      curUSnap[`r${row.rowNum}_sp`] = (row.unlocked && row.specialSlot) ? { uid: row.specialSlot.uid, name: row.specialSlot.name.split('(')[0], label: `${row.rowNum}줄 특수` } : null;
+    });
+    if (!isRestoringState && HELPER_DIFF_STATE.union.prev[currentUnionType]) {
+      const prevMap = HELPER_DIFF_STATE.union.prev[currentUnionType], nextDiffs = {};
+      Object.keys(curUSnap).forEach(k => {
+        const o = prevMap[k], n = curUSnap[k];
+        if ((o?.uid || '') !== (n?.uid || '')) {
+          const sLbl = (n?.label || o?.label || k);
+          nextDiffs[k] = { slotLabel: sLbl, oldName: o ? o.name : '', newName: n ? n.name : '해제' };
+        }
+      });
+      if (Object.keys(nextDiffs).length > 0) HELPER_DIFF_STATE.union.diffs[currentUnionType] = nextDiffs;
+    }
+    HELPER_DIFF_STATE.union.prev[currentUnionType] = curUSnap;
+    const curUDiffs = HELPER_DIFF_STATE.union.diffs[currentUnionType] || {};
+    renderHelperDiffBanner('union_diff_summary_bar', 'union', curUDiffs);
+    
     if (rowsContainer) {
       rowsContainer.innerHTML = activeRes.rowsData.map((row, idx) => `
         <div class="union-row-box">
-          ${!row.unlocked ? `<div class="union-row-lock-overlay"><span style="font-size:17px;">🔒</span><span>스테이지 <strong style="color:#fde047;">${unlockStages[idx]}</strong> 도달 시 해금됩니다</span></div>` : ''}
           <div class="union-row-num">${row.rowNum}</div>
-          <div class="union-slots-group">${row.normalSlots.map(u => renderUnionSlotCell(u, false)).join('')}<div class="union-divider"></div>${renderUnionSlotCell(row.specialSlot, true)}</div>
+          <div class="union-slots-group">${row.normalSlots.map((u, ci) => renderUnionSlotCell(u, false, curUDiffs[`r${row.rowNum}_n${ci}`])).join('')}<div class="union-divider"></div>${renderUnionSlotCell(row.specialSlot, true, curUDiffs[`r${row.rowNum}_sp`])}</div>
+          ${!row.unlocked ? `<div class="union-row-lock-overlay"><div style="font-size:20px;">🔒</div><div>스테이지 ${unlockStages[idx]} 달성 시 해금</div></div>` : ''}
         </div>`).join('');
     }
 
@@ -14230,6 +14518,10 @@
     }
 
     if (currentTraitTabStep === 2) {
+      if (currentTrait2ndLv >= 90 && !trait2Job1Lv80 && !trait2Lv80ManualOff) {
+        trait2Job1Lv80 = true;
+        showTrait2AutoToast('2차 Lv.90 이상 감지! [1차 Lv.80+ 표식확률 3/5 다이어트] 옵션이 자동 활성화되었습니다.');
+      }
       const quickBtns = [10,20,30,35,40,45,50,60,70,80,90,100,111,120,130,140,150,160,170,180].map(q => `<button type="button" class="t2-quick-lv-btn" data-lv="${q}" onclick="changeTrait2ndLevel(${q})" style="padding:5px 4px; font-size:11.5px; font-weight:800; border-radius:6px; cursor:pointer; border:1.5px solid #334155; background:#0f172a; color:#cbd5e1;">Lv.${q}</button>`).join('');
       container.innerHTML = `${stepTabs}<div class="stage-build-card" style="border-left-color:#eab308;">
         <div class="stage-build-header"><span class="stage-build-title">2차 전직 특성 (전 직업 공통 트리)</span><span class="grade-badge grade-legend">Lv.1 ~ Lv.180 (Global DP)</span></div>
@@ -14301,10 +14593,7 @@
       updateTrait2ndBoardOnly();
       return;
     }
-    if (currentTrait2ndLv >= 90 && !trait2Job1Lv80 && !trait2Lv80ManualOff) {
-    trait2Job1Lv80 = true;
-    showTrait2AutoToast('2차 Lv.90 이상 감지! [1차 Lv.80+ 표식확률 3/5 다이어트] 옵션이 자동 활성화되었습니다.');
-    }
+    
 
     if (currentTraitTabStep === 3) {
       const lv3Btns = [{lv:0,l:"Lv.0"},{lv:10,l:"Lv.10"},{lv:15,l:"Lv.15"},{lv:20,l:"Lv.20"},{lv:30,l:"Lv.30"},{lv:40,l:"Lv.40"}].map(it => `<button type="button" onclick="changeTrait3rdLevel(${it.lv})" style="padding:8px 10px; font-size:12.5px; font-weight:800; border-radius:8px; cursor:pointer; border:1.5px solid ${currentTrait3rdLv===it.lv?'#f43f5e':'#334155'}; background:${currentTrait3rdLv===it.lv?'#e11d48':'#0f172a'}; color:#fff;">${it.l}</button>`).join('');
