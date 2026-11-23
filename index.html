@@ -13496,28 +13496,22 @@
         return;
       }
 
-      if (awkSubView === 'skill_hero_awk') {
-        const newElemHero = awkGuideElem === 'fire' ? '이그니스' : (awkGuideElem === 'light' ? '제논' : '다미안');
-        const debSk = awkGuideElem === 'fire' ? '불벼락' : (awkGuideElem === 'light' ? '뇌전검무' : '암흑붕괴');
-        const m3Sk = awkGuideElem === 'fire' ? '플레어 필라' : (awkGuideElem === 'light' ? '볼트 스파이럴' : '블랙 베일');
-        const m4Sk = awkGuideElem === 'fire' ? '블레이즈 이럽션' : (awkGuideElem === 'light' ? '플라즈마 이럽션' : '어비스 이럽션');
-        const l3Hr = awkGuideElem === 'fire' ? '칼리아' : (awkGuideElem === 'light' ? '카이렌' : '모르반');
-        const l4Hr = awkGuideElem === 'fire' ? '화련' : (awkGuideElem === 'light' ? '청운' : '자월');
-
-        const tiers = awkGuideJob === 'reaper' ? [
-          { num:"1순위 (최우선 3각)", color:"#fb7185", items:[
-            { name:"오버드라이브", isSkill:true, badge:"전 직업 0순위", multTag:"", desc:"영구 지속 레벨 뻥튀기 + 과성장 졸업의 필수 열쇠" },
-            { name:"셀렌", isSkill:false, badge:"사신 최우선 3각", multTag:"3각 1,012.5배", desc:"각성 시너지 100점 이상 달성 시 1,012.5배 폭등" },
+      const tiers = awkGuideJob === 'reaper' ? [
+          { num:"1순위 (전 직업 단독 최우선 3각)", color:"#fbbf24", items:[
+            { name:"오버드라이브", isSkill:true, badge:"전 직업 부동의 1순위", multTag:"", desc:"영구 지속 레벨 뻥튀기 + 과성장 졸업의 필수 열쇠" }
+          ]},
+          { num:"2순위 (핵심 3각)", color:"#fb7185", items:[
+            { name:"셀렌", isSkill:false, badge:"사신 핵심 3각", multTag:"3각 1,012.5배", desc:"각성 시너지 100점 이상 달성 시 1,012.5배 폭등" },
             { name:"나리타", isSkill:false, badge:"무조건 3각 필수!", multTag:"3각 상시 501배", desc:"1·2각에 멈추지 말고 무조건 3각! 조건 없는 상시 501배 깡곱연산" }
           ]},
-          { num:"2순위", color:"#38bdf8", items:[
+          { num:"3순위", color:"#38bdf8", items:[
             { name:"썬더 오빗", isSkill:true, badge:"사신 전용", multTag:"3각 303.4배", desc:"사신 전용 강타 피해량 버프" },
             { name:"엘리멘탈 차지", isSkill:true, badge:"공용 핵심 버프", multTag:"3각 300배", desc:"3차 전직 기준 상시 300배 곱연산 버프" }
           ]},
-          { num:"3순위", color:"#c084fc", items:[
+          { num:"4순위", color:"#c084fc", items:[
             { name:"크림슨 웨이브", isSkill:true, badge:"불멸 출혈용", multTag:"", desc:"불멸 저주 II 룬 출혈 조건 달성 및 딜 보조" }
           ]},
-          { num:"4순위 (후순위 마무리)", color:"#94a3b8", items:[
+          { num:"5순위 (후순위 마무리)", color:"#94a3b8", items:[
             { name:newElemHero, isSkill:false, badge:"주속성 신영웅", multTag:"", desc:"주속성 피해량 증폭 및 디버프 지원" },
             { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", multTag:"", desc:"오버드라이브 3각 달성 시 엘리시아 대체" },
             { name:"그림자 포효", isSkill:true, badge:"2각 혼돈 필수", multTag:"3각 111배", desc:"2각 혼돈 상태이상 해금이 핵심 (3각 시 111배)" },
@@ -13525,43 +13519,47 @@
             { name:"루비", isSkill:false, badge:"격화 룬 세트", multTag:"", desc:"격화 룬 3상태이상 유지용" }
           ]}
         ] : (awkGuideJob === 'mage' ? [
-          { num:"1순위 (최우선 3각)", color:"#fb7185", items:[
-            { name:"오버드라이브", isSkill:true, badge:"전 직업 0순위", multTag:"", desc:"스킬 빌드의 심장 · 과성장 졸업 & 4차 한계 초월(+700%) 핵심" },
+          { num:"1순위 (전 직업 단독 최우선 3각)", color:"#fbbf24", items:[
+            { name:"오버드라이브", isSkill:true, badge:"전 직업 부동의 1순위", multTag:"", desc:"스킬 빌드의 심장 · 과성장 졸업 & 4차 한계 초월(+700%) 핵심" }
+          ]},
+          { num:"2순위 (핵심 3각)", color:"#fb7185", items:[
             { name:m4Sk, isSkill:true, badge:"4차 신스킬 3각!", multTag:"", desc:`3차 주스킬(${m3Sk})은 1각만 하고 사용! 3각성은 무조건 4차 신스킬에 집중` },
             { name:"나리타", isSkill:false, badge:"무조건 3각 필수!", multTag:"3각 상시 501배", desc:"지옥불베기보다 배율이 높음! 1·2각이 아니라 무조건 3각까지 완성 필수" }
           ]},
-          { num:"2순위 (나리타 이후 3각)", color:"#38bdf8", items:[
+          { num:"3순위 (나리타 이후 3각)", color:"#38bdf8", items:[
             { name:"지옥불베기", isSkill:true, badge:"나리타 다음 3각", multTag:"", desc:"아크메이지 전용 스킬 피해량 버프 극대화 (4차 찰나의 집중 연계)" },
             { name:"카엔", isSkill:false, badge:"앜메 전용 영웅", multTag:"3각 302.4배", desc:"아크메이지 전용 영웅 버퍼" },
             { name:"엘리멘탈 차지", isSkill:true, badge:"공용 핵심 버프", multTag:"3각 300배", desc:"3차 전직 기준 상시 300배 곱연산 버프" }
           ]},
-          { num:"3순위", color:"#c084fc", items:[
+          { num:"4순위", color:"#c084fc", items:[
             { name:"환영나비", isSkill:true, badge:awkGuideElem==='fire'?'화염 제외':'번개/어둠 필수', multTag:"3각 241배", desc:awkGuideElem==='fire'?'화염 속성은 포효/불베기/크림슨 사용으로 제외':'번개·어둠 아크메이지 3각 241배 버프' },
             { name:"크림슨 웨이브", isSkill:true, badge:"불멸 출혈용", multTag:"", desc:"불멸 저주 II 룬 출혈 조건 달성" }
           ]},
-          { num:"4순위 (후순위 마무리)", color:"#94a3b8", items:[
+          { num:"5순위 (후순위 마무리)", color:"#94a3b8", items:[
             { name:newElemHero, isSkill:false, badge:"주속성 신영웅", multTag:"", desc:"주속성 피해량 증폭" },
             { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", multTag:"", desc:"오버드라이브 3각 시 엘리시아 대체" },
             { name:"그림자 포효", isSkill:true, badge:"2각 혼돈 필수", multTag:"3각 111배", desc:"2각 혼돈 해금 · 불앜메 4차 Lv.80 혼돈의 낙인 핵심 (3각 111배)" },
             { name:debSk, isSkill:true, badge:"2각 디버프", multTag:"3각 111배", desc:"주속성 디버퍼 (3각 111배)" }
           ]}
         ] : [
-          { num:"1순위 (최우선 3각)", color:"#fb7185", items:[
-            { name:"오버드라이브", isSkill:true, badge:"전 직업 0순위", multTag:"", desc:"과성장 졸업 및 공용 버프 코어" },
+          { num:"1순위 (전 직업 단독 최우선 3각)", color:"#fbbf24", items:[
+            { name:"오버드라이브", isSkill:true, badge:"전 직업 부동의 1순위", multTag:"", desc:"과성장 졸업 및 공용 버프 코어" }
+          ]},
+          { num:"2순위 (핵심 3각)", color:"#fb7185", items:[
             { name:l4Hr, isSkill:false, badge:"4차 신영웅 3각!", multTag:"", desc:`3차 주영웅(${l3Hr})은 1각만 하고 사용! 3각성은 무조건 4차 신영웅에 집중` },
             { name:"나리타", isSkill:false, badge:"무조건 3각 필수!", multTag:"3각 상시 501배", desc:"1·2각에 멈추지 말고 무조건 3각! 조건 없는 상시 501배 깡곱연산" },
             { name:"백운귀", isSkill:false, badge:"닼로 필수 버퍼", multTag:"3각 상시 501배", desc:"다크로드 전용 상시 501배 버퍼 (3각 필수)" }
           ]},
-          { num:"2순위", color:"#38bdf8", items:[
+          { num:"3순위", color:"#38bdf8", items:[
             { name:"카엘", isSkill:false, badge:"닼로 전용 영웅", multTag:"3각 346.25배", desc:"다크로드 전용 영웅 버퍼" },
             { name:"엘리멘탈 차지", isSkill:true, badge:"공용 핵심 버프", multTag:"3각 300배", desc:"3차 전직 기준 상시 300배 곱연산 버프" }
           ]},
-          { num:"3순위", color:"#c084fc", items:[
+          { num:"4순위", color:"#c084fc", items:[
             { name:"보이드 펄스", isSkill:true, badge:"닼로 전용 스킬", multTag:"", desc:"영웅 스킬 피해량 버프" },
             { name:"환영나비", isSkill:true, badge:"공용 버프", multTag:"3각 241배", desc:"3각 시 241배 버프 지원" },
             { name:"크림슨 웨이브", isSkill:true, badge:"불멸 출혈용", multTag:"", desc:"불멸 저주 II 룬 출혈 조건 달성" }
           ]},
-          { num:"4순위 (후순위 마무리)", color:"#94a3b8", items:[
+          { num:"5순위 (후순위 마무리)", color:"#94a3b8", items:[
             { name:newElemHero, isSkill:false, badge:"주속성 신영웅", multTag:"", desc:"주속성 디버프 지원" },
             { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", multTag:"", desc:"오버드라이브 3각 시 엘리시아 대체" }
           ]}
