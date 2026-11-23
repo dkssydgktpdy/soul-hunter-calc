@@ -2442,12 +2442,6 @@
       font-size: 13px;
       font-weight: 900;
     }
-    .guides-card-grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      flex: 1;
-    }
     .guides-card-grid-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2488,9 +2482,7 @@
         border-top: 1.5px dashed rgba(125, 211, 252, 0.45);
         margin: 2px 0;
       }
-      .guides-card-grid-3 {
-        grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
-      }
+
       .guides-card-grid-2 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -3598,6 +3590,204 @@
       transform: translate(-50%, 0) scale(1);
     }
 
+    /* ==================== 9.99 내 세팅 진단 & 스테이지 돌파 예측기 ==================== */
+    .stage-diag-entry-wrap {
+      display: flex;
+      justify-content: center;
+      margin: -8px 0 20px 0;
+    }
+    .stage-diag-entry-btn {
+      width: 100%;
+      max-width: 720px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(15, 23, 42, 0.96) 55%, rgba(56, 189, 248, 0.2) 100%);
+      border: 2px solid #34d399;
+      border-radius: 15px;
+      padding: 12px 18px;
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      box-shadow: 0 6px 22px rgba(16, 185, 129, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.2s;
+    }
+    .stage-diag-entry-btn:hover {
+      transform: translateY(-2px) scale(1.01);
+      border-color: #fde047;
+      box-shadow: 0 10px 26px rgba(250, 204, 21, 0.32), 0 0 18px rgba(52, 211, 153, 0.35);
+    }
+    .stage-diag-entry-btn.has-alert {
+      border-color: #facc15;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22) 0%, rgba(15, 23, 42, 0.96) 55%, rgba(244, 63, 94, 0.22) 100%);
+      box-shadow: 0 6px 24px rgba(250, 204, 21, 0.34);
+    }
+    .diag-entry-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 900;
+      background: rgba(56, 189, 248, 0.18);
+      border: 1px solid #38bdf8;
+      color: #bae6fd;
+      white-space: nowrap;
+    }
+    .diag-entry-badge.is-alert {
+      background: linear-gradient(135deg, #e11d48 0%, #d97706 100%);
+      border-color: #fde047;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(244, 63, 94, 0.55);
+    }
+
+    .diag-stage-input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .diag-stage-box {
+      background: #0b1120;
+      border: 1.5px solid #334155;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .diag-stage-pair {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .diag-stage-pair input {
+      text-align: center;
+      font-weight: 900;
+      font-size: 16px;
+      color: #fde047;
+      padding: 8px 6px;
+    }
+    .diag-dual-dash {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .diag-dash-card {
+      background: linear-gradient(150deg, #16223d 0%, #0b1120 100%);
+      border: 1.5px solid #38bdf8;
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .diag-dash-card.predict {
+      border-color: #34d399;
+      background: linear-gradient(150deg, rgba(6, 78, 59, 0.52) 0%, #0b1120 100%);
+    }
+    .diag-dash-card.has-change {
+      border-color: #facc15;
+      box-shadow: 0 0 20px rgba(250, 204, 21, 0.25);
+    }
+
+    .diag-switch-bar {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      background: #0b1120;
+      padding: 7px;
+      border-radius: 13px;
+      border: 1.5px solid #334155;
+      margin-bottom: 16px;
+    }
+    .diag-switch-btn {
+      background: #131d33;
+      border: 1.5px solid #334155;
+      border-radius: 10px;
+      padding: 11px 8px;
+      color: #cbd5e1;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.18s ease;
+    }
+    .diag-switch-btn:hover { border-color: #fde047; color: #ffffff; }
+    .diag-switch-btn.active {
+      background: linear-gradient(135deg, #0284c7 0%, #1e3a8a 100%);
+      border-color: #7dd3fc;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.45);
+    }
+    .diag-slot-clickable {
+      cursor: pointer !important;
+      transition: transform 0.15s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .diag-slot-clickable:hover {
+      transform: translateY(-2px);
+      border-color: #fde047 !important;
+      box-shadow: 0 0 16px rgba(250, 204, 21, 0.45) !important;
+    }
+    .diag-slot-mismatch {
+      border-color: #f43f5e !important;
+      box-shadow: 0 0 14px rgba(244, 63, 94, 0.45) !important;
+    }
+    .diag-alert-banner {
+      background: linear-gradient(135deg, rgba(225, 29, 72, 0.2) 0%, rgba(15, 23, 42, 0.96) 65%, rgba(245, 158, 11, 0.2) 100%);
+      border: 1.5px solid #fb7185;
+      border-left: 4px solid #facc15;
+      border-radius: 12px;
+      padding: 12px 15px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .diag-alert-banner.all-good {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, #0f172a 100%);
+      border-color: #34d399;
+      border-left-color: #10b981;
+    }
+    .diag-goto-btn {
+      background: linear-gradient(135deg, #e11d48 0%, #b45309 100%);
+      border: 1.5px solid #fde047;
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 900;
+      padding: 8px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(225, 29, 72, 0.4);
+      transition: transform 0.15s ease;
+    }
+    .diag-goto-btn:hover { transform: translateY(-1px) scale(1.02); }
+    .diag-t3-cell { cursor: pointer; }
+    .diag-t3-cell:hover { border-color: #fde047 !important; color: #ffffff; }
+    .diag-t3-cell.user-picked {
+      border: 2px solid #38bdf8 !important;
+      background: linear-gradient(145deg, rgba(56, 189, 248, 0.25) 0%, #0f172a 100%) !important;
+      color: #ffffff !important;
+      font-weight: 900;
+    }
+    .diag-t3-cell.user-mismatch {
+      border: 2px solid #f43f5e !important;
+      background: linear-gradient(145deg, rgba(244, 63, 94, 0.28) 0%, #1c0b14 100%) !important;
+      color: #fecdd3 !important;
+      font-weight: 900;
+    }
+    @media (max-width: 720px) {
+      .diag-stage-input-grid, .diag-dual-dash { grid-template-columns: 1fr; }
+      .diag-switch-bar { grid-template-columns: 1fr; gap: 6px; }
+    }
+
     /* ==================== 10. 통합 반응형 (태블릿 & 모바일) ==================== */
     @media (max-width: 860px) {
       .union-ingame-body { grid-template-columns: 1fr; }
@@ -3759,7 +3949,7 @@
             <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 &amp; 공략 툴</h1>
           </div>
           <div class="author-tag">
-            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.5.1.0</strong>
+            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.6.0.0</strong>
           </div>
 
           <!-- 카카오페이 후원 팝오버 위젯 -->
@@ -3957,6 +4147,27 @@
       </div>
     </div>
 
+    <!-- 내 세팅 진단 & 스테이지 돌파 예측기 독립 진입 버튼 -->
+    <div class="stage-diag-entry-wrap">
+      <button type="button" id="stage_diag_entry_btn" class="stage-diag-entry-btn" onclick="openStageDiagView()">
+        <div style="display:flex; align-items:center; gap:12px; text-align:left;">
+          <div style="width:42px; height:42px; border-radius:11px; background:radial-gradient(circle, rgba(52,211,153,0.32) 0%, #0b1120 100%); border:1.5px solid #6ee7b7; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="14" r="10.5" stroke="#6ee7b7" stroke-width="1.8" stroke-dasharray="4 2.5"/>
+              <circle cx="14" cy="14" r="5.5" stroke="#38bdf8" stroke-width="1.6"/>
+              <path d="M14 2.5V6M14 22V25.5M2.5 14H6M22 14H25.5" stroke="#fde047" stroke-width="1.8" stroke-linecap="round"/>
+              <circle cx="14" cy="14" r="2.2" fill="#fde047"/>
+            </svg>
+          </div>
+          <div>
+            <div style="font-size:15px; font-weight:900; color:#ffffff; letter-spacing:-0.2px;">내 세팅, 고칠 게 있을까? <span style="color:#6ee7b7; font-size:13px;">(스테이지 돌파 &amp; 세팅 비교 진단)</span></div>
+            <div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">막힌 스테이지 ➔ 목표 필요 배율 계산 · 내 현재 룬/소울/특성 vs 추천 비교 및 예상 도달 예측</div>
+          </div>
+        </div>
+        <span id="diag_entry_badge" class="diag-entry-badge">진단실 열기 ➔</span>
+      </button>
+    </div>
+
     <!-- ==================== 5. 상단 3대 메인 탭 ==================== -->
     <div class="mode-switcher">
       <button type="button" class="mode-btn active" id="btn_mode_helpers" onclick="switchMainMode('helpers')">
@@ -4135,6 +4346,26 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <!-- 현재 막힌(도달) 스테이지 입력 (진단실 · 유니온 · 소울 해금 양방향 자동 연동) -->
+          <div style="background:#090e1a; padding:10px 12px; border-radius:10px; border:1.5px solid #34d399; margin-bottom:10px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:7px;">
+              <label style="margin:0; color:#6ee7b7; font-size:12px; font-weight:900;">현재 막힌(도달) 스테이지 (1-1 ~ 1510-50)</label>
+              <span id="minv_stage_hp_preview" style="font-size:11px; color:#fde047; font-weight:800;"></span>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+              <button type="button" class="minv-step-btn" onclick="stepMinvStage(-10)" style="width:38px; font-size:11.5px;">-10</button>
+              <button type="button" class="minv-step-btn" onclick="stepMinvStage(-1)" style="width:32px; font-size:12px;">-1</button>
+              <div style="display:flex; align-items:center; gap:5px; flex:1; min-width:150px;">
+                <input type="number" id="minv_cur_chap" min="1" max="1510" value="800" oninput="onMasterInvStageInput()" style="padding:6px 4px; text-align:center; font-size:14.5px; font-weight:900; color:#fde047; background:#131d33; border:1.5px solid #475569;">
+                <span style="font-weight:900; color:#64748b;">-</span>
+                <input type="number" id="minv_cur_sub" min="1" max="50" value="1" oninput="onMasterInvStageInput()" style="max-width:74px; padding:6px 4px; text-align:center; font-size:14.5px; font-weight:900; color:#fde047; background:#131d33; border:1.5px solid #475569;">
+              </div>
+              <button type="button" class="minv-step-btn" onclick="stepMinvStage(1)" style="width:32px; font-size:12px;">+1</button>
+              <button type="button" class="minv-step-btn" onclick="stepMinvStage(10)" style="width:38px; font-size:11.5px;">+10</button>
+            </div>
+            <div style="font-size:10.5px; color:#94a3b8; margin-top:5px;">진단실 [현재 막힌 스테이지]와 양방향 실시간 연동되며, 챕터 입력 시 유니온·소울 해금 구간도 자동 맞춰집니다.</div>
           </div>
 
           <!-- 유니온 해금 스테이지 9칸 라디오 -->
@@ -6380,12 +6611,122 @@
       </div>
     </div>
 
+    <!-- ==================== [MODE: STAGE DIAG] 내 세팅 진단 & 스테이지 돌파 예측기 ==================== -->
+    <div id="mode_stage_diag_container" style="display:none;">
+
+      <!-- 1. 상단 스테이지 입력 & 듀얼 결과 대시보드 -->
+      <div class="card" style="border-left: 4px solid #34d399;">
+        <div class="card-title">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="14" r="10.5" stroke="#34d399" stroke-width="2"/>
+              <path d="M9 17L13 13L16 16L21 10" stroke="#fde047" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="17,10 21,10 21,14" stroke="#fde047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>내 세팅 진단 &amp; 스테이지 돌파 예측기</span>
+          </div>
+          <span class="grade-badge grade-eternal">1-1 ~ 1510-50 전 구간 검증</span>
+        </div>
+        <p class="card-subtitle">현재 막힌 스테이지와 목표 스테이지를 입력하면 필요 배율을 계산하고, 아래에 입력한 <strong>내 현재 세팅</strong>을 시뮬레이터 추천으로 바꿨을 때 <strong>몇 배 강해지며 어디까지 돌파할지</strong> 예측합니다.</p>
+
+        <!-- 현재 / 목표 스테이지 입력 -->
+        <div class="diag-stage-input-grid">
+          <div class="diag-stage-box" style="border-color:#38bdf8;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:7px;">
+              <label style="margin:0; color:#7dd3fc; font-size:12.5px;">현재 막힌 스테이지 (1-1 ~ 1510-50)</label>
+              <span id="diag_cur_hp_preview" style="font-size:11.5px; color:#cbd5e1; font-weight:800;"></span>
+            </div>
+            <div class="diag-stage-pair">
+              <input type="number" id="diag_cur_chap" min="1" max="1510" value="800" oninput="onStageDiagInputChange()">
+              <span style="font-weight:900; color:#64748b; font-size:18px;">-</span>
+              <input type="number" id="diag_cur_sub" min="1" max="50" value="1" oninput="onStageDiagInputChange()" style="max-width:95px;">
+            </div>
+          </div>
+
+          <div class="diag-stage-box" style="border-color:#fbbf24;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:7px; flex-wrap:wrap; gap:4px;">
+              <label style="margin:0; color:#fde047; font-size:12.5px;">목표 스테이지</label>
+              <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                <button type="button" class="seg-pill-btn" style="padding:2px 7px; font-size:10.5px;" onclick="setDiagTargetOffset(10)">+10챕</button>
+                <button type="button" class="seg-pill-btn" style="padding:2px 7px; font-size:10.5px;" onclick="setDiagTargetOffset(50)">+50챕</button>
+                <button type="button" class="seg-pill-btn" style="padding:2px 7px; font-size:10.5px;" onclick="setDiagTargetOffset(100)">+100챕</button>
+              </div>
+            </div>
+            <div class="diag-stage-pair">
+              <input type="number" id="diag_tar_chap" min="1" max="1510" value="850" oninput="onStageDiagInputChange()">
+              <span style="font-weight:900; color:#64748b; font-size:18px;">-</span>
+              <input type="number" id="diag_tar_sub" min="1" max="50" value="1" oninput="onStageDiagInputChange()" style="max-width:95px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 좌: 목표 필요 배율 / 우: 내 세팅 변경 시 예상 도달 -->
+        <div class="diag-dual-dash">
+          <div class="diag-dash-card" id="diag_target_result_card"></div>
+          <div class="diag-dash-card predict" id="diag_predict_result_card"></div>
+        </div>
+
+        <!-- 변경사항 종합 감지 & 도우미 유도 배너 -->
+        <div id="diag_master_alert_wrap" style="margin-top:14px;"></div>
+      </div>
+
+      <!-- 2. 내 현재 장착 세팅 입력 & 비교 영역 (아코디언 ZERO · 스위치 전환) -->
+      <div class="card" style="border-left: 4px solid #38bdf8;">
+        <div class="card-title">
+          <span>내 현재 장착 세팅 직접 입력 (클릭하여 장착 · 추천과 실시간 비교)</span>
+          <span style="font-size:11.5px; color:#94a3b8; font-weight:700;">인벤토리 직업/속성/보유도감 자동 연동</span>
+        </div>
+
+        <div class="diag-switch-bar">
+          <button type="button" class="diag-switch-btn active" id="diag_sw_rune" onclick="switchStageDiagTab('rune')">
+            <img src="images/main_rune.png" alt="" style="width:20px; height:20px; object-fit:contain;" onerror="this.style.display='none';">
+            <span>1. 내 현재 룬 (10칸)</span>
+            <span id="diag_tab_badge_rune" class="mini-tag" style="background:#334155; color:#cbd5e1;">미입력</span>
+          </button>
+          <button type="button" class="diag-switch-btn" id="diag_sw_core" onclick="switchStageDiagTab('core')">
+            <img src="images/core_helper_main.png" alt="" style="width:20px; height:20px; object-fit:contain;" onerror="this.style.display='none';">
+            <span>2. 내 현재 소울 (6칸)</span>
+            <span id="diag_tab_badge_core" class="mini-tag" style="background:#334155; color:#cbd5e1;">미입력</span>
+          </button>
+          <button type="button" class="diag-switch-btn" id="diag_sw_trait" onclick="switchStageDiagTab('trait')">
+            <svg width="19" height="19" viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,14 14,26 2,14" fill="rgba(168,85,247,0.35)" stroke="#d8b4fe" stroke-width="1.8"/><circle cx="14" cy="14" r="3" fill="#fde047"/></svg>
+            <span>3. 내 현재 특성 (1~4차)</span>
+            <span id="diag_tab_badge_trait" class="mini-tag" style="background:#334155; color:#cbd5e1;">미입력</span>
+          </button>
+        </div>
+
+        <!-- 동적 탭 콘텐츠 (룬 / 소울 / 1~4차 특성) -->
+        <div id="diag_tab_dynamic_body"></div>
+      </div>
+    </div>
+
+    <!-- 진단실 공용 슬롯 선택 팝업 모달 (룬 · 소울 · 1차/4차 특성 공용 · 검색창 지원) -->
+    <div class="help-modal-overlay" id="diag_picker_modal_overlay" style="z-index: 10008;" onclick="if(event.target===this) closeDiagPickerModal()">
+      <div class="help-modal-box" style="max-width: 680px; max-height: 86vh; overflow-y: auto; border: 2px solid #38bdf8; padding: 20px;" onclick="event.stopPropagation()">
+        <div class="help-modal-header" style="margin-bottom: 12px;">
+          <div>
+            <div class="help-modal-title" id="diag_picker_title" style="color:#7dd3fc;">슬롯 선택</div>
+            <div id="diag_picker_subtitle" style="font-size:11.5px; color:#94a3b8;">현재 인게임에서 실제로 착용 중인 항목을 선택하세요</div>
+          </div>
+          <button type="button" class="help-modal-close" onclick="closeDiagPickerModal()">✕</button>
+        </div>
+        <div id="diag_picker_controls" style="margin-bottom:10px;"></div>
+        <div class="search-input-wrapper" id="diag_picker_search_wrap" style="margin-bottom:10px;">
+          <span class="search-icon-prefix">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#94a3b8" stroke-width="2.2"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </span>
+          <input type="text" id="diag_picker_search_input" placeholder="이름 또는 옵션으로 검색..." oninput="renderDiagPickerList()">
+        </div>
+        <div id="diag_picker_list_wrap" class="acc-scroll-box" style="max-height:390px;"></div>
+      </div>
+    </div>
+
   </div><!-- /.container -->
 
   <!-- ==================== 6. 푸터 (길보길 분석실 & 방문자 카운터) ==================== -->
   <footer>
     <div style="margin-bottom: 12px;">
-      소울헌터키우기 네이버 라운지 전용 계산기 v.5.1.0 | 제작: <strong>29서버 겨울눈사람</strong>
+      소울헌터키우기 네이버 라운지 전용 계산기 v.6.0.0 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
       <button type="button" onclick="location.href='guild.html'"
@@ -6647,6 +6988,14 @@
         <li>목표 정령 카드와 보유 장수를 입력하면 10돌파(70장)까지 필요한 정령석 기댓값을 비교해 줍니다.</li>
       </ol>`
     },
+    'stage-diag': {
+      title: '내 세팅 진단 & 스테이지 돌파 예측기 사용법',
+      html: `<ol>
+        <li><strong>현재 막힌 스테이지</strong>와 <strong>목표 스테이지</strong>를 입력하면 보스 체력(1-1~1510-50) 기준 필요 배율과 방어력·방치보상 차이를 계산합니다.</li>
+        <li>하단 스위치에서 <strong>내 현재 룬 / 소울 / 1~4차 특성</strong>을 클릭해 실제 착용 중인 세팅을 입력하세요. (<strong>[추천 세팅 그대로 복사]</strong> 후 다른 칸만 바꾸면 5초 만에 입력됩니다.)</li>
+        <li>추천 세팅과 다른 항목이 있으면 <strong>변경사항 감지 알림</strong>과 함께 <strong>몇 배 강해지고 몇 스테이지까지 돌파할지</strong> 자동 계산됩니다.</li>
+      </ol>`
+    },
     'rune': {
       title: '🛡️ 룬 착용 도우미 v.1.5.1 사용법',
       html: `<ol>
@@ -6718,6 +7067,9 @@
     document.getElementById("newbie_rune_view").style.display = "none";
     document.getElementById("guides_detail_view").style.display = "none";
 
+    const sdEl = document.getElementById("mode_stage_diag_container");
+    if (sdEl) sdEl.style.display = "none";
+
     if (mode === 'helpers') {
       guidesContainer.style.display = "none";
       deepContainer.style.display = "block";
@@ -6748,6 +7100,7 @@
   }
 
   function openDeepCalculator(calcTabId, skipScroll = false) {
+    const _sd = document.getElementById("mode_stage_diag_container"); if (_sd) _sd.style.display = "none";
     if (calcTabId !== 'tab-connect' && calcTabId !== 'tab-union') currentMainMode = 'calcs';
     document.getElementById("mode_newbie_container").style.display = "none";
     document.getElementById("mode_guides_container").style.display = "none";
@@ -6812,6 +7165,11 @@
   }
 
   function handleFloatingBack() {
+
+    if (document.getElementById("mode_stage_diag_container")?.style.display === "block") {
+      switchMainMode(currentMainMode);
+      return;
+    }
     // 1) 전직 특성 도우미 상세(1~3차)에서 뒤로가기 -> 1~4차 차수 선택 허브로 복귀
     if (currentGuideType === 'trait' && currentTraitTabStep !== 0 && document.getElementById("guides_detail_view")?.style.display === "block") {
       changeTraitTabStep(0);
@@ -7010,7 +7368,7 @@
       const inputsData = {};
       document.querySelectorAll('input[id], select[id]').forEach(el => {
         if (['rune_search_input', 'union_search_input', 'global_omni_input', 'trait2_lv_slider', 'trait4_lv_slider', 'ui_tog_solaris9', 'ui_tog_bleed'].includes(el.id)) return;
-        if (el.id.startsWith('eq_inv_') || el.id.startsWith('u_brk_') || el.id.startsWith('sc_gem_add_') || el.id.startsWith('minv_')) return;
+        if (el.id.startsWith('eq_inv_') || el.id.startsWith('u_brk_') || el.id.startsWith('sc_gem_add_') || el.id.startsWith('minv_') || el.id.startsWith('diag_')) return;
         inputsData[el.id] = (el.type === 'checkbox') ? el.checked : el.value;
       });
 
@@ -7030,7 +7388,8 @@
         unionUserSpecs,
         trait2SealAwk65,
         trait2Job1Lv80,
-        currentUnionStageIdx
+        currentUnionStageIdx,
+        stageDiagState
       };
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -7081,6 +7440,7 @@
       // loadUserSettings() 안의 state 복원 블록 내부에 추가:
       if (typeof state.trait2SealAwk65 === 'boolean') trait2SealAwk65 = state.trait2SealAwk65;
       if (typeof state.trait2Job1Lv80 === 'boolean') trait2Job1Lv80 = state.trait2Job1Lv80;
+      if (state.stageDiagState) stageDiagState = mergeDefaultStageDiagState(state.stageDiagState);
 
       if (state.inputs) {
         Object.keys(state.inputs).forEach(id => {
@@ -7168,6 +7528,7 @@
   }
 
   function refreshAllActiveViews() {
+    syncTraitLevelsFromInputs();
     ['reaper', 'mage', 'lord'].forEach(j => {
       document.getElementById('rune_job_' + j)?.classList.toggle('selected', j === currentRuneJob);
       document.getElementById('sc_job_' + j)?.classList.toggle('selected', j === currentConnectJob);
@@ -7199,10 +7560,12 @@
     if (document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
     calculateBestConnectLoadout();
     if (document.getElementById('tab-union')?.style.display !== 'none') renderUnionAll();
-    syncTraitLevelsFromInputs();
+    
     if (document.getElementById('guides_detail_view')?.style.display !== 'none') renderBuildGuideContent();
     if (document.getElementById('master_inv_modal_overlay')?.style.display === 'flex') refreshMasterInventoryModalUI();
-  }
+    if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
+    if (document.getElementById('mode_stage_diag_container')?.style.display === 'block') renderStageDiagAll();
+}
 
   function clearMemoryStateForEmptySlot(skipRender = false) {
     if (saveDebounceTimer) { clearTimeout(saveDebounceTimer); saveDebounceTimer = null; }
@@ -7227,6 +7590,7 @@
     currentRuneElem = currentConnectElem = guideElem = 'fire';
     currentConnectStageSlots = 6;
     trait2SealAwk65 = true;
+    stageDiagState = createDefaultStageDiagState();
 
     if (!skipRender) refreshAllActiveViews();
   }
@@ -7527,6 +7891,7 @@
   }
 
   function syncMasterInvVisualControls() {
+    if (typeof syncMasterInvStageVisual === 'function') syncMasterInvStageVisual();
     // 1. 직업 / 주속성 라디오
     const curJob = currentRuneJob || 'reaper';
     const curElem = currentRuneElem || 'fire';
@@ -7916,7 +8281,11 @@
     const gMap = { ancient:'a', mythic:'m', legend:'l', unique:'u', advanced:'d' };
     const gArr = snap.gems ? JSON.parse(snap.gems) : [];
     const compactGems = gArr.map(g => [gMap[g.tier] || 'a', g.chain, g.pt, g.atk || 0, g.amp || 0]);
+    
+    const compactDiag = (typeof packStageDiagForCode === 'function') ? packStageDiagForCode(s300.stageDiagState, runeIdxMap) : null;
     return {
+      dg: compactDiag,
+      t2f: [s300.trait2SealAwk65 ?? true, s300.trait2Job1Lv80 ?? false],
       gm: compactGems,
       sn: slotName || '계정',
       j: s300.currentRuneJob || 'reaper',
@@ -7965,8 +8334,11 @@
       equipInventories: { scythe: {}, orb: {}, accessory: {}, ...(cs.eq || {}) },
       inputs: fullInputs,
       unionUserSpecs: unionSpecsObj,
-      currentUnionStageIdx: cs.us ?? 0
-    };
+      currentUnionStageIdx: cs.us ?? 0,
+      trait2SealAwk65: Array.isArray(cs.t2f) ? Boolean(cs.t2f[0]) : true,
+      trait2Job1Lv80: Array.isArray(cs.t2f) ? Boolean(cs.t2f[1]) : false,
+      stageDiagState: (typeof unpackStageDiagFromCode === 'function' && cs.dg) ? unpackStageDiagFromCode(cs.dg) : createDefaultStageDiagState()
+   };
     const union = {
       unionUserSpecs: unionSpecsObj,
       currentUnionStageIdx: cs.us ?? 0,
@@ -8313,6 +8685,8 @@
       calculateBestRuneLoadout();
       if (document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
       calculateBestConnectLoadout();
+      if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
+      if (document.getElementById('mode_stage_diag_container')?.style.display === 'block') renderStageDiagAll();
       triggerAutoSave();
     } finally { _isSyncingProfile = false; }
   }
@@ -8342,6 +8716,8 @@
       calculateBestRuneLoadout();
       if (document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
       calculateBestConnectLoadout();
+      if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
+      if (document.getElementById('mode_stage_diag_container')?.style.display === 'block') renderStageDiagAll();
       triggerAutoSave();
     } finally { _isSyncingProfile = false; }
   }
@@ -9674,6 +10050,7 @@
   }
 
  function openNewbieCalculator(cat, skipScroll = false) {
+    const _sd = document.getElementById("mode_stage_diag_container"); if (_sd) _sd.style.display = "none";
     currentMainMode = 'calcs';
     currentNewbieCat = cat;
     document.getElementById("mode_deep_container").style.display = "none";
@@ -10302,6 +10679,7 @@
   ];
 
   function openRuneHelperView() {
+    const _sd = document.getElementById("mode_stage_diag_container"); if (_sd) _sd.style.display = "none";
     document.getElementById("mode_deep_container").style.display = "none";
     document.getElementById("mode_guides_container").style.display = "none";
     document.getElementById("mode_newbie_container").style.display = "block";
@@ -10957,6 +11335,23 @@
       </div>`;
     }).join('');
     reportEl.innerHTML = reportHtml || `<div style="text-align:center; padding:24px; color:#94a3b8; background:#0f172a; border-radius:10px; border:1px dashed #334155;">위 목록에서 보유 중인 룬을 클릭해 주세요.</div>`;
+  
+    window._latestBestRuneEval = {
+      log10: combinedLog10,
+      slots: {
+        armor_top: finalArmor.slots[0]?.id || null,
+        armor_mid: finalArmor.slots[1]?.id || null,
+        armor_bot: finalArmor.slots[2]?.id || null,
+        abyss:     finalEmbAb.abyss?.id || null,
+        ring:      finalAcc.ring?.id || null,
+        neck:      finalAcc.neck?.id || null,
+        emblem:    finalEmbAb.emblem?.id || null,
+        weap_1:    finalWeap.slots[0]?.id || null,
+        weap_2:    finalWeap.slots[1]?.id || null,
+        weap_3:    finalWeap.slots[2]?.id || null
+      }
+    };
+    if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
   }
 
   // =========================================================================
@@ -11857,6 +12252,12 @@
             <div style="font-size:13px; color:#94a3b8;">• 기본/증폭 해금: <span style="color:#e2e8f0;">코어${c.num} 공격력 총 +${tMeta.atkPct.toLocaleString()}%${ampStr}</span><br>• 고유 테마 효과: <span style="color:${isValid ? '#38bdf8' : '#64748b'}; font-weight:700;">${getCoreThemeSummary(c, inst.tier)}</span>${gemDetailStr}</div>
           </div>`;
         }).join('');
+
+    window._latestBestConnectEval = {
+      log10: bestEval.totalLog10,
+      slots: Array.from({ length: 6 }, (_, i) => bestCombo[i] ? { tier: bestCombo[i].tier, coreId: bestCombo[i].core.id } : null)
+    };
+    if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
   }
 
   // =========================================================================
@@ -12570,6 +12971,7 @@
   }
 
   function openSpecialGuideDetail(type) {
+    const _sd = document.getElementById("mode_stage_diag_container"); if (_sd) _sd.style.display = "none";
     currentGuideOrigin = 'guides';
     currentGuideType = type;
     document.getElementById("mode_deep_container").style.display = "none";
@@ -12602,6 +13004,7 @@
   }
 
   function openCategoryGuideDirect(catType) {
+    const _sd = document.getElementById("mode_stage_diag_container"); if (_sd) _sd.style.display = "none";
     if (catType === 'skill' || catType === 'hero') {
       guideBuildTab = catType;
       catType = 'job_build';
@@ -15434,6 +15837,7 @@
   // [SECTION 17] 구글 스타일 통합 검색 & 단일 클린 초기화
   // =========================================================================
   const GLOBAL_SEARCH_INDEX = [
+    { title:"내 세팅 진단 & 스테이지 돌파 예측기 (1-1~1510-50)", cat:"진단 시뮬레이터", badge:"grade-eternal", keywords:"스테이지 보스 체력 방어력 돌파 몇배 세팅 비교 내세팅 고칠게 룬 소울 특성 예측", action:()=>{ openStageDiagView(); } },
     { title:"🛡️ 룬 착용 도우미 v.1.5.1", cat:"🛠️ 세팅 도우미", badge:"grade-immortal", keywords:"룬 방어구 반지 목걸이 엠블렘 심연장식 무기 천상 명황 과성장 마녀 토테미즘", action:()=>{ switchMainMode('helpers'); openRuneHelperView(); } },
     { title:"🪐 소울커넥트 코어 선택 도우미 v.1.4.0", cat:"🛠️ 세팅 도우미", badge:"grade-ancient", keywords:"소울커넥트 코어 보석 하크확 하크피 도감 승급전 보스전 32P 28P", action:()=>{ switchMainMode('helpers'); openDeepCalculator('tab-connect'); } },
     { title:"🏛️ 유니온 세팅 도우미 v.1.1.0 (스킬·영웅)", cat:"🛠️ 세팅 도우미", badge:"grade-unique", keywords:"유니온 스킬유니온 영웅유니온 특수슬롯 일반슬롯 보라칸 500점 2000점 시너지", action:()=>{ switchMainMode('helpers'); openDeepCalculator('tab-union'); } },
@@ -15669,6 +16073,7 @@
     function getTopOpenModalCloseFn() {
       const modals = [
         ['pwa_install_modal_overlay', () => closePwaInstallModal(false)],
+        ['diag_picker_modal_overlay', () => closeDiagPickerModal()],
         ['sc_gem_modal_overlay',      () => closeScGemModal()],
         ['sc_cond_modal_overlay',     () => closeScCondModal()],
         ['rune_cond_modal_overlay',   () => closeRuneCondModal()],
@@ -15741,6 +16146,1391 @@
       tracking = false; lastDx = 0;
       if (ind) { ind.style.transform = 'translate(-110%, -50%)'; ind.classList.remove('ready'); }
     }, { passive: true });
+  }
+
+  // =========================================================================
+  // [SECTION 18] 스테이지 보스 체력/방어력 스케일링(1-1~1510-50) & 내 세팅 비교 진단 엔진
+  // =========================================================================
+  function createDefaultStageDiagState() {
+    return {
+      curC: 800, curS: 1, tarC: 850, tarS: 1,
+      activeTab: 'rune',      // 'rune' | 'core' | 'trait'
+      activeTraitStep: 2,     // 1 | 2 | 3 | 4
+      activeTrait2Sub: 'mark',// 'mark' | 'crit'
+      runes: {
+        armor_top: null, armor_mid: null, armor_bot: null, abyss: null,
+        ring: null, neck: null, emblem: null,
+        weap_1: null, weap_2: null, weap_3: null
+      },
+      cores: [null, null, null, null, null, null], // { tier, coreId }
+      trait1: [null, null, null, null, null],      // trait id
+      trait2Initialized: false,
+      trait2: {
+        markRoot: 0, critRoot: 0,
+        mark: { r1:[0,0,0,0,0,0], r2:new Array(18).fill(0), r3:[0,0,0,0,0,0], r4:[0,0,0,0] },
+        crit: { r1:[0,0,0,0,0,0], r2:new Array(18).fill(0), r3:[0,0,0,0,0,0], r4:[0,0,0,0] }
+      },
+      trait3: [null, null, null, null, null],      // 0 | 1 | 2
+      trait4: [null, null, null, null, null]       // { skill, linkId } | { linkId }
+    };
+  }
+
+  function mergeDefaultStageDiagState(saved) {
+    const def = createDefaultStageDiagState();
+    if (!saved || typeof saved !== 'object') return def;
+    return {
+      ...def, ...saved,
+      runes: { ...def.runes, ...(saved.runes || {}) },
+      cores: Array.isArray(saved.cores) ? saved.cores.slice(0, 6).concat(Array(6).fill(null)).slice(0, 6) : def.cores,
+      trait1: Array.isArray(saved.trait1) ? saved.trait1.slice(0, 5).concat(Array(5).fill(null)).slice(0, 5) : def.trait1,
+      trait2: saved.trait2 ? {
+        markRoot: saved.trait2.markRoot || 0,
+        critRoot: saved.trait2.critRoot || 0,
+        mark: {
+          r1: (saved.trait2.mark?.r1 || def.trait2.mark.r1).slice(0, 6),
+          r2: (saved.trait2.mark?.r2 || def.trait2.mark.r2).slice(0, 18),
+          r3: (saved.trait2.mark?.r3 || def.trait2.mark.r3).slice(0, 6),
+          r4: (saved.trait2.mark?.r4 || def.trait2.mark.r4).slice(0, 4)
+        },
+        crit: {
+          r1: (saved.trait2.crit?.r1 || def.trait2.crit.r1).slice(0, 6),
+          r2: (saved.trait2.crit?.r2 || def.trait2.crit.r2).slice(0, 18),
+          r3: (saved.trait2.crit?.r3 || def.trait2.crit.r3).slice(0, 6),
+          r4: (saved.trait2.crit?.r4 || def.trait2.crit.r4).slice(0, 4)
+        }
+      } : def.trait2,
+      trait3: Array.isArray(saved.trait3) ? saved.trait3.slice(0, 5).concat(Array(5).fill(null)).slice(0, 5) : def.trait3,
+      trait4: Array.isArray(saved.trait4) ? saved.trait4.slice(0, 5).concat(Array(5).fill(null)).slice(0, 5) : def.trait4
+    };
+  }
+
+  let stageDiagState = createDefaultStageDiagState();
+
+  // ---- A. 1-1 ~ 1510-50 보스 체력(log10_abs) · 몬스터 방어력 · 방치 보상 수학 엔진 ----
+  const STAGE_HP_UNITS_LOW = [
+    "", "만", "억", "조", "경", "해", "자", "양", "구", "간",
+    "정", "재", "극", "항", "아", "나", "불", "무", "대",
+    "겁", "업", "금", "V", "W", "X", "Y", "Z"
+  ];
+
+  // 1-1 ~ 20-1 극초반 비선형 실측 앵커 (S = 50*(c-1)+s, log10_abs)
+  const EARLY_STAGE_ANCHORS = [
+    [1,   1.000000],  // 1-1: 10
+    [30,  7.036549],  // 1-30: 1087만 8000
+    [50,  8.757396],  // 1-50: 5억 7200만
+    [51,  8.974880],  // 2-1: 9억 4380만
+    [97,  11.044521], // 2-47: 1107억 9510만
+    [101, 11.145252], // 3-1: 1397억 1784만
+    [164, 13.863302], // 4-14: 72조 9965억
+    [202, 15.321748], // 5-2: 2097조 7214억
+    [258, 17.252042], // 6-8: 17경 8666조
+    [327, 19.622018], // 7-27: 4188경 1077조
+    [471, 25.311396], // 10-21: 20자 4831해
+    [508, 28.820261], // 11-8: 6양 6109자
+    [547, 29.944464], // 11-47: 87양 9963자
+    [570, 30.847232], // 12-20: 703양 4477자
+    [617, 32.141763], // 13-17: 1구 3860양
+    [667, 33.674766], // 14-17: 47구 2896양
+    [698, 34.578337], // 14-48: 378구 7359양
+    [770, 36.597936], // 16-20: 3간 9622구
+    [815, 37.615275], // 17-15: 41간 2359구
+    [951, 41.116950]  // 20-1: 1차 장기안정구간 접속점
+  ];
+
+  function getUnitSymbolByIndex(idx) {
+    if (idx < 0) return "";
+    if (idx < STAGE_HP_UNITS_LOW.length) return STAGE_HP_UNITS_LOW[idx];
+    const rel = idx - 27;
+    const c1 = String.fromCharCode(65 + Math.floor(rel / 26));
+    const c2 = String.fromCharCode(65 + (rel % 26));
+    return c1 + c2;
+  }
+
+  function formatStageHpFromLog10(log10Abs) {
+    if (!isFinite(log10Abs) || log10Abs <= 0) return "1";
+    const unitIdx = Math.floor(log10Abs / 4);
+    const rem = log10Abs - unitIdx * 4;
+    const val = Math.pow(10, rem);
+    if (unitIdx === 0) return Math.round(val).toLocaleString();
+    const hi = Math.floor(val);
+    const lo = Math.floor((val - hi) * 10000);
+    const uHi = getUnitSymbolByIndex(unitIdx);
+    const uLo = getUnitSymbolByIndex(unitIdx - 1);
+    return lo > 0 ? `${hi}${uHi} ${lo}${uLo}` : `${hi}${uHi}`;
+  }
+
+  function formatDeltaMultiplierText(deltaLog10) {
+    if (!isFinite(deltaLog10) || Math.abs(deltaLog10) < 0.0005) return "1.00배 (동일)";
+    const absD = Math.abs(deltaLog10);
+    const signTxt = deltaLog10 > 0 ? "" : "1 / ";
+    if (absD < 4) return `${signTxt}${Math.pow(10, absD).toFixed(2)}배`;
+    if (absD < 16) return `${signTxt}약 ${formatKoreanNumber(Math.pow(10, absD))}배`;
+    const exp = Math.floor(absD);
+    const mant = Math.pow(10, absD - exp).toFixed(2);
+    return `${signTxt}약 ${mant} × 10^${exp}배`;
+  }
+
+  function getIntraChapterLog10(s, chapMult) {
+    const st = Math.max(1, Math.min(50, s));
+    let baseMult4559 = 1;
+    if (st === 50) {
+      baseMult4559 = 4.9609;
+    } else {
+      const block = Math.floor((st - 1) / 10);
+      const rem = (st - 1) % 10;
+      const base = Math.pow(1.3322, block);
+      if (rem <= 4) baseMult4559 = base * Math.pow(1.0170, rem);
+      else if (rem <= 8) baseMult4559 = base * Math.pow(1.0170, 4) * Math.pow(1.0343, rem - 4);
+      else baseMult4559 = base * 1.4500;
+    }
+    const logBase = Math.log10(baseMult4559);
+    if (Math.abs(chapMult - 4.55918) < 0.001) return logBase;
+    if (Math.abs(chapMult - 5.94311) < 0.001 && st === 50) return Math.log10(6.561);
+    return logBase * (Math.log10(chapMult) / Math.log10(4.55918));
+  }
+
+  function getStageBossLog10HP(c, s) {
+    const chap = Math.max(1, Math.min(1510, parseInt(c, 10) || 1));
+    const sub = Math.max(1, Math.min(50, parseInt(s, 10) || 1));
+    if (chap < 20) {
+      const S = 50 * (chap - 1) + sub;
+      for (let i = 0; i < EARLY_STAGE_ANCHORS.length - 1; i++) {
+        const [s1, l1] = EARLY_STAGE_ANCHORS[i];
+        const [s2, l2] = EARLY_STAGE_ANCHORS[i + 1];
+        if (S >= s1 && S <= s2) {
+          return l1 + ((S - s1) / (s2 - s1)) * (l2 - l1);
+        }
+      }
+      return 1.0;
+    }
+    if (chap <= 324) {
+      return 93.82790 + (chap - 100) * Math.log10(4.55918) + getIntraChapterLog10(sub, 4.55918);
+    }
+    if (chap <= 569) {
+      return 343.921898 + (chap - 500) * Math.log10(3.81895) + getIntraChapterLog10(sub, 3.81895);
+    }
+    if (chap <= 600) {
+      return 392.400296 + (chap - 580) * Math.log10(5.94311) + getIntraChapterLog10(sub, 5.94311);
+    }
+    if (chap <= 713) {
+      return 409.977497 + (chap - 603) * Math.log10(4.55918) + getIntraChapterLog10(sub, 4.55918);
+    }
+    const cEff = chap + (sub - 1) / 50;
+    const linFactor = Math.max(1.0, 3.142 * (cEff - 713.5));
+    return 409.977497 + Math.log10(linFactor) + (chap - 603) * Math.log10(4.55918) + getIntraChapterLog10(sub, 4.55918);
+  }
+
+  function getStageMonsterDef(c, s) {
+    const chap = Math.max(1, Math.min(1510, parseInt(c, 10) || 1));
+    const sub = Math.max(1, Math.min(50, parseInt(s, 10) || 1));
+    if (chap <= 10) return 144 + 6 * (50 * (chap - 1) + sub);
+
+    const calcOffset = (st, D) => {
+      const unit = D / 90;
+      if (st === 50) return 95 * unit;
+      const block = Math.floor((st - 1) / 10);
+      const rem = (st - 1) % 10;
+      if (rem <= 4) return (block * 17 + rem) * unit;
+      if (rem <= 8) return (block * 17 + 4 + (rem - 4) * 2) * unit;
+      return (block * 17 + 22) * unit;
+    };
+
+    let base = 0, D = 900;
+    if (chap <= 13)      { D = 900;   base = 900 * chap + 437; }
+    else if (chap <= 24) { D = 1350;  base = 1350 * chap - 5838; }
+    else if (chap <= 48) { D = 1800;  base = 1800 * chap - 17113; }
+    else if (chap <= 73) { D = 7650;  base = 7650 * chap - 298788; }
+    else if (chap <= 102){ D = 9000;  base = 9000 * chap - 397973; }
+    else if (chap <= 191){ D = 18000; base = 18000 * chap - 1323473; }
+    else                 { D = 63000; base = 63000 * chap - 9920972; }
+    return Math.round(base + calcOffset(sub, D));
+  }
+
+  function getStageIdleRewards(c) {
+    const chap = Math.max(1, Math.min(1510, parseInt(c, 10) || 1));
+    return {
+      r1: Math.round(81 + 9 * chap),
+      r2: Math.round(400 + 5 * chap),
+      r3: Math.round(375 + 2.5 * chap),
+      r4: Math.round(400 + 1.25 * chap)
+    };
+  }
+
+  // 현재 막힌 스테이지 + Δlog10 ➔ 예상 도달 스테이지 역산 (10스테이지 경계 보스 컷 반영)
+  function predictStageFromDeltaLog10(startC, startS, deltaLog10) {
+    const curLog = getStageBossLog10HP(startC, startS);
+    if (!isFinite(deltaLog10) || deltaLog10 <= 0.0005) {
+      return { c: startC, s: startS, chGain: 0, capped: false, targetLog: curLog };
+    }
+    const targetLog = curLog + deltaLog10;
+    if (targetLog >= getStageBossLog10HP(1510, 50)) {
+      const chGain = (1510 + 49 / 50) - (startC + (startS - 1) / 50);
+      return { c: 1510, s: 50, chGain, capped: true, targetLog };
+    }
+
+    // 이진 탐색으로 챕터 보스(-50)를 돌파할 수 있는 마지막 챕터 탐색
+    let lo = startC, hi = 1510, passChap = startC - 1;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      if (getStageBossLog10HP(mid, 50) <= targetLog) { passChap = mid; lo = mid + 1; }
+      else hi = mid - 1;
+    }
+
+    let bestC = Math.max(startC, passChap + 1);
+    if (bestC > 1510) return { c: 1510, s: 50, chGain: 1510 - startC, capped: true, targetLog };
+
+    let bestS = (bestC === startC) ? startS : 1;
+    const scanStart = (bestC === startC) ? startS : 1;
+    for (let s = scanStart; s <= 50; s++) {
+      if (getStageBossLog10HP(bestC, s) <= targetLog) bestS = s;
+      else break;
+    }
+    const chGain = Math.max(0, (bestC + (bestS - 1) / 50) - (startC + (startS - 1) / 50));
+    return { c: bestC, s: bestS, chGain, capped: false, targetLog };
+  }
+
+  // ---- B. 내 현재 룬 / 소울 / 2차 특성 배율 정밀 평가 + 1·3·4차 불일치 감지 ----
+  const DIAG_T2_META = {
+    row1: [
+      { reqLv:1, max:5, cost:1, cls:"t2c-brown", maxVal:15 }, { reqLv:10, max:5, cost:1, cls:"t2c-green", maxVal:15 },
+      { reqLv:20, max:5, cost:1, cls:"t2c-blue", maxVal:15 }, { reqLv:30, max:5, cost:1, cls:"t2c-purple", maxVal:15 },
+      { reqLv:40, max:5, cost:2, cls:"t2c-yellow", maxVal:15 }, { reqLv:50, max:5, cost:3, cls:"t2c-orange", maxVal:15 }
+    ],
+    mark2: [
+      { reqLv:1, max:5, cost:1, cls:"t2c-brown", maxVal:10 }, { reqLv:10, max:5, cost:1, cls:"t2c-green", maxVal:20 },
+      { reqLv:20, max:5, cost:1, cls:"t2c-blue", maxVal:30 }, { reqLv:30, max:5, cost:1, cls:"t2c-purple", maxVal:50 },
+      { reqLv:40, max:5, cost:2, cls:"t2c-yellow", maxVal:100 }, { reqLv:50, max:5, cost:3, cls:"t2c-orange", maxVal:200 },
+      { reqLv:60, max:5, cost:3, cls:"t2c-cyan", maxVal:350 }, { reqLv:70, max:10, cost:5, cls:"t2c-mint", maxVal:1000 },
+      { reqLv:80, max:10, cost:7, cls:"t2c-pink", maxVal:1400 }, { reqLv:90, max:10, cost:10, cls:"t2c-purple", maxVal:2000 },
+      { reqLv:100, max:10, cost:10, cls:"t2c-sky-silv", maxVal:2800 }, { reqLv:110, max:10, cost:10, cls:"t2c-blu-silv", maxVal:4000 },
+      { reqLv:120, max:10, cost:10, cls:"t2c-silver1", maxVal:6000 }, { reqLv:130, max:10, cost:15, cls:"t2c-silver2", maxVal:9000 },
+      { reqLv:140, max:10, cost:15, cls:"t2c-emerald1", maxVal:13500 }, { reqLv:150, max:10, cost:15, cls:"t2c-emerald2", maxVal:20250 },
+      { reqLv:160, max:10, cost:15, cls:"t2c-crimson1", maxVal:30380 }, { reqLv:170, max:10, cost:15, cls:"t2c-crimson2", maxVal:45570 }
+    ],
+    crit2: [
+      { reqLv:1, max:5, cost:1, cls:"t2c-brown", maxVal:50 }, { reqLv:10, max:5, cost:1, cls:"t2c-green", maxVal:100 },
+      { reqLv:20, max:5, cost:1, cls:"t2c-blue", maxVal:150 }, { reqLv:30, max:5, cost:1, cls:"t2c-purple", maxVal:200 },
+      { reqLv:40, max:5, cost:2, cls:"t2c-yellow", maxVal:350 }, { reqLv:50, max:5, cost:3, cls:"t2c-orange", maxVal:750 },
+      { reqLv:60, max:5, cost:3, cls:"t2c-cyan", maxVal:3500 }, { reqLv:70, max:10, cost:5, cls:"t2c-mint", maxVal:18000 },
+      { reqLv:80, max:10, cost:7, cls:"t2c-pink", maxVal:70000 }, { reqLv:90, max:10, cost:10, cls:"t2c-purple", maxVal:300000 },
+      { reqLv:100, max:10, cost:10, cls:"t2c-sky-silv", maxVal:1200000 }, { reqLv:110, max:10, cost:10, cls:"t2c-blu-silv", maxVal:3000000 },
+      { reqLv:120, max:10, cost:10, cls:"t2c-silver1", maxVal:7500000 }, { reqLv:130, max:10, cost:15, cls:"t2c-silver2", maxVal:18800000 },
+      { reqLv:140, max:10, cost:15, cls:"t2c-emerald1", maxVal:47000000 }, { reqLv:150, max:10, cost:15, cls:"t2c-emerald2", maxVal:117500000 },
+      { reqLv:160, max:10, cost:15, cls:"t2c-crimson1", maxVal:293800000 }, { reqLv:170, max:10, cost:15, cls:"t2c-crimson2", maxVal:734500000 }
+    ],
+    mark3: [
+      { reqLv:10, max:1, cost:2, cls:"t2c-green", maxVal:1 }, { reqLv:30, max:1, cost:2, cls:"t2c-purple", maxVal:1 },
+      { reqLv:45, max:1, cost:10, cls:"t2c-yellow", maxVal:2 }, { reqLv:60, max:1, cost:10, cls:"t2c-cyan", maxVal:2 },
+      { reqLv:80, max:1, cost:20, cls:"t2c-pink", maxVal:3 }, { reqLv:100, max:1, cost:20, cls:"t2c-sky-silv", maxVal:3 }
+    ],
+    crit3: [
+      { reqLv:10, max:1, cost:2, cls:"t2c-green", maxVal:100 }, { reqLv:30, max:1, cost:2, cls:"t2c-purple", maxVal:300 },
+      { reqLv:45, max:1, cost:10, cls:"t2c-yellow", maxVal:1000 }, { reqLv:60, max:1, cost:10, cls:"t2c-cyan", maxVal:4500 },
+      { reqLv:80, max:1, cost:20, cls:"t2c-pink", maxVal:13000 }, { reqLv:100, max:1, cost:20, cls:"t2c-sky-silv", maxVal:40000 }
+    ],
+    r4: [
+      { reqLv:1, max:1, cost:5, cls:"t2c-blue" }, { reqLv:40, max:1, cost:10, cls:"t2c-yellow" },
+      { reqLv:60, max:1, cost:20, cls:"t2c-cyan" }, { reqLv:90, max:1, cost:30, cls:"t2c-pink" }
+    ]
+  };
+
+  function evaluateUserCustomRunes() {
+    const s = stageDiagState.runes;
+    const byId = id => id ? (RUNE_DB.find(r => r.id === id) || null) : null;
+    const armorSlots = [byId(s.armor_top), byId(s.armor_mid), byId(s.armor_bot)];
+    const r = byId(s.ring), n = byId(s.neck), e = byId(s.emblem), a = byId(s.abyss);
+    const weapSlots = [byId(s.weap_1), byId(s.weap_2), byId(s.weap_3)];
+    const filledCnt = [...armorSlots, r, n, e, a, ...weapSlots].filter(Boolean).length;
+    if (filledCnt === 0) return { hasInput: false, log10: 0, filledCnt: 0 };
+
+    const all7OtherEternal = [r, n, e, a, ...weapSlots].every(x => x && x.tier === 'eternal');
+    const armorMult = Math.max(1, evaluateArmorCombo(armorSlots, all7OtherEternal, e?.tier || null));
+
+    const elisiaAwk = parseInt(document.getElementById('rune_elisia_awk')?.value ?? '-1', 10);
+    const overdriveAwk = parseInt(document.getElementById('rune_overdrive_awk')?.value ?? '-1', 10);
+    const hasSolaris9 = (document.getElementById('rune_cond_solaris9')?.value === '1');
+    const isGrad = hasSolaris9 && (overdriveAwk >= 3 || overdriveAwk > elisiaAwk);
+
+    let rMult = 1, nMult = 1;
+    if ((r && r.pairReq && (!n || n.id !== r.pairReq)) || (n && n.pairReq && (!r || r.id !== n.pairReq))) {
+      rMult = 1; nMult = 1;
+    } else {
+      if (r && (!r.elem || r.elem === currentRuneElem) && (!r.jobType || r.jobType === currentRuneJob)) {
+        if (r.id === 'ete_rg_gwaseong') rMult = (elisiaAwk < 0 || isGrad) ? 1 : (6600690 * (1 + elisiaAwk * 0.2));
+        else if (r.id === 'anc_rg_gwaseong') rMult = (elisiaAwk < 0 || isGrad) ? 1 : r.mult;
+        else rMult = Math.max(1, getEffectiveRuneValue(r, new Set()));
+      }
+      if (n && (!n.elem || n.elem === currentRuneElem) && (!n.jobType || n.jobType === currentRuneJob)) {
+        nMult = n.pairWithRing ? ((r && r.id === n.pairWithRing) ? n.pairMult : 1) : Math.max(1, getEffectiveRuneValue(n, new Set()));
+      }
+    }
+    const accMult = Math.max(1, rMult * nMult);
+
+    const hasBleed = (document.getElementById('rune_cond_bleed')?.value === '1');
+    const ancCnt = parseInt(document.getElementById('rune_ancient_abyss_cnt')?.value ?? '0', 10);
+    const isUsingTotem = weapSlots.some(w => w && w.id === 'imm_wp_totem');
+    let eMult = 1, aMult = 1;
+    if (e && (!e.jobType || e.jobType === currentRuneJob)) {
+      if (e.pairWithAbyss && a && a.id === e.pairWithAbyss) eMult = e.pairMult;
+      else if (e.id === 'imm_em_day') eMult = isUsingTotem ? 1 : (e.soloMult || 2500001);
+      else eMult = Math.max(1, getEffectiveRuneValue(e, new Set()));
+    }
+    if (a) {
+      if (a.pairWithEmblem && e && e.id === a.pairWithEmblem) aMult = a.pairMult;
+      else if (a.id === 'imm_ab_jeoju2') aMult = hasBleed ? a.mult : a.noBleedMult;
+      else if (a.id === 'imm_ab_simyeondolpa') aMult = ancCnt > 0 ? (1 + ancCnt * 300000) : 1;
+      else aMult = Math.max(1, getEffectiveRuneValue(a, new Set()));
+    }
+    const embAbMult = Math.max(1, eMult * aMult);
+    const weapMult = Math.max(1, evaluateWeaponCombo(weapSlots, true));
+    const log10 = Math.log10(armorMult) + Math.log10(accMult) + Math.log10(embAbMult) + Math.log10(weapMult);
+    return { hasInput: true, log10, filledCnt, armorMult, accMult, embAbMult, weapMult };
+  }
+
+  function evaluateUserCustomCores() {
+    const activeSlots = stageDiagState.cores.slice(0, currentConnectStageSlots);
+    const combo = [];
+    activeSlots.forEach((slot, i) => {
+      if (!slot || !slot.coreId) return;
+      const coreDef = CORE_TYPES_DB.find(c => c.id === slot.coreId);
+      if (coreDef) combo.push({ uid: `diag_${i}`, tier: slot.tier, core: coreDef });
+    });
+    if (combo.length === 0) return { hasInput: false, log10: 0, filledCnt: 0 };
+    const ev = evaluateConnectCombo(combo);
+    return { hasInput: true, log10: ev.totalLog10, filledCnt: combo.length, groupMults: ev.groupMults };
+  }
+
+  function evaluateUserCustomTrait2() {
+    if (!stageDiagState.trait2Initialized) return { hasInput: false, log10: 0, usedTP: 0 };
+    const t = stageDiagState.trait2;
+    let usedTP = (t.markRoot ? 1 : 0) + (t.critRoot ? 1 : 0);
+    const sumCost = (arr, meta) => arr.forEach((c, i) => { if (meta[i]) usedTP += c * meta[i].cost; });
+    sumCost(t.mark.r1, DIAG_T2_META.row1); sumCost(t.mark.r2, DIAG_T2_META.mark2);
+    sumCost(t.mark.r3, DIAG_T2_META.mark3); sumCost(t.mark.r4, DIAG_T2_META.r4);
+    sumCost(t.crit.r1, DIAG_T2_META.row1); sumCost(t.crit.r2, DIAG_T2_META.crit2);
+    sumCost(t.crit.r3, DIAG_T2_META.crit3); sumCost(t.crit.r4, DIAG_T2_META.r4);
+
+    const maxStacks = t.mark.r4[1] > 0 ? 250 : 50;
+    const markPerStackPct = (t.markRoot ? 10 : 0) + t.mark.r2.reduce((a, c, i) => a + (DIAG_T2_META.mark2[i].maxVal / DIAG_T2_META.mark2[i].max) * c, 0);
+    const totalMarkMult = t.markRoot ? (1 + (markPerStackPct * maxStacks) / 100) * (t.mark.r4[2] ? 11 : 1) * (t.mark.r4[3] ? 16 : 1) : 1;
+    const critDmgPct = 100 + t.crit.r2.reduce((a, c, i) => a + (DIAG_T2_META.crit2[i].maxVal / DIAG_T2_META.crit2[i].max) * c, 0);
+    const totalCritMult = t.critRoot ? (1 + critDmgPct / 100) * (t.crit.r4[3] ? 21 : 1) : 1;
+    const curseBasePct = (t.critRoot ? 100 : 0) + t.crit.r3.reduce((a, c, i) => a + (c ? DIAG_T2_META.crit3[i].maxVal : 0), 0);
+    const totalCurseMult = t.critRoot ? (1 + curseBasePct / 100) * (t.crit.r4[1] ? 8 : 1) * (t.crit.r4[2] ? (1 + 6 * maxStacks / 100) : 1) : 1;
+
+    const log10 = Math.log10(Math.max(1, totalMarkMult)) + Math.log10(Math.max(1, totalCritMult)) + Math.log10(Math.max(1, totalCurseMult));
+    return { hasInput: true, log10, usedTP, totalMarkMult, totalCritMult, totalCurseMult };
+  }
+
+  function getRecommended3rdSpecPicks() {
+    const isLCave = guideJob === 'lord' && currentLord3rdMode === 'cave';
+    const isLOther = guideJob === 'lord' && currentLord3rdMode === 'other';
+    const r0 = guideJob === 'reaper' ? [0, 1] : (guideJob === 'mage' ? (currentTrait3rdLv >= 15 ? [0] : [2]) : (isLCave ? [1] : [2]));
+    const r1 = guideJob === 'reaper' ? [0, 1] : [2];
+    const r2 = (guideJob !== 'lord' || isLOther) ? [2] : [1];
+    const r3 = [guideElem === 'fire' ? 0 : (guideElem === 'light' ? 1 : 2)];
+    const r4 = guideJob === 'lord' ? [0] : (guideJob === 'mage' ? [1, 2] : [2, 1]);
+    return [r0, r1, r2, r3, r4];
+  }
+
+  function computeFullDiagnosisReport() {
+    const recRune = window._latestBestRuneEval || { log10: 0, slots: {} };
+    const recCore = window._latestBestConnectEval || { log10: 0, slots: [] };
+    const sim2 = simulate2ndJobTree(currentTrait2ndLv);
+    const recT2Log = Math.log10(Math.max(1, sim2.totalMarkMult)) + Math.log10(Math.max(1, sim2.totalCritMult)) + Math.log10(Math.max(1, sim2.totalCurseMult));
+
+    const userRune = evaluateUserCustomRunes();
+    const userCore = evaluateUserCustomCores();
+    const userT2 = evaluateUserCustomTrait2();
+
+    const runeDeltaLog = (userRune.hasInput && recRune.log10 > 0) ? (recRune.log10 - userRune.log10) : 0;
+    const coreDeltaLog = (userCore.hasInput && recCore.log10 > 0) ? (recCore.log10 - userCore.log10) : 0;
+    const t2DeltaLog   = userT2.hasInput ? (recT2Log - userT2.log10) : 0;
+
+    // 1차·3차·4차 불일치 검사
+    const t1Filled = stageDiagState.trait1.filter(Boolean);
+    const recT1Ids = new Set(getRecommended1stTraits(guideJob, currentTrait1stLv, traitUseOvergrowth).activeTraits.map(t => t.id));
+    const t1Diff = t1Filled.length > 0 && (t1Filled.length !== recT1Ids.size || t1Filled.some(id => !recT1Ids.has(id)));
+
+    const recT3 = getRecommended3rdSpecPicks();
+    const unlockT3Lvs = [0, 10, 20, 30, 40];
+    let t3FilledCnt = 0, t3DiffCnt = 0;
+    stageDiagState.trait3.forEach((p, idx) => {
+      if (currentTrait3rdLv < unlockT3Lvs[idx] || p === null) return;
+      t3FilledCnt++;
+      if (!recT3[idx].includes(p)) t3DiffCnt++;
+    });
+
+    const t4Filled = stageDiagState.trait4.filter(x => x && x.linkId);
+    let t4Diff = false;
+    if (t4Filled.length > 0 && guideJob !== 'lord') {
+      const rec4 = guideJob === 'reaper' ? getRecommended4thReaperLinks(currentTrait4thLv, guideElem) : getRecommended4thLinks(currentTrait4thLv, guideElem);
+      const rec4Ids = new Set(rec4.slots.map(s => s.linkId));
+      t4Diff = t4Filled.length !== rec4Ids.size || t4Filled.some(x => !rec4Ids.has(x.linkId));
+    }
+
+    const totalGainLog = Math.max(0, runeDeltaLog) + Math.max(0, coreDeltaLog) + Math.max(0, t2DeltaLog);
+    const changes = [];
+    if (runeDeltaLog > 0.002) changes.push({ key:'rune', label:'룬 10칸 세팅', deltaLog: runeDeltaLog, goto: () => { switchMainMode('helpers'); openRuneHelperView(); }, btnText:'룬 착용 도우미로 이동' });
+    if (coreDeltaLog > 0.002) changes.push({ key:'core', label:'소울커넥트 코어', deltaLog: coreDeltaLog, goto: () => { switchMainMode('helpers'); openDeepCalculator('tab-connect'); }, btnText:'소울커넥트 도우미로 이동' });
+    if (t2DeltaLog > 0.002)   changes.push({ key:'trait2', label:'2차 전직 특성', deltaLog: t2DeltaLog, goto: () => { openTraitHelperFromHub(); changeTraitTabStep(2); }, btnText:'2차 특성 도우미로 이동' });
+    if (t1Diff)               changes.push({ key:'trait1', label:'1차 전직 특성', deltaLog: null, goto: () => { openTraitHelperFromHub(); changeTraitTabStep(1); }, btnText:'1차 특성 도우미로 이동' });
+    if (t3DiffCnt > 0)        changes.push({ key:'trait3', label:`3차 특화 (${t3DiffCnt}줄 차이)`, deltaLog: null, goto: () => { openTraitHelperFromHub(); changeTraitTabStep(3); }, btnText:'3차 특화 도우미로 이동' });
+    if (t4Diff)               changes.push({ key:'trait4', label:'4차 소울 링크', deltaLog: null, goto: () => { openTraitHelperFromHub(); changeTraitTabStep(4); }, btnText:'4차 소울 링크 도우미로 이동' });
+
+    return {
+      userRune, recRune, runeDeltaLog,
+      userCore, recCore, coreDeltaLog,
+      userT2, recT2Log, t2DeltaLog, sim2,
+      t1Diff, t1FilledCnt: t1Filled.length,
+      t3DiffCnt, t3FilledCnt,
+      t4Diff, t4FilledCnt: t4Filled.length,
+      totalGainLog, changes
+    };
+  }
+
+  function updateStageDiagEntryBadge() {
+    const btn = document.getElementById('stage_diag_entry_btn');
+    const badge = document.getElementById('diag_entry_badge');
+    if (!btn || !badge) return;
+    const rep = computeFullDiagnosisReport();
+    if (rep.changes.length > 0) {
+      btn.classList.add('has-alert');
+      badge.classList.add('is-alert');
+      const pred = predictStageFromDeltaLog10(stageDiagState.curC, stageDiagState.curS, rep.totalGainLog);
+      const gainTxt = rep.totalGainLog > 0.002 ? ` · +${pred.chGain.toFixed(1)}챕터 예상` : '';
+      badge.innerText = `추천 변경사항 발생 (${rep.changes.length}건${gainTxt}) ➔`;
+    } else {
+      btn.classList.remove('has-alert');
+      badge.classList.remove('is-alert');
+      badge.innerText = '진단실 열기 ➔';
+    }
+  }
+
+  // ---- C. 진단실 뷰 제어 & 대시보드 렌더링 ----
+  function openStageDiagView() {
+    document.getElementById('mode_deep_container').style.display = 'none';
+    document.getElementById('mode_newbie_container').style.display = 'none';
+    document.getElementById('mode_guides_container').style.display = 'none';
+    document.getElementById('mode_stage_diag_container').style.display = 'block';
+
+    document.getElementById('floating_back_btn').style.display = 'flex';
+    document.getElementById('floating_guide_btn').style.display = 'flex';
+    document.getElementById('floating_back_text').innerText = '메인 메뉴로 돌아가기';
+    setFloatingGuideContext('stage-diag', '세팅 진단실');
+
+    const cIn = document.getElementById('diag_cur_chap'), sIn = document.getElementById('diag_cur_sub');
+    const tcIn = document.getElementById('diag_tar_chap'), tsIn = document.getElementById('diag_tar_sub');
+    if (cIn) cIn.value = stageDiagState.curC;
+    if (sIn) sIn.value = stageDiagState.curS;
+    if (tcIn) tcIn.value = stageDiagState.tarC;
+    if (tsIn) tsIn.value = stageDiagState.tarS;
+
+    renderStageDiagAll();
+  }
+
+  // ---- 인벤토리 <-> 진단실 <-> 유니온·소울 해금 구간 100% 양방향 스테이지 동기화 ----
+  function syncMasterInvStageVisual() {
+    const activeEl = document.activeElement;
+    const mc = document.getElementById('minv_cur_chap');
+    const ms = document.getElementById('minv_cur_sub');
+    if (mc && activeEl !== mc) mc.value = String(stageDiagState.curC);
+    if (ms && activeEl !== ms) ms.value = String(stageDiagState.curS);
+    const hpEl = document.getElementById('minv_stage_hp_preview');
+    if (hpEl) {
+      const logHp = getStageBossLog10HP(stageDiagState.curC, stageDiagState.curS);
+      const def = getStageMonsterDef(stageDiagState.curC, stageDiagState.curS);
+      hpEl.innerText = `체력 ${formatStageHpFromLog10(logHp)} · 방어 ${def.toLocaleString()}`;
+    }
+  }
+
+  function syncStageEverywhere(chap, sub, source) {
+    const c = Math.max(1, Math.min(1510, parseInt(chap, 10) || 1));
+    const s = Math.max(1, Math.min(50, parseInt(sub, 10) || 1));
+    stageDiagState.curC = c;
+    stageDiagState.curS = s;
+
+    // 1) 상대방 입력창 동기화 (현재 타이핑 중인 칸은 건드리지 않음)
+    if (source !== 'diag') {
+      const dc = document.getElementById('diag_cur_chap'), ds = document.getElementById('diag_cur_sub');
+      if (dc && document.activeElement !== dc) dc.value = String(c);
+      if (ds && document.activeElement !== ds) ds.value = String(s);
+    }
+    syncMasterInvStageVisual();
+
+    // 2) 챕터 기준 유니온 해금 스테이지 & 소울커넥트 슬롯 자동 동기화
+    const targetUnionIdx = c >= 480 ? 8 : (c >= 440 ? 7 : (c >= 400 ? 6 : (c >= 360 ? 5 : (c >= 320 ? 4 : (c >= 280 ? 3 : (c >= 240 ? 2 : (c >= 200 ? 1 : 0)))))));
+    const targetScSlots = c >= 800 ? 6 : (c >= 500 ? 5 : (c >= 400 ? 4 : (c >= 300 ? 3 : 2)));
+    const slotsChanged = (currentConnectStageSlots !== targetScSlots);
+
+    if (currentUnionStageIdx !== targetUnionIdx) {
+      currentUnionStageIdx = targetUnionIdx;
+      const uSel = document.getElementById('minv_union_stage');
+      if (uSel) uSel.value = String(targetUnionIdx);
+      renderUnionStageButtons();
+      calculateAndRenderUnionBoard();
+    }
+    if (slotsChanged) {
+      currentConnectStageSlots = targetScSlots;
+      [2, 3, 4, 5, 6].forEach(n => document.getElementById('sc_stage_' + n)?.classList.toggle('selected', n === targetScSlots));
+    }
+    const scStgCond = document.getElementById('sc_sel_stage');
+    if (scStgCond) scStgCond.value = c >= 350 ? '3' : (c >= 200 ? '2' : '1');
+    if (slotsChanged) calculateBestConnectLoadout();
+
+    if (document.getElementById('master_inv_modal_overlay')?.style.display === 'flex') {
+      syncMasterInvVisualControls();
+    }
+    if (document.getElementById('mode_stage_diag_container')?.style.display === 'block') {
+      renderStageDiagDashboard();
+      if (slotsChanged) renderStageDiagBody();
+    }
+    updateStageDiagEntryBadge();
+    triggerAutoSave();
+  }
+
+  function onMasterInvStageInput() {
+    const rawC = (document.getElementById('minv_cur_chap')?.value || '').trim();
+    const rawS = (document.getElementById('minv_cur_sub')?.value || '').trim();
+    if (rawC === '' || rawS === '') return;
+    syncStageEverywhere(rawC, rawS, 'minv');
+  }
+
+  function stepMinvStage(deltaChap) {
+    const nextC = Math.max(1, Math.min(1510, stageDiagState.curC + deltaChap));
+    syncStageEverywhere(nextC, stageDiagState.curS, 'step');
+  }
+
+  function onStageDiagInputChange() {
+    const rawC = (document.getElementById('diag_cur_chap')?.value || '').trim();
+    const rawS = (document.getElementById('diag_cur_sub')?.value || '').trim();
+    const rawTC = (document.getElementById('diag_tar_chap')?.value || '').trim();
+    const rawTS = (document.getElementById('diag_tar_sub')?.value || '').trim();
+    if (rawTC !== '') stageDiagState.tarC = Math.max(1, Math.min(1510, parseInt(rawTC, 10) || 1));
+    if (rawTS !== '') stageDiagState.tarS = Math.max(1, Math.min(50, parseInt(rawTS, 10) || 1));
+    if (rawC !== '' && rawS !== '') {
+      syncStageEverywhere(rawC, rawS, 'diag');
+    } else {
+      renderStageDiagDashboard();
+      triggerAutoSave();
+    }
+  }
+
+  function setDiagTargetOffset(addChap) {
+    const nextC = Math.min(1510, stageDiagState.curC + addChap);
+    stageDiagState.tarC = nextC;
+    stageDiagState.tarS = 1;
+    const tc = document.getElementById('diag_tar_chap'), ts = document.getElementById('diag_tar_sub');
+    if (tc) tc.value = nextC;
+    if (ts) ts.value = 1;
+    renderStageDiagDashboard();
+    triggerAutoSave();
+  }
+
+  // ---- 스펙 코드(SHK-V1 / SHK-ALL2) 초압축 직렬화 / 복원 ----
+  function packStageDiagForCode(st, runeIdxMap) {
+    if (!st) return null;
+    const out = { cs: [st.curC || 800, st.curS || 1, st.tarC || 850, st.tarS || 1] };
+    const rKeys = ['armor_top','armor_mid','armor_bot','abyss','ring','neck','emblem','weap_1','weap_2','weap_3'];
+    const rArr = rKeys.map(k => (st.runes && st.runes[k] && runeIdxMap.has(st.runes[k])) ? runeIdxMap.get(st.runes[k]) : -1);
+    if (rArr.some(v => v >= 0)) out.rn = rArr;
+
+    const tMap = { ancient:'a', mythic:'m', legend:'l', unique:'u', advanced:'d' };
+    if (Array.isArray(st.cores) && st.cores.some(Boolean)) {
+      out.cr = st.cores.slice(0, 6).map(x => x ? [tMap[x.tier] || 'a', x.coreId] : null);
+    }
+    if (Array.isArray(st.trait1) && st.trait1.some(Boolean)) out.t1 = st.trait1.slice(0, 5);
+    if (st.trait2Initialized && st.trait2) {
+      const t = st.trait2;
+      out.t2 = [t.markRoot||0, t.critRoot||0, t.mark.r1, t.mark.r2, t.mark.r3, t.mark.r4, t.crit.r1, t.crit.r2, t.crit.r3, t.crit.r4];
+    }
+    if (Array.isArray(st.trait3) && st.trait3.some(v => v !== null && v !== undefined)) out.t3 = st.trait3.slice(0, 5);
+    if (Array.isArray(st.trait4) && st.trait4.some(x => x && x.linkId)) out.t4 = st.trait4.slice(0, 5).map(x => x ? x.linkId : null);
+    return out;
+  }
+
+  function unpackStageDiagFromCode(dg) {
+    const st = createDefaultStageDiagState();
+    if (!dg || typeof dg !== 'object') return st;
+    if (Array.isArray(dg.cs)) {
+      st.curC = dg.cs[0] || 800; st.curS = dg.cs[1] || 1;
+      st.tarC = dg.cs[2] || 850; st.tarS = dg.cs[3] || 1;
+    }
+    if (Array.isArray(dg.rn)) {
+      const rKeys = ['armor_top','armor_mid','armor_bot','abyss','ring','neck','emblem','weap_1','weap_2','weap_3'];
+      rKeys.forEach((k, i) => { const idx = dg.rn[i]; st.runes[k] = (idx >= 0 && RUNE_DB[idx]) ? RUNE_DB[idx].id : null; });
+    }
+    if (Array.isArray(dg.cr)) {
+      const tRev = { a:'ancient', m:'mythic', l:'legend', u:'unique', d:'advanced' };
+      st.cores = dg.cr.slice(0, 6).map(x => x ? { tier: tRev[x[0]] || 'ancient', coreId: x[1] } : null);
+    }
+    if (Array.isArray(dg.t1)) st.trait1 = dg.t1.slice(0, 5);
+    if (Array.isArray(dg.t2) && dg.t2.length >= 10) {
+      st.trait2Initialized = true;
+      st.trait2 = {
+        markRoot: dg.t2[0] || 0, critRoot: dg.t2[1] || 0,
+        mark: { r1: dg.t2[2], r2: dg.t2[3], r3: dg.t2[4], r4: dg.t2[5] },
+        crit: { r1: dg.t2[6], r2: dg.t2[7], r3: dg.t2[8], r4: dg.t2[9] }
+      };
+    }
+    if (Array.isArray(dg.t3)) st.trait3 = dg.t3.slice(0, 5);
+    if (Array.isArray(dg.t4)) st.trait4 = dg.t4.slice(0, 5).map(id => id ? { linkId: id } : null);
+    return mergeDefaultStageDiagState(st);
+  }
+
+  function switchStageDiagTab(tab) {
+    stageDiagState.activeTab = tab;
+    ['rune', 'core', 'trait'].forEach(k => document.getElementById('diag_sw_' + k)?.classList.toggle('active', k === tab));
+    renderStageDiagBody();
+    triggerAutoSave();
+  }
+
+  function switchStageDiagTraitStep(step) {
+    stageDiagState.activeTraitStep = step;
+    renderStageDiagBody();
+    triggerAutoSave();
+  }
+
+  function renderStageDiagAll() {
+    ['rune', 'core', 'trait'].forEach(k => document.getElementById('diag_sw_' + k)?.classList.toggle('active', k === stageDiagState.activeTab));
+    renderStageDiagDashboard();
+    renderStageDiagBody();
+    updateStageDiagEntryBadge();
+  }
+
+  function renderStageDiagDashboard() {
+    const { curC, curS, tarC, tarS } = stageDiagState;
+    const curLog = getStageBossLog10HP(curC, curS);
+    const tarLog = getStageBossLog10HP(tarC, tarS);
+    const curDef = getStageMonsterDef(curC, curS);
+    const tarDef = getStageMonsterDef(tarC, tarS);
+    const curRew = getStageIdleRewards(curC);
+    const tarRew = getStageIdleRewards(tarC);
+    const diffLog = tarLog - curLog;
+
+    const prevEl = document.getElementById('diag_cur_hp_preview');
+    if (prevEl) prevEl.innerText = `체력 ${formatStageHpFromLog10(curLog)} · 방어 ${curDef.toLocaleString()}`;
+
+    // 좌측 카드: 목표 스테이지 필요 배율
+    const targetCard = document.getElementById('diag_target_result_card');
+    if (targetCard) {
+      const bossTip = (tarC >= 20 && tarS % 10 === 0)
+        ? `<div style="font-size:11px; color:#fde047; background:rgba(250,204,21,0.1); border:1px solid rgba(250,204,21,0.35); border-radius:7px; padding:5px 8px;">경계 역전 팁: ${tarC}-${tarS} 보스보다 다음 단계(${tarS===50?`${tarC+1}-1`:`${tarC}-${tarS+1}`})가 체력이 약 8.1% 더 낮습니다.</div>`
+        : '';
+      targetCard.innerHTML = `
+        <div>
+          <div style="font-size:12px; font-weight:800; color:#7dd3fc;">목표 스테이지까지 필요 배율 (${curC}-${curS} ➔ ${tarC}-${tarS})</div>
+          <div style="font-size:26px; font-weight:900; color:#38bdf8; margin:4px 0;">${diffLog >= 0 ? formatDeltaMultiplierText(diffLog) : '이미 목표 돌파 상태'}</div>
+          ${diffLog > 0 ? `<div style="font-size:12px; color:#fde047; font-weight:800;">단위 환산: 약 ${(diffLog / 4).toFixed(2)} 단위(문자) 상승 필요 (Δlog10 = +${diffLog.toFixed(2)})</div>` : ''}
+        </div>
+        <div style="background:#090e1a; border:1px solid #26334a; border-radius:9px; padding:9px 11px; font-size:12px; color:#cbd5e1; line-height:1.65;">
+          <div>• 보스 체력: <strong style="color:#ffffff;">${formatStageHpFromLog10(curLog)}</strong> ➔ <strong style="color:#7dd3fc;">${formatStageHpFromLog10(tarLog)}</strong></div>
+          <div>• 몬스터 방어력: <strong>${curDef.toLocaleString()}</strong> ➔ <strong style="color:#fda4af;">${tarDef.toLocaleString()}</strong> (${tarDef - curDef >= 0 ? '+' : ''}${(tarDef - curDef).toLocaleString()})</div>
+          <div>• 방치 보상(/h · /m): 1번 ${curRew.r1.toLocaleString()}➔<strong style="color:#6ee7b7;">${tarRew.r1.toLocaleString()}/h</strong> · 2번 ${curRew.r2.toLocaleString()}➔<strong style="color:#6ee7b7;">${tarRew.r2.toLocaleString()}/m</strong></div>
+        </div>
+        ${bossTip}`;
+    }
+
+    // 우측 카드: 추천 세팅 변경 시 예상 도달 스테이지
+    const rep = computeFullDiagnosisReport();
+    const predCard = document.getElementById('diag_predict_result_card');
+    if (predCard) {
+      predCard.classList.toggle('has-change', rep.changes.length > 0);
+      const anyNumericInput = rep.userRune.hasInput || rep.userCore.hasInput || rep.userT2.hasInput;
+      const pred = predictStageFromDeltaLog10(curC, curS, rep.totalGainLog);
+      const predDef = getStageMonsterDef(pred.c, pred.s);
+      const defDiff = predDef - curDef;
+
+      let breakdownLines = [];
+      if (rep.userRune.hasInput) breakdownLines.push(`• 룬 10칸: <strong style="color:${rep.runeDeltaLog>0.002?'#fde047':'#34d399'};">${rep.runeDeltaLog>0.002 ? formatDeltaMultiplierText(rep.runeDeltaLog) + ' 상승' : '현재 추천과 동일(최적)'}</strong>`);
+      if (rep.userCore.hasInput) breakdownLines.push(`• 소울 6칸: <strong style="color:${rep.coreDeltaLog>0.002?'#fde047':'#34d399'};">${rep.coreDeltaLog>0.002 ? formatDeltaMultiplierText(rep.coreDeltaLog) + ' 상승' : '현재 추천과 동일(최적)'}</strong>`);
+      if (rep.userT2.hasInput)   breakdownLines.push(`• 2차 특성: <strong style="color:${rep.t2DeltaLog>0.002?'#fde047':'#34d399'};">${rep.t2DeltaLog>0.002 ? formatDeltaMultiplierText(rep.t2DeltaLog) + ' 상승' : '현재 추천과 동일(최적)'}</strong>`);
+      if (rep.t1Diff || rep.t3DiffCnt > 0 || rep.t4Diff) {
+        const extraNames = [rep.t1Diff ? '1차 특성' : '', rep.t3DiffCnt > 0 ? '3차 특화' : '', rep.t4Diff ? '4차 링크' : ''].filter(Boolean).join(' · ');
+        breakdownLines.push(`• 추가 최적화 가능: <strong style="color:#fb7185;">${extraNames} 변경 시 추가 돌파 가능</strong>`);
+      }
+
+      predCard.innerHTML = !anyNumericInput
+        ? `<div>
+            <div style="font-size:12px; font-weight:800; color:#6ee7b7;">추천 세팅으로 변경 시 예상 도달 스테이지</div>
+            <div style="font-size:21px; font-weight:900; color:#94a3b8; margin:8px 0;">아래에서 현재 착용 세팅을 입력하세요</div>
+            <div style="font-size:12px; color:#cbd5e1; line-height:1.6;">아래 스위치에서 <strong>내 현재 룬 / 소울 / 2차 특성</strong>을 입력하면, 시뮬레이터 추천 세팅 대비 <strong>몇 배 강해지고 몇 스테이지까지 뚫을 수 있는지</strong> 즉시 계산됩니다.</div>
+          </div>`
+        : `<div>
+            <div style="font-size:12px; font-weight:800; color:#6ee7b7;">추천 세팅 변경 시 총 상승 배율 &amp; 예상 도달</div>
+            <div style="font-size:25px; font-weight:900; color:#fde047; margin:4px 0;">
+              ${curC}-${curS} ➔ <span style="color:#34d399;">${pred.c}-${pred.s}${pred.capped ? ' (최종)' : ''}</span>
+              <span style="font-size:14px; color:#ffffff;">(+${pred.chGain.toFixed(1)} 챕터)</span>
+            </div>
+            <div style="font-size:12.5px; color:#a7f3d0; font-weight:800;">
+              총 상승 배율: ${rep.totalGainLog > 0.002 ? formatDeltaMultiplierText(rep.totalGainLog) : '1.00배 (이미 최적 세팅!)'}
+            </div>
+          </div>
+          <div style="background:#090e1a; border:1px solid #26334a; border-radius:9px; padding:9px 11px; font-size:12px; color:#e2e8f0; line-height:1.65;">
+            ${breakdownLines.join('<br>')}
+          </div>
+          ${defDiff > 0 ? `<div style="font-size:11px; color:#fda4af;">방어력 보정 참고: 도달 구간 몬스터 방어력이 +${defDiff.toLocaleString()} 상승하므로 방어 관통이 부족하면 실제 도달은 1~3챕터 낮아질 수 있습니다.</div>` : ''}`;
+    }
+
+    // 탭 미니 배지 갱신
+    const setTabBadge = (id, hasInput, isDiff) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (!hasInput) { el.style.background = '#334155'; el.style.color = '#cbd5e1'; el.innerText = '미입력'; }
+      else if (isDiff) { el.style.background = '#e11d48'; el.style.color = '#ffffff'; el.innerText = '변경추천'; }
+      else { el.style.background = '#059669'; el.style.color = '#ffffff'; el.innerText = '최적'; }
+    };
+    setTabBadge('diag_tab_badge_rune', rep.userRune.hasInput, rep.runeDeltaLog > 0.002);
+    setTabBadge('diag_tab_badge_core', rep.userCore.hasInput, rep.coreDeltaLog > 0.002);
+    const anyTraitIn = rep.userT2.hasInput || rep.t1FilledCnt > 0 || rep.t3FilledCnt > 0 || rep.t4FilledCnt > 0;
+    const anyTraitDiff = rep.t2DeltaLog > 0.002 || rep.t1Diff || rep.t3DiffCnt > 0 || rep.t4Diff;
+    setTabBadge('diag_tab_badge_trait', anyTraitIn, anyTraitDiff);
+
+    // 종합 변경사항 감지 & 도우미 유도 배너
+    const alertWrap = document.getElementById('diag_master_alert_wrap');
+    if (alertWrap) {
+      if (rep.changes.length === 0) {
+        alertWrap.innerHTML = anyTraitIn || rep.userRune.hasInput || rep.userCore.hasInput
+          ? `<div class="diag-alert-banner all-good"><strong style="font-size:13.5px; color:#6ee7b7;">입력하신 모든 항목이 현재 시뮬레이터 추천 세팅과 일치합니다.</strong></div>`
+          : '';
+      } else {
+        const btns = rep.changes.map((ch, idx) => `<button type="button" class="diag-goto-btn" onclick="executeDiagGoto(${idx})">${ch.label}${ch.deltaLog ? ` (${formatDeltaMultiplierText(ch.deltaLog)})` : ''} — ${ch.btnText} ➔</button>`).join('');
+        window._diagGotoActions = rep.changes.map(c => c.goto);
+        alertWrap.innerHTML = `<div class="diag-alert-banner">
+          <div>
+            <div style="font-size:14px; font-weight:900; color:#fde047;">시뮬레이터 추천 변경사항 발생 (${rep.changes.length}건 감지)</div>
+            <div style="font-size:12px; color:#e2e8f0; margin-top:2px;">아래 버튼을 누르면 해당 도우미 화면으로 즉시 이동하여 상세 추천 배치도를 확인할 수 있습니다.</div>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:7px;">${btns}</div>
+        </div>`;
+      }
+    }
+  }
+
+  function executeDiagGoto(idx) {
+    if (window._diagGotoActions && window._diagGotoActions[idx]) {
+      window._diagGotoActions[idx]();
+    }
+  }
+
+  // ---- D. 하단 3대 스위치 탭 렌더링 (룬 / 소울 / 1~4차 특성) ----
+  function copyRecRunesToDiag() {
+    const rec = window._latestBestRuneEval?.slots;
+    if (!rec || !Object.values(rec).some(Boolean)) {
+      alert('먼저 [룬 착용 도우미]에서 보유 중인 룬을 선택해 주세요.');
+      return;
+    }
+    stageDiagState.runes = { ...stageDiagState.runes, ...rec };
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+  function clearDiagRunes() {
+    stageDiagState.runes = createDefaultStageDiagState().runes;
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+
+  function copyRecCoresToDiag() {
+    const rec = window._latestBestConnectEval?.slots;
+    if (!rec || !rec.some(Boolean)) {
+      alert('먼저 [소울커넥트 도우미]에서 보유 중인 코어를 선택해 주세요.');
+      return;
+    }
+    stageDiagState.cores = rec.map(x => x ? { ...x } : null);
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+  function clearDiagCores() {
+    stageDiagState.cores = [null, null, null, null, null, null];
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+
+  function copyRecTrait1ToDiag() {
+    const rec = getRecommended1stTraits(guideJob, currentTrait1stLv, traitUseOvergrowth).activeTraits;
+    stageDiagState.trait1 = [0, 1, 2, 3, 4].map(i => rec[i]?.id || null);
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+  function clearDiagTrait1() { stageDiagState.trait1 = [null, null, null, null, null]; renderStageDiagAll(); triggerAutoSave(); }
+
+  function copyRecTrait2ToDiag() {
+    const sim = simulate2ndJobTree(currentTrait2ndLv);
+    stageDiagState.trait2Initialized = true;
+    stageDiagState.trait2 = {
+      markRoot: sim.markRoot.cur,
+      critRoot: sim.critRoot.cur,
+      mark: { r1: sim.mark.r1.map(n => n.cur), r2: sim.mark.r2.map(n => n.cur), r3: sim.mark.r3.map(n => n.cur), r4: sim.mark.r4.map(n => n.cur) },
+      crit: { r1: sim.crit.r1.map(n => n.cur), r2: sim.crit.r2.map(n => n.cur), r3: sim.crit.r3.map(n => n.cur), r4: sim.crit.r4.map(n => n.cur) }
+    };
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+  function clearDiagTrait2() {
+    stageDiagState.trait2Initialized = false;
+    stageDiagState.trait2 = createDefaultStageDiagState().trait2;
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+
+  function copyRecTrait3ToDiag() {
+    const rec = getRecommended3rdSpecPicks();
+    const uLvs = [0, 10, 20, 30, 40];
+    stageDiagState.trait3 = uLvs.map((lv, i) => currentTrait3rdLv >= lv ? rec[i][0] : null);
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+  function clearDiagTrait3() { stageDiagState.trait3 = [null, null, null, null, null]; renderStageDiagAll(); triggerAutoSave(); }
+
+  function copyRecTrait4ToDiag() {
+    if (guideJob === 'lord') return;
+    const rec = guideJob === 'reaper' ? getRecommended4thReaperLinks(currentTrait4thLv, guideElem) : getRecommended4thLinks(currentTrait4thLv, guideElem);
+    stageDiagState.trait4 = [0, 1, 2, 3, 4].map(i => rec.slots[i] ? { skill: rec.slots[i].skill || null, linkId: rec.slots[i].linkId } : null);
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+  function clearDiagTrait4() { stageDiagState.trait4 = [null, null, null, null, null]; renderStageDiagAll(); triggerAutoSave(); }
+
+  function renderStageDiagBody() {
+    const body = document.getElementById('diag_tab_dynamic_body');
+    if (!body) return;
+    const rep = computeFullDiagnosisReport();
+
+    // 1. 내 현재 룬 (10칸)
+    if (stageDiagState.activeTab === 'rune') {
+      const recSlots = rep.recRune.slots || {};
+      const recArmorSet = new Set([recSlots.armor_top, recSlots.armor_mid, recSlots.armor_bot].filter(Boolean));
+      const recWeapSet  = new Set([recSlots.weap_1, recSlots.weap_2, recSlots.weap_3].filter(Boolean));
+      const isRuneDifferent = rep.runeDeltaLog > 0.002;
+
+      const mkRuneSlot = (slotKey, partKey, label) => {
+        const rid = stageDiagState.runes[slotKey];
+        const r = rid ? RUNE_DB.find(x => x.id === rid) : null;
+        let isMis = false;
+        if (rep.userRune.hasInput && isRuneDifferent && recSlots[slotKey]) {
+          if (partKey === 'armor' && (!r || !r.slotPos)) isMis = !recArmorSet.has(rid);
+          else if (partKey === 'weapon') isMis = !recWeapSet.has(rid);
+          else isMis = (recSlots[slotKey] !== rid);
+        }
+        const recName = recSlots[slotKey] ? RUNE_DB.find(x => x.id === recSlots[slotKey])?.name : '';
+        if (!r) {
+          return `<div class="rune-slot-block diag-slot-clickable ${isMis?'diag-slot-mismatch':''}" onclick="openDiagRunePicker('${slotKey}','${partKey}','${label}')">
+            <div class="rune-slot-part-tag"><span>${label}</span><span style="color:#38bdf8;">클릭 선택</span></div>
+            <div class="rune-slot-name" style="color:#64748b; font-size:12.5px;">+ 장착 룬 선택</div>
+            <div class="rune-slot-stat" style="color:#475569;">${isMis && recName ? `추천: ${recName}` : '-'}</div>
+          </div>`;
+        }
+        return `<div class="rune-slot-block tier-${r.tier} diag-slot-clickable ${isMis?'diag-slot-mismatch':''}" onclick="openDiagRunePicker('${slotKey}','${partKey}','${label}')">
+          <div class="rune-slot-part-tag"><span>${label}</span><span class="grade-badge ${getRuneTierBadgeClass(r.tier)}" style="font-size:9.5px; padding:1px 5px;">${getRuneTierKr(r.tier)}</span></div>
+          <div class="rune-slot-name">${r.name}</div>
+          <div class="rune-slot-stat">${isMis && recName ? `<span style="color:#fda4af;">추천: ${recName}</span>` : r.desc.split(/\s*\(/)[0]}</div>
+        </div>`;
+      };
+
+      const statusBanner = !rep.userRune.hasInput
+        ? `<div style="background:#0f172a; border:1px dashed #475569; border-radius:10px; padding:10px 14px; font-size:12.5px; color:#cbd5e1; margin-bottom:12px;">각 부위 슬롯을 클릭해 현재 인게임에서 착용 중인 룬을 선택하거나, 우측 상단 <strong>[추천 세팅 그대로 복사]</strong> 후 다르게 낀 1~2칸만 바꿔보세요.</div>`
+        : (rep.recRune.log10 <= 0
+          ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13px;">아직 [룬 착용 도우미]에 보유 중인 룬이 선택되어 있지 않습니다.</strong><div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">보유 룬을 먼저 체크해야 추천 세팅과 배율 비교가 가능합니다.</div></div><button type="button" class="diag-goto-btn" onclick="switchMainMode('helpers'); openRuneHelperView();">보유 룬 체크하러 가기 ➔</button></div>`
+          : (rep.runeDeltaLog > 0.002
+            ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13.5px;">룬 추천 변경사항 발생 — 추천 룬으로 변경 시 ${formatDeltaMultiplierText(rep.runeDeltaLog)} 강해집니다!</strong><div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">빨간 테두리 슬롯이 현재 추천 세팅과 다른 부위입니다.</div></div><button type="button" class="diag-goto-btn" onclick="switchMainMode('helpers'); openRuneHelperView();">룬 착용 도우미에서 상세 보기 ➔</button></div>`
+            : (rep.runeDeltaLog < -0.002
+              ? `<div class="diag-alert-banner" style="border-color:#38bdf8; border-left-color:#38bdf8;"><div><strong style="color:#7dd3fc; font-size:13px;">현재 장착 룬이 [룬 착용 도우미]에 체크된 보유 룬 추천보다 높습니다.</strong><div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">착용 중인 상위 룬을 [룬 착용 도우미] 보유 목록에도 체크해 주세요.</div></div><button type="button" class="diag-goto-btn" style="background:#0284c7; border-color:#7dd3fc;" onclick="switchMainMode('helpers'); openRuneHelperView();">보유 룬 확인 ➔</button></div>`
+              : `<div class="diag-alert-banner all-good"><strong style="color:#6ee7b7; font-size:13px;">현재 장착 중인 룬 세팅이 보유 룬 기준 최고 배율(최적)입니다.</strong></div>`)));
+
+      body.innerHTML = `
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <span style="font-size:13px; color:#cbd5e1; font-weight:700;">슬롯 클릭 시 해당 부위 룬 목록 + 검색창이 열립니다.</span>
+          <div style="display:flex; gap:6px;">
+            <button type="button" onclick="copyRecRunesToDiag()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; padding:6px 11px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">추천 세팅 그대로 복사</button>
+            <button type="button" onclick="clearDiagRunes()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; padding:6px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">비우기</button>
+          </div>
+        </div>
+        ${statusBanner}
+        <div class="rune-equip-stage" style="margin-top:0;">
+          <div class="rune-stage-upper">
+            <div class="rune-col-left">
+              ${mkRuneSlot('armor_top', 'armor', '상의')}
+              ${mkRuneSlot('armor_mid', 'armor', '하의')}
+              ${mkRuneSlot('armor_bot', 'armor', '신발')}
+            </div>
+            <div class="rune-col-center">
+              <div class="sd-char-box"><img src="images/char.png" alt="캐릭터" onerror="handleSdCharError(this)"></div>
+              <div style="width:100%; max-width:220px;">${mkRuneSlot('abyss', 'abyss', '심연장식')}</div>
+            </div>
+            <div class="rune-col-right">
+              ${mkRuneSlot('ring', 'ring', '반지')}
+              ${mkRuneSlot('neck', 'neck', '목걸이')}
+              ${mkRuneSlot('emblem', 'emblem', '엠블렘')}
+            </div>
+          </div>
+          <div class="rune-weapon-bar">
+            <div style="font-size:12px; font-weight:800; color:#cbd5e1; text-align:center;">무기 룬 슬롯 (클릭 선택)</div>
+            <div class="rune-weapon-grid">
+              ${mkRuneSlot('weap_1', 'weapon', '무기 1')}
+              ${mkRuneSlot('weap_2', 'weapon', '무기 2')}
+              ${mkRuneSlot('weap_3', 'weapon', '무기 3')}
+            </div>
+          </div>
+        </div>`;
+      return;
+    }
+
+    // 2. 내 현재 소울커넥트 (6칸)
+    if (stageDiagState.activeTab === 'core') {
+      const mkCoreSlot = (sNum) => {
+        const idx = sNum - 1;
+        if (sNum > currentConnectStageSlots) {
+          return `<div class="connect-slot-card locked-slot"><div style="font-size:11px; color:#64748b; font-weight:800;">${sNum}번 슬롯 (미개방)</div><div style="text-align:center; font-size:12px; color:#64748b; margin:10px 0;">스테이지 해금 필요</div></div>`;
+        }
+        const cur = stageDiagState.cores[idx];
+        const coreDef = cur ? CORE_TYPES_DB.find(c => c.id === cur.coreId) : null;
+        if (!coreDef) {
+          return `<div class="connect-slot-card diag-slot-clickable" onclick="openDiagCorePicker(${idx})">
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8; font-weight:800;"><span>${sNum}번 슬롯</span><span style="color:#38bdf8;">클릭 선택</span></div>
+            <div style="text-align:center; font-size:13px; font-weight:800; color:#64748b; margin:14px 0;">+ 현재 장착 코어 선택</div>
+          </div>`;
+        }
+        const tMeta = CORE_TIER_META[cur.tier];
+        return `<div class="connect-slot-card tier-${cur.tier} diag-slot-clickable" onclick="openDiagCorePicker(${idx})">
+          <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:11px; font-weight:800; color:#94a3b8;">${sNum}번 슬롯</span><span class="grade-badge ${tMeta.badge}" style="font-size:10px; padding:1px 6px;">${tMeta.kr} ${tMeta.maxP}P</span></div>
+          <div style="display:flex; align-items:center; gap:9px; margin:7px 0;">
+            <div class="core-hex-badge core-color-${coreDef.num}">코어${coreDef.num}</div>
+            <div style="text-align:left;"><div style="font-size:14px; font-weight:900; color:#fff;">${coreDef.name}</div><div style="font-size:11px; color:${isCoreValidForUser(coreDef)?'#34d399':'#f87171'}; font-weight:700;">${isCoreValidForUser(coreDef)?'유효 발동':'잡코어(깡공증)'}</div></div>
+          </div>
+          <div style="font-size:10.5px; color:#fde047; background:rgba(0,0,0,0.45); padding:4px 7px; border-radius:6px; text-align:center;">${getCoreThemeSummary(coreDef, cur.tier)}</div>
+        </div>`;
+      };
+
+      const coreBanner = !rep.userCore.hasInput
+        ? `<div style="background:#0f172a; border:1px dashed #475569; border-radius:10px; padding:10px 14px; font-size:12.5px; color:#cbd5e1; margin-bottom:12px;">1~6번 슬롯을 클릭해 현재 장착 중인 코어를 선택하거나 <strong>[추천 세팅 그대로 복사]</strong> 후 변경된 칸만 수정하세요.</div>`
+        : (rep.recCore.log10 <= 0
+          ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13px;">아직 [소울커넥트 도우미]에 보유 중인 코어가 선택되어 있지 않습니다.</strong><div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">보유 코어를 먼저 체크해야 추천 세팅과 배율 비교가 가능합니다.</div></div><button type="button" class="diag-goto-btn" onclick="switchMainMode('helpers'); openDeepCalculator('tab-connect');">보유 코어 체크하러 가기 ➔</button></div>`
+          : (rep.coreDeltaLog > 0.002
+            ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13.5px;">소울커넥트 추천 변경사항 발생 — 추천 코어로 변경 시 ${formatDeltaMultiplierText(rep.coreDeltaLog)} 강해집니다!</strong></div><button type="button" class="diag-goto-btn" onclick="switchMainMode('helpers'); openDeepCalculator('tab-connect');">소울커넥트 도우미로 이동 ➔</button></div>`
+            : (rep.coreDeltaLog < -0.002
+              ? `<div class="diag-alert-banner" style="border-color:#38bdf8; border-left-color:#38bdf8;"><div><strong style="color:#7dd3fc; font-size:13px;">현재 장착 코어가 [소울커넥트 도우미] 보유 목록 추천보다 높습니다.</strong><div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">착용 중인 상위 코어를 [소울커넥트 도우미]에도 체크해 주세요.</div></div><button type="button" class="diag-goto-btn" style="background:#0284c7; border-color:#7dd3fc;" onclick="switchMainMode('helpers'); openDeepCalculator('tab-connect');">보유 코어 확인 ➔</button></div>`
+              : `<div class="diag-alert-banner all-good"><strong style="color:#6ee7b7; font-size:13px;">현재 장착 중인 소울커넥트 코어가 보유 코어 기준 최고 배율(최적)입니다.</strong></div>`)));
+
+      body.innerHTML = `
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <span style="font-size:13px; color:#cbd5e1; font-weight:700;">해금 슬롯 (${currentConnectStageSlots}/6칸) · 슬롯 클릭 시 등급/코어 선택창이 열립니다.</span>
+          <div style="display:flex; gap:6px;">
+            <button type="button" onclick="copyRecCoresToDiag()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; padding:6px 11px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">추천 세팅 그대로 복사</button>
+            <button type="button" onclick="clearDiagCores()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; padding:6px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">비우기</button>
+          </div>
+        </div>
+        ${coreBanner}
+        <div class="connect-hex-stage" style="margin-top:0;">
+          <div class="connect-hex-row">${mkCoreSlot(6)}${mkCoreSlot(1)}</div>
+          <div class="connect-hex-row mid-row">
+            ${mkCoreSlot(5)}
+            <div class="connect-center-emblem"><img src="images/core_main.png" alt="" onerror="this.style.display='none';"></div>
+            ${mkCoreSlot(2)}
+          </div>
+          <div class="connect-hex-row">${mkCoreSlot(4)}${mkCoreSlot(3)}</div>
+        </div>`;
+      return;
+    }
+
+    // 3. 내 현재 특성 (1·2·3·4차 서브 스위치)
+    const jMeta = JOB_NAMES_FULL[guideJob];
+    const tStep = stageDiagState.activeTraitStep;
+    const subTabs = `<div class="radio-pill-group" style="margin-bottom:14px;">
+      ${[
+        { s:1, l:`1차 특성 (Lv.${currentTrait1stLv})`, diff: rep.t1Diff },
+        { s:2, l:`2차 트리 (Lv.${currentTrait2ndLv})`, diff: rep.t2DeltaLog > 0.002 },
+        { s:3, l:`3차 특화 (Lv.${currentTrait3rdLv})`, diff: rep.t3DiffCnt > 0 },
+        { s:4, l:`4차 링크 (Lv.${currentTrait4thLv})`, diff: rep.t4Diff }
+      ].map(it => `<div class="radio-pill tier-step-${it.s} ${tStep===it.s?'selected':''}" onclick="switchStageDiagTraitStep(${it.s})" style="display:flex; align-items:center; justify-content:center; gap:6px; padding:9px 6px; font-size:12.5px;">
+        ${UI_SVG.roman(it.s, 20)}<span>${it.l}</span>
+        ${it.diff ? `<span class="mini-tag" style="background:#e11d48; color:#fff;">변경</span>` : ''}
+      </div>`).join('')}
+    </div>`;
+
+    if (tStep === 1) {
+      const rec1 = getRecommended1stTraits(guideJob, currentTrait1stLv, traitUseOvergrowth);
+      const recIds = new Set(rec1.activeTraits.map(t => t.id));
+      const slotsHtml = [1, 20, 40, 60, 80].map((reqLv, i) => {
+        if (currentTrait1stLv < reqLv) return `<div class="trait-slot-box locked"><div style="font-size:13px; font-weight:900; color:#f87171;">Lv.${reqLv} 해금 슬롯</div></div>`;
+        const tid = stageDiagState.trait1[i];
+        const tDef = tid ? (TRAIT_1ST_DB[guideJob] || []).find(x => x.id === tid) : null;
+        const tObj = tDef ? getUnlockedTraitAtLevel(tDef, currentTrait1stLv) : null;
+        if (!tObj) {
+          return `<div class="trait-slot-box diag-slot-clickable" style="border:1.5px dashed #475569; background:#0f172a; justify-content:center; align-items:center;" onclick="openDiagTrait1Picker(${i})">
+            <div style="font-size:12px; color:#38bdf8; font-weight:800;">슬롯 ${i + 1} · 클릭하여 선택</div>
+          </div>`;
+        }
+        const isMis = !recIds.has(tObj.id);
+        return `<div class="trait-slot-box ${tObj.tierMeta.cls} diag-slot-clickable ${isMis?'diag-slot-mismatch':''}" onclick="openDiagTrait1Picker(${i})">
+          <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:11px; font-weight:800;">슬롯 ${i + 1}</span><span class="trait-tier-badge ${tObj.tierMeta.cls}">${tObj.tierMeta.kr}</span></div>
+          <div style="font-size:14px; font-weight:900; color:#fff; margin:5px 0;">${tObj.name}</div>
+          <div style="font-size:11.5px; color:#fde047; background:rgba(0,0,0,0.45); padding:6px 8px; border-radius:7px;">${tObj.desc}</div>
+        </div>`;
+      }).join('');
+
+      const b1 = rep.t1Diff
+        ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13.5px;">1차 특성 추천 변경사항 발생!</strong><div style="font-size:11.5px; color:#cbd5e1;">추천 조합: ${rec1.activeTraits.map(t => t.name).join(' · ')}</div></div><button type="button" class="diag-goto-btn" onclick="openTraitHelperFromHub(); changeTraitTabStep(1);">1차 특성 도우미로 이동 ➔</button></div>`
+        : (rep.t1FilledCnt > 0 ? `<div class="diag-alert-banner all-good"><strong style="color:#6ee7b7; font-size:13px;">현재 1차 특성이 추천 세팅과 일치합니다.</strong></div>` : '');
+
+      body.innerHTML = `${subTabs}
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <span style="font-size:12.5px; color:#cbd5e1;">[${jMeta.c1} · 1차 Lv.${currentTrait1stLv}] 현재 장착 중인 1차 특성 5슬롯을 클릭해 선택하세요.</span>
+          <div style="display:flex; gap:6px;">
+            <button type="button" onclick="copyRecTrait1ToDiag()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">추천 그대로 복사</button>
+            <button type="button" onclick="clearDiagTrait1()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">비우기</button>
+          </div>
+        </div>
+        ${b1}
+        <div class="trait-slots-stage" style="margin-top:0;"><div class="trait-5slots-grid">${slotsHtml}</div></div>`;
+      return;
+    }
+
+    if (tStep === 2) {
+      const lv = currentTrait2ndLv;
+      const totalTP = get2ndJobTotalTP(lv);
+      const userT2 = rep.userT2;
+      const remTP = totalTP - userT2.usedTP;
+      const isMark = stageDiagState.activeTrait2Sub === 'mark';
+      const t2 = stageDiagState.trait2;
+      const activeTree = isMark ? t2.mark : t2.crit;
+      const activeRootCur = isMark ? t2.markRoot : t2.critRoot;
+
+      const buildDiagT2Row = (arr, meta, rIdx, label) => `<div style="margin-bottom:12px;">
+        <div style="font-size:11.5px; font-weight:800; color:#fdba74; margin-bottom:5px; position:sticky; left:0;">${label}</div>
+        <div class="trait2-row">${meta.map((m, ci) => {
+          const unlocked = lv >= m.reqLv;
+          const cur = arr[ci] || 0;
+          const hl = (ci > 0 && rIdx !== 4) ? 'has-line' : '';
+          if (!unlocked) return `<div class="trait2-node locked-node ${hl}">${getTrait2NodeSvg(isMark, rIdx, ci, true)}<span class="trait2-node-lv" style="color:#f87171;">Lv.${m.reqLv}</span></div>`;
+          return `<div class="trait2-node ${m.cls} ${hl} ${cur===0?'uninvested':''}" onclick="clickDiagT2Node('${isMark?'mark':'crit'}','r${rIdx}',${ci},1)" oncontextmenu="event.preventDefault(); clickDiagT2Node('${isMark?'mark':'crit'}','r${rIdx}',${ci},-1)" title="좌클릭 +1 / 우클릭 -1 (요구 TP: ${m.cost}P)">
+            <span class="trait2-node-cost">${m.cost}P</span>
+            ${getTrait2NodeSvg(isMark, rIdx, ci, false)}
+            <span class="trait2-node-lv">${cur}/${m.max}</span>
+          </div>`;
+        }).join('')}</div></div>`;
+
+      const b2 = !userT2.hasInput
+        ? `<div style="background:#0f172a; border:1px dashed #475569; border-radius:10px; padding:10px 14px; font-size:12.5px; color:#cbd5e1; margin-bottom:12px;">노드를 <strong>좌클릭(+1) / 우클릭(-1)</strong>하여 내가 현재 찍은 2차 트리를 입력하면 추천 트리 대비 <strong>정확한 배율 상승치</strong>가 상단 스테이지 돌파 예측에 자동 합산됩니다!</div>`
+        : (rep.t2DeltaLog > 0.002
+          ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13.5px;">2차 특성 추천 변경사항 발생 — 추천 트리 적용 시 ${formatDeltaMultiplierText(rep.t2DeltaLog)} 강해집니다!</strong></div><button type="button" class="diag-goto-btn" onclick="openTraitHelperFromHub(); changeTraitTabStep(2);">2차 특성 도우미로 이동 ➔</button></div>`
+          : `<div class="diag-alert-banner all-good"><strong style="color:#6ee7b7; font-size:13px;">현재 2차 특성 트리가 추천 배율과 동급 이상(최적)입니다.</strong></div>`);
+
+      body.innerHTML = `${subTabs}
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <div style="display:flex; gap:6px; flex-wrap:wrap; font-size:12px; font-weight:800;">
+            <span class="cond-chip is-on">2차 Lv.${lv} 총 TP: <strong style="color:#fde047;">${totalTP}P</strong></span>
+            <span class="cond-chip ${remTP<0?'is-warn':'is-on'}">사용 ${userT2.usedTP}P · 잔여 <strong style="color:${remTP<0?'#f87171':'#34d399'};">${remTP}P</strong></span>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button type="button" onclick="copyRecTrait2ToDiag()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">추천 트리 그대로 복사</button>
+            <button type="button" onclick="clearDiagTrait2()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">초기화</button>
+          </div>
+        </div>
+        ${b2}
+        <div class="trait2-ingame-board">
+          <div class="trait2-top-bar">
+            <div style="display:flex; gap:8px; width:100%; max-width:340px;">
+              <button type="button" class="trait2-subtab-btn ${isMark?'active':''}" onclick="stageDiagState.activeTrait2Sub='mark'; renderStageDiagBody();">표식 탭 트리</button>
+              <button type="button" class="trait2-subtab-btn ${!isMark?'active':''}" onclick="stageDiagState.activeTrait2Sub='crit'; renderStageDiagBody();">크리티컬 탭 트리</button>
+            </div>
+            <span style="font-size:11px; color:#fde047; font-weight:700;">노드 좌클릭: +1 (최대치에서 클릭 시 0) · 우클릭: -1</span>
+          </div>
+          <div class="trait2-tree-scroll">
+            <div style="display:flex; align-items:flex-start; gap:18px; min-width:max-content;">
+              <div class="trait2-root-col" style="display:flex; flex-direction:column; align-items:center; padding-top:86px;">
+                <div class="trait2-node ${activeRootCur?'':'uninvested'}" onclick="clickDiagT2Root('${isMark?'mark':'crit'}')" style="width:64px; height:64px; background:linear-gradient(145deg,#facc15,#b45309); border:2.5px solid #fef08a;">
+                  <span class="trait2-node-cost">1P</span>${getTrait2NodeSvg(isMark, 0, 0, false)}<span class="trait2-node-lv">${activeRootCur}/1</span>
+                </div>
+                <span style="font-size:10px; color:#fde047; font-weight:800; margin-top:5px;">${isMark?'표식 개방':'크리 개방'}</span>
+              </div>
+              <div style="flex:1;">
+                ${buildDiagT2Row(activeTree.r1, DIAG_T2_META.row1, 1, isMark ? '1줄 · 표식 획득 확률' : '1줄 · 2차 크리티컬 확률')}
+                ${buildDiagT2Row(activeTree.r2, isMark ? DIAG_T2_META.mark2 : DIAG_T2_META.crit2, 2, isMark ? '2줄 · 표식 1개당 피해량' : '2줄 · 2차 크리티컬 피해량')}
+                ${buildDiagT2Row(activeTree.r3, isMark ? DIAG_T2_META.mark3 : DIAG_T2_META.crit3, 3, isMark ? '3줄 · 표식 추가 획득' : '3줄 · 2차 저주 받는 피해 증가')}
+                ${buildDiagT2Row(activeTree.r4, DIAG_T2_META.r4, 4, isMark ? '4줄 · 3차 표식 증폭' : '4줄 · 3차 크리티컬 증폭')}
+              </div>
+            </div>
+          </div>
+        </div>`;
+      return;
+    }
+
+    if (tStep === 3) {
+      const rec3 = getRecommended3rdSpecPicks();
+      const rows = [
+        { lv:0,  cols:['속성 버프 최대 중첩 +30', '속성 버프 획득 확률 +50%', '속성 버프 중첩당 피해량 +75%'] },
+        { lv:10, cols:[`모든 ${guideJob==='reaper'?'강타':(guideJob==='mage'?'스킬':'영웅스킬')} 피해 +200%`, guideJob==='reaper'?'스킬 1% ➔ 강타 5% 전환':'강타 1% ➔ 주력 5% 전환', guideJob==='lord'?'스킬 1% ➔ 영웅스킬 5% 전환':'영웅스킬 1% ➔ 주력 5% 전환'] },
+        { lv:20, cols:['모든 피해량 +150%', '최대 중첩 50% 이상 시 모피증 +200%', '최대 중첩 시 모피증 +400%'] },
+        { lv:30, cols:['번개·어둠 1% ➔ 화염 5% 전환', '화염·어둠 1% ➔ 번개 5% 전환', '화염·번개 1% ➔ 어둠 5% 전환'] },
+        { lv:40, cols:['획득 확률 +20% / 증폭 +250%', '획득 확률 -20% / 증폭 +1,000%', '최대 중첩 -30 / 증폭 +1,500%'] }
+      ];
+      const b3 = rep.t3DiffCnt > 0
+        ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13.5px;">3차 특화 추천 변경사항 발생 (${rep.t3DiffCnt}개 구간 차이 감지)</strong></div><button type="button" class="diag-goto-btn" onclick="openTraitHelperFromHub(); changeTraitTabStep(3);">3차 특화 추천표 보기 ➔</button></div>`
+        : (rep.t3FilledCnt > 0 ? `<div class="diag-alert-banner all-good"><strong style="color:#6ee7b7; font-size:13px;">현재 선택한 3차 특화가 추천 트리와 일치합니다.</strong></div>` : '');
+
+      body.innerHTML = `${subTabs}
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <span style="font-size:12.5px; color:#cbd5e1;">[${jMeta.c3} · 3차 Lv.${currentTrait3rdLv}] 현재 찍어둔 칸을 직접 클릭해 선택하세요.</span>
+          <div style="display:flex; gap:6px;">
+            <button type="button" onclick="copyRecTrait3ToDiag()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">추천 그대로 복사</button>
+            <button type="button" onclick="clearDiagTrait3()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">비우기</button>
+          </div>
+        </div>
+        ${b3}
+        <div style="overflow-x:auto;"><table class="spec-3rd-table"><tbody>
+          ${rows.map((r, rIdx) => {
+            const unl = currentTrait3rdLv >= r.lv;
+            const picked = stageDiagState.trait3[rIdx];
+            return `<tr class="${unl?'':'spec-3rd-row-locked'}">
+              <td style="width:66px; font-weight:900; color:${unl?'#fde047':'#64748b'}; text-align:center;">Lv.${r.lv}</td>
+              ${r.cols.map((txt, cIdx) => {
+                const isPick = unl && picked === cIdx;
+                const isRec = rec3[rIdx].includes(cIdx);
+                const cls = isPick ? (isRec ? 'user-picked' : 'user-mismatch') : '';
+                return `<td class="spec-3rd-cell diag-t3-cell ${cls}" onclick="${unl ? `toggleDiagT3Pick(${rIdx},${cIdx})` : ''}">${txt}${isPick ? `<br><small style="color:${isRec?'#6ee7b7':'#fda4af'};">${isRec?'내 선택 (추천 일치)':'내 선택 (변경 권장)'}</small>` : ''}</td>`;
+              }).join('')}
+            </tr>`;
+          }).join('')}
+        </tbody></table></div>`;
+      return;
+    }
+
+    // 4차 소울 링크
+    if (guideJob === 'lord') {
+      body.innerHTML = `${subTabs}<div style="padding:24px; text-align:center; background:#0f172a; border:1px dashed #475569; border-radius:12px; color:#cbd5e1; font-size:13px;">소울이터(다크로드) 4차 소울 링크는 데이터 수집 중입니다. 그림리퍼 또는 슈프림으로 전환해 확인하실 수 있습니다.</div>`;
+      return;
+    }
+    const isReaper = guideJob === 'reaper';
+    const rec4 = isReaper ? getRecommended4thReaperLinks(currentTrait4thLv, guideElem) : getRecommended4thLinks(currentTrait4thLv, guideElem);
+    const rec4Ids = new Set(rec4.slots.map(s => s.linkId));
+    const unlockLvs = [5, 20, 40, 60, 80];
+    const cards4 = [0, 1, 2, 3, 4].map(idx => {
+      if (currentTrait4thLv < unlockLvs[idx]) {
+        return `<div class="trait4-slot-card is-locked"><div style="font-size:12px; font-weight:900; color:#f87171;">슬롯 ${idx + 1}</div><div style="font-size:11px; color:#94a3b8;">Lv.${unlockLvs[idx]} 해금</div></div>`;
+      }
+      const cur = stageDiagState.trait4[idx];
+      if (!cur || !cur.linkId) {
+        return `<div class="trait4-slot-card diag-slot-clickable" style="align-items:center; justify-content:center; min-height:150px; border-style:dashed;" onclick="openDiagTrait4Picker(${idx})"><div style="font-size:12px; font-weight:800; color:#38bdf8;">슬롯 ${idx + 1} · 클릭 선택</div></div>`;
+      }
+      const lk = isReaper ? getTrait4ReaperLinkById(cur.linkId) : getTrait4LinkById(cur.linkId);
+      const tm = getTraitTierMeta(lk.tier);
+      const isMis = !rec4Ids.has(cur.linkId);
+      return `<div class="trait4-slot-card t4-card-${lk.tier} diag-slot-clickable ${isMis?'diag-slot-mismatch':''}" onclick="openDiagTrait4Picker(${idx})">
+        <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:10.5px; color:#fdba74; font-weight:800;">슬롯 ${idx + 1}</span><span class="trait-tier-badge ${tm.cls}" style="font-size:9.5px; padding:1px 5px;">${tm.kr}</span></div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:4px; padding:5px 0;">
+          <div class="trait4-icon-box t4-box-${lk.tier}">${isReaper ? getTrait4ReaperSvg(lk.id) : getTrait4LinkSvg(lk.id)}</div>
+          <strong style="font-size:12px; color:#fef08a; text-align:center;">${lk.name}</strong>
+          ${isMis ? `<span class="mini-tag" style="background:#e11d48; color:#fff;">추천 변경 권장</span>` : ''}
+        </div>
+        <div class="trait4-link-desc">${lk.desc}</div>
+      </div>`;
+    }).join('');
+
+    const b4 = rep.t4Diff
+      ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13.5px;">4차 소울 링크 추천 변경사항 발생!</strong></div><button type="button" class="diag-goto-btn" onclick="openTraitHelperFromHub(); changeTraitTabStep(4);">4차 소울 링크 도우미로 이동 ➔</button></div>`
+      : (rep.t4FilledCnt > 0 ? `<div class="diag-alert-banner all-good"><strong style="color:#6ee7b7; font-size:13px;">현재 4차 소울 링크가 추천 조합과 일치합니다.</strong></div>` : '');
+
+    body.innerHTML = `${subTabs}
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+        <span style="font-size:12.5px; color:#cbd5e1;">[${jMeta.c4} · 4차 Lv.${currentTrait4thLv}] 현재 장착 중인 소울 링크 슬롯을 클릭해 선택하세요.</span>
+        <div style="display:flex; gap:6px;">
+          <button type="button" onclick="copyRecTrait4ToDiag()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">추천 그대로 복사</button>
+          <button type="button" onclick="clearDiagTrait4()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">비우기</button>
+        </div>
+      </div>
+      ${b4}
+      <div class="trait4-link-board ${isReaper?'reaper-theme':''}"><div class="trait4-slot-grid">${cards4}</div></div>`;
+  }
+
+  function clickDiagT2Root(tab) {
+    stageDiagState.trait2Initialized = true;
+    const key = tab === 'mark' ? 'markRoot' : 'critRoot';
+    stageDiagState.trait2[key] = stageDiagState.trait2[key] ? 0 : 1;
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+
+  function clickDiagT2Node(tab, rowKey, colIdx, delta) {
+    stageDiagState.trait2Initialized = true;
+    const meta = rowKey === 'r1' ? DIAG_T2_META.row1 : (rowKey === 'r2' ? (tab === 'mark' ? DIAG_T2_META.mark2 : DIAG_T2_META.crit2) : (rowKey === 'r3' ? (tab === 'mark' ? DIAG_T2_META.mark3 : DIAG_T2_META.crit3) : DIAG_T2_META.r4));
+    const maxV = meta[colIdx]?.max || 1;
+    const cur = stageDiagState.trait2[tab][rowKey][colIdx] || 0;
+    const next = delta > 0 ? (cur >= maxV ? 0 : cur + 1) : Math.max(0, cur - 1);
+    stageDiagState.trait2[tab][rowKey][colIdx] = next;
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+
+  function toggleDiagT3Pick(rIdx, cIdx) {
+    stageDiagState.trait3[rIdx] = (stageDiagState.trait3[rIdx] === cIdx) ? null : cIdx;
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+
+  // ---- E. 공용 클릭 선택 팝업 모달 (룬 / 소울 / 1차 특성 / 4차 링크 · 검색창 지원) ----
+  let diagPickerCtx = null;
+
+  function closeDiagPickerModal() {
+    document.getElementById('diag_picker_modal_overlay').style.display = 'none';
+    diagPickerCtx = null;
+  }
+
+  function openDiagRunePicker(slotKey, partKey, label) {
+    diagPickerCtx = { type: 'rune', slotKey, partKey, tierFilter: 'all' };
+    document.getElementById('diag_picker_title').innerText = `[${label}] 현재 장착 룬 선택`;
+    document.getElementById('diag_picker_subtitle').innerText = '검색창에 이름이나 옵션을 입력하거나 등급 필터로 빠르게 찾으세요';
+    const inp = document.getElementById('diag_picker_search_input');
+    if (inp) inp.value = '';
+    document.getElementById('diag_picker_search_wrap').style.display = 'block';
+    renderDiagPickerList();
+    document.getElementById('diag_picker_modal_overlay').style.display = 'flex';
+    setTimeout(() => inp?.focus(), 60);
+  }
+
+  function openDiagCorePicker(slotIdx) {
+    diagPickerCtx = { type: 'core', slotIdx, tierFilter: 'ancient', groupFilter: 0 };
+    document.getElementById('diag_picker_title').innerText = `[${slotIdx + 1}번 슬롯] 현재 장착 코어 선택`;
+    document.getElementById('diag_picker_subtitle').innerText = '등급과 코어 번호를 선택하거나 이름으로 검색하세요';
+    const inp = document.getElementById('diag_picker_search_input');
+    if (inp) inp.value = '';
+    document.getElementById('diag_picker_search_wrap').style.display = 'block';
+    renderDiagPickerList();
+    document.getElementById('diag_picker_modal_overlay').style.display = 'flex';
+    setTimeout(() => inp?.focus(), 60);
+  }
+
+  function openDiagTrait1Picker(slotIdx) {
+    diagPickerCtx = { type: 'trait1', slotIdx };
+    document.getElementById('diag_picker_title').innerText = `[1차 슬롯 ${slotIdx + 1}] 현재 장착 1차 특성 선택`;
+    document.getElementById('diag_picker_subtitle').innerText = `현재 1차 Lv.${currentTrait1stLv}에서 해금된 특성 목록`;
+    const inp = document.getElementById('diag_picker_search_input');
+    if (inp) inp.value = '';
+    document.getElementById('diag_picker_search_wrap').style.display = 'block';
+    renderDiagPickerList();
+    document.getElementById('diag_picker_modal_overlay').style.display = 'flex';
+  }
+
+  function openDiagTrait4Picker(slotIdx) {
+    diagPickerCtx = { type: 'trait4', slotIdx };
+    document.getElementById('diag_picker_title').innerText = `[4차 슬롯 ${slotIdx + 1}] 현재 장착 소울 링크 선택`;
+    document.getElementById('diag_picker_subtitle').innerText = `현재 4차 Lv.${currentTrait4thLv}에서 해금된 링크 목록`;
+    const inp = document.getElementById('diag_picker_search_input');
+    if (inp) inp.value = '';
+    document.getElementById('diag_picker_search_wrap').style.display = 'block';
+    renderDiagPickerList();
+    document.getElementById('diag_picker_modal_overlay').style.display = 'flex';
+  }
+
+  function renderDiagPickerList() {
+    if (!diagPickerCtx) return;
+    const ctrlEl = document.getElementById('diag_picker_controls');
+    const wrapEl = document.getElementById('diag_picker_list_wrap');
+    const q = (document.getElementById('diag_picker_search_input')?.value || '').trim().toLowerCase();
+
+    if (diagPickerCtx.type === 'rune') {
+      const tiers = [{ k:'all', l:'전체 등급' }, { k:'immortal', l:'불멸' }, { k:'eternal', l:'영원' }, { k:'ancient', l:'고대' }];
+      ctrlEl.innerHTML = `<div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;">
+        <div class="radio-pill-group" style="flex:1;">${tiers.map(t => `<div class="radio-pill ${diagPickerCtx.tierFilter===t.k?'selected':''}" onclick="diagPickerCtx.tierFilter='${t.k}'; renderDiagPickerList();" style="padding:6px; font-size:12px;">${t.l}</div>`).join('')}</div>
+        <button type="button" onclick="pickDiagRune(null)" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:6px 11px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">장착 해제</button>
+      </div>`;
+
+      const list = RUNE_DB.filter(r => r.part === diagPickerCtx.partKey && (diagPickerCtx.tierFilter === 'all' || r.tier === diagPickerCtx.tierFilter) && (!q || `${r.name} ${r.desc} ${r.cond}`.toLowerCase().includes(q)))
+        .sort((a, b) => (ownedRunes.has(b.id) ? 1 : 0) - (ownedRunes.has(a.id) ? 1 : 0));
+
+      wrapEl.innerHTML = `<div class="item-compact-grid">${list.map(r => {
+        const isSel = stageDiagState.runes[diagPickerCtx.slotKey] === r.id;
+        const isOwned = ownedRunes.has(r.id);
+        return `<div class="item-select-box ${isSel?'selected':''}" onclick="pickDiagRune('${r.id}')">
+          <div class="item-box-badges">
+            ${isOwned ? `<span class="mini-tag" style="background:#059669; color:#fff;">보유</span>` : ''}
+            <span class="grade-badge ${getRuneTierBadgeClass(r.tier)}" style="font-size:9px; padding:1px 4px;">${getRuneTierKr(r.tier)}</span>
+          </div>
+          <div class="item-box-name">${r.name}</div>
+          <div class="item-box-sub">${r.desc.split('(')[0]}</div>
+        </div>`;
+      }).join('')}</div>`;
+      return;
+    }
+
+    if (diagPickerCtx.type === 'core') {
+      const tiers = [{ k:'ancient', l:'고대' }, { k:'mythic', l:'신화' }, { k:'legend', l:'전설' }, { k:'unique', l:'특급' }, { k:'advanced', l:'상급' }];
+      ctrlEl.innerHTML = `
+        <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:7px;">
+          <div class="radio-pill-group" style="flex:1;">${tiers.map(t => `<div class="radio-pill ${diagPickerCtx.tierFilter===t.k?'selected':''}" onclick="diagPickerCtx.tierFilter='${t.k}'; renderDiagPickerList();" style="padding:6px 4px; font-size:12px;">${t.l}</div>`).join('')}</div>
+          <button type="button" onclick="pickDiagCore(null)" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:6px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">장착 해제</button>
+        </div>
+        <div class="radio-pill-group">${[{n:0,l:'전체'},{n:1,l:'코어1'},{n:2,l:'코어2'},{n:3,l:'코어3'},{n:4,l:'코어4'},{n:5,l:'코어5'},{n:6,l:'코어6'}].map(g => `<div class="radio-pill ${diagPickerCtx.groupFilter===g.n?'selected':''}" onclick="diagPickerCtx.groupFilter=${g.n}; renderDiagPickerList();" style="padding:5px 4px; font-size:11px; min-width:50px;">${g.l}</div>`).join('')}</div>`;
+
+      const list = CORE_TYPES_DB.filter(c => (diagPickerCtx.groupFilter === 0 || c.num === diagPickerCtx.groupFilter) && (!q || `${c.name} ${c.unit} ${c.cond}`.toLowerCase().includes(q)));
+      wrapEl.innerHTML = `<div class="item-compact-grid">${list.map(c => {
+        const isOwned = (ownedCoresMap.get(`${diagPickerCtx.tierFilter}__${c.id}`) || 0) > 0;
+        const cur = stageDiagState.cores[diagPickerCtx.slotIdx];
+        const isSel = cur && cur.tier === diagPickerCtx.tierFilter && cur.coreId === c.id;
+        return `<div class="item-select-box ${isSel?'selected':''}" onclick="pickDiagCore('${c.id}')">
+          <div class="item-box-badges">${isOwned ? `<span class="mini-tag" style="background:#059669; color:#fff;">보유</span>` : ''}<span class="mini-tag" style="background:#334155; color:#fff;">코어${c.num}</span></div>
+          <div class="item-box-name">${c.name}</div>
+          <div class="item-box-sub">${getCoreThemeSummary(c, diagPickerCtx.tierFilter)}</div>
+        </div>`;
+      }).join('')}</div>`;
+      return;
+    }
+
+    if (diagPickerCtx.type === 'trait1') {
+      ctrlEl.innerHTML = `<button type="button" onclick="pickDiagTrait1(null)" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:6px 11px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">슬롯 비우기</button>`;
+      const list = (TRAIT_1ST_DB[guideJob] || []).map(t => getUnlockedTraitAtLevel(t, currentTrait1stLv)).filter(Boolean)
+        .filter(t => !q || `${t.name} ${t.desc}`.toLowerCase().includes(q));
+      wrapEl.innerHTML = `<div class="grid-2" style="gap:8px;">${list.map(t => `<div class="item-select-box ${stageDiagState.trait1[diagPickerCtx.slotIdx]===t.id?'selected':''}" onclick="pickDiagTrait1('${t.id}')" style="min-height:64px;">
+        <div class="item-box-badges"><span class="trait-tier-badge ${t.tierMeta.cls}" style="font-size:9px; padding:1px 5px;">${t.tierMeta.kr}</span></div>
+        <div class="item-box-name">${t.name}</div>
+        <div class="item-box-sub">${t.desc}</div>
+      </div>`).join('')}</div>`;
+      return;
+    }
+
+    if (diagPickerCtx.type === 'trait4') {
+      ctrlEl.innerHTML = `<button type="button" onclick="pickDiagTrait4(null)" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:6px 11px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">슬롯 비우기</button>`;
+      const isReaper = guideJob === 'reaper';
+      const src = isReaper ? TRAIT_4TH_REAPER_LINKS_DB : TRAIT_4TH_LINKS_DB;
+      const list = src.filter(lk => currentTrait4thLv >= lk.reqLv && (!q || `${lk.name} ${lk.desc}`.toLowerCase().includes(q)));
+      wrapEl.innerHTML = `<div class="grid-2" style="gap:8px;">${list.map(lk => {
+        const tm = getTraitTierMeta(lk.tier);
+        const cur = stageDiagState.trait4[diagPickerCtx.slotIdx];
+        return `<div class="item-select-box ${cur && cur.linkId===lk.id?'selected':''}" onclick="pickDiagTrait4('${lk.id}')" style="min-height:64px;">
+          <div class="item-box-badges"><span class="trait-tier-badge ${tm.cls}" style="font-size:9px; padding:1px 5px;">${tm.kr} · Lv.${lk.reqLv}</span></div>
+          <div class="item-box-name">${lk.name}</div>
+          <div class="item-box-sub">${lk.desc}</div>
+        </div>`;
+      }).join('')}</div>`;
+    }
+  }
+
+  function pickDiagRune(runeId) {
+    if (!diagPickerCtx) return;
+    stageDiagState.runes[diagPickerCtx.slotKey] = runeId;
+    closeDiagPickerModal();
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+  function pickDiagCore(coreId) {
+    if (!diagPickerCtx) return;
+    stageDiagState.cores[diagPickerCtx.slotIdx] = coreId ? { tier: diagPickerCtx.tierFilter, coreId } : null;
+    closeDiagPickerModal();
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+  function pickDiagTrait1(tid) {
+    if (!diagPickerCtx) return;
+    stageDiagState.trait1[diagPickerCtx.slotIdx] = tid;
+    closeDiagPickerModal();
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+  function pickDiagTrait4(linkId) {
+    if (!diagPickerCtx) return;
+    stageDiagState.trait4[diagPickerCtx.slotIdx] = linkId ? { linkId } : null;
+    closeDiagPickerModal();
+    renderStageDiagAll();
+    triggerAutoSave();
   }
 
   let hasBooted = false;
