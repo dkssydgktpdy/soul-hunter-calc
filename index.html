@@ -13496,7 +13496,15 @@
         return;
       }
 
-      const tiers = awkGuideJob === 'reaper' ? [
+      if (awkSubView === 'skill_hero_awk') {
+        const newElemHero = awkGuideElem === 'fire' ? '이그니스' : (awkGuideElem === 'light' ? '제논' : '다미안');
+        const debSk = awkGuideElem === 'fire' ? '불벼락' : (awkGuideElem === 'light' ? '뇌전검무' : '암흑붕괴');
+        const m3Sk = awkGuideElem === 'fire' ? '플레어 필라' : (awkGuideElem === 'light' ? '볼트 스파이럴' : '블랙 베일');
+        const m4Sk = awkGuideElem === 'fire' ? '블레이즈 이럽션' : (awkGuideElem === 'light' ? '플라즈마 이럽션' : '어비스 이럽션');
+        const l3Hr = awkGuideElem === 'fire' ? '칼리아' : (awkGuideElem === 'light' ? '카이렌' : '모르반');
+        const l4Hr = awkGuideElem === 'fire' ? '화련' : (awkGuideElem === 'light' ? '청운' : '자월');
+
+        const tiers = awkGuideJob === 'reaper' ? [
           { num:"1순위 (전 직업 단독 최우선 3각)", color:"#fbbf24", items:[
             { name:"오버드라이브", isSkill:true, badge:"전 직업 부동의 1순위", multTag:"", desc:"영구 지속 레벨 뻥튀기 + 과성장 졸업의 필수 열쇠" }
           ]},
