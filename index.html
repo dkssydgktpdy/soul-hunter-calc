@@ -6812,6 +6812,39 @@
 
   </div><!-- /.container -->
 
+  <!-- 각성 우선순위 진입 시 [1각 골고루 도배 필수] 필독 경고 모달 -->
+    <div class="help-modal-overlay" id="awk_1st_warn_modal_overlay" style="z-index: 10015;" onclick="if(event.target===this) closeAwk1stWarnModal()">
+      <div class="help-modal-box" style="max-width: 490px; border: 2.5px solid #fb7185; background: linear-gradient(165deg, #2a0a14 0%, #161026 55%, #0b1120 100%); padding: 24px 22px; box-shadow: 0 24px 55px rgba(0,0,0,0.9), 0 0 30px rgba(244,63,94,0.45);" onclick="event.stopPropagation()">
+        <div style="display:flex; align-items:center; gap:10px; border-bottom:1.5px solid rgba(251,113,133,0.4); padding-bottom:12px; margin-bottom:14px;">
+          <svg width="30" height="30" viewBox="0 0 28 28" fill="none" style="flex-shrink:0; filter:drop-shadow(0 0 8px rgba(250,204,21,0.85));">
+            <path d="M14 3L26 24H2L14 3Z" fill="rgba(244,63,94,0.35)" stroke="#fde047" stroke-width="2" stroke-linejoin="round"/>
+            <line x1="14" y1="10.5" x2="14" y2="17" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="14" cy="20.5" r="1.4" fill="#fde047"/>
+          </svg>
+          <div>
+            <div style="font-size:17px; font-weight:900; color:#fde047; letter-spacing:-0.3px;">잠깐! 3각성 올리기 전에 필독하세요</div>
+            <div style="font-size:11.5px; color:#fecdd3; font-weight:700;">3각성 1개 먼저 올리면 각성석 손해가 매우 큽니다</div>
+          </div>
+        </div>
+
+        <div style="background:rgba(15,23,42,0.88); border:1.5px solid #facc15; border-radius:12px; padding:13px 14px; margin-bottom:12px; font-size:13px; color:#f8fafc; line-height:1.65;">
+          <div style="font-size:14px; font-weight:900; color:#fde047; margin-bottom:6px;">[절대 원칙] 착용 스킬·영웅 전부 '골고루 1각성' 도배 필수!</div>
+          • 신화 <strong>1개 3각성(115만)</strong> 비용이면 ➔ <strong style="color:#6ee7b7;">신화 11개를 1각성(개당 10만)</strong>해서 <strong style="color:#38bdf8;">각성 시너지 +165점</strong>을 먼저 챙길 수 있습니다!<br>
+          • <strong>3차 주력기(플레어 필라류 · 칼리아류)</strong>는 <strong style="color:#fda4af;">1각까지만 쓰고 멈추고</strong>, 3각성은 반드시 <strong>4차 신스킬·신영웅</strong>에 투자하세요!<br>
+          • <strong>나리타</strong>는 1·2각에 멈추지 말고 <strong style="color:#fde047;">무조건 3각(상시 501배)</strong>까지 끝내야 본체가 열립니다.
+        </div>
+
+        <div style="display:flex; align-items:center; gap:9px;">
+          <button type="button" onclick="closeAwk1stWarnModal(true)" style="flex:0.85; background:#1e293b; border:1.5px solid #64748b; color:#cbd5e1; font-size:13px; font-weight:800; padding:12px 8px; border-radius:11px; cursor:pointer; transition:all 0.15s;" onmouseover="this.style.borderColor='#fb7185'; this.style.color='#fecdd3';" onmouseout="this.style.borderColor='#64748b'; this.style.color='#cbd5e1';">
+            다시 보지 않기
+          </button>
+          <button type="button" onclick="closeAwk1stWarnModal(false)" style="flex:1.4; background:linear-gradient(135deg, #e11d48 0%, #d97706 100%); border:2px solid #fef08a; color:#ffffff; font-size:13.5px; font-weight:900; padding:12px 10px; border-radius:11px; cursor:pointer; box-shadow:0 6px 20px rgba(225,29,72,0.5);">
+            확인했습니다 (3각 순위 보기)
+          </button>
+        </div>
+      </div>
+    </div>
+
   <!-- ==================== 6. 푸터 (길보길 분석실 & 방문자 카운터) ==================== -->
   <footer>
     <div style="margin-bottom: 12px;">
@@ -13046,6 +13079,23 @@
     `;
   }
 
+  const AWK_1ST_WARN_HIDE_KEY = 'shk_awk_1st_warn_hide_v1';
+  let awk1stWarnSeenThisSession = false;
+
+  function openAwk1stWarnModal() {
+    const el = document.getElementById('awk_1st_warn_modal_overlay');
+    if (el) el.style.display = 'flex';
+  }
+
+  function closeAwk1stWarnModal(neverShowAgain = false) {
+    awk1stWarnSeenThisSession = true;
+    if (neverShowAgain) {
+      try { localStorage.setItem(AWK_1ST_WARN_HIDE_KEY, '1'); } catch (e) {}
+    }
+    const el = document.getElementById('awk_1st_warn_modal_overlay');
+    if (el) el.style.display = 'none';
+  }
+
   function openAwkSubView(viewName) {
     awkSubView = viewName;
     const floatTxt = document.getElementById("floating_back_text");
@@ -13057,6 +13107,11 @@
       }
     }
     renderBuildGuideContent();
+    if (viewName === 'skill_hero_awk' && !awk1stWarnSeenThisSession) {
+      let hideForever = false;
+      try { hideForever = (localStorage.getItem(AWK_1ST_WARN_HIDE_KEY) === '1'); } catch (e) {}
+      if (!hideForever) openAwk1stWarnModal();
+    }
   }
 
   function openAwakeningHelperFromHub() {
@@ -13450,46 +13505,108 @@
         const l4Hr = awkGuideElem === 'fire' ? '화련' : (awkGuideElem === 'light' ? '청운' : '자월');
 
         const tiers = awkGuideJob === 'reaper' ? [
-          { num:"1순위", color:"#38bdf8", items:[{ name:"오버드라이브", isSkill:true, badge:"전 직업 필수", desc:"영구 지속 레벨 뻥튀기 + 과성장 졸업의 필수 열쇠" }] },
-          { num:"2순위", color:"#f43f5e", items:[{ name:"셀렌", isSkill:false, badge:"3각 1,012.5배", desc:"각성 시너지 100점 달성 시 1천배 폭등" }] },
-          { num:"3순위", color:"#a855f7", items:[{ name:"썬더 오빗", isSkill:true, badge:"3각 303.4배", desc:"사신 전용 강타 피해량 버프" }, { name:"나리타", isSkill:false, badge:"상시 501배", desc:"조건 없이 상시 501배 깡곱연산 제공" }] },
-          { num:"4순위", color:"#eab308", items:[{ name:"엘리멘탈 차지", isSkill:true, badge:"3차 300배", desc:"3차 전직 시 상시 300배 곱연산 버프" }, { name:"크림슨 웨이브", isSkill:true, badge:"불멸 출혈용", desc:"불멸 저주 II 룬 출혈 조건 달성용" }] },
-          { num:"5순위", color:"#64748b", items:[{ name:newElemHero, isSkill:false, badge:"신규 디버퍼", desc:"주속성 피해량 증폭 및 디버프 지원" }, { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", desc:"오버드라이브 3각 달성 시 엘리시아 대체" }, { name:"그림자 포효", isSkill:true, badge:"2각 혼돈", desc:"2각 혼돈 상태이상 해금이 핵심" }, { name:debSk, isSkill:true, badge:"2각 디버프", desc:"주속성 디버퍼" }, { name:"루비", isSkill:false, badge:"격화 세트", desc:"격화 룬 3상태이상 유지용" }] }
+          { num:"1순위 (최우선 3각)", color:"#fb7185", items:[
+            { name:"오버드라이브", isSkill:true, badge:"전 직업 0순위", multTag:"", desc:"영구 지속 레벨 뻥튀기 + 과성장 졸업의 필수 열쇠" },
+            { name:"셀렌", isSkill:false, badge:"사신 최우선 3각", multTag:"3각 1,012.5배", desc:"각성 시너지 100점 이상 달성 시 1,012.5배 폭등" },
+            { name:"나리타", isSkill:false, badge:"무조건 3각 필수!", multTag:"3각 상시 501배", desc:"1·2각에 멈추지 말고 무조건 3각! 조건 없는 상시 501배 깡곱연산" }
+          ]},
+          { num:"2순위", color:"#38bdf8", items:[
+            { name:"썬더 오빗", isSkill:true, badge:"사신 전용", multTag:"3각 303.4배", desc:"사신 전용 강타 피해량 버프" },
+            { name:"엘리멘탈 차지", isSkill:true, badge:"공용 핵심 버프", multTag:"3각 300배", desc:"3차 전직 기준 상시 300배 곱연산 버프" }
+          ]},
+          { num:"3순위", color:"#c084fc", items:[
+            { name:"크림슨 웨이브", isSkill:true, badge:"불멸 출혈용", multTag:"", desc:"불멸 저주 II 룬 출혈 조건 달성 및 딜 보조" }
+          ]},
+          { num:"4순위 (후순위 마무리)", color:"#94a3b8", items:[
+            { name:newElemHero, isSkill:false, badge:"주속성 신영웅", multTag:"", desc:"주속성 피해량 증폭 및 디버프 지원" },
+            { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", multTag:"", desc:"오버드라이브 3각 달성 시 엘리시아 대체" },
+            { name:"그림자 포효", isSkill:true, badge:"2각 혼돈 필수", multTag:"3각 111배", desc:"2각 혼돈 상태이상 해금이 핵심 (3각 시 111배)" },
+            { name:debSk, isSkill:true, badge:"2각 디버프", multTag:"3각 111배", desc:"주속성 상태이상 디버퍼 (3각 시 111배)" },
+            { name:"루비", isSkill:false, badge:"격화 룬 세트", multTag:"", desc:"격화 룬 3상태이상 유지용" }
+          ]}
         ] : (awkGuideJob === 'mage' ? [
-          { num:"1순위", color:"#38bdf8", items:[{ name:"오버드라이브", isSkill:true, badge:"전 직업 필수", desc:"스킬 빌드의 심장이자 룬 과성장 졸업의 핵심" }] },
-          { num:"2순위", color:"#f43f5e", items:[{ name:m3Sk, isSkill:true, badge:"3차 메인딜 (선행)", desc:"1번 슬롯 배치 ➔ 4차까지 시간이 오래 걸리므로 3차 메인딜을 먼저 3각성해 사용!" }, { name:"지옥불베기", isSkill:true, badge:"4차 필수급", desc:"스킬 피해량 버프 극대화" }] },
-          { num:"3순위", color:"#a855f7", items:[{ name:"나리타", isSkill:false, badge:"상시 501배", desc:"조건 없는 상시 501배 곱연산" }, { name:m4Sk, isSkill:true, badge:"★4차 메인딜 (전환)", desc:"3차➔4차는 1차 80렙을 찍어야 해 오래 걸리므로, 3차를 먼저 쓰고 4차 메인스킬로 넘어가세요!" }] },
-          { num:"4순위", color:"#eab308", items:[{ name:"카엔", isSkill:false, badge:"3각 302.4배", desc:"앜메 전용 영웅" }, { name:"엘리멘탈 차지", isSkill:true, badge:"3차 300배", desc:"3차 전직 시 300배 버프" }, { name:"크림슨 웨이브", isSkill:true, badge:"불멸 출혈용", desc:"불멸 저주 II 출혈 조건" }, { name:"환영나비", isSkill:true, badge:awkGuideElem==='fire'?'화염 제외❌':'번개/어둠 필수', desc:awkGuideElem==='fire'?'화염 속성은 크림슨/포효/불베기 사용':'3각 시 241배' }] },
-          { num:"5순위", color:"#64748b", items:[{ name:newElemHero, isSkill:false, badge:"신규 디버퍼", desc:"주속성 피해량 증폭" }, { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", desc:"오버드라이브 3각 시 투입" }, { name:"그림자 포효", isSkill:true, badge:"2각 혼돈", desc:"2각 혼돈 해금" }, { name:debSk, isSkill:true, badge:"2각 디버프", desc:"주속성 디버퍼" }] }
+          { num:"1순위 (최우선 3각)", color:"#fb7185", items:[
+            { name:"오버드라이브", isSkill:true, badge:"전 직업 0순위", multTag:"", desc:"스킬 빌드의 심장 · 과성장 졸업 & 4차 한계 초월(+700%) 핵심" },
+            { name:m4Sk, isSkill:true, badge:"4차 신스킬 3각!", multTag:"", desc:`3차 주스킬(${m3Sk})은 1각만 하고 사용! 3각성은 무조건 4차 신스킬에 집중` },
+            { name:"나리타", isSkill:false, badge:"무조건 3각 필수!", multTag:"3각 상시 501배", desc:"지옥불베기보다 배율이 높음! 1·2각이 아니라 무조건 3각까지 완성 필수" }
+          ]},
+          { num:"2순위 (나리타 이후 3각)", color:"#38bdf8", items:[
+            { name:"지옥불베기", isSkill:true, badge:"나리타 다음 3각", multTag:"", desc:"아크메이지 전용 스킬 피해량 버프 극대화 (4차 찰나의 집중 연계)" },
+            { name:"카엔", isSkill:false, badge:"앜메 전용 영웅", multTag:"3각 302.4배", desc:"아크메이지 전용 영웅 버퍼" },
+            { name:"엘리멘탈 차지", isSkill:true, badge:"공용 핵심 버프", multTag:"3각 300배", desc:"3차 전직 기준 상시 300배 곱연산 버프" }
+          ]},
+          { num:"3순위", color:"#c084fc", items:[
+            { name:"환영나비", isSkill:true, badge:awkGuideElem==='fire'?'화염 제외':'번개/어둠 필수', multTag:"3각 241배", desc:awkGuideElem==='fire'?'화염 속성은 포효/불베기/크림슨 사용으로 제외':'번개·어둠 아크메이지 3각 241배 버프' },
+            { name:"크림슨 웨이브", isSkill:true, badge:"불멸 출혈용", multTag:"", desc:"불멸 저주 II 룬 출혈 조건 달성" }
+          ]},
+          { num:"4순위 (후순위 마무리)", color:"#94a3b8", items:[
+            { name:newElemHero, isSkill:false, badge:"주속성 신영웅", multTag:"", desc:"주속성 피해량 증폭" },
+            { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", multTag:"", desc:"오버드라이브 3각 시 엘리시아 대체" },
+            { name:"그림자 포효", isSkill:true, badge:"2각 혼돈 필수", multTag:"3각 111배", desc:"2각 혼돈 해금 · 불앜메 4차 Lv.80 혼돈의 낙인 핵심 (3각 111배)" },
+            { name:debSk, isSkill:true, badge:"2각 디버프", multTag:"3각 111배", desc:"주속성 디버퍼 (3각 111배)" }
+          ]}
         ] : [
-          { num:"1순위", color:"#38bdf8", items:[{ name:"오버드라이브", isSkill:true, badge:"전 직업 필수", desc:"과성장 졸업 및 공용 버프 코어" }, { name:"백운귀", isSkill:false, badge:"상시 501배", desc:"다크로드 필수 버퍼 (3각 필수)" }] },
-          { num:"2순위", color:"#f43f5e", items:[{ name:l3Hr, isSkill:false, badge:"3차 메인딜러 (선행)", desc:"4차까지 시간이 오래 걸리므로 3차 주력 딜러를 먼저 10돌·3각성해 사용!" }] },
-          { num:"3순위", color:"#a855f7", items:[{ name:"카엘", isSkill:false, badge:"3각 346.25배", desc:"다크로드 전용 영웅" }, { name:"나리타", isSkill:false, badge:"상시 501배", desc:"조건 없는 상시 501배" }, { name:l4Hr, isSkill:false, badge:"★4차 메인딜러 (전환)", desc:"3차➔4차는 1차 80렙을 찍어야 해 오래 걸리므로, 3차를 먼저 쓰고 4차 메인영웅으로 넘어가세요!" }] },
-          { num:"4순위", color:"#eab308", items:[{ name:"보이드 펄스", isSkill:true, badge:"닼로 전용", desc:"영웅 스킬 피해량 버프" }, { name:"환영나비", isSkill:true, badge:"3각 241배", desc:"241배 버프 지원" }, { name:"크림슨 웨이브", isSkill:true, badge:"불멸 출혈용", desc:"출혈 조건" }, { name:"엘리멘탈 차지", isSkill:true, badge:"3차 300배", desc:"300배 버프" }] },
-          { num:"5순위", color:"#64748b", items:[{ name:newElemHero, isSkill:false, badge:"신규 디버퍼", desc:"주속성 디버프" }, { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", desc:"오버드라이브 3각 시 투입" }] }
+          { num:"1순위 (최우선 3각)", color:"#fb7185", items:[
+            { name:"오버드라이브", isSkill:true, badge:"전 직업 0순위", multTag:"", desc:"과성장 졸업 및 공용 버프 코어" },
+            { name:l4Hr, isSkill:false, badge:"4차 신영웅 3각!", multTag:"", desc:`3차 주영웅(${l3Hr})은 1각만 하고 사용! 3각성은 무조건 4차 신영웅에 집중` },
+            { name:"나리타", isSkill:false, badge:"무조건 3각 필수!", multTag:"3각 상시 501배", desc:"1·2각에 멈추지 말고 무조건 3각! 조건 없는 상시 501배 깡곱연산" },
+            { name:"백운귀", isSkill:false, badge:"닼로 필수 버퍼", multTag:"3각 상시 501배", desc:"다크로드 전용 상시 501배 버퍼 (3각 필수)" }
+          ]},
+          { num:"2순위", color:"#38bdf8", items:[
+            { name:"카엘", isSkill:false, badge:"닼로 전용 영웅", multTag:"3각 346.25배", desc:"다크로드 전용 영웅 버퍼" },
+            { name:"엘리멘탈 차지", isSkill:true, badge:"공용 핵심 버프", multTag:"3각 300배", desc:"3차 전직 기준 상시 300배 곱연산 버프" }
+          ]},
+          { num:"3순위", color:"#c084fc", items:[
+            { name:"보이드 펄스", isSkill:true, badge:"닼로 전용 스킬", multTag:"", desc:"영웅 스킬 피해량 버프" },
+            { name:"환영나비", isSkill:true, badge:"공용 버프", multTag:"3각 241배", desc:"3각 시 241배 버프 지원" },
+            { name:"크림슨 웨이브", isSkill:true, badge:"불멸 출혈용", multTag:"", desc:"불멸 저주 II 룬 출혈 조건 달성" }
+          ]},
+          { num:"4순위 (후순위 마무리)", color:"#94a3b8", items:[
+            { name:newElemHero, isSkill:false, badge:"주속성 신영웅", multTag:"", desc:"주속성 디버프 지원" },
+            { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", multTag:"", desc:"오버드라이브 3각 시 엘리시아 대체" }
+          ]}
         ]);
 
-        const fourthTransitionTip = (awkGuideJob === 'mage' || awkGuideJob === 'lord')
-          ? `<div style="background:linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, #0f172a 100%); border:1.5px solid #fbbf24; border-radius:12px; padding:11px 15px; margin-bottom:10px; font-size:12.5px; color:#fef08a; line-height:1.55;">
-              💡 <strong>3차 ➔ 4차 주력기(${awkGuideJob==='mage'?m4Sk:l4Hr}) 전환 타이밍 안내:</strong><br>
-              <span style="color:#ffffff;">3차에서 4차 전직까지는 <strong>1차 전직 80레벨</strong>을 찍어야 하기 때문에 시간이 꽤 오래 걸립니다. 따라서 <strong>2순위 3차 주력기(${awkGuideJob==='mage'?m3Sk:l3Hr})를 먼저 각성해서 쓰다가 4차 전직 달성 후 4차 메인(${awkGuideJob==='mage'?m4Sk:l4Hr})으로 넘어가시는 것</strong>이 정석입니다!</span>
+        const thirdStopNotice = (awkGuideJob === 'mage' || awkGuideJob === 'lord')
+          ? `<div style="background:linear-gradient(135deg, rgba(245, 158, 11, 0.22) 0%, #1c1008 100%); border:2px solid #facc15; border-radius:12px; padding:11px 15px; margin-bottom:12px; font-size:12.5px; color:#fef08a; line-height:1.6;">
+              <strong style="color:#ffffff;">[3차 주력기 각성 주의]</strong> 3차 주력 ${awkGuideJob==='mage'?'스킬':'영웅'}(<strong>${awkGuideJob==='mage'?m3Sk:l3Hr}</strong>)은 <strong style="color:#fda4af; text-decoration:underline;">1각성까지만 찍고 사용</strong>하세요! 2각·3각 각성석을 아껴두었다가 <strong style="color:#6ee7b7;">4차 신규 주력기(${awkGuideJob==='mage'?m4Sk:l4Hr})에 바로 3각성</strong>하는 것이 정석입니다.
             </div>`
           : '';
 
-        const bandsHtml = tiers.map(t => `<div style="background:#0f172a; border:1px solid #334155; border-left:4px solid ${t.color}; border-radius:10px; padding:10px 14px; margin-bottom:9px;">
-          <div style="font-size:14px; font-weight:900; margin-bottom:7px; display:flex; justify-content:space-between;"><strong style="color:${t.color}; font-size:15px;">${t.num}</strong><span style="font-size:11px; color:#94a3b8;">(먼저 풀돌된 것 우선 3각)</span></div>
-          <div style="display:flex; gap:7px; flex-wrap:wrap;">${t.items.map(it => {
+        const bandsHtml = tiers.map(t => `<div style="background:#0f172a; border:1px solid #334155; border-left:4px solid ${t.color}; border-radius:10px; padding:11px 14px; margin-bottom:10px;">
+          <div style="font-size:14px; font-weight:900; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;"><strong style="color:${t.color}; font-size:15px;">${t.num}</strong><span style="font-size:11px; color:#94a3b8;">(1각 도배 완료 후, 풀돌된 항목부터 순서대로 3각)</span></div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">${t.items.map(it => {
             const fk = (it.isSkill ? SKILL_ICON_MAP : HERO_ICON_MAP)[it.name];
-            return `<div style="background:#131d33; border:1.5px solid #334155; border-radius:9px; padding:7px 11px; display:inline-flex; align-items:center; gap:9px; flex:1; min-width:210px;">
-              <div style="width:38px; height:38px; border-radius:8px; overflow:hidden; border:1.5px solid ${t.color}; background:#0f172a; flex-shrink:0; display:flex; align-items:center; justify-content:center;">${fk ? `<img src="images/${fk}.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.src='images/${fk}.PNG';">` : (it.isSkill?'⚡':'🦸')}</div>
-              <div style="line-height:1.3; flex:1;"><div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;"><span class="mini-tag" style="background:${it.isSkill?'#0284c7':'#e11d48'}; color:#fff;">${it.isSkill?'스킬':'영웅'}</span><strong style="font-size:13px; color:#ffffff;">${it.name}</strong><span style="font-size:11px; font-weight:800; color:#fde047;">${it.badge}</span></div><div style="font-size:11.5px; color:#e2e8f0; margin-top:3px;">${it.desc}</div></div>
+            return `<div style="background:#131d33; border:1.5px solid #334155; border-radius:9px; padding:8px 11px; display:inline-flex; align-items:center; gap:9px; flex:1; min-width:225px;">
+              <div style="width:40px; height:40px; border-radius:8px; overflow:hidden; border:1.5px solid ${t.color}; background:#0f172a; flex-shrink:0; display:flex; align-items:center; justify-content:center;">${fk ? `<img src="images/${fk}.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.src='images/${fk}.PNG';">` : `<span style="font-size:11px; color:#cbd5e1; font-weight:800;">${it.isSkill?'스킬':'영웅'}</span>`}</div>
+              <div style="line-height:1.32; flex:1;">
+                <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+                  <span class="mini-tag" style="background:${it.isSkill?'#0284c7':'#e11d48'}; color:#fff;">${it.isSkill?'스킬':'영웅'}</span>
+                  <strong style="font-size:13.5px; color:#ffffff;">${it.name}</strong>
+                  ${it.multTag ? `<span class="mini-tag" style="background:#065f46; border:1px solid #34d399; color:#a7f3d0; font-size:10px; padding:1.5px 6px;">${it.multTag}</span>` : ''}
+                  <span style="font-size:11px; font-weight:800; color:#fde047;">${it.badge}</span>
+                </div>
+                <div style="font-size:11.5px; color:#e2e8f0; margin-top:3px;">${it.desc}</div>
+              </div>
             </div>`;
           }).join('')}</div>
         </div>`).join('');
 
         body.innerHTML = `${topCtrl}
-          <div style="background:linear-gradient(135deg, rgba(16, 185, 129, 0.22) 0%, #0f172a 100%); border:2px solid #10b981; border-radius:12px; padding:12px 16px; margin-bottom:10px;"><div style="font-size:14.5px; font-weight:900; color:#34d399; margin-bottom:4px;">💎 [각성 기본 원칙] 3각성 하나 달리기 전 ➔ 착용 슬롯 '골고루 1각성(개당 10만)'부터 도배하세요!</div><div style="font-size:12px; color:#ffffff;">신화 3각성(115만) 1개 비용이면 신화 11개를 1각성해 각성 시너지 +165점을 먼저 챙길 수 있습니다.</div></div>
-          ${fourthTransitionTip}
+          <!-- 다크모드에서도 절대 놓치지 않는 초고대비 크림슨-골드 필수 경고 배너 -->
+          <div style="background:linear-gradient(135deg, #7f1d1d 0%, #450a0a 55%, #78350f 100%); border:2.5px solid #fde047; border-left:6px solid #fb7185; border-radius:13px; padding:14px 16px; margin-bottom:12px; box-shadow:0 6px 22px rgba(225,29,72,0.42);">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="background:#fde047; color:#191919; font-size:11px; font-weight:900; padding:2px 8px; border-radius:5px; letter-spacing:0.3px;">필독 · 최우선 원칙</span>
+                <strong style="font-size:15px; color:#ffffff;">3각성 하나 달리기 전 ➔ 착용 슬롯 '골고루 1각성' 도배 필수!</strong>
+              </div>
+              <button type="button" onclick="openAwk1stWarnModal()" style="background:rgba(15,23,42,0.75); border:1px solid #fde047; color:#fef08a; font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; cursor:pointer;">상세 경고 다시보기</button>
+            </div>
+            <div style="font-size:12.5px; color:#fef9c3; line-height:1.55;">
+              신화 <strong>3각성 1개(115만)</strong> 비용이면 <strong style="color:#6ee7b7; text-decoration:underline;">신화 11개를 1각성(개당 10만)</strong>해서 <strong>각성 시너지 +165점</strong>을 먼저 확보할 수 있습니다. 반드시 착용 중인 스킬·영웅을 전부 1각성으로 채운 뒤 아래 3각 순위를 진행하세요!
+            </div>
+          </div>
+          ${thirdStopNotice}
           ${bandsHtml}`;
         return;
       }
@@ -16209,6 +16326,7 @@
 
     function getTopOpenModalCloseFn() {
       const modals = [
+        ['awk_1st_warn_modal_overlay', () => closeAwk1stWarnModal()],
         ['pwa_install_modal_overlay', () => closePwaInstallModal(false)],
         ['diag_picker_modal_overlay', () => closeDiagPickerModal()],
         ['sc_gem_modal_overlay',      () => closeScGemModal()],
