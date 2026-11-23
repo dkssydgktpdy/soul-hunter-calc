@@ -11919,14 +11919,10 @@
     return { effP, atkPct, ampPct, effStep };
   }
 
-  // 보유 보석을 장착된 코어들에 최적 배분 (각 코어 최대 4개, 사슬 합 <= maxCap, 코어 해금 단계 최우선)
+ // 보유 보석을 장착된 코어들에 최적 배분 (사슬 한도 maxCap 내 4칸 꽉 채움 · 포인트 맥스/맥스오버 허용 · 공/증폭 최대화)
   function allocateGemsToCores(equippedCores) {
     if (!ownedSoulGems.length || !equippedCores.length) return null;
-    const pool = [...ownedSoulGems].sort((a, b) => {
-      if (b.pt !== a.pt) return b.pt - a.pt;
-      if (a.chain !== b.chain) return a.chain - b.chain;
-      return (b.atk + b.amp) - (a.atk + a.amp);
-    });
+    const tierWeight = { ancient: 5, mythic: 4, legend: 3, unique: 2, advanced: 1 };
 
     const tierPriority = { ancient: 5, mythic: 4, legend: 3, unique: 2, advanced: 1 };
     const coreIndices = equippedCores.map((_, i) => i).sort((a, b) => {
@@ -11938,28 +11934,55 @@
     const usedGemIds = new Set();
     const assignments = Array.from({ length: equippedCores.length }, () => []);
 
-    // 1차 배분: 각 코어의 목표 포인트(32/28/24/20/16/12)를 사슬 한도(maxCap) 내에서 달성하는 최적 4개 조합 탐색
     coreIndices.forEach(cIdx => {
       const inst = equippedCores[cIdx];
       const maxCap = CORE_TIER_META[inst.tier].maxCap;
       const targetP = CORE_TIER_META[inst.tier].maxP;
-      const avail = pool.filter(g => !usedGemIds.has(g.id)).slice(0, 18);
-      if (!avail.length) return;
+
+      const remaining = ownedSoulGems.filter(g => !usedGemIds.has(g.id));
+      if (!remaining.length) return;
+
+      // 후보 풀 구성: 높은 스탯(공+증폭) / 높은 포인트 / 낮은 사슬 보석이 빠지지 않도록 최대 24개 균형 선별
+      const byStat = [...remaining].sort((a, b) => ((b.atk || 0) + (b.amp || 0)) - ((a.atk || 0) + (a.amp || 0)) || tierWeight[b.tier] - tierWeight[a.tier] || b.pt - a.pt);
+      const byPt   = [...remaining].sort((a, b) => b.pt - a.pt || tierWeight[b.tier] - tierWeight[a.tier] || a.chain - b.chain);
+      const byCh   = [...remaining].sort((a, b) => a.chain - b.chain || b.pt - a.pt);
+      const candSet = new Set();
+      const pushTop = (arr, limit) => { for (const g of arr) { if (candSet.size >= 24 || limit-- <= 0) break; candSet.add(g); } };
+      pushTop(byPt, 14);
+      pushTop(byStat, 14);
+      pushTop(byCh, 8);
+      const avail = Array.from(candSet);
 
       let bestSubset = [];
       let bestScore = -1;
 
       function scoreSubset(sub) {
-        let cSum = 0, pSum = 0, statSum = 0;
-        for (const g of sub) { cSum += g.chain; pSum += g.pt; statSum += (g.atk + g.amp) * 1e-6; }
+        let cSum = 0, pSum = 0, atkSum = 0, ampSum = 0, tierSum = 0;
+        for (const g of sub) {
+          cSum += g.chain;
+          pSum += g.pt;
+          atkSum += (g.atk || 0);
+          ampSum += (g.amp || 0);
+          tierSum += (tierWeight[g.tier] || 1);
+        }
+        // 사슬 한도 초과만 유일한 하드 제한! (포인트 맥스 오버는 100% 허용)
         if (cSum > maxCap) return -1;
+
         const unlocked = getCoreUnlockedStatsByPoints(inst.tier, inst.core, pSum);
-        let tierScore = unlocked.effStep * 1000 + (unlocked.ampPct >= 546000 ? 50000 : (unlocked.ampPct >= 6000 ? 8000 : (unlocked.ampPct >= 1000 ? 2000 : 0))) + unlocked.atkPct;
-        const overflowPenalty = pSum > targetP ? (pSum - targetP) * 2 : pSum * 15;
-        return tierScore + overflowPenalty - cSum * 0.5 + statSum;
+        // 1순위: 코어 단계별 해금 (32P/28P/24P 증폭, 20P/16P/12P 테마, 18P/14P/10P 공격력) + 목표 포인트 달성
+        const ampTierScore = unlocked.ampPct >= 546000 ? 500000 : (unlocked.ampPct >= 6000 ? 80000 : (unlocked.ampPct >= 1000 ? 20000 : 0));
+        const unlockScore = ampTierScore + (unlocked.effStep * 15000) + (unlocked.atkPct * 5) + (Math.min(pSum, targetP) * 100);
+
+        // 2순위: 보석 공격력 + 공격력 증폭 최대화 (절대 코어 해금을 깨지 않으면서 스탯 최우선 선택)
+        const statLogScore = (atkSum > 0 || ampSum > 0) ? Math.log10((1 + atkSum / 100) * (1 + ampSum / 100)) * 450 : 0;
+        const statTieScore = Math.min(800, (atkSum + ampSum) * 1e-4);
+
+        // 3순위: 4칸 꽉 채우기 + 높은 보석 등급 + 사슬 한도 꽉 활용(저사슬 보석을 하위 코어용으로 보존) + 포인트 오버 보너스
+        const fillAndTierScore = (sub.length * 120) + (tierSum * 40) + (cSum * 0.8) + (Math.max(0, pSum - targetP) * 2);
+
+        return unlockScore + statLogScore + statTieScore + fillAndTierScore;
       }
 
-      // 크기 1~4 조합 중 최고 점수 탐색
       const N = avail.length;
       for (let i = 0; i < N; i++) {
         const s1 = [avail[i]]; const sc1 = scoreSubset(s1);
@@ -14750,19 +14773,25 @@
       ];
       tip = `Lv.75~79 (4슬롯): 4번 슬롯의 일반 낙인을 상위 75렙 [${getTrait4LinkById(brand2Id).name}(+2만% + 상태이상 +8만% 곱연산)]으로 교체합니다!`;
     } else {
-      const slot5 = elem === 'fire'
-        ? { skill: '그림자 포효', linkId: 'brand_dark', note: '불앜메 5슬롯 종결! (발견: 탑팀x라온·탑팀x노자님)' }
-        : { skill: '엘리멘탈 차지', linkId: 'flash_focus', note: '5슬롯 모스피 +15,000%' };
-      slots = [
-        { skill: mainSk, linkId: 'cycle_shift2', note: '4차 주력기 최종 종결' },
-        { skill: '오버드라이브', linkId: 'trans_limit', note: '돌파+100% · 각성+700%' },
-        { skill: debSk, linkId: brand2Id, note: '주속성 75렙 상위 낙인' },
-        { skill: '지옥불베기', linkId: 'brand_fire', note: '화염 스킬이라 전속성 발동!' },
-        slot5
-      ];
-      tip = elem === 'fire'
-        ? 'Lv.80 (5슬롯 불속성 최종 종결): 주스킬 [주기 전환 II] · 옵드 [한계 초월] · 불벼락 [열상의 낙인] · 지옥불베기 [작열의 낙인] · 5슬롯은 기존 [엘리멘탈 차지 + 찰나의 집중]보다 실전 효율이 훨씬 높은 [그림자 포효 + 혼돈의 낙인(Lv.45)]으로 최종 완성됩니다! (발견 제보: 탑팀x라온님 · 탑팀x노자님)'
-        : 'Lv.80 (5슬롯 최종 종결): 주스킬 [주기 전환 II] · 옵드 [한계 초월] · 주속성 디버프 [75렙 상위 낙인] · 지옥불베기 [작열의 낙인(불베기가 화염 속성이라 번개/어둠 앜메도 발동!)] · 5슬롯 [엘리멘탈 차지 + 찰나의 집중]으로 최종 완성됩니다!';
+      if (elem === 'fire') {
+        slots = [
+          { skill: mainSk, linkId: 'cycle_shift2', note: '4차 주력기 최종 종결' },
+          { skill: '오버드라이브', linkId: 'trans_limit', note: '돌파+100% · 각성+700%' },
+          { skill: debSk, linkId: brand2Id, note: '주속성 75렙 상위 낙인' },
+          { skill: '지옥불베기', linkId: 'flash_focus', note: '확률형 발동으로 찰나 효율 극대화!' },
+          { skill: '그림자 포효', linkId: 'brand_dark', note: '불앜메 종결! (발견: 탑팀x라온·탑팀x노자님)' }
+        ];
+        tip = 'Lv.80 (5슬롯 불속성 최종 종결): 주스킬 [주기 전환 II] · 옵드 [한계 초월] · 불벼락 [열상의 낙인] · 4슬롯은 엘리멘탈 차지의 버프 지속시간 50% 손실을 피하고 확률형 발동으로 가동률을 챙기는 [지옥불베기 + 찰나의 집중], 5슬롯은 [그림자 포효 + 혼돈의 낙인(Lv.45)]으로 최종 완성됩니다! (발견 제보: 탑팀x라온님 · 탑팀x노자님)';
+      } else {
+        slots = [
+          { skill: mainSk, linkId: 'cycle_shift2', note: '4차 주력기 최종 종결' },
+          { skill: '오버드라이브', linkId: 'trans_limit', note: '돌파+100% · 각성+700%' },
+          { skill: debSk, linkId: brand2Id, note: '주속성 75렙 상위 낙인' },
+          { skill: '지옥불베기', linkId: 'brand_fire', note: '화염 스킬이라 전속성 발동!' },
+          { skill: '엘리멘탈 차지', linkId: 'flash_focus', note: '5슬롯 모스피 +15,000%' }
+        ];
+        tip = 'Lv.80 (5슬롯 최종 종결): 주스킬 [주기 전환 II] · 옵드 [한계 초월] · 주속성 디버프 [75렙 상위 낙인] · 지옥불베기 [작열의 낙인(불베기가 화염 속성이라 번개/어둠 앜메도 발동!)] · 5슬롯 [엘리멘탈 차지 + 찰나의 집중]으로 최종 완성됩니다!';
+      }
     }
     return { unlockedSlots, slots, tip, mainSk, use4th, has4thInInv, sk3, sk4 };
   }
@@ -16641,8 +16670,9 @@
     const coreDeltaLog = (userCore.hasInput && recCore.log10 > 0) ? (recCore.log10 - userCore.log10) : 0;
     const t2DeltaLog   = userT2.hasInput ? (recT2Log - userT2.log10) : 0;
 
-    // 1차·3차·4차 불일치 검사
-    const t1Filled = stageDiagState.trait1.filter(Boolean);
+    // 1차·3차·4차 불일치 검사 (현재 선택된 직업 데이터만 필터링 + 슈프림 4차는 스킬+링크 쌍으로 정밀 비교)
+    const validT1JobIds = new Set((TRAIT_1ST_DB[guideJob] || []).map(t => t.id));
+    const t1Filled = stageDiagState.trait1.filter(id => id && validT1JobIds.has(id));
     const recT1Ids = new Set(getRecommended1stTraits(guideJob, currentTrait1stLv, traitUseOvergrowth).activeTraits.map(t => t.id));
     const t1Diff = t1Filled.length > 0 && (t1Filled.length !== recT1Ids.size || t1Filled.some(id => !recT1Ids.has(id)));
 
@@ -16655,12 +16685,20 @@
       if (!recT3[idx].includes(p)) t3DiffCnt++;
     });
 
-    const t4Filled = stageDiagState.trait4.filter(x => x && x.linkId);
+    const validT4Db = guideJob === 'reaper' ? TRAIT_4TH_REAPER_LINKS_DB : TRAIT_4TH_LINKS_DB;
+    const validT4JobIds = new Set(validT4Db.map(lk => lk.id));
+    const t4Filled = guideJob === 'lord' ? [] : stageDiagState.trait4.filter(x => x && x.linkId && validT4JobIds.has(x.linkId));
     let t4Diff = false;
     if (t4Filled.length > 0 && guideJob !== 'lord') {
-      const rec4 = guideJob === 'reaper' ? getRecommended4thReaperLinks(currentTrait4thLv, guideElem) : getRecommended4thLinks(currentTrait4thLv, guideElem);
-      const rec4Ids = new Set(rec4.slots.map(s => s.linkId));
-      t4Diff = t4Filled.length !== rec4Ids.size || t4Filled.some(x => !rec4Ids.has(x.linkId));
+      if (guideJob === 'reaper') {
+        const rec4 = getRecommended4thReaperLinks(currentTrait4thLv, guideElem);
+        const rec4Ids = new Set(rec4.slots.map(s => s.linkId));
+        t4Diff = t4Filled.length !== rec4Ids.size || t4Filled.some(x => !rec4Ids.has(x.linkId));
+      } else {
+        const rec4 = getRecommended4thLinks(currentTrait4thLv, guideElem);
+        const rec4Pairs = new Set(rec4.slots.map(s => `${s.skill}__${s.linkId}`));
+        t4Diff = t4Filled.length !== rec4Pairs.size || t4Filled.some(x => !x.skill || !rec4Pairs.has(`${x.skill}__${x.linkId}`));
+      }
     }
 
     const totalGainLog = Math.max(0, runeDeltaLog) + Math.max(0, coreDeltaLog) + Math.max(0, t2DeltaLog);
@@ -16856,7 +16894,7 @@
       out.t2 = [t.markRoot||0, t.critRoot||0, t.mark.r1, t.mark.r2, t.mark.r3, t.mark.r4, t.crit.r1, t.crit.r2, t.crit.r3, t.crit.r4];
     }
     if (Array.isArray(st.trait3) && st.trait3.some(v => v !== null && v !== undefined)) out.t3 = st.trait3.slice(0, 5);
-    if (Array.isArray(st.trait4) && st.trait4.some(x => x && x.linkId)) out.t4 = st.trait4.slice(0, 5).map(x => x ? x.linkId : null);
+    if (Array.isArray(st.trait4) && st.trait4.some(x => x && x.linkId)) out.t4 = st.trait4.slice(0, 5).map(x => x && x.linkId ? (x.skill ? [x.linkId, x.skill] : x.linkId) : null);
     return out;
   }
 
@@ -16885,7 +16923,7 @@
       };
     }
     if (Array.isArray(dg.t3)) st.trait3 = dg.t3.slice(0, 5);
-    if (Array.isArray(dg.t4)) st.trait4 = dg.t4.slice(0, 5).map(id => id ? { linkId: id } : null);
+    if (Array.isArray(dg.t4)) st.trait4 = dg.t4.slice(0, 5).map(v => !v ? null : (Array.isArray(v) ? { linkId: v[0], skill: v[1] || null } : { linkId: v, skill: null }));
     return mergeDefaultStageDiagState(st);
   }
 
@@ -17243,10 +17281,42 @@
       return;
     }
 
-    // 3. 내 현재 특성 (1·2·3·4차 전용 서브 스위치 + 인라인 레벨 조절)
+    // 3. 내 현재 특성 (직업/주속성 양방향 스위치 + 1·2·3·4차 서브 스위치 + 인라인 레벨 조절)
     const jMeta = JOB_NAMES_FULL[guideJob];
     const tStep = stageDiagState.activeTraitStep;
-    const subTabs = `<div class="diag-subtab-bar">
+    const jobElemBar = `
+      <div class="grid-2" style="gap:10px; margin-bottom:12px;">
+        <div style="background:#090e1a; padding:9px 11px; border-radius:10px; border:1px solid #26334a;">
+          <label style="color:#94a3b8; font-size:11.5px; margin-bottom:6px;">내 직업 선택 (전체 양방향 연동)</label>
+          <div class="radio-pill-group">
+            <div class="radio-pill job-pill-btn job-switch-reaper ${guideJob==='reaper'?'selected':''}" onclick="selectGuideJob('reaper')" style="padding:7px 6px; font-size:12px;">
+              <img src="images/reaper.png" alt="사신" onerror="this.style.display='none';"><span>사신</span>
+            </div>
+            <div class="radio-pill job-pill-btn job-switch-mage ${guideJob==='mage'?'selected':''}" onclick="selectGuideJob('mage')" style="padding:7px 6px; font-size:12px;">
+              <img src="images/mystic.png" alt="아크메이지" onerror="this.style.display='none';"><span>아크메이지</span>
+            </div>
+            <div class="radio-pill job-pill-btn job-switch-lord ${guideJob==='lord'?'selected':''}" onclick="selectGuideJob('lord')" style="padding:7px 6px; font-size:12px;">
+              <img src="images/overload.png" alt="오버로드" onerror="this.style.display='none';"><span>오버로드</span>
+            </div>
+          </div>
+        </div>
+        <div style="background:#090e1a; padding:9px 11px; border-radius:10px; border:1px solid #26334a;">
+          <label style="color:#94a3b8; font-size:11.5px; margin-bottom:6px;">내 주속성 선택 (전체 양방향 연동)</label>
+          <div class="radio-pill-group">
+            <div class="radio-pill job-pill-btn elem-switch-fire ${guideElem==='fire'?'selected':''}" onclick="selectGuideElem('fire')" style="padding:7px 6px; font-size:12px;">
+              <span class="elem-orb orb-fire" style="width:14px; height:14px;"></span><span>화염</span>
+            </div>
+            <div class="radio-pill job-pill-btn elem-switch-light ${guideElem==='light'?'selected':''}" onclick="selectGuideElem('light')" style="padding:7px 6px; font-size:12px;">
+              <span class="elem-orb orb-light" style="width:14px; height:14px;"></span><span>번개</span>
+            </div>
+            <div class="radio-pill job-pill-btn elem-switch-dark ${guideElem==='dark'?'selected':''}" onclick="selectGuideElem('dark')" style="padding:7px 6px; font-size:12px;">
+              <span class="elem-orb orb-dark" style="width:14px; height:14px;"></span><span>어둠</span>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    const subTabs = `${jobElemBar}<div class="diag-subtab-bar">
       ${[
         { s:1, l:`1차 특성 (Lv.${currentTrait1stLv})`, diff: rep.t1Diff },
         { s:2, l:`2차 트리 (Lv.${currentTrait2ndLv})`, diff: rep.t2DeltaLog > 0.002 },
@@ -17421,33 +17491,70 @@
       return;
     }
 
-    // 4차 소울 링크
+    // 4차 소울 링크 (사신: 링크 단독 / 아크메이지: 스킬 + 링크 쌍 표시 & 정밀 비교)
     if (guideJob === 'lord') {
-      body.innerHTML = `${subTabs}<div style="padding:24px; text-align:center; background:#0f172a; border:1px dashed #475569; border-radius:12px; color:#cbd5e1; font-size:13px;">소울이터(다크로드) 4차 소울 링크는 데이터 수집 중입니다. 그림리퍼 또는 슈프림으로 전환해 확인하실 수 있습니다.</div>`;
+      body.innerHTML = `${subTabs}<div style="padding:24px; text-align:center; background:#0f172a; border:1px dashed #475569; border-radius:12px; color:#cbd5e1; font-size:13px;">소울이터(다크로드) 4차 소울 링크는 데이터 수집 중입니다. 위에서 사신 또는 아크메이지로 전환해 확인하실 수 있습니다.</div>`;
       return;
     }
     const isReaper = guideJob === 'reaper';
+    const validT4Set = new Set((isReaper ? TRAIT_4TH_REAPER_LINKS_DB : TRAIT_4TH_LINKS_DB).map(lk => lk.id));
     const rec4 = isReaper ? getRecommended4thReaperLinks(currentTrait4thLv, guideElem) : getRecommended4thLinks(currentTrait4thLv, guideElem);
     const rec4Ids = new Set(rec4.slots.map(s => s.linkId));
+    const rec4Pairs = new Set(rec4.slots.map(s => `${s.skill}__${s.linkId}`));
     const unlockLvs = [5, 20, 40, 60, 80];
+
     const cards4 = [0, 1, 2, 3, 4].map(idx => {
       if (currentTrait4thLv < unlockLvs[idx]) {
         return `<div class="trait4-slot-card is-locked"><div style="font-size:12px; font-weight:900; color:#f87171;">슬롯 ${idx + 1}</div><div style="font-size:11px; color:#94a3b8;">4차 Lv.${unlockLvs[idx]} 해금</div></div>`;
       }
       const cur = stageDiagState.trait4[idx];
-      if (!cur || !cur.linkId) {
-        return `<div class="trait4-slot-card diag-slot-clickable" style="align-items:center; justify-content:center; min-height:150px; border-style:dashed;" onclick="openDiagTrait4Picker(${idx})"><div style="font-size:12px; font-weight:800; color:#38bdf8;">슬롯 ${idx + 1} · 클릭 선택</div></div>`;
+      if (!cur || !cur.linkId || !validT4Set.has(cur.linkId)) {
+        return `<div class="trait4-slot-card diag-slot-clickable" style="align-items:center; justify-content:center; min-height:156px; border-style:dashed;" onclick="openDiagTrait4Picker(${idx})"><div style="font-size:12px; font-weight:800; color:#38bdf8; text-align:center;">슬롯 ${idx + 1}<br><span style="font-size:11px; color:#94a3b8;">${isReaper ? '클릭하여 링크 선택' : '클릭하여 스킬+링크 선택'}</span></div></div>`;
       }
       const lk = isReaper ? getTrait4ReaperLinkById(cur.linkId) : getTrait4LinkById(cur.linkId);
       const tm = getTraitTierMeta(lk.tier);
-      const isMis = !rec4Ids.has(cur.linkId);
-      return `<div class="trait4-slot-card t4-card-${lk.tier} diag-slot-clickable ${isMis?'diag-slot-mismatch':''}" onclick="openDiagTrait4Picker(${idx})">
+
+      if (isReaper) {
+        const isMis = !rec4Ids.has(cur.linkId);
+        return `<div class="trait4-slot-card t4-card-${lk.tier} diag-slot-clickable ${isMis?'diag-slot-mismatch':''}" onclick="openDiagTrait4Picker(${idx})">
+          <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:10.5px; color:#fda4af; font-weight:800;">강타 슬롯 ${idx + 1}</span><span class="trait-tier-badge ${tm.cls}" style="font-size:9.5px; padding:1px 5px;">${tm.kr}</span></div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:4px; padding:5px 0;">
+            <div class="trait4-icon-box t4-box-${lk.tier}">${getTrait4ReaperSvg(lk.id)}</div>
+            <strong style="font-size:12px; color:#fef08a; text-align:center;">${lk.name}</strong>
+            ${isMis ? `<span class="mini-tag" style="background:#e11d48; color:#fff;">추천 변경 권장</span>` : ''}
+          </div>
+          <div class="trait4-link-desc">${lk.desc}</div>
+        </div>`;
+      }
+
+      // 아크메이지(슈프림): 스킬 + 소울 링크 쌍 카드
+      const skName = cur.skill || '스킬 미선택';
+      const skFile = cur.skill ? SKILL_ICON_MAP[cur.skill] : null;
+      const skImg = skFile
+        ? `<img src="images/${skFile}.png" alt="${skName}" onerror="this.onerror=null;this.src='images/${skFile}.PNG';">`
+        : `<span style="font-size:10px; font-weight:900; color:#f87171;">스킬?</span>`;
+      const isPairOk = Boolean(cur.skill && rec4Pairs.has(`${cur.skill}__${cur.linkId}`));
+      const isLinkOnlyOk = !isPairOk && rec4Ids.has(cur.linkId);
+      const misTag = !isPairOk
+        ? `<span class="mini-tag" style="background:#e11d48; color:#fff;">${isLinkOnlyOk ? '연결 스킬 변경 권장' : '추천 변경 권장'}</span>`
+        : '';
+
+      return `<div class="trait4-slot-card t4-card-${lk.tier} diag-slot-clickable ${!isPairOk?'diag-slot-mismatch':''}" onclick="openDiagTrait4Picker(${idx})">
         <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:10.5px; color:#fdba74; font-weight:800;">슬롯 ${idx + 1}</span><span class="trait-tier-badge ${tm.cls}" style="font-size:9.5px; padding:1px 5px;">${tm.kr}</span></div>
-        <div style="display:flex; flex-direction:column; align-items:center; gap:4px; padding:5px 0;">
-          <div class="trait4-icon-box t4-box-${lk.tier}">${isReaper ? getTrait4ReaperSvg(lk.id) : getTrait4LinkSvg(lk.id)}</div>
-          <strong style="font-size:12px; color:#fef08a; text-align:center;">${lk.name}</strong>
-          ${isMis ? `<span class="mini-tag" style="background:#e11d48; color:#fff;">추천 변경 권장</span>` : ''}
+        <div class="trait4-link-pair">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:3px; min-width:52px;">
+            <div class="trait4-icon-box" style="width:42px; height:42px; border-color:${cur.skill?'#fb923c':'#ef4444'};">${skImg}</div>
+            <span style="font-size:10.5px; font-weight:800; color:${cur.skill?'#ffffff':'#fca5a5'}; text-align:center; line-height:1.15;">${skName}</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0; margin-bottom:14px;">
+            <path d="M9 12H15M8 8H6C3.8 8 2 9.8 2 12C2 14.2 3.8 16 6 16H8M16 8H18C20.2 8 22 9.8 22 12C22 14.2 20.2 16 18 16H16" stroke="#fde047" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:3px; min-width:52px;">
+            <div class="trait4-icon-box t4-box-${lk.tier}" style="width:42px; height:42px;">${getTrait4LinkSvg(lk.id)}</div>
+            <span style="font-size:10.5px; font-weight:900; color:#fef08a; text-align:center; line-height:1.15;">${lk.name}</span>
+          </div>
         </div>
+        ${misTag ? `<div style="text-align:center;">${misTag}</div>` : ''}
         <div class="trait4-link-desc">${lk.desc}</div>
       </div>`;
     }).join('');
@@ -17455,14 +17562,14 @@
     const b4 = currentTrait4thLv < 5
       ? `<div style="background:rgba(250,204,21,0.1); border:1px solid rgba(250,204,21,0.45); border-radius:10px; padding:9px 12px; margin-bottom:10px; font-size:12px; color:#fde047;">현재 4차 레벨이 Lv.${currentTrait4thLv}로 설정되어 슬롯이 잠겨 있습니다. 위 <strong>[4차 Lv]</strong> 입력칸에서 본인 4차 레벨(Lv.5~80)을 먼저 입력해 주세요!</div>`
       : (rep.t4Diff
-        ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13.5px;">4차 소울 링크 추천 변경사항 발생!</strong></div><button type="button" class="diag-goto-btn" onclick="openTraitHelperFromHub(); changeTraitTabStep(4);">4차 소울 링크 도우미로 이동 ➔</button></div>`
+        ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13.5px;">4차 소울 링크 추천 변경사항 발생!</strong><div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">${isReaper ? '장착된 강타 링크 중 추천과 다른 항목이 있습니다.' : '연결된 스킬 또는 소울 링크가 현재 추천 조합과 다릅니다.'}</div></div><button type="button" class="diag-goto-btn" onclick="openTraitHelperFromHub(); changeTraitTabStep(4);">4차 소울 링크 도우미로 이동 ➔</button></div>`
         : (rep.t4FilledCnt > 0 ? `<div class="diag-alert-banner all-good"><strong style="color:#6ee7b7; font-size:13px;">현재 4차 소울 링크가 추천 조합과 일치합니다.</strong></div>` : ''));
 
     body.innerHTML = `${subTabs}
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
         <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
           ${mkLvInlineCtrl(4, currentTrait4thLv, 0, 80, 5)}
-          <span style="font-size:12px; color:#cbd5e1;">[${jMeta.c4}] 슬롯을 클릭해 장착 링크를 선택하세요.</span>
+          <span style="font-size:12px; color:#cbd5e1;">[${jMeta.c4}] ${isReaper ? '슬롯을 클릭해 장착 강타 링크를 선택하세요.' : '슬롯을 클릭해 연결할 [스킬 + 소울 링크]를 선택하세요.'}</span>
         </div>
         <div style="display:flex; gap:6px;">
           <button type="button" onclick="copyRecTrait4ToDiag()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">추천 그대로 복사</button>
@@ -17567,9 +17674,20 @@
   }
 
   function openDiagTrait4Picker(slotIdx) {
-    diagPickerCtx = { type: 'trait4', slotIdx };
-    document.getElementById('diag_picker_title').innerText = `[4차 슬롯 ${slotIdx + 1}] 현재 장착 소울 링크 선택`;
-    document.getElementById('diag_picker_subtitle').innerText = `현재 4차 Lv.${currentTrait4thLv}에서 해금된 링크 목록`;
+    const isReaper = (guideJob === 'reaper');
+    const cur = stageDiagState.trait4[slotIdx] || {};
+    diagPickerCtx = {
+      type: 'trait4',
+      slotIdx,
+      selectedSkill: cur.skill || null,
+      selectedLinkId: cur.linkId || null
+    };
+    document.getElementById('diag_picker_title').innerText = isReaper
+      ? `[강타 슬롯 ${slotIdx + 1}] 현재 장착 4차 강타 링크 선택`
+      : `[스킬 슬롯 ${slotIdx + 1}] 연결할 스킬 & 소울 링크 선택`;
+    document.getElementById('diag_picker_subtitle').innerText = isReaper
+      ? `현재 4차 Lv.${currentTrait4thLv}에서 해금된 그림리퍼 링크 목록`
+      : `위에서 연결할 스킬을 먼저 고르고, 아래에서 소울 링크를 선택하세요 (4차 Lv.${currentTrait4thLv})`;
     const inp = document.getElementById('diag_picker_search_input');
     if (inp) inp.value = '';
     document.getElementById('diag_picker_search_wrap').style.display = 'block';
@@ -17648,15 +17766,59 @@
       return;
     }
 
-    if (diagPickerCtx.type === 'trait4') {
-      ctrlEl.innerHTML = `<button type="button" onclick="pickDiagTrait4(null)" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:6px 11px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">슬롯 비우기</button>`;
-      const isReaper = guideJob === 'reaper';
+   if (diagPickerCtx.type === 'trait4') {
+      const isReaper = (guideJob === 'reaper');
       const src = isReaper ? TRAIT_4TH_REAPER_LINKS_DB : TRAIT_4TH_LINKS_DB;
       const list = src.filter(lk => currentTrait4thLv >= lk.reqLv && (!q || `${lk.name} ${lk.desc}`.toLowerCase().includes(q)));
+
+      if (isReaper) {
+        ctrlEl.innerHTML = `<button type="button" onclick="pickDiagTrait4(null)" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:6px 11px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">슬롯 비우기</button>`;
+        wrapEl.innerHTML = `<div class="grid-2" style="gap:8px;">${list.map(lk => {
+          const tm = getTraitTierMeta(lk.tier);
+          const cur = stageDiagState.trait4[diagPickerCtx.slotIdx];
+          return `<div class="item-select-box ${cur && cur.linkId===lk.id?'selected':''}" onclick="pickDiagTrait4('${lk.id}')" style="min-height:64px;">
+            <div class="item-box-badges"><span class="trait-tier-badge ${tm.cls}" style="font-size:9px; padding:1px 5px;">${tm.kr} · Lv.${lk.reqLv}</span></div>
+            <div class="item-box-name">${lk.name}</div>
+            <div class="item-box-sub">${lk.desc}</div>
+          </div>`;
+        }).join('')}</div>`;
+        return;
+      }
+
+      // 아크메이지(슈프림): STEP 1 스킬 선택 + STEP 2 소울 링크 선택
+      const mageSkillCandidates = [
+        '블레이즈 이럽션', '플라즈마 이럽션', '어비스 이럽션',
+        '플레어 필라', '볼트 스파이럴', '블랙 베일',
+        '오버드라이브', '지옥불베기', '불벼락', '뇌전검무', '암흑붕괴',
+        '그림자 포효', '환영나비', '엘리멘탈 차지', '크림슨 웨이브', '심판의 인장', '원소돌파'
+      ];
+      const skillBtnsHtml = mageSkillCandidates.map(sk => {
+        const isSelSk = diagPickerCtx.selectedSkill === sk;
+        const fk = SKILL_ICON_MAP[sk];
+        return `<button type="button" onclick="selectDiagTrait4Skill('${sk}')" style="display:inline-flex; align-items:center; gap:5px; padding:5px 8px; border-radius:8px; font-size:11.5px; font-weight:800; cursor:pointer; border:1.5px solid ${isSelSk?'#fde047':'#334155'}; background:${isSelSk?'linear-gradient(135deg,#0284c7,#1d4ed8)':'#0f172a'}; color:${isSelSk?'#ffffff':'#cbd5e1'};">
+          ${fk ? `<img src="images/${fk}.png" alt="" style="width:20px; height:20px; border-radius:4px; object-fit:cover;" onerror="this.style.display='none';">` : ''}
+          <span>${sk}</span>
+        </button>`;
+      }).join('');
+
+      const canApplyNow = Boolean(diagPickerCtx.selectedSkill && diagPickerCtx.selectedLinkId);
+      ctrlEl.innerHTML = `
+        <div style="background:#0b1120; border:1px solid #334155; border-radius:10px; padding:9px 10px; margin-bottom:8px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:7px;">
+            <strong style="font-size:12px; color:#7dd3fc;">STEP 1. 연결할 스킬 선택 <span style="color:#fde047;">(${diagPickerCtx.selectedSkill || '미선택'})</span></strong>
+            <div style="display:flex; gap:5px;">
+              ${canApplyNow ? `<button type="button" onclick="confirmDiagTrait4Pair()" style="background:#059669; border:1px solid #6ee7b7; color:#fff; padding:4px 10px; border-radius:7px; font-size:11.5px; font-weight:900; cursor:pointer;">선택 조합 적용</button>` : ''}
+              <button type="button" onclick="pickDiagTrait4(null)" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:4px 9px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">슬롯 비우기</button>
+            </div>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:5px; max-height:112px; overflow-y:auto;">${skillBtnsHtml}</div>
+        </div>
+        <div style="font-size:12px; font-weight:800; color:#fde047;">STEP 2. 아래에서 소울 링크 클릭 (스킬 선택 후 링크를 누르면 즉시 저장됩니다)</div>`;
+
       wrapEl.innerHTML = `<div class="grid-2" style="gap:8px;">${list.map(lk => {
         const tm = getTraitTierMeta(lk.tier);
-        const cur = stageDiagState.trait4[diagPickerCtx.slotIdx];
-        return `<div class="item-select-box ${cur && cur.linkId===lk.id?'selected':''}" onclick="pickDiagTrait4('${lk.id}')" style="min-height:64px;">
+        const isSelLk = diagPickerCtx.selectedLinkId === lk.id;
+        return `<div class="item-select-box ${isSelLk?'selected':''}" onclick="pickDiagTrait4('${lk.id}')" style="min-height:64px;">
           <div class="item-box-badges"><span class="trait-tier-badge ${tm.cls}" style="font-size:9px; padding:1px 5px;">${tm.kr} · Lv.${lk.reqLv}</span></div>
           <div class="item-box-name">${lk.name}</div>
           <div class="item-box-sub">${lk.desc}</div>
@@ -17686,12 +17848,46 @@
     renderStageDiagAll();
     triggerAutoSave();
   }
-  function pickDiagTrait4(linkId) {
+  function selectDiagTrait4Skill(skillName) {
     if (!diagPickerCtx) return;
-    stageDiagState.trait4[diagPickerCtx.slotIdx] = linkId ? { linkId } : null;
+    diagPickerCtx.selectedSkill = skillName;
+    renderDiagPickerList();
+  }
+
+  function confirmDiagTrait4Pair() {
+    if (!diagPickerCtx || !diagPickerCtx.selectedLinkId) return;
+    stageDiagState.trait4[diagPickerCtx.slotIdx] = {
+      skill: diagPickerCtx.selectedSkill || null,
+      linkId: diagPickerCtx.selectedLinkId
+    };
     closeDiagPickerModal();
     renderStageDiagAll();
     triggerAutoSave();
+  }
+
+  function pickDiagTrait4(linkId) {
+    if (!diagPickerCtx) return;
+    if (!linkId) {
+      stageDiagState.trait4[diagPickerCtx.slotIdx] = null;
+      closeDiagPickerModal();
+      renderStageDiagAll();
+      triggerAutoSave();
+      return;
+    }
+    if (guideJob === 'reaper') {
+      stageDiagState.trait4[diagPickerCtx.slotIdx] = { skill: null, linkId };
+      closeDiagPickerModal();
+      renderStageDiagAll();
+      triggerAutoSave();
+      return;
+    }
+    // 아크메이지(슈프림): 스킬이 이미 선택되어 있으면 즉시 저장, 아직 안 골랐으면 링크만 먼저 선택 표시
+    diagPickerCtx.selectedLinkId = linkId;
+    if (diagPickerCtx.selectedSkill) {
+      confirmDiagTrait4Pair();
+    } else {
+      renderDiagPickerList();
+    }
   }
 
   let hasBooted = false;
