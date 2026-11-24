@@ -15464,7 +15464,7 @@
       <div class="radio-pill-group">
         ${[
           { s:1, label:`1차 특성 (${jMeta.c1})` },
-          { s:2, label:`2차 특성 (공통 트리)` },
+          { s:2, label:`2차 특성 (${jMeta.c2})` },
           { s:3, label:`3차 특화 (${jMeta.c3})` },
           { s:4, label:`4차 링크 (${jMeta.c4})` }
         ].map(it => `<div class="radio-pill tier-step-${it.s} ${currentTraitTabStep===it.s?'selected':''}" onclick="changeTraitTabStep(${it.s})" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:10px 8px; font-size:13px; font-weight:800;">${UI_SVG.roman(it.s, 22)}<span>${it.label}</span></div>`).join('')}
@@ -15474,7 +15474,7 @@
     if (currentTraitTabStep === 0) {
       container.innerHTML = `<div class="grid-2" style="gap:12px;">
         <div class="hub-card" onclick="changeTraitTabStep(1)" style="border:2px solid #34d399; background:linear-gradient(145deg, rgba(16,185,129,0.2) 0%, #16223b 100%);"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#6ee7b7;">${UI_SVG.roman(1, 30)}</div><div><span class="hub-card-title">1차 전직 특성 자동 추천</span><span class="hub-card-desc">Lv.1 ~ Lv.150 · 18등급 최적 5슬롯</span></div></div><div class="hub-card-arrow">➔</div></div>
-        <div class="hub-card" onclick="changeTraitTabStep(2)" style="border:2px solid #c084fc; background:linear-gradient(145deg, rgba(168,85,247,0.22) 0%, #16223b 100%);"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#d8b4fe;">${UI_SVG.roman(2, 30)}</div><div><span class="hub-card-title">2차 전직 특성 (표식 · 크리티컬)</span><span class="hub-card-desc">Lv.1 ~ Lv.180 · 전 직업 공통 Global DP</span></div></div><div class="hub-card-arrow">➔</div></div>
+        <div class="hub-card" onclick="changeTraitTabStep(2)" style="border:2px solid #c084fc; background:linear-gradient(145deg, rgba(168,85,247,0.22) 0%, #16223b 100%);"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#d8b4fe;">${UI_SVG.roman(2, 30)}</div><div><span class="hub-card-title">2차 전직 특성 (표식 · 크리티컬)</span><span class="hub-card-desc">Lv.1 ~ Lv.180 · Global DP</span></div></div><div class="hub-card-arrow">➔</div></div>
         <div class="hub-card" onclick="changeTraitTabStep(3)" style="border:2px solid #fb7185; background:linear-gradient(145deg, rgba(244,63,94,0.22) 0%, #16223b 100%);"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#fda4af;">${UI_SVG.roman(3, 30)}</div><div><span class="hub-card-title">3차 전직 특화 트리 추천표</span><span class="hub-card-desc">Lv.0 ~ Lv.40 · 직업/속성/콘텐츠별 특화</span></div></div><div class="hub-card-arrow">➔</div></div>
         <div class="hub-card" onclick="changeTraitTabStep(4)" style="border:2px solid #fbbf24; background:linear-gradient(145deg, rgba(245,158,11,0.22) 0%, #16223b 100%);"><div class="hub-card-left"><div class="hub-card-icon" style="border-color:#fde047;">${UI_SVG.roman(4, 30)}</div><div><span class="hub-card-title">4차 전직 소울 링크 도우미</span><span class="hub-card-desc">Lv.0 ~ Lv.80 · 슈프림 · 그림리퍼 오픈!</span></div></div><div class="hub-card-arrow">➔</div></div>
       </div>`;
