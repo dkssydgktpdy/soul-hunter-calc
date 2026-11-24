@@ -4719,7 +4719,7 @@
           <select id="rc_char_lv"><option value="0">0</option><option value="22000">22000</option><option value="24000">24000</option><option value="25000" selected>25000</option></select>
           <select id="rc_job_lv"><option value="0">0</option><option value="60">60</option><option value="80" selected>80</option></select>
           <select id="rc_star_gaho"><option value="0">0</option><option value="30">30</option><option value="40" selected>40</option></select>
-          <select id="rc_moon_gaho"><option value="0">0</option><option value="20">20</option><option value="30" selected>30</option></select>
+          <select id="rc_moon_gaho"><option value="0">0</option><option value="10">10</option><option value="20">20</option><option value="30" selected>30</option></select>
           <select id="rc_anc_gem"><option value="0">0</option><option value="3">3</option><option value="15" selected>15</option></select>
           <select id="rc_anc_passive"><option value="none">none</option><option value="awk6">awk6</option><option value="brk40">brk40</option><option value="both" selected>both</option></select>
           <select id="rc_ref_scythe_lv"><option value="-1">-1</option><option value="0">0</option><option value="10">10</option><option value="15" selected>15</option></select>
@@ -10664,9 +10664,9 @@
     { id:"imm_ar_sokjeon", tier:"immortal", part:"armor", name:"속전", cat:"atk", val:825000, desc:"룬 공격력 +825,000% (8,251배)", cond:"스테이지 보스 시간 10초 고정" },
     { id:"imm_ar_jeokeung", tier:"immortal", part:"armor", slotPos:"job_auto", name:"적응", cat:"job", jobType:"all", val:825000, desc:"상의(강타) / 하의(스킬) / 신발(영웅스킬) 피해량 +825,000% (8,251배)", cond:"내 직업에 맞는 방어구 슬롯 위치 장착 필수!" },
     { id:"imm_ar_mosaic", tier:"immortal", part:"armor", name:"모자이크", cat:"atk", val:825000, desc:"룬 공격력 +825,000% (8,251배)", cond:"캐릭터 모자이크 적용" },
-    { id:"imm_ar_star", tier:"immortal", part:"armor", name:"천상의 빛:별", cat:"atk", val:2000000, setGroup:"imm_heaven", desc:"불멸룬공 +2,000,000% (별30·달20·해10 모두 달성 & 3세트 시 450조 배!)", cond:"⚠️ 별30·달20·해10 가호 미달 시 [불멸깡공+양날검+명왕] 조합보다 약함!" },
-    { id:"imm_ar_moon", tier:"immortal", part:"armor", name:"천상의 빛:달", cat:"atk", val:2000000, setGroup:"imm_heaven", desc:"불멸룬공 +2,000,000% (별30·달20·해10 모두 달성 & 3세트 시 450조 배!)", cond:"⚠️ 별30·달20·해10 가호 미달 시 [불멸깡공+양날검+명왕] 조합보다 약함!" },
-    { id:"imm_ar_sun", tier:"immortal", part:"armor", name:"천상의 빛:해", cat:"atk", val:2000000, setGroup:"imm_heaven", desc:"불멸룬공 +2,000,000% (별30·달20·해10 모두 달성 & 3세트 시 450조 배!)", cond:"⚠️ 별30·달20·해10 가호 미달 시 [불멸깡공+양날검+명왕] 조합보다 약함!" },
+    { id:"imm_ar_star", tier:"immortal", part:"armor", name:"천상의 빛:별", cat:"atk", val:2000000, setGroup:"imm_heaven", desc:"불멸룬공 +2,000,000% (별30·달20·해10 중 1개 이상 달성 & 3세트 시 150조~450조 배!)", cond:"별30·달20·해10 중 최소 1개 달성 필수 (3종 모두 미달 시 미발동)" },
+    { id:"imm_ar_moon", tier:"immortal", part:"armor", name:"천상의 빛:달", cat:"atk", val:2000000, setGroup:"imm_heaven", desc:"불멸룬공 +2,000,000% (별30·달20·해10 중 1개 이상 달성 & 3세트 시 150조~450조 배!)", cond:"별30·달20·해10 중 최소 1개 달성 필수 (3종 모두 미달 시 미발동)" },
+    { id:"imm_ar_sun", tier:"immortal", part:"armor", name:"천상의 빛:해", cat:"atk", val:2000000, setGroup:"imm_heaven", desc:"불멸룬공 +2,000,000% (별30·달20·해10 중 1개 이상 달성 & 3세트 시 150조~450조 배!)", cond:"별30·달20·해10 중 최소 1개 달성 필수 (3종 모두 미달 시 미발동)" },
     { id:"imm_ar_myeonghwang", tier:"immortal", part:"armor", name:"명황", cat:"all_dmg", val:5500000, desc:"명계 모든 지역 정찰 시 모든 피해량 +5,500,000% (모피증 곱연산, 55,001배)", cond:"명계 모든 지역 정찰 완료 필수" },
     { id:"imm_ar_mh_scythe", tier:"immortal", part:"armor", name:"명황의 낫", cat:"job", jobType:"reaper", val:4400000, reqRune:"imm_ar_myeonghwang", desc:"'명황' 장착 시 룬 강타 피해량 +4,400,000% (44,001배)", cond:"반드시 불멸 '명황' 룬과 함께 장착!" },
     { id:"imm_ar_mh_orb", tier:"immortal", part:"armor", name:"명황의 오브", cat:"job", jobType:"mage", val:4400000, reqRune:"imm_ar_myeonghwang", desc:"'명황' 장착 시 룬 스킬 피해량 +4,400,000% (44,001배)", cond:"반드시 불멸 '명황' 룬과 함께 장착!" },
@@ -11085,7 +11085,8 @@
     }
 
     if (r.id === 'imm_ar_star' && ctx.starGaho < 30) return 0;
-    if ((r.id === 'imm_ar_moon' || r.id === 'imm_ar_sun') && ctx.moonGaho < 20) return 0;
+    if (r.id === 'imm_ar_sun' && ctx.moonGaho < 10) return 0;
+    if (r.id === 'imm_ar_moon' && ctx.moonGaho < 20) return 0;
     if (['anc_ar_sasin','anc_ar_mabeopseo','anc_ar_gunju','ete_ar_sasin','ete_ar_mabeopseo','ete_ar_gunju','anc_em_singyeongji','ete_em_singyeongji'].includes(r.id) && ctx.jobLv < 60) return 0;
     if (r.id === 'imm_em_singyeongji' && ctx.jobLv < 80) return 0;
     if (['ete_ar_simpan','ete_ar_bijeon','ete_ar_jihwi'].includes(r.id) && !ctx.hasAbyss23) return 15000;
@@ -11150,16 +11151,17 @@
     // - 별(별가호30+), 달(달가호20+), 해(해가호10+) 각각의 가호 조건이 충족되어야 기본 불멸 룬공(+200만%)이 켜집니다.
     // - 가호 미충족 상태에서는 추가 효과(불멸 룬공 증폭 +7.5억%)만 켜지며, 이는 기본 불멸 룬공이 0%일 때 효율이 급감하고 불멸 엠블렘 증폭과도 합연산 희석됩니다.
     if (ids.has('imm_ar_star') && ids.has('imm_ar_moon') && ids.has('imm_ar_sun')) {
-      const starOk = ctx.starGaho >= 30;
-      const moonSunOk = ctx.moonGaho >= 20; // 달 20+ & 해 10+
-      const activeGahoCnt = (starOk ? 1 : 0) + (moonSunOk ? 2 : 0);
-      const baseAtkMult = 1 + ((activeGahoCnt * 2000000) / 100); // 3개 달성 시 60,001배
+      const starCnt = ctx.starGaho >= 30 ? 1 : 0;
+      const moonSunCnt = ctx.moonGaho >= 20 ? 2 : (ctx.moonGaho >= 10 ? 1 : 0);
+      const activeGahoCnt = starCnt + moonSunCnt;
+      const baseAtkMult = 1 + ((activeGahoCnt * 2000000) / 100); // 1개 20,001배 / 2개 40,001배 / 3개 60,001배
 
-      if (activeGahoCnt >= 3) {
-        // ★ 가호 3종 모두 달성 시 약 450조 배 (6.0e4 * 7.5e9 = 4.5e14) -> 명황+명황전용+중과부적(66.8조 배)을 정상적으로 상회!
+      if (activeGahoCnt >= 1) {
+        // ★ 해(10+)·달(20+)·별(30+) 중 어느 1개만 조건이 맞아도 기본 불멸 룬공(+200만%)이 켜져 3세트 증폭과 곱연산 발동!
+        // 1개 충족(150조 배) / 2개 충족(300조 배) / 3개 충족(450조 배) -> 중과부적+양날검+적응(1.25조 배) 및 명황 세트(66.8조 배) 상회!
         return baseAtkMult * 7500000001;
       } else {
-        // 가호 미달성 시에는 명황 세트나 [불멸깡공+양날검+명왕]이 우선 추천되도록 감쇠
+        // 3종 가호가 모두 미달(0개)일 때만 기본 불멸 룬공 0%로 감쇠
         const emblemDilution = (activeEmblemTier === 'immortal') ? 0.15 : 1;
         return Math.max(1, baseAtkMult * (1 + (7500000 * emblemDilution)));
       }
@@ -12220,7 +12222,7 @@
       { id: 'rc_char_lv',     title: '캐릭터 레벨',    sub: '절정 룬',       opts: [['0','2.2만↓'],['22000','2.2만+'],['24000','2.4만+'],['25000','2.5만+']] },
       { id: 'rc_job_lv',      title: '전직 레벨',      sub: '신의경지/사신', opts: [['0','60↓'],['60','60~79'],['80','80+']] },
       { id: 'rc_star_gaho',   title: '별의 가호',      sub: '성좌 / 천상',   opts: [['0','30↓'],['30','30~39'],['40','40+']] },
-      { id: 'rc_moon_gaho',   title: '달·해 가호',     sub: '월광 / 천상',   opts: [['0','미달'],['20','달20+해10'],['30','달30+해10']] },
+      { id: 'rc_moon_gaho',   title: '달·해 가호',     sub: '월광 / 천상(해10·달20)', opts: [['0','둘다 미달'],['10','해10 또는 달20'],['20','달20+해10'],['30','달30+해10']] },
       { id: 'rc_anc_gem',     title: '고대 보석·코어', sub: '보석학 / 장전', opts: [['0','미달'],['3','코어3+'],['15','보석15+코어3']] },
       { id: 'rc_anc_passive', title: '고대 패시브',    sub: '원론 / 극한',   opts: [['none','미달'],['brk40','돌파40+'],['awk6','각성6+'],['both','둘 다 O']] }
     ],
