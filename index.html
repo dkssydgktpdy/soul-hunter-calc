@@ -6088,6 +6088,61 @@
 
         <!-- 5.5 심연장비 인챈트 기댓값 계산기 & 인게임 미니게임 시뮬레이터 -->
         <div id="tab-enchant" class="tab-content" style="display:none;">
+          <!-- 심연장비 인챈트 핵심 공략 접기/보기 토글 아코디언 -->
+          <div class="accordion-item" id="acc_enchant_quick_guide" style="margin-bottom:16px; border-color:#334155; background:#0f172a;">
+            <div class="accordion-header" style="padding:12px 16px; background:#131d33;"
+                 onclick="const p=document.getElementById('acc_enchant_quick_guide'); p.classList.toggle('active'); const b=document.getElementById('ench_guide_tog_badge'); if(b){ const on=p.classList.contains('active'); b.innerText=on?'공략 접기 ▲':'공략 보기 ▼'; b.style.borderColor=on?'#38bdf8':'#475569'; b.style.color=on?'#bae6fd':'#cbd5e1'; }">
+              <div class="accordion-left">
+                <span class="accordion-toggle-icon">▶</span>
+                <span class="accordion-title-text" style="font-size:14.5px; color:#f8fafc;">심연장비 인챈트 핵심 공략 요약 <small style="color:#94a3b8; font-weight:600;">(초기화 컷 · 흰색 효율 · 주차 순서)</small></span>
+              </div>
+              <span id="ench_guide_tog_badge" style="font-size:11.5px; font-weight:800; padding:4px 10px; border-radius:7px; background:#1e293b; border:1px solid #475569; color:#cbd5e1; white-space:nowrap;">공략 보기 ▼</span>
+            </div>
+
+            <div class="accordion-content" style="padding:14px 16px; background:#0b1120; font-size:13px; color:#cbd5e1; line-height:1.65;">
+              <!-- 1. 기본 운영 -->
+              <div style="margin-bottom:12px;">
+                <div style="font-size:12.5px; font-weight:900; color:#7dd3fc; margin-bottom:6px;">1. 기본 운영 &amp; 절대 금지 사항</div>
+                <div style="display:flex; flex-direction:column; gap:5px; padding-left:4px;">
+                  <div>• <strong style="color:#f8fafc;">프리셋 1 (임시 장착용):</strong> 흰색 없이 <strong>70% 스크롤</strong>로 6부위 B~A등급부터 둘둘 감기 (6부위 곱연산 확보)</div>
+                  <div>• <strong style="color:#f8fafc;">프리셋 2 (종결 본작):</strong> 프리셋 1을 낀 채로 <strong>15% 스크롤(+5점)</strong>만 작업</div>
+                  <div>• <strong style="color:#fca5a5;">주의 1:</strong> 흰색(회귀)은 던전 전 구간 <strong>1%(100소탕당 1개) 고정</strong>이므로 70%·40%에 절대 사용 금지</div>
+                  <div>• <strong style="color:#fca5a5;">주의 2:</strong> 초기화 시 증폭까지 함께 삭제되므로 <strong>7칸 강화 완료 후 마지막에 증폭</strong> 진행</div>
+                </div>
+              </div>
+
+              <!-- 2. 15% 초기화 컷 (컷별 1줄씩 분리) -->
+              <div style="margin-bottom:12px; padding-top:10px; border-top:1px dashed #243247;">
+                <div style="font-size:12.5px; font-weight:900; color:#7dd3fc; margin-bottom:7px;">2. 15% 초기화 다다닥 기준 <small style="color:#94a3b8; font-weight:600;">(목표 불가능해지면 즉시 초기화 · 조기 포기 기준)</small></div>
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <div style="background:#131d33; border:1px solid #26354d; border-radius:8px; padding:7px 11px;">
+                    <strong style="color:#e2e8f0;">1개 이상 (올실패만 리셋 · 67.9%)</strong> — 조각 46.7만 · 흰색 36.4개 <span style="color:#94a3b8;">(추가 조각 0 · 최소 기본)</span>
+                  </div>
+                  <div style="background:#131d33; border:1px solid #26354d; border-radius:8px; padding:7px 11px;">
+                    <strong style="color:#7dd3fc;">2개 이상 (조각 부족 초반 · 28.3%)</strong> — 조각 54.7만 · 흰색 31.3개 <span style="color:#94a3b8;">(6칸 0성공 시 리셋)</span>
+                  </div>
+                  <div style="background:#132338; border:1px solid #38bdf8; border-radius:8px; padding:7px 11px;">
+                    <strong style="color:#bae6fd;">3개 이상 (1~60단계 표준 최강 · 7.4%)</strong> — 조각 103.8만 · 흰색 25.5개 <span style="color:#94a3b8;">(5칸 0성공 / 6칸 1성공 시 리셋)</span>
+                  </div>
+                  <div style="background:#1c1b16; border:1px solid #ca8a04; border-radius:8px; padding:7px 11px;">
+                    <strong style="color:#fde047;">4개 이상 (61~92단계 · 조각 400만+ 잉여 시 · 1.2%)</strong> — 조각 406.8만 · 흰색 19.3개 <span style="color:#94a3b8;">(4칸 0 / 5칸 1 / 6칸 2성공 시 리셋)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. 증폭 주차 순서 (단계별 분리) -->
+              <div style="padding-top:10px; border-top:1px dashed #243247;">
+                <div style="font-size:12.5px; font-weight:900; color:#7dd3fc; margin-bottom:6px;">3. 6부위 균등 증폭 주차 순서 <small style="color:#94a3b8; font-weight:600;">(보라 드롭 2.5% · 1부위 UR 몰빵 금지)</small></div>
+                <div style="display:flex; flex-direction:column; gap:5px; padding-left:4px;">
+                  <div>• <strong style="color:#f8fafc;">1차 주차:</strong> 6부위 전원 <strong>SSS (55점)</strong> — 35점 + 증폭 +60% 이상 (부위당 보라 평균 6.3개)</div>
+                  <div>• <strong style="color:#f8fafc;">2차 주차:</strong> 6부위 전원 <strong>SR (60점)</strong> — 35점 + 증폭 +80% 이상 (부위당 보라 평균 22.2개)</div>
+                  <div>• <strong style="color:#f8fafc;">3차 주차:</strong> 6부위 전원 <strong>SSR (65점)</strong> — 35점 + 증폭 +90% 이상 (부위당 보라 평균 40.0개)</div>
+                  <div>• <strong style="color:#fde047;">최종 종결:</strong> 6부위 전원 <strong>UR (70점)</strong> — 35점 + 증폭 +100% 필수 (부위당 보라 평균 100개)</div>
+                  <div style="color:#fca5a5; font-size:12px; margin-top:2px;">※ +70% 함정 주의: 35 × 1.7 = 59.5점으로 SR(60점)에 0.5점 모자라 SSS에 머뭅니다.</div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="card" style="border-left: 4px solid #3b82f6;">
             <div class="card-title">
               <span>심연장비 인챈트 기댓값 &amp; 재화 계산기 (강화 · 회귀 · 증폭)</span>
