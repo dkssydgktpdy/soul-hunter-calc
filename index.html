@@ -5101,12 +5101,7 @@
             <!-- 5. 심연장비 인챈트 기댓값 & 실전 시뮬레이터 (신설!) -->
             <div class="hub-card" onclick="openDeepCalculator('tab-enchant')" style="flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px 12px; gap:10px; border:2px solid #60a5fa; background:linear-gradient(160deg, rgba(59,130,246,0.24) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(59,130,246,0.22);">
               <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #93c5fd; background:radial-gradient(circle, rgba(59,130,246,0.34) 0%, #0f172a 100%); box-shadow:0 0 16px rgba(59,130,246,0.45);">
-                <svg width="38" height="38" viewBox="0 0 44 44" fill="none" style="filter:drop-shadow(0 0 7px rgba(147,197,253,0.95));">
-                  <rect x="9" y="6" width="26" height="32" rx="4" fill="rgba(37,99,235,0.28)" stroke="#93c5fd" stroke-width="2"/>
-                  <path d="M14 14H30M14 22H26M14 30H22" stroke="#e0f2fe" stroke-width="2.2" stroke-linecap="round"/>
-                  <circle cx="31" cy="29" r="7" fill="#7c3aed" stroke="#fde047" stroke-width="1.8"/>
-                  <path d="M31 25.5L32.3 28.2L35 29L32.3 29.8L31 32.5L29.7 29.8L27 29L29.7 28.2L31 25.5Z" fill="#fef08a"/>
-                </svg>
+                <img src="images/scroll.png" alt="심연장비 인챈트" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='images/scroll.PNG';}else if(this.dataset.f==1){this.dataset.f=2;this.src='images/scroll.jpg';}else{this.onerror=null;this.parentElement.innerHTML='📜';}">
               </div>
               <div>
                 <span class="hub-card-title" style="font-size:15px; margin-bottom:4px; color:#ffffff;">심연장비 인챈트 계산기</span>
@@ -6089,14 +6084,15 @@
         <!-- 5.5 심연장비 인챈트 기댓값 계산기 & 인게임 미니게임 시뮬레이터 -->
         <div id="tab-enchant" class="tab-content" style="display:none;">
           <!-- 심연장비 인챈트 핵심 공략 접기/보기 토글 아코디언 -->
-          <div class="accordion-item" id="acc_enchant_quick_guide" style="margin-bottom:16px; border-color:#334155; background:#0f172a;">
-            <div class="accordion-header" style="padding:12px 16px; background:#131d33;"
-                 onclick="const p=document.getElementById('acc_enchant_quick_guide'); p.classList.toggle('active'); const b=document.getElementById('ench_guide_tog_badge'); if(b){ const on=p.classList.contains('active'); b.innerText=on?'공략 접기 ▲':'공략 보기 ▼'; b.style.borderColor=on?'#38bdf8':'#475569'; b.style.color=on?'#bae6fd':'#cbd5e1'; }">
-              <div class="accordion-left">
-                <span class="accordion-toggle-icon">▶</span>
-                <span class="accordion-title-text" style="font-size:14.5px; color:#f8fafc;">심연장비 인챈트 핵심 공략 요약 <small style="color:#94a3b8; font-weight:600;">(초기화 컷 · 흰색 효율 · 주차 순서)</small></span>
+          <div class="accordion-item" id="acc_enchant_quick_guide" style="margin-bottom:16px; border:1.5px solid #38bdf8; background:#0f172a; box-shadow:0 4px 18px rgba(56, 189, 248, 0.22);">
+            <div class="accordion-header" style="padding:13px 16px; background:linear-gradient(135deg, rgba(14, 165, 233, 0.28) 0%, #172554 58%, #1e1b4b 100%);"
+                 onclick="const p=document.getElementById('acc_enchant_quick_guide'); p.classList.toggle('active'); const b=document.getElementById('ench_guide_tog_badge'); if(b){ const on=p.classList.contains('active'); b.innerText=on?'공략 접기 ▲':'공략 요약 보기 ▼'; b.style.background=on?'#1e293b':'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)'; b.style.borderColor=on?'#fde047':'#7dd3fc'; b.style.color=on?'#fde047':'#ffffff'; b.style.boxShadow=on?'none':'0 0 12px rgba(56, 189, 248, 0.5)'; }">
+              <div class="accordion-left" style="gap:9px; flex-wrap:wrap;">
+                <span class="accordion-toggle-icon" style="color:#fde047;">▶</span>
+                <span class="mini-tag" style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color:#ffffff; font-size:10.5px; padding:2px 7px; border-radius:5px;">필독 요약</span>
+                <span class="accordion-title-text" style="font-size:15px; color:#ffffff;">심연장비 인챈트 핵심 공략 요약 <small style="color:#bae6fd; font-weight:700;">(15% 연속 강화 컷 · 흰색 효율 · 주차 순서)</small></span>
               </div>
-              <span id="ench_guide_tog_badge" style="font-size:11.5px; font-weight:800; padding:4px 10px; border-radius:7px; background:#1e293b; border:1px solid #475569; color:#cbd5e1; white-space:nowrap;">공략 보기 ▼</span>
+              <span id="ench_guide_tog_badge" style="font-size:12px; font-weight:900; padding:6px 12px; border-radius:8px; background:linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); border:1.5px solid #7dd3fc; color:#ffffff; box-shadow:0 0 12px rgba(56, 189, 248, 0.5); white-space:nowrap;">공략 요약 보기 ▼</span>
             </div>
 
             <div class="accordion-content" style="padding:14px 16px; background:#0b1120; font-size:13px; color:#cbd5e1; line-height:1.65;">
@@ -6111,9 +6107,9 @@
                 </div>
               </div>
 
-              <!-- 2. 15% 초기화 컷 (컷별 1줄씩 분리) -->
+              <!-- 2. 15% 연속 강화 · 초기화 기준 (컷별 1줄씩 분리) -->
               <div style="margin-bottom:12px; padding-top:10px; border-top:1px dashed #243247;">
-                <div style="font-size:12.5px; font-weight:900; color:#7dd3fc; margin-bottom:7px;">2. 15% 초기화 다다닥 기준 <small style="color:#94a3b8; font-weight:600;">(목표 불가능해지면 즉시 초기화 · 조기 포기 기준)</small></div>
+                <div style="font-size:12.5px; font-weight:900; color:#7dd3fc; margin-bottom:7px;">2. 15% 7칸 연속 강화 · 초기화 기준 <small style="color:#94a3b8; font-weight:600;">(목표 개수 미달 확정 시 즉시 초기화 · 조기 포기 기준)</small></div>
                 <div style="display:flex; flex-direction:column; gap:6px;">
                   <div style="background:#131d33; border:1px solid #26354d; border-radius:8px; padding:7px 11px;">
                     <strong style="color:#e2e8f0;">1개 이상 (올실패만 리셋 · 67.9%)</strong> — 조각 46.7만 · 흰색 36.4개 <span style="color:#94a3b8;">(추가 조각 0 · 최소 기본)</span>
@@ -6143,6 +6139,7 @@
               </div>
             </div>
           </div>
+
           <div class="card" style="border-left: 4px solid #3b82f6;">
             <div class="card-title">
               <span>심연장비 인챈트 기댓값 &amp; 재화 계산기 (강화 · 회귀 · 증폭)</span>
@@ -6175,10 +6172,14 @@
                 </select>
               </div>
               <div>
-                <label style="color:#c084fc;">회귀 스크롤(실패 복구) 사용 전략</label>
+                <label style="color:#c084fc;">회귀 스크롤(흰색) · 초기화 전략</label>
                 <select id="ench_calc_use_reg" onchange="calculateEnchantExpected()" style="font-weight:800;">
-                  <option value="1" selected>실패 시 회귀 스크롤로 끝까지 복구 (정석)</option>
-                  <option value="0">회귀 미사용 (7회 그냥 시도 후 초기화 반복)</option>
+                  <option value="cut3" selected>3개 이상 + 조기포기 후 회귀 (1~60단계 표준 최강)</option>
+                  <option value="cut2">2개 이상 + 조기포기 후 회귀 (조각 부족 초반 추천)</option>
+                  <option value="cut4">4개 이상 + 조기포기 후 회귀 (61~92단계 잉여 조각용)</option>
+                  <option value="cut1">올실패만 리셋(1개↑) 후 회귀 (추가 조각 0)</option>
+                  <option value="1">초기화 없이 처음부터 끝까지 회귀 복구 (직진)</option>
+                  <option value="0">회귀 미사용 (무회귀 초기화 반복)</option>
                 </select>
               </div>
             </div>
@@ -15831,7 +15832,7 @@
 
     const targetFinalPts = parseInt(document.getElementById('ench_calc_target_pts')?.value || '70', 10);
     const scrollKey = parseInt(document.getElementById('ench_calc_scroll_type')?.value || '15', 10);
-    const useReg = document.getElementById('ench_calc_use_reg')?.value === '1';
+    const stratVal = document.getElementById('ench_calc_use_reg')?.value || 'cut3';
 
     const curSucc = Math.max(0, Math.min(7, parseInt(document.getElementById('ench_cur_succ_cnt')?.value || '0', 10) || 0));
     const curBase = Math.max(0, Math.min(35, parseInt(document.getElementById('ench_cur_base_pts')?.value || '0', 10) || 0));
@@ -15864,18 +15865,61 @@
       if (Math.floor(maxPossibleBase * (1 + a / 100)) >= targetFinalPts) { reqAmp = a; break; }
     }
 
+    // 조기 포기 초기화 컷(k개↑) 정밀 DP 계산 헬퍼
+    const calcEarlyStopReset = (targetK, pVal) => {
+      const memo = {};
+      const dp = (step, succ) => {
+        const key = step + '_' + succ;
+        if (memo[key]) return memo[key];
+        const rem = 7 - step;
+        if (succ + rem < targetK) return (memo[key] = [0, 0, 0]);
+        if (step === 7) return (memo[key] = [1, 0, succ]);
+        const s = dp(step + 1, succ + 1);
+        const f = dp(step + 1, succ);
+        return (memo[key] = [
+          pVal * s[0] + (1 - pVal) * f[0],
+          1 + pVal * s[1] + (1 - pVal) * f[1],
+          pVal * s[2] + (1 - pVal) * f[2]
+        ]);
+      };
+      const [probPass, expAttRun, expSuccPass] = dp(0, 0);
+      const condSucc = expSuccPass / probPass;
+      const remFill = 7 - condSucc;
+      const totalAtt = (expAttRun / probPass) + (remFill / pVal);
+      const totalWhite = remFill / pVal;
+      return { totalAtt, totalWhite, probPass };
+    };
+
+    const isFreshStart = (curSucc === 0 && curFail === 0);
     let expAttempts = 0, expFragments = 0, expRegScrolls = 0;
-    if (useReg) {
-      // 회귀 스크롤로 실패 복구 시: 남은 각 슬롯 성공까지 평균 (1/p)회 시도, 실패 횟수 = (1-p)/p
+    let stratNote = '';
+
+    if (stratVal.startsWith('cut') && isFreshStart) {
+      const targetK = parseInt(stratVal.replace('cut', ''), 10) || 3;
+      const r = calcEarlyStopReset(targetK, sc.prob);
+      expAttempts = r.totalAtt;
+      expFragments = expAttempts * sc.cost;
+      expRegScrolls = r.totalWhite;
+      stratNote = `${targetK}개↑ 조기포기 (1판 ${(r.probPass * 100).toFixed(2)}%)`;
+    } else if (stratVal !== '0') {
       expAttempts = remainSlots * (1 / sc.prob);
       expFragments = expAttempts * sc.cost;
       expRegScrolls = curFail + remainSlots * ((1 - sc.prob) / sc.prob);
+      stratNote = (curFail > 0 || curSucc > 0)
+        ? `현재 실패 ${curFail}칸 + 예상 실패 ${(expRegScrolls - curFail).toFixed(1)}회`
+        : '초기화 없이 처음부터 회귀 직진';
     } else {
-      // 무회귀 초기화 반복 시: 7칸 전부 성공 확률 = p^7
-      const allSuccProb = Math.pow(sc.prob, remainSlots);
-      expAttempts = remainSlots / allSuccProb;
+      const fullResetAtt = 7 / Math.pow(sc.prob, 7);
+      if (remainSlots === 0) {
+        expAttempts = 0;
+      } else if (curFail > 0) {
+        expAttempts = fullResetAtt;
+      } else {
+        expAttempts = remainSlots + (1 - Math.pow(sc.prob, remainSlots)) * fullResetAtt;
+      }
       expFragments = expAttempts * sc.cost;
       expRegScrolls = 0;
+      stratNote = '무회귀 초기화 반복';
     }
 
     const ampCumProb = getAmpCumulativeProb(reqAmp);
@@ -15886,6 +15930,8 @@
     const netAmp  = Math.max(0, Math.ceil(expAmpScrolls) - holdAmp);
 
     const dungeonRunsByFrag = Math.ceil(netFrag / dungeonFrag);
+    const dungeonRunsByReg  = netReg * 100;  // 흰색 드롭 1% 고정
+    const dungeonRunsByAmp  = netAmp * 40;   // 보라 드롭 2.5% 고정
 
     resBox.innerHTML = `<div class="result-dashboard">
       <div class="res-label">[${targetGradeInfo.grade} 등급 · ${targetFinalPts}점 (+${formatKoreanNumber(targetGradeInfo.atkPct)}%)] 달성 평균 기댓값</div>
@@ -15897,17 +15943,17 @@
         <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:12px;">
           <div style="font-size:12px; color:#fde68a; font-weight:800;">📜 총 필요 스크롤 조각 (보유 차감)</div>
           <div style="font-size:21px; font-weight:900; color:#fde047; margin:4px 0;">${netFrag.toLocaleString()}개</div>
-          <div style="font-size:11.5px; color:#94a3b8;">평균 강화 시도: 약 ${expAttempts.toFixed(1)}회 (던전 ${dungeonRunsByFrag.toLocaleString()}회분)</div>
+          <div style="font-size:11.5px; color:#94a3b8;">평균 강화 시도: 약 ${expAttempts.toFixed(1)}회 (던전 ${dungeonRunsByFrag.toLocaleString()}소탕)</div>
         </div>
         <div style="background:rgba(15,23,42,0.85); border:1.5px solid #e2e8f0; border-radius:12px; padding:12px;">
           <div style="font-size:12px; color:#f8fafc; font-weight:800;">🏳️ 필요 회귀 스크롤 (흰색·실패복구)</div>
           <div style="font-size:21px; font-weight:900; color:#ffffff; margin:4px 0;">약 ${expRegScrolls.toFixed(1)}개 <small style="font-size:13px; color:#94a3b8;">(부족 ${netReg}개)</small></div>
-          <div style="font-size:11.5px; color:#94a3b8;">${useReg ? `현재 실패 ${curFail}칸 + 예상 실패 ${(expRegScrolls - curFail).toFixed(1)}회` : '무회귀 초기화 전략 선택됨'}</div>
+          <div style="font-size:11.5px; color:#94a3b8;">${stratNote} · 흰색 1% 기준 ${dungeonRunsByReg.toLocaleString()}소탕</div>
         </div>
         <div style="background:rgba(15,23,42,0.85); border:1.5px solid #c084fc; border-radius:12px; padding:12px;">
           <div style="font-size:12px; color:#e9d5ff; font-weight:800;">🔮 필요 증폭 스크롤 (보라·+${reqAmp}% 목표)</div>
           <div style="font-size:21px; font-weight:900; color:#d8b4fe; margin:4px 0;">약 ${expAmpScrolls.toFixed(1)}개 <small style="font-size:13px; color:#94a3b8;">(부족 ${netAmp}개)</small></div>
-          <div style="font-size:11.5px; color:#94a3b8;">+${reqAmp}% 이상 등장 확률: ${(ampCumProb * 100).toFixed(1)}%</div>
+          <div style="font-size:11.5px; color:#94a3b8;">+${reqAmp}% 이상 확률 ${(ampCumProb * 100).toFixed(1)}% · 보라 2.5% 기준 ${dungeonRunsByAmp.toLocaleString()}소탕</div>
         </div>
       </div>
     </div>`;
@@ -16179,10 +16225,11 @@
           <button type="button" onclick="useEnchantScrollInSim()" style="width:100%; background:linear-gradient(135deg, #9333ea 0%, #581c87 100%); border:1.5px solid #e9d5ff; color:#ffffff; font-weight:900; font-size:14px; padding:10px; border-radius:10px; cursor:pointer; margin-bottom:8px; box-shadow:0 4px 14px rgba(147,51,234,0.45);">
             🔮 증폭 스크롤 1회 사용
           </button>
-          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px;">
-            <button type="button" onclick="autoRollEnchantAmpUntil(70)" style="background:#1e293b; border:1px solid #a855f7; color:#e9d5ff; font-size:11px; font-weight:800; padding:6px 4px; border-radius:7px; cursor:pointer;">⚡ +70%까지 연타</button>
-            <button type="button" onclick="autoRollEnchantAmpUntil(90)" style="background:#1e293b; border:1px solid #e879f9; color:#f5d0fe; font-size:11px; font-weight:800; padding:6px 4px; border-radius:7px; cursor:pointer;">⚡ +90%까지 연타</button>
-            <button type="button" onclick="autoRollEnchantAmpUntil(100)" style="background:#3b0764; border:1px solid #fde047; color:#fef08a; font-size:11px; font-weight:900; padding:6px 4px; border-radius:7px; cursor:pointer;">⚡ +100% 종결 연타</button>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:6px;">
+            <button type="button" onclick="autoRollEnchantAmpUntil(60)" style="background:#1e293b; border:1px solid #a855f7; color:#e9d5ff; font-size:11px; font-weight:800; padding:6px 4px; border-radius:7px; cursor:pointer;">⚡ +60% (SSS)</button>
+            <button type="button" onclick="autoRollEnchantAmpUntil(80)" style="background:#1e293b; border:1px solid #38bdf8; color:#bae6fd; font-size:11px; font-weight:800; padding:6px 4px; border-radius:7px; cursor:pointer;">⚡ +80% (SR)</button>
+            <button type="button" onclick="autoRollEnchantAmpUntil(90)" style="background:#1e293b; border:1px solid #e879f9; color:#f5d0fe; font-size:11px; font-weight:800; padding:6px 4px; border-radius:7px; cursor:pointer;">⚡ +90% (SSR)</button>
+            <button type="button" onclick="autoRollEnchantAmpUntil(100)" style="background:#3b0764; border:1px solid #fde047; color:#fef08a; font-size:11px; font-weight:900; padding:6px 4px; border-radius:7px; cursor:pointer;">⚡ +100% (UR)</button>
           </div>`;
       }
     }
