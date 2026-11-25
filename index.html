@@ -20261,36 +20261,37 @@
     return `<svg width="${s}" height="${s}" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><polygon points="14,2 25,8 25,20 14,26 3,20 3,8" fill="#7c2d12" stroke="#fb923c" stroke-width="1.8"/><path d="M9 11L7.5 7.5L11.5 9.5H16.5L20.5 7.5L19 11C19.6 12.3 19.8 14 19 16.2C18 18.6 16 20 14 20C12 20 10 18.6 9 16.2C8.2 14 8.4 12.3 9 11Z" fill="#fdba74"/><circle cx="11.8" cy="13.5" r="1.3" fill="#7c2d12"/><circle cx="16.2" cy="13.5" r="1.3" fill="#7c2d12"/></svg>`;
   }
 
-  // 인게임 순서 100% 일치 24종 몬스터 카드 DB
+
+  // 인게임 순서 100% 일치 24종 몬스터 카드 DB (.jpg 적용)
   const MONSTER_CARDS_DB = [
     // 상급 (3종)
-    { id:'mc_goblin',          tier:'advanced', name:'고블린',       cat:'job',       req:'reaper', val:100, img:'images/mc_goblin.png',          desc:'강타 피해량 +100%' },
-    { id:'mc_skeleton',        tier:'advanced', name:'스켈레톤',     cat:'job',       req:'mage',   val:100, img:'images/mc_skeleton.png',        desc:'스킬 피해량 +100%' },
-    { id:'mc_firedragon',      tier:'advanced', name:'화룡',         cat:'job',       req:'lord',   val:100, img:'images/mc_firedragon.png',      desc:'영웅 스킬 피해량 +100%' },
+    { id:'mc_goblin',          tier:'advanced', name:'고블린',       cat:'job',       req:'reaper', val:100, img:'images/mc_goblin.jpg',          desc:'강타 피해량 +100%' },
+    { id:'mc_skeleton',        tier:'advanced', name:'스켈레톤',     cat:'job',       req:'mage',   val:100, img:'images/mc_skeleton.jpg',        desc:'스킬 피해량 +100%' },
+    { id:'mc_firedragon',      tier:'advanced', name:'화룡',         cat:'job',       req:'lord',   val:100, img:'images/mc_firedragon.jpg',      desc:'영웅 스킬 피해량 +100%' },
     // 특급 (3종)
-    { id:'mc_minotaur',        tier:'unique',   name:'미노타우로스', cat:'elem',      req:'fire',   val:150, img:'images/mc_minotaur.png',        desc:'화염 속성 피해량 +150%' },
-    { id:'mc_viper',           tier:'unique',   name:'독사',         cat:'elem',      req:'light',  val:150, img:'images/mc_viper.png',           desc:'번개 속성 피해량 +150%' },
-    { id:'mc_gargoyle',        tier:'unique',   name:'가고일',       cat:'elem',      req:'dark',   val:150, img:'images/mc_gargoyle.png',        desc:'어둠 속성 피해량 +150%' },
+    { id:'mc_minotaur',        tier:'unique',   name:'미노타우로스', cat:'elem',      req:'fire',   val:150, img:'images/mc_minotaur.jpg',        desc:'화염 속성 피해량 +150%' },
+    { id:'mc_viper',           tier:'unique',   name:'독사',         cat:'elem',      req:'light',  val:150, img:'images/mc_viper.jpg',           desc:'번개 속성 피해량 +150%' },
+    { id:'mc_gargoyle',        tier:'unique',   name:'가고일',       cat:'elem',      req:'dark',   val:150, img:'images/mc_gargoyle.jpg',        desc:'어둠 속성 피해량 +150%' },
     // 전설 (9종)
-    { id:'mc_golem',           tier:'legend',   name:'원소 골렘',    cat:'job',       req:'reaper', val:180, img:'images/mc_golem.png',           desc:'몬카 강타 피해량 +180%' },
-    { id:'mc_spirit_know',     tier:'legend',   name:'지식의 정령',  cat:'job',       req:'mage',   val:180, img:'images/mc_spirit_know.png',     desc:'몬카 스킬 피해량 +180%' },
-    { id:'mc_hero_soul',       tier:'legend',   name:'영웅의 혼',    cat:'job',       req:'lord',   val:180, img:'images/mc_hero_soul.png',       desc:'몬카 영웅 스킬 피해량 +180%' },
-    { id:'mc_trial_knight',    tier:'legend',   name:'시련의 기사',  cat:'elem',      req:'fire',   val:180, img:'images/mc_trial_knight.png',    desc:'몬카 화염 속성 피해량 +180%' },
-    { id:'mc_mimic',           tier:'legend',   name:'미믹',         cat:'elem',      req:'light',  val:180, img:'images/mc_mimic.png',           desc:'몬카 번개 속성 피해량 +180%' },
-    { id:'mc_wisp',            tier:'legend',   name:'위습',         cat:'elem',      req:'dark',   val:180, img:'images/mc_wisp.png',            desc:'몬카 어둠 속성 피해량 +180%' },
-    { id:'mc_guardian_spirit', tier:'legend',   name:'수호령',       cat:'final',     req:'all',    val:180, img:'images/mc_guardian_spirit.png', desc:'몬카 최종 피해량 +180%' },
-    { id:'mc_dragon_soul',     tier:'legend',   name:'드래곤 소울',  cat:'def_ign',   req:'all',    val:270, img:'images/mc_dragon_soul.png',     desc:'방어도 무시 피해 증폭 +270%' },
-    { id:'mc_despair_knight',  tier:'legend',   name:'절망의 기사',  cat:'score_atk', req:'all',    val:55,  stepPts:100, img:'images/mc_despair_knight.png', desc:'카드 100점당 몬카 공 +55%' },
+    { id:'mc_golem',           tier:'legend',   name:'원소 골렘',    cat:'job',       req:'reaper', val:180, img:'images/mc_golem.jpg',           desc:'몬카 강타 피해량 +180%' },
+    { id:'mc_spirit_know',     tier:'legend',   name:'지식의 정령',  cat:'job',       req:'mage',   val:180, img:'images/mc_spirit_know.jpg',     desc:'몬카 스킬 피해량 +180%' },
+    { id:'mc_hero_soul',       tier:'legend',   name:'영웅의 혼',    cat:'job',       req:'lord',   val:180, img:'images/mc_hero_soul.jpg',       desc:'몬카 영웅 스킬 피해량 +180%' },
+    { id:'mc_trial_knight',    tier:'legend',   name:'시련의 기사',  cat:'elem',      req:'fire',   val:180, img:'images/mc_trial_knight.jpg',    desc:'몬카 화염 속성 피해량 +180%' },
+    { id:'mc_mimic',           tier:'legend',   name:'미믹',         cat:'elem',      req:'light',  val:180, img:'images/mc_mimic.jpg',           desc:'몬카 번개 속성 피해량 +180%' },
+    { id:'mc_wisp',            tier:'legend',   name:'위습',         cat:'elem',      req:'dark',   val:180, img:'images/mc_wisp.jpg',            desc:'몬카 어둠 속성 피해량 +180%' },
+    { id:'mc_guardian_spirit', tier:'legend',   name:'수호령',       cat:'final',     req:'all',    val:180, img:'images/mc_guardian_spirit.jpg', desc:'몬카 최종 피해량 +180%' },
+    { id:'mc_dragon_soul',     tier:'legend',   name:'드래곤 소울',  cat:'def_ign',   req:'all',    val:270, img:'images/mc_dragon_soul.jpg',     desc:'방어도 무시 피해 증폭 +270%' },
+    { id:'mc_despair_knight',  tier:'legend',   name:'절망의 기사',  cat:'score_atk', req:'all',    val:55,  stepPts:100, img:'images/mc_despair_knight.jpg', desc:'카드 100점당 몬카 공 +55%' },
     // 신화 (9종)
-    { id:'mc_argos',           tier:'mythic',   name:'아르고스',     cat:'job',       req:'reaper', val:500, img:'images/mc_argos.png',           desc:'몬카 강타 피해량 +500%' },
-    { id:'mc_caelus',          tier:'mythic',   name:'카엘루스',     cat:'job',       req:'mage',   val:500, img:'images/mc_caelus.png',          desc:'몬카 스킬 피해량 +500%' },
-    { id:'mc_barkan',          tier:'mythic',   name:'바르칸',       cat:'job',       req:'lord',   val:500, img:'images/mc_barkan.png',          desc:'몬카 영웅 스킬 피해량 +500%' },
-    { id:'mc_frigion',         tier:'mythic',   name:'프리기온',     cat:'elem',      req:'fire',   val:500, img:'images/mc_frigion.png',         desc:'몬카 화염 속성 피해량 +500%' },
-    { id:'mc_laska',           tier:'mythic',   name:'라스카',       cat:'elem',      req:'light',  val:500, img:'images/mc_laska.png',           desc:'몬카 번개 속성 피해량 +500%' },
-    { id:'mc_nactis',          tier:'mythic',   name:'나크티스',     cat:'elem',      req:'dark',   val:500, img:'images/mc_nactis.png',          desc:'몬카 어둠 속성 피해량 +500%' },
-    { id:'mc_luparg',          tier:'mythic',   name:'루파르그',     cat:'final',     req:'all',    val:500, img:'images/mc_luparg.png',          desc:'몬카 최종 피해량 +500%' },
-    { id:'mc_tigron',          tier:'mythic',   name:'티그론',       cat:'def_ign',   req:'all',    val:750, img:'images/mc_tigron.png',          desc:'방어도 무시 피해 증폭 +750%' },
-    { id:'mc_dracargo',        tier:'mythic',   name:'드라카르고',   cat:'score_atk', req:'all',    val:750, stepPts:500, img:'images/mc_dracargo.png', desc:'카드 500점당 몬카 공 +750%' }
+    { id:'mc_argos',           tier:'mythic',   name:'아르고스',     cat:'job',       req:'reaper', val:500, img:'images/mc_argos.jpg',           desc:'몬카 강타 피해량 +500%' },
+    { id:'mc_caelus',          tier:'mythic',   name:'카엘루스',     cat:'job',       req:'mage',   val:500, img:'images/mc_caelus.jpg',          desc:'몬카 스킬 피해량 +500%' },
+    { id:'mc_barkan',          tier:'mythic',   name:'바르칸',       cat:'job',       req:'lord',   val:500, img:'images/mc_barkan.jpg',          desc:'몬카 영웅 스킬 피해량 +500%' },
+    { id:'mc_frigion',         tier:'mythic',   name:'프리기온',     cat:'elem',      req:'fire',   val:500, img:'images/mc_frigion.jpg',         desc:'몬카 화염 속성 피해량 +500%' },
+    { id:'mc_laska',           tier:'mythic',   name:'라스카',       cat:'elem',      req:'light',  val:500, img:'images/mc_laska.jpg',           desc:'몬카 번개 속성 피해량 +500%' },
+    { id:'mc_nactis',          tier:'mythic',   name:'나크티스',     cat:'elem',      req:'dark',   val:500, img:'images/mc_nactis.jpg',          desc:'몬카 어둠 속성 피해량 +500%' },
+    { id:'mc_luparg',          tier:'mythic',   name:'루파르그',     cat:'final',     req:'all',    val:500, img:'images/mc_luparg.jpg',          desc:'몬카 최종 피해량 +500%' },
+    { id:'mc_tigron',          tier:'mythic',   name:'티그론',       cat:'def_ign',   req:'all',    val:750, img:'images/mc_tigron.jpg',          desc:'방어도 무시 피해 증폭 +750%' },
+    { id:'mc_dracargo',        tier:'mythic',   name:'드라카르고',   cat:'score_atk', req:'all',    val:750, stepPts:500, img:'images/mc_dracargo.jpg', desc:'카드 500점당 몬카 공 +750%' }
   ];
 
   let mcardUserSpecs = {}; // { [cardId]: { owned: true, brk: 0~10, unlockedSyns: ['fear','crit',...] } }
