@@ -7279,14 +7279,15 @@
                 </label>
                 <label class="cond-toggle-row" for="mc_cond_ideal_syn">
                   <input type="checkbox" id="mc_cond_ideal_syn" class="neon-toggle-input" onchange="onMcardCondManualChange()">
-                  <div><div style="font-size:12.5px; font-weight:800; color:#fff;">시너지 자유변경 가정 (이상적 종결)</div><div style="font-size:10.5px; color:#94a3b8;">OFF=내 해금 시너지 기준만 / ON=전 시너지 해금 가정</div></div>
+                  <div><div style="font-size:12.5px; font-weight:800; color:#fff;">5종 시너지 전체 해금 가정</div><div style="font-size:10.5px; color:#94a3b8;">ON=아래 카드별 시너지 아이콘을 안 눌러도 5종 시너지가 다 열려 있다고 가정</div></div>
                   <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
                 </label>
               </div>
               <div style="background:rgba(15,23,42,0.85); border:1px dashed #475569; border-radius:9px; padding:9px 12px; margin-bottom:8px; font-size:11.5px; color:#cbd5e1; line-height:1.6;">
-                <strong style="color:#7dd3fc;">[시너지 5종 효과 &amp; 중복 규칙 안내]</strong>
-                카드 등급별 시너지 칸은 <strong>상급·특급(1칸×1P) / 전설(2칸×2P) / 신화(3칸×3P)</strong>이며, <strong>카드에 해금된 시너지는 한 카드 안에 중복 배치(예: 공포3·공포3·공포3 = 9P)</strong>가 가능합니다.<br>
-                • <strong style="color:#f59e0b;">지휘</strong>(카드공 3/6/9셋 +50/100/250%, 5배) ·
+                <strong style="color:#fde047;">💡 [몬스터 카드 점수(500점)]와 [시너지(3/6/9세트)]는 서로 다른 시스템입니다!</strong><br>
+                • <strong style="color:#6ee7b7;">몬스터 카드 점수 (드라카르고 500점 / 절망의 기사 100점 조건):</strong> 보유한 전체 카드(상급~신화 24종)의 돌파 점수 총합입니다. <span style="color:#94a3b8;">(신화만 입력하면 500점이 안 넘으므로 상단 <strong>[상·특·전 일괄 보유]</strong>를 누르거나 아래 <strong>[총 카드 점수]</strong>에 인게임 점수를 직접 적어주세요!)</span><br>
+                • <strong style="color:#7dd3fc;">시너지 (지휘·노련·공포·치명·진화 3/6/9세트):</strong> 장착한 카드 3장에 붙은 시너지 아이콘 개수(상급·특급 1칸×1개 / 전설 2칸×2개 / 신화 3칸×3개, 한 카드 내 중복 변경 가능)로 발동하는 세트 효과입니다.<br>
+                &nbsp;&nbsp;▸ <strong style="color:#f59e0b;">지휘</strong>(카드공 +50/100/250%, 5배) ·
                 <strong style="color:#38bdf8;">노련</strong>(챕터 100/125/150 모피증 +50/150/400%, 7배) ·
                 <strong style="color:#c084fc;">공포</strong>(카드공증 +100/300/600%, 11배) ·
                 <strong style="color:#2dd4bf;">치명</strong>(크피50%×슈크피100%×하크피400%, <strong>곱연산 최대 15배</strong>) ·
@@ -20585,10 +20586,10 @@
       const actChips = MCARD_SYN_KEYS.map(sk => {
         const d = bestSyn.details[sk] || { pts: 0, mult: 1 };
         if (d.pts <= 0) return '';
-        const tierHit = d.pts >= 9 ? '9셋' : (d.pts >= 6 ? '6셋' : (d.pts >= 3 ? '3셋' : `${d.pts}P`));
+        const tierHit = d.pts >= 9 ? '9세트' : (d.pts >= 6 ? '6세트' : (d.pts >= 3 ? '3세트' : '세트 미달'));
         return `<div class="mcard-syn-badge" style="border-color:${MCARD_SYN_META[sk].color}; padding:4px 9px; font-size:12px;">
           ${getMcardSynSvg(sk, 20)}
-          <span>${MCARD_SYN_META[sk].name} <strong style="color:#fde047;">${d.pts}P</strong> <small style="color:${d.mult>1?'#6ee7b7':'#94a3b8'};">(${tierHit} · ${d.mult.toFixed(1)}배)</small></span>
+          <span>${MCARD_SYN_META[sk].name} <strong style="color:#fde047;">${d.pts}개</strong> <small style="color:${d.mult>1?'#6ee7b7':'#94a3b8'};">(${tierHit} · ${d.mult.toFixed(1)}배)</small></span>
         </div>`;
       }).filter(Boolean).join('');
       synBar.innerHTML = `<div style="font-size:12.5px; font-weight:900; color:#93c5fd;">활성화 시너지</div><div style="display:flex; flex-wrap:wrap; gap:7px;">${actChips || '<span style="font-size:12px; color:#64748b;">활성화된 시너지 없음 (카드 아래 시너지 아이콘을 선택하세요)</span>'}</div>`;
