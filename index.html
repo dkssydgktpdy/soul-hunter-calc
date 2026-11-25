@@ -4243,6 +4243,280 @@
       .trait2-root-col { padding-top: 68px !important; }
       .step-section-sub { display: none; }
     }
+
+    /* ==================== 11. 7대 도우미 12컬럼 · 모바일 2x2 십자선 · 연마 미니게임 · 몬스터 카드 ==================== */
+    .helper-grid-7 {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 13px;
+    }
+    .helper-grid-7 > .hub-card:nth-child(-n+3) { grid-column: span 4; }
+    .helper-grid-7 > .hub-card:nth-child(n+4)  { grid-column: span 3; padding: 18px 10px !important; }
+    @media (max-width: 768px) {
+      .helper-grid-7 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .helper-grid-7 > .hub-card:nth-child(-n+6) { grid-column: span 1; }
+      .helper-grid-7 > .hub-card:nth-child(7) {
+        grid-column: 1 / -1;
+        flex-direction: row !important;
+        justify-content: center !important;
+        text-align: left !important;
+        padding: 14px 16px !important;
+      }
+      /* 모바일 2x2 상단 4탭 십자(┼) 구분선 */
+      .mode-switcher { position: relative; }
+      .mode-switcher::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 10px;
+        bottom: 10px;
+        width: 1px;
+        background: linear-gradient(180deg, transparent, rgba(148, 163, 184, 0.55), transparent);
+        pointer-events: none;
+        z-index: 2;
+      }
+      .mode-switcher::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        right: 10px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.55), transparent);
+        pointer-events: none;
+        z-index: 2;
+      }
+    }
+
+    /* 통합 인벤토리 6탭 & 진단실 4탭 확장 */
+    .minv-tab-bar { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .diag-switch-bar { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    @media (max-width: 768px) {
+      .minv-tab-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .diag-switch-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    /* 영원 장비 연마 인게임 미니게임 보드 */
+    .refsim-window {
+      background: radial-gradient(circle at 50% 25%, #163052 0%, #0d182b 65%, #070d19 100%);
+      border: 2.5px solid #2563eb;
+      border-radius: 16px;
+      padding: 18px 16px;
+      box-shadow: inset 0 0 42px rgba(0, 0, 0, 0.85), 0 10px 26px rgba(0, 0, 0, 0.55);
+      color: #f8fafc;
+    }
+    .refsim-stage-head {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .refsim-prob-box {
+      justify-self: end;
+      background: rgba(9, 14, 26, 0.88);
+      border: 1.5px solid #334155;
+      border-radius: 11px;
+      padding: 8px 14px;
+      min-width: 142px;
+      font-size: 12.5px;
+    }
+    .refsim-prob-row { display: flex; justify-content: space-between; gap: 14px; font-weight: 800; line-height: 1.55; }
+    .refsim-orbs-wrap {
+      background: rgba(8, 13, 25, 0.88);
+      border: 1.5px solid #1e3a8a;
+      border-radius: 12px;
+      padding: 12px 14px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .refsim-orbs-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .refsim-orb-group { display: inline-flex; gap: 4px; }
+    .refsim-orb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 1.5px solid #475569;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      transition: all 0.2s;
+    }
+    .refsim-orb.on {
+      background: radial-gradient(circle at 35% 30%, #bbf7d0 0%, #22c55e 55%, #15803d 100%);
+      border-color: #86efac;
+      box-shadow: 0 0 9px rgba(34, 197, 94, 0.85);
+    }
+    .refsim-result-banner {
+      min-height: 44px;
+      border-radius: 11px;
+      padding: 9px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 900;
+      text-align: center;
+      border: 1.5px solid #334155;
+      background: rgba(15, 23, 42, 0.85);
+      transition: all 0.16s;
+    }
+    .refsim-result-banner.res-succ { border-color: #34d399; background: rgba(16, 185, 129, 0.22); color: #6ee7b7; box-shadow: 0 0 18px rgba(16, 185, 129, 0.35); }
+    .refsim-result-banner.res-keep { border-color: #60a5fa; background: rgba(59, 130, 246, 0.18); color: #bae6fd; }
+    .refsim-result-banner.res-drop { border-color: #ef4444; background: rgba(239, 68, 68, 0.26); color: #fecdd3; box-shadow: 0 0 20px rgba(239, 68, 68, 0.45); }
+    .refsim-gold-btn {
+      background: linear-gradient(180deg, #fde047 0%, #eab308 100%);
+      border: 2px solid #fef9c3;
+      border-radius: 12px;
+      padding: 10px 22px;
+      color: #1c1917;
+      font-weight: 900;
+      font-size: 15px;
+      cursor: pointer;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 195px;
+      box-shadow: 0 6px 20px rgba(234, 179, 8, 0.45);
+      transition: transform 0.12s ease, box-shadow 0.15s;
+    }
+    .refsim-gold-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(250, 204, 21, 0.65); }
+    .refsim-gold-btn:active { transform: scale(0.97); }
+    @media (max-width: 680px) {
+      .refsim-stage-head { grid-template-columns: 1fr; justify-items: center; }
+      .refsim-prob-box { justify-self: center; width: 100%; }
+    }
+
+    /* 몬스터 카드 세팅 도우미 인게임 UI */
+    .mcard-board-window {
+      background: linear-gradient(180deg, #10243d 0%, #091322 100%);
+      border: 2.5px solid #38bdf8;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: inset 0 0 36px rgba(0, 0, 0, 0.82), 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+    .mcard-equip-3grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .mcard-slot-card {
+      background: #0f172a;
+      border: 2.5px solid #475569;
+      border-radius: 13px;
+      padding: 11px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      position: relative;
+      min-height: 196px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+    }
+    .mcard-slot-card.tier-advanced { border-color: #3b82f6; background: linear-gradient(180deg, rgba(37,99,235,0.28) 0%, #0b1120 75%); }
+    .mcard-slot-card.tier-unique   { border-color: #a855f7; background: linear-gradient(180deg, rgba(147,51,234,0.3) 0%, #0b1120 75%); }
+    .mcard-slot-card.tier-legend   { border-color: #eab308; background: linear-gradient(180deg, rgba(202,138,4,0.32) 0%, #0b1120 75%); }
+    .mcard-slot-card.tier-mythic   { border-color: #f97316; background: linear-gradient(180deg, rgba(234,88,12,0.34) 0%, #1c0b0e 75%); box-shadow: 0 0 18px rgba(249,115,22,0.32); }
+    .mcard-art-box {
+      width: 78px;
+      height: 78px;
+      border-radius: 11px;
+      background: #090e1a;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .mcard-art-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .mcard-syn-row { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
+    .mcard-syn-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: rgba(9, 14, 26, 0.9);
+      border: 1px solid #334155;
+      border-radius: 7px;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+    .mcard-active-syn-bar {
+      background: rgba(9, 15, 28, 0.9);
+      border: 1.5px solid #1e3a8a;
+      border-radius: 12px;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .mcard-roster-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .mcard-editor-card {
+      background: #131d33;
+      border: 1.5px solid #334155;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .mcard-editor-card.owned {
+      border-color: #38bdf8;
+      background: linear-gradient(145deg, rgba(56, 189, 248, 0.14) 0%, #0f172a 100%);
+    }
+    .mcard-syn-toggle-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+    }
+    .mcard-syn-tog-btn {
+      background: #090e1a;
+      border: 1.5px solid #334155;
+      border-radius: 7px;
+      padding: 4px 2px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      opacity: 0.45;
+      filter: grayscale(0.75);
+      transition: all 0.14s;
+    }
+    .mcard-syn-tog-btn.unlocked {
+      opacity: 1;
+      filter: none;
+      border-color: #fde047;
+      background: rgba(250, 204, 21, 0.14);
+      box-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
+    }
+    .mcard-syn-tog-btn span { font-size: 9px; font-weight: 900; color: #e2e8f0; }
+    @media (max-width: 760px) {
+      .mcard-equip-3grid { gap: 7px; }
+      .mcard-slot-card { padding: 8px 5px; min-height: 168px; }
+      .mcard-art-box { width: 56px; height: 56px; }
+      .mcard-roster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    }
   </style>
 </head>
 
@@ -4319,7 +4593,7 @@
             <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 &amp; 공략 툴</h1>
           </div>
           <div class="author-tag">
-            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.7.0.0</strong>
+            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.8.0.0</strong>
           </div>
 
           <!-- 카카오페이 후원 팝오버 위젯 -->
@@ -4856,6 +5130,7 @@
             <button type="button" class="minv-tab-btn" data-mtab="hero" onclick="switchMasterInvTab('hero')">영웅 편집</button>
             <button type="button" class="minv-tab-btn" data-mtab="rune" onclick="switchMasterInvTab('rune')">룬 편집</button>
             <button type="button" class="minv-tab-btn" data-mtab="core" onclick="switchMasterInvTab('core')">코어 편집</button>
+            <button type="button" class="minv-tab-btn" data-mtab="mcard" onclick="switchMasterInvTab('mcard')">카드 편집</button>
           </div>
           <div id="minv_collection_summary_cards" class="grid-2" style="gap:10px;"></div>
           <div id="minv_inline_editor_body" style="display:none;"></div>
@@ -5011,7 +5286,8 @@
           <select id="rc_job_lv"><option value="0">0</option><option value="60">60</option><option value="80" selected>80</option></select>
           <select id="rc_star_gaho"><option value="0">0</option><option value="30">30</option><option value="40" selected>40</option></select>
           <select id="rc_moon_gaho"><option value="0">0</option><option value="10">10</option><option value="20">20</option><option value="30" selected>30</option></select>
-          <select id="rc_anc_gem"><option value="0">0</option><option value="3">3</option><option value="15" selected>15</option></select>
+          <select id="rc_anc_gem"><option value="0">0</option><option value="5">5</option><option value="10">10</option><option value="15" selected>15</option></select>
+          <select id="rc_anc_core"><option value="0">0</option><option value="3" selected>3</option></select>
           <select id="rc_anc_passive"><option value="none">none</option><option value="awk6">awk6</option><option value="brk40">brk40</option><option value="both" selected>both</option></select>
           <select id="rc_ref_scythe_lv"><option value="-1">-1</option><option value="0">0</option><option value="10">10</option><option value="15" selected>15</option></select>
           <select id="rc_ref_orb_lv"><option value="-1">-1</option><option value="0">0</option><option value="10">10</option><option value="15" selected>15</option></select>
@@ -5049,11 +5325,11 @@
         <div id="rmtab_panel_stat" style="display:none;">
           <div class="grid-2" style="gap:8px; margin-bottom:10px;">
             <div class="cond-modal-row" style="margin:0;">
-              <div class="cond-modal-label">인게임 공격속도 (%)<small>광풍 룬 (100% 풀발동)</small></div>
+              <div class="cond-modal-label">인게임 공격속도 (%)<small>광풍 룬 (100% 풀발동 · 세부정보 ➔ 보조 탭)</small></div>
               <input type="number" id="rc_atk_spd" value="100" min="0" max="500" step="10" oninput="calculateBestRuneLoadout(); triggerAutoSave();" style="width:92px; padding:6px 8px; text-align:center; font-weight:800; color:#fde047;">
             </div>
             <div class="cond-modal-row" style="margin:0;">
-              <div class="cond-modal-label">인게임 이동속도 (%)<small>광속 룬 (200% 풀발동)</small></div>
+              <div class="cond-modal-label">인게임 이동속도 (%)<small>광속 룬 (200% 풀발동 · 세부정보 ➔ 보조 탭)</small></div>
               <input type="number" id="rc_mov_spd" value="200" min="0" max="500" step="10" oninput="calculateBestRuneLoadout(); triggerAutoSave();" style="width:92px; padding:6px 8px; text-align:center; font-weight:800; color:#fde047;">
             </div>
           </div>
@@ -5425,7 +5701,7 @@
 
         <!-- ==================== 🛠️ 세팅 도우미 모음 (6대 도우미 PC 3x2 그리드) ==================== -->
         <div class="hub-section" id="helper_icons_accordion_section">
-          <div class="helper-grid-6">
+          <div class="helper-grid-7">
             <!-- 1. 소울커넥트 코어 도우미 (시안 #22d3ee) -->
             <div class="hub-card" onclick="openDeepCalculator('tab-connect')" style="flex-direction:column; align-items:center; text-align:center; padding:20px 14px; gap:10px; border:2px solid #22d3ee; background:linear-gradient(160deg, rgba(34,211,238,0.22) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(34,211,238,0.2);">
               <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #67e8f9; background:radial-gradient(circle, rgba(34,211,238,0.28) 0%, #0f172a 100%); box-shadow:0 0 14px rgba(34,211,238,0.38);">
@@ -5450,7 +5726,24 @@
               </div>
             </div>
 
-            <!-- 3. 유니온 세팅 도우미 (코발트 스카이 #60a5fa) -->
+            <!-- 3. 몬스터 카드 세팅 도우미 (오렌지 골드 #fb923c) -->
+            <div class="hub-card" onclick="openDeepCalculator('tab-mcard')" style="flex-direction:column; align-items:center; text-align:center; padding:20px 14px; gap:10px; border:2px solid #fb923c; background:linear-gradient(160deg, rgba(249,115,22,0.24) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(249,115,22,0.22);">
+              <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #fdba74; background:radial-gradient(circle, rgba(249,115,22,0.34) 0%, #1c1008 100%); box-shadow:0 0 16px rgba(249,115,22,0.45);">
+                <img src="images/main_mcard.png" alt="몬스터 카드" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <svg width="38" height="38" viewBox="0 0 40 40" fill="none" style="display:none; filter:drop-shadow(0 0 6px rgba(251,146,60,0.9));">
+                  <rect x="8" y="4" width="24" height="32" rx="4" fill="rgba(249,115,22,0.32)" stroke="#fdba74" stroke-width="2"/>
+                  <polygon points="20,11 26,20 20,29 14,20" fill="#fde047" stroke="#ffffff" stroke-width="1.3"/>
+                  <circle cx="20" cy="20" r="2.6" fill="#e11d48"/>
+                </svg>
+              </div>
+              <div>
+                <span class="hub-card-title" style="font-size:15.5px; margin-bottom:4px; color:#ffffff;">몬스터 카드 도우미</span>
+                <span class="grade-badge" style="font-size:10.5px; margin-bottom:5px; background:rgba(249,115,22,0.28); color:#ffedd5; border:1px solid #fb923c;">NEW · v.1.0.0</span>
+                <span class="hub-card-desc" style="display:block; font-size:12px; color:#cbd5e1;">상급~신화 3장 &amp; 시너지 자동 최적화</span>
+              </div>
+            </div>
+
+            <!-- 4. 유니온 세팅 도우미 (코발트 스카이 #60a5fa) -->
             <div class="hub-card" onclick="openDeepCalculator('tab-union')" style="flex-direction:column; align-items:center; text-align:center; padding:20px 14px; gap:10px; border:2px solid #60a5fa; background:linear-gradient(160deg, rgba(96,165,250,0.24) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(96,165,250,0.22);">
               <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #93c5fd; background:radial-gradient(circle, rgba(96,165,250,0.34) 0%, #111827 100%); box-shadow:0 0 16px rgba(96,165,250,0.45);">
                 <svg width="40" height="40" viewBox="0 0 44 44" fill="none" style="filter:drop-shadow(0 0 7px rgba(147,197,253,0.95));">
@@ -5470,7 +5763,7 @@
               </div>
             </div>
 
-            <!-- 4. 1~4차 전직 특성 도우미 (라벤더 바이올렛 #a78bfa) -->
+            <!-- 5. 1~4차 전직 특성 도우미 (라벤더 바이올렛 #a78bfa) -->
             <div class="hub-card" onclick="openTraitHelperFromHub()" style="flex-direction:column; align-items:center; text-align:center; padding:20px 14px; gap:10px; border:2px solid #a78bfa; background:linear-gradient(160deg, rgba(167,139,250,0.22) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(167,139,250,0.2);">
               <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #c4b5fd; background:radial-gradient(circle, rgba(139,92,246,0.34) 0%, #1e1b4b 100%); box-shadow:0 0 16px rgba(167,139,250,0.45);">
                 <svg width="38" height="38" viewBox="0 0 36 36" fill="none" style="filter: drop-shadow(0 0 8px rgba(196,181,253,0.95));">
@@ -5488,7 +5781,7 @@
               </div>
             </div>
 
-            <!-- 5. 각성 우선순위 & 패시브 도우미 (오키드 마젠타 #e879f9) -->
+            <!-- 6. 각성 우선순위 & 패시브 도우미 (오키드 마젠타 #e879f9) -->
             <div class="hub-card" onclick="openAwakeningHelperFromHub()" style="flex-direction:column; align-items:center; text-align:center; padding:20px 14px; gap:10px; border:2px solid #e879f9; background:linear-gradient(160deg, rgba(232,121,249,0.22) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(232,121,249,0.22);">
               <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #f0abfc; background:radial-gradient(circle, rgba(232,121,249,0.34) 0%, #1e1b4b 100%); box-shadow:0 0 16px rgba(232,121,249,0.45);">
                 <svg width="40" height="40" viewBox="0 0 44 44" fill="none" style="filter:drop-shadow(0 0 8px rgba(240,171,252,0.95));">
@@ -5510,7 +5803,7 @@
               </div>
             </div>
 
-            <!-- 6. 사신 ➔ 아크메이지 전환 판정기 (솔라 골드 #fbbf24) -->
+            <!-- 7. 사신 ➔ 아크메이지 전환 판정기 (솔라 골드 #fbbf24) -->
             <div class="hub-card" onclick="openTransitionCheckerFromHub()" style="flex-direction:column; align-items:center; text-align:center; padding:20px 14px; gap:10px; border:2px solid #fbbf24; background:linear-gradient(160deg, rgba(251,191,36,0.24) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(251,191,36,0.22);">
               <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #fde047; background:radial-gradient(circle, rgba(251,191,36,0.34) 0%, #1c1917 100%); box-shadow:0 0 16px rgba(251,191,36,0.45);">
                 <svg width="38" height="38" viewBox="0 0 36 36" fill="none" style="filter:drop-shadow(0 0 7px rgba(253,224,71,0.9));">
@@ -5557,12 +5850,12 @@
               <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><polygon points="14,1.5 26.5,14 14,26.5 1.5,14" fill="rgba(245,158,11,0.36)" stroke="#fef08a" stroke-width="1.8"/><text x="14" y="14.5" text-anchor="middle" dominant-baseline="central" fill="#fff" font-family="Georgia, serif" font-size="11.5" font-weight="900">IV</text></svg>
               <span>4차 전직 재화</span>
             </button>
-            <button type="button" class="growth-sub-tab-btn" id="gsub_btn_dragon" onclick="switchGrowthSubTab('dragon')">
-              <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><path d="M14 3L18 8.5L24 6L21.5 13L25 18L19 19.5L14 25.5L9 19.5L3 18L6.5 13L4 6L10 8.5L14 3Z" fill="rgba(245,158,11,0.32)" stroke="#fde047" stroke-width="1.6" stroke-linejoin="round"/><polygon points="14,9.5 17.5,14.5 14,19.5 10.5,14.5" fill="#fff"/></svg>
+           <button type="button" class="growth-sub-tab-btn" id="gsub_btn_dragon" onclick="switchGrowthSubTab('dragon')">
+              <img src="images/res_dragon_glyph.png" alt="드래곤" style="width:22px; height:22px; border-radius:4px; object-fit:contain;" onerror="this.style.display='none';">
               <span>드래곤 육성·승급</span>
             </button>
             <button type="button" class="growth-sub-tab-btn" id="gsub_btn_guardian" onclick="switchGrowthSubTab('guardian')">
-              <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><path d="M5 8.5C9 6.5 11.5 6.8 14 3.5C16.5 6.8 19 6.5 23 8.5C22.5 16.5 19 22 14 25.5C9 22 5.5 16.5 5 8.5Z" fill="rgba(16,185,129,0.32)" stroke="#6ee7b7" stroke-width="1.7" stroke-linejoin="round"/><polygon points="14,8.5 18,14 14,20.5 10,14" fill="#fef08a"/></svg>
+              <img src="images/res_guardian_token.png" alt="수호신" style="width:22px; height:22px; border-radius:4px; object-fit:contain;" onerror="this.style.display='none';">
               <span>수호신 재화 (3종)</span>
             </button>
           </div>
@@ -5573,7 +5866,7 @@
               <div class="card-title">
                 <span>🌟 1차 전직 재화 계산기 (시련의 정수 · 시련의 탑 &amp; 보물던전 1)</span>
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  <span class="grade-badge grade-ancient">Lv.1 ~ Lv.102 전체 반영</span>
+                  <span class="grade-badge grade-ancient">Lv.1 ~ Lv.101 실측 반영 (101+ 데이터 없음)</span>
                   <span style="display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg, rgba(244,63,94,0.22) 0%, rgba(30,27,75,0.95) 100%); border:1.5px solid #fb7185; color:#ffe4e6; padding:3px 10px 3px 5px; border-radius:20px; font-size:11.5px; font-weight:900;">
                     <img src="images/yang.png" alt="붉양" style="width:20px; height:20px; border-radius:50%; border:1.5px solid #fde047; object-fit:cover;" onerror="this.style.display='none';">
                     <span>📊 데이터 제공: <strong style="color:#fde047;">붉양</strong>님</span>
@@ -5582,9 +5875,9 @@
               </div>
               <p class="card-subtitle">현재 1차 전직 레벨과 목표 레벨을 입력하면 필요한 <strong>시련의 정수</strong>와 <strong>시련의 탑 / 보물던전 1 열쇠</strong> 개수를 계산합니다.</p>
               <div class="grid-3" style="margin-bottom:14px;">
-                <div><label style="color:#38bdf8;">📍 현재 1차 전직 레벨 (1~101)</label><input type="number" id="jc1_cur_lv" value="60" min="1" max="101" oninput="onGrowthLevelTyped('jc1_cur_lv', 1, 101)" style="font-weight:800; color:#fde047;"></div>
-                <div><label style="color:#fde047;">🎯 목표 1차 전직 레벨 (2~102)</label><input type="number" id="jc1_tar_lv" value="80" min="2" max="102" oninput="onGrowthLevelTyped('jc1_tar_lv', 2, 102)" style="font-weight:800; color:#fde047;"></div>
-                <div><label>💰 현재 보유 중인 시련의 정수</label><input type="number" id="jc1_hold_ess" value="0" min="0" step="10000" oninput="calculateAllGrowthCalcs()"></div>
+                <div><label style="color:#38bdf8;">📍 현재 1차 전직 레벨 (1~100)</label><input type="number" id="jc1_cur_lv" value="60" min="1" max="100" oninput="onGrowthLevelTyped('jc1_cur_lv', 1, 100)" style="font-weight:800; color:#fde047;"></div>
+                <div><label style="color:#fde047;">🎯 목표 1차 전직 레벨 (2~101)</label><input type="number" id="jc1_tar_lv" value="80" min="2" max="101" oninput="onGrowthLevelTyped('jc1_tar_lv', 2, 101)" style="font-weight:800; color:#fde047;"></div>
+                <div><label><img src="images/res_ess_job1.png" alt="" style="width:17px;height:17px;vertical-align:-3px;margin-right:4px;object-fit:contain;" onerror="this.style.display='none';">현재 보유 중인 시련의 정수</label><input type="number" id="jc1_hold_ess" value="0" min="0" step="10000" oninput="calculateAllGrowthCalcs()"></div>
               </div>
               <div class="grid-2" style="background:#0b1120; padding:14px; border-radius:12px; border:1px solid #334155;">
                 <div>
@@ -5593,7 +5886,7 @@
                   <span style="font-size:11px; color:#94a3b8;">* 본인 클리어 층수의 소탕 보상량을 입력하세요</span>
                 </div>
                 <div>
-                  <label style="color:#fde047;">🗝️ 보물던전 1 1회(열쇠 1개)당 획득량</label>
+                  <label style="color:#fde047;"><img src="images/res_key_treasure1.png" alt="" style="width:17px;height:17px;vertical-align:-3px;margin-right:4px;object-fit:contain;" onerror="this.style.display='none';">보물던전 1 1회(열쇠 1개)당 획득량</label>
                   <input type="number" id="jc1_treas_reward" value="350000" min="1" step="10000" oninput="calculateAllGrowthCalcs()">
                   <span style="font-size:11px; color:#94a3b8;">* 1차 전직 재화는 <strong>[보물던전 1]</strong>에서 획득합니다</span>
                 </div>
@@ -5621,7 +5914,7 @@
               <div class="grid-3" style="margin-bottom:14px;">
                 <div><label style="color:#c084fc;">📍 현재 2차 전직 레벨 (1~103)</label><input type="number" id="jc2_cur_lv" value="70" min="1" max="103" oninput="onGrowthLevelTyped('jc2_cur_lv', 1, 103)" style="font-weight:800; color:#fde047;"></div>
                 <div><label style="color:#fde047;">🎯 목표 2차 전직 레벨 (2~104)</label><input type="number" id="jc2_tar_lv" value="90" min="2" max="104" oninput="onGrowthLevelTyped('jc2_tar_lv', 2, 104)" style="font-weight:800; color:#fde047;"></div>
-                <div><label>💰 현재 보유 중인 극한의 정수</label><input type="number" id="jc2_hold_ess" value="0" min="0" step="10000" oninput="calculateAllGrowthCalcs()"></div>
+                <div><label><img src="images/res_ess_job2.png" alt="" style="width:17px;height:17px;vertical-align:-3px;margin-right:4px;object-fit:contain;" onerror="this.style.display='none';">현재 보유 중인 극한의 정수</label><input type="number" id="jc2_hold_ess" value="0" min="0" step="10000" oninput="calculateAllGrowthCalcs()"></div>
               </div>
               <div class="grid-2" style="background:#0b1120; padding:14px; border-radius:12px; border:1px solid #334155;">
                 <div>
@@ -5630,7 +5923,7 @@
                   <span style="font-size:11px; color:#94a3b8;">* 본인 극한의 탑 소탕 1회당 획득 정수를 입력하세요</span>
                 </div>
                 <div>
-                  <label style="color:#fde047;">🗝️ 보물던전 2 1회(열쇠 1개)당 획득량</label>
+                  <label style="color:#fde047;"><img src="images/res_key_treasure2.png" alt="" style="width:17px;height:17px;vertical-align:-3px;margin-right:4px;object-fit:contain;" onerror="this.style.display='none';">보물던전 2 1회(열쇠 1개)당 획득량</label>
                   <input type="number" id="jc2_treas_reward" value="50000" min="1" step="5000" oninput="calculateAllGrowthCalcs()">
                   <span style="font-size:11px; color:#94a3b8;">* 2차 전직 재화는 <strong>[보물던전 2]</strong>에서 획득합니다</span>
                 </div>
@@ -5691,7 +5984,7 @@
                 <div><label>현재 보유 중인 종언의 정수</label><input type="number" id="jc4_hold_ess" value="0" min="0" step="5000" oninput="calculateAllGrowthCalcs()"></div>
               </div>
               <div style="background:#0b1120; padding:14px; border-radius:12px; border:1px solid #334155;">
-                <label style="color:#fde047;">종언의 탑 1회(열쇠 1개)당 획득량</label>
+                <label style="color:#fde047;"><img src="images/res_key_job4.png" alt="" style="width:17px;height:17px;vertical-align:-3px;margin-right:4px;object-fit:contain;" onerror="this.style.display='none';">종언의 탑 1회(열쇠 1개)당 획득량</label>
                 <input type="number" id="jc4_tower_reward" value="10000" min="1" step="1000" oninput="calculateAllGrowthCalcs()">
                 <span style="font-size:11px; color:#94a3b8;">* 본인 종언의 탑 소탕 1회당 획득하는 종언의 정수 수량을 입력하세요</span>
               </div>
@@ -5761,10 +6054,10 @@
 
               <div class="guardian-mode-radio-bar">
                 <div class="guardian-radio-btn selected" id="grd_radio_break" onclick="switchGuardianMode('break')">
-                  🛡️ ① 수호신 돌파 재화 계산기<br><small style="color:#6ee7b7; font-weight:700;">(0돌~10돌 필요 수호신 &amp; 수호신의 증표)</small>
+                  <img src="images/res_guardian_token.png" alt="" style="width:18px;height:18px;vertical-align:-3.5px;margin-right:4px;object-fit:contain;" onerror="this.style.display='none';">① 수호신 돌파 재화 계산기<br><small style="color:#6ee7b7; font-weight:700;">(0돌~10돌 필요 수호신 &amp; 수호신의 증표)</small>
                 </div>
                 <div class="guardian-radio-btn" id="grd_radio_potential" onclick="switchGuardianMode('potential')">
-                  🔥 ② 수호신 잠재능력 계산기<br><small style="color:#fde047; font-weight:700;">(잠재 강화석 &amp; 25,000증표=1만개 환산)</small>
+                  <img src="images/res_guardian_pot.png" alt="" style="width:18px;height:18px;vertical-align:-3.5px;margin-right:4px;object-fit:contain;" onerror="this.style.display='none';">② 수호신 잠재능력 계산기<br><small style="color:#fde047; font-weight:700;">(잠재 강화석 &amp; 25,000증표=1만개 환산)</small>
                 </div>
                 <div class="guardian-radio-btn" id="grd_radio_scroll" onclick="switchGuardianMode('scroll')">
                   📜 ③ 수호신 강화서(레벨업) 계산기<br><small style="color:#7dd3fc; font-weight:700;">(Lv.1~120 구간별 강화서 &amp; 소탕권/보던2)</small>
@@ -5778,7 +6071,7 @@
                 <div class="grid-3" style="margin-bottom:14px;">
                   <div><label style="color:#34d399;">📍 현재 수호신 돌파 단계</label><select id="grd_brk_cur" onchange="calculateGuardianAll()"></select></div>
                   <div><label style="color:#fde047;">🎯 목표 수호신 돌파 단계</label><select id="grd_brk_tar" onchange="calculateGuardianAll()"></select></div>
-                  <div><label>💰 현재 보유 중인 수호신의 증표</label><input type="number" id="grd_brk_hold_token" value="0" min="0" step="5000" oninput="calculateGuardianAll()"></div>
+                  <div><label><img src="images/res_guardian_token.png" alt="" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;object-fit:contain;" onerror="this.style.display='none';">현재 보유 중인 수호신의 증표</label><input type="number" id="grd_brk_hold_token" value="0" min="0" step="5000" oninput="calculateGuardianAll()"></div>
                 </div>
               </div>
 
@@ -5789,8 +6082,8 @@
                 <div class="grid-4" style="margin-bottom:14px;">
                   <div><label style="color:#fbbf24;">📍 현재 잠재능력 레벨 (5단위)</label><select id="grd_pot_cur" onchange="calculateGuardianAll()"></select></div>
                   <div><label style="color:#34d399;">🎯 목표 잠재능력 레벨 (5단위)</label><select id="grd_pot_tar" onchange="calculateGuardianAll()"></select></div>
-                  <div><label>💎 현재 보유 잠재 강화석</label><input type="number" id="grd_pot_hold_stone" value="0" min="0" step="5000" oninput="calculateGuardianAll()"></div>
-                  <div><label>🛡️ 현재 보유 수호신의 증표</label><input type="number" id="grd_pot_hold_token" value="0" min="0" step="10000" oninput="calculateGuardianAll()"></div>
+                  <div><label><img src="images/res_guardian_pot.png" alt="" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;object-fit:contain;" onerror="this.style.display='none';">현재 보유 잠재 강화석</label><input type="number" id="grd_pot_hold_stone" value="0" min="0" step="5000" oninput="calculateGuardianAll()"></div>
+<div><label><img src="images/res_guardian_token.png" alt="" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;object-fit:contain;" onerror="this.style.display='none';">현재 보유 수호신의 증표</label><input type="number" id="grd_pot_hold_token" value="0" min="0" step="10000" oninput="calculateGuardianAll()"></div>
                 </div>
               </div>
 
@@ -6066,7 +6359,7 @@
                     <span>영원의 돌</span>
                   </div>
                   <div class="radio-pill job-pill-btn elem-switch-dark" id="ref_res_dia" onclick="selectRefineResource('dia')">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><polygon points="7,4 17,4 22,10 12,21 2,10" fill="rgba(56,189,248,0.35)" stroke="#7dd3fc" stroke-width="1.8" stroke-linejoin="round"/><polyline points="2,10 22,10" stroke="#e0f2fe" stroke-width="1.3"/><polyline points="7,4 9,10 12,21 15,10 17,4" stroke="#bae6fd" stroke-width="1.2"/></svg>
+                    <img src="images/res_blue_dia.png" alt="블루 다이아" style="width:18px; height:18px; object-fit:contain;" onerror="this.style.display='none';">
                     <span>블루 다이아 (×100)</span>
                   </div>
                 </div>
@@ -6097,16 +6390,112 @@
             </div>
           </div>
 
-          <div class="card" style="border-left: 4px solid var(--accent); padding: 20px 22px; margin-top: 24px;">
-            <div class="card-title" style="margin-bottom: 8px;">
-              <span style="font-size:17.5px;" id="ref_table_header_title">📊 [영원 대낫] 연마 단계별 공식 확률 &amp; 소모 재화표</span>
-              <span class="grade-badge grade-ancient" id="ref_table_badge">영원의 돌 기준</span>
+          <div class="card" style="border-left: 4px solid var(--accent); padding: 14px 18px; margin-top: 18px;">
+            <div class="accordion-item" id="acc_table_refine" style="margin:0;">
+              <div class="accordion-header" onclick="toggleNewbieAccordion('acc_table_refine')">
+                <div class="accordion-left">
+                  <span class="accordion-toggle-icon">▶</span>
+                  <span class="accordion-title-text" id="ref_table_header_title" style="font-size:15px;">📊 [영원 대낫] 연마 단계별 공식 확률 &amp; 소모 재화표</span>
+                </div>
+                <div class="accordion-right-info">
+                  <span class="grade-badge grade-ancient" id="ref_table_badge">영원의 돌 기준</span>
+                </div>
+              </div>
+              <div class="accordion-content">
+                <div class="custom-table-container" style="margin-top:0;">
+                  <table class="custom-table">
+                    <thead><tr><th>단계</th><th>성공 확률</th><th>유지 확률</th><th>하락 확률</th><th id="ref_table_col_cost">1회 소모 재화</th></tr></thead>
+                    <tbody id="refine_rates_tbody"></tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-            <div class="custom-table-container">
-              <table class="custom-table">
-                <thead><tr><th>단계</th><th>성공 확률</th><th>유지 확률</th><th>하락 확률</th><th id="ref_table_col_cost">1회 소모 재화</th></tr></thead>
-                <tbody id="refine_rates_tbody"></tbody>
-              </table>
+          </div>
+
+        <!-- 🎮 영원 장비 연마 실전 미니게임 시뮬레이터 -->
+          <div class="card" style="border-left: 4px solid #fbbf24; margin-top: 22px;">
+            <div class="card-title">
+              <span>실전 체험! 영원 장비 연마 미니게임 시뮬레이터</span>
+              <span class="grade-badge grade-legend">인게임 UI 재현 · 0~20강</span>
+            </div>
+            <p class="card-subtitle">실제 인게임 연마 확률(성공 · 유지 · 하락)과 하락 방지 규칙으로 대낫·오브·장식 연마를 직접 체험해 보세요!</p>
+
+            <div class="refsim-window">
+              <!-- 상단 장비 선택 & 시작 레벨 조절 -->
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid rgba(56,189,248,0.25);">
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                  <button type="button" id="refsim_eq_scythe" onclick="setRefSimEquip('scythe')" class="seg-pill-btn active">영원 대낫</button>
+                  <button type="button" id="refsim_eq_orb" onclick="setRefSimEquip('orb')" class="seg-pill-btn">영원 오브</button>
+                  <button type="button" id="refsim_eq_accessory" onclick="setRefSimEquip('accessory')" class="seg-pill-btn">영원 장식</button>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-size:11.5px; color:#94a3b8; font-weight:800;">시작 단계:</span>
+                  <select id="refsim_jump_lv" onchange="jumpRefSimLevel(this.value)" style="width:auto; padding:4px 8px; font-size:12px; font-weight:800; color:#fde047;"></select>
+                  <button type="button" onclick="resetRefSimAll()" style="background:#7f1d1d; border:1px solid #f87171; color:#fecdd3; font-size:11.5px; font-weight:800; padding:5px 9px; border-radius:7px; cursor:pointer;">초기화</button>
+                </div>
+              </div>
+
+              <!-- 중앙 장비 아이콘 + 우측 확률표 -->
+              <div class="refsim-stage-head">
+                <div style="font-size:12px; color:#94a3b8; font-weight:700;">
+                  최고 도달: <strong id="refsim_best_lv" style="color:#fde047;">Lv.10</strong><br>
+                  총 시도: <strong id="refsim_tries_cnt" style="color:#ffffff;">0회</strong>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+                  <div style="width:74px; height:74px; border-radius:14px; border:2.5px solid #34d399; background:radial-gradient(circle, rgba(52,211,153,0.35) 0%, #091322 100%); display:flex; align-items:center; justify-content:center; padding:6px; box-shadow:0 0 22px rgba(52,211,153,0.45); position:relative;">
+                    <img id="refsim_equip_img" src="images/scythe.png" alt="영원 장비" style="width:100%; height:100%; object-fit:contain;" onerror="this.style.display='none';">
+                    <span style="position:absolute; top:-6px; right:-6px; width:22px; height:22px; border-radius:50%; background:#1c1917; border:2px solid #fde047; color:#fde047; font-size:11px; font-weight:900; display:flex; align-items:center; justify-content:center;">E</span>
+                  </div>
+                  <strong id="refsim_equip_name" style="font-size:16px; color:#6ee7b7; text-shadow:0 0 10px rgba(52,211,153,0.6);">영원 대낫</strong>
+                </div>
+                <div class="refsim-prob-box">
+                  <div style="text-align:center; font-size:12px; font-weight:900; color:#e2e8f0; border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:5px;">확률</div>
+                  <div class="refsim-prob-row"><span style="color:#cbd5e1;">성공</span><span id="refsim_p_succ" style="color:#4ade80;">20.0%</span></div>
+                  <div class="refsim-prob-row"><span style="color:#cbd5e1;">유지</span><span id="refsim_p_keep" style="color:#ffffff;">80.0%</span></div>
+                  <div class="refsim-prob-row"><span style="color:#cbd5e1;">하락</span><span id="refsim_p_drop" style="color:#f87171;">0.0%</span></div>
+                </div>
+              </div>
+
+              <!-- 20구슬 연마 게이지 & Lv.X -> Lv.Y -->
+              <div class="refsim-orbs-wrap">
+                <div class="refsim-orbs-row" id="refsim_orbs_row"></div>
+                <div style="font-size:21px; font-weight:900; letter-spacing:0.5px;">
+                  <span id="refsim_lv_cur" style="color:#ffffff;">Lv.10</span>
+                  <span style="color:#94a3b8; margin:0 10px;">➔</span>
+                  <span id="refsim_lv_next" style="color:#fbbf24;">Lv.11</span>
+                </div>
+              </div>
+
+              <!-- 결과 연출 배너 -->
+              <div class="refsim-result-banner" id="refsim_result_banner">아래 [연마] 버튼을 눌러 강화를 시도해 보세요!</div>
+
+              <!-- 하단 체크박스 & 황금 연마 버튼 -->
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+                <div style="display:flex; flex-direction:column; gap:7px; font-size:13px; font-weight:800;">
+                  <label style="margin:0; display:inline-flex; align-items:center; gap:7px; cursor:pointer; color:#e2e8f0;">
+                    <input type="checkbox" id="refsim_chk_dia" onchange="renderRefSimUI()" style="width:17px; height:17px; accent-color:#38bdf8;">
+                    <span>블루 다이아 사용 (×100)</span>
+                  </label>
+                  <label style="margin:0; display:inline-flex; align-items:center; gap:7px; cursor:pointer; color:#e2e8f0;">
+                    <input type="checkbox" id="refsim_chk_safe" onchange="renderRefSimUI()" style="width:17px; height:17px; accent-color:#10b981;">
+                    <span>하락 방지 <strong style="color:#fde047;">(재화 2배 소모)</strong></span>
+                  </label>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:0 auto;">
+                  <button type="button" class="refsim-gold-btn" id="refsim_btn_go" onclick="rollRefSimOnce()">
+                    <span>연마</span>
+                    <span id="refsim_btn_cost_pill" style="background:rgba(15,23,42,0.88); color:#ffffff; padding:2px 12px; border-radius:6px; font-size:13px; display:inline-flex; align-items:center; gap:4px;">25,000</span>
+                  </button>
+                  <button type="button" onclick="autoRollRefSimNext()" style="background:linear-gradient(135deg,#059669,#047857); border:1.5px solid #6ee7b7; color:#fff; font-weight:900; font-size:12.5px; padding:14px 13px; border-radius:11px; cursor:pointer;">⚡ +1강 될 때까지<br>자동 연마</button>
+                </div>
+              </div>
+
+              <!-- 누적 소모 통계 바 -->
+              <div style="margin-top:14px; background:rgba(9,14,26,0.88); border:1px solid #334155; border-radius:10px; padding:9px 12px; display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; font-size:12px; color:#cbd5e1;">
+                <span>성공 <strong id="refsim_stat_s" style="color:#4ade80;">0</strong> · 유지 <strong id="refsim_stat_k" style="color:#ffffff;">0</strong> · 하락 <strong id="refsim_stat_d" style="color:#f87171;">0</strong></span>
+                <span>누적 소모 영원의 돌: <strong id="refsim_spent_stone" style="color:#67e8f9;">0개</strong> | 블루 다이아: <strong id="refsim_spent_dia" style="color:#fde047;">0개</strong></span>
+              </div>
             </div>
           </div>
         </div>
@@ -6837,6 +7226,119 @@
             <div id="union_roster_accordions" class="accordion-group"></div>
           </div>
         </div>
+
+          <!-- 8. 몬스터 카드 세팅 도우미 (v.1.0.0) -->
+        <div id="tab-mcard" class="tab-content" style="display:none;">
+          <div class="card" style="border-left: 4px solid #fb923c;">
+            <div class="card-title">
+              <span>몬스터 카드 세팅 도우미 (v.1.0.0)</span>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button type="button" onclick="applyMcardQuickPreset('mid')" style="background:#1e293b; border:1px solid #eab308; color:#fde047; padding:5px 10px; border-radius:6px; font-size:11.5px; cursor:pointer; font-weight:800;">상·특·전 일괄 보유</button>
+                <button type="button" onclick="applyMcardQuickPreset('mythic')" style="background:#431407; border:1px solid #fb923c; color:#ffedd5; padding:5px 10px; border-radius:6px; font-size:11.5px; cursor:pointer; font-weight:800;">신화 전체+종결시너지</button>
+                <button type="button" onclick="resetAllMcardSpecs()" style="background:#450a0a; border:1px solid #ef4444; color:#fca5a5; padding:5px 10px; border-radius:6px; font-size:11.5px; cursor:pointer; font-weight:800;">초기화</button>
+              </div>
+            </div>
+            <p class="card-subtitle">보유 중인 카드의 <strong>돌파 수</strong>와 <strong>해금된 시너지 아이콘</strong>을 선택하면, 내 직업·주속성·카드 점수·조건에 맞춰 <strong>최고 배율 3장 + 각 카드 시너지 조합</strong>을 자동 계산합니다.</p>
+
+            <!-- STEP 1: 직업 · 주속성 · 조건 스위치 (인벤토리/유니온/소울 자동 연동) -->
+            <div class="grid-2" style="gap:10px; margin-bottom:12px;">
+              <div style="background:#0b1120; padding:10px 12px; border-radius:10px; border:1px solid #26334a;">
+                <label style="color:#94a3b8; font-size:11.5px; margin-bottom:6px;">내 직업 선택 (전체 양방향 연동)</label>
+                <div class="radio-pill-group">
+                  <div class="radio-pill job-pill-btn job-switch-reaper" id="mc_job_reaper" onclick="syncAllJobs('reaper')" style="padding:7px 6px; font-size:12px;"><img src="images/reaper.png" alt="" onerror="this.style.display='none';"><span>사신</span></div>
+                  <div class="radio-pill job-pill-btn job-switch-mage" id="mc_job_mage" onclick="syncAllJobs('mage')" style="padding:7px 6px; font-size:12px;"><img src="images/mystic.png" alt="" onerror="this.style.display='none';"><span>아크메이지</span></div>
+                  <div class="radio-pill job-pill-btn job-switch-lord" id="mc_job_lord" onclick="syncAllJobs('lord')" style="padding:7px 6px; font-size:12px;"><img src="images/overload.png" alt="" onerror="this.style.display='none';"><span>오버로드</span></div>
+                </div>
+              </div>
+              <div style="background:#0b1120; padding:10px 12px; border-radius:10px; border:1px solid #26334a;">
+                <label style="color:#94a3b8; font-size:11.5px; margin-bottom:6px;">내 주속성 선택 (전체 양방향 연동)</label>
+                <div class="radio-pill-group">
+                  <div class="radio-pill job-pill-btn elem-switch-fire" id="mc_elem_fire" onclick="syncAllElems('fire')" style="padding:7px 6px; font-size:12px;"><span class="elem-orb orb-fire" style="width:14px;height:14px;"></span><span>화염</span></div>
+                  <div class="radio-pill job-pill-btn elem-switch-light" id="mc_elem_light" onclick="syncAllElems('light')" style="padding:7px 6px; font-size:12px;"><span class="elem-orb orb-light" style="width:14px;height:14px;"></span><span>번개</span></div>
+                  <div class="radio-pill job-pill-btn elem-switch-dark" id="mc_elem_dark" onclick="syncAllElems('dark')" style="padding:7px 6px; font-size:12px;"><span class="elem-orb orb-dark" style="width:14px;height:14px;"></span><span>어둠</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 조건 토글 & 자동 연동 바 -->
+            <div style="background:#0b1120; border:1.5px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:14px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                <strong style="font-size:13px; color:#fde047;">몬스터 카드 발동 조건 (인벤토리 · 유니온 · 소울커넥트 자동 연동)</strong>
+                <button type="button" onclick="syncMcardCondFromInventory(true)" style="background:#172554; border:1px solid #38bdf8; color:#bae6fd; font-size:11.5px; font-weight:800; padding:4px 10px; border-radius:7px; cursor:pointer;">내 인벤토리/유니온/소울에서 다시 불러오기</button>
+              </div>
+              <div class="grid-3" style="gap:8px; margin-bottom:8px;">
+                <label class="cond-toggle-row" for="mc_cond_narita3">
+                  <input type="checkbox" id="mc_cond_narita3" class="neon-toggle-input" onchange="onMcardCondManualChange()">
+                  <div><div style="font-size:12.5px; font-weight:800; color:#fff;">영웅 [나리타] 3각성 보유</div><div style="font-size:10.5px; color:#94a3b8;">OFF 시 티그론/드래곤소울(방무) 최우선</div></div>
+                  <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+                </label>
+                <label class="cond-toggle-row" for="mc_cond_hcrit">
+                  <input type="checkbox" id="mc_cond_hcrit" class="neon-toggle-input" onchange="onMcardCondManualChange()">
+                  <div><div style="font-size:12.5px; font-weight:800; color:#fff;">소울커넥트 [하이퍼 크리티컬 확률·피해] 코어</div><div style="font-size:10.5px; color:#94a3b8;">ON 시 치명 9셋(하이퍼 크피 +400% · ×5배) 발동</div></div>
+                  <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+                </label>
+                <label class="cond-toggle-row" for="mc_cond_ideal_syn">
+                  <input type="checkbox" id="mc_cond_ideal_syn" class="neon-toggle-input" onchange="onMcardCondManualChange()">
+                  <div><div style="font-size:12.5px; font-weight:800; color:#fff;">시너지 자유변경 가정 (이상적 종결)</div><div style="font-size:10.5px; color:#94a3b8;">OFF=내 해금 시너지 기준만 / ON=전 시너지 해금 가정</div></div>
+                  <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+                </label>
+              </div>
+              <div style="background:rgba(15,23,42,0.85); border:1px dashed #475569; border-radius:9px; padding:9px 12px; margin-bottom:8px; font-size:11.5px; color:#cbd5e1; line-height:1.6;">
+                <strong style="color:#7dd3fc;">[시너지 5종 효과 &amp; 중복 규칙 안내]</strong>
+                카드 등급별 시너지 칸은 <strong>상급·특급(1칸×1P) / 전설(2칸×2P) / 신화(3칸×3P)</strong>이며, <strong>카드에 해금된 시너지는 한 카드 안에 중복 배치(예: 공포3·공포3·공포3 = 9P)</strong>가 가능합니다.<br>
+                • <strong style="color:#f59e0b;">지휘</strong>(카드공 3/6/9셋 +50/100/250%, 5배) ·
+                <strong style="color:#38bdf8;">노련</strong>(챕터 100/125/150 모피증 +50/150/400%, 7배) ·
+                <strong style="color:#c084fc;">공포</strong>(카드공증 +100/300/600%, 11배) ·
+                <strong style="color:#2dd4bf;">치명</strong>(크피50%×슈크피100%×하크피400%, <strong>곱연산 최대 15배</strong>) ·
+                <strong style="color:#fb923c;">진화</strong>(1/2/3차 모피증 곱연산 +150/300/1,050%, 16배)
+              </div>
+              <div class="grid-3" style="gap:8px;">
+                <div style="background:#131d33; border:1px solid #334155; border-radius:9px; padding:7px 10px; display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                  <span style="font-size:11.5px; font-weight:800; color:#cbd5e1;">진화 전직 차수</span>
+                  <select id="mc_cond_jobtier" onchange="onMcardCondManualChange()" style="width:auto; padding:4px 8px; font-size:12px; font-weight:800; color:#fde047;">
+                    <option value="0">전직 전</option><option value="1">1차 전직</option><option value="2">2차 전직</option><option value="3" selected>3차 전직 이상</option>
+                  </select>
+                </div>
+                <div style="background:#131d33; border:1px solid #334155; border-radius:9px; padding:7px 10px; display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                  <span style="font-size:11.5px; font-weight:800; color:#cbd5e1;">도달 챕터 (노련)</span>
+                  <input type="number" id="mc_cond_chap" value="800" min="1" max="1510" oninput="onMcardCondManualChange()" style="width:76px; padding:4px 6px; font-size:12.5px; font-weight:900; text-align:center; color:#7dd3fc;">
+                </div>
+                <div style="background:#131d33; border:1px solid #334155; border-radius:9px; padding:7px 10px; display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                  <span style="font-size:11.5px; font-weight:800; color:#cbd5e1;">총 카드 점수 <small id="mc_auto_score_hint" style="color:#6ee7b7;"></small></span>
+                  <input type="number" id="mc_cond_score_override" placeholder="자동" min="0" max="5000" oninput="onMcardCondManualChange()" style="width:76px; padding:4px 6px; font-size:12.5px; font-weight:900; text-align:center; color:#fde047;">
+                </div>
+              </div>
+            </div>
+
+            <!-- 인게임 스타일 추천 편성 3슬롯 보드 -->
+            <div class="mcard-board-window">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid rgba(56,189,248,0.3);">
+                <strong style="font-size:15.5px; color:#ffffff;">편성 ▸ 몬스터 카드 추천 조합 (최고 배율 3장 &amp; 시너지)</strong>
+                <span id="mcard_total_score_badge" class="grade-badge grade-legend">총 카드 점수: 0점</span>
+              </div>
+              <div class="mcard-equip-3grid" id="mcard_rec_3slots"></div>
+              <div class="mcard-active-syn-bar" id="mcard_active_syn_bar"></div>
+              <div class="result-dashboard" style="margin-top:14px; padding:16px;">
+                <div class="res-label">추천 몬스터 카드 + 시너지 최종 곱연산 배율</div>
+                <div class="res-value" id="mcard_grand_mult" style="font-size:28px; color:#fde047;">1.00배</div>
+                <div id="mcard_mult_breakdown" style="font-size:12.5px; color:#cbd5e1;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 보유 몬스터 카드 도감 입력 (인게임 순서 100% 일치) -->
+          <div class="card" style="border-left: 4px solid #38bdf8;">
+            <div class="card-title">
+              <span>보유 몬스터 카드 돌파 &amp; 해금 시너지 입력 (총 24종 · 인게임 순서)</span>
+              <span class="grade-badge grade-ancient" id="mcard_owned_cnt_badge">보유 등록: 0 / 24종</span>
+            </div>
+            <div style="background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.35); border-radius:10px; padding:9px 13px; margin-bottom:12px; font-size:12.5px; color:#e2e8f0; line-height:1.55;">
+              • <strong>돌파 입력(0~10):</strong> 빈칸 = 미보유 / <code>0</code> = 명함 보유 / <code>1~10</code> = 해당 돌파 (숫자 입력 시 자동 점수 계산)<br>
+              • <strong>해금 시너지 선택:</strong> 카드 아래 <strong>[지휘 · 노련 · 공포 · 치명 · 진화]</strong> 아이콘 중 해금된 시너지를 클릭해 켜두면, 엔진이 해당 카드에 중복 배분까지 포함해 최적 시너지를 자동 조합합니다!
+            </div>
+            <div id="mcard_roster_accordions" class="accordion-group"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -7149,6 +7651,11 @@
             <span>3. 내 현재 특성 (1~4차)</span>
             <span id="diag_tab_badge_trait" class="mini-tag" style="background:#334155; color:#cbd5e1;">미입력</span>
           </button>
+          <button type="button" class="diag-switch-btn" id="diag_sw_mcard" onclick="switchStageDiagTab('mcard')">
+            <img src="images/main_mcard.png" alt="" style="width:20px; height:20px; object-fit:contain;" onerror="this.style.display='none';">
+            <span>4. 내 현재 몬스터 카드</span>
+            <span id="diag_tab_badge_mcard" class="mini-tag" style="background:#334155; color:#cbd5e1;">미입력</span>
+          </button>
         </div>
 
         <!-- 동적 탭 콘텐츠 (룬 / 소울 / 1~4차 특성) -->
@@ -7250,7 +7757,7 @@
   <!-- ==================== 6. 푸터 (길보길 분석실 & 방문자 카운터) ==================== -->
   <footer>
     <div style="margin-bottom: 12px;">
-      소울헌터키우기 네이버 라운지 전용 계산기 v.7.0.0 | 제작: <strong>29서버 겨울눈사람</strong>
+      소울헌터키우기 네이버 라운지 전용 계산기 v.8.0.0 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
       <button type="button" onclick="location.href='guild.html'"
@@ -7311,6 +7818,10 @@
   let currentActiveGuideKey = 'equip';
   let currentGuideOrigin = 'guides'; // 'guides' | 'helpers' (전직 특성 도우미 진입 경로 추적)
 
+  function calcResIcon(file, size = 18) {
+    return `<img src="images/${file}" alt="" style="width:${size}px; height:${size}px; vertical-align:-3.5px; margin-right:4px; border-radius:4px; object-fit:contain; display:inline-block;" onerror="this.style.display='none';">`;
+  }
+  
   function formatKoreanNumber(num) {
     if (!isFinite(num) || num <= 0) return "0";
     if (num < 10000) return Math.round(num).toLocaleString();
@@ -7472,6 +7983,14 @@
       html: `<ol>
         <li>상단 계산기에서 <strong>목표 등급(UR 70점 ~ A 25점)</strong>과 주력 강화 스크롤(15%/40%/70%), 현재 진행 상태를 입력하면 <strong>필요 스크롤 조각 · 회귀 스크롤(흰색) · 증폭 스크롤(보라) 기댓값</strong>을 계산합니다.</li>
         <li>하단 미니게임에서 실제 확률로 7칸 강화·회귀 복구(실패한 ❌ 칸 직접 클릭 가능)·증폭을 미리 체험해 보세요!</li>
+      </ol>`
+    },
+    'tab-mcard': {
+      title: '몬스터 카드 세팅 도우미 v.1.0.0 사용법',
+      html: `<ol>
+        <li>보유 중인 카드(상급~신화 24종)에 <strong>돌파 수(0~10)</strong>를 입력하면 총 몬스터 카드 점수가 자동 합산됩니다.</li>
+        <li>각 카드 하단의 <strong>5종 시너지 아이콘(지휘·노련·공포·치명·진화)</strong> 중 해금된 시너지를 클릭해 켜두세요. (하나만 해금되어도 중복 장착 가능 원리가 자동 반영됩니다!)</li>
+        <li>직업·속성·나리타 3각·하크확 조건에 맞춰 최고 배율 3장 + 최적 시너지 조합이 즉시 추천됩니다.</li>
       </ol>`
     },
     'tab-union': {
@@ -7636,7 +8155,8 @@
   function openDeepCalculator(calcTabId, skipScroll = false) {
     const _ec = document.getElementById("mode_encyclopedia_container"); if (_ec) _ec.style.display = "none";
     const _sd = document.getElementById("mode_stage_diag_container"); if (_sd) _sd.style.display = "none";
-    if (calcTabId !== 'tab-connect' && calcTabId !== 'tab-union') currentMainMode = 'calcs';
+    if (calcTabId !== 'tab-connect' && calcTabId !== 'tab-union' && calcTabId !== 'tab-mcard') currentMainMode = 'calcs';
+    
     document.getElementById("mode_newbie_container").style.display = "none";
     document.getElementById("mode_guides_container").style.display = "none";
     document.getElementById("mode_deep_container").style.display = "block";
@@ -7647,7 +8167,7 @@
     floatBtn.style.display = "flex";
     document.getElementById("floating_guide_btn").style.display = "flex";
     document.getElementById("floating_back_text").innerText =
-      (calcTabId === 'tab-connect' || calcTabId === 'tab-union') ? "도우미 모음으로 돌아가기" : "계산기 메뉴로 돌아가기";
+      (calcTabId === 'tab-connect' || calcTabId === 'tab-union' || calcTabId === 'tab-mcard') ? "도우미 모음으로 돌아가기" : "계산기 메뉴로 돌아가기";
 
     const labelMap = {
       'tab-growth-calc': '전직·드래곤·수호신',
@@ -7658,6 +8178,7 @@
       'tab-ability': '어빌리티',
       'tab-enchant': '심연장비 인챈트',
       'tab-connect': '소울커넥트 도우미',
+      'tab-mcard': '몬스터 카드 도우미',
       'tab-union': '유니온 도우미'
     };
     setFloatingGuideContext(calcTabId, labelMap[calcTabId] || '계산기');
@@ -7697,6 +8218,8 @@
       switchUnionType(currentUnionType || 'skill');
     }
     else if (calcTabId === 'tab-enchant') { initEnchantSystemUI(); }
+    else if (calcTabId === 'tab-mcard') { renderMcardAll(); }
+    else if (calcTabId === 'tab-refine') { initRefSimUI(); }
   }
 
   function handleFloatingBack() {
@@ -7929,7 +8452,9 @@
         trait2SealAwk65,
         trait2Job1Lv80,
         currentUnionStageIdx,
-        stageDiagState
+        stageDiagState,
+        mcardUserSpecs,
+        mcardCondState
       };
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -7981,6 +8506,8 @@
       if (typeof state.trait2SealAwk65 === 'boolean') trait2SealAwk65 = state.trait2SealAwk65;
       if (typeof state.trait2Job1Lv80 === 'boolean') trait2Job1Lv80 = state.trait2Job1Lv80;
       if (state.stageDiagState) stageDiagState = mergeDefaultStageDiagState(state.stageDiagState);
+      if (state.mcardUserSpecs) mcardUserSpecs = state.mcardUserSpecs;
+      if (state.mcardCondState) mcardCondState = { ...mcardCondState, ...state.mcardCondState };
 
       if (state.inputs) {
         Object.keys(state.inputs).forEach(id => {
@@ -8100,6 +8627,8 @@
     if (document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
     calculateBestConnectLoadout();
     if (document.getElementById('tab-union')?.style.display !== 'none') renderUnionAll();
+    if (typeof calculateBestMcardLoadout === 'function') calculateBestMcardLoadout();
+    if (document.getElementById('tab-mcard')?.style.display !== 'none' && typeof renderMcardAll === 'function') renderMcardAll();
     
     if (document.getElementById('guides_detail_view')?.style.display !== 'none') renderBuildGuideContent();
     if (document.getElementById('master_inv_modal_overlay')?.style.display === 'flex') refreshMasterInventoryModalUI();
@@ -8131,6 +8660,8 @@
     currentConnectStageSlots = 6;
     trait2SealAwk65 = true;
     stageDiagState = createDefaultStageDiagState();
+    mcardUserSpecs = {};
+    mcardCondState = { narita3: false, hcrit: false, idealSyn: false, jobTier: 3, chap: 800, scoreOverride: '' };
 
     if (!skipRender) refreshAllActiveViews();
   }
@@ -8253,6 +8784,8 @@
     if (solSel && solar.found && solar.owned) solSel.value = solar.brk >= 9 ? '1' : '0';
     const wavSel = document.getElementById('rune_cond_bleed');
     if (wavSel && wave.found && wave.owned) wavSel.value = '1';
+    const narita = getUnionSpecByName('hero', '나리타');
+    if (narita && narita.found && narita.owned && typeof mcardCondState !== 'undefined') mcardCondState.narita3 = (narita.awk >= 3);
   }
 
   function syncSoulConnectJobLv() {
@@ -8266,6 +8799,8 @@
       else if (lv2 > 1) scJobLvEl.value = '2';
       else if (lv1 >= 1) scJobLvEl.value = '1';
     }
+    if (typeof mcardCondState !== 'undefined') mcardCondState.jobTier = lv3 >= 1 ? 3 : (lv2 >= 1 ? 2 : (lv1 >= 1 ? 1 : 0));
+    if (typeof calculateBestMcardLoadout === 'function') calculateBestMcardLoadout();
     calculateBestConnectLoadout();
   }
 
@@ -8580,6 +9115,10 @@
           <div><div style="font-size:13px; font-weight:900; color:#d1fae5;">⚔️ 전직 · 드래곤 · 수호신 계산기</div><div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">1차 Lv.${j1} · 2차 Lv.${j2} · 3차 Lv.${j3} · 4차 Lv.${j4} · 용 Lv.${dr}</div></div>
           <span style="color:#34d399; font-weight:900; font-size:12px;">이동 ➔</span>
         </div>
+        <div onclick="closeMasterInventoryModal(); switchMainMode('helpers'); openDeepCalculator('tab-mcard');" style="grid-column:1/-1; background:#131d33; border:1.5px solid #fb923c; border-radius:10px; padding:10px 12px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+          <div><div style="font-size:13px; font-weight:900; color:#ffedd5;">🃏 몬스터 카드 보유 도감 (상급~신화 24종)</div><div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">보유 <strong style="color:#fde047;">${Object.keys(mcardUserSpecs || {}).length}종</strong> · 자동 합산 카드 점수 <strong style="color:#6ee7b7;">${getMcardAutoTotalScore()}점</strong></div></div>
+          <span style="color:#fb923c; font-weight:900; font-size:12px;">편집 ➔</span>
+        </div>
       `;
     }
     if (currentMasterInvTab !== 'summary') renderMasterInvInlineEditor();
@@ -8592,6 +9131,7 @@
     const msgEl = document.getElementById('master_code_status_msg');
     if (msgEl) msgEl.innerText = '';
     document.getElementById('master_inv_modal_overlay').style.display = 'flex';
+    
   }
 
   function closeMasterInventoryModal() {
@@ -8722,6 +9262,8 @@
           </div>`;
         }).join('')}</div></div>`;
     }
+
+    if (currentMasterInvTab === 'mcard') { renderMasterInvMcardEditor(edBox); return; }
   }
 
   function clearMasterSpecCodeBox() {
@@ -8825,6 +9367,8 @@
     const compactDiag = (typeof packStageDiagForCode === 'function') ? packStageDiagForCode(s300.stageDiagState, runeIdxMap) : null;
     return {
       dg: compactDiag,
+      mc: s300.mcardUserSpecs || {},
+      mcc: s300.mcardCondState || null,
       t2f: [s300.trait2SealAwk65 ?? true, s300.trait2Job1Lv80 ?? false],
       gm: compactGems,
       sn: slotName || '계정',
@@ -8877,8 +9421,10 @@
       currentUnionStageIdx: cs.us ?? 0,
       trait2SealAwk65: Array.isArray(cs.t2f) ? Boolean(cs.t2f[0]) : true,
       trait2Job1Lv80: Array.isArray(cs.t2f) ? Boolean(cs.t2f[1]) : false,
-      stageDiagState: (typeof unpackStageDiagFromCode === 'function' && cs.dg) ? unpackStageDiagFromCode(cs.dg) : createDefaultStageDiagState()
-   };
+      stageDiagState: (typeof unpackStageDiagFromCode === 'function' && cs.dg) ? unpackStageDiagFromCode(cs.dg) : createDefaultStageDiagState(),
+      mcardUserSpecs: cs.mc || {},
+      mcardCondState: cs.mcc || { narita3: false, hcrit: false, idealSyn: false, jobTier: 3, chap: 800, scoreOverride: '' }
+    };
     const union = {
       unionUserSpecs: unionSpecsObj,
       currentUnionStageIdx: cs.us ?? 0,
@@ -9225,6 +9771,8 @@
       calculateBestRuneLoadout();
       if (document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
       calculateBestConnectLoadout();
+      if (typeof calculateBestMcardLoadout === 'function') calculateBestMcardLoadout();
+      if (document.getElementById('tab-mcard')?.style.display !== 'none' && typeof renderMcardAll === 'function') renderMcardAll();
       if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
       if (document.getElementById('mode_stage_diag_container')?.style.display === 'block') renderStageDiagAll();
       triggerAutoSave();
@@ -9256,6 +9804,8 @@
       calculateBestRuneLoadout();
       if (document.getElementById('tab-connect')?.style.display !== 'none') renderConnectAccordions();
       calculateBestConnectLoadout();
+      if (typeof calculateBestMcardLoadout === 'function') calculateBestMcardLoadout();
+      if (document.getElementById('tab-mcard')?.style.display !== 'none' && typeof renderMcardAll === 'function') renderMcardAll();
       if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
       if (document.getElementById('mode_stage_diag_container')?.style.display === 'block') renderStageDiagAll();
       triggerAutoSave();
@@ -9684,7 +10234,7 @@
   const REFINE_STONE_COSTS = {
     scythe:    { 0:5000, 1:6250, 2:7500, 3:8750, 4:12500, 5:12500, 6:13750, 7:16250, 8:20000, 9:25000, 10:25000, 11:31250, 12:37500, 13:37500, 14:47500, 15:50000, 16:52500, 17:55000 },
     orb:       { 0:5000, 1:6250, 2:7500, 3:8750, 4:12500, 5:12500, 6:13750, 7:16250, 8:20000, 9:25000, 10:25000, 11:31250, 12:37500, 13:37500, 14:43750, 15:50000, 16:52500, 17:52500 },
-    accessory: { 0:7500, 1:9375, 2:11250, 3:13125, 4:18750, 5:18750, 6:20625, 7:24375, 8:30000, 10:37500, 12:56250, 13:56250, 14:65625, 15:75000, 16:78750, 17:82500 }
+    accessory: { 0:7500, 1:9375, 2:11250, 3:13125, 4:18750, 5:18750, 6:20625, 7:24375, 8:30000, 9:37500, 10:37500, 11:46875, 12:56250, 13:56250, 14:65625, 15:75000, 16:78750, 17:82500 }
   };
 
   function selectRefineEquip(eqType, skipAutoLv = false) {
@@ -9734,7 +10284,7 @@
     const mult = (currentRefineRes === 'dia' ? 100 : 1) * (safeMode ? 2 : 1);
     const stoneIconHtml = currentRefineRes === 'stone'
       ? `<img src="images/eternity_stone.png" alt="영원의돌" style="width:16px; height:16px; vertical-align:middle; margin-right:4px; object-fit:contain;" onerror="this.onerror=null; this.src='images/eternity_stone.PNG'; this.onerror=function(){this.style.display='none';};">`
-      : `💎 `;
+      : calcResIcon('res_blue_dia.png', 16);
 
     document.getElementById("ref_table_header_title").innerText = `📊 [${eqKr}] 연마 단계별 공식 확률 & 소모 재화표`;
     document.getElementById("ref_table_badge").innerText = `${resKr} 기준 ${safeMode ? '(하락방지 ×2배 반영)' : '(일반 1배)'}`;
@@ -9766,7 +10316,7 @@
     const eqKr = currentRefineEquip === 'scythe' ? '영원 대낫' : (currentRefineEquip === 'orb' ? '영원 오브' : '영원 장식');
     const resIconHtml = currentRefineRes === 'stone'
       ? `<img src="images/eternity_stone.png" alt="영원의돌" style="width:24px; height:24px; vertical-align:middle; margin-right:5px; object-fit:contain;" onerror="this.onerror=null; this.src='images/eternity_stone.PNG'; this.onerror=function(){this.style.display='none';};">영원의 돌`
-      : `💎 블루 다이아`;
+      :`${calcResIcon('res_blue_dia.png', 22)}블루 다이아`;
 
     document.getElementById("ref_dash_title").innerText = `[${eqKr}] Lv.${cur} ➔ Lv.${tar} 평균 연마 기댓값`;
     const costBox = document.getElementById("ref_expected_cost_box");
@@ -10004,7 +10554,7 @@
     61:1250000, 62:1500000, 63:1750000, 64:2000000, 65:2250000, 66:2500000, 67:2750000, 68:3000000, 69:3250000, 70:3500000,
     71:4000000, 72:4500000, 73:5000000, 74:5500000, 75:6000000, 76:6500000, 77:7000000, 78:7500000, 79:8000000, 80:8500000,
     81:9000000, 82:9500000, 83:10000000, 84:11000000, 85:12000000, 86:13000000, 87:14000000, 88:15000000, 89:16000000, 90:17000000,
-    91:18000000, 92:19000000, 93:20000000, 94:21000000, 95:22000000, 96:23000000, 97:24000000, 98:25000000, 99:26000000, 100:27000000, 101:28000000
+    91:18000000, 92:19000000, 93:20000000, 94:21000000, 95:22000000, 96:23000000, 97:24000000, 98:25000000, 99:26000000, 100:30000000
   };
 
   const JOB2_COST_TABLE = {
@@ -10166,7 +10716,8 @@
       }
       return `<table class="custom-table" style="font-size:13px;"><thead><tr><th>레벨 구간</th><th>필요 ${unitName}</th><th>Lv.${startLv}부터 누적 합계</th></tr></thead><tbody>${rows}</tbody></table>`;
     };
-    document.getElementById('jc1_table_container').innerHTML = buildTable(JOB1_COST_TABLE, 101, '시련의 정수');
+    document.getElementById('jc1_table_container').innerHTML = buildTable(JOB1_COST_TABLE, 100, '시련의 정수')
+      .replace('</tbody>', '<tr><td style="font-weight:700; color:#94a3b8;">Lv.101 ➔ Lv.102+</td><td style="color:#f87171; font-weight:800;">데이터 없음</td><td style="color:#64748b;">-</td></tr></tbody>');
     document.getElementById('jc2_table_container').innerHTML = buildTable(JOB2_COST_TABLE, 103, '극한의 정수');
     document.getElementById('jc3_table_container').innerHTML = buildTable(JOB3_COST_TABLE, 44, '절망의 정수');
     const jc4Tbl = document.getElementById('jc4_table_container');
@@ -10188,26 +10739,37 @@
       return;
     }
 
-    let totalNeed = 0;
-    for (let lv = curLv; lv < tarLv; lv++) totalNeed += (costTable[lv] || 0);
+    let totalNeed = 0, hasMissingData = false;
+    for (let lv = curLv; lv < tarLv; lv++) {
+      if (costTable[lv] === undefined) { hasMissingData = true; break; }
+      totalNeed += costTable[lv];
+    }
+    if (hasMissingData) {
+      resBox.innerHTML = `<div class="result-dashboard" style="border-color:#ef4444;"><div class="res-label" style="color:#fca5a5;">[Lv.${curLv} ➔ Lv.${tarLv}] 미확인 구간 포함</div><div class="res-value" style="font-size:24px; color:#f87171;">데이터 없음</div><div style="font-size:13px; color:#cbd5e1;">현재 공식 데이터가 확인된 최대 구간을 초과했습니다. 목표 레벨을 낮춰서 계산해 주세요.</div></div>`;
+      return;
+    }
     const netNeed = Math.max(0, totalNeed - holdEss);
     const towerKeys = Math.ceil(netNeed / towerRew);
     const treasKeys = Math.ceil(netNeed / treasRew);
 
+    const essIcon = prefix === 'jc1' ? calcResIcon('res_ess_job1.png', 24) : (prefix === 'jc2' ? calcResIcon('res_ess_job2.png', 24) : '');
+    const towerIcon = prefix === 'jc4' ? calcResIcon('res_key_job4.png', 18) : '';
+    const treasIcon = prefix === 'jc1' ? calcResIcon('res_key_treasure1.png', 18) : (prefix === 'jc2' ? calcResIcon('res_key_treasure2.png', 18) : '');
+
     const keyCardsHtml = hasTreasureDungeon
       ? `<div class="grid-2" style="margin-top:14px; text-align:center;">
-          <div style="background:rgba(15,23,42,0.85); border:1.5px solid ${colorHex}; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#cbd5e1; font-weight:800;">[${towerName}] 열쇠로만 파밍 시</div><div style="font-size:26px; font-weight:900; color:${colorHex}; margin:6px 0;">${towerKeys.toLocaleString()}개</div><div style="font-size:12px; color:#94a3b8;">(1회당 ${towerRew.toLocaleString()}개 획득 기준)</div></div>
-          <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#fde68a; font-weight:800;">[${treasName}] 열쇠로만 파밍 시</div><div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${treasKeys.toLocaleString()}개</div><div style="font-size:12px; color:#94a3b8;">(1회당 ${treasRew.toLocaleString()}개 획득 기준)</div></div>
+          <div style="background:rgba(15,23,42,0.85); border:1.5px solid ${colorHex}; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#cbd5e1; font-weight:800;">${towerIcon}[${towerName}] 열쇠로만 파밍 시</div><div style="font-size:26px; font-weight:900; color:${colorHex}; margin:6px 0;">${towerKeys.toLocaleString()}개</div><div style="font-size:12px; color:#94a3b8;">(1회당 ${towerRew.toLocaleString()}개 획득 기준)</div></div>
+          <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#fde68a; font-weight:800;">${treasIcon}[${treasName}] 열쇠로만 파밍 시</div><div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${treasKeys.toLocaleString()}개</div><div style="font-size:12px; color:#94a3b8;">(1회당 ${treasRew.toLocaleString()}개 획득 기준)</div></div>
         </div>`
       : `<div style="margin-top:14px; background:rgba(15,23,42,0.85); border:1.5px solid ${colorHex}; border-radius:12px; padding:16px; text-align:center;">
-          <div style="font-size:13.5px; color:${colorHex}; font-weight:800;">[${towerName}] 필요 열쇠 수 (단독 수급처)</div>
+          <div style="font-size:13.5px; color:${colorHex}; font-weight:800;">${towerIcon}[${towerName}] 필요 열쇠 수 (단독 수급처)</div>
           <div style="font-size:28px; font-weight:900; color:${colorHex}; margin:6px 0;">${towerKeys.toLocaleString()}개</div>
           <div style="font-size:12px; color:#94a3b8;">(${towerName} 소탕 1회당 ${towerRew.toLocaleString()}개 획득 기준)</div>
         </div>`;
 
     resBox.innerHTML = `<div class="result-dashboard">
       <div class="res-label">[Lv.${curLv} ➔ Lv.${tarLv}] 목표 달성까지 부족한 ${essName}</div>
-      <div class="res-value" style="color:${colorHex};">${formatKoreanNumber(netNeed)}개 <small style="font-size:16px; color:#cbd5e1;">(${netNeed.toLocaleString()}개)</small></div>
+      <div class="res-value" style="color:${colorHex};">${essIcon}${formatKoreanNumber(netNeed)}개 <small style="font-size:16px; color:#cbd5e1;">(${netNeed.toLocaleString()}개)</small></div>
       <div style="font-size:13.5px; color:#94a3b8; margin-bottom:10px;">구간 총 필요량: <strong style="color:#ffffff;">${totalNeed.toLocaleString()}개</strong> (${formatKoreanNumber(totalNeed)}) | 현재 보유: <strong style="color:#34d399;">${holdEss.toLocaleString()}개</strong></div>
       ${keyCardsHtml}
     </div>`;
@@ -10264,7 +10826,9 @@
     const dLabel = document.getElementById('grd_dungeon_input_label');
     const tLabel = document.getElementById('grd_treas2_input_label');
     if (dLabel) dLabel.innerHTML = mode === 'scroll' ? '🏛️ 수호신의 던전 1회(소탕권 1개)당 획득 강화서' : '🏛️ 수호신의 던전 1회(소탕권 1개)당 획득 수호신의 증표';
-    if (tLabel) tLabel.innerHTML = mode === 'scroll' ? '🗝️ 보물던전 2 1회(열쇠 1개)당 획득 강화서' : '🗝️ 보물던전 2 1회(열쇠 1개)당 획득 수호신의 증표';
+    if (tLabel) tLabel.innerHTML = mode === 'scroll'
+      ? `${calcResIcon('res_key_treasure2.png', 17)}보물던전 2 1회(열쇠 1개)당 획득 강화서`
+      : `${calcResIcon('res_key_treasure2.png', 17)}보물던전 2 1회(열쇠 1개)당 획득 수호신의 증표`;
     renderGuardianReferenceTable();
     calculateGuardianAll();
     if (!skipSave) triggerAutoSave();
@@ -10287,11 +10851,11 @@
       const netToken = Math.max(0, needTokenSum - holdToken);
       resBox.innerHTML = `<div class="result-dashboard green">
         <div class="res-label">🛡️ 수호신 [${curBrk}돌파 ➔ ${tarBrk}돌파] 필요 수호신 <strong style="color:#fde047;">총 ${needUnitsSum}개</strong> 구매 비용</div>
-        <div class="res-value" style="color:#34d399;">${formatKoreanNumber(netToken)} 증표 <small style="font-size:16px; color:#cbd5e1;">(${netToken.toLocaleString()}개)</small></div>
+        <div class="res-value" style="color:#34d399;">${calcResIcon('res_guardian_token.png', 28)}${formatKoreanNumber(netToken)} <small style="font-size:16px; color:#cbd5e1;">(${netToken.toLocaleString()}개)</small></div>
         <div style="font-size:13.5px; color:#d1fae5; margin-bottom:12px;">구간 총 필요 증표: <strong>${needTokenSum.toLocaleString()}개</strong> | 현재 보유 증표: <strong>${holdToken.toLocaleString()}개</strong></div>
         <div class="grid-2" style="text-align:center;">
           <div style="background:rgba(15,23,42,0.85); border:1.5px solid #10b981; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#a7f3d0; font-weight:800;">🏛️ [수호신의 던전] 소탕권 필요량</div><div style="font-size:26px; font-weight:900; color:#34d399; margin:6px 0;">${Math.ceil(netToken / dungeonRew).toLocaleString()}장</div><div style="font-size:12px; color:#94a3b8;">(소탕권 1장당 ${dungeonRew.toLocaleString()} 증표)</div></div>
-          <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#fde68a; font-weight:800;">🗝️ [보물던전 2] 열쇠 필요량</div><div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${Math.ceil(netToken / treas2Rew).toLocaleString()}개</div><div style="font-size:12px; color:#94a3b8;">(열쇠 1개당 ${treas2Rew.toLocaleString()} 증표)</div></div>
+          <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#fde68a; font-weight:800;">${calcResIcon('res_key_treasure2.png', 17)}[보물던전 2] 열쇠 필요량</div><div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${Math.ceil(netToken / treas2Rew).toLocaleString()}개</div><div style="font-size:12px; color:#94a3b8;">(열쇠 1개당 ${treas2Rew.toLocaleString()} 증표)</div></div>
         </div>
       </div>`;
     } else if (currentGuardianMode === 'potential') {
@@ -10308,12 +10872,12 @@
       const packsToBuy = Math.ceil(netStones / 10000);
       resBox.innerHTML = `<div class="result-dashboard">
         <div class="res-label">🔥 수호신 잠재능력 [Lv.${curLv} ➔ Lv.${tarLv}] (등불 9개 전체 기준)</div>
-        <div class="res-value" style="color:#fde047;">잠재 강화석 ${netStones.toLocaleString()}개</div>
-        <div style="font-size:16px; font-weight:900; color:#34d399; margin-bottom:10px;">🛡️ 상점 구매 환산: 추가 필요 증표 <span style="color:#ffffff; font-size:20px;">${netTokensAfterHold.toLocaleString()}개</span> <small style="color:#a7f3d0;">(1만개 묶음 ${packsToBuy}회 = ${(packsToBuy * 25000).toLocaleString()} 증표)</small></div>
+        <div class="res-value" style="color:#fde047;">${calcResIcon('res_guardian_pot.png', 28)}잠재 강화석 ${netStones.toLocaleString()}개</div>
+        <div style="font-size:16px; font-weight:900; color:#34d399; margin-bottom:10px;">${calcResIcon('res_guardian_token.png', 20)}상점 구매 환산: 추가 필요 증표 <span style="color:#ffffff; font-size:20px;">${netTokensAfterHold.toLocaleString()}개</span> <small style="color:#a7f3d0;">(1만개 묶음 ${packsToBuy}회 = ${(packsToBuy * 25000).toLocaleString()} 증표)</small></div>
         ${tarRow ? `<div style="font-size:12.5px; color:#cbd5e1; margin-bottom:12px;">✨ Lv.${tarLv} 달성 시 총 효과: 공격력 <strong style="color:#38bdf8;">+${tarRow.atkPct}%</strong> · 공증 <strong style="color:#f472b6;">+${tarRow.ampPct.toLocaleString()}%</strong> (최종 <strong style="color:#fde047;">${tarRow.mult}배</strong>)</div>` : ''}
         <div class="grid-2" style="text-align:center;">
           <div style="background:rgba(15,23,42,0.85); border:1.5px solid #10b981; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#a7f3d0; font-weight:800;">🏛️ [수호신의 던전] 소탕권 필요량</div><div style="font-size:26px; font-weight:900; color:#34d399; margin:6px 0;">${Math.ceil(netTokensAfterHold / dungeonRew).toLocaleString()}장</div></div>
-          <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#fde68a; font-weight:800;">🗝️ [보물던전 2] 열쇠 필요량</div><div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${Math.ceil(netTokensAfterHold / treas2Rew).toLocaleString()}개</div></div>
+          <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#fde68a; font-weight:800;">${calcResIcon('res_key_treasure2.png', 17)}[보물던전 2] 열쇠 필요량</div><div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${Math.ceil(netTokensAfterHold / treas2Rew).toLocaleString()}개</div></div>
         </div>
       </div>`;
     } else {
@@ -10333,7 +10897,7 @@
         <div style="font-size:13.5px; color:#94a3b8; margin-bottom:12px;">구간 총 필요 강화서: <strong style="color:#ffffff;">${totalScrolls.toLocaleString()}개</strong> | 현재 보유: <strong style="color:#34d399;">${holdScr.toLocaleString()}개</strong></div>
         <div class="grid-2" style="text-align:center;">
           <div style="background:rgba(15,23,42,0.85); border:1.5px solid #38bdf8; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#7dd3fc; font-weight:800;">🏛️ [수호신의 던전] 소탕권 필요량</div><div style="font-size:26px; font-weight:900; color:#38bdf8; margin:6px 0;">${Math.ceil(netScrolls / dungeonRew).toLocaleString()}장</div></div>
-          <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#fde68a; font-weight:800;">🗝️ [보물던전 2] 열쇠 필요량</div><div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${Math.ceil(netScrolls / treas2Rew).toLocaleString()}개</div></div>
+          <div style="background:rgba(15,23,42,0.85); border:1.5px solid #fbbf24; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#fde68a; font-weight:800;">${calcResIcon('res_key_treasure2.png', 17)}[보물던전 2] 열쇠 필요량</div><div style="font-size:26px; font-weight:900; color:#fde047; margin:6px 0;">${Math.ceil(netScrolls / treas2Rew).toLocaleString()}개</div></div>
         </div>
       </div>`;
     }
@@ -10864,7 +11428,7 @@
       resBox.innerHTML = `<div class="result-dashboard">
         <div class="res-label">목표 달성까지 남은 예상 장비 소환 횟수 (인벤토리 합성 반영: 현재 ${progressPct}%)</div>
         <div class="res-value">${rawPulls.toLocaleString()}회</div>
-        <div style="margin-bottom:10px; font-size:18px; font-weight:800; color:#fde047;">💎 예상 소모 블루 다이아 (1만뽑당 500장 환급 반영): 약 ${formatKoreanNumber(totalDia)}개</div>
+        <div style="margin-bottom:10px; font-size:18px; font-weight:800; color:#fde047;">${calcResIcon('res_blue_dia.png', 20)}예상 소모 블루 다이아 (1만뽑당 500장 환급 반영): 약 ${formatKoreanNumber(totalDia)}개</div>
         <div class="res-sub"><span>실제 과금/소모 소환 수: <strong>${netPulls.toLocaleString()}회</strong></span><span>|</span><span>현재 인벤토리 달성률: <strong style="color:#34d399;">${progressPct}%</strong></span></div>
       </div>`;
       return;
@@ -10879,6 +11443,7 @@
     const poolSize = ((SUMMON_ITEMS[currentNewbieCat] || {})[grade] || []).length || 1;
     const costUnit = currentNewbieCat === 'hero' ? 500 : 200;
     const resName = currentNewbieCat === 'spirit' ? '정령석' : '블루 다이아';
+    const resIconHtml = calcResIcon(currentNewbieCat === 'spirit' ? 'res_spirit_stone.png' : 'res_blue_dia.png', 17);
     const singleNormalProb = rProb / poolSize;
     const normalPulls = singleNormalProb > 0 ? Math.ceil(needCnt / singleNormalProb) : 0;
 
@@ -10888,15 +11453,15 @@
       resBox.innerHTML = `<div class="result-dashboard">
         <div class="res-label">[${selectedTargetItem.name}] 부족 수량 ${needCnt}장 획득 기댓값 (픽업 vs 통상 비교)</div>
         <div class="grid-2" style="margin-top:12px; text-align:center;">
-          <div style="background:rgba(16,185,129,0.15); border:1.5px solid #10b981; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#6ee7b7; font-weight:800;">🌟 픽업 소환 시 ${currentNewbieCat !== 'spirit' ? '(0.1% + 1만뽑당 15장)' : '(0.1% 고정)'}</div><div style="font-size:26px; font-weight:900; color:#34d399; margin:6px 0;">${pickupPulls.toLocaleString()}회</div><div style="font-size:14.5px; color:#fde047; font-weight:800;">필요 ${resName}: 약 ${formatKoreanNumber(pickupPulls * costUnit)}개</div></div>
-          <div style="background:rgba(244,63,94,0.12); border:1.5px solid #f43f5e; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#fda4af; font-weight:800;">🎲 상시(통상) 소환 시 (${poolSize}종 균등)</div><div style="font-size:26px; font-weight:900; color:#fb7185; margin:6px 0;">${normalPulls > 0 ? normalPulls.toLocaleString() + '회' : '소환 불가(0%)'}</div><div style="font-size:14.5px; color:#cbd5e1; font-weight:800;">필요 ${resName}: ${normalPulls > 0 ? '약 ' + formatKoreanNumber(normalPulls * costUnit) + '개' : '-'}</div></div>
+          <div style="background:rgba(16,185,129,0.15); border:1.5px solid #10b981; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#6ee7b7; font-weight:800;">🌟 픽업 소환 시 ${currentNewbieCat !== 'spirit' ? '(0.1% + 1만뽑당 15장)' : '(0.1% 고정)'}</div><div style="font-size:26px; font-weight:900; color:#34d399; margin:6px 0;">${pickupPulls.toLocaleString()}회</div><div style="font-size:14.5px; color:#fde047; font-weight:800;">필요 ${resIconHtml}${resName}: 약 ${formatKoreanNumber(pickupPulls * costUnit)}개</div></div>
+          <div style="background:rgba(244,63,94,0.12); border:1.5px solid #f43f5e; border-radius:12px; padding:14px;"><div style="font-size:13px; color:#fda4af; font-weight:800;">🎲 상시(통상) 소환 시 (${poolSize}종 균등)</div><div style="font-size:26px; font-weight:900; color:#fb7185; margin:6px 0;">${normalPulls > 0 ? normalPulls.toLocaleString() + '회' : '소환 불가(0%)'}</div><div style="font-size:14.5px; color:#cbd5e1; font-weight:800;">필요 ${resIconHtml}${resName}: ${normalPulls > 0 ? '약 ' + formatKoreanNumber(normalPulls * costUnit) + '개' : '-'}</div></div>
         </div>
       </div>`;
     } else {
       resBox.innerHTML = `<div class="result-dashboard">
         <div class="res-label">[${selectedTargetItem.name}] 부족 수량 ${needCnt}장 통상 소환 기댓값 (${poolSize}종 균등)</div>
         <div class="res-value">${rProb > 0 ? normalPulls.toLocaleString() + '회' : '현재 소환레벨 등장 불가(0%)'}</div>
-        <div style="margin-bottom:8px; font-size:18px; font-weight:800; color:#fde047;">필요 ${resName}: ${rProb > 0 ? '약 ' + formatKoreanNumber(normalPulls * costUnit) + '개' : '-'}</div>
+        <div style="margin-bottom:8px; font-size:18px; font-weight:800; color:#fde047;">필요 ${resIconHtml}${resName}: ${rProb > 0 ? '약 ' + formatKoreanNumber(normalPulls * costUnit) + '개' : '-'}</div>
         <div class="res-sub"><span>단일 저격 확률: <strong>${(singleNormalProb * 100).toFixed(5)}%</strong></span><span>|</span><span>필요 추가 장수: <strong>${needCnt}장</strong></span></div>
       </div>`;
     }
@@ -11136,7 +11701,7 @@
     { id:"imm_em_jeoljeong", tier:"immortal", part:"emblem", name:"절정", mult:450001, desc:"레벨 25,000 달성 시 불멸룬 공증 총 +45,000,000% (45만 배)", cond:"레벨 25,000 달성" },
     { id:"imm_em_golem", tier:"immortal", part:"emblem", name:"골렘화", mult:450001, desc:"룬골렘 변신, 불멸룬 공증 +45,000,000% (45만 배)", cond:"룬던전 결계석 체력 1 고정" },
     { id:"imm_em_day", tier:"immortal", part:"emblem", name:"영원의 순환:낮", mult:1, soloMult:2500001, pairWithAbyss:"imm_ab_night", pairMult:37500001, desc:"'영원의 순환:밤' 장착 시 영구 지속 모든 피해량 총 +3,750,000,000% (단독 사용 시 5초 제한)", cond:"심연장식 '영원의 순환:밤'과 세트 필수" },
-    { id:"imm_em_boseok", tier:"immortal", part:"emblem", name:"보석학", mult:22500001, desc:"고대 보석 15개 장착 시 불멸 룬 공격력 증폭 총 +2,250,000,000% (2,250만 배!)", cond:"소울커넥트 고대 보석 15개 장착" },
+    { id:"imm_em_boseok", tier:"immortal", part:"emblem", name:"보석학", mult:135000001, desc:"고대 보석 5개(+30억%) / 10개(+60억%) / 15개(+125% 추가 ➔ 135억%+, 15개 시 낮+밤 역전!)", cond:"소울커넥트 고대 보석 5/10/15개 장착 (코어 아님)" },
     { id:"imm_em_samsingi", tier:"immortal", part:"emblem", name:"삼신기", mult:1500001, desc:"영원 대낫/오브/장식 보유 1개당 불멸룬 공증 5천만% (3개 시 150만 배)", cond:"영원 무기 3종 보유" },
     { id:"imm_em_wonron", tier:"immortal", part:"emblem", name:"원론", mult:1200001, desc:"장착 고대 패시브 돌파 40 이상 시 불멸룬 공증 총 +120,000,000% (120만 배)", cond:"고대 패시브 돌파 합 40 이상" },
     { id:"imm_em_myeongseong", tier:"immortal", part:"emblem", name:"명성", mult:750001, desc:"불멸 등급 이상 칭호 장착 시 불멸룬 공증 +75,000,000% (75만 배)", cond:"불멸 칭호 장착" },
@@ -11385,6 +11950,7 @@
       starGaho: parseInt(document.getElementById('rc_star_gaho')?.value ?? '40', 10),
       moonGaho: parseInt(document.getElementById('rc_moon_gaho')?.value ?? '30', 10),
       ancGem: parseInt(document.getElementById('rc_anc_gem')?.value ?? '15', 10),
+      ancCore: parseInt(document.getElementById('rc_anc_core')?.value ?? '3', 10),
       ancPassive: document.getElementById('rc_anc_passive')?.value ?? 'both',
       refScytheLv: sLv, refOrbLv: oLv, refAccLv: aLv,
       eternalWeapCnt: [sLv, oLv, aLv].filter(v => v >= 0).length,
@@ -11436,8 +12002,13 @@
       const m = r.mult || 1;
       return ctx.charLv >= 25000 ? m : (ctx.charLv >= 24000 ? Math.round(m * 0.66) : (ctx.charLv >= 22000 ? Math.round(m * 0.33) : Math.round(m * 0.15)));
     }
-    if (r.id === 'imm_em_boseok' && ctx.ancGem < 15) return 1500001;
-    if (['anc_wp_jangjeon','ete_wp_jangjeon','imm_wp_jangjeon'].includes(r.id) && ctx.ancGem < 3) return 0;
+    if (r.id === 'imm_em_boseok') {
+      if (ctx.ancGem >= 15) return 135000001; // 60억% × 2.25(+125% 추가) = 135억% (1.35억 배)
+      if (ctx.ancGem >= 10) return 60000001;  // 60억% (6,000만 배)
+      if (ctx.ancGem >= 5)  return 30000001;  // 30억% (3,000만 배)
+      return 1;                               // 5개 미만 미발동
+    }
+    if (['anc_wp_jangjeon','ete_wp_jangjeon','imm_wp_jangjeon'].includes(r.id) && ctx.ancCore < 3) return 0;
     if (r.id === 'imm_em_wonron' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'brk40') return 600001;
     if (r.id === 'imm_ab_geukhan' && ctx.ancPassive !== 'both' && ctx.ancPassive !== 'awk6') return 400001;
     if (r.id === 'imm_em_samsingi') return ctx.eternalWeapCnt <= 0 ? 300001 : (1 + ctx.eternalWeapCnt * 500000);
@@ -11677,31 +12248,53 @@
     return (1 + atkSum / 100) * dmgProduct;
   }
 
-  function findBestWeapon3(ownedWeapons) {
-    if (ownedWeapons.length === 0) return { slots: [null, null, null], mult: 1 };
+  function findBestWeapon3(ownedWeapons, unlockedFlags = [true, true, true]) {
+    const openIndices = [];
+    unlockedFlags.forEach((isOpen, idx) => { if (isOpen) openIndices.push(idx); });
+    const kMax = openIndices.length;
+    if (kMax === 0 || ownedWeapons.length === 0) {
+      return { slots: [null, null, null], mult: 1, unlockedFlags };
+    }
+
     const bestByName = new Map();
     ownedWeapons.forEach(w => {
       const sc = getEffectiveRuneValue(w, new Set()) * (w.wCat === 'dmg' ? 1000 : 1);
       if (!bestByName.has(w.name) || sc > bestByName.get(w.name).sc) bestByName.set(w.name, { rune: w, sc });
     });
     const uniqueWeaps = Array.from(bestByName.values()).map(x => x.rune);
-    const source = uniqueWeaps.length >= 3 ? uniqueWeaps : ownedWeapons;
-    const allowDup = uniqueWeaps.length < 3;
-    if (source.length <= 3) return { slots: [source[0]||null, source[1]||null, source[2]||null], mult: Math.max(1, evaluateWeaponCombo(source, true)) };
+    const source = uniqueWeaps.length >= kMax ? uniqueWeaps : ownedWeapons;
+    const allowDup = uniqueWeaps.length < kMax;
 
     const pool = source.length > 12
       ? [...source.filter(w => w.wCat === 'dmg'), ...source.filter(w => w.wCat !== 'dmg').sort((a, b) => getEffectiveRuneValue(b, new Set()) - getEffectiveRuneValue(a, new Set())).slice(0, 6)]
       : source;
 
-    let bestScore = -1, bestCombo = [];
-    for (let i = 0; i < pool.length - 2; i++)
-      for (let j = i + 1; j < pool.length - 1; j++)
-        for (let k = j + 1; k < pool.length; k++) {
-          const c = [pool[i], pool[j], pool[k]];
-          const sc = evaluateWeaponCombo(c, allowDup);
-          if (sc > bestScore) { bestScore = sc; bestCombo = c; }
+    let bestScore = -1, bestPicked = [];
+    const pickCount = Math.min(kMax, pool.length);
+
+    if (pickCount === 1) {
+      for (let i = 0; i < pool.length; i++) {
+        const sc = evaluateWeaponCombo([pool[i]], allowDup);
+        if (sc > bestScore) { bestScore = sc; bestPicked = [pool[i]]; }
+      }
+    } else if (pickCount === 2) {
+      for (let i = 0; i < pool.length - 1; i++)
+        for (let j = i + 1; j < pool.length; j++) {
+          const sc = evaluateWeaponCombo([pool[i], pool[j]], allowDup);
+          if (sc > bestScore) { bestScore = sc; bestPicked = [pool[i], pool[j]]; }
         }
-    return { slots: bestCombo, mult: Math.max(1, bestScore) };
+    } else {
+      for (let i = 0; i < pool.length - 2; i++)
+        for (let j = i + 1; j < pool.length - 1; j++)
+          for (let k = j + 1; k < pool.length; k++) {
+            const sc = evaluateWeaponCombo([pool[i], pool[j], pool[k]], allowDup);
+            if (sc > bestScore) { bestScore = sc; bestPicked = [pool[i], pool[j], pool[k]]; }
+          }
+    }
+
+    const resultSlots = [null, null, null];
+    openIndices.forEach((slotIdx, i) => { resultSlots[slotIdx] = bestPicked[i] || null; });
+    return { slots: resultSlots, mult: Math.max(1, bestScore), unlockedFlags };
   }
 
   function findSameMultiplierRunes(targetRune, ownedPartList, equippedIds) {
@@ -11758,9 +12351,18 @@
     bar.style.display = 'flex';
   }
 
-  function renderSlotBlock(slotElId, partLabel, runeObj) {
+  function renderSlotBlock(slotElId, partLabel, runeObj, isLocked = false, lockReason = '') {
     const el = document.getElementById(slotElId);
     if (!el) return;
+    if (isLocked) {
+      el.className = 'rune-slot-block';
+      el.style.opacity = '0.52';
+      el.style.borderStyle = 'dashed';
+      el.innerHTML = `<div class="rune-slot-part-tag"><span>${partLabel}</span><span style="color:#f87171;">🔒 잠김</span></div><div class="rune-slot-name" style="color:#94a3b8; font-size:12.5px;">슬롯 미개방</div><div class="rune-slot-stat" style="color:#fca5a5;">${lockReason}</div>`;
+      return;
+    }
+    el.style.opacity = '';
+    el.style.borderStyle = '';
     const diff = HELPER_DIFF_STATE.rune.diffs[slotElId];
     const diffCls = diff ? ' slot-diff-changed' : '';
     const diffTagHtml = diff
@@ -11786,7 +12388,9 @@
     const ownedWeapons = ownedList.filter(r => r.part === 'weapon');
 
     let finalAcc = findBestRingAndNeck(ownedRings, ownedNecks);
-    let finalWeap = findBestWeapon3(ownedWeapons);
+    const ctxRune = getUserRuneSpecContext();
+    const weapUnlockFlags = [ctxRune.refScytheLv >= 0, ctxRune.refOrbLv >= 0, ctxRune.refAccLv >= 0];
+    let finalWeap = findBestWeapon3(ownedWeapons, weapUnlockFlags);
     let finalEmbAb = findBestEmblemAndAbyss(ownedEmblems, ownedAbyss, finalWeap.slots);
     const other7AllEternal = [finalAcc.ring, finalAcc.neck, finalEmbAb.emblem, finalEmbAb.abyss, ...finalWeap.slots].every(s => s && s.tier === 'eternal');
     let finalArmor = findBestArmor3(ownedArmor, other7AllEternal, finalEmbAb.emblem?.tier || null);
@@ -11795,8 +12399,8 @@
 
     if (!other7AllEternal && ownedArmor.some(r => r.id === 'ete_ar_gongmyeong') && ownedArmor.some(r => r.id === 'ete_ar_gongjin')) {
       const eA = ownedArmor.filter(r => r.tier === 'eternal'), eR = ownedRings.filter(r => r.tier === 'eternal'), eN = ownedNecks.filter(r => r.tier === 'eternal'), eE = ownedEmblems.filter(r => r.tier === 'eternal'), eAb = ownedAbyss.filter(r => r.tier === 'eternal'), eW = ownedWeapons.filter(r => r.tier === 'eternal');
-      if (eA.length >= 3 && eR.length && eN.length && eE.length && eAb.length && eW.length >= 3) {
-        const bA = findBestArmor3(eA, true, 'eternal'), bAc = findBestRingAndNeck(eR, eN), bEm = findBestEmblemAndAbyss(eE, eAb), bW = findBestWeapon3(eW);
+      if (eA.length >= 3 && eR.length && eN.length && eE.length && eAb.length && eW.length >= 3 && weapUnlockFlags.every(Boolean)) {
+        const bA = findBestArmor3(eA, true, 'eternal'), bAc = findBestRingAndNeck(eR, eN), bEm = findBestEmblemAndAbyss(eE, eAb), bW = findBestWeapon3(eW, weapUnlockFlags);
         const logEte = Math.log10(Math.max(1, bA.mult)) + Math.log10(Math.max(1, bAc.mult)) + Math.log10(Math.max(1, bEm.mult)) + Math.log10(Math.max(1, bW.mult));
         if (logEte > combinedLog10) { finalArmor = bA; finalAcc = bAc; finalEmbAb = bEm; finalWeap = bW; combinedLog10 = logEte; }
       }
@@ -11839,9 +12443,9 @@
     renderSlotBlock('slot_ring', '💍 반지', finalAcc.ring);
     renderSlotBlock('slot_neck', '📿 목걸이', finalAcc.neck);
     renderSlotBlock('slot_emblem', '🛡️ 엠블렘', finalEmbAb.emblem);
-    renderSlotBlock('slot_weap_1', '🪓 무기 1슬롯', finalWeap.slots[0]);
-    renderSlotBlock('slot_weap_2', '🪓 무기 2슬롯', finalWeap.slots[1]);
-    renderSlotBlock('slot_weap_3', '🪓 무기 3슬롯', finalWeap.slots[2]);
+    renderSlotBlock('slot_weap_1', '🪓 무기 1슬롯 (대낫)', finalWeap.slots[0], !weapUnlockFlags[0], '영원 대낫 제작 시 해금');
+    renderSlotBlock('slot_weap_2', '🪓 무기 2슬롯 (오브)', finalWeap.slots[1], !weapUnlockFlags[1], '영원 오브 제작 시 해금');
+    renderSlotBlock('slot_weap_3', '🪓 무기 3슬롯 (장식)', finalWeap.slots[2], !weapUnlockFlags[2], '영원 장식 제작 시 해금');
 
     const grandEl = document.getElementById('rune_grand_total_mult');
     if (grandEl) {
@@ -11897,6 +12501,7 @@
     };
     if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
   }
+  
 
   // =========================================================================
   // [SECTION 12] 소울커넥트 코어 선택 도우미 (v.1.4.0)
@@ -11961,11 +12566,8 @@
     ownedCoresMap.forEach((cnt, key) => {
       if (key.startsWith('ancient__') && cnt > 0) ancCoreCnt += cnt;
     });
-    const gemSel = document.getElementById('rc_anc_gem');
-    if (gemSel && ancCoreCnt >= 3 && gemSel.value === '0') {
-      gemSel.value = '3';
-      calculateBestRuneLoadout();
-    }
+    const coreSel = document.getElementById('rc_anc_core');
+    if (coreSel && ancCoreCnt >= 3 && coreSel.value === '0') { coreSel.value = '3'; calculateBestRuneLoadout(); }
   }
 
   function toggleCoreOwned(tier, coreId) {
@@ -12552,13 +13154,14 @@
       { id: 'rc_job_lv',      title: '전직 레벨',      sub: '신의경지/사신', opts: [['0','60↓'],['60','60~79'],['80','80+']] },
       { id: 'rc_star_gaho',   title: '별의 가호',      sub: '성좌 / 천상',   opts: [['0','30↓'],['30','30~39'],['40','40+']] },
       { id: 'rc_moon_gaho',   title: '달·해 가호',     sub: '월광 / 천상(해10·달20)', opts: [['0','둘다 미달'],['10','해10 또는 달20'],['20','달20+해10'],['30','달30+해10']] },
-      { id: 'rc_anc_gem',     title: '고대 보석·코어', sub: '보석학 / 장전', opts: [['0','미달'],['3','코어3+'],['15','보석15+코어3']] },
+      { id: 'rc_anc_gem',     title: '고대 보석 (보석학)', sub: '장착 고대 보석 수 · 5개(30억) / 10개(60억) / 15개(+125%)', opts: [['0','5개 미만'],['5','5~9개'],['10','10~14개'],['15','15개+']] },
+      { id: 'rc_anc_core',    title: '고대 코어 (장전)',   sub: '소울커넥트 장착 고대 코어 수 (무기 장전 룬)',             opts: [['0','3개 미만'],['3','3개 이상']] },
       { id: 'rc_anc_passive', title: '고대 패시브',    sub: '원론 / 극한',   opts: [['none','미달'],['brk40','돌파40+'],['awk6','각성6+'],['both','둘 다 O']] }
     ],
     etc: [
-      { id: 'rc_ref_scythe_lv', title: '영원 대낫 연마',  sub: '극련:대낫',    opts: [['-1','미보유'],['0','0~9'],['10','10~14'],['15','15+']] },
-      { id: 'rc_ref_orb_lv',    title: '영원 오브 연마',  sub: '극련:오브',    opts: [['-1','미보유'],['0','0~9'],['10','10~14'],['15','15+']] },
-      { id: 'rc_ref_acc_lv',    title: '영원 장식 연마',  sub: '극련:장식',    opts: [['-1','미보유'],['0','0~9'],['10','10~14'],['15','15+']] },
+      { id: 'rc_ref_scythe_lv', title: '영원 대낫 연마', sub: '극련:대낫 · 미보유 시 무기 1슬롯 잠김', opts: [['-1','미보유'],['0','0~9'],['10','10~14'],['15','15+']] },
+      { id: 'rc_ref_orb_lv',    title: '영원 오브 연마', sub: '극련:오브 · 미보유 시 무기 2슬롯 잠김', opts: [['-1','미보유'],['0','0~9'],['10','10~14'],['15','15+']] },
+      { id: 'rc_ref_acc_lv',    title: '영원 장식 연마', sub: '극련:장식 · 미보유 시 무기 3슬롯 잠김', opts: [['-1','미보유'],['0','0~9'],['10','10~14'],['15','15+']] },
       { id: 'rc_refine_state',  title: '3종 연마 합 35+', sub: '완벽 추구',    opts: [['15only','35 미만'],['all','35 이상']] },
       { id: 'rc_dungeon_hell',  title: '룬던전·명계',     sub: '명황/일기당천', opts: [['low','미달'],['hell_only','명계O/100+'],['all','명계O/150+']] },
       { id: 'rc_dragon_status', title: '드래곤·9돌스킬',  sub: '용기사/홍염',  opts: [['none','미달'],['dragon_only','용3단만'],['status_only','9돌만'],['all','둘 다 O']] },
@@ -12592,19 +13195,19 @@
     const setC = (id, c) => { const e = document.getElementById(id); if (e) e.checked = Boolean(c); };
     if (mode === 'mid') {
       setV('rc_char_lv','22000'); setV('rc_job_lv','60'); setV('rc_star_gaho','0'); setV('rc_moon_gaho','0');
-      setV('rc_anc_gem','0'); setV('rc_anc_passive','none'); setV('rc_ref_scythe_lv','10'); setV('rc_ref_orb_lv','10');
+      setV('rc_anc_gem','0'); setV('rc_anc_core','0'); setV('rc_anc_passive','none'); setV('rc_ref_scythe_lv','10'); setV('rc_ref_orb_lv','10');
       setV('rc_ref_acc_lv','0'); setV('rc_refine_state','15only'); setV('rc_dungeon_hell','hell_only');
       setV('rc_dragon_status','status_only'); setV('rc_adventure_mode','easy');
       setC('rc_chk_gaehwa',false); setC('rc_chk_abyss23',false); setC('rc_chk_spirit30',false); setC('rc_chk_title_card',false);
     } else if (mode === 'late') {
       setV('rc_char_lv','24000'); setV('rc_job_lv','80'); setV('rc_star_gaho','30'); setV('rc_moon_gaho','20');
-      setV('rc_anc_gem','3'); setV('rc_anc_passive','brk40'); setV('rc_ref_scythe_lv','15'); setV('rc_ref_orb_lv','15');
+      setV('rc_anc_gem','5'); setV('rc_anc_core','3'); setV('rc_anc_passive','brk40'); setV('rc_ref_scythe_lv','15'); setV('rc_ref_orb_lv','15');
       setV('rc_ref_acc_lv','10'); setV('rc_refine_state','all'); setV('rc_dungeon_hell','all');
       setV('rc_dragon_status','all'); setV('rc_adventure_mode','hard');
       setC('rc_chk_gaehwa',true); setC('rc_chk_abyss23',true); setC('rc_chk_spirit30',true); setC('rc_chk_title_card',true);
     } else {
       setV('rc_char_lv','25000'); setV('rc_job_lv','80'); setV('rc_star_gaho','40'); setV('rc_moon_gaho','30');
-      setV('rc_anc_gem','15'); setV('rc_anc_passive','both'); setV('rc_ref_scythe_lv','15'); setV('rc_ref_orb_lv','15');
+      setV('rc_anc_gem','15'); setV('rc_anc_core','3'); setV('rc_anc_passive','both'); setV('rc_ref_scythe_lv','15'); setV('rc_ref_orb_lv','15');
       setV('rc_ref_acc_lv','15'); setV('rc_refine_state','all'); setV('rc_dungeon_hell','all');
       setV('rc_dragon_status','all'); setV('rc_adventure_mode','hard');
       setC('rc_chk_gaehwa',true); setC('rc_chk_abyss23',true); setC('rc_chk_spirit30',true); setC('rc_chk_title_card',true);
@@ -12838,6 +13441,10 @@
       log10: bestEval.totalLog10,
       slots: Array.from({ length: 6 }, (_, i) => bestCombo[i] ? { tier: bestCombo[i].tier, coreId: bestCombo[i].core.id } : null)
     };
+    if (typeof mcardCondState !== 'undefined' && bestCombo.length > 0) {
+      mcardCondState.hcrit = bestCombo.some(x => x.core.id === 'c5_hcrit_rate') && bestCombo.some(x => x.core.id === 'c6_hcrit_dmg');
+      if (typeof calculateBestMcardLoadout === 'function') calculateBestMcardLoadout();
+    }
     if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
   }
 
@@ -15104,6 +15711,24 @@
 
   // ==================== 4차 전직 [소울 링크] 도우미 (아크메이지/슈프림) ====================
   let trait4thSkillOverride = 'auto'; // 'auto' | '3rd' | '4th'
+  let trait4thMainSkill3Awk = true;   // true: 주력 스킬 3각↑(고양 I·II 우선) / false: 3각 미만(한계돌파·각성의증명 기준)
+
+  function toggleTrait4thMain3Awk(checked) {
+    trait4thMainSkill3Awk = Boolean(checked);
+    updateTrait4thBoardOnly();
+    const box = document.getElementById('t4_cond_box_3awk');
+    const bdg = document.getElementById('t4_cond_badge_3awk');
+    if (box) {
+      box.style.borderColor = trait4thMainSkill3Awk ? '#10b981' : '#334155';
+      box.style.background = trait4thMainSkill3Awk ? 'linear-gradient(90deg, rgba(16,185,129,0.16) 0%, #0f172a 100%)' : '#0b1120';
+    }
+    if (bdg) {
+      bdg.style.background = trait4thMainSkill3Awk ? '#059669' : '#1e293b';
+      bdg.style.color = trait4thMainSkill3Awk ? '#fff' : '#94a3b8';
+      bdg.innerText = trait4thMainSkill3Awk ? 'ON · 고양 I·II 우선' : 'OFF · 한계돌파/증명';
+    }
+    if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
+  }
 
   const TRAIT_4TH_LINKS_DB = [
     { id:'goyang1',     name:'고양 I',        reqLv:0,  tier:'normal',     desc:'링크된 스킬 발동 시 5초간 4차 스킬 피해량 +30% (최대 10중첩, +300%)' },
@@ -15237,7 +15862,7 @@
     const unlockedSlots = lv >= 80 ? 5 : (lv >= 60 ? 4 : (lv >= 40 ? 3 : (lv >= 20 ? 2 : (lv >= 5 ? 1 : 0))));
     let slots = [], tip = '', isEstimated = false;
 
-    if (unlockedSlots === 0) {
+     if (unlockedSlots === 0) {
       tip = '4차 전직 Lv.5 달성 시 강타 소울 링크 1단계 슬롯이 최초로 해금됩니다. Lv.5까지 먼저 육성해 주세요.';
     } else if (lv < 15) {
       slots = [{ linkId: 'rp_fixed_beat', note: '강타 타수 3회 고정 (고양 I보다 우수!)' }];
@@ -15358,30 +15983,58 @@
     if (unlockedSlots === 0) {
       tip = '4차 전직 Lv.5 달성 시 1단계 소울 링크 슬롯이 최초로 해금됩니다. Lv.5까지 먼저 육성해 주세요.';
     } else if (lv < 15) {
-      slots = [{ skill: mainSk, linkId: 'goyang1', note: '초반 주력기 4차 피해 중첩' }];
-      tip = 'Lv.5~14 (1슬롯): 주력 딜 스킬에 [고양 I]을 연결해 초반 4차 피해량을 챙깁니다.';
+      if (trait4thMainSkill3Awk) {
+        slots = [{ skill: mainSk, linkId: 'goyang1', note: '주스킬 3각↑ · 한계돌파보다 고양 I 우세!' }];
+        tip = 'Lv.5~14 (1슬롯): 주력 스킬이 3각성 이상이면 [한계 돌파]보다 [고양 I (+300%)]이 더 강력합니다.';
+      } else {
+        slots = [{ skill: mainSk, linkId: 'limit_brk', note: '3각 미만 · 돌파 효과 +50%' }];
+        tip = 'Lv.5~14 (1슬롯): 주력 스킬이 3각성 미만일 때는 [한계 돌파]를 사용합니다. (3각 달성 시 위 토글을 켜서 [고양 I]으로 변경)';
+      }
     } else if (lv < 20) {
-      slots = [{ skill: mainSk, linkId: 'awk_proof', note: '3각 이상 +100% 곱연산' }];
-      tip = 'Lv.15~19 (1슬롯): 주력 스킬이 3각성 이상이면 [고양 I]을 빼고 곱연산인 [각성의 증명]으로 교체합니다.';
+      if (trait4thMainSkill3Awk) {
+        slots = [{ skill: mainSk, linkId: 'goyang2', note: '주스킬 3각↑ · 각성의 증명보다 고양 II 우세!' }];
+        tip = 'Lv.15~19 (1슬롯): 주력 스킬이 3각성 이상이면 [각성의 증명(+100%)]보다 [고양 II (+500%)]이 더 강력합니다!';
+      } else {
+        slots = [{ skill: mainSk, linkId: 'awk_proof', note: '3각 미만 · 3각 보유 스킬에 연결' }];
+        tip = 'Lv.15~19 (1슬롯): [각성의 증명]을 사용하거나, 주력 스킬이 3각 미만이면 [한계 돌파]를 유지합니다.';
+      }
     } else if (lv < 25) {
-      slots = [
-        { skill: mainSk, linkId: 'awk_proof', note: '주력기 곱연산' },
-        { skill: '지옥불베기', linkId: 'goyang2', note: '2슬롯 4차 피해 +500%' }
-      ];
-      tip = 'Lv.20~24 (2슬롯): 2번째 슬롯이 해금되어 [지옥불베기 + 고양 II]를 추가합니다.';
+      if (trait4thMainSkill3Awk) {
+        slots = [
+          { skill: mainSk, linkId: 'goyang2', note: '주스킬 3각↑ · 고양 II 최우선' },
+          { skill: '지옥불베기', linkId: 'awk_proof', note: '2슬롯 3각 곱연산 (+100%)' }
+        ];
+        tip = 'Lv.20~24 (2슬롯): 주력 스킬에 [고양 II]를 유지하고, 2번째 슬롯에 [지옥불베기 + 각성의 증명(미3각 시 고양 I)]을 추가합니다.';
+      } else {
+        slots = [
+          { skill: mainSk, linkId: 'limit_brk', note: '주력기 돌파 +50%' },
+          { skill: '지옥불베기', linkId: 'goyang2', note: '2슬롯 4차 피해 +500%' }
+        ];
+        tip = 'Lv.20~24 (2슬롯): 2번째 슬롯이 해금되어 [한계 돌파 + 고양 II] 조합을 사용합니다.';
+      }
     } else if (lv < 35) {
-      slots = [
-        { skill: mainSk, linkId: 'awk_proof', note: '주력기 곱연산' },
-        { skill: mightSkill, linkId: mightId, note: '주속성 +1,500% 곱연산' }
-      ];
-      tip = `Lv.25~34 (2슬롯): 상급 속성 맹위(+1,500% 곱연산) 개방! ${elem === 'fire' ? '지옥불베기(화염)에 그대로 화염의 맹위를' : `주속성 스킬(${mightSkill})에 ${getTrait4LinkById(mightId).name}를`} 연결하세요.`;
+      if (trait4thMainSkill3Awk) {
+        slots = [
+          { skill: mainSk, linkId: 'goyang2', note: '주스킬 3각↑ · 고양 II 우세' },
+          { skill: mightSkill, linkId: mightId, note: '주속성 +1,500% 곱연산' }
+        ];
+        tip = `Lv.25~34 (2슬롯): 주력 스킬은 [고양 II]를 유지하고, 2번 칸에 주속성 맹위(+1,500% 곱연산)인 [${getTrait4LinkById(mightId).name}]를 연결합니다.`;
+      } else {
+        slots = [
+          { skill: mainSk, linkId: 'awk_proof', note: '주력기 곱연산 (미3각 시 한계돌파)' },
+          { skill: mightSkill, linkId: mightId, note: '주속성 +1,500% 곱연산' }
+        ];
+        tip = `Lv.25~34 (2슬롯): 상급 속성 맹위(+1,500% 곱연산) 개방! ${elem === 'fire' ? '지옥불베기(화염)에 그대로 화염의 맹위를' : `주속성 스킬(${mightSkill})에 ${getTrait4LinkById(mightId).name}를`} 연결하세요.`;
+      }
+
     } else if (lv < 40) {
       slots = [
         { skill: mainSk, linkId: 'stack_pow', note: '기운 100스택 +3,000%' },
         { skill: '오버드라이브', linkId: 'awk_amp', note: '옵드 3각×고패 95배↑' }
       ];
       tip = 'Lv.35~39 (2슬롯 핵심 구간): 주력기에 [쌓이는 힘]을 고정하고, 2번 칸은 [오버드라이브 + 각성 증폭]이 3고패 기준 약 95배~1,994배로 [임계점(51배)]을 압도합니다. (※ 단, 옵드 미각성 시 지옥불베기+임계점 사용)';
-  } else if (lv < 45) {
+      
+    } else if (lv < 45) {
       slots = [
         { skill: mainSk, linkId: 'stack_pow', note: '기운 100스택 생성' },
         { skill: '오버드라이브', linkId: 'awk_amp', note: '각성 효과 +400%' },
@@ -15692,6 +16345,21 @@
         </div>`
       : '';
 
+    const mage3AwkToggleHtml = !isReaper
+      ? `<label id="t4_cond_box_3awk" class="cond-toggle-row" style="margin-bottom:14px; padding:10px 14px; border-color:${trait4thMainSkill3Awk?'#10b981':'#334155'}; background:${trait4thMainSkill3Awk?'linear-gradient(90deg, rgba(16,185,129,0.16) 0%, #0f172a 100%)':'#0b1120'};">
+          <input type="checkbox" class="neon-toggle-input" ${trait4thMainSkill3Awk?'checked':''} onchange="toggleTrait4thMain3Awk(this.checked)">
+          <div style="flex:1;">
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+              <strong style="color:#f8fafc; font-size:13px;">주력 스킬 (${rec.mainSk}) 3각성 이상 달성</strong>
+              <span id="t4_cond_badge_3awk" class="grade-badge" style="background:${trait4thMainSkill3Awk?'#059669':'#1e293b'}; color:${trait4thMainSkill3Awk?'#fff':'#94a3b8'};">${trait4thMainSkill3Awk?'ON · 고양 I·II 우선':'OFF · 한계돌파/증명'}</span>
+            </div>
+            <div style="font-size:11.5px; color:#94a3b8; margin-top:2px;">Lv.5~34 구간: 주력 스킬이 3각성 이상이면 [한계 돌파 · 각성의 증명]보다 [고양 I · 고양 II]가 더 강력합니다.</div>
+          </div>
+          <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+        </label>`
+      : '';
+
+
     const reaperTargetBarHtml = isReaper
       ? `<div class="trait4-reaper-target-bar">
           <div style="display:flex; align-items:center; gap:10px;">
@@ -15738,6 +16406,7 @@
       </div>
 
       ${reaperSpeedAlertHtml}
+      ${mage3AwkToggleHtml}
 
       <!-- 인게임 소울 링크 5슬롯 보드 -->
       <div class="trait4-link-board ${isReaper ? 'reaper-theme' : ''}">
@@ -16710,6 +17379,8 @@
   // [SECTION 17] 구글 스타일 통합 검색 & 단일 클린 초기화
   // =========================================================================
   const GLOBAL_SEARCH_INDEX = [
+    { title:"🃏 몬스터 카드 세팅 도우미 v.1.0.0 (24종 & 시너지 최적화)", cat:"🛠️ 세팅 도우미", badge:"grade-legend", keywords:"몬스터카드 몬카 드라카르고 티그론 루파르그 카엘루스 아르고스 바르칸 프리기온 라스카 나크티스 절망의기사 시너지 공포 치명 진화 노련 지휘", action:()=>{ switchMainMode('helpers'); openDeepCalculator('tab-mcard'); } },
+    { title:"🎮 영원 장비 연마 실전 미니게임 시뮬레이터 (0~20강)", cat:"🎲 확률 계산기", badge:"grade-ancient", keywords:"연마 미니게임 영원 대낫 오브 장식 강화 시뮬레이터 하락방지", action:()=>{ switchMainMode('calcs'); openDeepCalculator('tab-refine'); } },
     { title:"[종합 공략] 보물던전 1·2차 재화 사용처 총정리", cat:"종합 공략", badge:"grade-eternal", keywords:"보물던전 보던 1차 2차 사용처 속성강화 수호신 정령 드래곤문양 블루다이아", action:()=>{ openEncyclopediaArticle('ency_treasure_usage'); } },
     { title:"[종합 공략] 상점 & 이벤트 교환소 구매 우선순위 (HOT 필수)", cat:"종합 공략", badge:"grade-legend", keywords:"상점 이벤트 교환소 각성석 HOT 무기교환권 종언의탑 마일리지 고대주화 심연교환소", action:()=>{ openEncyclopediaArticle('ency_shop_priority'); } },
     { title:"[종합 공략] 수호신 돌파 · 도감작(3/6/9/10) · 잠재 10단위 공략", cat:"종합 공략", badge:"grade-eternal", keywords:"수호신 도감작 잠재능력 백화린 적운영 녹티스 녹티아 카이온 오멘 카르미나 루시엘 미라", action:()=>{ openEncyclopediaArticle('ency_guardian'); } },
@@ -17055,7 +17726,8 @@
         crit: { r1:[0,0,0,0,0,0], r2:new Array(18).fill(0), r3:[0,0,0,0,0,0], r4:[0,0,0,0] }
       },
       trait3: [null, null, null, null, null],      // 0 | 1 | 2
-      trait4: [null, null, null, null, null]       // { skill, linkId } | { linkId }
+      trait4: [null, null, null, null, null],       // { skill, linkId } | { linkId }
+      mcards: [null, null, null] // { cardId, syns: [] }
     };
   }
 
@@ -17084,7 +17756,8 @@
         }
       } : def.trait2,
       trait3: Array.isArray(saved.trait3) ? saved.trait3.slice(0, 5).concat(Array(5).fill(null)).slice(0, 5) : def.trait3,
-      trait4: Array.isArray(saved.trait4) ? saved.trait4.slice(0, 5).concat(Array(5).fill(null)).slice(0, 5) : def.trait4
+      trait4: Array.isArray(saved.trait4) ? saved.trait4.slice(0, 5).concat(Array(5).fill(null)).slice(0, 5) : def.trait4,
+      mcards: Array.isArray(saved.mcards) ? saved.mcards.slice(0, 3).concat([null, null, null]).slice(0, 3) : def.mcards
     };
   }
 
@@ -17426,6 +18099,9 @@
     const userRune = evaluateUserCustomRunes();
     const userCore = evaluateUserCustomCores();
     const userT2 = evaluateUserCustomTrait2();
+    const recMcard = window._latestBestMcardEval || { log10: 0, cards: [] };
+    const userMcard = evaluateUserCustomMcards();
+    const mcardDeltaLog = (userMcard.hasInput && recMcard.log10 > 0) ? (recMcard.log10 - userMcard.log10) : 0;
 
     const runeDeltaLog = (userRune.hasInput && recRune.log10 > 0) ? (recRune.log10 - userRune.log10) : 0;
     const coreDeltaLog = (userCore.hasInput && recCore.log10 > 0) ? (recCore.log10 - userCore.log10) : 0;
@@ -17462,7 +18138,7 @@
       }
     }
 
-    const totalGainLog = Math.max(0, runeDeltaLog) + Math.max(0, coreDeltaLog) + Math.max(0, t2DeltaLog);
+    const totalGainLog = Math.max(0, runeDeltaLog) + Math.max(0, coreDeltaLog) + Math.max(0, t2DeltaLog) + Math.max(0, mcardDeltaLog);
     const changes = [];
     if (runeDeltaLog > 0.002) changes.push({ key:'rune', label:'룬 10칸 세팅', deltaLog: runeDeltaLog, goto: () => { switchMainMode('helpers'); openRuneHelperView(); }, btnText:'룬 착용 도우미로 이동' });
     if (coreDeltaLog > 0.002) changes.push({ key:'core', label:'소울커넥트 코어', deltaLog: coreDeltaLog, goto: () => { switchMainMode('helpers'); openDeepCalculator('tab-connect'); }, btnText:'소울커넥트 도우미로 이동' });
@@ -17470,6 +18146,7 @@
     if (t1Diff)               changes.push({ key:'trait1', label:'1차 전직 특성', deltaLog: null, goto: () => { openTraitHelperFromHub(); changeTraitTabStep(1); }, btnText:'1차 특성 도우미로 이동' });
     if (t3DiffCnt > 0)        changes.push({ key:'trait3', label:`3차 특화 (${t3DiffCnt}줄 차이)`, deltaLog: null, goto: () => { openTraitHelperFromHub(); changeTraitTabStep(3); }, btnText:'3차 특화 도우미로 이동' });
     if (t4Diff)               changes.push({ key:'trait4', label:'4차 소울 링크', deltaLog: null, goto: () => { openTraitHelperFromHub(); changeTraitTabStep(4); }, btnText:'4차 소울 링크 도우미로 이동' });
+    if (mcardDeltaLog > 0.002) changes.push({ key:'mcard', label:'몬스터 카드 3장', deltaLog: mcardDeltaLog, goto: () => { switchMainMode('helpers'); openDeepCalculator('tab-mcard'); }, btnText:'몬스터 카드 도우미로 이동' });
 
     return {
       userRune, recRune, runeDeltaLog,
@@ -17478,7 +18155,8 @@
       t1Diff, t1FilledCnt: t1Filled.length,
       t3DiffCnt, t3FilledCnt,
       t4Diff, t4FilledCnt: t4Filled.length,
-      totalGainLog, changes
+      totalGainLog, changes,
+      userMcard, recMcard, mcardDeltaLog
     };
   }
 
@@ -17657,6 +18335,7 @@
     }
     if (Array.isArray(st.trait3) && st.trait3.some(v => v !== null && v !== undefined)) out.t3 = st.trait3.slice(0, 5);
     if (Array.isArray(st.trait4) && st.trait4.some(x => x && x.linkId)) out.t4 = st.trait4.slice(0, 5).map(x => x && x.linkId ? (x.skill ? [x.linkId, x.skill] : x.linkId) : null);
+    if (Array.isArray(st.mcards) && st.mcards.some(x => x && x.cardId)) out.mc = st.mcards.slice(0, 3);
     return out;
   }
 
@@ -17686,12 +18365,13 @@
     }
     if (Array.isArray(dg.t3)) st.trait3 = dg.t3.slice(0, 5);
     if (Array.isArray(dg.t4)) st.trait4 = dg.t4.slice(0, 5).map(v => !v ? null : (Array.isArray(v) ? { linkId: v[0], skill: v[1] || null } : { linkId: v, skill: null }));
+    if (Array.isArray(dg.mc)) st.mcards = dg.mc.slice(0, 3);
     return mergeDefaultStageDiagState(st);
   }
 
   function switchStageDiagTab(tab) {
     stageDiagState.activeTab = tab;
-    ['rune', 'core', 'trait'].forEach(k => document.getElementById('diag_sw_' + k)?.classList.toggle('active', k === tab));
+    ['rune', 'core', 'trait', 'mcard'].forEach(k => document.getElementById('diag_sw_' + k)?.classList.toggle('active', k === tab));
     renderStageDiagBody();
     triggerAutoSave();
   }
@@ -17703,7 +18383,7 @@
   }
 
   function renderStageDiagAll() {
-    ['rune', 'core', 'trait'].forEach(k => document.getElementById('diag_sw_' + k)?.classList.toggle('active', k === stageDiagState.activeTab));
+    ['rune', 'core', 'trait', 'mcard'].forEach(k => document.getElementById('diag_sw_' + k)?.classList.toggle('active', k === stageDiagState.activeTab));
     renderStageDiagDashboard();
     renderStageDiagBody();
     updateStageDiagEntryBadge();
@@ -17747,7 +18427,7 @@
     const predCard = document.getElementById('diag_predict_result_card');
     if (predCard) {
       predCard.classList.toggle('has-change', rep.changes.length > 0);
-      const anyNumericInput = rep.userRune.hasInput || rep.userCore.hasInput || rep.userT2.hasInput;
+      const anyNumericInput = rep.userRune.hasInput || rep.userCore.hasInput || rep.userT2.hasInput || rep.userMcard.hasInput;
       const pred = predictStageFromDeltaLog10(curC, curS, rep.totalGainLog);
       const predDef = getStageMonsterDef(pred.c, pred.s);
       const defDiff = predDef - curDef;
@@ -17760,6 +18440,7 @@
         const extraNames = [rep.t1Diff ? '1차 특성' : '', rep.t3DiffCnt > 0 ? '3차 특화' : '', rep.t4Diff ? '4차 링크' : ''].filter(Boolean).join(' · ');
         breakdownLines.push(`• 추가 최적화 가능: <strong style="color:#fb7185;">${extraNames} 변경 시 추가 돌파 가능</strong>`);
       }
+      if (rep.userMcard.hasInput) breakdownLines.push(`• 몬스터 카드: <strong style="color:${rep.mcardDeltaLog>0.002?'#fde047':'#34d399'};">${rep.mcardDeltaLog>0.002 ? formatDeltaMultiplierText(rep.mcardDeltaLog) + ' 상승' : '현재 추천과 동일(최적)'}</strong>`);
 
       predCard.innerHTML = !anyNumericInput
         ? `<div>
@@ -17796,6 +18477,7 @@
     const anyTraitIn = rep.userT2.hasInput || rep.t1FilledCnt > 0 || rep.t3FilledCnt > 0 || rep.t4FilledCnt > 0;
     const anyTraitDiff = rep.t2DeltaLog > 0.002 || rep.t1Diff || rep.t3DiffCnt > 0 || rep.t4Diff;
     setTabBadge('diag_tab_badge_trait', anyTraitIn, anyTraitDiff);
+    setTabBadge('diag_tab_badge_mcard', rep.userMcard.hasInput, rep.mcardDeltaLog > 0.002);
 
     // 종합 변경사항 감지 & 도우미 유도 배너
     const alertWrap = document.getElementById('diag_master_alert_wrap');
@@ -17908,6 +18590,7 @@
     const rep = computeFullDiagnosisReport();
 
     // 1. 내 현재 룬 (10칸)
+    if (stageDiagState.activeTab === 'mcard') { renderStageDiagMcardTab(body, rep); return; }
     if (stageDiagState.activeTab === 'rune') {
       const recSlots = rep.recRune.slots || {};
       const recArmorSet = new Set([recSlots.armor_top, recSlots.armor_mid, recSlots.armor_bot].filter(Boolean));
@@ -18463,6 +19146,7 @@
     const wrapEl = document.getElementById('diag_picker_list_wrap');
     const q = (document.getElementById('diag_picker_search_input')?.value || '').trim().toLowerCase();
 
+    if (diagPickerCtx.type === 'mcard') { renderDiagMcardPickerList(ctrlEl, wrapEl, q); return; }
     if (diagPickerCtx.type === 'rune') {
       const tiers = [
         { k:'all',      l:'전체 등급', cls:'' },
@@ -18774,6 +19458,7 @@
   function getEncyclopediaArticleData(key) {
     const fig = (src, cap) => `<div class="ency-fig"><img src="${src}" alt="${cap}" onerror="this.closest('.ency-fig').style.display='none';"><div class="ency-fig-cap">${cap}</div></div>`;
     const chip = (name, imgSrc, sub, borderCol = '#475569') => `<div class="ency-item-chip" style="border-color:${borderCol};"><img src="${imgSrc}" alt="${name}" onerror="this.onerror=null;this.src='${imgSrc.replace('.png','.jpg')}';this.onerror=function(){this.style.display='none';};"><div><div class="ency-item-chip-name">${name}</div><div class="ency-item-chip-sub">${sub}</div></div></div>`;
+    const resIcon = (file, alt = '') => `<img src="images/${file}" alt="${alt}" style="width:18px; height:18px; vertical-align:-3.5px; margin-right:3px; border-radius:4px; object-fit:contain; display:inline-block;" onerror="this.style.display='none';">`;
 
     if (key === 'ency_newbie_start') return {
       title: '초반 직업 선택 · 블루다이아 사용처 · 픽업 기초',
@@ -18802,8 +19487,8 @@
         </div>
 
         <div class="ency-block" style="border-left-color:#f43f5e;">
-          <h3>2. 블루 다이아 사용처 (장비 뽑기 절대 금지!)</h3>
-          <div class="ency-callout warn"><strong>블루 다이아로 장비 뽑기는 절대 하지 마세요!</strong><br>영원 장비 업데이트 이후 <strong>이벤트 교환소</strong>와 <strong>드래곤 릴레이 상점</strong>에서 얻는 장비 소환권 효율이 압도적으로 높습니다. 블루 다이아는 오직 <strong>스킬 · 영웅 픽업 소환</strong>과 대형 이벤트 <strong>커스텀 픽업</strong>에만 투자하세요!</div>
+          <h3>2. ${resIcon('res_blue_dia.png')}블루 다이아 사용처 (장비 뽑기 절대 금지!)</h3>
+          <div class="ency-callout warn"><strong>${resIcon('res_blue_dia.png')}블루 다이아로 장비 뽑기는 절대 하지 마세요!</strong><br>영원 장비 업데이트 이후 <strong>이벤트 교환소</strong>와 <strong>드래곤 릴레이 상점</strong>에서 얻는 장비 소환권 효율이 압도적으로 높습니다. 블루 다이아는 오직 <strong>스킬 · 영웅 픽업 소환</strong>과 대형 이벤트 <strong>커스텀 픽업</strong>에만 투자하세요!</div>
           <div class="ency-fig-stack">
             ${fig('images/newbie_guide2.png', '예시 1) 스킬 픽업 소환 — 오버드라이브 · 지옥불베기 등 핵심 스킬 픽업 시 투자')}
             ${fig('images/newbie_guide3.png', '예시 2) 영웅 픽업 소환 — 셀렌 · 카엘 · 나리타 등 필수 영웅 픽업 시 투자')}
@@ -18898,10 +19583,10 @@
       accent: '#34d399',
       html: `
         <div class="ency-block" style="border-left-color:#38bdf8;">
-          <h3>1. 훈련 순위 &amp; 2. 속성 강화 우선순위</h3>
+          <h3>1. 훈련 순위 &amp; 2. ${resIcon('res_elem_stone.png')}속성 강화 우선순위</h3>
           <ul class="ency-list">
             <li><strong>훈련 순위:</strong> <strong style="color:#fde047;">① 공격력 ➔ ② 방어도 무시 ➔ ③ 체력</strong> 순서로 올려 승급합니다.</li>
-            <li><strong>속성 강화 순위:</strong> <strong style="color:#7dd3fc;">① 내 주속성(증폭 포함) ➔ ② 모든 속성 피해 ➔ ③ 나머지 타 속성</strong> 순서로 투자합니다.</li>
+            <li><strong>${resIcon('res_elem_stone.png')}속성 강화 순위:</strong> <strong style="color:#7dd3fc;">① 내 주속성(증폭 포함) ➔ ② 모든 속성 피해 ➔ ③ 나머지 타 속성</strong> 순서로 투자합니다.</li>
           </ul>
           <div class="ency-fig-grid-2">
             ${fig('images/growth_guide_train.png', '훈련 우선순위: 1 공격력 ➔ 2 방어도 무시 ➔ 3 체력')}
@@ -18910,11 +19595,11 @@
         </div>
 
         <div class="ency-block" style="border-left-color:#f97316;">
-          <h3>3. 속성 어빌리티 &amp; 원혼 어빌리티 세팅</h3>
+          <h3>3. 속성 어빌리티 &amp; ${resIcon('soul.png')}원혼 어빌리티 세팅</h3>
           <ul class="ency-list">
             <li><strong>속성 어빌리티:</strong> 기본 공격 시 확률형 스킬이 메인딜인 구조이므로, <strong>장비 어빌리티는 전부 옵션 공격력</strong>으로 맞추고 <strong>속성 어빌리티는 전부 신화 공격속도 증가(%)로 도배해 공속 100%</strong>를 맞춰주세요!</li>
             <li><strong>사신 4차 Lv.55+ (초가속 해금) 예외:</strong> 4차 사신 <strong>Lv.55 [초가속]</strong> 해금 이후부터는 공속 100% 초과분 1%당 강타 피해 +50% 곱연산이 적용되므로, <strong>장비·속성 어빌리티를 전부 공격속도로 변경</strong>합니다!</li>
-            <li><strong>원혼 강화 어빌리티:</strong> 최종 6칸 모두 <strong>고대 [원혼 옵션 공격력 증폭 500%]</strong>을 목표로 잠금하며 맞춥니다.</li>
+            <li>${resIcon('soul.png')}<strong>원혼 강화 어빌리티:</strong> 최종 6칸 모두 <strong>고대 [원혼 옵션 공격력 증폭 500%]</strong>을 목표로 잠금하며 맞춥니다.</li>
           </ul>
           <div class="ency-fig-grid-2">
             ${fig('images/growth_guide_elem_abil.png', '속성 어빌리티: 신화 공격속도 증가(%) 7.5 올 도배로 공속 확보!')}
@@ -18923,11 +19608,11 @@
         </div>
 
         <div class="ency-block" style="border-left-color:#fde047;">
-          <h3>4. 별 · 달 · 해 · 유성의 가호 &amp; 어빌리티 세팅</h3>
+          <h3>4. ${resIcon('star.png')}${resIcon('moon.png')}${resIcon('sun.png')}${resIcon('shooting_star.png')}별 · 달 · 해 · 유성의 가호 &amp; 어빌리티 세팅</h3>
           <ul class="ency-list">
-            <li>가호 조각은 방치 보상에서만 수급되므로 <strong>성장 멤버십(990 레드다이아 · 별/달/해/유성 +100%)</strong> 구매 효율이 매우 높습니다.</li>
+            <li>가호 조각은 방치 보상에서만 수급되므로 <strong>성장 멤버십(990 ${resIcon('res_red_dia.png')}레드다이아 · 별/달/해/유성 +100%)</strong> 구매 효율이 매우 높습니다.</li>
             <li>각 단계의 <strong>5번째 별·달 업그레이드</strong>에서 증폭 수치가 크게 오르므로 5번째 노드 돌파 체감이 매우 큽니다.</li>
-            <li><strong>가호 어빌리티:</strong> 주사위 소모량이 매우 크므로 최소 3칸 개방 후 <strong>고대 [별/달 가호 옵션 공격력 증폭]</strong>을 1개씩 확보하고, 최종적으로는 <strong>7칸 전부 옵션 공격력 증폭</strong>으로 도배합니다!</li>
+            <li><strong>가호 어빌리티:</strong> ${resIcon('option_dice.png')}주사위 소모량이 매우 크므로 최소 3칸 개방 후 <strong>고대 [별/달 가호 옵션 공격력 증폭]</strong>을 1개씩 확보하고, 최종적으로는 <strong>7칸 전부 옵션 공격력 증폭</strong>으로 도배합니다!</li>
           </ul>
           <div class="ency-fig-grid-2">
             ${fig('images/shop_guide_membership.png', '성장 멤버십 (30일간 별·달·해·유성 조각 +100% 필수 효율!)')}
@@ -18965,7 +19650,7 @@
               <br>• <strong>다크로드:</strong> 신화1(24단계) ➔ <strong>고대1(28단계 · 영웅스킬피해 증폭 1,500%)</strong>
             </li>
             <li><strong>강타 속성 선택 필수:</strong> 강타 상세 창 하단에서 본인 주속성(화염/번개/어둠)을 반드시 맞춰주세요!</li>
-            <li><strong>초월 주문서:</strong> 신화 1등급부터 사용하는 것을 권장합니다.</li>
+            <li>${resIcon('res_trans_scroll.png')}<strong>초월 주문서:</strong> 신화 1등급부터 사용하는 것을 권장합니다.</li>
           </ul>
           <div class="ency-fig-grid-2">
             ${fig('images/equip_guide_scythe.png', '무기는 최고 등급 장착 + 강타는 사신(고3)/앜메(고2)/닼로(고1) 분리 장착!')}
@@ -18974,7 +19659,7 @@
         </div>
 
         <div class="ency-block" style="border-left-color:#f97316;">
-          <h3>2. 장비 어빌리티 vs 속성 어빌리티 역할 분담 (중요!)</h3>
+          <h3>2. ${resIcon('option_dice.png')}장비 어빌리티 vs 속성 어빌리티 역할 분담 (중요!)</h3>
           <ul class="ency-list">
             <li><strong>장비류(대낫 · 오브 · 장식) 어빌리티:</strong> 전부 <strong>신화 [옵션 공격력(%)]</strong>으로 맞춥니다.</li>
             <li><strong>속성 어빌리티:</strong> 기본 공격 시 확률형 스킬이 메인딜인 구조이므로, <strong>속성 어빌리티는 전부 신화 [공격속도 증가(%)]로 도배해 공속 100%</strong>를 확보합니다!</li>
@@ -18990,7 +19675,7 @@
           <h3>3. 문장 (보스전 장비 — 200렙 보유효과 &amp; 어빌리티)</h3>
           <ul class="ency-list">
             <li>미장착 문장도 보유 효과에 <strong>강화석 획득량 증가</strong>가 있으므로 <strong>모든 문장을 Lv.200</strong>까지 찍어두세요! (풀초월은 장착 중인 최고 등급 문장만 진행)</li>
-            <li><strong>문장 어빌리티:</strong> 첫 옵션은 무조건 <strong>고대 [옵션 공격력 증폭]</strong> 1줄 확보 ➔ 주사위 여유 시 최종적으로 <strong>고대 옵공증 2~3줄 + 고대 옵공 3~2줄</strong> 조합!</li>
+            <li><strong>문장 어빌리티:</strong> 첫 옵션은 무조건 <strong>고대 [옵션 공격력 증폭]</strong> 1줄 확보 ➔ ${resIcon('option_dice.png')}주사위 여유 시 최종적으로 <strong>고대 옵공증 2~3줄 + 고대 옵공 3~2줄</strong> 조합!</li>
           </ul>
           <div class="ency-fig-grid-2">
             ${fig('images/equip_guide_crest_list.png', '미사용 문장도 보유효과(강화석) 때문에 전원 Lv.200 필수!')}
@@ -18999,7 +19684,7 @@
         </div>
 
         <div class="ency-block" style="border-left-color:#facc15;">
-          <h3>4. 장비 증폭 투자 순서 (초반 vs 영원무기 이후) &amp; 5·10강 단위 법칙</h3>
+          <h3>4. ${resIcon('res_equip_amp.png')}장비 증폭 투자 순서 (초반 vs 영원무기 이후) &amp; 5·10강 단위 법칙</h3>
           <div class="ency-callout gold">
             <strong>단계별 증폭 우선순위:</strong><br>
             • <strong style="color:#fef08a;">초반 (~15~20강, 영원무기 전):</strong> 대낫이 등급이 가장 빨리 오르고 효율이 좋아 <strong>① 대낫 ➔ ② 오브 ➔ ③ 장식 ➔ ④ 문장</strong> 순서!<br>
@@ -19070,7 +19755,7 @@
         </div>`
     };
 
-    if (key === 'ency_shop_priority') return {
+   if (key === 'ency_shop_priority') return {
       title: '상점 & 이벤트 교환소 구매 우선순위 (최신 메타 반영)',
       credit: '붉양님 원문 + 최신 교환소·패스 메타 반영',
       subtitle: '이벤트 교환소(HOT 필수), 필수 과금 패스 4종, 마일리지, 고대주화, 드래곤 릴레이, 심연 교환소까지 한눈에 정리했습니다.',
@@ -19082,9 +19767,9 @@
           <h3>1. 이벤트 교환소 구매 우선순위 (특별상점 우선 ➔ 일반상점)</h3>
           <ul class="ency-list">
             <li><strong>0순위 (고대 무기가 없는 뉴비 한정):</strong> 아직 고대 무기가 없다면 무조건 <strong>대낫 / 오브 / 장식 소환권(HOT!)</strong>부터 최우선 구매! (사신 고3 · 앜메 고2 · 닼로 고1 / 오브·장식 고4까지)</li>
-            <li><strong>1순위 (전 구간 1위 · 무조건 전량 싹쓸이):</strong> <strong style="color:#fde047;">각성석(HOT!)</strong> 무조건 1순위로 싹 다 털어먹기!</li>
-            <li><strong>2순위:</strong> <strong style="color:#7dd3fc;">보물던전 1차 / 2차 소탕권(HOT!)</strong> 중 본인에게 부족한 쪽부터 우선 구매!</li>
-            <li><strong>3순위 (필요에 따라 골라먹기):</strong> <strong>종언의 탑 소탕권(4차) · 심연장비 인챈트 재화 · 영원의 돌 · 심연정수 · 코스튬(코디)</strong> 및 소울·수호신·정령·드래곤 등 본인 스펙에 필요한 열쇠 순으로 마무리!</li>
+            <li><strong>1순위 (전 구간 1위 · 무조건 전량 싹쓸이):</strong> ${resIcon('upgrade_stone.png')}<strong style="color:#fde047;">각성석(HOT!)</strong> 무조건 1순위로 싹 다 털어먹기!</li>
+            <li><strong>2순위:</strong> ${resIcon('res_key_treasure1.png')}${resIcon('res_key_treasure2.png')}<strong style="color:#7dd3fc;">보물던전 1차 / 2차 소탕권(HOT!)</strong> 중 본인에게 부족한 쪽부터 우선 구매!</li>
+            <li><strong>3순위 (필요에 따라 골라먹기):</strong> ${resIcon('res_key_job4.png')}<strong>종언의 탑 소탕권(4차)</strong> · ${resIcon('scroll.png')}<strong>심연장비 인챈트 재화</strong> · ${resIcon('eternity_stone.png')}<strong>영원의 돌</strong> · ${resIcon('essence.png')}<strong>심연정수</strong> · <strong>코스튬(코디)</strong> 및 소울·수호신·정령·드래곤 등 본인 스펙에 필요한 열쇠 순으로 마무리!</li>
           </ul>
           <div class="ency-fig-grid-2">
             ${fig('images/shop_guide_evt_weapon.png', '0순위 (고대무기 미보유 시): 대낫·오브·장식 소환권 HOT!')}
@@ -19097,9 +19782,9 @@
         </div>
 
         <div class="ency-block" style="border-left-color:#10b981;">
-          <h3>2. 필수 레드다이아 / 과금 패스 추천 (이계 패스 필수 승격!)</h3>
+          <h3>2. 필수 ${resIcon('res_red_dia.png')}레드다이아 / 과금 패스 추천 (이계 패스 필수 승격!)</h3>
           <ul class="ency-list">
-            <li><strong>필수 4종:</strong> <strong>월간 레드 다이아 연금(1,500)</strong> · <strong>성장 멤버십(990)</strong> · <strong>영지 성장 패스(2,200)</strong> · <strong style="color:#6ee7b7;">이계 성장 패스</strong> (방치 보상으로 즉시 정찰 가능 개편으로 필수 승격!)</li>
+            <li><strong>필수 4종:</strong> ${resIcon('res_red_dia.png')}<strong>월간 레드 다이아 연금(1,500)</strong> · <strong>성장 멤버십(990)</strong> · <strong>영지 성장 패스(2,200)</strong> · <strong style="color:#6ee7b7;">이계 성장 패스</strong> (방치 보상으로 즉시 정찰 가능 개편으로 필수 승격!)</li>
             <li><strong>선택 과금:</strong> 여유 시 <strong>이벤트 패스(990)</strong> / <strong>아레나 패스</strong>(영구 적용, 선택 구매).</li>
           </ul>
           <div class="ency-fig-grid-2">
@@ -19116,8 +19801,8 @@
           <h3>3. 마일리지 · 고대 주화 · 드래곤 릴레이 · 심연 교환소</h3>
           <ul class="ency-list">
             <li><strong>마일리지 교환소:</strong> 패시브는 랜덤 소환권까지 구매 OK, <strong>스킬 · 영웅 · 정령은 무조건 [선택 소환권(신화)]만 구매!</strong></li>
-            <li><strong>고대 문양 - 고대 주화 교환소:</strong> <strong style="color:#fde047;">심연불꽃 방치 보상 쿠폰(2시간) 필수!</strong> 필요 시 전설/신화 룬 촉매제, 여유 시 골드·경험치 2시간 쿠폰도 가능.</li>
-            <li><strong>드래곤 릴레이 상점:</strong> <strong>장비</strong>(고대1 미만 뉴비, 마지막 390 레드다이아 제외) · <strong>보물1</strong> · <strong>보물2</strong> 탭이 가성비 최고!</li>
+            <li><strong>고대 문양 - 고대 주화 교환소:</strong> ${resIcon('res_abyss_flame.png')}<strong style="color:#fde047;">심연불꽃 방치 보상 쿠폰(2시간) 필수!</strong> 필요 시 전설/신화 룬 촉매제, 여유 시 골드·경험치 2시간 쿠폰도 가능.</li>
+            <li><strong>드래곤 릴레이 상점:</strong> <strong>장비</strong>(고대1 미만 뉴비, 마지막 390 레드다이아 제외) · ${resIcon('res_key_treasure1.png')}<strong>보물1</strong> · ${resIcon('res_key_treasure2.png')}<strong>보물2</strong> 탭이 가성비 최고!</li>
             <li><strong>심연 교환소:</strong> <strong>정령 선택 소환권(신화)</strong> · <strong>영웅 선택 소환권(신화)</strong> · <strong>심연 카드</strong> 우선 구매! (시즌 주화 13만 미만이면 심연 카드 2~3개 먼저 챙긴 뒤 선택권 구매)</li>
           </ul>
           <div class="ency-fig-grid-2">
@@ -19186,11 +19871,11 @@
       accent: '#facc15',
       html: `
         <div class="ency-block" style="border-left-color:#38bdf8;">
-          <h3>1. 보물던전 1차 사용처 (1차 Lv.80 ➔ 속성 Lv.100~120 ➔ 1차 Lv.90 / 블다)</h3>
+          <h3>1. ${resIcon('res_key_treasure1.png','보던1')}보물던전 1차 사용처 (1차 Lv.80 ➔ 속성 Lv.100~120 ➔ 1차 Lv.90 / 블다)</h3>
           <ul class="ency-list">
-            <li><strong style="color:#7dd3fc;">[1단계 · 1차 Lv.80까지]</strong> 무조건 <strong>시련의 정수(1차 전직 재화)</strong>에 올인해서 1차 80레벨(5슬롯 + 버프 특성)을 최우선 달성합니다.</li>
-            <li><strong style="color:#6ee7b7;">[2단계 · 속성 Lv.100~120까지]</strong> 1차 Lv.80 달성 후에는 <strong>속성석(속성 강화 재화)</strong>으로 바꿔먹으며 속성 레벨 <strong>100 ~ 120</strong>을 찍습니다.</li>
-            <li><strong style="color:#fde047;">[3단계 · 이후 선택]</strong> 속성 돌파작을 다 끝낸 이후에는 <strong>1차 Lv.90</strong>까지 올리거나, <strong>블루 다이아</strong>는 <strong>과금러 한정(연마·픽업 급전용)</strong>으로만 제한적 추천합니다. (블다 교환 자체는 효율이 높지 않으므로 속성 돌파작 완료 후 꼭 필요할 때만 털어먹기!)</li>
+            <li><strong style="color:#7dd3fc;">[1단계 · 1차 Lv.80까지]</strong> 무조건 ${resIcon('res_ess_job1.png')}<strong>시련의 정수(1차 전직 재화)</strong>에 올인해서 1차 80레벨(5슬롯 + 버프 특성)을 최우선 달성합니다.</li>
+            <li><strong style="color:#6ee7b7;">[2단계 · 속성 Lv.100~120까지]</strong> 1차 Lv.80 달성 후에는 ${resIcon('res_elem_stone.png')}<strong>속성석(속성 강화 재화)</strong>으로 바꿔먹으며 속성 레벨 <strong>100 ~ 120</strong>을 찍습니다.</li>
+            <li><strong style="color:#fde047;">[3단계 · 이후 선택]</strong> 속성 돌파작을 다 끝낸 이후에는 ${resIcon('res_ess_job1.png')}<strong>1차 Lv.90</strong>까지 올리거나, ${resIcon('res_blue_dia.png')}<strong>블루 다이아</strong>는 <strong>과금러 한정(연마·픽업 급전용)</strong>으로만 제한적 추천합니다.</li>
           </ul>
           <div class="ency-fig-grid-2">
             ${fig('images/dungeon_guide_t1.png', '보물 던전 1 입장 화면')}
@@ -19199,12 +19884,15 @@
         </div>
 
         <div class="ency-block" style="border-left-color:#c084fc;">
-          <h3>2. 보물던전 2차 사용처 (2차 Lv.90 ➔ 수호신 ➔ 정령 속성작 ➔ 드래곤 문양)</h3>
+          <h3>2. ${resIcon('res_key_treasure2.png','보던2')}보물던전 2차 사용처 (2차 Lv.90 ➔ 수호신 도감5종 ➔ 정령 ➔ 드래곤 문양)</h3>
           <ul class="ency-list">
-            <li><strong style="color:#d8b4fe;">[1단계 · 2차 Lv.90까지]</strong> 초반에는 <strong>극한의 정수(2차 전직)</strong>로 Lv.90을 먼저 찍습니다. (Lv.90 ➔ Lv.110 구간은 2차 전직 탑 소탕권만으로도 충분히 달성 가능하므로 보던2 열쇠를 아낍니다!)</li>
-            <li><strong style="color:#6ee7b7;">[2단계 · 수호신 재화]</strong> 2차 Lv.90 달성 이후에는 <strong>수호신의 증표</strong>로 바꿔먹어 메인 10돌 + 도감작 5종 + 잠재작을 진행합니다.</li>
-            <li><strong style="color:#7dd3fc;">[3단계 · 정령 속성 시너지작]</strong> 수호신 도감작 이후에는 필요할 때 <strong>정령석</strong>으로 바꿔먹고 <strong>정령 속성작</strong>을 맞춥니다! (4차 정령 리더는 <strong>속성 시너지 400점+</strong>, 제피라·라바나·모르나류는 <strong>300점+</strong>가 돌파 효과 발동에 필수!)</li>
-            <li><strong style="color:#fda4af;">[4단계 · 엔드 스펙 마무리: 드래곤 문양]</strong> 위 항목들이 모두 끝난 엔드 스펙 구간에서 <strong>드래곤 문양 조각</strong>에 투자합니다. (투자 재화 대비 딜 상승폭이 크지 않으므로 엔드 스펙 마무리용으로 권장)</li>
+            <li><strong style="color:#d8b4fe;">[1단계 · 2차 Lv.90까지]</strong> 초반에는 ${resIcon('res_ess_job2.png')}<strong>극한의 정수(2차 전직)</strong>로 Lv.90을 먼저 찍습니다. (Lv.90 ➔ Lv.110 구간은 2차 전직 탑 소탕권만으로도 충분히 달성 가능하므로 보던2 열쇠를 아낍니다!)</li>
+            <li><strong style="color:#6ee7b7;">[2단계 · 수호신 재화 — 고대 도감 코어 5종 100%작!]</strong> 2차 Lv.90 이후에는 ${resIcon('res_guardian_token.png')}<strong>수호신의 증표</strong>로 바꿔먹습니다.
+              <br>• 소울커넥트 종결인 <strong>[고대 코어3: 수호신 도감]</strong>을 풀로 받으려면 <strong>도감 100% 수호신 3종(최소 효율) ➔ 5종(최대 맥스)</strong>이 필수입니다!
+              <br>• 도감 %는 <strong>레벨·잠재능력 10단위</strong>마다 오르므로 <strong>5종을 골고루 10단위씩</strong> 올려 도감 100%를 완성한 뒤, 나머지 수호신은 <strong>전원 3돌 ➔ 6돌 ➔ 잠재 100 ➔ 마지막 풀돌</strong> 순으로 진행합니다. (상세 로드맵은 아래 수호신 공략 참고)
+            </li>
+            <li><strong style="color:#7dd3fc;">[3단계 · 정령 속성 시너지작]</strong> 수호신 도감작 이후에는 필요할 때 ${resIcon('res_spirit_stone.png')}<strong>정령석</strong>으로 바꿔먹고 <strong>정령 속성작</strong>을 맞춥니다! (4차 정령 리더는 <strong>속성 시너지 400점+</strong>, 제피라·라바나·모르나류는 <strong>300점+</strong> 필수!)</li>
+            <li><strong style="color:#fda4af;">[4단계 · 엔드 스펙 마무리: 드래곤 문양]</strong> 위 항목들이 모두 끝난 엔드 스펙 구간에서 ${resIcon('res_dragon_glyph.png')}<strong>드래곤 문양 조각</strong>에 투자합니다. (투자 재화 대비 딜 상승폭이 크지 않으므로 엔드 스펙 마무리용으로 권장)</li>
           </ul>
           <div class="ency-fig-grid-2">
             ${fig('images/dungeon_guide_t2.png', '보물 던전 2 입장 화면')}
@@ -19230,18 +19918,21 @@
       accent: '#10b981',
       html: `
         <div class="ency-block" style="border-left-color:#10b981;">
-          <h3>1. 수호신 도감작 &amp; 잠재능력 최적 투자 순서 (필독!)</h3>
+          <h3>1. ${resIcon('res_guardian_token.png')}수호신 도감작(5종 100%) &amp; ${resIcon('res_guardian_pot.png')}잠재능력 최고 효율 투자 순서</h3>
+          <div class="ency-callout gold" style="margin-top:4px;">
+            <strong>왜 수호신 5종 도감 100%작을 먼저 해야 하나요?</strong><br>
+            소울커넥트 3번 슬롯 종결 코어인 <strong>[고대 코어3: 수호신 도감]</strong>은 도감 100% 달성 수호신이 <strong>3개(16P)</strong>부터 효율이 나오고, <strong>5개(20P)</strong>에서 최대(MAX) 효율이 열립니다! 도감 %는 <strong>돌파</strong>와 <strong>레벨·잠재능력 10단위</strong>마다 오릅니다.
+          </div>
           <ul class="ency-list">
-            <li><strong style="color:#fde047;">[1순위] 내 직업 메인 수호신 10돌파 최우선:</strong> 10돌파 시 <strong>전투 시작 즉시 변신 + 영구 지속</strong>이 열리므로 가장 먼저 완성합니다. (사신: 카르미나 / 아크메이지: 루시엘·오멘 / 다크로드: 오멘)</li>
-            <li><strong style="color:#7dd3fc;">[2순위] 고대 코어3 도감작 5종 — 3 ➔ 6 ➔ 9 ➔ 10돌 &amp; 잠재 10단위 균등!</strong>
-              <br>• 소울커넥트 고대 코어3(수호신 도감) 조건을 채우기 위해 <strong>수호신 5종</strong>을 돌파 <strong>3돌 ➔ 6돌 ➔ 9돌 ➔ 10돌</strong> 순으로 올립니다.
-              <br>• 잠재능력은 6돌부터 열리며 <strong>레벨이 오를수록 재화 요구량이 급증</strong>하므로, <strong>하나를 100까지 몰빵하지 말고 10레벨씩(10➔20➔30...) 골고루 올리는 것이 훨씬 셉니다!</strong>
-            </li>
-            <li><strong style="color:#6ee7b7;">[3순위] 나머지 수호신 전원 6돌 + 잠재 10단위 균등 100:</strong> 도감작 5종이 끝나면 나머지 수호신도 전부 6돌파로 잠재 보유효과를 열고, 동일하게 <strong>10레벨씩 균등하게 100단계</strong>까지 올립니다.</li>
+            <li><strong style="color:#fde047;">[1단계] 내 직업 메인 수호신 10돌파 최우선:</strong> 10돌파 시 <strong>전투 시작 즉시 변신 + 영구 지속</strong>이 열립니다. (사신: 카르미나 / 앜메: 루시엘·오멘 / 닼로: 오멘)</li>
+            <li><strong style="color:#7dd3fc;">[2단계] 고대 도감 코어용 5종 도감 100% 완성 (3종 ➔ 5종):</strong> 메인 포함 수호신 5종을 골라 <strong>3돌 ➔ 6돌 ➔ 9돌 ➔ 10돌</strong>로 올리며, <strong>레벨과 ${resIcon('res_guardian_pot.png')}잠재능력을 5종 골고루 10단위씩(10➔20➔30...➔100)</strong> 올려 도감 100%를 <strong>3개(최소 효율) ➔ 5개(맥스)</strong> 순서로 채웁니다.</li>
+            <li><strong style="color:#6ee7b7;">[3단계] 나머지 전체 수호신 골고루 3돌 ➔ 6돌 해금:</strong> 도감 5종을 다 맞춘 뒤부터는 남은 모든 수호신을 골고루 <strong>3돌 ➔ 6돌</strong>까지 올려 잠재능력 보유효과를 전부 엽니다.</li>
+            <li><strong style="color:#c084fc;">[4단계] 6돌 상태에서 전원 ${resIcon('res_guardian_pot.png')}잠재능력 100 마스터 (10단위 균등!):</strong> 6돌파를 마친 수호신들의 잠재능력을 <strong>10단위씩 골고루 전부 100</strong>까지 맞춥니다.</li>
+            <li><strong style="color:#fda4af;">[5단계] 마지막으로 나머지 수호신 전원 10돌파(풀돌):</strong> 잠재 100 완료 후 ${resIcon('res_guardian_token.png')}증표로 남은 수호신들을 10돌파(풀돌)하는 것이 드는 재화 대비 효율이 제일 좋습니다!</li>
           </ul>
           <div class="ency-fig-grid-2">
             ${fig('images/guardian_guide_karmina.png', '수호신 6돌파 달성 시 잠재능력(보유효과) 해금!')}
-            ${fig('images/guardian_guide_pot.png', '잠재능력은 1개 100 몰빵 금지 ➔ 전원 10레벨씩 균등 투자!')}
+            ${fig('images/guardian_guide_pot.png', '도감 %는 10단위 상승 ➔ 5종 골고루 10단위씩 균등 투자!')}
           </div>
         </div>
 
@@ -19361,6 +20052,903 @@
     };
 
     return { title: '종합 공략', credit: '', subtitle: '', html: '' };
+  }
+
+  // =========================================================================
+  // [SECTION 20] 영원 장비 연마 실전 미니게임 시뮬레이터
+  // =========================================================================
+  const refSimState = {
+    equip: 'scythe',
+    lv: 10,
+    bestLv: 10,
+    tries: 0,
+    succ: 0,
+    keep: 0,
+    drop: 0,
+    spentStone: 0,
+    spentDia: 0
+  };
+
+  function initRefSimUI() {
+    const sel = document.getElementById('refsim_jump_lv');
+    if (sel && sel.options.length === 0) {
+      let h = '';
+      for (let i = 0; i <= 19; i++) h += `<option value="${i}" ${i === refSimState.lv ? 'selected' : ''}>Lv.${i}</option>`;
+      sel.innerHTML = h;
+    }
+    renderRefSimUI();
+  }
+
+  function setRefSimEquip(eqKey) {
+    refSimState.equip = eqKey;
+    ['scythe', 'orb', 'accessory'].forEach(k => document.getElementById('refsim_eq_' + k)?.classList.toggle('active', k === eqKey));
+    renderRefSimUI();
+  }
+
+  function jumpRefSimLevel(val) {
+    refSimState.lv = Math.max(0, Math.min(20, parseInt(val, 10) || 0));
+    refSimState.bestLv = Math.max(refSimState.bestLv, refSimState.lv);
+    const b = document.getElementById('refsim_result_banner');
+    if (b) { b.className = 'refsim-result-banner'; b.innerText = `Lv.${refSimState.lv} 단계로 이동했습니다. 연마를 시작하세요!`; }
+    renderRefSimUI();
+  }
+
+  function resetRefSimAll() {
+    refSimState.lv = 10;
+    refSimState.bestLv = 10;
+    refSimState.tries = refSimState.succ = refSimState.keep = refSimState.drop = 0;
+    refSimState.spentStone = refSimState.spentDia = 0;
+    const sel = document.getElementById('refsim_jump_lv');
+    if (sel) sel.value = '10';
+    const b = document.getElementById('refsim_result_banner');
+    if (b) { b.className = 'refsim-result-banner'; b.innerText = '초기화 완료! 아래 [연마] 버튼을 눌러 강화를 시도해 보세요!'; }
+    renderRefSimUI();
+  }
+
+  function getRefSimStepInfo() {
+    const rate = REFINE_RATES[refSimState.lv] || { lv: 20, s: 0, k: 1, d: 0 };
+    const safe = document.getElementById('refsim_chk_safe')?.checked ?? false;
+    const useDia = document.getElementById('refsim_chk_dia')?.checked ?? false;
+    const baseStone = (REFINE_STONE_COSTS[refSimState.equip] || {})[refSimState.lv];
+    const stoneCost = baseStone !== undefined ? baseStone * (safe ? 2 : 1) : 60000 * (safe ? 2 : 1);
+    const effKeep = (safe && rate.d > 0) ? (rate.k + rate.d) : rate.k;
+    const effDrop = safe ? 0 : rate.d;
+    return { s: rate.s, k: effKeep, d: effDrop, safe, useDia, stoneCost, diaCost: stoneCost * 100 };
+  }
+
+  function rollRefSimOnce() {
+    if (refSimState.lv >= 20) {
+      const b = document.getElementById('refsim_result_banner');
+      if (b) { b.className = 'refsim-result-banner res-succ'; b.innerText = '👑 이미 최종 Lv.20 연마를 달성했습니다!'; }
+      return 'max';
+    }
+    const info = getRefSimStepInfo();
+    refSimState.tries++;
+    if (info.useDia) refSimState.spentDia += info.diaCost;
+    else refSimState.spentStone += info.stoneCost;
+
+    const r = Math.random();
+    const b = document.getElementById('refsim_result_banner');
+    let outcome = 'keep';
+    if (r < info.s) {
+      outcome = 'succ';
+      refSimState.succ++;
+      refSimState.lv++;
+      refSimState.bestLv = Math.max(refSimState.bestLv, refSimState.lv);
+      if (b) { b.className = 'refsim-result-banner res-succ'; b.innerText = `✨ 연마 성공!! Lv.${refSimState.lv - 1} ➔ Lv.${refSimState.lv} 달성!`; }
+    } else if (r < info.s + info.k) {
+      outcome = 'keep';
+      refSimState.keep++;
+      if (b) { b.className = 'refsim-result-banner res-keep'; b.innerText = `💨 연마 실패 (Lv.${refSimState.lv} 단계 유지)`; }
+    } else {
+      outcome = 'drop';
+      refSimState.drop++;
+      refSimState.lv = Math.max(0, refSimState.lv - 1);
+      if (b) { b.className = 'refsim-result-banner res-drop'; b.innerText = `💥 연마 실패! 단계 하락... (Lv.${refSimState.lv + 1} ➔ Lv.${refSimState.lv})`; }
+    }
+    const sel = document.getElementById('refsim_jump_lv');
+    if (sel && refSimState.lv <= 19) sel.value = String(refSimState.lv);
+    renderRefSimUI();
+    return outcome;
+  }
+
+  function autoRollRefSimNext() {
+    if (refSimState.lv >= 20) { rollRefSimOnce(); return; }
+    const startLv = refSimState.lv, targetLv = startLv + 1;
+    let cnt = 0, drops = 0;
+    while (refSimState.lv < targetLv && cnt < 3000) {
+      const res = rollRefSimOnce();
+      cnt++;
+      if (res === 'drop') drops++;
+    }
+    const b = document.getElementById('refsim_result_banner');
+    if (b) {
+      if (refSimState.lv >= targetLv) {
+        b.className = 'refsim-result-banner res-succ';
+        b.innerText = `⚡ 자동 연마 완료! ${cnt}회 만에 Lv.${startLv} ➔ Lv.${targetLv} 성공! (하락 ${drops}회)`;
+      } else {
+        b.className = 'refsim-result-banner res-drop';
+        b.innerText = `⚠️ 3,000회 시도 동안 Lv.${targetLv} 도달 실패 (현재 Lv.${refSimState.lv} · 하락 ${drops}회)`;
+      }
+    }
+  }
+
+  function renderRefSimUI() {
+    const eqMeta = {
+      scythe:    { name: '영원 대낫', img: 'images/scythe.png' },
+      orb:       { name: '영원 오브', img: 'images/orb.png' },
+      accessory: { name: '영원 장식', img: 'images/accessory.png' }
+    }[refSimState.equip] || { name: '영원 대낫', img: 'images/scythe.png' };
+    const info = getRefSimStepInfo();
+
+    const imgEl = document.getElementById('refsim_equip_img');
+    if (imgEl) { imgEl.src = eqMeta.img; imgEl.style.display = 'block'; }
+    const nmEl = document.getElementById('refsim_equip_name');
+    if (nmEl) nmEl.innerText = eqMeta.name;
+
+    const pS = document.getElementById('refsim_p_succ'), pK = document.getElementById('refsim_p_keep'), pD = document.getElementById('refsim_p_drop');
+    if (pS) pS.innerText = refSimState.lv >= 20 ? 'MAX' : `${(info.s * 100).toFixed(1)}%`;
+    if (pK) pK.innerText = refSimState.lv >= 20 ? '-' : `${(info.k * 100).toFixed(1)}%`;
+    if (pD) pD.innerText = refSimState.lv >= 20 ? '-' : `${(info.d * 100).toFixed(1)}%`;
+
+    const curEl = document.getElementById('refsim_lv_cur'), nxtEl = document.getElementById('refsim_lv_next');
+    if (curEl) curEl.innerText = `Lv.${refSimState.lv}`;
+    if (nxtEl) nxtEl.innerText = refSimState.lv >= 20 ? 'MAX' : `Lv.${refSimState.lv + 1}`;
+
+    const orbsRow = document.getElementById('refsim_orbs_row');
+    if (orbsRow) {
+      let html = '';
+      for (let g = 0; g < 4; g++) {
+        html += `<div class="refsim-orb-group">`;
+        for (let k = 0; k < 5; k++) {
+          const idx = g * 5 + k + 1;
+          html += `<span class="refsim-orb ${idx <= refSimState.lv ? 'on' : ''}"></span>`;
+        }
+        html += `</div>`;
+      }
+      orbsRow.innerHTML = html;
+    }
+
+    const costPill = document.getElementById('refsim_btn_cost_pill');
+    if (costPill) {
+      const iconHtml = info.useDia ? calcResIcon('res_blue_dia.png', 16) : `<img src="images/eternity_stone.png" alt="" style="width:16px;height:16px;object-fit:contain;" onerror="this.style.display='none';">`;
+      costPill.innerHTML = refSimState.lv >= 20 ? 'MAX 달성' : `${iconHtml}${(info.useDia ? info.diaCost : info.stoneCost).toLocaleString()}`;
+    }
+
+    const setT = (id, t) => { const e = document.getElementById(id); if (e) e.innerText = t; };
+    setT('refsim_best_lv', `Lv.${refSimState.bestLv}`);
+    setT('refsim_tries_cnt', `${refSimState.tries.toLocaleString()}회`);
+    setT('refsim_stat_s', refSimState.succ.toLocaleString());
+    setT('refsim_stat_k', refSimState.keep.toLocaleString());
+    setT('refsim_stat_d', refSimState.drop.toLocaleString());
+    setT('refsim_spent_stone', `${formatKoreanNumber(refSimState.spentStone)}개`);
+    setT('refsim_spent_dia', `${formatKoreanNumber(refSimState.spentDia)}개`);
+  }
+
+  // =========================================================================
+  // [SECTION 21] 몬스터 카드 세팅 도우미 (v.1.0.0) 전체 DB · 시너지 SVG · 최적화 엔진
+  // =========================================================================
+  const MCARD_TIER_META = {
+    advanced: { kr:'상급', badge:'grade-advanced', baseScore:1, perBrk:2,  synSlots:1, ptsPerSlot:1, eff:[10,30,60],   brk10Atk:50 },
+    unique:   { kr:'특급', badge:'grade-unique',   baseScore:2, perBrk:3,  synSlots:1, ptsPerSlot:1, eff:[10,30,60],   brk10Atk:50 },
+    legend:   { kr:'전설', badge:'grade-legend',   baseScore:3, perBrk:7,  synSlots:2, ptsPerSlot:2, eff:[30,50,120],  brk10Atk:150 },
+    mythic:   { kr:'신화', badge:'grade-mythic',   baseScore:5, perBrk:10, synSlots:3, ptsPerSlot:3, eff:[30,120,800], brk10Atk:1000 }
+  };
+
+  const MCARD_SYN_KEYS = ['command', 'veteran', 'fear', 'crit', 'evolve'];
+  const MCARD_SYN_META = {
+    command: { name:'지휘', color:'#f59e0b', desc:'카드 공격력 (+50 / +100 / +250% · 합연산 5배)' },
+    veteran: { name:'노련', color:'#38bdf8', desc:'챕터 100/125/150 모피증 (+50 / +150 / +400% · 7배)' },
+    fear:    { name:'공포', color:'#c084fc', desc:'카드 공격력 증폭 (+100 / +300 / +600% · 합연산 11배)' },
+    crit:    { name:'치명', color:'#2dd4bf', desc:'크피50% × 슈크피100% × 하크피400% (곱연산 최대 15배!)' },
+    evolve:  { name:'진화', color:'#f97316', desc:'1/2/3차 모피증 (+150 / +300 / +1,050% · 합연산 16배)' }
+  };
+
+  function getMcardSynSvg(synKey, size = 20) {
+    const s = size;
+    if (synKey === 'command') {
+      return `<svg width="${s}" height="${s}" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><polygon points="14,2 25,8 25,20 14,26 3,20 3,8" fill="#78350f" stroke="#fbbf24" stroke-width="1.8"/><path d="M7 18L8.5 11L12 14L14 9.5L16 14L19.5 11L21 18H7Z" fill="#fde047" stroke="#fff" stroke-width="0.9" stroke-linejoin="round"/></svg>`;
+    }
+    if (synKey === 'veteran') {
+      return `<svg width="${s}" height="${s}" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><polygon points="14,2 25,8 25,20 14,26 3,20 3,8" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.8"/><path d="M14 6.5C14 6.5 9.5 11 9.5 15.5C9.5 18.2 11.5 20.5 14 20.5C16.5 20.5 18.5 18.2 18.5 15.5C18.5 13 17 11 16 9.8C16 11.8 14.8 12.6 14 12.6C14.8 10.6 14.6 8.5 14 6.5Z" fill="#7dd3fc" stroke="#e0f2fe" stroke-width="1"/></svg>`;
+    }
+    if (synKey === 'fear') {
+      return `<svg width="${s}" height="${s}" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><polygon points="14,2 25,8 25,20 14,26 3,20 3,8" fill="#3b0764" stroke="#c084fc" stroke-width="1.8"/><path d="M14 7.5C10.5 7.5 8.5 10 8.5 13C8.5 15 9.6 16.5 10.8 17.3V19.8H17.2V17.3C18.4 16.5 19.5 15 19.5 13C19.5 10 17.5 7.5 14 7.5Z" fill="#e9d5ff"/><circle cx="11.8" cy="13" r="1.4" fill="#3b0764"/><circle cx="16.2" cy="13" r="1.4" fill="#3b0764"/></svg>`;
+    }
+    if (synKey === 'crit') {
+      return `<svg width="${s}" height="${s}" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><polygon points="14,2 25,8 25,20 14,26 3,20 3,8" fill="#064e3b" stroke="#2dd4bf" stroke-width="1.8"/><path d="M8.5 18L15 8.5M12.5 19.5L18.5 9.5M16.5 19.5L20.8 12.5" stroke="#5eead4" stroke-width="2.1" stroke-linecap="round"/></svg>`;
+    }
+    return `<svg width="${s}" height="${s}" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><polygon points="14,2 25,8 25,20 14,26 3,20 3,8" fill="#7c2d12" stroke="#fb923c" stroke-width="1.8"/><path d="M9 11L7.5 7.5L11.5 9.5H16.5L20.5 7.5L19 11C19.6 12.3 19.8 14 19 16.2C18 18.6 16 20 14 20C12 20 10 18.6 9 16.2C8.2 14 8.4 12.3 9 11Z" fill="#fdba74"/><circle cx="11.8" cy="13.5" r="1.3" fill="#7c2d12"/><circle cx="16.2" cy="13.5" r="1.3" fill="#7c2d12"/></svg>`;
+  }
+
+  // 인게임 순서 100% 일치 24종 몬스터 카드 DB
+  const MONSTER_CARDS_DB = [
+    // 상급 (3종)
+    { id:'mc_goblin',          tier:'advanced', name:'고블린',       cat:'job',       req:'reaper', val:100, img:'images/mc_goblin.png',          desc:'강타 피해량 +100%' },
+    { id:'mc_skeleton',        tier:'advanced', name:'스켈레톤',     cat:'job',       req:'mage',   val:100, img:'images/mc_skeleton.png',        desc:'스킬 피해량 +100%' },
+    { id:'mc_firedragon',      tier:'advanced', name:'화룡',         cat:'job',       req:'lord',   val:100, img:'images/mc_firedragon.png',      desc:'영웅 스킬 피해량 +100%' },
+    // 특급 (3종)
+    { id:'mc_minotaur',        tier:'unique',   name:'미노타우로스', cat:'elem',      req:'fire',   val:150, img:'images/mc_minotaur.png',        desc:'화염 속성 피해량 +150%' },
+    { id:'mc_viper',           tier:'unique',   name:'독사',         cat:'elem',      req:'light',  val:150, img:'images/mc_viper.png',           desc:'번개 속성 피해량 +150%' },
+    { id:'mc_gargoyle',        tier:'unique',   name:'가고일',       cat:'elem',      req:'dark',   val:150, img:'images/mc_gargoyle.png',        desc:'어둠 속성 피해량 +150%' },
+    // 전설 (9종)
+    { id:'mc_golem',           tier:'legend',   name:'원소 골렘',    cat:'job',       req:'reaper', val:180, img:'images/mc_golem.png',           desc:'몬카 강타 피해량 +180%' },
+    { id:'mc_spirit_know',     tier:'legend',   name:'지식의 정령',  cat:'job',       req:'mage',   val:180, img:'images/mc_spirit_know.png',     desc:'몬카 스킬 피해량 +180%' },
+    { id:'mc_hero_soul',       tier:'legend',   name:'영웅의 혼',    cat:'job',       req:'lord',   val:180, img:'images/mc_hero_soul.png',       desc:'몬카 영웅 스킬 피해량 +180%' },
+    { id:'mc_trial_knight',    tier:'legend',   name:'시련의 기사',  cat:'elem',      req:'fire',   val:180, img:'images/mc_trial_knight.png',    desc:'몬카 화염 속성 피해량 +180%' },
+    { id:'mc_mimic',           tier:'legend',   name:'미믹',         cat:'elem',      req:'light',  val:180, img:'images/mc_mimic.png',           desc:'몬카 번개 속성 피해량 +180%' },
+    { id:'mc_wisp',            tier:'legend',   name:'위습',         cat:'elem',      req:'dark',   val:180, img:'images/mc_wisp.png',            desc:'몬카 어둠 속성 피해량 +180%' },
+    { id:'mc_guardian_spirit', tier:'legend',   name:'수호령',       cat:'final',     req:'all',    val:180, img:'images/mc_guardian_spirit.png', desc:'몬카 최종 피해량 +180%' },
+    { id:'mc_dragon_soul',     tier:'legend',   name:'드래곤 소울',  cat:'def_ign',   req:'all',    val:270, img:'images/mc_dragon_soul.png',     desc:'방어도 무시 피해 증폭 +270%' },
+    { id:'mc_despair_knight',  tier:'legend',   name:'절망의 기사',  cat:'score_atk', req:'all',    val:55,  stepPts:100, img:'images/mc_despair_knight.png', desc:'카드 100점당 몬카 공 +55%' },
+    // 신화 (9종)
+    { id:'mc_argos',           tier:'mythic',   name:'아르고스',     cat:'job',       req:'reaper', val:500, img:'images/mc_argos.png',           desc:'몬카 강타 피해량 +500%' },
+    { id:'mc_caelus',          tier:'mythic',   name:'카엘루스',     cat:'job',       req:'mage',   val:500, img:'images/mc_caelus.png',          desc:'몬카 스킬 피해량 +500%' },
+    { id:'mc_barkan',          tier:'mythic',   name:'바르칸',       cat:'job',       req:'lord',   val:500, img:'images/mc_barkan.png',          desc:'몬카 영웅 스킬 피해량 +500%' },
+    { id:'mc_frigion',         tier:'mythic',   name:'프리기온',     cat:'elem',      req:'fire',   val:500, img:'images/mc_frigion.png',         desc:'몬카 화염 속성 피해량 +500%' },
+    { id:'mc_laska',           tier:'mythic',   name:'라스카',       cat:'elem',      req:'light',  val:500, img:'images/mc_laska.png',           desc:'몬카 번개 속성 피해량 +500%' },
+    { id:'mc_nactis',          tier:'mythic',   name:'나크티스',     cat:'elem',      req:'dark',   val:500, img:'images/mc_nactis.png',          desc:'몬카 어둠 속성 피해량 +500%' },
+    { id:'mc_luparg',          tier:'mythic',   name:'루파르그',     cat:'final',     req:'all',    val:500, img:'images/mc_luparg.png',          desc:'몬카 최종 피해량 +500%' },
+    { id:'mc_tigron',          tier:'mythic',   name:'티그론',       cat:'def_ign',   req:'all',    val:750, img:'images/mc_tigron.png',          desc:'방어도 무시 피해 증폭 +750%' },
+    { id:'mc_dracargo',        tier:'mythic',   name:'드라카르고',   cat:'score_atk', req:'all',    val:750, stepPts:500, img:'images/mc_dracargo.png', desc:'카드 500점당 몬카 공 +750%' }
+  ];
+
+  let mcardUserSpecs = {}; // { [cardId]: { owned: true, brk: 0~10, unlockedSyns: ['fear','crit',...] } }
+  let mcardCondState = { narita3: false, hcrit: false, idealSyn: false, jobTier: 3, chap: 800, scoreOverride: '' };
+
+  function getMcardScore(cardDef, brk) {
+    const tm = MCARD_TIER_META[cardDef.tier];
+    return tm.baseScore + Math.max(0, Math.min(10, parseInt(brk, 10) || 0)) * tm.perBrk;
+  }
+
+  function getMcardEffMult(cardDef, brk) {
+    const tm = MCARD_TIER_META[cardDef.tier];
+    const b = Math.max(0, Math.min(10, parseInt(brk, 10) || 0));
+    const addPct = (b >= 3 ? tm.eff[0] : 0) + (b >= 6 ? tm.eff[1] : 0) + (b >= 9 ? tm.eff[2] : 0);
+    return 1 + addPct / 100;
+  }
+
+  function getMcardAutoTotalScore() {
+    let sum = 0;
+    MONSTER_CARDS_DB.forEach(c => {
+      const sp = mcardUserSpecs[c.id];
+      if (sp && sp.owned) sum += getMcardScore(c, sp.brk);
+    });
+    return sum;
+  }
+
+  function getEffectiveMcardTotalScore() {
+    const ov = parseInt(mcardCondState.scoreOverride, 10);
+    return (!isNaN(ov) && mcardCondState.scoreOverride !== '' && ov >= 0) ? ov : getMcardAutoTotalScore();
+  }
+
+  function syncMcardCondFromInventory(isManualBtn = false) {
+    const narita = (typeof getUnionSpecByName === 'function') ? getUnionSpecByName('hero', '나리타') : null;
+    if (narita && narita.found && narita.owned) mcardCondState.narita3 = (narita.awk >= 3);
+
+    const bestCores = window._latestBestConnectEval?.slots || [];
+    const hasHRate = bestCores.some(x => x && x.coreId === 'c5_hcrit_rate');
+    const hasHDmg  = bestCores.some(x => x && x.coreId === 'c6_hcrit_dmg');
+    if (bestCores.some(Boolean)) mcardCondState.hcrit = (hasHRate && hasHDmg);
+
+    const lv3 = parseInt(document.getElementById('jc3_cur_lv')?.value || '0', 10);
+    const lv2 = parseInt(document.getElementById('jc2_cur_lv')?.value || '0', 10);
+    const lv1 = parseInt(document.getElementById('jc1_cur_lv')?.value || '0', 10);
+    mcardCondState.jobTier = lv3 >= 1 ? 3 : (lv2 >= 1 ? 2 : (lv1 >= 1 ? 1 : 0));
+    mcardCondState.chap = stageDiagState?.curC || 800;
+
+    applyMcardCondToDom();
+    calculateBestMcardLoadout();
+    if (isManualBtn) {
+      triggerAutoSave();
+      showGlobalCopyToast('인벤토리 · 유니온 · 소울 조건 동기화 완료!', `나리타3각: ${mcardCondState.narita3?'ON':'OFF'} · 하크확: ${mcardCondState.hcrit?'ON':'OFF'} · ${mcardCondState.jobTier}차 · ${mcardCondState.chap}챕터`);
+    }
+  }
+
+  function applyMcardCondToDom() {
+    const setC = (id, v) => { const e = document.getElementById(id); if (e) e.checked = Boolean(v); };
+    const setV = (id, v) => { const e = document.getElementById(id); if (e) e.value = v; };
+    setC('mc_cond_narita3', mcardCondState.narita3);
+    setC('mc_cond_hcrit', mcardCondState.hcrit);
+    setC('mc_cond_ideal_syn', mcardCondState.idealSyn);
+    setV('mc_cond_jobtier', String(mcardCondState.jobTier));
+    setV('mc_cond_chap', String(mcardCondState.chap));
+    const ovEl = document.getElementById('mc_cond_score_override');
+    if (ovEl && document.activeElement !== ovEl) ovEl.value = mcardCondState.scoreOverride ?? '';
+  }
+
+  function onMcardCondManualChange() {
+    mcardCondState.narita3 = document.getElementById('mc_cond_narita3')?.checked ?? false;
+    mcardCondState.hcrit = document.getElementById('mc_cond_hcrit')?.checked ?? false;
+    mcardCondState.idealSyn = document.getElementById('mc_cond_ideal_syn')?.checked ?? false;
+    mcardCondState.jobTier = parseInt(document.getElementById('mc_cond_jobtier')?.value || '3', 10);
+    mcardCondState.chap = Math.max(1, parseInt(document.getElementById('mc_cond_chap')?.value || '800', 10) || 1);
+    mcardCondState.scoreOverride = (document.getElementById('mc_cond_score_override')?.value || '').trim();
+    calculateBestMcardLoadout();
+    triggerAutoSave();
+  }
+
+  function evaluateMcardSynTotals(synPtsMap) {
+    const { hcrit, jobTier, chap } = mcardCondState;
+    let totalMult = 1;
+    const details = {};
+
+    // 1. 지휘 (카드 공격력: 합연산 50/100/250 -> 최대 5.0배)
+    const pCmd = synPtsMap.command || 0;
+    const mCmd = 1 + ((pCmd >= 3 ? 50 : 0) + (pCmd >= 6 ? 100 : 0) + (pCmd >= 9 ? 250 : 0)) / 100;
+    details.command = { pts: pCmd, mult: mCmd }; totalMult *= mCmd;
+
+    // 2. 노련 (챕터 100/125/150 모피증: 합연산 50/150/400 -> 최대 7.0배)
+    const pVet = synPtsMap.veteran || 0;
+    const mVet = 1 + ((pVet >= 3 && chap >= 100 ? 50 : 0) + (pVet >= 6 && chap >= 125 ? 150 : 0) + (pVet >= 9 && chap >= 150 ? 400 : 0)) / 100;
+    details.veteran = { pts: pVet, mult: mVet }; totalMult *= mVet;
+
+    // 3. 공포 (카드 공격력 증폭: 합연산 100/300/600 -> 최대 11.0배)
+    const pFear = synPtsMap.fear || 0;
+    const mFear = 1 + ((pFear >= 3 ? 100 : 0) + (pFear >= 6 ? 300 : 0) + (pFear >= 9 ? 600 : 0)) / 100;
+    details.fear = { pts: pFear, mult: mFear }; totalMult *= mFear;
+
+    // 4. 치명 (세트별 곱연산! 1.5 × 2.0 × 5.0 = 15.0배, 9셋은 하크확+하크피 필수)
+    const pCrit = synPtsMap.crit || 0;
+    const mCrit = (pCrit >= 3 ? 1.5 : 1) * (pCrit >= 6 ? 2.0 : 1) * (pCrit >= 9 && hcrit ? 5.0 : 1);
+    details.crit = { pts: pCrit, mult: mCrit }; totalMult *= mCrit;
+
+    // 5. 진화 (1/2/3차 모피증 곱연산: 합연산 150/300/1050 -> 최대 16.0배)
+    const pEvo = synPtsMap.evolve || 0;
+    const mEvo = 1 + ((pEvo >= 3 && jobTier >= 1 ? 150 : 0) + (pEvo >= 6 && jobTier >= 2 ? 300 : 0) + (pEvo >= 9 && jobTier >= 3 ? 1050 : 0)) / 100;
+    details.evolve = { pts: pEvo, mult: mEvo }; totalMult *= mEvo;
+
+    return { synMult: totalMult, details };
+  }
+
+  function evaluateMcardEquipEffects(cardInstances, totalScore) {
+    const job = currentRuneJob || 'reaper';
+    const elem = currentRuneElem || 'fire';
+    const narita3 = mcardCondState.narita3;
+    const catSums = { job: 0, elem: 0, final: 0, def_ign: 0, score_atk: 0 };
+
+    cardInstances.forEach(inst => {
+      if (!inst || !inst.card) return;
+      const c = inst.card;
+      const effMult = getMcardEffMult(c, inst.brk);
+      if (c.cat === 'job') {
+        if (c.req === job) catSums.job += c.val * effMult;
+      } else if (c.cat === 'elem') {
+        if (c.req === elem) catSums.elem += c.val * effMult;
+      } else if (c.cat === 'final') {
+        catSums.final += c.val * effMult;
+      } else if (c.cat === 'def_ign') {
+        // 나리타 3각 미보유(방무 부족) 시 티그론/드래곤소울 최우선 가중치, 보유 시 방무 희석 반영
+        const weight = narita3 ? 1.35 : 1.0;
+        const val = narita3 ? (c.val * effMult * 0.22) : (c.val * effMult * 1.35);
+        catSums.def_ign += val;
+      } else if (c.cat === 'score_atk') {
+        const stacks = Math.floor(totalScore / (c.stepPts || 500));
+        catSums.score_atk += stacks * c.val * effMult;
+      }
+    });
+
+    const mult = (1 + catSums.job / 100) * (1 + catSums.elem / 100) * (1 + catSums.final / 100) * (1 + catSums.def_ign / 100) * (1 + catSums.score_atk / 100);
+    return { equipMult: Math.max(1, mult), catSums };
+  }
+
+  // 카드 1~3장의 해금 시너지 풀 내에서 최고 배율 시너지 배치 탐색 (중복 허용 · 캐싱으로 5ms 미만 초고속)
+  function findBestSynergyAssignmentForCombo(cardInstances, synCache) {
+    const ideal = mcardCondState.idealSyn;
+    const slotGroups = cardInstances.map(inst => {
+      const tm = MCARD_TIER_META[inst.card.tier];
+      const unlocked = ideal ? MCARD_SYN_KEYS : (inst.unlockedSyns || []).filter(k => MCARD_SYN_KEYS.includes(k));
+      return { slots: tm.synSlots, pts: tm.ptsPerSlot, pool: unlocked };
+    });
+
+    const sig = slotGroups.map(g => `${g.slots}:${g.pts}:${g.pool.join(',')}`).join('|');
+    if (synCache && synCache.has(sig)) return synCache.get(sig);
+
+    // 각 카드에서 만들 수 있는 중복조합(순서 무관) 생성
+    function genMultisets(pool, k) {
+      if (k <= 0 || !pool.length) return [[]];
+      const out = [];
+      (function rec(idx, cur) {
+        if (cur.length === k) { out.push([...cur]); return; }
+        for (let i = idx; i < pool.length; i++) {
+          cur.push(pool[i]); rec(i, cur); cur.pop();
+        }
+      })(0, []);
+      return out;
+    }
+
+    const cardOptions = slotGroups.map(g => genMultisets(g.pool, g.slots));
+    let bestSynMult = -1;
+    let bestPicks = slotGroups.map(() => []);
+    let bestTotals = { command:0, veteran:0, fear:0, crit:0, evolve:0 };
+    let bestDetails = null;
+
+    const N = cardOptions.length;
+    const curTotals = { command:0, veteran:0, fear:0, crit:0, evolve:0 };
+    const curPicks = new Array(N);
+
+    (function dfs(ci) {
+      if (ci === N) {
+        const ev = evaluateMcardSynTotals(curTotals);
+        if (ev.synMult > bestSynMult) {
+          bestSynMult = ev.synMult;
+          bestPicks = curPicks.map(p => [...p]);
+          bestTotals = { ...curTotals };
+          bestDetails = ev.details;
+        }
+        return;
+      }
+      const pts = slotGroups[ci].pts;
+      const opts = cardOptions[ci];
+      for (let i = 0; i < opts.length; i++) {
+        const arr = opts[i];
+        curPicks[ci] = arr;
+        for (let j = 0; j < arr.length; j++) curTotals[arr[j]] += pts;
+        dfs(ci + 1);
+        for (let j = 0; j < arr.length; j++) curTotals[arr[j]] -= pts;
+      }
+    })(0);
+
+    const res = { synMult: Math.max(1, bestSynMult), picks: bestPicks, totals: bestTotals, details: bestDetails || evaluateMcardSynTotals(bestTotals).details };
+    if (synCache) synCache.set(sig, res);
+    return res;
+  }
+
+  function calculateBestMcardLoadout() {
+    const totalScore = getEffectiveMcardTotalScore();
+    const autoScore = getMcardAutoTotalScore();
+    const hintEl = document.getElementById('mc_auto_score_hint');
+    if (hintEl) hintEl.innerText = `(자동 ${autoScore}점)`;
+    const scoreBadge = document.getElementById('mcard_total_score_badge');
+    if (scoreBadge) scoreBadge.innerText = `총 카드 점수: ${totalScore}점`;
+
+    const ownedList = [];
+    MONSTER_CARDS_DB.forEach(c => {
+      const sp = mcardUserSpecs[c.id];
+      if (sp && sp.owned) {
+        ownedList.push({ card: c, brk: sp.brk || 0, unlockedSyns: Array.isArray(sp.unlockedSyns) ? sp.unlockedSyns : [] });
+      }
+    });
+
+    const cntBadge = document.getElementById('mcard_owned_cnt_badge');
+    if (cntBadge) cntBadge.innerText = `보유 등록: ${ownedList.length} / ${MONSTER_CARDS_DB.length}종`;
+
+    const synCache = new Map();
+    let bestCombo = [], bestEquip = { equipMult: 1, catSums: {} }, bestSyn = { synMult: 1, picks: [], totals: {}, details: evaluateMcardSynTotals({}).details }, bestTotalMult = -1;
+
+    const evalCandidate = (arr) => {
+      const eq = evaluateMcardEquipEffects(arr, totalScore);
+      const sy = findBestSynergyAssignmentForCombo(arr, synCache);
+      const tot = eq.equipMult * sy.synMult;
+      if (tot > bestTotalMult) { bestTotalMult = tot; bestCombo = arr; bestEquip = eq; bestSyn = sy; }
+    };
+
+    const n = ownedList.length;
+    if (n > 0 && n <= 3) {
+      evalCandidate(ownedList);
+    } else if (n > 3) {
+      for (let i = 0; i < n - 2; i++)
+        for (let j = i + 1; j < n - 1; j++)
+          for (let k = j + 1; k < n; k++)
+            evalCandidate([ownedList[i], ownedList[j], ownedList[k]]);
+    }
+
+    const finalMult = Math.max(1, bestTotalMult);
+    window._latestBestMcardEval = {
+      log10: Math.log10(finalMult),
+      cards: bestCombo.map((inst, idx) => ({ cardId: inst.card.id, syns: bestSyn.picks[idx] || [] }))
+    };
+
+    // 추천 3슬롯 보드 렌더링
+    const slotsEl = document.getElementById('mcard_rec_3slots');
+    if (slotsEl) {
+      slotsEl.innerHTML = [0, 1, 2].map(idx => {
+        const inst = bestCombo[idx];
+        if (!inst) {
+          return `<div class="mcard-slot-card"><div style="font-size:11px; color:#64748b; font-weight:800;">슬롯 ${idx + 1}</div><div style="font-size:13px; color:#64748b; font-weight:800;">보유 카드를 등록하세요</div><div style="font-size:11px; color:#475569;">-</div></div>`;
+        }
+        const c = inst.card, tm = MCARD_TIER_META[c.tier];
+        const score = getMcardScore(c, inst.brk);
+        const effMult = getMcardEffMult(c, inst.brk);
+        const picks = bestSyn.picks[idx] || [];
+        const synBadges = picks.length > 0
+          ? picks.map(sk => `<span class="mcard-syn-badge" style="border-color:${MCARD_SYN_META[sk].color};">${getMcardSynSvg(sk, 16)}<span>${tm.ptsPerSlot}</span></span>`).join('')
+          : `<span style="font-size:10.5px; color:#94a3b8;">해금 시너지 없음</span>`;
+        let statTxt = c.desc;
+        if (c.cat === 'score_atk') {
+          const st = Math.floor(totalScore / c.stepPts);
+          statTxt = `${st}스택 · 공 +${Math.round(st * c.val * effMult).toLocaleString()}%`;
+        } else {
+          statTxt = `${c.desc.split('+')[0]}+${Math.round(c.val * effMult).toLocaleString()}%`;
+        }
+
+        return `<div class="mcard-slot-card tier-${c.tier}">
+          <div style="width:100%; display:flex; justify-content:space-between; align-items:center; gap:4px;">
+            <span style="font-size:11px; font-weight:900; color:#fde047;">${score}점</span>
+            <span class="grade-badge ${tm.badge}" style="font-size:10px; padding:1px 6px;">${tm.kr} ${inst.brk}돌</span>
+          </div>
+          <div class="mcard-art-box">
+            <img src="${c.img}" alt="${c.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <span style="display:none; width:100%; height:100%; align-items:center; justify-content:center; font-size:12px; font-weight:900; color:#e2e8f0; text-align:center; padding:4px;">${c.name}</span>
+          </div>
+          <div style="font-size:14px; font-weight:900; color:#ffffff; text-align:center;">${c.name}</div>
+          <div style="font-size:11px; color:#7dd3fc; font-weight:800; text-align:center;">${statTxt}</div>
+          <div class="mcard-syn-row">${synBadges}</div>
+        </div>`;
+      }).join('');
+    }
+
+    // 활성화 시너지 바
+    const synBar = document.getElementById('mcard_active_syn_bar');
+    if (synBar) {
+      const actChips = MCARD_SYN_KEYS.map(sk => {
+        const d = bestSyn.details[sk] || { pts: 0, mult: 1 };
+        if (d.pts <= 0) return '';
+        const tierHit = d.pts >= 9 ? '9셋' : (d.pts >= 6 ? '6셋' : (d.pts >= 3 ? '3셋' : `${d.pts}P`));
+        return `<div class="mcard-syn-badge" style="border-color:${MCARD_SYN_META[sk].color}; padding:4px 9px; font-size:12px;">
+          ${getMcardSynSvg(sk, 20)}
+          <span>${MCARD_SYN_META[sk].name} <strong style="color:#fde047;">${d.pts}P</strong> <small style="color:${d.mult>1?'#6ee7b7':'#94a3b8'};">(${tierHit} · ${d.mult.toFixed(1)}배)</small></span>
+        </div>`;
+      }).filter(Boolean).join('');
+      synBar.innerHTML = `<div style="font-size:12.5px; font-weight:900; color:#93c5fd;">활성화 시너지</div><div style="display:flex; flex-wrap:wrap; gap:7px;">${actChips || '<span style="font-size:12px; color:#64748b;">활성화된 시너지 없음 (카드 아래 시너지 아이콘을 선택하세요)</span>'}</div>`;
+    }
+
+    const gMultEl = document.getElementById('mcard_grand_mult');
+    if (gMultEl) gMultEl.innerText = finalMult >= 10000 ? `약 ${formatKoreanNumber(Math.round(finalMult))}배` : `${finalMult.toLocaleString(undefined, { maximumFractionDigits: 2 })}배`;
+    const bdEl = document.getElementById('mcard_mult_breakdown');
+    if (bdEl) bdEl.innerHTML = `카드 3장 장착 배율 <strong style="color:#7dd3fc;">${bestEquip.equipMult.toLocaleString(undefined,{maximumFractionDigits:2})}배</strong> × 활성화 시너지 배율 <strong style="color:#fde047;">${bestSyn.synMult.toLocaleString(undefined,{maximumFractionDigits:2})}배</strong>`;
+
+    if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
+  }
+
+  let mcardAutoTabTimer = null;
+
+  function focusNextMcardBrkInput(curEl, dir = 1) {
+    const scope = curEl.closest('#mcard_roster_accordions, #minv_inline_editor_body') || document;
+    const inputs = Array.from(scope.querySelectorAll('.mcard-brk-autotab'));
+    const idx = inputs.indexOf(curEl);
+    if (idx !== -1 && idx + dir >= 0 && idx + dir < inputs.length) {
+      const nextEl = inputs[idx + dir];
+      nextEl.closest('.accordion-item')?.classList.add('active');
+      nextEl.focus();
+      nextEl.select();
+    }
+  }
+
+  function onMcardBrkKeyDown(e, el, cardId) {
+    if (e.key === '0' && el.value === '1') {
+      e.preventDefault();
+      el.value = '10';
+      onMcardBrkInput(el, cardId);
+      return;
+    }
+    if (e.key === 'Backspace' && el.value === '') {
+      e.preventDefault();
+      focusNextMcardBrkInput(el, -1);
+    } else if (e.key === 'Delete' || e.key === '-') {
+      e.preventDefault();
+      el.value = '';
+      onMcardBrkInput(el, cardId);
+      focusNextMcardBrkInput(el, 1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      focusNextMcardBrkInput(el, -1);
+    } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+      e.preventDefault();
+      focusNextMcardBrkInput(el, 1);
+    }
+  }
+
+  function onMcardBrkInput(el, cardId) {
+    if (mcardAutoTabTimer) { clearTimeout(mcardAutoTabTimer); mcardAutoTabTimer = null; }
+    let raw = el.value.replace(/[^0-9]/g, '');
+    if (raw === '') {
+      delete mcardUserSpecs[cardId];
+      updateSingleMcardEditorUI(cardId);
+      calculateBestMcardLoadout();
+      triggerAutoSave();
+      return;
+    }
+    let num = parseInt(raw, 10);
+    if (num > 10) {
+      raw = raw.slice(-2); num = parseInt(raw, 10);
+      if (num > 10) { raw = raw.slice(-1); num = parseInt(raw, 10); }
+    }
+    el.value = num;
+    const prev = mcardUserSpecs[cardId] || { owned: true, brk: 0, unlockedSyns: [] };
+    mcardUserSpecs[cardId] = { ...prev, owned: true, brk: num };
+    updateSingleMcardEditorUI(cardId);
+    calculateBestMcardLoadout();
+    triggerAutoSave();
+
+    if (num === 1 && raw.length === 1) {
+      mcardAutoTabTimer = setTimeout(() => { if (document.activeElement === el) focusNextMcardBrkInput(el, 1); }, 360);
+    } else {
+      focusNextMcardBrkInput(el, 1);
+    }
+  }
+
+  function toggleMcardUnlockedSyn(cardId, synKey) {
+    if (!mcardUserSpecs[cardId] || !mcardUserSpecs[cardId].owned) {
+      mcardUserSpecs[cardId] = { owned: true, brk: 0, unlockedSyns: [synKey] };
+      const inp = document.getElementById('mc_brk_' + cardId);
+      if (inp) inp.value = '0';
+    } else {
+      const list = mcardUserSpecs[cardId].unlockedSyns || [];
+      const idx = list.indexOf(synKey);
+      if (idx >= 0) list.splice(idx, 1);
+      else list.push(synKey);
+      mcardUserSpecs[cardId].unlockedSyns = list;
+    }
+    updateSingleMcardEditorUI(cardId);
+    calculateBestMcardLoadout();
+    triggerAutoSave();
+  }
+
+  function updateSingleMcardEditorUI(cardId) {
+    const c = MONSTER_CARDS_DB.find(x => x.id === cardId);
+    if (!c) return;
+    const sp = mcardUserSpecs[cardId];
+    const owned = Boolean(sp && sp.owned);
+    const cardEl = document.getElementById('mc_editor_' + cardId);
+    if (cardEl) cardEl.classList.toggle('owned', owned);
+    const scEl = document.getElementById('mc_sc_' + cardId);
+    if (scEl) scEl.innerText = owned ? `${getMcardScore(c, sp.brk)}점` : '미보유';
+    MCARD_SYN_KEYS.forEach(sk => {
+      const btn = document.getElementById(`mc_stog_${cardId}_${sk}`);
+      if (btn) btn.classList.toggle('unlocked', owned && (sp.unlockedSyns || []).includes(sk));
+    });
+    const mCard = document.getElementById('minv_mc_card_' + cardId);
+    if (mCard) mCard.classList.toggle('owned', owned);
+    const mSc = document.getElementById('minv_mc_sc_' + cardId);
+    if (mSc) mSc.innerText = owned ? `${getMcardScore(c, sp.brk)}점` : '-';
+  }
+
+  function applyMcardQuickPreset(mode) {
+    if (mode === 'mid') {
+      MONSTER_CARDS_DB.forEach(c => {
+        if (c.tier === 'advanced' || c.tier === 'unique') {
+          mcardUserSpecs[c.id] = { owned: true, brk: 10, unlockedSyns: ['fear', 'crit', 'evolve'] };
+        } else if (c.tier === 'legend') {
+          mcardUserSpecs[c.id] = { owned: true, brk: 4, unlockedSyns: ['fear', 'crit', 'evolve'] };
+        }
+      });
+    } else if (mode === 'mythic') {
+      MONSTER_CARDS_DB.forEach(c => {
+        if (c.tier === 'advanced' || c.tier === 'unique') {
+          mcardUserSpecs[c.id] = { owned: true, brk: 10, unlockedSyns: ['fear', 'crit', 'evolve'] };
+        } else if (c.tier === 'legend') {
+          mcardUserSpecs[c.id] = { owned: true, brk: 5, unlockedSyns: ['fear', 'crit', 'evolve'] };
+        } else {
+          mcardUserSpecs[c.id] = { owned: true, brk: 2, unlockedSyns: ['fear', 'crit', 'evolve', 'veteran', 'command'] };
+        }
+      });
+    }
+    renderMcardAll();
+    triggerAutoSave();
+  }
+
+  function resetAllMcardSpecs() {
+    if (!confirm('몬스터 카드 보유 및 시너지 등록 내역을 모두 초기화하시겠습니까?')) return;
+    mcardUserSpecs = {};
+    renderMcardAll();
+    triggerAutoSave();
+  }
+
+  function renderMcardAll() {
+    ['reaper', 'mage', 'lord'].forEach(j => document.getElementById('mc_job_' + j)?.classList.toggle('selected', j === currentRuneJob));
+    ['fire', 'light', 'dark'].forEach(e => document.getElementById('mc_elem_' + e)?.classList.toggle('selected', e === currentRuneElem));
+    applyMcardCondToDom();
+
+    const container = document.getElementById('mcard_roster_accordions');
+    if (container) {
+      const tierGroups = [
+        { k:'mythic',   title:'신화 카드 (9종 · 시너지 3칸×3P · 명함 5점 +10/돌)', cls:'acc-mythic',   badge:'grade-mythic' },
+        { k:'legend',   title:'전설 카드 (9종 · 시너지 2칸×2P · 명함 3점 +7/돌)',  cls:'acc-legend',   badge:'grade-legend' },
+        { k:'unique',   title:'특급 카드 (3종 · 시너지 1칸×1P · 명함 2점 +3/돌)',  cls:'acc-unique',   badge:'grade-unique' },
+        { k:'advanced', title:'상급 카드 (3종 · 시너지 1칸×1P · 명함 1점 +2/돌)',  cls:'acc-advanced', badge:'grade-advanced' }
+      ];
+      container.innerHTML = tierGroups.map((tg, idx) => {
+        const list = MONSTER_CARDS_DB.filter(c => c.tier === tg.k);
+        const cardsHtml = list.map(c => {
+          const sp = mcardUserSpecs[c.id];
+          const owned = Boolean(sp && sp.owned);
+          const brkVal = owned ? sp.brk : '';
+          const unlocked = owned ? (sp.unlockedSyns || []) : [];
+          const synBtns = MCARD_SYN_KEYS.map(sk => `
+            <button type="button" id="mc_stog_${c.id}_${sk}" class="mcard-syn-tog-btn ${unlocked.includes(sk)?'unlocked':''}" onclick="toggleMcardUnlockedSyn('${c.id}','${sk}')" title="${MCARD_SYN_META[sk].name} 시너지 해금 여부 토글">
+              ${getMcardSynSvg(sk, 18)}
+              <span>${MCARD_SYN_META[sk].name}</span>
+            </button>`).join('');
+
+          return `<div class="mcard-editor-card ${owned?'owned':''}" id="mc_editor_${c.id}">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:40px; height:40px; border-radius:8px; background:#090e1a; border:1.5px solid #475569; overflow:hidden; flex-shrink:0; display:flex; align-items:center; justify-content:center;">
+                <img src="${c.img}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span style="display:none; font-size:9px; color:#94a3b8; font-weight:800;">카드</span>
+              </div>
+              <div style="flex:1; min-width:0;">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
+                  <strong style="font-size:13px; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${c.name}</strong>
+                  <span id="mc_sc_${c.id}" style="font-size:11px; font-weight:900; color:#fde047;">${owned ? getMcardScore(c, sp.brk) + '점' : '미보유'}</span>
+                </div>
+                <div style="font-size:10.5px; color:#94a3b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${c.desc}</div>
+              </div>
+            </div>
+            <input type="text" inputmode="numeric" class="mcard-brk-autotab" id="mc_brk_${c.id}" value="${brkVal}" placeholder="돌파 (0~10 · 빈칸=미보유)" maxlength="2" onfocus="this.select()" onkeydown="onMcardBrkKeyDown(event,this,'${c.id}')" oninput="onMcardBrkInput(this,'${c.id}')" style="padding:6px; font-size:12.5px; font-weight:900; text-align:center; color:#fde047; background:#090d16; border:1.5px solid #334155;">
+            <div class="mcard-syn-toggle-row">${synBtns}</div>
+          </div>`;
+        }).join('');
+
+        return `<div class="accordion-item ${tg.cls} ${idx === 0 ? 'active' : ''}" id="mc_acc_${tg.k}">
+          <div class="accordion-header" onclick="toggleNewbieAccordion('mc_acc_${tg.k}')">
+            <div class="accordion-left"><span class="accordion-toggle-icon">▶</span><span class="accordion-title-text"><span class="grade-badge ${tg.badge}">${MCARD_TIER_META[tg.k].kr}</span> ${tg.title}</span></div>
+            <span class="accordion-count-badge">${list.length}종</span>
+          </div>
+          <div class="accordion-content"><div class="mcard-roster-grid">${cardsHtml}</div></div>
+        </div>`;
+      }).join('');
+    }
+    calculateBestMcardLoadout();
+  }
+
+  // ---- 통합 인벤토리 인라인 몬스터 카드 편집 ----
+  function renderMasterInvMcardEditor(edBox) {
+    const cardsHtml = MONSTER_CARDS_DB.map(c => {
+      const sp = mcardUserSpecs[c.id];
+      const owned = Boolean(sp && sp.owned);
+      const tm = MCARD_TIER_META[c.tier];
+      return `<div id="minv_mc_card_${c.id}" class="minv-mini-card ${owned?'owned':''}" style="gap:5px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
+          <strong style="font-size:12px; color:#fff;">${c.name}</strong>
+          <span class="grade-badge ${tm.badge}" style="font-size:9px; padding:1px 4px;">${tm.kr}</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <input type="text" inputmode="numeric" class="mcard-brk-autotab" value="${owned ? sp.brk : ''}" placeholder="미보유" maxlength="2" onfocus="this.select()" onkeydown="onMcardBrkKeyDown(event,this,'${c.id}')" oninput="onMcardBrkInput(this,'${c.id}')" style="padding:4px; font-size:12px; font-weight:900; text-align:center; color:#fde047;">
+          <span id="minv_mc_sc_${c.id}" style="font-size:10.5px; color:#6ee7b7; white-space:nowrap;">${owned ? getMcardScore(c, sp.brk) + '점' : '-'}</span>
+        </div>
+      </div>`;
+    }).join('');
+    edBox.innerHTML = `<div style="font-size:11.5px; color:#94a3b8; margin-bottom:8px;">돌파 수(0~10) 빠른 입력 · 시너지 상세 설정은 [몬스터 카드 도우미]에서 가능합니다.</div><div class="minv-inline-scroll"><div class="minv-unit-row">${cardsHtml}</div></div>`;
+  }
+
+  // ---- 진단실 4번 탭 (내 현재 몬스터 카드 3장 비교) ----
+  function evaluateUserCustomMcards() {
+    const slots = (stageDiagState.mcards || [null, null, null]).filter(x => x && x.cardId);
+    if (slots.length === 0) return { hasInput: false, log10: 0, filledCnt: 0 };
+    const totalScore = getEffectiveMcardTotalScore();
+    const insts = [];
+    const synTotals = { command:0, veteran:0, fear:0, crit:0, evolve:0 };
+    slots.forEach(s => {
+      const c = MONSTER_CARDS_DB.find(x => x.id === s.cardId);
+      if (!c) return;
+      const sp = mcardUserSpecs[c.id];
+      const brk = sp && sp.owned ? sp.brk : 0;
+      const tm = MCARD_TIER_META[c.tier];
+      insts.push({ card: c, brk });
+      (s.syns || []).slice(0, tm.synSlots).forEach(sk => { if (synTotals[sk] !== undefined) synTotals[sk] += tm.ptsPerSlot; });
+    });
+    const eq = evaluateMcardEquipEffects(insts, totalScore);
+    const sy = evaluateMcardSynTotals(synTotals);
+    return { hasInput: true, log10: Math.log10(Math.max(1, eq.equipMult * sy.synMult)), filledCnt: insts.length };
+  }
+
+  function copyRecMcardsToDiag() {
+    const rec = window._latestBestMcardEval?.cards;
+    if (!rec || !rec.length) { alert('먼저 [몬스터 카드 도우미]에서 보유 카드를 등록해 주세요.'); return; }
+    stageDiagState.mcards = [0, 1, 2].map(i => rec[i] ? { cardId: rec[i].cardId, syns: [...rec[i].syns] } : null);
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+
+  function clearDiagMcards() {
+    stageDiagState.mcards = [null, null, null];
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+
+  function openDiagMcardPicker(slotIdx) {
+    const cur = (stageDiagState.mcards || [])[slotIdx] || null;
+    diagPickerCtx = { type: 'mcard', slotIdx, selectedCardId: cur?.cardId || null, selectedSyns: cur ? [...cur.syns] : [] };
+    document.getElementById('diag_picker_title').innerText = `[몬스터 카드 ${slotIdx + 1}번 슬롯] 현재 장착 카드 & 시너지`;
+    document.getElementById('diag_picker_subtitle').innerText = '카드를 고르고 장착 중인 시너지를 클릭한 뒤 [적용]을 누르세요';
+    const inp = document.getElementById('diag_picker_search_input');
+    if (inp) inp.value = '';
+    document.getElementById('diag_picker_search_wrap').style.display = 'block';
+    renderDiagPickerList();
+    document.getElementById('diag_picker_modal_overlay').style.display = 'flex';
+  }
+
+  function selectDiagMcardPickerCard(cardId) {
+    if (!diagPickerCtx) return;
+    diagPickerCtx.selectedCardId = cardId;
+    const c = MONSTER_CARDS_DB.find(x => x.id === cardId);
+    const maxS = c ? MCARD_TIER_META[c.tier].synSlots : 0;
+    diagPickerCtx.selectedSyns = (diagPickerCtx.selectedSyns || []).slice(0, maxS);
+    renderDiagPickerList();
+  }
+
+  function pushDiagMcardPickerSyn(synKey) {
+    if (!diagPickerCtx || !diagPickerCtx.selectedCardId) return;
+    const c = MONSTER_CARDS_DB.find(x => x.id === diagPickerCtx.selectedCardId);
+    const maxS = c ? MCARD_TIER_META[c.tier].synSlots : 3;
+    if (diagPickerCtx.selectedSyns.length >= maxS) diagPickerCtx.selectedSyns.shift();
+    diagPickerCtx.selectedSyns.push(synKey);
+    renderDiagPickerList();
+  }
+
+  function applyDiagMcardPicker() {
+    if (!diagPickerCtx) return;
+    if (!Array.isArray(stageDiagState.mcards)) stageDiagState.mcards = [null, null, null];
+    stageDiagState.mcards[diagPickerCtx.slotIdx] = diagPickerCtx.selectedCardId
+      ? { cardId: diagPickerCtx.selectedCardId, syns: [...diagPickerCtx.selectedSyns] }
+      : null;
+    closeDiagPickerModal();
+    renderStageDiagAll();
+    triggerAutoSave();
+  }
+
+  function renderDiagMcardPickerList(ctrlEl, wrapEl, q) {
+    const selC = diagPickerCtx.selectedCardId ? MONSTER_CARDS_DB.find(x => x.id === diagPickerCtx.selectedCardId) : null;
+    const maxS = selC ? MCARD_TIER_META[selC.tier].synSlots : 0;
+    const synPickBtns = selC ? MCARD_SYN_KEYS.map(sk => `<button type="button" onclick="pushDiagMcardPickerSyn('${sk}')" style="display:inline-flex;align-items:center;gap:4px;padding:5px 8px;border-radius:7px;background:#0f172a;border:1px solid ${MCARD_SYN_META[sk].color};color:#fff;font-size:11.5px;font-weight:800;cursor:pointer;">${getMcardSynSvg(sk, 16)}<span>+${MCARD_SYN_META[sk].name}</span></button>`).join('') : '';
+
+    ctrlEl.innerHTML = `<div style="background:#0b1120; border:1px solid #334155; border-radius:10px; padding:9px 11px; margin-bottom:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:6px;">
+        <strong style="font-size:12px; color:#fde047;">선택 카드: ${selC ? `${selC.name} (시너지 ${diagPickerCtx.selectedSyns.length}/${maxS}칸)` : '아래에서 먼저 선택하세요'}</strong>
+        <div style="display:flex; gap:5px;">
+          ${selC ? `<button type="button" onclick="applyDiagMcardPicker()" style="background:#059669;border:1px solid #6ee7b7;color:#fff;padding:4px 10px;border-radius:7px;font-size:11.5px;font-weight:900;cursor:pointer;">장착 적용</button>` : ''}
+          <button type="button" onclick="diagPickerCtx.selectedCardId=null; applyDiagMcardPicker();" style="background:#450a0a;border:1px solid #ef4444;color:#fca5a5;padding:4px 9px;border-radius:7px;font-size:11.5px;font-weight:800;cursor:pointer;">슬롯 비우기</button>
+        </div>
+      </div>
+      ${selC ? `<div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:6px;">${synPickBtns}</div><div style="font-size:11px; color:#7dd3fc;">현재 담은 시너지: ${diagPickerCtx.selectedSyns.map(sk => MCARD_SYN_META[sk].name).join(' · ') || '없음'}</div>` : ''}
+    </div>`;
+
+    const list = MONSTER_CARDS_DB.filter(c => !q || `${c.name} ${c.desc}`.toLowerCase().includes(q));
+    wrapEl.innerHTML = `<div class="item-compact-grid">${list.map(c => {
+      const tm = MCARD_TIER_META[c.tier];
+      const isOwned = Boolean(mcardUserSpecs[c.id]?.owned);
+      return `<div class="item-select-box ${diagPickerCtx.selectedCardId===c.id?'selected':''}" onclick="selectDiagMcardPickerCard('${c.id}')">
+        <div class="item-box-badges">${isOwned?'<span class="mini-tag" style="background:#059669;color:#fff;">보유</span>':''}<span class="grade-badge ${tm.badge}" style="font-size:9px;padding:1px 4px;">${tm.kr}</span></div>
+        <div class="item-box-name">${c.name}</div>
+        <div class="item-box-sub">${c.desc}</div>
+      </div>`;
+    }).join('')}</div>`;
+  }
+
+  function renderStageDiagMcardTab(body, rep) {
+    const slots = stageDiagState.mcards || [null, null, null];
+    const banner = !rep.userMcard.hasInput
+      ? `<div style="background:#0f172a; border:1px dashed #475569; border-radius:10px; padding:10px 14px; font-size:12.5px; color:#cbd5e1; margin-bottom:12px;">3칸 중 슬롯을 클릭해 현재 장착 중인 몬스터 카드와 시너지를 입력하거나 <strong>[추천 세팅 그대로 복사]</strong>를 눌러보세요.</div>`
+      : (rep.recMcard.log10 <= 0
+        ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13px;">먼저 [몬스터 카드 도우미]에서 보유 카드를 등록해 주세요.</strong></div><button type="button" class="diag-goto-btn" onclick="switchMainMode('helpers'); openDeepCalculator('tab-mcard');">몬스터 카드 도우미로 이동 ➔</button></div>`
+        : (rep.mcardDeltaLog > 0.002
+          ? `<div class="diag-alert-banner"><div><strong style="color:#fde047; font-size:13.5px;">몬스터 카드 추천 변경사항 발생 — 추천 조합 적용 시 ${formatDeltaMultiplierText(rep.mcardDeltaLog)} 강해집니다!</strong></div><button type="button" class="diag-goto-btn" onclick="switchMainMode('helpers'); openDeepCalculator('tab-mcard');">몬스터 카드 도우미로 이동 ➔</button></div>`
+          : `<div class="diag-alert-banner all-good"><strong style="color:#6ee7b7; font-size:13px;">현재 장착 중인 몬스터 카드 3장이 추천 조합과 동급 이상(최적)입니다.</strong></div>`));
+
+    const cardsHtml = [0, 1, 2].map(idx => {
+      const s = slots[idx];
+      const c = s && s.cardId ? MONSTER_CARDS_DB.find(x => x.id === s.cardId) : null;
+      if (!c) {
+        return `<div class="mcard-slot-card diag-slot-clickable" onclick="openDiagMcardPicker(${idx})"><div style="font-size:11px;color:#38bdf8;font-weight:800;">슬롯 ${idx + 1} · 클릭 선택</div><div style="font-size:13px;color:#64748b;font-weight:800;">+ 현재 장착 카드</div><div style="font-size:11px;color:#475569;">-</div></div>`;
+      }
+      const tm = MCARD_TIER_META[c.tier];
+      const synBadges = (s.syns || []).map(sk => `<span class="mcard-syn-badge" style="border-color:${MCARD_SYN_META[sk].color};">${getMcardSynSvg(sk, 15)}<span>${tm.ptsPerSlot}</span></span>`).join('');
+      return `<div class="mcard-slot-card tier-${c.tier} diag-slot-clickable" onclick="openDiagMcardPicker(${idx})">
+        <div style="width:100%;display:flex;justify-content:space-between;"><span style="font-size:11px;color:#94a3b8;font-weight:800;">슬롯 ${idx + 1}</span><span class="grade-badge ${tm.badge}" style="font-size:10px;padding:1px 5px;">${tm.kr}</span></div>
+        <div class="mcard-art-box"><img src="${c.img}" alt="${c.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span style="display:none; width:100%; height:100%; align-items:center; justify-content:center; font-size:12px; font-weight:900; color:#fff;">${c.name}</span></div>
+        <div style="font-size:14px;font-weight:900;color:#fff;">${c.name}</div>
+        <div class="mcard-syn-row">${synBadges || '<span style="font-size:10px;color:#94a3b8;">시너지 미입력</span>'}</div>
+      </div>`;
+    }).join('');
+
+    body.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+      <span style="font-size:13px; color:#cbd5e1; font-weight:700;">슬롯 클릭 시 카드 &amp; 시너지 선택창이 열립니다.</span>
+      <div style="display:flex; gap:6px;">
+        <button type="button" onclick="copyRecMcardsToDiag()" style="background:#0284c7; border:1px solid #7dd3fc; color:#fff; padding:6px 11px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">추천 세팅 그대로 복사</button>
+        <button type="button" onclick="clearDiagMcards()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; padding:6px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">비우기</button>
+      </div>
+    </div>${banner}<div class="mcard-board-window"><div class="mcard-equip-3grid" style="margin-bottom:0;">${cardsHtml}</div></div>`;
   }
 
   let hasBooted = false;
