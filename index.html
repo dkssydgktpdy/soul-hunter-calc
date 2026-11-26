@@ -14581,31 +14581,41 @@
         return;
       }
 
-      if (awkSubView === 'passive_slot') {
-        const mkP = (n, i, t, bg, bc, awkNum = 0) => `<div class="build-slot-item" style="border-color:${bc}; padding:8px 6px;"><span class="build-slot-tag" style="background:${bg}; color:#fff;">${t}</span><div class="build-slot-thumb icon-clean-wrap" style="width:46px; height:46px; border-color:${bc};">${awkNum > 0 ? `<div class="icon-stars-top is-awk" style="font-size:10px;">${getAwkStarHtml(awkNum)}</div>` : ''}<img src="images/${i}.jpg" alt="${n}" onerror="this.onerror=null;this.src='images/${i}.png';"></div><div class="build-slot-name" style="font-size:12px;">${n}</div></div>`;
-        let s0Html = '', s4_1, s5_1, s5_2, out1 = '', out2 = '', out3 = '', rpSw = '';
+     if (awkSubView === 'passive_slot') {
+        const mkP = (n, i, t, bg, bc, awkNum = 0, warnBadge = '') => `<div class="build-slot-item" style="border-color:${bc}; padding:8px 6px;"><span class="build-slot-tag" style="background:${bg}; color:#fff;">${t}</span><div class="build-slot-thumb icon-clean-wrap" style="width:46px; height:46px; border-color:${bc};">${awkNum > 0 ? `<div class="icon-stars-top is-awk">${getAwkStarHtml(awkNum)}</div>` : ''}<img src="images/${i}.jpg" alt="${n}" onerror="this.onerror=null;this.src='images/${i}.png';"></div><div class="build-slot-name" style="font-size:12px;">${n}</div>${warnBadge ? `<div style="font-size:10px; font-weight:900; color:#fda4af; margin-top:2px;">${warnBadge}</div>` : ''}</div>`;
+        let s0Html = '', s4_1, s5_1, s5_2, out1 = '', out2 = '', out3 = '', rpSw = '', jobExtraNoteHtml = '';
         if (awkGuideJob === 'reaper') {
-          s0Html = `<div style="font-size:13px; font-weight:800; color:#94a3b8; margin-bottom:6px;">⓪ [0고패 (고패 제작 전 입문)] 5슬롯 <small style="color:#fde047;">(※ 전술가속은 0고패에서만 사용하고 1고패 완성 시 즉시 뺍니다!)</small>:</div><div class="build-slot-grid" style="margin-bottom:14px;">${mkP(e3.m1.name,e3.m1.img,"주속성 신화","#e11d48","#f43f5e")}${mkP("원소융합","elem_fusion","모속성 신화","#e11d48","#f43f5e")}${mkP("마력폭주","mana_surge","변환 시너지","#7e22ce","#a855f7")}${mkP("폭발준비","blast_ready","1고패 재료","#ca8a04","#eab308")}${mkP("전술가속","tactical_haste","0고패 임시착용","#475569","#64748b")}</div>`;
+          s0Html = `<div style="font-size:13px; font-weight:800; color:#94a3b8; margin-bottom:6px;">⓪ [0고패 (고패 제작 전 입문)] 5슬롯 <small style="color:#fde047;">(※ 전술가속은 0고패에서만 사용하고 1고패 완성 시 즉시 뺍니다!)</small>:</div><div class="build-slot-grid" style="margin-bottom:14px;">${mkP(e3.m1.name,e3.m1.img,"주속성 신화","#e11d48","#f43f5e",3)}${mkP("원소융합","elem_fusion","모속성 신화","#e11d48","#f43f5e",3)}${mkP("마력폭주","mana_surge","변환(앜메재료)","#7e22ce","#a855f7",0,"3각 시 앜메 재활용")}${mkP("폭발준비","blast_ready","1고패 재료","#ca8a04","#eab308",3)}${mkP("전술가속","tactical_haste","0고패 임시","#475569","#64748b",0,"각성 X")}</div>`;
           out1 = " (<span style='color:#f87171;'>전술가속 OUT</span> ➔ <span style='color:#67e8f9;'>강타의 대가 IN</span> / 폭발준비 3각 고정!)";
-          s4_1 = mkP("마력폭주","mana_surge","변환 시너지","#7e22ce","#a855f7");
-          s5_1 = mkP("폭발준비","blast_ready","★1고패 3각 고정!","#ca8a04","#eab308", 3);
-          if (awkSlotReaperState === 'pre80_blast') { s5_2 = mkP("폭발준비","blast_ready","폭발준비 3각 우위","#ca8a04","#eab308", 3); out2 = "마력폭주 OUT"; out3 = "폭발준비 OUT"; }
-          else { s5_2 = mkP("마력폭주","mana_surge","마력폭주 3각 우위","#7e22ce","#a855f7", 3); out2 = "폭발준비 OUT"; out3 = "마력폭주 OUT"; }
+          s4_1 = mkP("마력폭주","mana_surge","변환(앜메재료)","#7e22ce","#a855f7",0,"3각 시 앜메 재활용");
+          s5_1 = mkP("폭발준비","blast_ready","★1고패 3각 고정!","#ca8a04","#eab308",3);
+          if (awkSlotReaperState === 'pre80_blast') { s5_2 = mkP("폭발준비","blast_ready","폭발준비 3각 우위","#ca8a04","#eab308",3); out2 = "마력폭주 OUT"; out3 = "폭발준비 OUT"; }
+          else { s5_2 = mkP("마력폭주","mana_surge","마력폭주 3각 우위","#7e22ce","#a855f7",3,"앜메 직변 시 재활용!"); out2 = "폭발준비 OUT"; out3 = "마력폭주 OUT"; }
           rpSw = `<div style="background:#131d33; border:1.5px solid #f59e0b; border-radius:10px; padding:12px 14px; margin-bottom:12px;"><div style="font-size:13px; font-weight:900; color:#fde047; margin-bottom:8px;">⚔️ [사신 2고패 조건 선택] 내 각성 상태 클릭</div><div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:8px;">
             <button type="button" onclick="setAwkSlotReaperState('pre80_blast')" style="padding:9px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:2px solid ${awkSlotReaperState==='pre80_blast'?'#fbbf24':'#475569'}; background:${awkSlotReaperState==='pre80_blast'?'#b45309':'#0f172a'}; color:#ffffff;">마력폭주 각성 &lt; 폭발준비 각성 (폭발준비 3각 유지)</button>
             <button type="button" onclick="setAwkSlotReaperState('pre80_mana')" style="padding:9px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:2px solid ${awkSlotReaperState==='pre80_mana'?'#a855f7':'#475569'}; background:${awkSlotReaperState==='pre80_mana'?'#7e22ce':'#0f172a'}; color:#ffffff;">마력폭주 각성 &gt; 폭발준비 각성 (1차 70~75렙 스피증 세트)</button>
           </div></div>`;
+          jobExtraNoteHtml = `<div style="margin-top:12px; background:rgba(168,85,247,0.14); border:1.5px solid #c084fc; border-radius:10px; padding:10px 14px; font-size:12.5px; color:#f3e8ff; line-height:1.6;">
+            💡 <strong style="color:#fde047;">[사신 마력폭주 각성 팁]</strong> 마력폭주는 사신 고패 재료는 아니지만 <strong>3각성을 미리 해두면 사신 구간 변환 효율도 좋아지고, 나중에 아크메이지로 넘어갈 때 1순위 고패 [마력광란] 재료로 그대로 재활용</strong>할 수 있습니다!
+          </div>`;
         } else if (awkGuideJob === 'mage') {
-          s4_1 = mkP("전투지휘","battle_command","영스피 증폭","#7e22ce","#a855f7");
-          s5_1 = mkP("전술가속","tactical_haste","임시 유틸","#ca8a04","#eab308");
-          s5_2 = mkP("전투지휘","battle_command","영스피 유지!","#7e22ce","#a855f7");
+          s4_1 = mkP("전투지휘","battle_command","⚠️ 각성 금지!","#dc2626","#ef4444",0,"고패 재료 아님(0각)");
+          s5_1 = mkP("전술가속","tactical_haste","임시 유틸","#475569","#64748b",0,"각성 금지(0각)");
+          s5_2 = mkP("전투지휘","battle_command","⚠️ 각성 금지!","#dc2626","#ef4444",0,"고패 재료 아님(0각)");
           out2 = "전술가속 OUT"; out3 = "전투지휘 OUT";
+          jobExtraNoteHtml = `<div style="margin-top:12px; background:rgba(239,68,68,0.16); border:2px solid #ef4444; border-radius:10px; padding:11px 14px; font-size:12.5px; color:#fecdd3; line-height:1.6;">
+            ⚠️ <strong style="color:#fde047;">[아크메이지 필수 경고] 전투지휘(영웅 스킬 피해량)는 절대 각성하지 마세요!</strong><br>
+            <strong>전투지휘</strong>와 <strong>전술가속</strong>은 아크메이지 고대 패시브 재료가 아닙니다(다크로드 전용 재료). 3고패를 만들면 바로 빼는 임시 패시브이므로 <strong>각성석을 절대 쓰지 말고 0각 상태로만 사용</strong>하세요!
+          </div>`;
         } else {
-          out1 = " <small style='color:#fde047;'>(전술가속 OUT ➔ 전투지휘 유지)</small>";
-          s4_1 = mkP("마력폭주","mana_surge","스피 변환용","#7e22ce","#a855f7");
-          s5_1 = mkP("전투지휘","battle_command","영스피 증폭","#7e22ce","#a855f7");
-          s5_2 = mkP("마력폭주","mana_surge","스피 유지!","#7e22ce","#a855f7");
+          out1 = " <small style='color:#fde047;'>(전술가속 OUT ➔ 전투지휘 3각 유지)</small>";
+          s4_1 = mkP("마력폭주","mana_surge","스피 변환(임시)","#7e22ce","#a855f7",0,"앜메 갈아탈때만 3각");
+          s5_1 = mkP("전투지휘","battle_command","1고패 재료(3각)","#7e22ce","#a855f7",3);
+          s5_2 = mkP("마력폭주","mana_surge","스피 변환(임시)","#7e22ce","#a855f7",0,"앜메 갈아탈때만 3각");
           out2 = "전투지휘 OUT"; out3 = "마력폭주 OUT";
+          jobExtraNoteHtml = `<div style="margin-top:12px; background:rgba(168,85,247,0.14); border:1.5px solid #c084fc; border-radius:10px; padding:10px 14px; font-size:12.5px; color:#f3e8ff; line-height:1.6;">
+            💡 <strong style="color:#fde047;">[다크로드 마력폭주 참고]</strong> 1순위 고패 재료인 <strong>전투지휘</strong>는 이미 3각 완성 상태입니다. 임시로 끼우는 <strong>마력폭주</strong>는 아크메이지로 넘어갈 계획이 없다면 각성하지 말고 사용하다가 3고패 완성 시 빼시면 됩니다.
+          </div>`;
         }
 
         body.innerHTML = `${topCtrl}
@@ -14613,12 +14623,13 @@
             <div class="stage-build-header" style="margin-bottom:10px;"><span class="stage-build-title" style="font-size:15px;">📜 [${j1.jobKr} · ${e3.elemKr}] 0고패 ➔ 3고패 패시브 5슬롯 교체표</span><span class="grade-badge grade-ancient">3고패 명함 종결</span></div>
             ${s0Html}
             <div style="font-size:13px; font-weight:800; color:#38bdf8; margin-bottom:6px;">① [1고패 달성] ${j1.ancName} 제작 직후 (5슬롯)${out1}:</div>
-            <div class="build-slot-grid" style="margin-bottom:14px;">${mkP(j1.ancName,j1.ancImg,"1순위 고패","#0891b2","#06b6d4")}${mkP(e3.m1.name,e3.m1.img,"주속성 신화","#e11d48","#f43f5e")}${mkP("원소융합","elem_fusion","모속성 신화","#e11d48","#f43f5e")}${s4_1}${s5_1}</div>
+            <div class="build-slot-grid" style="margin-bottom:14px;">${mkP(j1.ancName,j1.ancImg,"1순위 고패","#0891b2","#06b6d4")}${mkP(e3.m1.name,e3.m1.img,"주속성 신화","#e11d48","#f43f5e",3)}${mkP("원소융합","elem_fusion","모속성 신화","#e11d48","#f43f5e",3)}${s4_1}${s5_1}</div>
             <div style="font-size:13px; font-weight:800; color:#c084fc; margin-bottom:6px;">② [2고패 달성] 근원관통 제작 시 (<span style="color:#f87171;">${out2}</span> ➔ <span style="color:#67e8f9;">근원관통 IN</span>):</div>
             ${rpSw}
-            <div class="build-slot-grid" style="margin-bottom:14px;">${mkP(j1.ancName,j1.ancImg,"1순위 고패","#0891b2","#06b6d4")}${mkP("근원관통","pierce","2순위 고패","#0891b2","#06b6d4")}${mkP(e3.m1.name,e3.m1.img,"주속성 신화","#e11d48","#f43f5e")}${mkP("원소융합","elem_fusion","모속성 신화","#e11d48","#f43f5e")}${s5_2}</div>
+            <div class="build-slot-grid" style="margin-bottom:14px;">${mkP(j1.ancName,j1.ancImg,"1순위 고패","#0891b2","#06b6d4")}${mkP("근원관통","pierce","2순위 고패","#0891b2","#06b6d4")}${mkP(e3.m1.name,e3.m1.img,"주속성 신화","#e11d48","#f43f5e",3)}${mkP("원소융합","elem_fusion","모속성 신화","#e11d48","#f43f5e",3)}${s5_2}</div>
             <div style="font-size:13px; font-weight:800; color:#34d399; margin-bottom:6px;">③ [3고패 달성 (가성비 종결!)] ${e3.ancName} 제작 시 (<span style="color:#f87171;">${out3}</span> ➔ <span style="color:#67e8f9;">${e3.ancName} IN</span>):</div>
-            <div class="build-slot-grid" style="margin-bottom:10px;">${mkP(j1.ancName,j1.ancImg,"1순위 고패","#0891b2","#06b6d4")}${mkP("근원관통","pierce","2순위 고패","#0891b2","#06b6d4")}${mkP(e3.ancName,e3.ancImg,"3순위 고패","#0891b2","#06b6d4")}${mkP(e3.m1.name,e3.m1.img,"주속성 신화","#e11d48","#f43f5e")}${mkP("원소융합","elem_fusion","모속성 신화","#e11d48","#f43f5e")}</div>
+            <div class="build-slot-grid" style="margin-bottom:10px;">${mkP(j1.ancName,j1.ancImg,"1순위 고패","#0891b2","#06b6d4")}${mkP("근원관통","pierce","2순위 고패","#0891b2","#06b6d4")}${mkP(e3.ancName,e3.ancImg,"3순위 고패","#0891b2","#06b6d4")}${mkP(e3.m1.name,e3.m1.img,"주속성 신화","#e11d48","#f43f5e",3)}${mkP("원소융합","elem_fusion","모속성 신화","#e11d48","#f43f5e",3)}</div>
+            ${jobExtraNoteHtml}
           </div>`;
         return;
       }
