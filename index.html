@@ -14147,13 +14147,14 @@
     lord:   { title: "오버로드 (다크로드 / 오버로드 / 소울이터)", icon: "images/overload.png", color: "#a855f7", c1: "다크로드", c2: "팬텀", c3: "오버로드", c4: "소울이터" }
   };
 
-  function makeGuideSlotHtml(name, tagText, noteText, isSkill, styleType) {
+  function makeGuideSlotHtml(name, tagText, noteText, isSkill, styleType, awkNum = 0) {
     const fileKey = (isSkill ? SKILL_ICON_MAP : HERO_ICON_MAP)[name] || null;
     const cls = styleType === 'fix' ? 'core-fix' : (styleType === 'future' ? 'future-4th' : 'flex-pick');
     const tagBg = styleType === 'fix' ? '#e11d48' : (styleType === 'future' ? '#ca8a04' : '#0284c7');
     const imgHtml = fileKey
       ? `<img src="images/${fileKey}.png" alt="${name}" onerror="this.onerror=null; this.src='images/${fileKey}.PNG'; this.onerror=function(){this.src='images/darmian.png'; this.onerror=function(){this.parentElement.innerHTML='⭐';};};">`
       : `<span>${isSkill ? '⚡' : '🦸'}</span>`;
+    const awkOverlay = awkNum > 0 ? `<div class="icon-stars-top is-awk">${getAwkStarHtml(awkNum)}</div>` : '';
 
     let comboPartnerHtml = '', subSuffix = '';
     if (!isSkill && name === '루비') {
@@ -14161,7 +14162,7 @@
       comboPartnerHtml = `<span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span><div style="width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg, #06b6d4 0%, #10b981 50%, #f43f5e 100%); padding:1.5px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;"><div style="width:100%; height:100%; background:#0f172a; border-radius:8.5px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1;"><span style="font-size:8.5px; color:#67e8f9; font-weight:800;">고·영·불</span><span style="font-size:11px; color:#ffffff; font-weight:900;">격화룬</span></div></div>`;
     } else if (!isSkill && name === '솔라리스') {
       subSuffix = ' <small style="color:#fde047;">(+오버3각)</small>';
-      comboPartnerHtml = `<span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span><div class="build-slot-thumb" style="border-color:#f59e0b; position:relative;"><img src="images/overdrive.png" alt="오버드라이브" onerror="this.onerror=null; this.src='images/overdrive.PNG'; this.onerror=function(){this.parentElement.innerHTML='⚡';};"><span style="position:absolute; bottom:0; right:0; background:rgba(225,29,72,0.92); color:#fff; font-size:8.5px; font-weight:900; padding:0 3px; border-radius:3px;">3각</span></div>`;
+      comboPartnerHtml = `<span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span><div class="build-slot-thumb icon-clean-wrap" style="border-color:#f59e0b; position:relative;"><div class="icon-stars-top is-awk">★★★</div><img src="images/overdrive.png" alt="오버드라이브" onerror="this.onerror=null; this.src='images/overdrive.PNG'; this.onerror=function(){this.parentElement.innerHTML='⚡';};"></div>`;
     } else if (!isSkill && name === '엘리시아') {
       subSuffix = ' <small style="color:#34d399;">(+과성장)</small>';
       comboPartnerHtml = `<span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span><div style="width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg, #06b6d4 0%, #10b981 100%); padding:1.5px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;"><div style="width:100%; height:100%; background:#0f172a; border-radius:8.5px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1;"><span style="font-size:8.5px; color:#34d399; font-weight:800;">고대·영원</span><span style="font-size:11px; color:#ffffff; font-weight:900;">과성장</span></div></div>`;
@@ -14169,7 +14170,7 @@
 
     return `<div class="build-slot-item ${cls}">
       <span class="build-slot-tag" style="background:${tagBg}; color:#fff;">${tagText}</span>
-      <div style="display:flex; align-items:center; justify-content:center;"><div class="build-slot-thumb">${imgHtml}</div>${comboPartnerHtml}</div>
+      <div style="display:flex; align-items:center; justify-content:center;"><div class="build-slot-thumb icon-clean-wrap">${awkOverlay}${imgHtml}</div>${comboPartnerHtml}</div>
       <div class="build-slot-name">${name}${subSuffix}</div>
       <div class="build-slot-note">${noteText}</div>
     </div>`;
@@ -14907,11 +14908,14 @@
       return;
     }
 
-   // 5~6) 통합 직업·속성별 스킬 & 영웅 종합 공략 (라디오 버튼: 1~4차 × 스킬/영웅)
+   // 5~6) 통합 직업·속성별 스킬 & 영웅 종합 공략 (라디오 버튼: 1~4차 × 스킬/영웅 · 하단 가림 + 1각 ★ 표시)
     if (currentGuideType === 'job_build' || currentGuideType === 'skill' || currentGuideType === 'hero') {
       const mage4thDeal = guideElem === 'fire' ? '블레이즈 이럽션' : (guideElem === 'light' ? '플라즈마 이럽션' : '어비스 이럽션');
       const lord4thDealHero = guideElem === 'fire' ? '화련' : (guideElem === 'light' ? '청운' : '자월');
       const jMeta = JOB_NAMES_FULL[guideJob];
+      const NO_AWK_GUIDE_SET = new Set(['원소돌파', '심판의 인장', '바토리', '나찰']);
+      const mkBuildSlot = (name, tagText, noteText, isSkill, styleType) =>
+        makeGuideSlotHtml(name, tagText, noteText, isSkill, styleType, NO_AWK_GUIDE_SET.has(name) ? 0 : 1);
 
       const radioControlsHtml = `
         <div style="background:#131d33; border:1.5px solid #475569; border-radius:14px; padding:14px 16px; margin-bottom:16px; display:flex; flex-direction:column; gap:12px;">
@@ -14944,18 +14948,18 @@
           : `🗡️ <strong>다크로드 대낫 &amp; 강타 단계 필수 팁:</strong> 강타는 꼭 <strong>[강타 28단계(고대, 영스피 증폭 1,500%)]</strong> 또는 <strong>[강타 24단계(신화, 500%)]</strong>를 착용하세요!`);
 
         const s1Fixed = [
-          makeGuideSlotHtml(jobOnlySkill, '직업 필수고정', guideJob==='reaper'?'강타 피해 증가':(guideJob==='mage'?'스킬 피해 증가':'영웅스킬 피해 증가'), true, 'fix'),
-          makeGuideSlotHtml(elemDebuffSkill, '주속성 고정', '최소 9돌파 필수', true, 'fix'),
-          makeGuideSlotHtml('그림자 포효', '공용 고정', '최소 9돌파 필수', true, 'fix')
+          mkBuildSlot(jobOnlySkill, '직업 필수고정', guideJob==='reaper'?'강타 피해 증가':(guideJob==='mage'?'스킬 피해 증가':'영웅스킬 피해 증가'), true, 'fix'),
+          mkBuildSlot(elemDebuffSkill, '주속성 고정', '최소 9돌파 필수', true, 'fix'),
+          mkBuildSlot('그림자 포효', '공용 고정', '최소 9돌파 필수', true, 'fix')
         ].join('');
 
         if (guideBuildStep === 1) {
           const s1Flex = [
-            makeGuideSlotHtml('오버드라이브', '★1순위 돌파', '나머지 2칸 중 최우선', true, 'flex'),
-            makeGuideSlotHtml('환영나비', '우선 돌파', '2상태이상 시 발동(9돌↑)', true, 'flex'),
-            makeGuideSlotHtml('엘리멘탈 차지', '우선 돌파', '돌파 높은 순 선택', true, 'flex'),
-            makeGuideSlotHtml('심판의 인장', '국밥 버프', '돌파 높은 순 선택', true, 'flex'),
-            makeGuideSlotHtml('원소돌파', '1각↑ 유효', '돌파 높은 순 선택', true, 'flex')
+            mkBuildSlot('오버드라이브', '★1순위 돌파', '나머지 2칸 중 최우선', true, 'flex'),
+            mkBuildSlot('환영나비', '우선 돌파', '2상태이상 시 발동(9돌↑)', true, 'flex'),
+            mkBuildSlot('엘리멘탈 차지', '우선 돌파', '돌파 높은 순 선택', true, 'flex'),
+            mkBuildSlot('심판의 인장', '국밥 버프', '돌파 높은 순 선택', true, 'flex'),
+            mkBuildSlot('원소돌파', '1각↑ 유효', '돌파 높은 순 선택', true, 'flex')
           ].join('');
           contentHtml = `<div class="stage-build-card" style="border-left-color:#38bdf8;">
             <div class="stage-build-header"><span class="stage-build-title">⚡ 1차 전직 (${jMeta.c1}) 스킬 세팅 (고정 3칸 + 선택 2칸)</span><span class="grade-badge grade-advanced">5슬롯</span></div>
@@ -14966,13 +14970,13 @@
             <div class="build-tip-box" style="margin-top:12px;">• <strong>9돌파 미만 주의:</strong> 그림자 포효, 환영나비, ${elemDebuffSkill}는 <strong>9돌파 달성 시 투입</strong>하세요!</div>
           </div>`;
         } else if (guideBuildStep === 2) {
-          let s2Slots = s1Fixed + makeGuideSlotHtml('오버드라이브', '주력 버프', '고돌파 착용', true, 'flex') + makeGuideSlotHtml('환영나비', '주력 버프', '엘차/심판/원소 택1', true, 'flex');
+          let s2Slots = s1Fixed + mkBuildSlot('오버드라이브', '주력 버프', '고돌파 착용', true, 'flex') + mkBuildSlot('환영나비', '주력 버프', '엘차/심판/원소 택1', true, 'flex');
           let s2Cnt = '5슬롯';
-          if (guideJob === 'mage') { s2Cnt = '6슬롯 (아크메이지 스킬 +1)'; s2Slots += makeGuideSlotHtml(mage3rdDeal, '★1번슬롯 주력딜', `1번 슬롯 [${mage3rdDeal}] 배치!`, true, 'fix'); }
+          if (guideJob === 'mage') { s2Cnt = '6슬롯 (아크메이지 스킬 +1)'; s2Slots += mkBuildSlot(mage3rdDeal, '★1번슬롯 주력딜', `1번 슬롯 [${mage3rdDeal}] 배치!`, true, 'fix'); }
           const s2Prep = [
-            makeGuideSlotHtml('크림슨 웨이브', '3차 출혈준비', '3차 종결 필수! 미리 육성', true, 'future'),
-            makeGuideSlotHtml(elemPulseSkill, '보유효과 준비', '주속성 보유효과 각성용', true, 'future'),
-            ...(guideJob === 'mage' ? [makeGuideSlotHtml(mage3rdDeal, '3차 메인딜 육성', '3차 스킬 집중 투자', true, 'fix')] : [])
+            mkBuildSlot('크림슨 웨이브', '3차 출혈준비', '3차 종결 필수! 미리 육성', true, 'future'),
+            mkBuildSlot(elemPulseSkill, '보유효과 준비', '주속성 보유효과 1각 필수', true, 'future'),
+            ...(guideJob === 'mage' ? [mkBuildSlot(mage3rdDeal, '3차 메인딜 육성', '3차 스킬 집중 투자', true, 'fix')] : [])
           ].join('');
           contentHtml = `<div class="stage-build-card" style="border-left-color:#818cf8;">
             <div class="stage-build-header"><span class="stage-build-title">⚡ 2차 전직 (${jMeta.c2}) 스킬 세팅 &amp; 3차 대비 육성</span><span class="grade-badge grade-unique">${s2Cnt}</span></div>
@@ -14985,54 +14989,138 @@
           if (guideJob === 'mage') {
             s3Cnt = '7슬롯 (미스틱 스킬 +1 추가)';
             const fourth = guideElem === 'fire' ? '그림자 포효' : '환영나비';
-            s3Slots = [makeGuideSlotHtml(mage3rdDeal,'★1번슬롯 메인딜','강화스킬 적용용 1번 배치!',true,'fix'), makeGuideSlotHtml('지옥불베기','직업 고정','스킬 피해 버프',true,'fix'), makeGuideSlotHtml(elemDebuffSkill,'주속성 고정','속성 상태이상 디버프',true,'fix'), makeGuideSlotHtml(fourth,'속성별 분기',guideElem==='fire'?'불속성 고정':'비불속성: 나비 채택',true,'fix'), makeGuideSlotHtml('엘리멘탈 차지','고정 버프','3차 핵심 버프',true,'fix'), makeGuideSlotHtml('오버드라이브','고정 버프','과성장 졸업 핵심',true,'fix'), makeGuideSlotHtml('크림슨 웨이브','출혈 고정','불멸 저주II 출혈 조건',true,'fix')].join('');
+            s3Slots = [mkBuildSlot(mage3rdDeal,'★1번슬롯 메인딜','강화스킬 적용용 1번 배치!',true,'fix'), mkBuildSlot('지옥불베기','직업 고정','스킬 피해 버프',true,'fix'), mkBuildSlot(elemDebuffSkill,'주속성 고정','속성 상태이상 디버프',true,'fix'), mkBuildSlot(fourth,'속성별 분기',guideElem==='fire'?'불속성 고정':'비불속성: 나비 채택',true,'fix'), mkBuildSlot('엘리멘탈 차지','고정 버프','3차 핵심 버프',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','과성장 졸업 핵심',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈 고정','불멸 저주II 출혈 조건',true,'fix')].join('');
           } else if (guideJob === 'reaper') {
             s3Cnt = '6슬롯 (소울리퍼 스킬 +1 추가)';
-            s3Slots = [makeGuideSlotHtml('썬더 오빗','사신 고정','3각 시 303.4배',true,'fix'), makeGuideSlotHtml(elemDebuffSkill,'주속성 고정','3각 111배 + 상태이상',true,'fix'), makeGuideSlotHtml('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'), makeGuideSlotHtml('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), makeGuideSlotHtml('그림자 포효','고정 디버프','2각 혼돈 / 3각 111배',true,'fix'), makeGuideSlotHtml('크림슨 웨이브','출혈/원소돌파','저주II 출혈 또는 원소돌파',true,'fix')].join('');
+            s3Slots = [mkBuildSlot('썬더 오빗','사신 고정','3각 시 303.4배',true,'fix'), mkBuildSlot(elemDebuffSkill,'주속성 고정','3각 111배 + 상태이상',true,'fix'), mkBuildSlot('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), mkBuildSlot('그림자 포효','고정 디버프','2각 혼돈 / 3각 111배',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈/원소돌파','저주II 출혈 또는 원소돌파',true,'fix')].join('');
           } else {
             s3Cnt = '5슬롯 (오버로드 스킬 슬롯 동일)';
-            s3Slots = [makeGuideSlotHtml('보이드 펄스','닼로 고정','영웅스킬 피해 버프',true,'fix'), makeGuideSlotHtml('크림슨 웨이브','출혈 고정','저주II 출혈 조건',true,'fix'), makeGuideSlotHtml('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), makeGuideSlotHtml('환영나비','고정 버프','3각 241배',true,'fix'), makeGuideSlotHtml('엘리멘탈 차지','최종 종결',`전환 전엔 [${elemDebuffSkill}] 사용`,true,'flex')].join('');
+            s3Slots = [mkBuildSlot('보이드 펄스','닼로 고정','영웅스킬 피해 버프',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈 고정','저주II 출혈 조건',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), mkBuildSlot('환영나비','고정 버프','3각 241배',true,'fix'), mkBuildSlot('엘리멘탈 차지','최종 종결',`전환 전엔 [${elemDebuffSkill}] 사용`,true,'flex')].join('');
           }
           contentHtml = `<div class="stage-build-card" style="border-left-color:#a855f7;">
             <div class="stage-build-header"><span class="stage-build-title">⚡ 3차 전직 (${jMeta.c3}) 종결 스킬 세팅</span><span class="grade-badge grade-mythic">${s3Cnt}</span></div>
             <div class="build-slot-grid">${s3Slots}</div>
-            <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 전 직업 공통 3차 보유효과 풀각성:</div>
-            <div class="build-slot-grid">${makeGuideSlotHtml(elemPulseSkill,'3차 보유효과','주속성 맞춰 풀각성(3각) 필수!',true,'future')}</div>
+            <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 전 직업 공통 보유효과 스킬 (미장착 · 1각 필수):</div>
+            <div class="build-slot-grid">${mkBuildSlot(elemPulseSkill,'보유효과 (1각 필수)','주속성 펄스 미장착 보유효과!',true,'future')}</div>
           </div>`;
         } else {
-          // 4차 전직 스킬 (아크메이지 신규 4차 이럽션 3종 반영!)
+          // 4차 전직 스킬 (보유효과 펄스 스킬 섹션 포함!)
           let s4Slots = '', s4Cnt = '', s4Note = '';
           if (guideJob === 'mage') {
             s4Cnt = '7슬롯 (4차 신규 메인딜 반영)';
             const fourth = guideElem === 'fire' ? '그림자 포효' : '환영나비';
             s4Slots = [
-              makeGuideSlotHtml(mage4thDeal,'★4차 1번슬롯 메인딜',`[${mage3rdDeal}] 대체 신규 종결 딜스킬!`,true,'future'),
-              makeGuideSlotHtml('지옥불베기','직업 고정','스킬 피해 버프',true,'fix'),
-              makeGuideSlotHtml(elemDebuffSkill,'주속성 고정','속성 디버프',true,'fix'),
-              makeGuideSlotHtml(fourth,'속성별 분기',guideElem==='fire'?'불속성 고정':'비불속성: 나비 채택',true,'fix'),
-              makeGuideSlotHtml('엘리멘탈 차지','고정 버프','3차 핵심 버프',true,'fix'),
-              makeGuideSlotHtml('오버드라이브','고정 버프','필수 버프',true,'fix'),
-              makeGuideSlotHtml('크림슨 웨이브','출혈 고정','불멸 저주II 출혈 조건',true,'fix')
+              mkBuildSlot(mage4thDeal,'★4차 1번슬롯 메인딜',`[${mage3rdDeal}] 대체 신규 종결 딜스킬!`,true,'future'),
+              mkBuildSlot('지옥불베기','직업 고정','스킬 피해 버프',true,'fix'),
+              mkBuildSlot(elemDebuffSkill,'주속성 고정','속성 디버프',true,'fix'),
+              mkBuildSlot(fourth,'속성별 분기',guideElem==='fire'?'불속성 고정':'비불속성: 나비 채택',true,'fix'),
+              mkBuildSlot('엘리멘탈 차지','고정 버프','3차 핵심 버프',true,'fix'),
+              mkBuildSlot('오버드라이브','고정 버프','필수 버프',true,'fix'),
+              mkBuildSlot('크림슨 웨이브','출혈 고정','불멸 저주II 출혈 조건',true,'fix')
             ].join('');
             s4Note = `🔥 <strong>4차 슈프림 핵심 변경점:</strong> 기존 3차 주력기(<strong>${mage3rdDeal}</strong>)를 1번 슬롯에서 빼고, 신규 4차 전용 메인딜 <strong>[${mage4thDeal}]</strong>로 교체하세요!`;
           } else if (guideJob === 'reaper') {
             s4Cnt = '6슬롯 (소울리퍼/그림리퍼 공통)';
-            s4Slots = [makeGuideSlotHtml('썬더 오빗','사신 고정','3각 시 303.4배',true,'fix'), makeGuideSlotHtml(elemDebuffSkill,'주속성 고정','3각 111배 + 상태이상',true,'fix'), makeGuideSlotHtml('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'), makeGuideSlotHtml('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), makeGuideSlotHtml('그림자 포효','고정 디버프','2각 혼돈 / 3각 111배',true,'fix'), makeGuideSlotHtml('크림슨 웨이브','출혈/원소돌파','저주II 출혈 또는 원소돌파',true,'fix')].join('');
+            s4Slots = [mkBuildSlot('썬더 오빗','사신 고정','3각 시 303.4배',true,'fix'), mkBuildSlot(elemDebuffSkill,'주속성 고정','3각 111배 + 상태이상',true,'fix'), mkBuildSlot('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), mkBuildSlot('그림자 포효','고정 디버프','2각 혼돈 / 3각 111배',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈/원소돌파','저주II 출혈 또는 원소돌파',true,'fix')].join('');
             s4Note = `💡 4차 전직(그림리퍼) 구간에서도 3차 종결 스킬 6종을 그대로 유지하며 돌파·각성 스펙을 극대화합니다.`;
           } else {
             s4Cnt = '5슬롯 (소울이터 종결)';
-            s4Slots = [makeGuideSlotHtml('보이드 펄스','닼로 고정','영웅스킬 피해 버프',true,'fix'), makeGuideSlotHtml('크림슨 웨이브','출혈 고정','저주II 출혈 조건',true,'fix'), makeGuideSlotHtml('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), makeGuideSlotHtml('환영나비','고정 버프','3각 241배',true,'fix'), makeGuideSlotHtml('엘리멘탈 차지','최종 종결',`전환 전엔 [${elemDebuffSkill}] 사용`,true,'flex')].join('');
+            s4Slots = [mkBuildSlot('보이드 펄스','닼로 고정','영웅스킬 피해 버프',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈 고정','저주II 출혈 조건',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), mkBuildSlot('환영나비','고정 버프','3각 241배',true,'fix'), mkBuildSlot('엘리멘탈 차지','최종 종결',`전환 전엔 [${elemDebuffSkill}] 사용`,true,'flex')].join('');
             s4Note = `💡 4차 전직(소울이터)은 스킬 5칸을 유지하고, 영웅 탭에서 신규 4차 메인딜 <strong>[${lord4thDealHero}]</strong>로 교체해 주세요!`;
           }
           contentHtml = `<div class="stage-build-card" style="border-left-color:#facc15;">
             <div class="stage-build-header"><span class="stage-build-title">⚡ 4차 전직 (${jMeta.c4}) 최종 종결 스킬 세팅</span><span class="grade-badge grade-legend">${s4Cnt}</span></div>
             <div class="build-slot-grid">${s4Slots}</div>
+            <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 전 직업 공통 보유효과 스킬 (미장착 · 1각 필수):</div>
+            <div class="build-slot-grid">${mkBuildSlot(elemPulseSkill,'보유효과 (1각 필수)','주속성 펄스 미장착 보유효과!',true,'future')}</div>
             <div class="build-tip-box" style="margin-top:12px;">${s4Note}</div>
           </div>`;
         }
         body.innerHTML = `${radioControlsHtml}<div class="build-tip-box" style="margin-bottom:14px; border-color:#38bdf8; background:rgba(56,189,248,0.1);">${scytheTip}</div>${contentHtml}`;
         return;
       }
+
+      // 영웅 세팅 (1차 ~ 4차 라디오 선택)
+      const h1Cnt = guideJob === 'lord' ? '5슬롯 (다크로드 영웅 +1)' : '4슬롯';
+      if (guideBuildStep === 1) {
+        const h1Arr = [mkBuildSlot(jobOnlyHero,'직업 필수고정','최우선 육성',false,'fix'), mkBuildSlot('나리타','★3각 최우선','3각성 시 상시 501배',false,'fix'), mkBuildSlot(elemDebuffHero,'주속성 디버프','9돌파 이상 권장',false,'flex'), mkBuildSlot('루비','화상/디버프','3상태이상 충족 시',false,'flex')];
+        if (guideJob === 'lord') h1Arr.splice(1, 0, mkBuildSlot('백운귀','닼로 +1슬롯','3각성 시 501배 필수 버퍼',false,'fix'));
+        const h1Prep = [mkBuildSlot('솔라리스','3차 대비 육성','9돌 모피증 / 과성장졸업',false,'future'), mkBuildSlot('현묵','보유효과 육성','보유효과 1각 필수',false,'future'), mkBuildSlot(elemNewHero,'3차 디버퍼 육성','고각성 시 플레어류 대체',false,'future'), ...(guideJob==='lord'?[mkBuildSlot(lord3rdDealHero,'3차 메인딜','3차 주력 딜러 미리 육성!',false,'future')]:[])].join('');
+        const h0 = [mkBuildSlot(jobOnlyHero,'직업 고정','셀렌/카엔/카엘',false,'fix'), mkBuildSlot('바토리','특급 감전','신화 전 감전 요원',false,'flex'), mkBuildSlot('나찰','특급 혼돈','강타게이지+혼돈',false,'flex')].join('');
+        contentHtml = `<div class="stage-build-card" style="border-left-color:#38bdf8;">
+          <div class="stage-build-header"><span class="stage-build-title">🦸 1차 전직 (${jMeta.c1}) 영웅 세팅 &amp; 육성 준비</span><span class="grade-badge grade-advanced">${h1Cnt}</span></div>
+          <div class="build-slot-grid">${h1Arr.join('')}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 3차 대비 함께 돌파 키워둘 영웅:</div>
+          <div class="build-slot-grid">${h1Prep}</div>
+          <div style="margin-top:14px; padding-top:12px; border-top:1px dashed #334155;">
+            <div style="font-size:12.5px; font-weight:800; color:#94a3b8; margin-bottom:6px;">🐣 참고: 1차 전직 이전(신화 부족 시) 입문 대체 조합:</div>
+            <div class="build-slot-grid">${h0}</div>
+          </div>
+        </div>`;
+      } else if (guideBuildStep === 2) {
+        const h2A = [mkBuildSlot('엘리시아','🅰️ 1번슬롯 고정','과성장 룬과 함께 채택',false,'fix'), mkBuildSlot(jobOnlyHero,'직업 필수고정','셀렌/카엔/카엘',false,'fix'), ...(guideJob==='lord'?[mkBuildSlot('백운귀','닼로 고정','3각성 버퍼',false,'fix')]:[]), mkBuildSlot('나리타','3각 필수','상시 501배',false,'fix'), mkBuildSlot('루비','격화룬 세트',`또는 ${elemDebuffHero} 채택`,false,'flex')].join('');
+        const h2B = [mkBuildSlot('솔라리스','🅱️ 노과성장 채택','오버드라이브 각성과 함께!',false,'flex'), mkBuildSlot(jobOnlyHero,'직업 필수고정','셀렌/카엔/카엘',false,'fix'), ...(guideJob==='lord'?[mkBuildSlot('백운귀','닼로 고정','3각성 버퍼',false,'fix')]:[]), mkBuildSlot('나리타','3각 필수','상시 501배',false,'fix'), mkBuildSlot(elemDebuffHero,'주속성 디버프','플레어/프레이야/엘리제',false,'flex')].join('');
+        contentHtml = `<div class="stage-build-card" style="border-left-color:#818cf8;">
+          <div class="stage-build-header"><span class="stage-build-title">🦸 2차 전직 (${jMeta.c2}) 영웅 세팅 (과성장 vs 솔라리스 분기)</span><span class="grade-badge grade-unique">${h1Cnt}</span></div>
+          <div style="font-size:12.5px; font-weight:800; color:#f43f5e; margin-bottom:6px;">🅰️ [과성장 룬 + 엘리시아 트리]:</div>
+          <div class="build-slot-grid">${h2A}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:14px 0 6px 0;">🅱️ [노과성장 + 솔라리스 트리]:</div>
+          <div class="build-slot-grid">${h2B}</div>
+        </div>`;
+      } else if (guideBuildStep === 3) {
+        let h3Slots = '', h3Cnt = '';
+        if (guideJob === 'reaper') {
+          h3Cnt = '5슬롯 (소울리퍼 영웅 +1)';
+          h3Slots = [mkBuildSlot('엘리시아','1번슬롯 고정','오버3각 시 ➔ 솔라리스',false,'fix'), mkBuildSlot('셀렌','사신 고정','3각 1,012.5배',false,'fix'), mkBuildSlot(elemDebuffHero,'주속성 디버퍼',`시너지 후 ➔ ${elemNewHero}`,false,'flex'), mkBuildSlot('나리타','고정 버퍼','3각 상시 501배',false,'fix'), mkBuildSlot('루비','디버프 고정','3상태이상 유지',false,'fix')].join('');
+        } else if (guideJob === 'mage') {
+          h3Cnt = '4슬롯 (미스틱 동일)';
+          h3Slots = [mkBuildSlot('엘리시아','1번슬롯 고정','오버3각 시 ➔ 솔라리스',false,'fix'), mkBuildSlot('카엔','앜메 고정','3각 302.4배',false,'fix'), mkBuildSlot(elemDebuffHero,'주속성 디버퍼',`시너지 후 ➔ ${elemNewHero}`,false,'flex'), mkBuildSlot('나리타','고정 버퍼','3각 상시 501배',false,'fix')].join('');
+        } else {
+          h3Cnt = '6슬롯 (오버로드 영웅 +1)';
+          h3Slots = [mkBuildSlot('엘리시아','1번슬롯(과성장)','노과성장 시 메인딜을 1번에!',false,'flex'), mkBuildSlot(lord3rdDealHero,'3차 메인딜!','10돌 및 3각 최우선!',false,'fix'), mkBuildSlot('백운귀','닼로 고정','3각 501배',false,'fix'), mkBuildSlot(elemDebuffHero,'주속성 디버퍼',`시너지 후 ➔ ${elemNewHero}`,false,'flex'), mkBuildSlot('카엘','닼로 고정','3각 346.25배',false,'fix'), mkBuildSlot('나리타','고정 버퍼','3각 상시 501배',false,'fix')].join('');
+        }
+        const h3Sw = [mkBuildSlot(elemNewHero,'고각성 교체픽',`${elemDebuffHero} 풀돌 < ${elemNewHero} 1각`,false,'future'), mkBuildSlot('솔라리스','과성장 졸업픽','오버3각 시 엘리시아 대체',false,'future'), mkBuildSlot('현묵','★공통 보유효과','미장착 보유효과 (1각 필수!)',false,'future')].join('');
+        contentHtml = `<div class="stage-build-card" style="border-left-color:#a855f7;">
+          <div class="stage-build-header"><span class="stage-build-title">🦸 3차 전직 (${jMeta.c3}) 종결 영웅 세팅</span><span class="grade-badge grade-mythic">${h3Cnt}</span></div>
+          <div class="build-slot-grid">${h3Slots}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">🔄 조건 달성 시 교체 투입할 종결 영웅 &amp; 공통 보유효과:</div>
+          <div class="build-slot-grid">${h3Sw}</div>
+        </div>`;
+      } else {
+        // 4차 전직 영웅 (보유효과 현묵 카드 섹션 포함!)
+        let h4Slots = '', h4Cnt = '', h4Note = '';
+        if (guideJob === 'reaper') {
+          h4Cnt = '5슬롯 (그림리퍼 종결)';
+          h4Slots = [mkBuildSlot('솔라리스','과성장 졸업','(미졸업 시 엘리시아 1번)',false,'fix'), mkBuildSlot('셀렌','사신 고정','3각 1,012.5배',false,'fix'), mkBuildSlot(elemNewHero,'주속성 신영웅',`고각성 시 ${elemDebuffHero} 대체`,false,'fix'), mkBuildSlot('나리타','고정 버퍼','3각 상시 501배',false,'fix'), mkBuildSlot('루비','디버프 고정','3상태이상 유지',false,'fix')].join('');
+          h4Note = `💡 <strong>그림리퍼(4차):</strong> 오버드라이브 3각+솔라리스 9돌 달성 시 엘리시아 대신 <strong>솔라리스</strong>를 투입하고, 공통 보유효과로 <strong>현묵</strong>을 챙기세요.`;
+        } else if (guideJob === 'mage') {
+          h4Cnt = '4슬롯 (슈프림 종결)';
+          h4Slots = [mkBuildSlot('솔라리스','과성장 졸업','(미졸업 시 엘리시아 1번)',false,'fix'), mkBuildSlot('카엔','앜메 고정','3각 302.4배',false,'fix'), mkBuildSlot(elemNewHero,'주속성 신영웅',`고각성 시 ${elemDebuffHero} 대체`,false,'fix'), mkBuildSlot('나리타','고정 버퍼','3각 상시 501배',false,'fix')].join('');
+          h4Note = `💡 <strong>슈프림(4차):</strong> 스킬 탭에서 신규 4차 스킬 <strong>[${mage4thDeal}]</strong>를 1번 슬롯에 배치하고, 영웅 4칸은 위 조합 + 보유효과 <strong>현묵</strong>을 완성하세요.`;
+        } else {
+          h4Cnt = '6슬롯 (4차 신규 메인딜 반영)';
+          h4Slots = [
+            mkBuildSlot(lord4thDealHero,'★4차 메인딜!',`[${lord3rdDealHero}] 대체 4차 종결 딜러!`,false,'future'),
+            mkBuildSlot('솔라리스','과성장 졸업','(과성장 시 엘리시아 1번!)',false,'fix'),
+            mkBuildSlot('백운귀','닼로 고정','3각 상시 501배',false,'fix'),
+            mkBuildSlot(elemNewHero,'주속성 신영웅',`고각성 시 ${elemDebuffHero} 대체`,false,'fix'),
+            mkBuildSlot('카엘','닼로 고정','3각 346.25배',false,'fix'),
+            mkBuildSlot('나리타','고정 버퍼','3각 상시 501배',false,'fix')
+          ].join('');
+          h4Note = `🔥 <strong>소울이터(4차) 핵심 변경점:</strong> 기존 3차 메인딜(<strong>${lord3rdDealHero}</strong>) 대신 신규 4차 메인딜 영웅 <strong>[${lord4thDealHero}]</strong>로 교체하세요! (노과성장 시 <strong>${lord4thDealHero}</strong>을 1번 슬롯에 배치!)`;
+        }
+        contentHtml = `<div class="stage-build-card" style="border-left-color:#facc15;">
+          <div class="stage-build-header"><span class="stage-build-title">🦸 4차 전직 (${jMeta.c4}) 최종 종결 영웅 세팅</span><span class="grade-badge grade-legend">${h4Cnt}</span></div>
+          <div class="build-slot-grid">${h4Slots}</div>
+          <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 전 직업 공통 보유효과 영웅 (미장착 · 1각 필수):</div>
+          <div class="build-slot-grid">${mkBuildSlot('현묵','★공통 보유효과','미장착 보유효과 (1각 필수!)',false,'future')}</div>
+          <div class="build-tip-box" style="margin-top:12px;">${h4Note}</div>
+        </div>`;
+      }
+
+      body.innerHTML = `${radioControlsHtml}${contentHtml}`;
+      return;
+    }
 
       // 영웅 세팅 (1차 ~ 4차 라디오 선택)
       const h1Cnt = guideJob === 'lord' ? '5슬롯 (다크로드 영웅 +1)' : '4슬롯';
