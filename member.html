@@ -56,7 +56,6 @@
     .stat-val { font-size: 22px; font-weight: 900; margin-top: 4px; color: #fff; }
     .stat-sub { font-size: 11.5px; color: #94a3b8; margin-top: 2px; }
 
-    /* 구글 검색창 스타일 자동완성 */
     .input-row {
       display: grid; grid-template-columns: 1.3fr 1.2fr auto; gap: 10px; align-items: start;
     }
@@ -102,7 +101,6 @@
     .msg-err { background: rgba(244, 63, 94, 0.16); border: 1px solid #f43f5e; color: #fda4af; }
     .msg-ok  { background: rgba(16, 185, 129, 0.16); border: 1px solid #10b981; color: #6ee7b7; }
 
-    /* 미기입 칩 */
     .missing-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
     .missing-chip {
       background: #0f172a; border: 1px solid #f43f5e; color: #fecdd3;
@@ -110,7 +108,6 @@
     }
     .missing-chip:hover { background: rgba(244, 63, 94, 0.25); }
 
-    /* 테이블 */
     .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-inner); }
     table { width: 100%; border-collapse: collapse; font-size: 13.5px; text-align: center; }
     th { background: #131d33; color: #93c5fd; font-weight: 800; padding: 11px 10px; border-bottom: 2px solid #1e3a8a; white-space: nowrap; }
@@ -122,15 +119,15 @@
 </head>
 <body>
 
-  <!-- 비밀번호 잠금 화면 (비밀번호: gbg123) -->
+  <!-- 서버 인증 잠금 화면 (비밀번호는 HTML에 저장하지 않고 Apps Script 서버에서만 검증) -->
   <div id="gate_lock_overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(11,17,32,0.96); backdrop-filter:blur(8px); z-index:999999; display:flex; align-items:center; justify-content:center; padding:16px;">
     <div style="background:#1e293b; border:2px solid #10b981; border-radius:18px; max-width:390px; width:100%; padding:28px 24px; text-align:center; box-shadow:0 15px 45px rgba(0,0,0,0.85);">
-      <div style="font-size:36px; margin-bottom:10px;">📊</div>
+      <div style="font-size:36px; margin-bottom:10px;">🔒</div>
       <h3 style="color:#6ee7b7; font-size:19px; font-weight:800; margin-bottom:8px;">길보길 길드원 예상 투력 분석</h3>
       <p style="color:#cbd5e1; font-size:13.5px; margin-bottom:18px;">길드원 전용 입력 페이지입니다.<br>비밀번호를 입력해 주세요.</p>
       <input type="password" id="gate_pw_input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter') verifyPw()"
         style="width:100%; text-align:center; padding:12px; font-size:15px; font-weight:bold; background:#0f172a; border:1.5px solid #475569; border-radius:10px; color:#fff; margin-bottom:12px; outline:none;">
-      <button onclick="verifyPw()" style="width:100%; background:linear-gradient(135deg,#10b981,#059669); border:1px solid #34d399; padding:12px; border-radius:10px; color:#fff; font-size:14.5px; font-weight:800; cursor:pointer; margin-bottom:12px;">🔓 입장하기</button>
+      <button id="gate_submit_btn" onclick="verifyPw()" style="width:100%; background:linear-gradient(135deg,#10b981,#059669); border:1px solid #34d399; padding:12px; border-radius:10px; color:#fff; font-size:14.5px; font-weight:800; cursor:pointer; margin-bottom:12px;">🔓 입장하기</button>
       <button onclick="location.href='index.html'" style="width:100%; background:#334155; border:1px solid #475569; padding:10px; border-radius:10px; color:#e2e8f0; font-size:13px; font-weight:700; cursor:pointer;">🏠 메인 계산기로 돌아가기</button>
     </div>
   </div>
@@ -171,7 +168,7 @@
       </div>
     </div>
 
-    <!-- 길드원 점수 입력 카드 (구글 검색창 스타일 자동완성) -->
+    <!-- 길드원 점수 입력 카드 -->
     <div class="card" style="border-left:4px solid #10b981;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
         <div>
@@ -215,7 +212,7 @@
     <div class="card" style="border-left:4px solid #38bdf8;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
         <h2 style="font-size:16px; color:#fff;">📋 길드원 30명 전체 현황 (3타 예상 점수순 자동 정렬)</h2>
-        <span id="sync_status_badge" style="font-size:12px; color:#94a3b8;">로컬 대기 중</span>
+        <span id="sync_status_badge" style="font-size:12px; color:#94a3b8;">인증 대기 중</span>
       </div>
       <div class="table-wrap">
         <table>
@@ -236,9 +233,8 @@
   </div>
 
 <script>
-  // ★ 배포한 Apps Script 웹앱 URL을 아래에 붙여넣으세요!
   const MEMBER_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbx0sdB0a8k1P4v8HGQtAfHq04ey87WbIxvtvdtCzy-lXBoFVW6xwF7V3HWIJVhheDcqtA/exec";
-  const GATE_PW = "gbg123";
+  let activePw = sessionStorage.getItem("member_auth_pw") || "";
 
   const ROSTER_30 = [
     "성월", "가해자", "Minari", "퍽", "북어코",
@@ -248,7 +244,6 @@
     "대사신", "불꽃처럼", "BMW", "겨울눈사람", "지존검사", "왕십리", "벽풍사"
   ];
 
-  // 상태 데이터: { nickname -> { hitScore, est3x, status, updatedAt } }
   let memberData = {};
   let prevWeekClosingTotal = 4868000;
   let acFocusIdx = -1;
@@ -266,31 +261,70 @@
     return String(s || "").replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
   }
 
-  function verifyPw() {
-    const val = (document.getElementById("gate_pw_input")?.value || "").trim();
-    if (val === GATE_PW) {
-      sessionStorage.setItem("member_auth_passed", "true");
-      document.getElementById("gate_lock_overlay").style.display = "none";
-      loadFromSheet(false);
-    } else {
-      alert("비밀번호가 일치하지 않습니다.");
-      document.getElementById("gate_pw_input").value = "";
-      document.getElementById("gate_pw_input").focus();
+  function findRosterMatch(raw) {
+    const q = String(raw || "").trim().toLowerCase();
+    return ROSTER_30.find(n => n.toLowerCase() === q) || null;
+  }
+
+  function applySheetJson(json) {
+    initDefaultData();
+    if (Array.isArray(json.rows)) {
+      for (let i = 1; i < json.rows.length; i++) {
+        const r = json.rows[i];
+        const nick = findRosterMatch(r[0]);
+        if (!nick) continue;
+        const hit = parseInt(String(r[1] || "0").replace(/[^0-9]/g, ""), 10) || 0;
+        memberData[nick] = {
+          hitScore: hit,
+          est3x: hit * 3,
+          status: hit > 0 ? "입력완료" : "미기입",
+          updatedAt: String(r[4] || "")
+        };
+      }
+    }
+    if (json.prevTotal && Number(json.prevTotal) > 0) {
+      prevWeekClosingTotal = Number(json.prevTotal);
+    }
+    const now = new Date();
+    document.getElementById("sync_status_badge").innerText =
+      `☁️ 시트 연동 완료 (${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")})`;
+    renderAll();
+  }
+
+  async function verifyPw() {
+    const inputEl = document.getElementById("gate_pw_input");
+    const btnEl = document.getElementById("gate_submit_btn");
+    const val = (inputEl?.value || "").trim();
+    if (!val) return;
+    btnEl.disabled = true;
+    btnEl.innerText = "확인 중...";
+    try {
+      const res = await fetch(`${MEMBER_WEBHOOK_URL}?pw=${encodeURIComponent(val)}&_t=${Date.now()}`);
+      const json = await res.json();
+      if (json && json.ok) {
+        activePw = val;
+        sessionStorage.setItem("member_auth_pw", val);
+        document.getElementById("gate_lock_overlay").style.display = "none";
+        applySheetJson(json);
+      } else {
+        alert("비밀번호가 일치하지 않습니다.");
+        inputEl.value = "";
+        inputEl.focus();
+      }
+    } catch (e) {
+      alert("서버 연결에 실패했습니다. Apps Script가 새 버전으로 배포되었는지 확인해 주세요.");
+    } finally {
+      btnEl.disabled = false;
+      btnEl.innerText = "🔓 입장하기";
     }
   }
 
   function checkAuth() {
-    if (sessionStorage.getItem("member_auth_passed") === "true") {
-      document.getElementById("gate_lock_overlay").style.display = "none";
+    if (activePw) {
       loadFromSheet(false);
     } else {
       setTimeout(() => document.getElementById("gate_pw_input")?.focus(), 80);
     }
-  }
-
-  function findRosterMatch(raw) {
-    const q = String(raw || "").trim().toLowerCase();
-    return ROSTER_30.find(n => n.toLowerCase() === q) || null;
   }
 
   function showFormMsg(text, isErr) {
@@ -305,7 +339,6 @@
     document.getElementById("live_3x_preview").innerText = `3타 예상(×3): ${(v * 3).toLocaleString()}점`;
   }
 
-  // ==================== 구글 검색창 스타일 자동완성 ====================
   function renderAutocomplete(query) {
     const dd = document.getElementById("ac_dropdown");
     const q = String(query || "").trim().toLowerCase();
@@ -385,45 +418,35 @@
     }
   });
 
-  // ==================== 시트 연동 (읽기 / 쓰기) ====================
   async function loadFromSheet(isManual) {
     initDefaultData();
     const badge = document.getElementById("sync_status_badge");
-    if (!MEMBER_WEBHOOK_URL || MEMBER_WEBHOOK_URL.includes("여기에_")) {
-      badge.innerText = "⚠️ 웹앱 URL 미연결 (로컬 미리보기 모드)";
-      renderAll();
+    if (!activePw) {
+      document.getElementById("gate_lock_overlay").style.display = "flex";
       return;
     }
     if (isManual) badge.innerText = "🔄 시트 불러오는 중...";
     try {
-      const res = await fetch(`${MEMBER_WEBHOOK_URL}?_t=${Date.now()}`);
+      const res = await fetch(`${MEMBER_WEBHOOK_URL}?pw=${encodeURIComponent(activePw)}&_t=${Date.now()}`);
       const json = await res.json();
-      if (Array.isArray(json.rows)) {
-        for (let i = 1; i < json.rows.length; i++) {
-          const r = json.rows[i];
-          const nick = findRosterMatch(r[0]);
-          if (!nick) continue;
-          const hit = parseInt(String(r[1] || "0").replace(/[^0-9]/g, ""), 10) || 0;
-          memberData[nick] = {
-            hitScore: hit,
-            est3x: hit * 3,
-            status: hit > 0 ? "입력완료" : "미기입",
-            updatedAt: String(r[4] || "")
-          };
-        }
+      if (!json || !json.ok) {
+        sessionStorage.removeItem("member_auth_pw");
+        activePw = "";
+        document.getElementById("gate_lock_overlay").style.display = "flex";
+        return;
       }
-      if (json.prevTotal && Number(json.prevTotal) > 0) {
-        prevWeekClosingTotal = Number(json.prevTotal);
-      }
-      const now = new Date();
-      badge.innerText = `☁️ 시트 연동 완료 (${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")})`;
+      document.getElementById("gate_lock_overlay").style.display = "none";
+      applySheetJson(json);
     } catch (err) {
-      badge.innerText = "⚠️ 시트 연동 실패 (URL 또는 배포 권한 확인)";
+      badge.innerText = "⚠️ 시트 연동 실패 (네트워크 또는 배포 확인)";
     }
-    renderAll();
   }
 
   async function submitMemberScore() {
+    if (!activePw) {
+      document.getElementById("gate_lock_overlay").style.display = "flex";
+      return;
+    }
     const rawNick = document.getElementById("nick_input").value.trim();
     const hitScore = parseInt(document.getElementById("score_input").value || "0", 10) || 0;
 
@@ -447,27 +470,23 @@
     };
     renderAll();
 
-    if (MEMBER_WEBHOOK_URL && !MEMBER_WEBHOOK_URL.includes("여기에_")) {
-      const btn = document.getElementById("btn_submit_score");
-      btn.disabled = true;
-      btn.innerText = "전송 중...";
-      try {
-        await fetch(MEMBER_WEBHOOK_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ nickname: matchedNick, hitScore })
-        });
-        showFormMsg(`✅ [${matchedNick}] 1타 ${hitScore.toLocaleString()}점 (3타 예상 ${(hitScore*3).toLocaleString()}점) 시트 반영 완료!`, false);
-        setTimeout(() => loadFromSheet(false), 1200);
-      } catch (e) {
-        showFormMsg("⚠️ 시트 전송 중 오류가 발생했습니다.", true);
-      } finally {
-        btn.disabled = false;
-        btn.innerText = "💾 등록 / 업데이트";
-      }
-    } else {
-      showFormMsg(`✅ [${matchedNick}] 로컬 반영 완료! (Apps Script URL 연결 시 구글 시트에 자동 저장됩니다)`, false);
+    const btn = document.getElementById("btn_submit_score");
+    btn.disabled = true;
+    btn.innerText = "전송 중...";
+    try {
+      await fetch(MEMBER_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ pw: activePw, nickname: matchedNick, hitScore })
+      });
+      showFormMsg(`✅ [${matchedNick}] 1타 ${hitScore.toLocaleString()}점 (3타 예상 ${(hitScore*3).toLocaleString()}점) 시트 반영 완료!`, false);
+      setTimeout(() => loadFromSheet(false), 1200);
+    } catch (e) {
+      showFormMsg("⚠️ 시트 전송 중 오류가 발생했습니다.", true);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "💾 등록 / 업데이트";
     }
 
     document.getElementById("nick_input").value = "";
@@ -475,7 +494,6 @@
     updateLivePreview();
   }
 
-  // ==================== 화면 렌더링 ====================
   function renderAll() {
     initDefaultData();
     const list = ROSTER_30.map(name => ({ name, ...memberData[name] }));
@@ -503,7 +521,6 @@
         : `<span style="color:#fda4af;">전주 대비 ${diff.toLocaleString()}점 (${pct}%)</span>`;
     }
 
-    // 미기입 리스트
     document.getElementById("missing_cnt_title").innerText = missing.length;
     const mWrap = document.getElementById("missing_chips_wrap");
     if (missing.length === 0) {
@@ -514,7 +531,6 @@
       ).join("");
     }
 
-    // 전체 30명 테이블
     document.getElementById("member_tbody").innerHTML = list.map((m, idx) => {
       const isDone = m.hitScore > 0;
       return `

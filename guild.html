@@ -628,7 +628,7 @@
   </div>
 
 <script>
-  const GATE_PASSWORD ="gbgbest";
+  let activeGuildPw = sessionStorage.getItem("guild_auth_pw") || "";
   const SPREADSHEET_ID = "1k5IvfxaEFlI6BKYIbHnbKIY71lxBlVN4i1UU7S1LTeY";
   const GOOGLE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxjyf_C3Me9HLimtqH4hQ_FZ5vT6QlymFIA4F1FgRv093rTTUYzhqxEX8KwvRUlJmwB/exec";
   const OUR_GUILD_NAME = "기부랑길보필수";
@@ -701,9 +701,8 @@
   }
 
   function checkGateAuth() {
-    const isAuthed = sessionStorage.getItem("guild_auth_passed");
     const overlay = document.getElementById("gate_lock_overlay");
-    if (isAuthed === "true") {
+    if (activeGuildPw) {
       if (overlay) overlay.style.display = "none";
       autoDetectSheetSeasons();
     } else {
@@ -713,19 +712,24 @@
     }
   }
 
-  function verifyGatePassword() {
+  async function verifyGatePassword() {
     const inputEl = document.getElementById("gate_password_input");
     const val = inputEl ? inputEl.value.trim() : "";
-    if (val === GATE_PASSWORD) {
-      sessionStorage.setItem("guild_auth_passed", "true");
-      document.getElementById("gate_lock_overlay").style.display = "none";
-      autoDetectSheetSeasons();
-    } else {
-      alert("비밀번호가 일치하지 않습니다.");
-      if (inputEl) {
-        inputEl.value = "";
-        inputEl.focus();
+    if (!val) return;
+    try {
+      const res = await fetch(`${GOOGLE_WEBHOOK_URL}?action=auth&pw=${encodeURIComponent(val)}&_t=${Date.now()}`);
+      const json = await res.json();
+      if (json && json.ok) {
+        activeGuildPw = val;
+        sessionStorage.setItem("guild_auth_pw", val);
+        document.getElementById("gate_lock_overlay").style.display = "none";
+        autoDetectSheetSeasons();
+      } else {
+        alert("비밀번호가 일치하지 않습니다.");
+        if (inputEl) { inputEl.value = ""; inputEl.focus(); }
       }
+    } catch (e) {
+      alert("서버 인증에 실패했습니다. Apps Script가 새 버전으로 배포되었는지 확인해 주세요.");
     }
   }
 
@@ -863,7 +867,7 @@
     if (!sheetName) return parseSheetRows([]);
     if (GOOGLE_WEBHOOK_URL) {
       try {
-        const res = await fetch(`${GOOGLE_WEBHOOK_URL}?sheetName=${encodeURIComponent(sheetName)}&_t=${Date.now()}`);
+        const res = await fetch(`${GOOGLE_WEBHOOK_URL}?sheetName=${encodeURIComponent(sheetName)}&pw=${encodeURIComponent(activeGuildPw)}&_t=${Date.now()}`);
         if (res.ok) {
           const json = await res.json();
           if (json && Array.isArray(json.rows) && json.rows.length > 0) {
