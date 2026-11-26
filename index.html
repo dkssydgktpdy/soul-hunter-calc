@@ -4517,6 +4517,86 @@
       .mcard-art-box { width: 56px; height: 56px; }
       .mcard-roster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
     }
+
+   /* ==================== 12. 아이콘 하단 별 가림 마스크 · 하단 별 오버레이 · 5고패 애니메이션 ==================== */
+    .icon-clean-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .icon-clean-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      transform: scale(1.12);
+      display: block;
+    }
+    /* 이미지 밑부분에 찍힌 원본 돌파/각성 별을 깔끔하게 가리는 하단 불투명 마스크 */
+    .icon-clean-wrap::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 32%;
+      background: linear-gradient(to top, #090e1a 62%, rgba(9, 14, 26, 0.88) 82%, transparent 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+    /* 새 돌파/각성 별은 가려진 하단 마스크 위 중앙에 안 잘리게 배치 */
+    .icon-stars-top {
+      position: absolute;
+      bottom: 1px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 9.5px;
+      font-weight: 900;
+      letter-spacing: -1.6px;
+      line-height: 1.05;
+      white-space: nowrap;
+      z-index: 4;
+      pointer-events: none;
+      text-shadow: 0 1px 2px #000, 0 0 4px #000;
+    }
+    .icon-stars-top.is-awk {
+      font-size: 10px;
+      letter-spacing: -1px;
+      color: #f0abfc;
+      text-shadow: 0 1px 2px #000, 0 0 6px #d946ef;
+    }
+
+    /* 5고패 돌파/각성 애니메이션 (흔들림 ZERO · 깔끔한 네온 하이라이트) */
+    .end5-anim-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .end5-anim-card {
+      background: #0b1120;
+      border: 2px solid #334155;
+      border-radius: 11px;
+      padding: 8px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      text-align: center;
+      transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    }
+    .end5-anim-card.is-hit {
+      border-color: #fde047;
+      background: linear-gradient(160deg, rgba(250, 204, 21, 0.22) 0%, #16223d 100%);
+      box-shadow: 0 0 15px rgba(250, 204, 21, 0.55), inset 0 0 8px rgba(250, 204, 21, 0.22);
+    }
+    .end5-anim-card.is-done {
+      border-color: #34d399;
+      background: linear-gradient(160deg, rgba(16, 185, 129, 0.16) 0%, #0b1120 100%);
+    }
+    @media (max-width: 680px) {
+      .end5-anim-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
   </style>
 </head>
 
@@ -4593,7 +4673,7 @@
             <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 &amp; 공략 툴</h1>
           </div>
           <div class="author-tag">
-            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.8.0.0</strong>
+            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.8.1.0</strong>
           </div>
 
           <!-- 카카오페이 후원 팝오버 위젯 -->
@@ -7717,19 +7797,19 @@
           </div>
           <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin-bottom:7px;">
             <div style="background:#0b1120; border:1px solid #f97316; border-radius:8px; padding:5px 4px; display:flex; align-items:center; gap:5px;">
-              <img src="images/flame_p.png" alt="플레임 펄스" style="width:28px; height:28px; border-radius:6px; object-fit:cover; flex-shrink:0;" onerror="this.style.display='none';">
+              <div class="icon-clean-wrap" style="width:32px; height:32px; border-radius:6px; flex-shrink:0; border:1px solid #f97316;"><div class="icon-stars-top is-awk" style="font-size:9px;">★</div><img src="images/flame_p.png" alt="플레임 펄스" onerror="this.style.display='none';"></div>
               <div style="line-height:1.15; min-width:0;"><div style="font-size:10.5px; font-weight:900; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">플레임 펄스</div><div style="font-size:9.5px; color:#fdba74; font-weight:800;">화염 1각!</div></div>
             </div>
             <div style="background:#0b1120; border:1px solid #38bdf8; border-radius:8px; padding:5px 4px; display:flex; align-items:center; gap:5px;">
-              <img src="images/thunder_p.png" alt="썬더 펄스" style="width:28px; height:28px; border-radius:6px; object-fit:cover; flex-shrink:0;" onerror="this.style.display='none';">
+              <div class="icon-clean-wrap" style="width:32px; height:32px; border-radius:6px; flex-shrink:0; border:1px solid #38bdf8;"><div class="icon-stars-top is-awk" style="font-size:9px;">★</div><img src="images/thunder_p.png" alt="썬더 펄스" onerror="this.style.display='none';"></div>
               <div style="line-height:1.15; min-width:0;"><div style="font-size:10.5px; font-weight:900; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">썬더 펄스</div><div style="font-size:9.5px; color:#7dd3fc; font-weight:800;">번개 1각!</div></div>
             </div>
             <div style="background:#0b1120; border:1px solid #c084fc; border-radius:8px; padding:5px 4px; display:flex; align-items:center; gap:5px;">
-              <img src="images/dark_pu.png" alt="다크 펄스" style="width:28px; height:28px; border-radius:6px; object-fit:cover; flex-shrink:0;" onerror="this.style.display='none';">
+              <div class="icon-clean-wrap" style="width:32px; height:32px; border-radius:6px; flex-shrink:0; border:1px solid #c084fc;"><div class="icon-stars-top is-awk" style="font-size:9px;">★</div><img src="images/dark_pu.png" alt="다크 펄스" onerror="this.style.display='none';"></div>
               <div style="line-height:1.15; min-width:0;"><div style="font-size:10.5px; font-weight:900; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">다크 펄스</div><div style="font-size:9.5px; color:#e9d5ff; font-weight:800;">어둠 1각!</div></div>
             </div>
             <div style="background:#0b1120; border:1px solid #fde047; border-radius:8px; padding:5px 4px; display:flex; align-items:center; gap:5px;">
-              <img src="images/hyunmuk.png" alt="현묵" style="width:28px; height:28px; border-radius:6px; object-fit:cover; flex-shrink:0;" onerror="this.style.display='none';">
+              <div class="icon-clean-wrap" style="width:32px; height:32px; border-radius:6px; flex-shrink:0; border:1px solid #fde047;"><div class="icon-stars-top is-awk" style="font-size:9px;">★</div><img src="images/hyunmuk.png" alt="현묵" onerror="this.style.display='none';"></div>
               <div style="line-height:1.15; min-width:0;"><div style="font-size:10.5px; font-weight:900; color:#fde047; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">현묵 (공통)</div><div style="font-size:9.5px; color:#6ee7b7; font-weight:800;">필수 1각!</div></div>
             </div>
           </div>
@@ -7758,7 +7838,7 @@
   <!-- ==================== 6. 푸터 (길보길 분석실 & 방문자 카운터) ==================== -->
   <footer>
     <div style="margin-bottom: 12px;">
-      소울헌터키우기 네이버 라운지 전용 계산기 v.8.0.0 | 제작: <strong>29서버 겨울눈사람</strong>
+      소울헌터키우기 네이버 라운지 전용 계산기 v.8.1.0 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
       <button type="button" onclick="location.href='guild.html'"
@@ -7821,6 +7901,21 @@
 
   function calcResIcon(file, size = 18) {
     return `<img src="images/${file}" alt="" style="width:${size}px; height:${size}px; vertical-align:-3.5px; margin-right:4px; border-radius:4px; object-fit:contain; display:inline-block;" onerror="this.style.display='none';">`;
+  }
+
+  // 1~5돌 노란별 / 6~10돌 파란별 (몬스터 카드 · 5고패 공용)
+  function getBreakStarHtml(brk) {
+    const b = Math.max(0, Math.min(10, parseInt(brk, 10) || 0));
+    if (b <= 0) return '';
+    if (b <= 5) return `<span style="color:#facc15;">${'★'.repeat(b)}</span>`;
+    const blue = b - 5, yellow = 10 - b;
+    return `<span style="color:#38bdf8;">${'★'.repeat(blue)}</span><span style="color:#facc15;">${'★'.repeat(yellow)}</span>`;
+  }
+
+  // 1~3각성 보라별 (스킬 · 영웅 · 패시브 공용)
+  function getAwkStarHtml(awk) {
+    const a = Math.max(0, Math.min(3, parseInt(awk, 10) || 0));
+    return a > 0 ? `<span style="color:#f0abfc;">${'★'.repeat(a)}</span>` : '';
   }
   
   function formatKoreanNumber(num) {
@@ -14460,11 +14555,11 @@
         const rowFn = (rk, col, m1, m2, ancN, ancI, ancD, sumC) => `<div style="background:#0f172a; border:1px solid #334155; border-left:4px solid ${col}; border-radius:10px; padding:10px 14px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
           <div style="min-width:175px;"><div style="font-size:13.5px; font-weight:900; color:#ffffff;">${rk} : <span style="color:#67e8f9;">${ancN}</span></div><div style="font-size:11.5px; color:#94a3b8; margin-top:2px;">${ancD}</div><div style="font-size:12px; font-weight:800; color:#fde047; margin-top:3px;">${stoneMini}총 ${(sumC/10000).toFixed(1)}만 각성석</div></div>
           <div style="display:flex; align-items:center; gap:8px; background:#131d33; padding:7px 12px; border-radius:9px; border:1px solid #334155; flex-wrap:wrap;">
-            <div style="display:flex; align-items:center; gap:6px;"><img src="images/${m1.img}.jpg" style="width:36px; height:36px; border-radius:7px; border:1.5px solid #475569; object-fit:cover;" onerror="this.onerror=null;this.src='images/${m1.img}.png';"><div><span class="grade-badge ${m1.gradeCls}" style="font-size:9.5px; padding:1px 4px;">${m1.gradeKr} 3각</span><div style="font-size:12px; font-weight:800; color:#f8fafc;">${m1.name} <small style="color:#fde047;">(${m1.costTxt})</small></div></div></div>
+            <div style="display:flex; align-items:center; gap:6px;"><div class="icon-clean-wrap" style="width:40px; height:40px; border-radius:7px; border:1.5px solid #c084fc; flex-shrink:0;"><div class="icon-stars-top is-awk" style="font-size:9.5px;">★★★</div><img src="images/${m1.img}.jpg" onerror="this.onerror=null;this.src='images/${m1.img}.png';"></div><div><span class="grade-badge ${m1.gradeCls}" style="font-size:9.5px; padding:1px 4px;">${m1.gradeKr} 3각</span><div style="font-size:12px; font-weight:800; color:#f8fafc;">${m1.name} <small style="color:#fde047;">(${m1.costTxt})</small></div></div></div>
             <span style="font-weight:900; color:#94a3b8;">➕</span>
-            <div style="display:flex; align-items:center; gap:6px;"><img src="images/${m2.img}.jpg" style="width:36px; height:36px; border-radius:7px; border:1.5px solid #475569; object-fit:cover;" onerror="this.onerror=null;this.src='images/${m2.img}.png';"><div><span class="grade-badge ${m2.gradeCls}" style="font-size:9.5px; padding:1px 4px;">${m2.gradeKr} 3각</span><div style="font-size:12px; font-weight:800; color:#f8fafc;">${m2.name} <small style="color:#fde047;">(${m2.costTxt})</small></div></div></div>
+            <div style="display:flex; align-items:center; gap:6px;"><div class="icon-clean-wrap" style="width:40px; height:40px; border-radius:7px; border:1.5px solid #c084fc; flex-shrink:0;"><div class="icon-stars-top is-awk" style="font-size:9.5px;">★★★</div><img src="images/${m2.img}.jpg" onerror="this.onerror=null;this.src='images/${m2.img}.png';"></div><div><span class="grade-badge ${m2.gradeCls}" style="font-size:9.5px; padding:1px 4px;">${m2.gradeKr} 3각</span><div style="font-size:12px; font-weight:800; color:#f8fafc;">${m2.name} <small style="color:#fde047;">(${m2.costTxt})</small></div></div></div>
             <span style="font-weight:900; color:#38bdf8;">➔</span>
-            <div style="display:flex; align-items:center; gap:6px; background:rgba(6,182,212,0.15); padding:4px 9px; border-radius:8px; border:1.5px solid #06b6d4;"><img src="images/${ancI}.jpg" style="width:38px; height:38px; border-radius:7px; border:1.5px solid #22d3ee; object-fit:cover;" onerror="this.onerror=null;this.src='images/${ancI}.png';"><div><span class="grade-badge grade-ancient" style="font-size:9.5px; padding:1px 4px;">완성</span><div style="font-size:12.5px; font-weight:900; color:#67e8f9;">${ancN}</div></div></div>
+            <div style="display:flex; align-items:center; gap:6px; background:rgba(6,182,212,0.15); padding:4px 9px; border-radius:8px; border:1.5px solid #06b6d4;"><div class="icon-clean-wrap" style="width:40px; height:40px; border-radius:7px; border:1.5px solid #22d3ee; flex-shrink:0;"><img src="images/${ancI}.jpg" onerror="this.onerror=null;this.src='images/${ancI}.png';"></div><div><span class="grade-badge grade-ancient" style="font-size:9.5px; padding:1px 4px;">완성</span><div style="font-size:12.5px; font-weight:900; color:#67e8f9;">${ancN}</div></div></div>
           </div>
         </div>`;
 
@@ -14487,15 +14582,15 @@
       }
 
       if (awkSubView === 'passive_slot') {
-        const mkP = (n, i, t, bg, bc) => `<div class="build-slot-item" style="border-color:${bc}; padding:8px 6px;"><span class="build-slot-tag" style="background:${bg}; color:#fff;">${t}</span><div class="build-slot-thumb" style="width:42px; height:42px; border-color:${bc};"><img src="images/${i}.jpg" alt="${n}" onerror="this.onerror=null;this.src='images/${i}.png';"></div><div class="build-slot-name" style="font-size:12px;">${n}</div></div>`;
+        const mkP = (n, i, t, bg, bc, awkNum = 0) => `<div class="build-slot-item" style="border-color:${bc}; padding:8px 6px;"><span class="build-slot-tag" style="background:${bg}; color:#fff;">${t}</span><div class="build-slot-thumb icon-clean-wrap" style="width:46px; height:46px; border-color:${bc};">${awkNum > 0 ? `<div class="icon-stars-top is-awk" style="font-size:10px;">${getAwkStarHtml(awkNum)}</div>` : ''}<img src="images/${i}.jpg" alt="${n}" onerror="this.onerror=null;this.src='images/${i}.png';"></div><div class="build-slot-name" style="font-size:12px;">${n}</div></div>`;
         let s0Html = '', s4_1, s5_1, s5_2, out1 = '', out2 = '', out3 = '', rpSw = '';
         if (awkGuideJob === 'reaper') {
           s0Html = `<div style="font-size:13px; font-weight:800; color:#94a3b8; margin-bottom:6px;">⓪ [0고패 (고패 제작 전 입문)] 5슬롯 <small style="color:#fde047;">(※ 전술가속은 0고패에서만 사용하고 1고패 완성 시 즉시 뺍니다!)</small>:</div><div class="build-slot-grid" style="margin-bottom:14px;">${mkP(e3.m1.name,e3.m1.img,"주속성 신화","#e11d48","#f43f5e")}${mkP("원소융합","elem_fusion","모속성 신화","#e11d48","#f43f5e")}${mkP("마력폭주","mana_surge","변환 시너지","#7e22ce","#a855f7")}${mkP("폭발준비","blast_ready","1고패 재료","#ca8a04","#eab308")}${mkP("전술가속","tactical_haste","0고패 임시착용","#475569","#64748b")}</div>`;
           out1 = " (<span style='color:#f87171;'>전술가속 OUT</span> ➔ <span style='color:#67e8f9;'>강타의 대가 IN</span> / 폭발준비 3각 고정!)";
           s4_1 = mkP("마력폭주","mana_surge","변환 시너지","#7e22ce","#a855f7");
-          s5_1 = mkP("폭발준비","blast_ready","★1고패 3각 고정!","#ca8a04","#eab308");
-          if (awkSlotReaperState === 'pre80_blast') { s5_2 = mkP("폭발준비","blast_ready","폭발준비 각성 우위","#ca8a04","#eab308"); out2 = "마력폭주 OUT"; out3 = "폭발준비 OUT"; }
-          else { s5_2 = mkP("마력폭주","mana_surge","마력폭주 각성 우위","#7e22ce","#a855f7"); out2 = "폭발준비 OUT"; out3 = "마력폭주 OUT"; }
+          s5_1 = mkP("폭발준비","blast_ready","★1고패 3각 고정!","#ca8a04","#eab308", 3);
+          if (awkSlotReaperState === 'pre80_blast') { s5_2 = mkP("폭발준비","blast_ready","폭발준비 3각 우위","#ca8a04","#eab308", 3); out2 = "마력폭주 OUT"; out3 = "폭발준비 OUT"; }
+          else { s5_2 = mkP("마력폭주","mana_surge","마력폭주 3각 우위","#7e22ce","#a855f7", 3); out2 = "폭발준비 OUT"; out3 = "마력폭주 OUT"; }
           rpSw = `<div style="background:#131d33; border:1.5px solid #f59e0b; border-radius:10px; padding:12px 14px; margin-bottom:12px;"><div style="font-size:13px; font-weight:900; color:#fde047; margin-bottom:8px;">⚔️ [사신 2고패 조건 선택] 내 각성 상태 클릭</div><div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:8px;">
             <button type="button" onclick="setAwkSlotReaperState('pre80_blast')" style="padding:9px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:2px solid ${awkSlotReaperState==='pre80_blast'?'#fbbf24':'#475569'}; background:${awkSlotReaperState==='pre80_blast'?'#b45309':'#0f172a'}; color:#ffffff;">마력폭주 각성 &lt; 폭발준비 각성 (폭발준비 3각 유지)</button>
             <button type="button" onclick="setAwkSlotReaperState('pre80_mana')" style="padding:9px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; border:2px solid ${awkSlotReaperState==='pre80_mana'?'#a855f7':'#475569'}; background:${awkSlotReaperState==='pre80_mana'?'#7e22ce':'#0f172a'}; color:#ffffff;">마력폭주 각성 &gt; 폭발준비 각성 (1차 70~75렙 스피증 세트)</button>
@@ -14641,8 +14736,12 @@
           <div style="font-size:14px; font-weight:900; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;"><strong style="color:${t.color}; font-size:15px;">${t.num}</strong><span style="font-size:11px; color:#94a3b8;">${t.subNote || '(착용 슬롯 + 펄스·현묵 1각 도배 완료 후 순서대로 3각)'}</span></div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">${t.items.map(it => {
             const fk = (it.isSkill ? SKILL_ICON_MAP : HERO_ICON_MAP)[it.name];
+            const dispAwk = (t.num.includes('보유효과')) ? 1 : 3;
             return `<div style="background:#131d33; border:1.5px solid #334155; border-radius:9px; padding:8px 11px; display:inline-flex; align-items:center; gap:9px; flex:1; min-width:225px;">
-              <div style="width:40px; height:40px; border-radius:8px; overflow:hidden; border:1.5px solid ${t.color}; background:#0f172a; flex-shrink:0; display:flex; align-items:center; justify-content:center;">${fk ? `<img src="images/${fk}.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.src='images/${fk}.PNG';">` : `<span style="font-size:11px; color:#cbd5e1; font-weight:800;">${it.isSkill?'스킬':'영웅'}</span>`}</div>
+              <div class="icon-clean-wrap" style="width:44px; height:44px; border-radius:8px; border:1.5px solid ${t.color}; background:#0f172a; flex-shrink:0; display:flex; align-items:center; justify-content:center;">
+                <div class="icon-stars-top is-awk" style="font-size:10px;">${getAwkStarHtml(dispAwk)}</div>
+                ${fk ? `<img src="images/${fk}.png" onerror="this.onerror=null;this.src='images/${fk}.PNG';">` : `<span style="font-size:11px; color:#cbd5e1; font-weight:800;">${it.isSkill?'스킬':'영웅'}</span>`}
+              </div>
               <div style="line-height:1.32; flex:1;">
                 <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
                   <span class="mini-tag" style="background:${it.isSkill?'#0284c7':'#e11d48'}; color:#fff;">${it.isSkill?'스킬':'영웅'}</span>
@@ -14677,11 +14776,16 @@
       }
 
       if (awkSubView === 'endgame_5anc') {
-        const mk5 = (n, i, t, bg, bc, sub) => `<div class="build-slot-item" style="border-color:${bc}; padding:9px 6px; background:linear-gradient(145deg, rgba(6,182,212,0.14) 0%, #0f172a 100%);"><span class="build-slot-tag" style="background:${bg}; color:#fff;">${t}</span><div class="build-slot-thumb" style="width:46px; height:46px; border-color:${bc};"><img src="images/${i}.jpg" onerror="this.onerror=null;this.src='images/${i}.png';"></div><div class="build-slot-name" style="font-size:12.5px; color:#67e8f9;">${n}</div><div class="build-slot-note" style="color:#e2e8f0; font-size:10.5px;">${sub}</div></div>`;
-        const miniIcon = (img, name, badge, borderCol) => `<div style="display:inline-flex; align-items:center; gap:7px; background:#0b1120; border:1.5px solid ${borderCol}; border-radius:9px; padding:5px 9px;">
-          <img src="images/${img}.jpg" alt="${name}" style="width:30px; height:30px; border-radius:6px; object-fit:cover; border:1px solid ${borderCol}; flex-shrink:0;" onerror="this.onerror=null;this.src='images/${img}.png';">
-          <div style="line-height:1.2;"><div style="font-size:12px; font-weight:900; color:#fff;">${name}</div><div style="font-size:10px; font-weight:800; color:${borderCol};">${badge}</div></div>
-        </div>`;
+        const mk5 = (n, i, t, bg, bc, sub) => `<div class="build-slot-item" style="border-color:${bc}; padding:9px 6px; background:linear-gradient(145deg, rgba(6,182,212,0.14) 0%, #0f172a 100%);"><span class="build-slot-tag" style="background:${bg}; color:#fff;">${t}</span><div class="build-slot-thumb icon-clean-wrap" style="width:48px; height:48px; border-color:${bc};"><div class="icon-stars-top is-awk">★★★</div><img src="images/${i}.jpg" onerror="this.onerror=null;this.src='images/${i}.png';"></div><div class="build-slot-name" style="font-size:12.5px; color:#67e8f9;">${n}</div><div class="build-slot-note" style="color:#e2e8f0; font-size:10.5px;">${sub}</div></div>`;
+
+        const animItems = [
+          { name: j1.ancName,   img: j1.ancImg,     role: '1순위' },
+          { name: '근원관통',   img: 'pierce',      role: '2순위' },
+          { name: e3.ancName,   img: e3.ancImg,     role: '3순위' },
+          { name: '원소창조',   img: 'elem_create', role: '4순위' },
+          { name: '고대의 기억',img: 'ancient_mem', role: '5순위' }
+        ];
+        window._end5AnimItems = animItems;
 
         body.innerHTML = `${topCtrl}
           <div style="background:linear-gradient(135deg, rgba(239,68,68,0.14) 0%, #0f172a 100%); border:1.5px solid #ef4444; border-radius:12px; padding:12px 15px; margin-bottom:14px; font-size:12.5px; color:#e2e8f0; line-height:1.6;">
@@ -14695,74 +14799,46 @@
             <div class="build-slot-grid">${mk5(j1.ancName,j1.ancImg,"1순위 고패","#0891b2","#06b6d4","직업 메인")}${mk5("근원관통","pierce","2순위 고패","#0891b2","#06b6d4","방무 곱연산")}${mk5(e3.ancName,e3.ancImg,"3순위 고패","#0891b2","#06b6d4","주속성 +20,000%")}${mk5("원소창조","elem_create","4순위 고패","#e11d48","#f43f5e","10돌 디버프+700%")}${mk5("고대의 기억","ancient_mem","5순위 고패","#ca8a04","#fbbf24","50돌·15각 증폭")}</div>
           </div>
 
-          <!-- 파트 A: 돌파(Breakthrough) 순서 시각 로드맵 -->
+          <!-- PART 1: 돌파 순서 (자동 재생 + 기존 단계 설명 유지) -->
           <div class="stage-build-card" style="border-left-color:#38bdf8; padding:14px 16px; margin-bottom:14px;">
-            <div class="stage-build-header"><span class="stage-build-title" style="font-size:15px;">PART 1 · 5고패 돌파 순서 로드맵 (총합 50돌 완성)</span><span class="grade-badge grade-ancient">돌파 순서</span></div>
-
-            <div style="display:flex; flex-direction:column; gap:10px;">
-              <!-- STEP 1 -->
-              <div style="background:#131d33; border:1.5px solid #f43f5e; border-radius:11px; padding:11px 14px;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
-                  <span class="step-num-badge" style="border-color:#fb7185; color:#ffe4e6; background:#881337;">STEP 01</span>
-                  <strong style="font-size:13.5px; color:#fff;">[원소창조] 최우선 10돌파 단독 선행</strong>
-                  <span style="font-size:11.5px; color:#fda4af;">(디버프 효과 +700% 최우선 확보)</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  ${miniIcon('elem_create', '원소창조', '최우선 10돌파!', '#fb7185')}
-                </div>
+            <div class="stage-build-header">
+              <span class="stage-build-title" style="font-size:15px;">PART 1 · 5고패 돌파 순서 로드맵 (총합 50돌 완성)</span>
+              <div style="display:flex; gap:6px;">
+                <button type="button" onclick="restartEnd5Anim('brk')" style="background:#0f172a; border:1px solid #64748b; color:#e2e8f0; padding:4px 9px; border-radius:6px; font-size:11.5px; font-weight:800; cursor:pointer;">↺ 처음부터</button>
+                <button type="button" id="end5_brk_pause_btn" onclick="toggleEnd5AnimPause('brk')" style="background:#1e293b; border:1px solid #38bdf8; color:#bae6fd; padding:4px 10px; border-radius:6px; font-size:11.5px; font-weight:800; cursor:pointer;">⏸ 일시정지</button>
               </div>
-
-              <!-- STEP 2 -->
-              <div style="background:#131d33; border:1.5px solid #38bdf8; border-radius:11px; padding:11px 14px;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
-                  <span class="step-num-badge">STEP 02</span>
-                  <strong style="font-size:13.5px; color:#fff;">나머지 4종 전부 [3돌 ➔ 6돌 ➔ 9돌] 균등 돌파</strong>
-                  <span style="font-size:11.5px; color:#7dd3fc;">(3·6·9돌 구간 보너스 효율 극대화)</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:7px; flex-wrap:wrap;">
-                  ${miniIcon(j1.ancImg, j1.ancName, '3 ➔ 6 ➔ 9돌', '#38bdf8')}
-                  ${miniIcon('pierce', '근원관통', '3 ➔ 6 ➔ 9돌', '#38bdf8')}
-                  ${miniIcon(e3.ancImg, e3.ancName, '3 ➔ 6 ➔ 9돌', '#38bdf8')}
-                  ${miniIcon('ancient_mem', '고대의 기억', '3 ➔ 6 ➔ 9돌', '#fde047')}
-                </div>
-              </div>
-
-              <!-- STEP 3 -->
-              <div style="background:#131d33; border:1.5px solid #10b981; border-radius:11px; padding:11px 14px;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
-                  <span class="step-num-badge" style="border-color:#34d399; color:#a7f3d0; background:#064e3b;">STEP 03</span>
-                  <strong style="font-size:13.5px; color:#fff;">1~3순위 전체 10돌 완성 ➔ 마지막 [고대의 기억] 10돌 (총 50돌 졸업!)</strong>
-                </div>
-                <div style="display:flex; align-items:center; gap:7px; flex-wrap:wrap;">
-                  ${miniIcon(j1.ancImg, j1.ancName, '먼저 10돌', '#34d399')}
-                  ${miniIcon('pierce', '근원관통', '먼저 10돌', '#34d399')}
-                  ${miniIcon(e3.ancImg, e3.ancName, '먼저 10돌', '#34d399')}
-                  <span style="font-weight:900; color:#fde047; font-size:15px;">➔</span>
-                  ${miniIcon('ancient_mem', '고대의 기억', '마지막 10돌 (50돌 완성!)', '#fbbf24')}
-                </div>
-              </div>
+            </div>
+            <div id="end5_brk_status_bar" style="background:#090e1a; border:1px solid #1e3a8a; border-radius:9px; padding:8px 12px; font-size:12.5px; font-weight:800; color:#fde047; display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;">
+              <span>준비 중...</span><span>총 돌파: 0 / 50</span>
+            </div>
+            <div class="end5-anim-grid" id="end5_brk_anim_stage"></div>
+            <div style="font-size:12px; color:#cbd5e1; background:#090e1a; padding:10px 12px; border-radius:8px; border:1px solid #26334a; margin-top:12px; line-height:1.65;">
+              • <strong style="color:#fda4af;">STEP 01:</strong> <strong>[원소창조] 최우선 10돌파</strong> 단독 선행 (디버프 효과 +700% 최우선 확보)<br>
+              • <strong style="color:#7dd3fc;">STEP 02:</strong> 나머지 4종 전부 <strong>[3돌 ➔ 6돌 ➔ 9돌]</strong> 균등 돌파 (3·6·9돌 구간 보너스 효율 극대화)<br>
+              • <strong style="color:#6ee7b7;">STEP 03:</strong> <strong>1~3순위 전체 10돌 완성 ➔ 마지막 [고대의 기억] 10돌</strong>로 총 50돌 졸업!
             </div>
           </div>
 
-          <!-- 파트 B: 각성(Awakening) 순서 시각 로드맵 -->
+          <!-- PART 2: 각성 순서 (수동 재생 시작 + 기존 설명 유지) -->
           <div class="stage-build-card" style="border-left-color:#c084fc; padding:14px 16px;">
-            <div class="stage-build-header"><span class="stage-build-title" style="font-size:15px;">PART 2 · 5고패 각성 순서 로드맵 (총합 5각 ➔ 10각 ➔ 15각)</span><span class="grade-badge grade-unique">각성 순서</span></div>
-            <div style="background:#131d33; border:1.5px solid #a855f7; border-radius:11px; padding:12px 14px;">
-              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-                ${miniIcon('elem_create', '원소창조', '1순위 (오브 연마 연계)', '#f43f5e')}
-                <span style="font-weight:900; color:#c084fc;">➔</span>
-                ${miniIcon(j1.ancImg, j1.ancName, '2순위 균등 각성', '#38bdf8')}
-                ${miniIcon('pierce', '근원관통', '2순위 균등 각성', '#38bdf8')}
-                ${miniIcon(e3.ancImg, e3.ancName, '2순위 균등 각성', '#38bdf8')}
-                <span style="font-weight:900; color:#c084fc;">➔</span>
-                ${miniIcon('ancient_mem', '고대의 기억', '커트라인 마무리', '#fbbf24')}
-              </div>
-              <div style="font-size:12px; color:#cbd5e1; background:#090e1a; padding:9px 12px; border-radius:8px; border:1px solid #26334a; line-height:1.6;">
-                • <strong>각성 핵심 원리:</strong> [고대의 기억]은 장착 고패 <strong>각성 총합 5각 / 10각 / 15각</strong> 구간마다 증폭이 터집니다.<br>
-                • <strong>투자 팁:</strong> 먼저 <strong>5종 전원 1각(총 5각)</strong> ➔ 영원 오브 10·15연마에 맞춰 <strong>원소창조 우선 2~3각</strong> ➔ <strong>총합 10각</strong> ➔ 최종 <strong>올 3각(15각)</strong> 순으로 올리는 것이 각성석 효율이 가장 높습니다.
+            <div class="stage-build-header">
+              <span class="stage-build-title" style="font-size:15px;">PART 2 · 5고패 각성 순서 로드맵 (총합 5각 ➔ 10각 ➔ 15각)</span>
+              <div style="display:flex; gap:6px;">
+                <button type="button" onclick="restartEnd5Anim('awk')" style="background:#0f172a; border:1px solid #64748b; color:#e2e8f0; padding:5px 9px; border-radius:7px; font-size:11.5px; font-weight:800; cursor:pointer;">↺ 처음부터</button>
+                <button type="button" id="end5_awk_pause_btn" onclick="toggleEnd5AnimPause('awk')" style="background:linear-gradient(135deg,#9333ea,#6d28d9); border:1px solid #e9d5ff; color:#ffffff; padding:5px 12px; border-radius:7px; font-size:12px; font-weight:900; cursor:pointer;">▶ 각성 순서 재생</button>
               </div>
             </div>
+            <div id="end5_awk_status_bar" style="background:#090e1a; border:1px solid #581c87; border-radius:9px; padding:8px 12px; font-size:12.5px; font-weight:800; color:#f0abfc; display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;">
+              <span>우측 [▶ 각성 순서 재생] 버튼을 누르면 순서가 재생됩니다</span><span>총 각성: 0 / 15</span>
+            </div>
+            <div class="end5-anim-grid" id="end5_awk_anim_stage"></div>
+            <div style="font-size:12px; color:#cbd5e1; background:#090e1a; padding:10px 12px; border-radius:8px; border:1px solid #26334a; margin-top:12px; line-height:1.65;">
+              • <strong>각성 핵심 원리:</strong> [고대의 기억]은 장착 고패 <strong>각성 총합 5각 / 10각 / 15각</strong> 구간마다 증폭이 터집니다.<br>
+              • <strong>투자 순서:</strong> 먼저 <strong>5종 전원 1각(총 5각)</strong> ➔ 영원 오브 10·15연마에 맞춰 <strong>원소창조 우선 2~3각</strong> ➔ <strong>1~3순위 2각(총 10각)</strong> ➔ 최종 <strong>올 3각(15각)</strong> 순이 가장 효율적입니다.
+            </div>
           </div>`;
+
+        startEndgame5AncAnimations();
         return;
       }
     }
@@ -15086,6 +15162,169 @@
 
     // 8) 1~4차 전직 특성 도우미
     if (currentGuideType === 'trait') renderTraitGuideFull(body);
+  }
+
+  // ==================== 5고패 돌파/각성 독립 자동·수동 애니메이션 엔진 ====================
+  let end5BrkTimer = null;
+  let end5AwkTimer = null;
+  let end5AnimPaused = { brk: false, awk: true };
+  let end5BrkStepIdx = 0;
+  let end5AwkStepIdx = 0;
+
+  const END5_BRK_SEQ = [
+    { vals:[0,0,0,0,0],     hit:-1, txt:'[시작] 5고패 명함(0돌) 상태' },
+    { vals:[0,0,0,3,0],     hit:3,  txt:'STEP 1 · [원소창조] 단독 선행 3돌' },
+    { vals:[0,0,0,6,0],     hit:3,  txt:'STEP 1 · [원소창조] 단독 선행 6돌' },
+    { vals:[0,0,0,9,0],     hit:3,  txt:'STEP 1 · [원소창조] 단독 선행 9돌' },
+    { vals:[0,0,0,10,0],    hit:3,  txt:'STEP 1 완료 · [원소창조] 최우선 10돌파 달성!' },
+    { vals:[3,0,0,10,0],    hit:0,  txt:'STEP 2 · 1순위 고패 3돌' },
+    { vals:[3,3,0,10,0],    hit:1,  txt:'STEP 2 · 근원관통 3돌' },
+    { vals:[3,3,3,10,0],    hit:2,  txt:'STEP 2 · 3순위 주속성 3돌' },
+    { vals:[3,3,3,10,3],    hit:4,  txt:'STEP 2 · 고대의 기억 3돌 (전원 3돌 완료)' },
+    { vals:[6,3,3,10,3],    hit:0,  txt:'STEP 2 · 1순위 고패 6돌' },
+    { vals:[6,6,3,10,3],    hit:1,  txt:'STEP 2 · 근원관통 6돌' },
+    { vals:[6,6,6,10,3],    hit:2,  txt:'STEP 2 · 3순위 주속성 6돌' },
+    { vals:[6,6,6,10,6],    hit:4,  txt:'STEP 2 · 고대의 기억 6돌 (전원 6돌 완료)' },
+    { vals:[9,6,6,10,6],    hit:0,  txt:'STEP 2 · 1순위 고패 9돌' },
+    { vals:[9,9,6,10,6],    hit:1,  txt:'STEP 2 · 근원관통 9돌' },
+    { vals:[9,9,9,10,6],    hit:2,  txt:'STEP 2 · 3순위 주속성 9돌' },
+    { vals:[9,9,9,10,9],    hit:4,  txt:'STEP 2 · 고대의 기억 9돌 (전원 9돌 완료)' },
+    { vals:[10,9,9,10,9],   hit:0,  txt:'STEP 3 · 1순위 고패 10돌!' },
+    { vals:[10,10,9,10,9],  hit:1,  txt:'STEP 3 · 근원관통 10돌!' },
+    { vals:[10,10,10,10,9], hit:2,  txt:'STEP 3 · 3순위 주속성 10돌!' },
+    { vals:[10,10,10,10,10],hit:4,  txt:'👑 최종 완성 · [고대의 기억] 10돌 (총 50돌 졸업!)' },
+    { vals:[10,10,10,10,10],hit:-1, txt:'👑 총 50돌파 완성! (처음부터 다시 재생)' }
+  ];
+
+  const END5_AWK_SEQ = [
+    { vals:[0,0,0,0,0], hit:-1, txt:'[대기] 우측 [▶ 각성 순서 재생] 버튼을 눌러 순서 확인' },
+    { vals:[0,0,0,1,0], hit:3,  txt:'STEP 1 (5각 컷) · 원소창조 1각' },
+    { vals:[1,0,0,1,0], hit:0,  txt:'STEP 1 (5각 컷) · 1순위 1각' },
+    { vals:[1,1,0,1,0], hit:1,  txt:'STEP 1 (5각 컷) · 근원관통 1각' },
+    { vals:[1,1,1,1,0], hit:2,  txt:'STEP 1 (5각 컷) · 3순위 1각' },
+    { vals:[1,1,1,1,1], hit:4,  txt:'✨ 전원 1각 완료 (총 5각 증폭 해금!)' },
+    { vals:[1,1,1,2,1], hit:3,  txt:'STEP 2 (10각 컷) · 원소창조 선행 2각' },
+    { vals:[1,1,1,3,1], hit:3,  txt:'STEP 2 (10각 컷) · 원소창조 최우선 3각!' },
+    { vals:[2,1,1,3,1], hit:0,  txt:'STEP 2 (10각 컷) · 1순위 2각' },
+    { vals:[2,2,1,3,1], hit:1,  txt:'STEP 2 (10각 컷) · 근원관통 2각' },
+    { vals:[2,2,2,3,1], hit:2,  txt:'✨ 3순위 2각 완료 (총 10각 증폭 해금!)' },
+    { vals:[2,2,2,3,2], hit:4,  txt:'STEP 3 (15각 졸업) · 고대의 기억 2각' },
+    { vals:[3,2,2,3,2], hit:0,  txt:'STEP 3 (15각 졸업) · 1순위 3각' },
+    { vals:[3,3,2,3,2], hit:1,  txt:'STEP 3 (15각 졸업) · 근원관통 3각' },
+    { vals:[3,3,3,3,2], hit:2,  txt:'STEP 3 (15각 졸업) · 3순위 3각' },
+    { vals:[3,3,3,3,3], hit:4,  txt:'👑 최종 졸업 · 고대의 기억 3각 (올 3각 · 총 15각!)' },
+    { vals:[3,3,3,3,3], hit:-1, txt:'👑 올 3각(15각) 졸업! (처음부터 다시 재생)' }
+  ];
+
+  function renderEnd5BrkFrame() {
+    const stage = document.getElementById('end5_brk_anim_stage');
+    if (!stage) { if (end5BrkTimer) { clearInterval(end5BrkTimer); end5BrkTimer = null; } return; }
+    const items = window._end5AnimItems || [];
+    const bf = END5_BRK_SEQ[end5BrkStepIdx % END5_BRK_SEQ.length];
+    const brkSum = bf.vals.reduce((a, b) => a + b, 0);
+    const bar = document.getElementById('end5_brk_status_bar');
+    if (bar) bar.innerHTML = `<span>${bf.txt}</span><span style="color:#34d399;">총 돌파: ${brkSum} / 50</span>`;
+    stage.innerHTML = items.map((it, idx) => {
+      const v = bf.vals[idx] || 0;
+      const cls = idx === bf.hit ? 'is-hit' : (v >= 10 ? 'is-done' : '');
+      return `<div class="end5-anim-card ${cls}">
+        <span style="font-size:10px; color:#94a3b8; font-weight:800;">${it.role}</span>
+        <div class="icon-clean-wrap" style="width:52px; height:52px; border-radius:9px; border:1.5px solid ${v>=10?'#34d399':'#475569'};">
+          <div class="icon-stars-top">${getBreakStarHtml(v)}</div>
+          <img src="images/${it.img}.jpg" onerror="this.onerror=null;this.src='images/${it.img}.png';">
+        </div>
+        <div style="font-size:11.5px; font-weight:900; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">${it.name}</div>
+        <span style="font-size:12.5px; font-weight:900; color:${v>=10?'#34d399':(idx===bf.hit?'#fde047':'#7dd3fc')};">${v}돌</span>
+      </div>`;
+    }).join('');
+  }
+
+  function renderEnd5AwkFrame() {
+    const stage = document.getElementById('end5_awk_anim_stage');
+    if (!stage) { if (end5AwkTimer) { clearInterval(end5AwkTimer); end5AwkTimer = null; } return; }
+    const items = window._end5AnimItems || [];
+    const af = END5_AWK_SEQ[end5AwkStepIdx % END5_AWK_SEQ.length];
+    const awkSum = af.vals.reduce((a, b) => a + b, 0);
+    const bar = document.getElementById('end5_awk_status_bar');
+    if (bar) bar.innerHTML = `<span>${af.txt}</span><span style="color:#fde047;">총 각성: ${awkSum} / 15</span>`;
+    stage.innerHTML = items.map((it, idx) => {
+      const v = af.vals[idx] || 0;
+      const cls = idx === af.hit ? 'is-hit' : (v >= 3 ? 'is-done' : '');
+      return `<div class="end5-anim-card ${cls}">
+        <span style="font-size:10px; color:#94a3b8; font-weight:800;">${it.role}</span>
+        <div class="icon-clean-wrap" style="width:52px; height:52px; border-radius:9px; border:1.5px solid ${v>=3?'#e879f9':'#475569'};">
+          <div class="icon-stars-top is-awk">${getAwkStarHtml(v)}</div>
+          <img src="images/${it.img}.jpg" onerror="this.onerror=null;this.src='images/${it.img}.png';">
+        </div>
+        <div style="font-size:11.5px; font-weight:900; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">${it.name}</div>
+        <span style="font-size:12.5px; font-weight:900; color:${v>=3?'#f0abfc':(idx===af.hit?'#fde047':'#cbd5e1')};">${v}각</span>
+      </div>`;
+    }).join('');
+  }
+
+  function restartEnd5Anim(kind) {
+    const btn = document.getElementById(`end5_${kind}_pause_btn`);
+    if (kind === 'brk') {
+      if (end5BrkTimer) { clearInterval(end5BrkTimer); end5BrkTimer = null; }
+      end5AnimPaused.brk = false;
+      end5BrkStepIdx = 0;
+      if (btn) btn.innerText = '⏸ 일시정지';
+      renderEnd5BrkFrame();
+      end5BrkTimer = setInterval(() => {
+        end5BrkStepIdx = (end5BrkStepIdx + 1) % END5_BRK_SEQ.length;
+        renderEnd5BrkFrame();
+      }, 550);
+    } else {
+      if (end5AwkTimer) { clearInterval(end5AwkTimer); end5AwkTimer = null; }
+      end5AnimPaused.awk = false;
+      end5AwkStepIdx = 1;
+      if (btn) btn.innerText = '⏸ 일시정지';
+      renderEnd5AwkFrame();
+      end5AwkTimer = setInterval(() => {
+        end5AwkStepIdx = (end5AwkStepIdx + 1) % END5_AWK_SEQ.length;
+        renderEnd5AwkFrame();
+      }, 550);
+    }
+  }
+
+  function toggleEnd5AnimPause(kind) {
+    end5AnimPaused[kind] = !end5AnimPaused[kind];
+    const btn = document.getElementById(`end5_${kind}_pause_btn`);
+    if (kind === 'brk') {
+      if (btn) btn.innerText = end5AnimPaused.brk ? '▶ 다시 재생' : '⏸ 일시정지';
+      if (end5BrkTimer) { clearInterval(end5BrkTimer); end5BrkTimer = null; }
+      if (!end5AnimPaused.brk) {
+        end5BrkTimer = setInterval(() => {
+          end5BrkStepIdx = (end5BrkStepIdx + 1) % END5_BRK_SEQ.length;
+          renderEnd5BrkFrame();
+        }, 550);
+      }
+    } else {
+      if (btn) btn.innerText = end5AnimPaused.awk ? '▶ 각성 순서 재생' : '⏸ 일시정지';
+      if (end5AwkTimer) { clearInterval(end5AwkTimer); end5AwkTimer = null; }
+      if (!end5AnimPaused.awk) {
+        if (end5AwkStepIdx === 0) { end5AwkStepIdx = 1; renderEnd5AwkFrame(); }
+        end5AwkTimer = setInterval(() => {
+          end5AwkStepIdx = (end5AwkStepIdx + 1) % END5_AWK_SEQ.length;
+          renderEnd5AwkFrame();
+        }, 550);
+      }
+    }
+  }
+
+  function startEndgame5AncAnimations() {
+    if (end5BrkTimer) { clearInterval(end5BrkTimer); end5BrkTimer = null; }
+    if (end5AwkTimer) { clearInterval(end5AwkTimer); end5AwkTimer = null; }
+    end5BrkStepIdx = 0;
+    end5AwkStepIdx = 0;
+    end5AnimPaused = { brk: false, awk: true };
+    renderEnd5BrkFrame();
+    renderEnd5AwkFrame();
+    // 돌파 순서만 자동 재생 (0.55초 간격), 각성은 수동 버튼 클릭 시 재생!
+    end5BrkTimer = setInterval(() => {
+      end5BrkStepIdx = (end5BrkStepIdx + 1) % END5_BRK_SEQ.length;
+      renderEnd5BrkFrame();
+    }, 550);
   }
 
   // =========================================================================
@@ -19471,16 +19710,25 @@
           <h3>1. 초반 직업 선택 — 무조건 [사신]으로 시작!</h3>
           <ul class="ency-list">
             <li>초반에는 1순위 고대 패시브(<strong>강타의 대가</strong>) 제작 비용이 가장 저렴하고 강타 효율이 압도적인 <strong>사신</strong>으로 시작합니다.</li>
-            <li><strong>1차 전직 Lv.70 달성 (3차 전직 오픈)</strong> 이후부터 아크메이지 / 다크로드 직변을 고려하세요. 직변 전 아래 2가지 최소 조건이 필요합니다.
-              <br>• ① <strong>3차 전용 메인 딜링기 10돌파</strong> (아크메이지: 플레어 필라류 스킬 / 다크로드: 칼리아류 영웅)
+            <li><strong>1차 전직 Lv.70 달성 (3차 전직 오픈)</strong> 이후부터 아크메이지 / 다크로드 직변을 고려하세요. 직변 전 아래 2가지 조건이 필요합니다.
+              <br>• ① <strong>내 주속성에 맞는 3차 메인 딜링기 10돌파</strong>
+              <br>&nbsp;&nbsp;▸ <strong>아크메이지 3차 메인딜:</strong> 🔥불 <strong>플레어 필라</strong> · ⚡번개 <strong>볼트 스파이럴</strong> · 🌑어둠 <strong>블랙 베일</strong>
+              <br>&nbsp;&nbsp;▸ <strong>다크로드 3차 메인딜:</strong> 🔥불 <strong>칼리아</strong> · ⚡번개 <strong>카이렌</strong> · 🌑어둠 <strong>모르반</strong>
               <br>• ② <strong>1차 전직 특성 조건 충족</strong> (보유 스킬 돌파 총합 &amp; 장착 스킬 레벨 총합 / 다크로드는 영웅 기준)
             </li>
           </ul>
+          <div style="font-size:12px; font-weight:800; color:#7dd3fc; margin:10px 0 4px 0;">[사신 초반 핵심 &amp; 3차 아크메이지 속성별 메인딜]</div>
           <div class="ency-chip-row">
             ${chip('강타의 대가', 'images/strike_master.jpg', '사신 1순위 고패 (16.1만)', '#f43f5e')}
-            ${chip('플레어 필라', 'images/flare_p.png', '앜메 3차 메인딜 (10돌)', '#38bdf8')}
-            ${chip('볼트 스파이럴', 'images/volt_sp.png', '번개 앜메 3차 (10돌)', '#38bdf8')}
-            ${chip('칼리아', 'images/kalia.png', '닼로 3차 메인딜 (10돌)', '#c084fc')}
+            ${chip('플레어 필라', 'images/flare_p.png', '🔥 불 아크메이지 3차 메인딜', '#f97316')}
+            ${chip('볼트 스파이럴', 'images/volt_sp.png', '⚡ 번개 아크메이지 3차 메인딜', '#38bdf8')}
+            ${chip('블랙 베일', 'images/black_v.png', '🌑 어둠 아크메이지 3차 메인딜', '#c084fc')}
+          </div>
+          <div style="font-size:12px; font-weight:800; color:#e9d5ff; margin:10px 0 4px 0;">[3차 다크로드(오버로드) 속성별 메인딜]</div>
+          <div class="ency-chip-row">
+            ${chip('칼리아', 'images/kalia.png', '🔥 불 다크로드 3차 메인딜', '#f97316')}
+            ${chip('카이렌', 'images/kairen.png', '⚡ 번개 다크로드 3차 메인딜', '#38bdf8')}
+            ${chip('모르반', 'images/morban.png', '🌑 어둠 다크로드 3차 메인딜', '#c084fc')}
           </div>
           <div class="ency-fig-stack">
             ${fig('images/newbie_guide1.png', '초반~중반 정석 직업: 사신 계열 (그림리퍼 / 강타 위주 육성)')}
@@ -19497,10 +19745,14 @@
         </div>
 
         <div class="ency-block" style="border-left-color:#38bdf8;">
-          <h3>3. 스킬 &amp; 영웅 픽업 3분류 원리</h3>
+          <h3>3. 스킬 &amp; 영웅 픽업 3분류 원리 (내 직업·속성만 저격!)</h3>
           <ul class="ency-list">
-            <li>뽑아야 할 스킬·영웅은 크게 <strong>[공용] / [직업 전용] / [주속성 전용]</strong> 3가지로 나뉩니다.</li>
-            <li>예를 들어 내가 <strong>화염 아크메이지</strong>라면 ➔ <strong>[공용(오버드라이브·엘리멘탈 차지·나리타·엘리시아·솔라리스)] + [아크메이지(지옥불베기·카엔)] + [화염(불벼락·플레어 필라·이그니스)]</strong>이 픽업에 떴을 때만 뽑으시면 됩니다!</li>
+            <li>뽑아야 할 스킬·영웅은 <strong>① 전 직업 공용 / ② 내 직업 전용 / ③ 내 주속성 전용</strong> 3가지로 나뉩니다.</li>
+            <li><strong>예시 — 화염(불) 아크메이지 기준:</strong><br>
+              • <strong>공용:</strong> 오버드라이브 · 엘리멘탈 차지 · 나리타 · 엘리시아 · 솔라리스<br>
+              • <strong>아크메이지 전용:</strong> 지옥불베기 · 카엔<br>
+              • <strong>화염(불) 속성 전용:</strong> 불벼락 · 플레어 필라(3차) · 블레이즈 이럽션(4차) · 이그니스
+            </li>
           </ul>
           <div class="ency-chip-row">
             ${chip('오버드라이브', 'images/overdrive.png', '전 직업 공용 1순위', '#fde047')}
@@ -20569,7 +20821,8 @@
             <span style="font-size:11px; font-weight:900; color:#fde047;">${score}점</span>
             <span class="grade-badge ${tm.badge}" style="font-size:10px; padding:1px 6px;">${tm.kr} ${inst.brk}돌</span>
           </div>
-          <div class="mcard-art-box">
+          <div class="mcard-art-box icon-clean-wrap">
+            <div class="icon-stars-top">${getBreakStarHtml(inst.brk)}</div>
             <img src="${c.img}" alt="${c.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             <span style="display:none; width:100%; height:100%; align-items:center; justify-content:center; font-size:12px; font-weight:900; color:#e2e8f0; text-align:center; padding:4px;">${c.name}</span>
           </div>
@@ -20696,6 +20949,8 @@
     if (cardEl) cardEl.classList.toggle('owned', owned);
     const scEl = document.getElementById('mc_sc_' + cardId);
     if (scEl) scEl.innerText = owned ? `${getMcardScore(c, sp.brk)}점` : '미보유';
+    const starEl = document.getElementById('mc_stars_' + cardId);
+    if (starEl) starEl.innerHTML = owned ? getBreakStarHtml(sp.brk) : '';
     MCARD_SYN_KEYS.forEach(sk => {
       const btn = document.getElementById(`mc_stog_${cardId}_${sk}`);
       if (btn) btn.classList.toggle('unlocked', owned && (sp.unlockedSyns || []).includes(sk));
@@ -20765,8 +21020,9 @@
 
           return `<div class="mcard-editor-card ${owned?'owned':''}" id="mc_editor_${c.id}">
             <div style="display:flex; align-items:center; gap:8px;">
-              <div style="width:40px; height:40px; border-radius:8px; background:#090e1a; border:1.5px solid #475569; overflow:hidden; flex-shrink:0; display:flex; align-items:center; justify-content:center;">
-                <img src="${c.img}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <div class="icon-clean-wrap" style="width:44px; height:44px; border-radius:8px; background:#090e1a; border:1.5px solid #475569; flex-shrink:0; display:flex; align-items:center; justify-content:center;">
+                <div class="icon-stars-top" id="mc_stars_${c.id}" style="font-size:8px;">${owned ? getBreakStarHtml(sp.brk) : ''}</div>
+                <img src="${c.img}" alt="${c.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <span style="display:none; font-size:9px; color:#94a3b8; font-weight:800;">카드</span>
               </div>
               <div style="flex:1; min-width:0;">
@@ -20935,10 +21191,11 @@
         return `<div class="mcard-slot-card diag-slot-clickable" onclick="openDiagMcardPicker(${idx})"><div style="font-size:11px;color:#38bdf8;font-weight:800;">슬롯 ${idx + 1} · 클릭 선택</div><div style="font-size:13px;color:#64748b;font-weight:800;">+ 현재 장착 카드</div><div style="font-size:11px;color:#475569;">-</div></div>`;
       }
       const tm = MCARD_TIER_META[c.tier];
+      const spBrk = mcardUserSpecs[c.id]?.owned ? (mcardUserSpecs[c.id].brk || 0) : 0;
       const synBadges = (s.syns || []).map(sk => `<span class="mcard-syn-badge" style="border-color:${MCARD_SYN_META[sk].color};">${getMcardSynSvg(sk, 15)}<span>${tm.ptsPerSlot}</span></span>`).join('');
       return `<div class="mcard-slot-card tier-${c.tier} diag-slot-clickable" onclick="openDiagMcardPicker(${idx})">
         <div style="width:100%;display:flex;justify-content:space-between;"><span style="font-size:11px;color:#94a3b8;font-weight:800;">슬롯 ${idx + 1}</span><span class="grade-badge ${tm.badge}" style="font-size:10px;padding:1px 5px;">${tm.kr}</span></div>
-        <div class="mcard-art-box"><img src="${c.img}" alt="${c.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span style="display:none; width:100%; height:100%; align-items:center; justify-content:center; font-size:12px; font-weight:900; color:#fff;">${c.name}</span></div>
+        <div class="mcard-art-box icon-clean-wrap"><div class="icon-stars-top">${getBreakStarHtml(spBrk)}</div><img src="${c.img}" alt="${c.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span style="display:none; width:100%; height:100%; align-items:center; justify-content:center; font-size:12px; font-weight:900; color:#fff;">${c.name}</span></div>
         <div style="font-size:14px;font-weight:900;color:#fff;">${c.name}</div>
         <div class="mcard-syn-row">${synBadges || '<span style="font-size:10px;color:#94a3b8;">시너지 미입력</span>'}</div>
       </div>`;
