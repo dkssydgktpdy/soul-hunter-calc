@@ -4244,24 +4244,8 @@
       .step-section-sub { display: none; }
     }
 
-    /* ==================== 11. 7대 도우미 12컬럼 · 모바일 2x2 십자선 · 연마 미니게임 · 몬스터 카드 ==================== */
-    .helper-grid-7 {
-      display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      gap: 13px;
-    }
-    .helper-grid-7 > .hub-card:nth-child(-n+3) { grid-column: span 4; }
-    .helper-grid-7 > .hub-card:nth-child(n+4)  { grid-column: span 3; padding: 18px 10px !important; }
+    /* ==================== 11. 모바일 2x2 십자선 · 연마 미니게임 · 몬스터 카드 ==================== */
     @media (max-width: 768px) {
-      .helper-grid-7 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-      .helper-grid-7 > .hub-card:nth-child(-n+6) { grid-column: span 1; }
-      .helper-grid-7 > .hub-card:nth-child(7) {
-        grid-column: 1 / -1;
-        flex-direction: row !important;
-        justify-content: center !important;
-        text-align: left !important;
-        padding: 14px 16px !important;
-      }
       /* 모바일 2x2 상단 4탭 십자(┼) 구분선 */
       .mode-switcher { position: relative; }
       .mode-switcher::before {
@@ -4597,6 +4581,180 @@
     @media (max-width: 680px) {
       .end5-anim-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
+
+    /* ==================== 13. 8대 도우미 4x2 대칭 그리드 & 기본 특성(CP) 육각 트리 UI ==================== */
+    .helper-grid-8 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .helper-grid-8 > .hub-card { padding: 18px 10px !important; }
+    @media (max-width: 768px) {
+      .helper-grid-8 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    }
+
+    /* 인게임 [성장 > 특성] 우주 성운 보드 */
+    .btrait-window {
+      background: radial-gradient(circle at 50% 35%, #16294d 0%, #0b1529 65%, #070c18 100%);
+      border: 2.5px solid #3b82f6;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: inset 0 0 42px rgba(0, 0, 0, 0.88), 0 10px 28px rgba(0, 0, 0, 0.55);
+      color: #f8fafc;
+    }
+    .btrait-window.tab-skill { border-color: #a855f7; background: radial-gradient(circle at 50% 35%, #2b1548 0%, #100c24 68%, #070914 100%); }
+    .btrait-window.tab-hero  { border-color: #22c55e; background: radial-gradient(circle at 50% 35%, #0f3326 0%, #091a16 68%, #060e0d 100%); }
+
+    .btrait-2col-split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .btrait-half-box {
+      background: rgba(7, 12, 24, 0.72);
+      border: 1.5px solid rgba(148, 163, 184, 0.28);
+      border-radius: 13px;
+      padding: 12px 10px 14px 10px;
+      position: relative;
+    }
+    .btrait-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      padding: 5px 0;
+    }
+    .btrait-conn-line {
+      width: 2px;
+      height: 11px;
+      background: linear-gradient(180deg, #facc15, #fde047);
+      margin: 0 auto;
+      box-shadow: 0 0 6px rgba(250, 204, 21, 0.65);
+    }
+    .btrait-conn-bracket {
+      width: 66%;
+      height: 8px;
+      margin: 0 auto;
+      border-top: 2px solid rgba(250, 204, 21, 0.75);
+      border-left: 2px solid rgba(250, 204, 21, 0.75);
+      border-right: 2px solid rgba(250, 204, 21, 0.75);
+      border-radius: 4px 4px 0 0;
+    }
+    .btrait-node-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      user-select: none;
+      min-width: 78px;
+      position: relative;
+      transition: transform 0.14s ease;
+    }
+    .btrait-node-wrap:hover { transform: scale(1.07); }
+    .btrait-hex {
+      width: 50px;
+      height: 54px;
+      clip-path: polygon(50% 0%, 96% 25%, 96% 75%, 50% 100%, 4% 75%, 4% 25%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: #1e293b;
+      transition: all 0.18s;
+    }
+    .btrait-hex-inner {
+      width: 44px;
+      height: 48px;
+      clip-path: polygon(50% 0%, 96% 25%, 96% 75%, 50% 100%, 4% 75%, 4% 25%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0f172a;
+    }
+    .btrait-node-wrap.is-on .btrait-hex {
+      background: linear-gradient(135deg, #fef08a 0%, #eab308 55%, #f59e0b 100%);
+      filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.65));
+    }
+    .btrait-node-wrap.is-on.th-basic .btrait-hex-inner { background: radial-gradient(circle at 35% 30%, #2563eb 0%, #172554 85%); }
+    .btrait-node-wrap.is-on.th-skill .btrait-hex-inner { background: radial-gradient(circle at 35% 30%, #9333ea 0%, #3b0764 85%); }
+    .btrait-node-wrap.is-on.th-hero  .btrait-hex-inner { background: radial-gradient(circle at 35% 30%, #16a34a 0%, #052e16 85%); }
+    .btrait-node-wrap.is-extra .btrait-hex {
+      background: linear-gradient(135deg, #38bdf8 0%, #22d3ee 100%);
+      filter: drop-shadow(0 0 9px rgba(56, 189, 248, 0.8));
+    }
+    .btrait-node-wrap.is-off { opacity: 0.42; filter: grayscale(0.75); }
+    .btrait-lv-pill {
+      font-size: 10.5px;
+      font-weight: 900;
+      padding: 1px 7px;
+      border-radius: 5px;
+      background: #090e1a;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+    .btrait-node-wrap.is-on .btrait-lv-pill { border-color: #facc15; color: #fef08a; background: rgba(120, 53, 15, 0.65); }
+    .btrait-node-wrap.is-extra .btrait-lv-pill { border-color: #38bdf8; color: #bae6fd; background: rgba(12, 74, 110, 0.75); }
+    .btrait-node-name {
+      font-size: 10px;
+      font-weight: 800;
+      color: #cbd5e1;
+      text-align: center;
+      line-height: 1.15;
+      max-width: 86px;
+      word-break: keep-all;
+    }
+    .btrait-cost-tag {
+      position: absolute;
+      top: -4px;
+      right: 6px;
+      font-size: 8.5px;
+      font-weight: 900;
+      background: #090e1a;
+      border: 1px solid #475569;
+      color: #fde047;
+      padding: 0 4px;
+      border-radius: 4px;
+      z-index: 3;
+    }
+
+    /* 인게임 하단 [기본 | 스킬 | 영웅] 3탭 바 */
+    .btrait-tab-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+      background: #090e1a;
+      padding: 6px;
+      border-radius: 12px;
+      border: 1.5px solid #334155;
+    }
+    .btrait-tab-btn {
+      background: #131d33;
+      border: 1.5px solid #334155;
+      border-radius: 9px;
+      padding: 9px 6px;
+      color: #94a3b8;
+      font-size: 13.5px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: all 0.16s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .btrait-tab-btn.active-basic { background: linear-gradient(135deg,#1d4ed8,#1e3a8a); border-color:#60a5fa; color:#fff; box-shadow:0 0 12px rgba(59,130,246,0.5); }
+    .btrait-tab-btn.active-skill { background: linear-gradient(135deg,#7e22ce,#4c1d95); border-color:#c084fc; color:#fff; box-shadow:0 0 12px rgba(168,85,247,0.5); }
+    .btrait-tab-btn.active-hero  { background: linear-gradient(135deg,#15803d,#064e3b); border-color:#4ade80; color:#fff; box-shadow:0 0 12px rgba(34,197,94,0.5); }
+    @media (max-width: 780px) {
+      .btrait-2col-split { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 
@@ -4673,7 +4831,7 @@
             <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 &amp; 공략 툴</h1>
           </div>
           <div class="author-tag">
-            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.8.1.0</strong>
+            기획 및 제작: <strong>29서버 겨울눈사람</strong> | 네이버 라운지 배포 버전 <strong>v.9.0.0</strong>
           </div>
 
           <!-- 카카오페이 후원 팝오버 위젯 -->
@@ -5781,7 +5939,7 @@
 
         <!-- ==================== 🛠️ 세팅 도우미 모음 (6대 도우미 PC 3x2 그리드) ==================== -->
         <div class="hub-section" id="helper_icons_accordion_section">
-          <div class="helper-grid-7">
+          <div class="helper-grid-8">
             <!-- 1. 소울커넥트 코어 도우미 (시안 #22d3ee) -->
             <div class="hub-card" onclick="openDeepCalculator('tab-connect')" style="flex-direction:column; align-items:center; text-align:center; padding:20px 14px; gap:10px; border:2px solid #22d3ee; background:linear-gradient(160deg, rgba(34,211,238,0.22) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(34,211,238,0.2);">
               <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #67e8f9; background:radial-gradient(circle, rgba(34,211,238,0.28) 0%, #0f172a 100%); box-shadow:0 0 14px rgba(34,211,238,0.38);">
@@ -5858,6 +6016,23 @@
                 <span class="grade-badge" style="font-size:10.5px; margin-bottom:5px; background:rgba(167,139,250,0.24); color:#ede9fe; border:1px solid #c4b5fd;">v.2.0.0</span>
                 <span class="hub-card-desc" style="display:block; font-size:12px; color:#cbd5e1;">1차 레벨별 추천 &amp; 2·3차 트리</span>
                 <span style="display:block; font-size:10.5px; color:#fde047; margin-top:2px;">(4차 앜메·사신 오픈!)</span>
+              </div>
+            </div>
+
+            <!-- 5.5 기본 특성(CP) 세팅 도우미 (스카이 인디고 #38bdf8) -->
+            <div class="hub-card" onclick="openDeepCalculator('tab-btrait')" style="flex-direction:column; align-items:center; text-align:center; padding:20px 14px; gap:10px; border:2px solid #38bdf8; background:linear-gradient(160deg, rgba(56,189,248,0.22) 0%, #16223b 100%); box-shadow:0 6px 18px rgba(56,189,248,0.22);">
+              <div class="hub-card-icon" style="width:62px; height:62px; border-radius:14px; border:2px solid #7dd3fc; background:radial-gradient(circle, rgba(56,189,248,0.34) 0%, #0c1f3d 100%); box-shadow:0 0 16px rgba(56,189,248,0.45);">
+                <svg width="38" height="38" viewBox="0 0 40 40" fill="none" style="filter:drop-shadow(0 0 7px rgba(125,211,252,0.95));">
+                  <polygon points="20,3 35,11.5 35,28.5 20,37 5,28.5 5,11.5" fill="rgba(37,99,235,0.32)" stroke="#7dd3fc" stroke-width="2"/>
+                  <polygon points="20,9 29,14 29,26 20,31 11,26 11,14" fill="rgba(56,189,248,0.22)" stroke="#fde047" stroke-width="1.5"/>
+                  <path d="M20 12V28M14 20H26" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+                  <circle cx="20" cy="20" r="3" fill="#fde047"/>
+                </svg>
+              </div>
+              <div>
+                <span class="hub-card-title" style="font-size:15.5px; margin-bottom:4px; color:#ffffff;">기본 특성(CP) 도우미</span>
+                <span class="grade-badge" style="font-size:10.5px; margin-bottom:5px; background:rgba(56,189,248,0.25); color:#bae6fd; border:1px solid #38bdf8;">NEW · v.1.0.0</span>
+                <span class="hub-card-desc" style="display:block; font-size:12px; color:#cbd5e1;">기본·스킬·영웅 CP 자동 배분</span>
               </div>
             </div>
 
@@ -7420,6 +7595,114 @@
             <div id="mcard_roster_accordions" class="accordion-group"></div>
           </div>
         </div>
+
+        <!-- 9. 기본 특성(CP) 세팅 도우미 (v.1.0.0) -->
+        <div id="tab-btrait" class="tab-content" style="display:none;">
+          <div class="card" style="border-left: 4px solid #38bdf8;">
+            <div class="card-title">
+              <span>기본 특성(CP) 세팅 도우미 (v.1.0.0)</span>
+              <span class="grade-badge grade-ancient">인게임 육각 트리 · 붉양님 공략 기반</span>
+            </div>
+            <p class="card-subtitle">내 캐릭터 레벨(최소 10,000레벨)과 3차 전직 단계를 설정하면 <strong>기본 · 스킬 · 영웅</strong> 3개 트리에 CP 포인트를 최적 순서대로 자동 배분합니다.</p>
+
+            <!-- 1. 직업 · 주속성 (전 영역 양방향 연동) -->
+            <div class="grid-2" style="gap:10px; margin-bottom:12px;">
+              <div style="background:#0b1120; padding:10px 12px; border-radius:10px; border:1px solid #26334a;">
+                <label style="color:#94a3b8; font-size:11.5px; margin-bottom:6px;">내 직업 선택 (전체 양방향 연동)</label>
+                <div class="radio-pill-group">
+                  <div class="radio-pill job-pill-btn job-switch-reaper" id="bt_job_reaper" onclick="syncAllJobs('reaper')" style="padding:7px 6px; font-size:12px;"><img src="images/reaper.png" alt="" onerror="this.style.display='none';"><span>사신</span></div>
+                  <div class="radio-pill job-pill-btn job-switch-mage" id="bt_job_mage" onclick="syncAllJobs('mage')" style="padding:7px 6px; font-size:12px;"><img src="images/mystic.png" alt="" onerror="this.style.display='none';"><span>아크메이지</span></div>
+                  <div class="radio-pill job-pill-btn job-switch-lord" id="bt_job_lord" onclick="syncAllJobs('lord')" style="padding:7px 6px; font-size:12px;"><img src="images/overload.png" alt="" onerror="this.style.display='none';"><span>다크로드</span></div>
+                </div>
+              </div>
+              <div style="background:#0b1120; padding:10px 12px; border-radius:10px; border:1px solid #26334a;">
+                <label style="color:#94a3b8; font-size:11.5px; margin-bottom:6px;">내 주속성 선택 (전체 양방향 연동)</label>
+                <div class="radio-pill-group">
+                  <div class="radio-pill job-pill-btn elem-switch-fire" id="bt_elem_fire" onclick="syncAllElems('fire')" style="padding:7px 6px; font-size:12px;"><span class="elem-orb orb-fire" style="width:14px;height:14px;"></span><span>화염</span></div>
+                  <div class="radio-pill job-pill-btn elem-switch-light" id="bt_elem_light" onclick="syncAllElems('light')" style="padding:7px 6px; font-size:12px;"><span class="elem-orb orb-light" style="width:14px;height:14px;"></span><span>번개</span></div>
+                  <div class="radio-pill job-pill-btn elem-switch-dark" id="bt_elem_dark" onclick="syncAllElems('dark')" style="padding:7px 6px; font-size:12px;"><span class="elem-orb orb-dark" style="width:14px;height:14px;"></span><span>어둠</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. 캐릭터 레벨(CP) & 3차 전직 조건 토글 -->
+            <div style="background:#0b1120; border:1.5px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:14px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <strong style="font-size:13px; color:#fde047;">현재 캐릭터 레벨 (CP = 레벨×1):</strong>
+                  <input type="number" id="bt_char_lv_input" value="25000" min="10000" max="50000" step="500" oninput="onBasicTraitLvInput(this.value)" onblur="onBasicTraitLvBlur(this)" style="width:104px; padding:6px 8px; font-size:14.5px; font-weight:900; text-align:center; color:#38bdf8;">
+                  <span style="font-size:11px; color:#94a3b8;">(10,000 미만 입력 시 자동 10,000 보정 · 전체 해금 기준)</span>
+                </div>
+                <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                  <button type="button" class="seg-pill-btn" onclick="setBasicTraitLv(10000)">1만</button>
+                  <button type="button" class="seg-pill-btn" onclick="setBasicTraitLv(15000)">1.5만</button>
+                  <button type="button" class="seg-pill-btn" onclick="setBasicTraitLv(20000)">2만</button>
+                  <button type="button" class="seg-pill-btn" onclick="setBasicTraitLv(25000)">2.5만</button>
+                  <button type="button" class="seg-pill-btn" onclick="setBasicTraitLv(27500)">2.75만</button>
+                  <button type="button" class="seg-pill-btn" onclick="setBasicTraitLv(32000)">3.2만</button>
+                </div>
+              </div>
+
+              <div class="grid-2" style="gap:8px;">
+                <label class="cond-toggle-row" for="bt_chk_job3_lv10">
+                  <input type="checkbox" id="bt_chk_job3_lv10" class="neon-toggle-input" checked onchange="onBasicTraitCondChange()">
+                  <div>
+                    <div style="font-size:12.5px; font-weight:800; color:#fff;" id="bt_lbl_job3_lv10">3차 전직 Lv.10 이상 (전환 특화 해금)</div>
+                    <div style="font-size:10.5px; color:#94a3b8;" id="bt_sub_job3_lv10">스킬 피해량 1% ➔ 주력 5% 전환 시 스킬 피해 추가 투자</div>
+                  </div>
+                  <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+                </label>
+                <label class="cond-toggle-row" for="bt_chk_job3_lv30">
+                  <input type="checkbox" id="bt_chk_job3_lv30" class="neon-toggle-input" checked onchange="onBasicTraitCondChange()">
+                  <div>
+                    <div style="font-size:12.5px; font-weight:800; color:#fff;">3차 전직 Lv.30 이상 (타속성 전환 해금)</div>
+                    <div style="font-size:10.5px; color:#94a3b8;">ON=스킬·영웅 3속성 전부 20/20 / OFF=내 주속성만 20/20</div>
+                  </div>
+                  <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+                </label>
+              </div>
+            </div>
+
+            <!-- 3. 인게임 스타일 육각 특성 보드 (상단 3탭 + PC 2열 압축) -->
+            <div class="btrait-window" id="btrait_window_wrap">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid rgba(148,163,184,0.28);">
+                <strong id="btrait_board_head" style="font-size:15px; color:#ffffff;">성장 ▸ 기본 특성</strong>
+                <div style="display:flex; gap:6px; flex-wrap:wrap; font-size:12px; font-weight:800;">
+                  <span style="background:#090e1a; border:1px solid #475569; padding:3px 9px; border-radius:7px;">총 CP <strong id="btrait_stat_total" style="color:#fde047;">25,000</strong></span>
+                  <span style="background:#090e1a; border:1px solid #475569; padding:3px 9px; border-radius:7px;">사용 <strong id="btrait_stat_used" style="color:#38bdf8;">0</strong></span>
+                  <span style="background:#090e1a; border:1px solid #475569; padding:3px 9px; border-radius:7px;">잔여 <strong id="btrait_stat_rem" style="color:#6ee7b7;">0</strong></span>
+                </div>
+              </div>
+
+              <!-- 위쪽으로 이동한 [기본 | 스킬 | 영웅] 3탭 바 -->
+              <div class="btrait-tab-bar" style="margin-top:0; margin-bottom:12px;">
+                <button type="button" class="btrait-tab-btn active-basic" id="bt_tab_basic" onclick="switchBasicTraitSubTab('basic')">
+                  <span>기본</span>
+                  <small id="bt_tab_cp_basic" style="font-size:10.5px; opacity:0.85;">0 CP</small>
+                </button>
+                <button type="button" class="btrait-tab-btn" id="bt_tab_skill" onclick="switchBasicTraitSubTab('skill')">
+                  <span>스킬</span>
+                  <small id="bt_tab_cp_skill" style="font-size:10.5px; opacity:0.85;">0 CP</small>
+                </button>
+                <button type="button" class="btrait-tab-btn" id="bt_tab_hero" onclick="switchBasicTraitSubTab('hero')">
+                  <span>영웅</span>
+                  <small id="bt_tab_cp_hero" style="font-size:10.5px; opacity:0.85;">0 CP</small>
+                </button>
+              </div>
+
+              <!-- 클릭한 노드 상세 설명 & 실시간 적용 수치 바 -->
+              <div id="btrait_node_info_bar" style="background:rgba(9,14,26,0.88); border:1px solid #334155; border-radius:9px; padding:8px 12px; margin-bottom:12px; font-size:12px; color:#cbd5e1;">
+                육각 노드를 클릭(터치)하면 해당 특성의 <strong>현재 적용 수치 · 1포인트당 증가량 · 만렙 수치</strong>를 바로 확인할 수 있습니다.
+              </div>
+
+              <!-- 좌: 1~4단계(초반) | 우: 5~8단계(25/40/60/80P 핵심) -->
+              <div class="btrait-2col-split" id="btrait_tree_2col"></div>
+
+              <!-- 남는 포인트 투자 순서 & 리셋 팁 안내 -->
+              <div id="btrait_summary_tip" style="margin-top:12px; background:rgba(9,14,26,0.88); border:1.5px solid #38bdf8; border-radius:10px; padding:10px 13px; font-size:12px; color:#e2e8f0; line-height:1.6;"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -7838,7 +8121,7 @@
   <!-- ==================== 6. 푸터 (길보길 분석실 & 방문자 카운터) ==================== -->
   <footer>
     <div style="margin-bottom: 12px;">
-      소울헌터키우기 네이버 라운지 전용 계산기 v.8.1.0 | 제작: <strong>29서버 겨울눈사람</strong>
+      소울헌터키우기 네이버 라운지 전용 계산기 v.9.0.0 | 제작: <strong>29서버 겨울눈사람</strong>
     </div>
     <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; min-height: 36px; padding: 4px 0;">
       <button type="button" onclick="location.href='guild.html'"
@@ -8088,6 +8371,14 @@
         <li>하단 미니게임에서 실제 확률로 7칸 강화·회귀 복구(실패한 ❌ 칸 직접 클릭 가능)·증폭을 미리 체험해 보세요!</li>
       </ol>`
     },
+    'tab-btrait': {
+      title: '기본 특성(CP) 세팅 도우미 v.1.0.0 사용법',
+      html: `<ol>
+        <li><strong>캐릭터 레벨(최소 10,000)</strong>과 <strong>3차 전직 Lv.10 / Lv.30 달성 여부</strong>를 설정하면 기본·스킬·영웅 3개 트리에 CP가 자동 배분됩니다.</li>
+        <li><strong>하늘색 테두리 노드</strong>는 필수 특성을 모두 찍고 남는 포인트로 투자하는 <strong>[모든 피해량 (80➔60➔40➔25P 순번)]</strong> 구간입니다.</li>
+        <li>25P에 찍은 뒤 15P가 더 모여 40P가 되면 초기화해서 40P 노드에 찍는 방식이 최고 효율입니다.</li>
+      </ol>`
+    },
     'tab-mcard': {
       title: '몬스터 카드 세팅 도우미 v.1.0.0 사용법',
       html: `<ol>
@@ -8258,7 +8549,7 @@
   function openDeepCalculator(calcTabId, skipScroll = false) {
     const _ec = document.getElementById("mode_encyclopedia_container"); if (_ec) _ec.style.display = "none";
     const _sd = document.getElementById("mode_stage_diag_container"); if (_sd) _sd.style.display = "none";
-    if (calcTabId !== 'tab-connect' && calcTabId !== 'tab-union' && calcTabId !== 'tab-mcard') currentMainMode = 'calcs';
+    if (calcTabId !== 'tab-connect' && calcTabId !== 'tab-union' && calcTabId !== 'tab-mcard' && calcTabId !== 'tab-btrait') currentMainMode = 'calcs';
     
     document.getElementById("mode_newbie_container").style.display = "none";
     document.getElementById("mode_guides_container").style.display = "none";
@@ -8270,7 +8561,7 @@
     floatBtn.style.display = "flex";
     document.getElementById("floating_guide_btn").style.display = "flex";
     document.getElementById("floating_back_text").innerText =
-      (calcTabId === 'tab-connect' || calcTabId === 'tab-union' || calcTabId === 'tab-mcard') ? "도우미 모음으로 돌아가기" : "계산기 메뉴로 돌아가기";
+      (calcTabId === 'tab-connect' || calcTabId === 'tab-union' || calcTabId === 'tab-mcard' || calcTabId === 'tab-btrait') ? "도우미 모음으로 돌아가기" : "계산기 메뉴로 돌아가기";
 
     const labelMap = {
       'tab-growth-calc': '전직·드래곤·수호신',
@@ -8282,6 +8573,7 @@
       'tab-enchant': '심연장비 인챈트',
       'tab-connect': '소울커넥트 도우미',
       'tab-mcard': '몬스터 카드 도우미',
+      'tab-btrait': '기본 특성 도우미',
       'tab-union': '유니온 도우미'
     };
     setFloatingGuideContext(calcTabId, labelMap[calcTabId] || '계산기');
@@ -8322,6 +8614,7 @@
     }
     else if (calcTabId === 'tab-enchant') { initEnchantSystemUI(); }
     else if (calcTabId === 'tab-mcard') { renderMcardAll(); }
+    else if (calcTabId === 'tab-btrait') { renderBasicTraitAll(); }
     else if (calcTabId === 'tab-refine') { initRefSimUI(); }
   }
 
@@ -8558,7 +8851,8 @@
         stageDiagState,
         mcardUserSpecs,
         mcardCondState,
-        transCheckState
+        transCheckState,
+        basicTraitState
       };
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -8613,6 +8907,7 @@
       if (state.mcardUserSpecs) mcardUserSpecs = state.mcardUserSpecs;
       if (state.mcardCondState) mcardCondState = { ...mcardCondState, ...state.mcardCondState };
       if (state.transCheckState) transCheckState = { ...transCheckState, ...state.transCheckState };
+      if (state.basicTraitState) { basicTraitState = { ...basicTraitState, ...state.basicTraitState }; const btInp = document.getElementById('bt_char_lv_input'); if (btInp) btInp.value = String(basicTraitState.lv); }
 
       if (state.inputs) {
         Object.keys(state.inputs).forEach(id => {
@@ -8734,7 +9029,7 @@
     if (document.getElementById('tab-union')?.style.display !== 'none') renderUnionAll();
     if (typeof calculateBestMcardLoadout === 'function') calculateBestMcardLoadout();
     if (document.getElementById('tab-mcard')?.style.display !== 'none' && typeof renderMcardAll === 'function') renderMcardAll();
-    
+    if (document.getElementById('tab-btrait')?.style.display !== 'none' && typeof renderBasicTraitAll === 'function') renderBasicTraitAll();
     if (document.getElementById('guides_detail_view')?.style.display !== 'none') renderBuildGuideContent();
     if (document.getElementById('master_inv_modal_overlay')?.style.display === 'flex') refreshMasterInventoryModalUI();
     if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
@@ -8768,6 +9063,7 @@
     mcardUserSpecs = {};
     mcardCondState = { narita3: false, hcrit: false, idealSyn: false, jobTier: 3, chap: 800, scoreOverride: '' };
     transCheckState = { is3rdJob: false, anc1_frenzy: false, anc2_pierce: false, anc3_elem: false };
+    basicTraitState = { lv: 25000, subTab: 'basic', job3Lv10: true, job3Lv30: true };
 
     if (!skipRender) refreshAllActiveViews();
   }
@@ -9476,6 +9772,7 @@
       dg: compactDiag,
       mc: s300.mcardUserSpecs || {},
       mcc: s300.mcardCondState || null,
+      bt: s300.basicTraitState || null,
       t2f: [s300.trait2SealAwk65 ?? true, s300.trait2Job1Lv80 ?? false],
       gm: compactGems,
       sn: slotName || '계정',
@@ -9530,7 +9827,8 @@
       trait2Job1Lv80: Array.isArray(cs.t2f) ? Boolean(cs.t2f[1]) : false,
       stageDiagState: (typeof unpackStageDiagFromCode === 'function' && cs.dg) ? unpackStageDiagFromCode(cs.dg) : createDefaultStageDiagState(),
       mcardUserSpecs: cs.mc || {},
-      mcardCondState: cs.mcc || { narita3: false, hcrit: false, idealSyn: false, jobTier: 3, chap: 800, scoreOverride: '' }
+      mcardCondState: cs.mcc || { narita3: false, hcrit: false, idealSyn: false, jobTier: 3, chap: 800, scoreOverride: '' },
+      basicTraitState: cs.bt || { lv: 25000, subTab: 'basic', job3Lv10: true, job3Lv30: true }
     };
     const union = {
       unionUserSpecs: unionSpecsObj,
@@ -9880,6 +10178,7 @@
       calculateBestConnectLoadout();
       if (typeof calculateBestMcardLoadout === 'function') calculateBestMcardLoadout();
       if (document.getElementById('tab-mcard')?.style.display !== 'none' && typeof renderMcardAll === 'function') renderMcardAll();
+      if (document.getElementById('tab-btrait')?.style.display !== 'none' && typeof renderBasicTraitAll === 'function') renderBasicTraitAll();
       if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
       if (document.getElementById('mode_stage_diag_container')?.style.display === 'block') renderStageDiagAll();
       triggerAutoSave();
@@ -9913,6 +10212,7 @@
       calculateBestConnectLoadout();
       if (typeof calculateBestMcardLoadout === 'function') calculateBestMcardLoadout();
       if (document.getElementById('tab-mcard')?.style.display !== 'none' && typeof renderMcardAll === 'function') renderMcardAll();
+      if (document.getElementById('tab-btrait')?.style.display !== 'none' && typeof renderBasicTraitAll === 'function') renderBasicTraitAll();
       if (typeof updateStageDiagEntryBadge === 'function') updateStageDiagEntryBadge();
       if (document.getElementById('mode_stage_diag_container')?.style.display === 'block') renderStageDiagAll();
       triggerAutoSave();
@@ -17724,6 +18024,7 @@
   // [SECTION 17] 구글 스타일 통합 검색 & 단일 클린 초기화
   // =========================================================================
   const GLOBAL_SEARCH_INDEX = [
+    { title:"🔷 기본 특성(CP) 세팅 도우미 v.1.0.0 (기본 · 스킬 · 영웅 자동 배분)", cat:"🛠️ 세팅 도우미", badge:"grade-ancient", keywords:"기본특성 CP 특성 포인트 25 40 60 80 모든피해량 성장특성 사신 아크메이지 다크로드", action:()=>{ switchMainMode('helpers'); openDeepCalculator('tab-btrait'); } },
     { title:"🃏 몬스터 카드 세팅 도우미 v.1.0.0 (24종 & 시너지 최적화)", cat:"🛠️ 세팅 도우미", badge:"grade-legend", keywords:"몬스터카드 몬카 드라카르고 티그론 루파르그 카엘루스 아르고스 바르칸 프리기온 라스카 나크티스 절망의기사 시너지 공포 치명 진화 노련 지휘", action:()=>{ switchMainMode('helpers'); openDeepCalculator('tab-mcard'); } },
     { title:"🎮 영원 장비 연마 실전 미니게임 시뮬레이터 (0~20강)", cat:"🎲 확률 계산기", badge:"grade-ancient", keywords:"연마 미니게임 영원 대낫 오브 장식 강화 시뮬레이터 하락방지", action:()=>{ switchMainMode('calcs'); openDeepCalculator('tab-refine'); } },
     { title:"[종합 공략] 보물던전 1·2차 재화 사용처 총정리", cat:"종합 공략", badge:"grade-eternal", keywords:"보물던전 보던 1차 2차 사용처 속성강화 수호신 정령 드래곤문양 블루다이아", action:()=>{ openEncyclopediaArticle('ency_treasure_usage'); } },
@@ -18568,6 +18869,8 @@
     const s = Math.max(1, Math.min(50, parseInt(sub, 10) || 1));
     stageDiagState.curC = c;
     stageDiagState.curS = s;
+    if (typeof mcardCondState !== 'undefined') mcardCondState.chap = c;
+    if (typeof calculateBestMcardLoadout === 'function') calculateBestMcardLoadout();
 
     // 1) 상대방 입력창 동기화 (현재 타이핑 중인 칸은 건드리지 않음)
     if (source !== 'diag') {
@@ -20780,7 +21083,6 @@
         catSums.final += c.val * effMult;
       } else if (c.cat === 'def_ign') {
         // 나리타 3각 미보유(방무 부족) 시 티그론/드래곤소울 최우선 가중치, 보유 시 방무 희석 반영
-        const weight = narita3 ? 1.35 : 1.0;
         const val = narita3 ? (c.val * effMult * 0.22) : (c.val * effMult * 1.35);
         catSums.def_ign += val;
       } else if (c.cat === 'score_atk') {
@@ -21315,6 +21617,391 @@
         <button type="button" onclick="clearDiagMcards()" style="background:#1e293b; border:1px solid #475569; color:#fca5a5; padding:6px 10px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">비우기</button>
       </div>
     </div>${banner}<div class="mcard-board-window"><div class="mcard-equip-3grid" style="margin-bottom:0;">${cardsHtml}</div></div>`;
+  }
+
+  // =========================================================================
+  // [SECTION 22] 기본 특성(CP) 세팅 도우미 (v.1.0.0) — 인게임 육각 트리 & CP 자동 분배
+  // =========================================================================
+  const BTRAIT_STORAGE_KEY = 'shk_btrait_state_v1';
+  let basicTraitState = { lv: 25000, subTab: 'basic', job3Lv10: true, job3Lv30: true };
+  try {
+    const rawBt = localStorage.getItem(BTRAIT_STORAGE_KEY);
+    if (rawBt) basicTraitState = { ...basicTraitState, ...JSON.parse(rawBt) };
+  } catch (e) {}
+
+  function saveBasicTraitState() {
+    try { localStorage.setItem(BTRAIT_STORAGE_KEY, JSON.stringify(basicTraitState)); } catch (e) {}
+  }
+
+  function getBtraitNodeSvg(iconType, tabTheme = 'basic') {
+    const pal = {
+      basic: { main:'#93c5fd', hi:'#e0f2fe', glow:'rgba(96,165,250,0.85)', dark:'#1e3a8a' },
+      skill: { main:'#e879f9', hi:'#fae8ff', glow:'rgba(217,70,239,0.85)', dark:'#4c1d95' },
+      hero:  { main:'#4ade80', hi:'#dcfce7', glow:'rgba(74,222,128,0.85)', dark:'#064e3b' }
+    }[tabTheme] || { main:'#93c5fd', hi:'#e0f2fe', glow:'rgba(96,165,250,0.85)', dark:'#1e3a8a' };
+    const w = `width="26" height="26" viewBox="0 0 28 28" fill="none" style="filter:drop-shadow(0 0 4px ${pal.glow});"`;
+
+    switch (iconType) {
+      case 'spd_slash': // 일반 1: 공속 검+속도선
+        return `<svg ${w}><path d="M21 5L10 16L12 18L23 7L21 5Z" fill="${pal.hi}" stroke="${pal.main}" stroke-width="1"/><path d="M8 14L14 20M6 22L10 18" stroke="#fde047" stroke-width="2" stroke-linecap="round"/><path d="M4 9H11M5 12H9M16 20H23" stroke="${pal.main}" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+      case 'atk_sword': // 1-1: 검+방패/공격
+        return `<svg ${w}><path d="M20 5L9 16L12 19L23 8L20 5Z" fill="${pal.hi}"/><path d="M7 14L14 21M5 23L9 19" stroke="${pal.main}" stroke-width="2" stroke-linecap="round"/><path d="M6 7L10 5L14 7V11C14 13.5 12 15 10 16C8 15 6 13.5 6 11V7Z" fill="rgba(147,197,253,0.28)" stroke="${pal.main}" stroke-width="1.4"/></svg>`;
+      case 'hp_heart': // 1-2: 하트
+        return `<svg ${w}><path d="M14 22.5C14 22.5 5.5 17 5.5 11.2C5.5 8.2 7.8 6 10.6 6C12.2 6 13.3 6.9 14 8C14.7 6.9 15.8 6 17.4 6C20.2 6 22.5 8.2 22.5 11.2C22.5 17 14 22.5 14 22.5Z" fill="rgba(255,255,255,0.2)" stroke="${pal.main}" stroke-width="1.8"/><path d="M14 11V17M11 14H17" stroke="${pal.hi}" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+      case 'aura_man': // 일반 2 / 3-2: 기운 뿜는 실루엣
+        return `<svg ${w}><circle cx="14" cy="8.5" r="3" fill="${pal.hi}"/><path d="M9 21V15.5C9 13.5 11 12.5 14 12.5C17 12.5 19 13.5 19 15.5V21" fill="${pal.main}" stroke="${pal.hi}" stroke-width="1.2"/><path d="M5 10L7.5 12M23 10L20.5 12M5 16H7.5M20.5 16H23" stroke="#fde047" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+      case 'crit_burst': // 2-1: 크리 확률 폭발 별+검
+        return `<svg ${w}><polygon points="14,3.5 16.5,10 23.5,10.5 18,15 19.5,22 14,18 8.5,22 10,15 4.5,10.5 11.5,10" fill="rgba(147,197,253,0.32)" stroke="${pal.hi}" stroke-width="1.4"/><circle cx="14" cy="13.5" r="2.5" fill="#fde047"/></svg>`;
+      case 'crit_dice': // 2-2: 폭발 주사위
+        return `<svg ${w}><rect x="7" y="7" width="14" height="14" rx="3" fill="rgba(147,197,253,0.3)" stroke="${pal.hi}" stroke-width="1.6"/><circle cx="11" cy="11" r="1.4" fill="#fde047"/><circle cx="17" cy="17" r="1.4" fill="#fde047"/><circle cx="14" cy="14" r="1.4" fill="#fff"/><path d="M14 3V5M14 23V25M3 14H5M23 14H25" stroke="${pal.main}" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+      case 'vortex': // 일반 3: 소용돌이
+        return `<svg ${w}><circle cx="14" cy="14" r="9" stroke="${pal.main}" stroke-width="1.7" stroke-dasharray="10 4"/><path d="M14 7.5C17.5 7.5 19.5 10.5 18.5 14C17.5 17 14 18.5 11.5 17C9.5 15.8 9.5 12.5 12 11.5C13.8 10.8 15.5 12 15 14" stroke="${pal.hi}" stroke-width="1.9" stroke-linecap="round"/></svg>`;
+      case 'strike_arc': // 3-1, 5-1~8-1: 검 + 원호 궤적
+        return `<svg ${w}><path d="M6 17C7 10 13 6 21 7" stroke="${pal.main}" stroke-width="2.2" stroke-linecap="round"/><path d="M8 21C11 19 16 17 22 12" stroke="#fde047" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 2"/><path d="M21 6L11 16L13 18L23 8L21 6Z" fill="${pal.hi}"/><path d="M8 15L14 21M6 22L10 18" stroke="${pal.hi}" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+      case 'def_break': // 3-3, 스킬 1, 2-1, 영웅 2-1: 깨지는 방패 + 검
+        return `<svg ${w}><path d="M14 4L22 7.5V14C22 19 18.5 22.5 14 24.5C9.5 22.5 6 19 6 14V7.5L14 4Z" fill="rgba(255,255,255,0.14)" stroke="${pal.main}" stroke-width="1.7"/><path d="M11 8L15 13L12 16L16 21" stroke="#fde047" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="7" y1="21" x2="21" y2="7" stroke="${pal.hi}" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+      case 'multi_x': // 일반 4: 교차 빛줄기
+        return `<svg ${w}><path d="M6 6L22 22M22 6L6 22" stroke="${pal.hi}" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="14" r="4" fill="${pal.main}" stroke="#fde047" stroke-width="1.4"/></svg>`;
+      case 'three_blades': // 4-1: 3개 칼날
+        return `<svg ${w}><path d="M14 4L16 18L14 23L12 18L14 4Z" fill="${pal.hi}"/><path d="M8 7L10 17L8 21L6.5 17L8 7Z" fill="${pal.main}"/><path d="M20 7L21.5 17L20 21L18 17L20 7Z" fill="${pal.main}"/></svg>`;
+      case 'spark_star': // 4-2: 중앙 폭발 스파크
+        return `<svg ${w}><path d="M14 3L16.5 11.5L25 14L16.5 16.5L14 25L11.5 16.5L3 14L11.5 11.5L14 3Z" fill="${pal.hi}" stroke="${pal.main}" stroke-width="1.1"/><circle cx="14" cy="14" r="2.6" fill="#fde047"/></svg>`;
+      case 'vamp_jaw': // 4-3: 이빨/흡혈
+        return `<svg ${w}><path d="M6 12C8 8 20 8 22 12C20 18 17 21 14 21C11 21 8 18 6 12Z" fill="rgba(147,197,253,0.22)" stroke="${pal.main}" stroke-width="1.6"/><path d="M9 12L10.5 15L12 12L14 15.5L16 12L17.5 15L19 12" stroke="${pal.hi}" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+      case 'eye_orb': // 일반 5,6,8 / 영웅 3: 신비한 눈
+        return `<svg ${w}><path d="M3.5 14C6.5 8.5 10.5 6.5 14 6.5C17.5 6.5 21.5 8.5 24.5 14C21.5 19.5 17.5 21.5 14 21.5C10.5 21.5 6.5 19.5 3.5 14Z" fill="rgba(255,255,255,0.16)" stroke="${pal.hi}" stroke-width="1.7"/><circle cx="14" cy="14" r="3.8" fill="${pal.main}" stroke="#fde047" stroke-width="1.3"/><circle cx="14" cy="14" r="1.4" fill="#090e1a"/></svg>`;
+      case 'skull_sword': // 일반 7: 해골 + 검
+        return `<svg ${w}><line x1="6" y1="22" x2="22" y2="6" stroke="#fde047" stroke-width="2.2" stroke-linecap="round"/><path d="M14 6.5C10.5 6.5 8 9 8 12.2C8 14.3 9 15.8 10.5 16.8V19.5H17.5V16.8C19 15.8 20 14.3 20 12.2C20 9 17.5 6.5 14 6.5Z" fill="${pal.hi}" stroke="${pal.dark}" stroke-width="1"/><circle cx="11.8" cy="12.5" r="1.4" fill="${pal.dark}"/><circle cx="16.2" cy="12.5" r="1.4" fill="${pal.dark}"/></svg>`;
+      case 'all_emblem': // 5-2~8-2: 모든 피해량 대칭 엠블렘(뿔/왕관형)
+        return `<svg ${w}><path d="M14 4L17 9L22.5 7.5L20 14L22.5 20.5L17 19L14 24L11 19L5.5 20.5L8 14L5.5 7.5L11 9L14 4Z" fill="rgba(255,255,255,0.2)" stroke="${pal.main}" stroke-width="1.6" stroke-linejoin="round"/><polygon points="14,9 17.5,14 14,19 10.5,14" fill="${pal.hi}" stroke="#fde047" stroke-width="1"/></svg>`;
+      case 'drop_heal': // 스킬 1-2: 물방울+십자
+        return `<svg ${w}><path d="M14 4C14 4 7 11.5 7 16.5C7 20.4 10.1 23.5 14 23.5C17.9 23.5 21 20.4 21 16.5C21 11.5 14 4 14 4Z" fill="rgba(232,121,249,0.24)" stroke="${pal.main}" stroke-width="1.7"/><path d="M14 13V19M11 16H17" stroke="${pal.hi}" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+      case 'skill_flame': // 스킬 2, 5-1~8-1: 보라 불꽃 영혼
+        return `<svg ${w}><path d="M14 3.5C14 3.5 7.5 9.5 7.5 15.5C7.5 19.5 10.5 22.5 14 22.5C17.5 22.5 20.5 19.5 20.5 15.5C20.5 12.5 18.8 10.2 17 8.8C17 11.5 15.2 12.8 14 12.8C15 10 14.8 6.5 14 3.5Z" fill="${pal.main}" stroke="${pal.hi}" stroke-width="1.4"/><path d="M14 14L16 17.5L14 20.5L12 17.5L14 14Z" fill="#fde047"/></svg>`;
+      case 'status_q': // 스킬 2-2: 물음표 상태이상 실루엣
+        return `<svg ${w}><circle cx="14" cy="14.5" r="3" fill="${pal.main}"/><path d="M9 23C9 19.5 11 18 14 18C17 18 19 19.5 19 23" fill="${pal.main}"/><text x="14" y="10" text-anchor="middle" fill="#fde047" font-size="9.5" font-weight="900">???</text></svg>`;
+      case 'spellbook': // 스킬 3: 펼쳐진 마법서
+        return `<svg ${w}><path d="M4.5 9.5C7.5 8 11 8.5 14 10.5C17 8.5 20.5 8 23.5 9.5V21C20.5 19.5 17 20 14 22C11 20 7.5 19.5 4.5 21V9.5Z" fill="rgba(232,121,249,0.28)" stroke="${pal.hi}" stroke-width="1.6" stroke-linejoin="round"/><line x1="14" y1="10.5" x2="14" y2="22" stroke="${pal.hi}" stroke-width="1.4"/><circle cx="14" cy="6" r="2.3" fill="#fde047"/></svg>`;
+      case 'eye_book': // 스킬 5~8: 마법서 + 중앙 눈
+        return `<svg ${w}><path d="M4.5 10.5C7.5 9 11 9.5 14 11.5C17 9.5 20.5 9 23.5 10.5V21.5C20.5 20 17 20.5 14 22.5C11 20.5 7.5 20 4.5 21.5V10.5Z" fill="rgba(232,121,249,0.24)" stroke="${pal.main}" stroke-width="1.5"/><ellipse cx="14" cy="15.5" rx="4.5" ry="2.6" fill="#090e1a" stroke="#fde047" stroke-width="1.3"/><circle cx="14" cy="15.5" r="1.3" fill="${pal.hi}"/></svg>`;
+      case 'book_fire': // 3-1: 책 위 화염
+        return `<svg ${w}><path d="M5 18L14 21L23 18V21.5L14 24.5L5 21.5V18Z" fill="rgba(255,255,255,0.22)" stroke="${pal.hi}" stroke-width="1.2"/><path d="M14 4C14 4 8.5 8.5 8.5 13C8.5 16 11 18 14 18C17 18 19.5 16 19.5 13C19.5 10.5 18 8.8 16.5 7.5C16.5 9.8 15 10.8 14 10.8C14.8 8.5 14.6 6 14 4Z" fill="#f97316" stroke="#fef08a" stroke-width="1.2"/></svg>`;
+      case 'book_light': // 3-2: 책 위 번개
+        return `<svg ${w}><path d="M5 18L14 21L23 18V21.5L14 24.5L5 21.5V18Z" fill="rgba(255,255,255,0.22)" stroke="${pal.hi}" stroke-width="1.2"/><path d="M16 4L8.5 13H13.5L11.5 19L19.5 10H14.5L16 4Z" fill="#38bdf8" stroke="#e0f2fe" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+      case 'book_dark': // 3-3: 책 위 초승달
+        return `<svg ${w}><path d="M5 18L14 21L23 18V21.5L14 24.5L5 21.5V18Z" fill="rgba(255,255,255,0.22)" stroke="${pal.hi}" stroke-width="1.2"/><path d="M19.5 12.5A6.2 6.2 0 1 1 12.2 5.2 4.8 4.8 0 0 0 19.5 12.5Z" fill="#c084fc" stroke="#f5d0fe" stroke-width="1.2"/></svg>`;
+      case 'hourglass': // 스킬 4: 모래시계
+        return `<svg ${w}><path d="M8 5H20L15 14L20 23H8L13 14L8 5Z" fill="rgba(232,121,249,0.25)" stroke="${pal.hi}" stroke-width="1.7" stroke-linejoin="round"/><line x1="7" y1="5" x2="21" y2="5" stroke="#fde047" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="23" x2="21" y2="23" stroke="#fde047" stroke-width="2" stroke-linecap="round"/></svg>`;
+      case 'magic_wand': // 스킬 4-2: 마법 지팡이 + 폭발
+        return `<svg ${w}><line x1="7" y1="21" x2="18" y2="10" stroke="${pal.hi}" stroke-width="2.2" stroke-linecap="round"/><polygon points="19,5 20.5,8.5 24,10 20.5,11.5 19,15 17.5,11.5 14,10 17.5,8.5" fill="#fde047" stroke="#fff" stroke-width="0.9"/></svg>`;
+      case 'dual_sword': // 스킬 4-1: X자 쌍검
+        return `<svg ${w}><path d="M7 7L21 21M21 7L7 21" stroke="${pal.main}" stroke-width="2.2" stroke-linecap="round"/><path d="M6 17L11 22M22 17L17 22" stroke="${pal.hi}" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+      case 'hero_bust': // 영웅 1, 5-1~8-1: 영웅 실루엣 + 빛
+        return `<svg ${w}><circle cx="14" cy="9" r="3.6" fill="${pal.hi}"/><path d="M7 22C7 17.2 10 14.5 14 14.5C18 14.5 21 17.2 21 22" fill="${pal.main}" stroke="${pal.hi}" stroke-width="1.4" stroke-linecap="round"/><path d="M6 12L10 14M22 12L18 14" stroke="#fde047" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+      case 'hero_duo': // 영웅 4-1, 4-2: 영웅 2인
+        return `<svg ${w}><circle cx="10.5" cy="9.5" r="2.8" fill="${pal.main}"/><path d="M5.5 21C5.5 17.2 7.5 15 10.5 15C13.5 15 15.5 17.2 15.5 21" fill="rgba(74,222,128,0.4)" stroke="${pal.main}" stroke-width="1.3"/><circle cx="18" cy="10.5" r="2.6" fill="${pal.hi}"/><path d="M13.5 21C13.5 17.5 15.3 15.8 18 15.8C20.7 15.8 22.5 17.5 22.5 21" fill="${pal.main}" stroke="${pal.hi}" stroke-width="1.3"/></svg>`;
+      case 'hero_elem3': // 영웅 5~8: 영웅 + 3속성 구슬
+        return `<svg ${w}><circle cx="14" cy="12" r="3" fill="${pal.hi}"/><path d="M8.5 22.5C8.5 18.5 10.8 16.5 14 16.5C17.2 16.5 19.5 18.5 19.5 22.5" fill="${pal.main}" stroke="${pal.hi}" stroke-width="1.2"/><circle cx="14" cy="5.5" r="2.1" fill="#f97316"/><circle cx="7" cy="9.5" r="2.1" fill="#38bdf8"/><circle cx="21" cy="9.5" r="2.1" fill="#c084fc"/></svg>`;
+      case 'hero_orb': // 영웅 4: 강타 게이지 구체
+        return `<svg ${w}><circle cx="14" cy="14" r="8.5" fill="rgba(74,222,128,0.28)" stroke="${pal.hi}" stroke-width="1.7"/><path d="M10 14H18M14 10V18" stroke="#fde047" stroke-width="2" stroke-linecap="round"/></svg>`;
+      default:
+        return `<svg ${w}><polygon points="14,4 22,14 14,24 6,14" fill="rgba(255,255,255,0.16)" stroke="${pal.main}" stroke-width="1.6"/></svg>`;
+    }
+  }
+
+  // 인게임 3탭(기본 · 스킬 · 영웅) 48개 전 노드 정식 명칭 & 인게임 아이콘 & 1레벨당 수치 정밀 정의
+  function buildBasicTraitTreeDef() {
+    const mk = (id, name, shortName, max, cost, icon, role, statName, perLv, unit = '%', extraNote = '') => ({
+      id, name, shortName, max, cost, icon, role, statName, perLv, unit, extraNote, cur: 0, isExtra: false
+    });
+    return {
+      basic: [
+        [mk('b_g1','일반 특성 1','공속 +30%',1,1,'spd_slash','core','공격속도 증가',30,'%')],
+        [mk('b_2a','일반 특성 1-1','공격력',20,5,'atk_sword','core','공격력 증가',12.5,'%'),
+         mk('b_2b','일반 특성 1-2','체력',20,5,'hp_heart','skip','체력 증가',2.5,'%','생존용(미투자)')],
+        [mk('b_g2','일반 특성 2','시작 강타',1,1,'aura_man','core','전투 시작 시 강타 즉시 발동',1,'회')],
+        [mk('b_4a','일반 특성 2-1','크리 확률',20,8,'crit_burst','core','크리티컬 확률 증가',0.5,'%'),
+         mk('b_4b','일반 특성 2-2','크리 피해',20,8,'crit_dice','skip','크리티컬 피해 증가',1.5,'%','합연산 미미 ➔ 전 직업 미투자')],
+        [mk('b_g3','일반 특성 3','강타게이지+1',1,1,'vortex','core','스킬 사용 시 강타 게이지',1,'')],
+        [mk('b_6a','일반 특성 3-1','강타 피해',20,10,'strike_arc','reaper_early','강타 피해량 증가',25,'%','사신 필수'),
+         mk('b_6b','일반 특성 3-2','게이지 감소',20,10,'aura_man','reaper_early','강타 게이지 감소',0.25,'','사신 필수'),
+         mk('b_6c','일반 특성 3-3','방어도 무시',20,10,'def_break','non_reaper_early','방어도 무시',15,'','앜메·닼로 필수')],
+        [mk('b_g4','일반 특성 4','평타3회 추가',1,1,'multi_x','core','기본 공격 3회 시 추가 발동',1,'회')],
+        [mk('b_8a','일반 특성 4-1','평타 공증',20,12,'three_blades','skip','기본 공격 시 공격력 증가(5초·5중첩)',50,'%','미투자'),
+         mk('b_8b','일반 특성 4-2','평타 크피',20,12,'spark_star','core','기본 공격 시 크리티컬 피해 증가(5초·5중첩)',1,'%'),
+         mk('b_8c','일반 특성 4-3','평타 체회',20,12,'vamp_jaw','skip','기본 공격 시 체력 회복',500,'','생존용(미투자)')],
+        [mk('b_g5','일반 특성 5','최종피해 50%',1,5,'eye_orb','core','기본 공격 시 5초간 최종 피해 증가(5중첩)',50,'%')],
+        [mk('b_10a','일반 특성 5-1','강타 피해 I',20,25,'strike_arc','basic_dmg','강타 피해량 증가',50,'%','사신 주력'),
+         mk('b_10b','일반 특성 5-2','모든 피해 I',20,25,'all_emblem','basic_all','모든 피해량 증가',125,'%')],
+        [mk('b_g6','일반 특성 6','최종피해 150%',1,5,'eye_orb','core','기본 공격 시 5초간 최종 피해 증가(5중첩)',150,'%')],
+        [mk('b_12a','일반 특성 6-1','강타 피해 II',20,40,'strike_arc','basic_dmg','강타 피해량 증가',150,'%','사신 주력'),
+         mk('b_12b','일반 특성 6-2','모든 피해 II',20,40,'all_emblem','basic_all','모든 피해량 증가',250,'%')],
+        [mk('b_g7','일반 특성 7','일반몹 고뎀2%',1,5,'skull_sword','core','모든 공격 시 일반 몬스터 고정 피해',2,'%')],
+        [mk('b_14a','일반 특성 7-1','특성 강타 I',20,60,'strike_arc','basic_trait_dmg','특성 강타 피해량 증가',15,'%','사신 전용 · 전환 미적용'),
+         mk('b_14b','일반 특성 7-2','모든 피해 III',20,60,'all_emblem','basic_all','모든 피해량 증가',500,'%')],
+        [mk('b_g8','일반 특성 8','최종피해 500%',1,5,'eye_orb','core','기본 공격 시 5초간 최종 피해 증가(5중첩)',500,'%')],
+        [mk('b_16a','일반 특성 8-1','특성 강타 II',40,80,'strike_arc','basic_trait_dmg','특성 강타 피해량 증가',35,'%','사신 전용 · 전환 미적용'),
+         mk('b_16b','일반 특성 8-2','모든 피해 IV',40,80,'all_emblem','basic_all','모든 피해량 증가',800,'%')]
+      ],
+      skill: [
+        [mk('s_g1','스킬 특성 1','방무 +100',1,1,'def_break','core','방어도 무시',100,'')],
+        [mk('s_2a','스킬 특성 1-1','공격력',20,5,'atk_sword','core','공격력 증가',12.5,'%'),
+         mk('s_2b','스킬 특성 1-2','초당 체회',20,5,'drop_heal','skip','초당 체력 회복 증가',0.25,'%','생존용(미투자)')],
+        [mk('s_g2','스킬 특성 2','스피증 +200%',1,1,'skill_flame','core','스킬 피해량 증가',200,'%')],
+        [mk('s_4a','스킬 특성 2-1','적중 방무',20,8,'def_break','non_mage_early','스킬 적중 시 방어도 무시',25,'','사신·닼로 투자 / 아크메이지 미투자'),
+         mk('s_4b','스킬 특성 2-2','상태이상 스피',20,8,'status_q','mage_early','상태이상에 걸린 적에게 주는 스킬 피해량',2.5,'%','아크메이지 전용 투자')],
+        [mk('s_g3','스킬 특성 3','모속피 +100%',1,1,'spellbook','core','모든 속성 피해량 증가',100,'%')],
+        [mk('s_6f','스킬 특성 3-1','화염 속피',20,10,'book_fire','elem_fire','화염 속성 피해량 증가',2.5,'%','3차 Lv.30+ 전속성 투자'),
+         mk('s_6l','스킬 특성 3-2','번개 속피',20,10,'book_light','elem_light','번개 속성 피해량 증가',2.5,'%','3차 Lv.30+ 전속성 투자'),
+         mk('s_6d','스킬 특성 3-3','어둠 속피',20,10,'book_dark','elem_dark','어둠 속성 피해량 증가',2.5,'%','3차 Lv.30+ 전속성 투자')],
+        [mk('s_g4','스킬 특성 4','강타 쿨감 5%',1,1,'hourglass','core','강타 사용 시 스킬 쿨타임 감소',5,'%')],
+        [mk('s_8a','스킬 특성 4-1','스킬 공증',20,12,'dual_sword','skip','스킬 사용 시 공격력 증가(5초·5중첩)',50,'%','미투자'),
+         mk('s_8b','스킬 특성 4-2','스킬 크피',20,12,'magic_wand','core','스킬 사용 시 크리티컬 피해 증가(5초·5중첩)',1,'%'),
+         mk('s_8c','스킬 특성 4-3','스킬 체증',20,12,'hp_heart','skip','스킬 사용 시 체력 증가',25000,'','생존용(미투자)')],
+        [mk('s_g5','스킬 특성 5','최종피해 50%',1,5,'eye_book','core','스킬 사용 시 5초간 최종 피해 증가(5중첩)',50,'%')],
+        [mk('s_10a','스킬 특성 5-1','스킬 피해 I',20,25,'skill_flame','skill_dmg','스킬 피해량 증가',50,'%','사신·닼로 3차 Lv.10+ 전환 적용!'),
+         mk('s_10b','스킬 특성 5-2','모든 피해 I',20,25,'all_emblem','skill_all','모든 피해량 증가',125,'%')],
+        [mk('s_g6','스킬 특성 6','최종피해 150%',1,5,'eye_book','core','스킬 사용 시 5초간 최종 피해 증가(5중첩)',150,'%')],
+        [mk('s_12a','스킬 특성 6-1','스킬 피해 II',20,40,'skill_flame','skill_dmg','스킬 피해량 증가',150,'%','사신·닼로 3차 Lv.10+ 전환 적용!'),
+         mk('s_12b','스킬 특성 6-2','모든 피해 II',20,40,'all_emblem','skill_all','모든 피해량 증가',250,'%')],
+        [mk('s_g7','스킬 특성 7','최종피해 350%',1,5,'eye_book','core','스킬 사용 시 5초간 최종 피해 증가(5중첩)',350,'%')],
+        [mk('s_14a','스킬 특성 7-1','특성 스킬 I',20,60,'skill_flame','skill_trait_dmg','특성 스킬 피해량 증가',15,'%','⚠️ 아크메이지 전용! (전환 미적용 ➔ 타직업 미투자)'),
+         mk('s_14b','스킬 특성 7-2','모든 피해 III',20,60,'all_emblem','skill_all','모든 피해량 증가',500,'%')],
+        [mk('s_g8','스킬 특성 8','최종피해 500%',1,5,'eye_book','core','스킬 사용 시 5초간 최종 피해 증가(5중첩)',500,'%')],
+        [mk('s_16a','스킬 특성 8-1','특성 스킬 II',40,80,'skill_flame','skill_trait_dmg','특성 스킬 피해량 증가',35,'%','⚠️ 아크메이지 전용! (전환 미적용 ➔ 타직업 미투자)'),
+         mk('s_16b','스킬 특성 8-2','모든 피해 IV',40,80,'all_emblem','skill_all','모든 피해량 증가',800,'%')]
+      ],
+      hero: [
+        [mk('h_g1','영웅 특성 1','영스피 +200%',1,1,'hero_bust','core','영웅 스킬 피해량 증가',200,'%')],
+        [mk('h_2a','영웅 특성 1-1','공격력',20,5,'atk_sword','core','공격력 증가',25,'%'),
+         mk('h_2b','영웅 특성 1-2','체력',20,5,'hp_heart','skip','체력 증가',7.5,'%','생존용(미투자)')],
+        [mk('h_g2','영웅 특성 2','영웅공속+20%',1,1,'spd_slash','core','영웅 공격속도 증가',20,'%')],
+        [mk('h_4a','영웅 특성 2-1','영웅 방무',20,8,'def_break','core','영웅 스킬 적중 시 방어도 무시(5초·5중첩)',100,''),
+         mk('h_4b','영웅 특성 2-2','영웅 체회',20,8,'drop_heal','skip','영웅 스킬 사용 시 체력 회복',0.25,'%','생존용(미투자)')],
+        [mk('h_g3','영웅 특성 3','최피증 +100%',1,1,'eye_orb','core','최종 피해량 증가',100,'%')],
+        [mk('h_6f','영웅 특성 3-1','화염 속피',20,10,'book_fire','elem_fire','화염 속성 피해량 증가',2.5,'%','3차 Lv.30+ 전속성 투자'),
+         mk('h_6l','영웅 특성 3-2','번개 속피',20,10,'book_light','elem_light','번개 속성 피해량 증가',2.5,'%','3차 Lv.30+ 전속성 투자'),
+         mk('h_6d','영웅 특성 3-3','어둠 속피',20,10,'book_dark','elem_dark','어둠 속성 피해량 증가',2.5,'%','3차 Lv.30+ 전속성 투자')],
+        [mk('h_g4','영웅 특성 4','강타게이지+6',1,1,'hero_orb','core','영웅 스킬 사용 시 강타 게이지 증가',6,'')],
+        [mk('h_8a','영웅 특성 4-1','영웅 공증',20,12,'hero_duo','skip','영웅 스킬 사용 시 공격력 증가(5초·5중첩)',50,'%','미투자'),
+         mk('h_8b','영웅 특성 4-2','영웅 크피',20,12,'spark_star','core','영웅 스킬 사용 시 크리티컬 피해 증가(5초·5중첩)',1,'%'),
+         mk('h_8c','영웅 특성 4-3','영웅 최피증',20,12,'dual_sword','reaper_early','영웅 스킬 사용 시 최종 피해 증가(5중첩)',1,'%','앜메·닼로 미투자 (남는 CP는 모피증!)')],
+        [mk('h_g5','영웅 특성 5','모속피 50%',1,5,'hero_elem3','core','영웅 스킬 사용 시 5초간 모든 속성 피해 증가(5중첩)',50,'%')],
+        [mk('h_10a','영웅 특성 5-1','영스피 I',20,25,'hero_bust','hero_dmg','영웅 스킬 피해량 증가',50,'%','아크메이지 3차 Lv.10+ 전환 적용!'),
+         mk('h_10b','영웅 특성 5-2','모든 피해 I',20,25,'all_emblem','hero_all','모든 피해량 증가',125,'%')],
+        [mk('h_g6','영웅 특성 6','모속피 150%',1,5,'hero_elem3','core','영웅 스킬 사용 시 5초간 모든 속성 피해 증가(5중첩)',150,'%')],
+        [mk('h_12a','영웅 특성 6-1','영스피 II',20,40,'hero_bust','hero_dmg','영웅 스킬 피해량 증가',150,'%','아크메이지 3차 Lv.10+ 전환 적용!'),
+         mk('h_12b','영웅 특성 6-2','모든 피해 II',20,40,'all_emblem','hero_all','모든 피해량 증가',250,'%')],
+        [mk('h_g7','영웅 특성 7','모속피 350%',1,5,'hero_elem3','core','영웅 스킬 사용 시 5초간 모든 속성 피해 증가(5중첩)',350,'%')],
+        [mk('h_14a','영웅 특성 7-1','특성 영스피 I',20,60,'hero_bust','hero_trait_dmg','특성 영웅 스킬 피해량 증가',15,'%','⚠️ 다크로드 전용! (전환 미적용 ➔ 아크메이지 미투자)'),
+         mk('h_14b','영웅 특성 7-2','모든 피해 III',20,60,'all_emblem','hero_all','모든 피해량 증가',500,'%')],
+        [mk('h_g8','영웅 특성 8','모속피 500%',1,5,'hero_elem3','core','영웅 스킬 사용 시 5초간 모든 속성 피해 증가(5중첩)',500,'%')],
+        [mk('h_16a','영웅 특성 8-1','특성 영스피 II',40,80,'hero_bust','hero_trait_dmg','특성 영웅 스킬 피해량 증가',35,'%','⚠️ 다크로드 전용! (전환 미적용 ➔ 아크메이지 미투자)'),
+         mk('h_16b','영웅 특성 8-2','모든 피해 IV',40,80,'all_emblem','hero_all','모든 피해량 증가',800,'%')]
+      ]
+    };
+  }
+
+  function formatBtraitNodeEffectText(n) {
+    const curVal = +(n.perLv * n.cur).toFixed(2);
+    const maxVal = +(n.perLv * n.max).toFixed(2);
+    const fmt = v => (Math.abs(v) >= 1000 ? v.toLocaleString() : String(v));
+    const perTxt = `${fmt(n.perLv)}${n.unit}`;
+    const curTxt = `${fmt(curVal)}${n.unit}`;
+    const maxTxt = `${fmt(maxVal)}${n.unit}`;
+    const note = n.extraNote ? ` · <span style="color:#fde047;">${n.extraNote}</span>` : '';
+    if (n.max === 1) return `${n.statName} <strong style="color:#6ee7b7;">+${maxTxt}</strong>${note}`;
+    return `${n.statName}: 현재 <strong style="color:#6ee7b7;">+${curTxt}</strong> <small style="color:#94a3b8;">(1포인트당 +${perTxt} / 만렙 +${maxTxt})</small>${note}`;
+  }
+
+  function simulateBasicTraitCP() {
+    const lv = Math.max(10000, Math.min(50000, parseInt(basicTraitState.lv, 10) || 10000));
+    let remCP = lv;
+    const job = currentRuneJob || 'reaper';
+    const elem = currentRuneElem || 'fire';
+    const { job3Lv10, job3Lv30 } = basicTraitState;
+    const trees = buildBasicTraitTreeDef();
+
+    const allNodes = [...trees.basic.flat(), ...trees.skill.flat(), ...trees.hero.flat()];
+    const byRole = (r) => allNodes.filter(n => n.role === r);
+    const investNode = (node, extraMark = false) => {
+      while (node.cur < node.max && remCP >= node.cost) {
+        node.cur++;
+        remCP -= node.cost;
+        if (extraMark) node.isExtra = true;
+      }
+    };
+
+    // 1. 필수 관문 + 초반 공통 딜 노드 + 직업별 3단계(3-1/3-2 vs 3-3 방무)
+    byRole('core').forEach(n => investNode(n));
+    if (job === 'reaper') byRole('reaper_early').forEach(n => investNode(n));
+    else byRole('non_reaper_early').forEach(n => investNode(n));
+    if (job === 'mage') byRole('mage_early').forEach(n => investNode(n));
+    else byRole('non_mage_early').forEach(n => investNode(n));
+
+    // 2. 속성 피해량 (3차 Lv.30+면 3속성 전부, 미만이면 주속성만!)
+    if (job3Lv30) {
+      ['elem_fire', 'elem_light', 'elem_dark'].forEach(r => byRole(r).forEach(n => investNode(n)));
+    } else {
+      byRole('elem_' + elem).forEach(n => investNode(n));
+    }
+
+    // 3. 직업별 주력 라인(5-1/6-1/7-1/8-1 전부) + 타 탭 모피증 + 3차 Lv.10+ 전환(오직 5-1, 6-1만! '특성' 붙은 7-1/8-1 제외!)
+    let priorityRoles = [], overflowRole = '';
+    if (job === 'reaper') {
+      priorityRoles = ['basic_dmg', 'basic_trait_dmg', 'skill_all', 'hero_all'];
+      if (job3Lv10) priorityRoles.push('skill_dmg'); // 스킬 5-1, 6-1만 추가 (7-1/8-1 특성 스킬피해 제외!)
+      overflowRole = 'basic_all';
+    } else if (job === 'mage') {
+      priorityRoles = ['skill_dmg', 'skill_trait_dmg', 'basic_all', 'hero_all'];
+      if (job3Lv10) priorityRoles.push('hero_dmg');  // 영웅 5-1, 6-1만 추가 (7-1/8-1 특성 영스피 제외!)
+      overflowRole = 'skill_all';
+    } else {
+      priorityRoles = ['hero_dmg', 'hero_trait_dmg', 'basic_all', 'skill_all'];
+      if (job3Lv10) priorityRoles.push('skill_dmg'); // 스킬 5-1, 6-1만 추가 (7-1/8-1 특성 스킬피해 제외!)
+      overflowRole = 'hero_all';
+    }
+
+    const primaryPool = priorityRoles.flatMap(r => byRole(r)).sort((a, b) => b.cost - a.cost);
+    primaryPool.forEach(n => investNode(n, false));
+
+    // 4. 남는 CP: 1CP당 효율이 가장 높은 8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순으로 투자!
+    const overNodes = byRole(overflowRole).sort((a, b) => b.cost - a.cost);
+    overNodes.forEach(n => investNode(n, true));
+
+    const tabCP = {};
+    ['basic', 'skill', 'hero'].forEach(k => {
+      tabCP[k] = trees[k].flat().reduce((acc, n) => acc + n.cur * n.cost, 0);
+    });
+    return { lv, totalCP: lv, usedCP: lv - remCP, remCP, trees, tabCP, overflowRole };
+  }
+
+  function setBasicTraitLv(val) {
+    basicTraitState.lv = Math.max(10000, Math.min(50000, parseInt(val, 10) || 10000));
+    const inp = document.getElementById('bt_char_lv_input');
+    if (inp) inp.value = String(basicTraitState.lv);
+    saveBasicTraitState();
+    renderBasicTraitAll();
+    triggerAutoSave();
+  }
+
+  function onBasicTraitLvInput(val) {
+    const n = parseInt(val, 10);
+    if (isNaN(n)) return;
+    basicTraitState.lv = Math.max(10000, Math.min(50000, n));
+    if (n >= 10000) {
+      saveBasicTraitState();
+      triggerAutoSave();
+    }
+    renderBasicTraitAll();
+  }
+
+  function onBasicTraitLvBlur(el) {
+    const n = parseInt(el.value, 10);
+    const fixed = isNaN(n) || n < 10000 ? 10000 : Math.min(50000, n);
+    basicTraitState.lv = fixed;
+    el.value = String(fixed);
+    saveBasicTraitState();
+    renderBasicTraitAll();
+    triggerAutoSave();
+  }
+
+  function onBasicTraitCondChange() {
+    basicTraitState.job3Lv10 = document.getElementById('bt_chk_job3_lv10')?.checked ?? true;
+    basicTraitState.job3Lv30 = document.getElementById('bt_chk_job3_lv30')?.checked ?? true;
+    saveBasicTraitState();
+    renderBasicTraitAll();
+    triggerAutoSave();
+  }
+
+  function switchBasicTraitSubTab(tab) {
+    basicTraitState.subTab = tab;
+    saveBasicTraitState();
+    renderBasicTraitAll();
+  }
+
+  function showBasicTraitNodeById(nodeId) {
+    const n = (window._latestBtraitNodesMap || {})[nodeId];
+    const bar = document.getElementById('btrait_node_info_bar');
+    if (!n || !bar) return;
+    bar.style.borderColor = n.isExtra ? '#38bdf8' : '#fde047';
+    bar.innerHTML = `<strong style="color:${n.isExtra?'#7dd3fc':'#fde047'};">${n.name} (${n.cur}/${n.max} · 레벨당 ${n.cost} CP)</strong>${n.isExtra ? ' <span class="mini-tag" style="background:#0284c7;color:#fff;">남는 CP 투자 구간</span>' : ''}<div style="color:#e2e8f0; margin-top:3px;">${formatBtraitNodeEffectText(n)}</div>`;
+  }
+
+  function renderBasicTraitAll() {
+    const job = currentRuneJob || 'reaper';
+    const lvInp = document.getElementById('bt_char_lv_input');
+    if (lvInp && document.activeElement !== lvInp) lvInp.value = String(basicTraitState.lv);
+    ['reaper', 'mage', 'lord'].forEach(j => document.getElementById('bt_job_' + j)?.classList.toggle('selected', j === job));
+    ['fire', 'light', 'dark'].forEach(e => document.getElementById('bt_elem_' + e)?.classList.toggle('selected', e === currentRuneElem));
+
+    const chk10 = document.getElementById('bt_chk_job3_lv10');
+    const chk30 = document.getElementById('bt_chk_job3_lv30');
+    if (chk10) chk10.checked = Boolean(basicTraitState.job3Lv10);
+    if (chk30) chk30.checked = Boolean(basicTraitState.job3Lv30);
+
+    const sub10 = document.getElementById('bt_sub_job3_lv10');
+    if (sub10) {
+      sub10.innerText = job === 'mage'
+        ? '영웅 5-1(+1,000%) · 6-1(+3,000%)만 추가 투자 ("특성" 붙은 7-1·8-1 제외!)'
+        : '스킬 5-1(+1,000%) · 6-1(+3,000%)만 추가 투자 ("특성" 붙은 7-1·8-1 제외!)';
+    }
+
+    const sim = simulateBasicTraitCP();
+    window._latestBtraitNodesMap = {};
+    [...sim.trees.basic.flat(), ...sim.trees.skill.flat(), ...sim.trees.hero.flat()].forEach(n => { window._latestBtraitNodesMap[n.id] = n; });
+
+    const tab = basicTraitState.subTab || 'basic';
+    const tabKr = tab === 'basic' ? '기본 특성' : (tab === 'skill' ? '스킬 특성' : '영웅 특성');
+    const jobKr = job === 'reaper' ? '사신' : (job === 'mage' ? '아크메이지' : '다크로드');
+
+    const win = document.getElementById('btrait_window_wrap');
+    if (win) win.className = `btrait-window tab-${tab}`;
+    const head = document.getElementById('btrait_board_head');
+    if (head) head.innerText = `성장 ▸ [${jobKr}] ${tabKr} 추천 트리`;
+
+    const setT = (id, t) => { const e = document.getElementById(id); if (e) e.innerText = t; };
+    setT('btrait_stat_total', sim.totalCP.toLocaleString());
+    setT('btrait_stat_used', sim.usedCP.toLocaleString());
+    setT('btrait_stat_rem', sim.remCP.toLocaleString());
+    setT('bt_tab_cp_basic', `${sim.tabCP.basic.toLocaleString()} CP`);
+    setT('bt_tab_cp_skill', `${sim.tabCP.skill.toLocaleString()} CP`);
+    setT('bt_tab_cp_hero',  `${sim.tabCP.hero.toLocaleString()} CP`);
+
+    ['basic', 'skill', 'hero'].forEach(k => {
+      const b = document.getElementById('bt_tab_' + k);
+      if (b) b.className = 'btrait-tab-btn' + (k === tab ? ` active-${k}` : '');
+    });
+
+    const rows = sim.trees[tab] || [];
+    const renderHalf = (sliceRows, title) => {
+      const bodyRows = sliceRows.map((rowNodes, idx) => {
+        const conn = idx === 0 ? '' : (rowNodes.length > 1 ? '<div class="btrait-conn-bracket"></div>' : '<div class="btrait-conn-line"></div>');
+        const nodesHtml = rowNodes.map(n => {
+          const stCls = n.cur > 0 ? (n.isExtra ? 'is-on is-extra' : 'is-on') : 'is-off';
+          return `<div class="btrait-node-wrap th-${tab} ${stCls}" onclick="showBasicTraitNodeById('${n.id}')">
+            ${n.cost >= 25 ? `<span class="btrait-cost-tag">${n.cost}P</span>` : ''}
+            <div class="btrait-hex"><div class="btrait-hex-inner">${getBtraitNodeSvg(n.icon, tab)}</div></div>
+            <span class="btrait-lv-pill">${n.cur} / ${n.max}</span>
+            <span class="btrait-node-name">${n.shortName}</span>
+          </div>`;
+        }).join('');
+        return `${conn}<div class="btrait-row">${nodesHtml}</div>`;
+      }).join('');
+      return `<div class="btrait-half-box"><div style="font-size:11.5px; font-weight:900; color:#93c5fd; text-align:center; margin-bottom:8px; padding-bottom:5px; border-bottom:1px dashed #334155;">${title}</div>${bodyRows}</div>`;
+    };
+
+    const gridEl = document.getElementById('btrait_tree_2col');
+    if (gridEl) {
+      gridEl.innerHTML = renderHalf(rows.slice(0, 8), '상반부 (1 ~ 4단계 · 필수 관문 & 속성)') + renderHalf(rows.slice(8), '하반부 (5 ~ 8단계 · 25 / 40 / 60 / 80P 핵심)');
+    }
+
+    const overTabKr = job === 'reaper' ? '기본 특성' : (job === 'mage' ? '스킬 특성' : '영웅 특성');
+    const tipEl = document.getElementById('btrait_summary_tip');
+    if (tipEl) {
+      tipEl.innerHTML = `💡 <strong style="color:#fde047;">[${jobKr}] 핵심 규칙 &amp; 남는 CP 투자 가이드 (하늘색 노드):</strong><br>
+        • <strong>남는 CP (하늘색):</strong> 필수 특성을 모두 찍고 남는 포인트는 <strong style="color:#7dd3fc;">[${overTabKr}] 우측 [모든 피해량]</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong>(1CP당 효율 최고 순!)으로 투자합니다. (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)`;
+    }
   }
 
   let hasBooted = false;
