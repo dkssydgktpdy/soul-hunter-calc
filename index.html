@@ -4822,10 +4822,10 @@
         <div class="header-main-left">
           <div class="header-badge">소울 헌터 키우기 네이버 라운지 전용 툴</div>
           <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:10px; flex-wrap:wrap;">
-            <div class="speech-bubble-wrap" data-bubble="💬 룡은 1+1을 활성화 하라!" style="position:relative; width:82px; height:82px; flex-shrink:0;">
+            <div class="speech-bubble-wrap" data-bubble="💬 룡은 1+1을 활성화 하라!" style="position:relative; width:104px; height:104px; flex-shrink:0;">
               <img id="main-avatar" src="images/avatar.JPG" alt="겨울눈사람 아바타"
                 onerror="handleAvatarError(this)"
-                style="width:82px; height:82px; border-radius:50%; border:3px solid #7dd3fc; object-fit:cover; background:#1e293b; box-shadow:0 0 24px rgba(56, 189, 248, 0.75), inset 0 0 10px rgba(255,255,255,0.4); display:block;">
+                style="width:104px; height:104px; border-radius:50%; border:3.5px solid #7dd3fc; object-fit:cover; background:#1e293b; box-shadow:0 0 28px rgba(56, 189, 248, 0.85), inset 0 0 12px rgba(255,255,255,0.45); display:block;">
             </div>
             <h1 style="margin:0; font-size:26px; text-shadow:0 2px 12px rgba(14, 165, 233, 0.45), 0 2px 6px rgba(0,0,0,0.6);">❄️ 소헌키 종합 시뮬레이터 &amp; 공략 툴</h1>
           </div>
@@ -6129,8 +6129,8 @@
               </div>
               <p class="card-subtitle">현재 1차 전직 레벨과 목표 레벨을 입력하면 필요한 <strong>시련의 정수</strong>와 <strong>시련의 탑 / 보물던전 1 열쇠</strong> 개수를 계산합니다.</p>
               <div class="grid-3" style="margin-bottom:14px;">
-                <div><label style="color:#38bdf8;">📍 현재 1차 전직 레벨 (1~100)</label><input type="number" id="jc1_cur_lv" value="60" min="1" max="100" oninput="onGrowthLevelTyped('jc1_cur_lv', 1, 100)" style="font-weight:800; color:#fde047;"></div>
-                <div><label style="color:#fde047;">🎯 목표 1차 전직 레벨 (2~101)</label><input type="number" id="jc1_tar_lv" value="80" min="2" max="101" oninput="onGrowthLevelTyped('jc1_tar_lv', 2, 101)" style="font-weight:800; color:#fde047;"></div>
+                <div><label style="color:#38bdf8;">📍 현재 1차 전직 레벨 (1~110)</label><input type="number" id="jc1_cur_lv" value="60" min="1" max="110" oninput="onGrowthLevelTyped('jc1_cur_lv', 1, 110)" style="font-weight:800; color:#fde047;"></div>
+                <div><label style="color:#fde047;">🎯 목표 1차 전직 레벨 (2~111)</label><input type="number" id="jc1_tar_lv" value="80" min="2" max="111" oninput="onGrowthLevelTyped('jc1_tar_lv', 2, 111)" style="font-weight:800; color:#fde047;"></div>
                 <div><label><img src="images/res_ess_job1.png" alt="" style="width:17px;height:17px;vertical-align:-3px;margin-right:4px;object-fit:contain;" onerror="this.style.display='none';">현재 보유 중인 시련의 정수</label><input type="number" id="jc1_hold_ess" value="0" min="0" step="10000" oninput="calculateAllGrowthCalcs()"></div>
               </div>
               <div class="grid-2" style="background:#0b1120; padding:14px; border-radius:12px; border:1px solid #334155;">
@@ -10960,7 +10960,8 @@
     61:1250000, 62:1500000, 63:1750000, 64:2000000, 65:2250000, 66:2500000, 67:2750000, 68:3000000, 69:3250000, 70:3500000,
     71:4000000, 72:4500000, 73:5000000, 74:5500000, 75:6000000, 76:6500000, 77:7000000, 78:7500000, 79:8000000, 80:8500000,
     81:9000000, 82:9500000, 83:10000000, 84:11000000, 85:12000000, 86:13000000, 87:14000000, 88:15000000, 89:16000000, 90:17000000,
-    91:18000000, 92:19000000, 93:20000000, 94:21000000, 95:22000000, 96:23000000, 97:24000000, 98:25000000, 99:26000000, 100:30000000
+    91:18000000, 92:19000000, 93:20000000, 94:21000000, 95:22000000, 96:23000000, 97:24000000, 98:25000000, 99:26000000, 100:30000000,
+    101:32000000, 102:34000000, 103:36000000, 104:38000000, 105:40000000, 106:42000000, 107:44000000, 108:46000000, 109:48000000, 110:50000000
   };
 
   const JOB2_COST_TABLE = {
@@ -11122,8 +11123,8 @@
       }
       return `<table class="custom-table" style="font-size:13px;"><thead><tr><th>레벨 구간</th><th>필요 ${unitName}</th><th>Lv.${startLv}부터 누적 합계</th></tr></thead><tbody>${rows}</tbody></table>`;
     };
-    document.getElementById('jc1_table_container').innerHTML = buildTable(JOB1_COST_TABLE, 100, '시련의 정수')
-      .replace('</tbody>', '<tr><td style="font-weight:700; color:#94a3b8;">Lv.101 ➔ Lv.102+</td><td style="color:#f87171; font-weight:800;">데이터 없음</td><td style="color:#64748b;">-</td></tr></tbody>');
+    document.getElementById('jc1_table_container').innerHTML = buildTable(JOB1_COST_TABLE, 110, '시련의 정수')
+      .replace('</tbody>', '<tr><td style="font-weight:700; color:#94a3b8;">Lv.111 ➔ Lv.112+</td><td style="color:#f87171; font-weight:800;">데이터 없음</td><td style="color:#64748b;">-</td></tr></tbody>');
     document.getElementById('jc2_table_container').innerHTML = buildTable(JOB2_COST_TABLE, 103, '극한의 정수');
     document.getElementById('jc3_table_container').innerHTML = buildTable(JOB3_COST_TABLE, 44, '절망의 정수');
     const jc4Tbl = document.getElementById('jc4_table_container');
