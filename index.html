@@ -5146,9 +5146,9 @@
                 <span style="background:#4c0519; color:#fda4af; padding:1px 5px; border-radius:4px; font-size:10px; font-family:Georgia,serif;">III</span><span>3차 전직</span>
               </div>
               <div class="minv-stepper-row">
-                <button type="button" class="minv-step-btn" onclick="stepMinvNumField('minv_job3_lv','job3Lv',-1,1,45)">-</button>
-                <input type="number" id="minv_job3_lv" class="minv-step-input" min="1" max="45" value="40" oninput="onMasterInvFieldChange('job3Lv', this.value)">
-                <button type="button" class="minv-step-btn" onclick="stepMinvNumField('minv_job3_lv','job3Lv',1,1,45)">+</button>
+                <button type="button" class="minv-step-btn" onclick="stepMinvNumField('minv_job3_lv','job3Lv',-1,0,45)">-</button>
+                <input type="number" id="minv_job3_lv" class="minv-step-input" min="0" max="45" value="40" oninput="onMasterInvFieldChange('job3Lv', this.value)">
+                <button type="button" class="minv-step-btn" onclick="stepMinvNumField('minv_job3_lv','job3Lv',1,0,45)">+</button>
               </div>
             </div>
             <div class="minv-growth-box">
@@ -6029,7 +6029,7 @@
               </div>
               <p class="card-subtitle">현재 3차 전직 레벨과 목표 레벨을 입력하면 필요한 <strong>절망의 정수</strong>와 <strong>절망의 탑 열쇠</strong> 개수를 계산합니다. <small style="color:#fda4af;">(※ 3차 전직 재화는 절망의 탑 단독 계산)</small></p>
               <div class="grid-3" style="margin-bottom:14px;">
-                <div><label style="color:#fb7185;">📍 현재 3차 전직 레벨 (1~44)</label><input type="number" id="jc3_cur_lv" value="40" min="1" max="44" oninput="onGrowthLevelTyped('jc3_cur_lv', 1, 44)" style="font-weight:800; color:#fde047;"></div>
+                <div><label style="color:#fb7185;">📍 현재 3차 전직 레벨 (1~44)</label><input type="number" id="jc3_cur_lv" value="40" min="0" max="44" oninput="onGrowthLevelTyped('jc3_cur_lv', 0, 44)" style="font-weight:800; color:#fde047;"></div>
                 <div><label style="color:#fde047;">🎯 목표 3차 전직 레벨 (2~45)</label><input type="number" id="jc3_tar_lv" value="45" min="2" max="45" oninput="onGrowthLevelTyped('jc3_tar_lv', 2, 45)" style="font-weight:800; color:#fde047;"></div>
                 <div><label>💰 현재 보유 중인 절망의 정수</label><input type="number" id="jc3_hold_ess" value="0" min="0" step="5000" oninput="calculateAllGrowthCalcs()"></div>
               </div>
@@ -7854,7 +7854,7 @@
         onmouseover="this.style.borderColor='#fde047'; this.style.color='#ffffff'; this.style.transform='translateY(-2px)';"
         onmouseout="this.style.borderColor='#34d399'; this.style.color='#a7f3d0'; this.style.transform='translateY(0)';"
         title="길보길 길드원 30명 1타×3 예상 투력 분석">
-        <span>📊 길드원 분석</span>
+        <span> 길드원 분석</span>
       </button>
 
       <img src="https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fdkssydgktpdy.github.io%2Fsoul-hunter-calc%2F&label=VISITS+(TODAY+%2F+TOTAL)&labelColor=%231e293b&countColor=%2338bdf8&style=flat"
@@ -8557,7 +8557,8 @@
         currentUnionStageIdx,
         stageDiagState,
         mcardUserSpecs,
-        mcardCondState
+        mcardCondState,
+        transCheckState
       };
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -8611,6 +8612,7 @@
       if (state.stageDiagState) stageDiagState = mergeDefaultStageDiagState(state.stageDiagState);
       if (state.mcardUserSpecs) mcardUserSpecs = state.mcardUserSpecs;
       if (state.mcardCondState) mcardCondState = { ...mcardCondState, ...state.mcardCondState };
+      if (state.transCheckState) transCheckState = { ...transCheckState, ...state.transCheckState };
 
       if (state.inputs) {
         Object.keys(state.inputs).forEach(id => {
@@ -8765,6 +8767,7 @@
     stageDiagState = createDefaultStageDiagState();
     mcardUserSpecs = {};
     mcardCondState = { narita3: false, hcrit: false, idealSyn: false, jobTier: 3, chap: 800, scoreOverride: '' };
+    transCheckState = { is3rdJob: false, anc1_frenzy: false, anc2_pierce: false, anc3_elem: false };
 
     if (!skipRender) refreshAllActiveViews();
   }
@@ -8903,6 +8906,7 @@
       else if (lv1 >= 1) scJobLvEl.value = '1';
     }
     if (typeof mcardCondState !== 'undefined') mcardCondState.jobTier = lv3 >= 1 ? 3 : (lv2 >= 1 ? 2 : (lv1 >= 1 ? 1 : 0));
+    if (typeof sync3rdJobFromLevels === 'function') sync3rdJobFromLevels();
     if (typeof calculateBestMcardLoadout === 'function') calculateBestMcardLoadout();
     calculateBestConnectLoadout();
   }
@@ -8991,7 +8995,7 @@
       currentTrait2ndLv = lv;
       syncSoulConnectJobLv();
     } else if (fieldType === 'job3Lv') {
-      const lv = Math.max(1, Math.min(45, parseInt(val, 10) || 1));
+      const lv = Math.max(0, Math.min(45, parseInt(val, 10) || 0));
       const jc3Cur = document.getElementById('jc3_cur_lv');
       if (jc3Cur) jc3Cur.value = String(lv);
       currentTrait3rdLv = lv;
@@ -11764,7 +11768,7 @@
     { id:"imm_nk_nanta", tier:"immortal", part:"neck", name:"난타", jobType:"reaper", mult:24001, desc:"강타 필요 타수 5배, 공속 +50%, 룬 강타 피해 +2,400,000% (24,001배)", cond:"강타 타수 5배 페널티 주의" },
     { id:"imm_nk_witch", tier:"immortal", part:"neck", name:"마녀의 펜던트", mult:250001, pairReq:"imm_rg_witch", desc:"모든 피해량 +25,000,000% (250,001배 곱연산, 세트 시 625억 배!)", cond:"⚠️ 반지 '마녀의 반지' 미장착 시 방무 피해 100 고정!" },
     { id:"imm_nk_yonggisa", tier:"immortal", part:"neck", name:"용기사", mult:160001, desc:"드래곤 탑승 및 승급 3단계 시 모든 피해량 총 +16,000,000% (160,001배)", cond:"드래곤 승급 3단계 이상" },
-    { id:"imm_nk_geomap", tier:"immortal", part:"neck", name:"검압", jobType:"reaper", mult:80001, desc:"강타 필요 타수 3 고정, 룬 강타 피해량 +8,000,000% (80,001배)", cond:"대사신(강타) 전용" },
+    { id:"imm_nk_geomap", tier:"immortal", part:"neck", name:"검압", jobType:"reaper", mult:80001, desc:"강타 필요 타수 3 고정 + 룬 강타 피해 +8,000,000% (회전율 보정 · 불멸 마마 이전 사신 1티어!)", cond:"대사신(강타) 전용" },
     { id:"imm_nk_yeongchang", tier:"immortal", part:"neck", name:"영창", jobType:"mage", mult:80001, desc:"스킬 7개 이상 장착 시 룬 스킬 피해량 총 +8,000,000% (80,001배)", cond:"아크메이지(스킬 7개) 전용" },
     { id:"imm_nk_gunjip", tier:"immortal", part:"neck", name:"군집", jobType:"lord", mult:80001, desc:"영웅 6개 이상 장착 시 룬 영웅 스킬 피해량 총 +8,000,000% (80,001배)", cond:"팬텀(영웅 6명) 전용" },
     { id:"imm_nk_tamyok", tier:"immortal", part:"neck", name:"탐욕", mult:32001, desc:"보물던전 2 35단계 이상 시 룬공 증폭 총 +3,200,000% (32,001배)", cond:"보물던전 2 35단계 이상" },
@@ -12277,11 +12281,10 @@
     return { slots: bestCombo, mult: Math.max(1, bestScore) };
   }
 
-  function findBestRingAndNeck(ownedRings, ownedNecks) {
+  function findBestRingAndNeck(ownedRings, ownedNecks, activeEmblemTier = null) {
     const elisiaAwk = parseInt(document.getElementById('rune_elisia_awk')?.value ?? '-1', 10);
     const overdriveAwk = parseInt(document.getElementById('rune_overdrive_awk')?.value ?? '-1', 10);
     const hasSolaris9 = (document.getElementById('rune_cond_solaris9')?.value === '1');
-    // 기존: const isGrad = (overdriveAwk > elisiaAwk) && hasSolaris9;
     const isGrad = hasSolaris9 && (overdriveAwk >= 3 || overdriveAwk > elisiaAwk);
 
     let bestScore = -1, bestRing = null, bestNeck = null;
@@ -12300,7 +12303,16 @@
         }
         let nMult = 1;
         if (n && (!n.elem || n.elem === currentRuneElem) && (!n.jobType || n.jobType === currentRuneJob)) {
-          nMult = n.pairWithRing ? ((r && r.id === n.pairWithRing) ? n.pairMult : 1) : Math.max(1, getEffectiveRuneValue(n, new Set()));
+          if (n.pairWithRing) {
+            nMult = (r && r.id === n.pairWithRing) ? n.pairMult : 1;
+          } else if (n.id === 'imm_nk_geomap') {
+            // 사신 [불멸 검압]: 룬 강타 피해(80,001배) × 강타 타수 3고정 회전율 보정(4.5배) × 불멸 엠블렘(골렘화 등) 시너지(1.05배)
+            // ➔ 영원 마마(2.5억 배) 역전 & 불멸 마마(625억 배) 미만 완벽 정렬!
+            const embSyn = (activeEmblemTier === 'immortal') ? 1.05 : 1.0;
+            nMult = Math.max(1, getEffectiveRuneValue(n, new Set()) * 4.5 * embSyn);
+          } else {
+            nMult = Math.max(1, getEffectiveRuneValue(n, new Set()));
+          }
         }
         if (rMult * nMult > bestScore) { bestScore = rMult * nMult; bestRing = r ? { ...r } : null; bestNeck = n ? { ...n } : null; }
       }
@@ -12490,11 +12502,11 @@
     const ownedAbyss = ownedList.filter(r => r.part === 'abyss');
     const ownedWeapons = ownedList.filter(r => r.part === 'weapon');
 
-    let finalAcc = findBestRingAndNeck(ownedRings, ownedNecks);
     const ctxRune = getUserRuneSpecContext();
     const weapUnlockFlags = [ctxRune.refScytheLv >= 0, ctxRune.refOrbLv >= 0, ctxRune.refAccLv >= 0];
     let finalWeap = findBestWeapon3(ownedWeapons, weapUnlockFlags);
     let finalEmbAb = findBestEmblemAndAbyss(ownedEmblems, ownedAbyss, finalWeap.slots);
+    let finalAcc = findBestRingAndNeck(ownedRings, ownedNecks, finalEmbAb.emblem?.tier || null);
     const other7AllEternal = [finalAcc.ring, finalAcc.neck, finalEmbAb.emblem, finalEmbAb.abyss, ...finalWeap.slots].every(s => s && s.tier === 'eternal');
     let finalArmor = findBestArmor3(ownedArmor, other7AllEternal, finalEmbAb.emblem?.tier || null);
 
@@ -14892,6 +14904,7 @@
           <h4 style="color:#38bdf8; font-size:15px; margin:18px 0 10px 0;">🔥 언제 아크메이지(제네시스)로 넘어가면 될까? (최신 4대 필수 조건!)</h4>
           <div class="build-slot-grid">
             ${makeGuideSlotHtml(mage3rdDeal, '★3차 전용 메인딜', '사신 주력기보다 고돌파·고각성 필수!', true, 'fix')}
+            ${makeGuideSlotHtml(guideElem==='fire'?'블레이즈 이럽션':(guideElem==='light'?'플라즈마 이럽션':'어비스 이럽션'), '★4차 신규 메인딜', '4차 신스킬 보유 시 최우선 대체!', true, 'future')}
             ${makeGuideSlotHtml('지옥불베기', '앜메 전용버프', '스킬 피해 증폭 핵심!', true, 'fix')}
             ${makeGuideSlotHtml('카엔', '앜메 전용영웅', '아크메이지 전용 버퍼!', false, 'fix')}
           </div>
@@ -16938,7 +16951,52 @@
     currentGuideOrigin = 'helpers';
     document.getElementById("floating_back_text").innerText = "도우미 모음으로 돌아가기";
   }
-  function toggleTransCheckItem(key) { transCheckState[key] = !transCheckState[key]; saveTransCheckState(); renderBuildGuideContent(); }
+  function sync3rdJobFromLevels() {
+    const lv1 = parseInt(document.getElementById('jc1_cur_lv')?.value || '1', 10) || 1;
+    const lv3 = parseInt(document.getElementById('jc3_cur_lv')?.value || '0', 10) || 0;
+    const lv4 = parseInt(document.getElementById('jc4_cur_lv')?.value || '0', 10) || 0;
+    const achieved = (lv3 >= 1 || lv4 >= 1 || lv1 >= 70);
+    if (transCheckState.is3rdJob !== achieved) {
+      transCheckState.is3rdJob = achieved;
+      saveTransCheckState();
+    }
+  }
+
+  function toggleTransCheckItem(key) {
+    transCheckState[key] = !transCheckState[key];
+    saveTransCheckState();
+
+    // ★ 3차 전직 달성 토글 <-> 인벤토리 · 계산기 · 특성 · 소울커넥트 양방향 동기화!
+    if (key === 'is3rdJob') {
+      const jc1 = document.getElementById('jc1_cur_lv');
+      const jc3 = document.getElementById('jc3_cur_lv');
+      const m1  = document.getElementById('minv_job1_lv');
+      const m3  = document.getElementById('minv_job3_lv');
+      const scJ = document.getElementById('sc_sel_joblv');
+
+      if (transCheckState.is3rdJob) {
+        if (jc3 && (parseInt(jc3.value, 10) || 0) < 1) jc3.value = '1';
+        if (m3  && (parseInt(m3.value, 10)  || 0) < 1) m3.value  = '1';
+        if (currentTrait3rdLv < 1) currentTrait3rdLv = 1;
+        if (jc1 && (parseInt(jc1.value, 10) || 1) < 70) { jc1.value = '70'; if (m1) m1.value = '70'; currentTrait1stLv = 70; }
+        if (scJ) scJ.value = '3';
+        if (typeof mcardCondState !== 'undefined') mcardCondState.jobTier = 3;
+      } else {
+        if (jc3) jc3.value = '0';
+        if (m3)  m3.value  = '0';
+        currentTrait3rdLv = 0;
+        if (jc1 && (parseInt(jc1.value, 10) || 1) >= 70) { jc1.value = '65'; if (m1) m1.value = '65'; currentTrait1stLv = 65; }
+        if (scJ && scJ.value === '3') scJ.value = '2';
+        if (typeof mcardCondState !== 'undefined' && mcardCondState.jobTier >= 3) mcardCondState.jobTier = 2;
+      }
+      calculateAllGrowthCalcs();
+      calculateBestConnectLoadout();
+      if (typeof calculateBestMcardLoadout === 'function') calculateBestMcardLoadout();
+    }
+
+    renderBuildGuideContent();
+    triggerAutoSave();
+  }
   function changeTransCheckElem(eKey) { syncAllElems(eKey); renderBuildGuideContent(); }
   function jumpToUnionForMageSetup() { switchMainMode('helpers'); openDeepCalculator('tab-union'); }
   function jumpToSoulConnectForMageSetup() { switchMainMode('helpers'); openDeepCalculator('tab-connect'); }
@@ -16993,10 +17051,24 @@
   function buildTransitionCheckerHtml() {
     const elemKr = guideElem === 'fire' ? '화염' : (guideElem === 'light' ? '번개' : '어둠');
     const mage3rdSkillName = guideElem === 'fire' ? '플레어 필라' : (guideElem === 'light' ? '볼트 스파이럴' : '블랙 베일');
+    const mage4thSkillName = guideElem === 'fire' ? '블레이즈 이럽션' : (guideElem === 'light' ? '플라즈마 이럽션' : '어비스 이럽션');
     const elemAnc = guideElem === 'fire' ? { name:'불길의 지배', img:'elem_fire' } : (guideElem === 'light' ? { name:'천둥의 진노', img:'elem_light' } : { name:'그림자 동화', img:'elem_dark' });
 
     const rSkill = getUnionSpecByName('skill', '썬더 오빗'), rHero = getUnionSpecByName('hero', '셀렌');
-    const mMain = getUnionSpecByName('skill', mage3rdSkillName), mSub = getUnionSpecByName('skill', '지옥불베기');
+    const mMain3 = getUnionSpecByName('skill', mage3rdSkillName);
+    const mMain4 = getUnionSpecByName('skill', mage4thSkillName);
+
+    // ★ 3차 주력기(플레어 필라류) vs 4차 신스킬(이럽션류) 중 더 강력한 스킬 자동 채택! (동급 시 4차 신스킬 우선)
+    const scoreSkillSpec = (sp, is4th) => !sp.owned ? -1 : (sp.awk * 100 + sp.brk * 5 + (is4th ? 15 : 0));
+    const use4thMain = mMain4.owned && scoreSkillSpec(mMain4, true) >= scoreSkillSpec(mMain3, false);
+    const mMain = use4thMain ? mMain4 : mMain3;
+    const altMain = use4thMain ? mMain3 : mMain4;
+    const mainRoleLabel = use4thMain ? `4차 주력기(${elemKr})` : `3차 주력기(${elemKr})`;
+    const altInfoStr = altMain.owned
+      ? `함께 보유: ${altMain.name} (${altMain.brk}돌·${altMain.awk}각)`
+      : `3차(${mage3rdSkillName}) 또는 4차(${mage4thSkillName}) 중 택1`;
+
+    const mSub = getUnionSpecByName('skill', '지옥불베기');
     const mHero = getUnionSpecByName('hero', '카엔'), cOver = getUnionSpecByName('skill', '오버드라이브');
 
     const missing = [];
@@ -17005,15 +17077,17 @@
     if (!transCheckState.anc2_pierce) missing.push("❌ <strong>[2순위 고패 미완성]</strong> [근원관통]이 없습니다.");
     if (!transCheckState.anc3_elem)   missing.push(`❌ <strong>[3순위 고패 미완성]</strong> [${elemAnc.name}]이 없습니다.`);
 
-    const mMainStrictOk = mMain.owned && mMain.brk >= 10 && (mMain.awk > rSkill.awk || (mMain.awk === 3 && rSkill.awk === 3));
-    const mMainOk = mMainStrictOk || (mMain.owned && mMain.brk >= 10 && mMain.awk === rSkill.awk && mMain.awk >= 1 && mSub.awk > 0);
-    if (!mMainOk) missing.push(`❌ <strong>[${mage3rdSkillName} 조건 미달]</strong> 사신 썬더 오빗(${rSkill.awk}각)보다 높은 각성과 10돌파가 필요합니다.`);
+    // 4차 신스킬은 계수 우위로 9돌파+동각성부터 바로 인정, 3차 주력기는 기존 10돌파 기준 유지
+    const reqBrkMain = use4thMain ? 9 : 10;
+    const mMainStrictOk = mMain.owned && mMain.brk >= reqBrkMain && (mMain.awk > rSkill.awk || (use4thMain && mMain.awk >= rSkill.awk) || (mMain.awk === 3 && rSkill.awk === 3));
+    const mMainOk = mMainStrictOk || (mMain.owned && mMain.brk >= reqBrkMain && mMain.awk === rSkill.awk && mMain.awk >= 1 && mSub.awk > 0);
+    if (!mMainOk) missing.push(`❌ <strong>[${mage3rdSkillName} / ${mage4thSkillName} 조건 미달]</strong> 둘 중 하나가 사신 썬더 오빗(${rSkill.awk}각) 이상 각성 및 ${reqBrkMain}돌파가 필요합니다.`);
 
     const mSubOk = mSub.owned && mSub.brk >= 9 && mSub.awk >= 1;
     if (!mSubOk) missing.push(`❌ <strong>[지옥불베기 부족]</strong> 최소 9돌파 & 1각성 이상 필요합니다.`);
 
     const rTotAwk = rSkill.awk + rHero.awk, mTotAwk = mMain.awk + mSub.awk + mHero.awk;
-    const totAwkOk = (mTotAwk > rTotAwk && mMain.awk >= rSkill.awk) || (mMain.awk === 3 && mSub.awk === 3 && mHero.awk === 3);
+    const totAwkOk = (mTotAwk > rTotAwk && mMain.awk >= rSkill.awk) || (use4thMain && mTotAwk >= rTotAwk && mMain.awk >= 1) || (mMain.awk === 3 && mSub.awk === 3 && mHero.awk === 3);
 
     const mHeroStrictOk = mHero.owned && mHero.brk >= 9 && mHero.awk >= 1 && (mHero.awk >= rHero.awk || mHero.awk === 3);
     const mHeroOk = mHeroStrictOk || (mHero.owned && mHero.brk >= 9 && mHero.awk >= 1 && totAwkOk);
@@ -17049,7 +17123,6 @@
     const isOverallPass = (missing.length === 0);
     const cOverStrictOk = cOver.owned && cOver.brk >= 9;
 
-    // 3단계 카드 상태 판정: 'ok'(초록) | 'warn'(주황: 미달이지만 앜메 전환 무관) | 'fail'(빨강)
     const getUnitStatus = (strictOk, looseOk) => {
       if (strictOk) return 'ok';
       if (isOverallPass || looseOk) return 'warn';
@@ -17058,7 +17131,7 @@
 
     const ancCard = (stateKey, title, imgKey) => {
       const checked = transCheckState[stateKey];
-      return `<div onclick="toggleTransCheckItem('${stateKey}')" style="cursor:pointer; background:${checked?'linear-gradient(135deg, rgba(16,185,129,0.16) 0%, #131d33 100%)':'#131d33'}; border:2px solid ${checked?'#10b981':'#475569'}; border-radius:12px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; gap:8px; transition:all 0.2s;">
+      return `<div onclick="toggleTransCheckItem('${stateKey}')" style="cursor:pointer; background:${checked?'linear-gradient(135deg, rgba(16,185,129,0.16) 0%, #131d33 100%)':'#131d33'}; border:2px solid ${checked?'#10b981':'#ef4444'}; border-radius:12px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; gap:8px; transition:all 0.2s;">
         <div style="display:flex; align-items:center; gap:9px; min-width:0;">
           <div style="width:38px; height:38px; border-radius:8px; overflow:hidden; border:1.5px solid ${checked?'#10b981':'#475569'}; background:#0f172a; flex-shrink:0; display:flex; align-items:center; justify-content:center;">
             <img src="images/${imgKey}.jpg" alt="${title}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; this.src='images/${imgKey}.png'; this.onerror=function(){this.parentElement.innerHTML='🔮';};">
@@ -17090,7 +17163,8 @@
             <span style="background:${badgeBg}; color:#fff; font-size:10.5px; font-weight:900; padding:2px 7px; border-radius:5px; white-space:nowrap;">${badgeText}</span>
           </div>
           <div style="display:flex; align-items:center; gap:9px; margin-bottom:6px;">
-            <div style="width:40px; height:40px; border-radius:9px; overflow:hidden; border:1.5px solid ${borderColor}; background:#0f172a; flex-shrink:0; display:flex; align-items:center; justify-content:center;">
+            <div class="icon-clean-wrap" style="width:40px; height:40px; border-radius:9px; border:1.5px solid ${borderColor}; background:#0f172a; flex-shrink:0; display:flex; align-items:center; justify-content:center;">
+              ${u.awk > 0 ? `<div class="icon-stars-top is-awk">${getAwkStarHtml(u.awk)}</div>` : (u.brk > 0 ? `<div class="icon-stars-top">${getBreakStarHtml(u.brk)}</div>` : '')}
               ${imgHtml}
             </div>
             <div style="min-width:0;">
@@ -17098,7 +17172,7 @@
               <div style="font-size:11.5px; color:#e2e8f0; margin-top:2px;">${u.owned ? `Lv.${u.lv} · <strong style="color:#fde047;">${u.brk}돌</strong> · <strong style="color:#f0abfc;">${u.awk}각</strong>` : '<span style="color:#f87171;">유니온 미등록</span>'}</div>
             </div>
           </div>
-          <div style="font-size:11px; color:#94a3b8;">${sub}</div>
+          <div style="font-size:11px; color:#94a3b8; line-height:1.4;">${sub}</div>
         </div>
         ${warnMsgHtml}
       </div>`;
@@ -17113,13 +17187,18 @@
           <div class="radio-pill job-pill-btn elem-switch-dark ${guideElem==='dark'?'selected':''}" onclick="changeTransCheckElem('dark')"><span class="elem-orb orb-dark"></span><span>어둠</span></div>
         </div>
       </div>
-      <div onclick="toggleTransCheckItem('is3rdJob')" style="cursor:pointer; padding:13px 16px; border-radius:12px; border:2px solid ${transCheckState.is3rdJob?'#10b981':'#475569'}; background:${transCheckState.is3rdJob?'linear-gradient(90deg, rgba(16,185,129,0.18) 0%, #0f172a 100%)':'#0f172a'}; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; transition:all 0.2s;">
+      <div onclick="toggleTransCheckItem('is3rdJob')" style="cursor:pointer; padding:13px 16px; border-radius:12px; border:2px solid ${transCheckState.is3rdJob?'#10b981':'#ef4444'}; background:${transCheckState.is3rdJob?'linear-gradient(90deg, rgba(16,185,129,0.18) 0%, #0f172a 100%)':'linear-gradient(90deg, rgba(239,68,68,0.24) 0%, #1c0b12 100%)'}; box-shadow:${transCheckState.is3rdJob?'none':'0 0 16px rgba(239,68,68,0.38)'}; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; transition:all 0.2s;">
         <div>
-          <div style="font-size:14.5px; font-weight:900; color:#ffffff;">1. 3차 전직 달성 여부</div>
-          <div style="font-size:12px; color:#cbd5e1; margin-top:2px;">현재 3차 전직을 완료했다면 우측 스위치를 <strong>ON</strong>으로 켜주세요</div>
+          <div style="font-size:14.5px; font-weight:900; color:${transCheckState.is3rdJob?'#ffffff':'#fecdd3'};">
+            1. 3차 전직 달성 여부
+            <span class="mini-tag" style="background:#172554; border:1px solid #38bdf8; color:#7dd3fc; margin-left:4px;">인벤토리·특성 양방향 연동</span>
+          </div>
+          <div style="font-size:12px; color:${transCheckState.is3rdJob?'#cbd5e1':'#fda4af'}; margin-top:2px;">
+            ${transCheckState.is3rdJob ? '인벤토리·특성의 1/3/4차 레벨과 자동 연동 중입니다. (클릭 시 변경)' : '⚠️ 현재 3차 전직 미달성(OFF) 상태입니다! 3차 전직을 하셨다면 이 박스를 클릭해 ON으로 켜주세요.'}
+          </div>
         </div>
         <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
-          <span style="padding:3px 9px; border-radius:6px; font-size:11.5px; font-weight:900; background:${transCheckState.is3rdJob?'rgba(16,185,129,0.22)':'rgba(244,63,94,0.16)'}; color:${transCheckState.is3rdJob?'#6ee7b7':'#fda4af'}; border:1px solid ${transCheckState.is3rdJob?'#10b981':'rgba(244,63,94,0.5)'};">${transCheckState.is3rdJob?'ON · 달성 완료':'OFF · 미달성'}</span>
+          <span style="padding:4px 10px; border-radius:6px; font-size:11.5px; font-weight:900; background:${transCheckState.is3rdJob?'rgba(16,185,129,0.22)':'#dc2626'}; color:${transCheckState.is3rdJob?'#6ee7b7':'#ffffff'}; border:1px solid ${transCheckState.is3rdJob?'#10b981':'#fca5a5'};">${transCheckState.is3rdJob?'✅ ON · 달성 완료':'❌ OFF · 미달 (클릭!)'}</span>
           <span class="neon-toggle-track ${transCheckState.is3rdJob?'is-on':''}"><span class="neon-toggle-thumb"></span></span>
         </div>
       </div>
@@ -17136,11 +17215,11 @@
       </div>
       <div style="background:#0f172a; border:1.5px solid #334155; border-radius:14px; padding:14px; margin-bottom:14px;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-          <strong style="color:#fff;">3️⃣ 유니온 연동 스킬·영웅 비교 (사신 ${rTotAwk}각 VS 앜메 ${mTotAwk}각)</strong>
+          <strong style="color:#fff;">3️⃣ 유니온 연동 스킬·영웅 비교 (사신 ${rTotAwk}각 VS 앜메 ${mTotAwk}각 · 3차/4차 주스킬 자동 인식)</strong>
           <button type="button" onclick="jumpToUnionForMageSetup()" style="background:#4338ca; border:1px solid #818cf8; color:#fff; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer;">🏛️ 유니온 입력하러 가기 ➔</button>
         </div>
         <div class="grid-4">
-          ${unitCard(mMain, `3차 주력기(${elemKr})`, getUnitStatus(mMainStrictOk, mMainOk), `썬더오빗(${rSkill.awk}각) 초과 필요`)}
+          ${unitCard(mMain, mainRoleLabel, getUnitStatus(mMainStrictOk, mMainOk), `썬더오빗(${rSkill.awk}각) ${use4thMain?'이상':'초과'} 필요<br><span style="color:#7dd3fc;">${altInfoStr}</span>`)}
           ${unitCard(mSub,  '전용 버프', getUnitStatus(mSubOk, mSubOk), '9돌 & 1각 이상')}
           ${unitCard(mHero, '전용 영웅', getUnitStatus(mHeroStrictOk, mHeroOk), `셀렌(${rHero.awk}각) 이상 권장`)}
           ${unitCard(cOver, '공용 버프', getUnitStatus(cOverStrictOk, false), '9돌~3각 권장')}
@@ -17157,7 +17236,7 @@
         </div>
       </div>
       ${isOverallPass
-        ? `<div style="background:linear-gradient(135deg, #064e3b 0%, #022c22 100%); border:2px solid #10b981; border-radius:14px; padding:20px; text-align:center;"><div style="font-size:26px;">🎉</div><div style="font-size:18px; font-weight:900; color:#34d399; margin:6px 0;">모든 조건 충족! 지금 바로 [아크메이지]로 갈아타셔도 좋습니다!</div><p style="font-size:13px; color:#d1fae5;">대낫 강타를 <strong>[강타 27단계 (고대 대낫 2)]</strong>로 변경하고 전환하세요!</p></div>`
+        ? `<div style="background:linear-gradient(135deg, #064e3b 0%, #022c22 100%); border:2px solid #10b981; border-radius:14px; padding:20px; text-align:center;"><div style="font-size:26px;">🎉</div><div style="font-size:18px; font-weight:900; color:#34d399; margin:6px 0;">모든 조건 충족! 지금 바로 [아크메이지]로 갈아타셔도 좋습니다!</div><p style="font-size:13px; color:#d1fae5;">주력 스킬 <strong>[${mMain.name}]</strong> 1번 슬롯 배치 + 대낫 강타를 <strong>[강타 27단계 (고대 대낫 2)]</strong>로 변경하고 전환하세요!</p></div>`
         : `<div style="background:linear-gradient(135deg, #450a0a 0%, #1e1b4b 100%); border:2px solid #ef4444; border-radius:14px; padding:16px;"><div style="font-size:16.5px; font-weight:900; color:#fca5a5; margin-bottom:8px;">😢 아직은 [사신]으로 조금 더 플레이하세요!</div><div style="background:rgba(15,23,42,0.9); border:1px solid #dc2626; border-radius:10px; padding:12px; font-size:12.5px; color:#fff; line-height:1.75;">${missing.join('<br>')}</div></div>`}`;
   }
 
@@ -18284,7 +18363,9 @@
         else rMult = Math.max(1, getEffectiveRuneValue(r, new Set()));
       }
       if (n && (!n.elem || n.elem === currentRuneElem) && (!n.jobType || n.jobType === currentRuneJob)) {
-        nMult = n.pairWithRing ? ((r && r.id === n.pairWithRing) ? n.pairMult : 1) : Math.max(1, getEffectiveRuneValue(n, new Set()));
+        if (n.pairWithRing) nMult = (r && r.id === n.pairWithRing) ? n.pairMult : 1;
+        else if (n.id === 'imm_nk_geomap') nMult = Math.max(1, getEffectiveRuneValue(n, new Set()) * 4.5 * (e?.tier === 'immortal' ? 1.05 : 1.0));
+        else nMult = Math.max(1, getEffectiveRuneValue(n, new Set()));
       }
     }
     const accMult = Math.max(1, rMult * nMult);
