@@ -14453,24 +14453,20 @@
     hasElemCreate10 = Boolean(checked);
     renderBuildGuideContent();
   }
-  function buildElemCreate10ToggleHtml(subDesc) {
-    return `<label class="cond-toggle-row" style="margin-bottom:14px; padding:11px 14px; border:2px solid ${hasElemCreate10?'#f43f5e':'#475569'}; background:${hasElemCreate10?'linear-gradient(90deg, rgba(244,63,94,0.22) 0%, #161026 100%)':'linear-gradient(90deg, rgba(30,41,59,0.75) 0%, #0f172a 100%)'}; box-shadow:${hasElemCreate10?'0 0 16px rgba(244,63,94,0.35)':'none'};">
-      <input type="checkbox" class="neon-toggle-input" ${hasElemCreate10?'checked':''} onchange="toggleElemCreate10(this.checked)">
-      <div style="display:flex; align-items:center; gap:11px; flex:1; min-width:0;">
-        <div class="icon-clean-wrap" style="width:44px; height:44px; border-radius:10px; border:2px solid ${hasElemCreate10?'#fde047':'#64748b'}; flex-shrink:0; background:#090e1a;">
-          <div class="icon-stars-top">${getBreakStarHtml(10)}</div>
-          <img src="images/elem_create.jpg" alt="원소창조" onerror="this.onerror=null;this.src='images/elem_create.png';">
-        </div>
-        <div style="min-width:0;">
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-            <strong style="font-size:13.5px; color:#ffffff;">고대 패시브 [원소창조 10돌파] 보유</strong>
-            <span class="grade-badge" style="background:${hasElemCreate10?'#e11d48':'#1e293b'}; color:${hasElemCreate10?'#fef08a':'#94a3b8'}; border:1px solid ${hasElemCreate10?'#fde047':'#475569'};">${hasElemCreate10?'ON · 열상/과부하/공포 +700% (881배!)':'OFF · 미보유 (111배)'}</span>
-          </div>
-          <div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">${subDesc}</div>
-        </div>
+  function buildElemCreate10BlueBannerHtml(descText) {
+    return `<div style="margin-bottom:14px; padding:11px 14px; border-radius:11px; border:1.5px solid #38bdf8; border-left:4px solid #0ea5e9; background:linear-gradient(90deg, rgba(14,165,233,0.2) 0%, #0f172a 100%); display:flex; align-items:center; gap:11px; box-shadow:0 4px 14px rgba(14,165,233,0.18);">
+      <div class="icon-clean-wrap" style="width:42px; height:42px; border-radius:9px; border:1.5px solid #7dd3fc; flex-shrink:0; background:#090e1a;">
+        <div class="icon-stars-top">${getBreakStarHtml(10)}</div>
+        <img src="images/elem_create.jpg" alt="원소창조" onerror="this.onerror=null;this.src='images/elem_create.png';">
       </div>
-      <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
-    </label>`;
+      <div style="min-width:0; line-height:1.45;">
+        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <strong style="font-size:13px; color:#e0f2fe;">고대 패시브 [원소창조 10돌파] 시너지 안내</strong>
+          <span class="mini-tag" style="background:#0284c7; color:#ffffff; font-size:10px; padding:1.5px 6px;">열상·과부하·공포 +700% (881배)</span>
+        </div>
+        <div style="font-size:11.5px; color:#bae6fd; margin-top:2px;">${descText}</div>
+      </div>
+    </div>`;
   }
 
   function selectGuideBuildTab(tab) { guideBuildTab = tab; renderBuildGuideContent(); }
@@ -14502,8 +14498,14 @@
 
     let comboPartnerHtml = '', subSuffix = '';
     if (!isSkill && name === '루비') {
-      subSuffix = ' <small style="color:#67e8f9;">(+격화)</small>';
-      comboPartnerHtml = `<span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span><div style="width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg, #06b6d4 0%, #10b981 50%, #f43f5e 100%); padding:1.5px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;"><div style="width:100%; height:100%; background:#0f172a; border-radius:8.5px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1;"><span style="font-size:8.5px; color:#67e8f9; font-weight:800;">고·영·불</span><span style="font-size:11px; color:#ffffff; font-weight:900;">격화룬</span></div></div>`;
+      const isEndRuby = (currentGuideType === 'job_build' && guideBuildStep >= 4);
+      if (isEndRuby) {
+        subSuffix = ' <small style="color:#fde047;">(+별·달·해)</small>';
+        comboPartnerHtml = `<span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span><div style="width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg, #facc15 0%, #38bdf8 50%, #f43f5e 100%); padding:1.5px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;"><div style="width:100%; height:100%; background:#0f172a; border-radius:8.5px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1;"><span style="font-size:8.5px; color:#fda4af; font-weight:800;">불멸 3셋</span><span style="font-size:10.5px; color:#fef08a; font-weight:900;">별·달·해</span></div></div>`;
+      } else {
+        subSuffix = ' <small style="color:#67e8f9;">(+격화)</small>';
+        comboPartnerHtml = `<span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span><div style="width:44px; height:44px; border-radius:10px; background:linear-gradient(135deg, #06b6d4 0%, #10b981 50%, #f43f5e 100%); padding:1.5px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;"><div style="width:100%; height:100%; background:#0f172a; border-radius:8.5px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1;"><span style="font-size:8.5px; color:#67e8f9; font-weight:800;">고·영·불</span><span style="font-size:11px; color:#ffffff; font-weight:900;">격화룬</span></div></div>`;
+      }
     } else if (!isSkill && name === '솔라리스') {
       subSuffix = ' <small style="color:#fde047;">(+오버3각)</small>';
       comboPartnerHtml = `<span style="font-size:12px; font-weight:900; color:#fde047; margin:0 2px;">➕</span><div class="build-slot-thumb icon-clean-wrap" style="border-color:#f59e0b; position:relative;"><div class="icon-stars-top is-awk">★★★</div><img src="images/overdrive.png" alt="오버드라이브" onerror="this.onerror=null; this.src='images/overdrive.PNG'; this.onerror=function(){this.parentElement.innerHTML='⚡';};"></div>`;
@@ -15023,7 +15025,7 @@
           ]},
           { num:"4순위", color:"#c084fc", items:[
             { name:"환영나비", isSkill:true, badge:"사신 종결 필수!", multTag:"3각 241배", desc:"별·달·해 졸업 및 저주II 세팅 모두 사신 종결 6슬롯 핵심 버프 (포효 111배의 2.17배!)" },
-            { name:"크림슨 웨이브", isSkill:true, badge:"저주II 출혈용", multTag:"", desc:"불멸 저주 II 룬 착용 시 출혈 조건 달성용 (개화/순환:밤 졸업 시 제외)" }
+            { name:"크림슨 웨이브", isSkill:true, badge:"전 구간 필수 고정!", multTag:"출혈 받피증 폭증", desc:"고대·영원 무기(낫·오브·장식) 보유 시 출혈(받피증 260%)이 대폭 증폭되어 저주 룬 여부와 무관하게 무조건 고정!" }
           ]},
           { num:"5순위 (후순위 마무리 · 시너지 조건 확인)", color:"#94a3b8", items:[
             { name:newElemHero, isSkill:false, badge:"시너지 600점+ 필수!", multTag:`${oldElemHero} 대체`, desc:newHeroSynergyDesc },
@@ -15298,9 +15300,9 @@
           </div>
         </div>
         ${(guideBuildTab === 'skill' && guideBuildStep >= 3)
-          ? buildElemCreate10ToggleHtml(guideJob === 'lord'
-              ? '다크로드 필수 확인! 원소창조 10돌 ON 시 주속성 디버프(881배)가 환영나비(241배)를 압도해 슬롯이 자동 교체됩니다.'
-              : '사신·아크메이지는 이미 주속성 디버프를 착용 중이라 원소창조 10돌 보유 여부와 무관하게 슬롯 구성이 동일하며, 디버프 배율이 111배 ➔ 881배로 8배 상승합니다!')
+          ? (guideJob === 'lord'
+              ? buildElemCreate10ToggleHtml('다크로드 특이 케이스! 원소창조 10돌 ON 시 주속성 디버프(881배)가 환영나비(241배)를 압도해 슬롯이 자동 교체됩니다.')
+              : buildElemCreate10BlueBannerHtml('사신·아크메이지는 이미 주속성 디버프(불벼락·뇌전검무·암흑붕괴)를 고정 착용 중이라 원소창조 10돌 시 슬롯 변경 없이 111배 ➔ 881배로 자동 적용됩니다.'))
           : ''}
       `;
 
@@ -15406,47 +15408,48 @@
             <div class="build-tip-box" style="margin-top:12px;">${s4Note}</div>
           </div>`;
         } else {
-          // V. 완전 종결 탭 (격화 졸업 = 별·달·해 + 저주 II 졸업 = 개화/영원의 순환:밤 ➔ 크림슨 웨이브 OUT!)
+          // V. 완전 종결 탭 (별·달·해 졸업 · 크림슨 웨이브 전 직업 절대 고정!)
           let s5Slots = '', s5Cnt = '', s5Note = '';
           if (guideJob === 'reaper') {
-            s5Cnt = '6슬롯 · 완전 종결 (크림슨 OUT!)';
+            s5Cnt = '6슬롯 · 완전 종결 (별·달·해 기준)';
             s5Slots = [
               mkBuildSlot('썬더 오빗','사신 고정','3각 303.4배',true,'fix'),
-              mkBuildSlot(elemDebuffSkill,'주속성 고정',hasElemCreate10?'★원소창조10돌 881배!':'3각 111배 (원소창조10돌 881배)',true,'future'),
+              mkBuildSlot(elemDebuffSkill,'주속성 고정','원소창조 10돌 시 881배!',true,'future'),
               mkBuildSlot('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'),
               mkBuildSlot('오버드라이브','고정 버프','최우선 3각',true,'fix'),
-              mkBuildSlot('환영나비','★종결 필수 241배','셀렌(감전)+루비(화상)+포효(혼돈) 풀발동!',true,'future'),
-              mkBuildSlot('그림자 포효','★크림슨 OUT ➔ IN!','3각 111배 + 2각 혼돈(루비 3상태 완성!)',true,'future')
+              mkBuildSlot('환영나비','★종결 241배','그림자 포효(111배) 대체 · 2.17배 우위!',true,'future'),
+              mkBuildSlot('크림슨 웨이브','★필수 고정!','고대·영원 무기 3종 보유 시 출혈 받피증 압도적!',true,'fix')
             ].join('');
-            s5Note = `👑 <strong>그림리퍼(사신) 완전 종결 해설:</strong> 별·달·해(격화 졸업) 및 개화/영원의 순환:밤(저주 II 졸업) 달성 시 <strong>크림슨 웨이브가 빠져</strong> <strong>[환영나비(241배) + 그림자 포효(111배+혼돈)]</strong>을 둘 다 장착할 수 있습니다! 루비(화상·3상태 21배)까지 화염·번개·어둠 전 속성 100% 풀발동되며, <strong>원소창조 10돌 보유 여부와 상관없이 6슬롯 구성은 동일</strong>합니다.`;
+            s5Note = `👑 <strong>그림리퍼(사신) 완전 종결 해설:</strong> <strong>크림슨 웨이브</strong>는 저주 룬 여부와 상관없이 <strong>고대·영원 대낫·오브·장식 보유 시 출혈(받는 피해량 증가) 버프 증폭이 그림자 포효보다 훨씬 강력</strong>하므로 무조건 고정합니다! 영웅 탭은 격화 룬 대신 <strong>별·달·해</strong>를 장착합니다.`;
           } else if (guideJob === 'mage') {
-            s5Cnt = '7슬롯 · 완전 종결 (크림슨 OUT!)';
+            s5Cnt = '7슬롯 · 완전 종결 (별·달·해 기준)';
+            const fourth = guideElem === 'fire' ? '그림자 포효' : '환영나비';
             s5Slots = [
               mkBuildSlot(mage4thDeal,'★4차 1번슬롯 메인딜','주기 전환 II 링크 종결!',true,'future'),
               mkBuildSlot('지옥불베기','직업 고정',guideElem==='fire'?'찰나의 집중 링크':'작열의 낙인 링크',true,'fix'),
-              mkBuildSlot(elemDebuffSkill,'주속성 고정',hasElemCreate10?'★원소창조10돌 881배!':'75렙 상위 낙인 + 3각 111배',true,'future'),
-              mkBuildSlot('환영나비','★종결 241배','포효(2각 혼돈)+불베기(화상)로 화염도 241배 발동!',true,'future'),
-              mkBuildSlot('그림자 포효','★크림슨 OUT ➔ IN!','3각 111배 + 2각 혼돈 (불앜메 혼돈의 낙인!)',true,'future'),
+              mkBuildSlot(elemDebuffSkill,'주속성 고정','75렙 상위 낙인 · 원소창조 10돌 881배!',true,'future'),
+              mkBuildSlot(fourth,'속성별 종결',guideElem==='fire'?'불앜메 4차 Lv.80 혼돈의 낙인 고정!':'번개·어둠 종결 (3각 241배)',true,'future'),
               mkBuildSlot('엘리멘탈 차지','고정 버프','3각 300배 버프',true,'fix'),
-              mkBuildSlot('오버드라이브','고정 버프','한계 초월(+700%) 링크',true,'fix')
+              mkBuildSlot('오버드라이브','고정 버프','한계 초월(+700%) 링크',true,'fix'),
+              mkBuildSlot('크림슨 웨이브','★필수 고정!','고대·영원 무기 풀증폭 출혈 받피증!',true,'fix')
             ].join('');
-            s5Note = `👑 <strong>슈프림(아크메이지) 완전 종결 해설:</strong> 저주 II 졸업(개화/영원의 순환:밤)으로 크림슨 웨이브가 빠지면 화염·번개·어둠 3속성 모두 <strong>[환영나비(241배) + 그림자 포효(111배+혼돈)] 동시 장착</strong>이 완성됩니다! <strong>원소창조 10돌 여부와 무관하게 7슬롯 구성은 동일</strong>합니다.`;
+            s5Note = `👑 <strong>슈프림(아크메이지) 완전 종결 해설:</strong> 고대·영원 무기 풀보유 기준 <strong>크림슨 웨이브</strong>는 저주 룬 여부와 무관하게 고정 핵심 버프이며, <strong>원소창조 10돌 보유 시에도 7슬롯 구성은 동일</strong>합니다.`;
           } else {
-            s5Cnt = '5슬롯 · 완전 종결 (크림슨 OUT!)';
-            const slot5 = hasElemCreate10
-              ? mkBuildSlot(elemDebuffSkill,'★원소창조 881배!','원소창조 10돌 시 최우선 고정 (881배!)',true,'future')
-              : mkBuildSlot('그림자 포효','크림슨 OUT ➔ 포효','원소창조 10돌 전엔 포효(111배+혼돈) 또는 주속성 디버프',true,'flex');
+            s5Cnt = '5슬롯 · 완전 종결 (원소창조 10돌 분기)';
+            const slot4 = hasElemCreate10
+              ? mkBuildSlot(elemDebuffSkill,'★원소창조 881배!','원소창조 10돌 시 환영나비(241배) 압도!',true,'future')
+              : mkBuildSlot('환영나비','3각 241배','원소창조 10돌 달성 시 상단 토글 ON!',true,'future');
             s5Slots = [
               mkBuildSlot('보이드 펄스','닼로 고정','영웅스킬 피해 버프',true,'fix'),
+              mkBuildSlot('크림슨 웨이브','★필수 고정!','고대·영원 무기 풀증폭 출혈 받피증!',true,'fix'),
               mkBuildSlot('오버드라이브','고정 버프','최우선 3각',true,'fix'),
-              mkBuildSlot('엘리멘탈 차지','고정 버프','3각 300배',true,'fix'),
-              mkBuildSlot('환영나비','★종결 241배','3각 241배 버프',true,'future'),
-              slot5
+              slot4,
+              mkBuildSlot('엘리멘탈 차지','고정 버프','3각 300배',true,'fix')
             ].join('');
-            s5Note = `👑 <strong>소울이터(다크로드) 완전 종결 해설:</strong> 저주 II 졸업으로 크림슨 웨이브가 빠지면서 <strong>[환영나비(241배)]</strong>와 <strong>[주속성 디버프(원소창조 10돌 시 881배!)]</strong>를 동시에 챙길 수 있습니다! 위 <strong>[원소창조 10돌]</strong> 토글을 켜서 확인해 보세요.`;
+            s5Note = `👑 <strong>소울이터(다크로드) 완전 종결 해설:</strong> <strong>크림슨 웨이브</strong>는 무조건 고정이며, 다크로드는 5슬롯 제한으로 인해 <strong>[원소창조 10돌]</strong> 달성 시 <strong>환영나비(241배) ➔ 주속성 디버프(881배)</strong>로 교체하는 것이 최종 종결입니다!`;
           }
           contentHtml = `<div class="stage-build-card" style="border-left-color:#e879f9; background:linear-gradient(150deg, rgba(168,85,247,0.14) 0%, #0f172a 100%);">
-            <div class="stage-build-header"><span class="stage-build-title">👑 완전 종결 (${jMeta.c4} · 별·달·해 &amp; 저주II 졸업) 스킬 세팅</span><span class="grade-badge grade-immortal">${s5Cnt}</span></div>
+            <div class="stage-build-header"><span class="stage-build-title">👑 완전 종결 (${jMeta.c4} · 별·달·해 &amp; 영원무기 풀보유) 스킬 세팅</span><span class="grade-badge grade-immortal">${s5Cnt}</span></div>
             <div class="build-slot-grid">${s5Slots}</div>
             <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 전 직업 공통 보유효과 스킬 (미장착 · 1각 필수):</div>
             <div class="build-slot-grid">${mkBuildSlot(elemPulseSkill,'보유효과 (1각 필수)','주속성 펄스 미장착 보유효과!',true,'future')}</div>
