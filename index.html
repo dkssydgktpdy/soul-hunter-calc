@@ -3414,13 +3414,14 @@
     /* ==================== 딤(dim.png) Special Thanks 빼꼼 이스터에그 (2차 후원 기념 특대형 사이즈 업!) ==================== */
     .header-thanks-box { position: relative; }
 
-    /* 💻 PC 기본: Special Thanks 왼쪽 빈 공간을 꽉 채우는 특대 사이즈 (164px!) */
+    /* 💻 PC 기본: 제목 안 가리게 아래쪽 [영웅오키V님 왼쪽 옆] 빈 공간에 특대 사이즈 배치! */
     .dim-easter-egg {
       position: absolute;
-      top: -6px;
+      top: auto;
+      bottom: -10px;
       right: calc(100% - 14px);
-      width: 176px;
-      height: 172px;
+      width: 170px;
+      height: 162px;
       cursor: pointer;
       z-index: 9700;
       user-select: none;
@@ -3488,6 +3489,7 @@
         left: calc(100% - 22px);
         right: auto;
         top: 0px;
+        bottom: auto;
         width: 112px;
         height: 112px;
       }
