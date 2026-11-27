@@ -16312,7 +16312,7 @@
   const TRAIT_4TH_LINKS_DB = [
     { id:'goyang1',     name:'고양 I',        reqLv:0,  tier:'normal',     desc:'링크된 스킬 발동 시 5초간 4차 스킬 피해량 +30% (최대 10중첩, +300%)' },
     { id:'limit_brk',   name:'한계 돌파',     reqLv:0,  tier:'normal',     desc:'링크된 스킬의 돌파 효과 +50% 증가' },
-    { id:'awk_proof',   name:'각성의 증명',   reqLv:15, tier:'middle',     desc:'링크된 스킬이 3각성 이상일 때 스킬 피해량 +100% (곱연산)' },
+    { id:'awk_proof',   name:'각성의 증명',   reqLv:15, tier:'middle',     desc:'링크된 스킬이 3각성 이상일 때 스킬 피해량 +1,000% (곱연산)' },
     { id:'goyang2',     name:'고양 II',       reqLv:15, tier:'middle',     desc:'링크된 스킬 발동 시 5초간 4차 스킬 피해량 +50% (최대 10중첩, +500%)' },
     { id:'might_fire',  name:'화염의 맹위',   reqLv:25, tier:'advanced',   desc:'링크된 스킬이 화염 속성일 때 화염 피해량 +1,500% (곱연산)' },
     { id:'might_light', name:'번개의 맹위',   reqLv:25, tier:'advanced',   desc:'링크된 스킬이 번개 속성일 때 번개 피해량 +1,500% (곱연산)' },
@@ -16572,16 +16572,16 @@
     } else if (lv < 20) {
       if (trait4thMainSkill3Awk) {
         slots = [{ skill: mainSk, linkId: 'goyang2', note: '주스킬 3각↑ · 각성의 증명보다 고양 II 우세!' }];
-        tip = 'Lv.15~19 (1슬롯): 주력 스킬이 3각성 이상이면 [각성의 증명(+100%)]보다 [고양 II (+500%)]이 더 강력합니다!';
+        tip = 'Lv.15~19 (1슬롯): 주력 스킬이 3각성 이상이면 [각성의 증명(+1,000%)]보다 [고양 II (+500%)]이 더 강력합니다!';
       } else {
-        slots = [{ skill: mainSk, linkId: 'awk_proof', note: '3각 미만 · 3각 보유 스킬에 연결' }];
-        tip = 'Lv.15~19 (1슬롯): [각성의 증명]을 사용하거나, 주력 스킬이 3각 미만이면 [한계 돌파]를 유지합니다.';
+        slots = [{ skill: mainSk, linkId: 'awk_proof', note: '3각 미만 · 3각 보유 스킬에 연결 (+1,000%)' }];
+        tip = 'Lv.15~19 (1슬롯): [각성의 증명(+1,000%)]을 사용하거나, 주력 스킬이 3각 미만이면 [한계 돌파]를 유지합니다.';
       }
     } else if (lv < 25) {
       if (trait4thMainSkill3Awk) {
         slots = [
           { skill: mainSk, linkId: 'goyang2', note: '주스킬 3각↑ · 고양 II 최우선' },
-          { skill: '지옥불베기', linkId: 'awk_proof', note: '2슬롯 3각 곱연산 (+100%)' }
+          { skill: '지옥불베기', linkId: 'awk_proof', note: '2슬롯 3각 곱연산 (+1,000%)' }
         ];
         tip = 'Lv.20~24 (2슬롯): 주력 스킬에 [고양 II]를 유지하고, 2번째 슬롯에 [지옥불베기 + 각성의 증명(미3각 시 고양 I)]을 추가합니다.';
       } else {
