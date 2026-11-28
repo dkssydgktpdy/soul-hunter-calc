@@ -14453,6 +14453,26 @@
     hasElemCreate10 = Boolean(checked);
     renderBuildGuideContent();
   }
+  function buildElemCreate10ToggleHtml(subDesc) {
+    return `<label class="cond-toggle-row" style="margin-bottom:14px; padding:11px 14px; border:2px solid ${hasElemCreate10?'#f43f5e':'#475569'}; background:${hasElemCreate10?'linear-gradient(90deg, rgba(244,63,94,0.22) 0%, #161026 100%)':'linear-gradient(90deg, rgba(30,41,59,0.75) 0%, #0f172a 100%)'}; box-shadow:${hasElemCreate10?'0 0 16px rgba(244,63,94,0.35)':'none'};">
+      <input type="checkbox" class="neon-toggle-input" ${hasElemCreate10?'checked':''} onchange="toggleElemCreate10(this.checked)">
+      <div style="display:flex; align-items:center; gap:11px; flex:1; min-width:0;">
+        <div class="icon-clean-wrap" style="width:44px; height:44px; border-radius:10px; border:2px solid ${hasElemCreate10?'#fde047':'#64748b'}; flex-shrink:0; background:#090e1a;">
+          <div class="icon-stars-top">${getBreakStarHtml(10)}</div>
+          <img src="images/elem_create.jpg" alt="원소창조" onerror="this.onerror=null;this.src='images/elem_create.png';">
+        </div>
+        <div style="min-width:0;">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <strong style="font-size:13.5px; color:#ffffff;">고대 패시브 [원소창조 10돌파] 보유</strong>
+            <span class="grade-badge" style="background:${hasElemCreate10?'#e11d48':'#1e293b'}; color:${hasElemCreate10?'#fef08a':'#94a3b8'}; border:1px solid ${hasElemCreate10?'#fde047':'#475569'};">${hasElemCreate10?'ON · 열상/과부하/공포 +700% (881배!)':'OFF · 미보유 (111배)'}</span>
+          </div>
+          <div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">${subDesc}</div>
+        </div>
+      </div>
+      <div class="neon-toggle-right"><span class="neon-toggle-track"><span class="neon-toggle-thumb"></span></span></div>
+    </label>`;
+  }
+  
   function buildElemCreate10BlueBannerHtml(descText) {
     return `<div style="margin-bottom:14px; padding:11px 14px; border-radius:11px; border:1.5px solid #38bdf8; border-left:4px solid #0ea5e9; background:linear-gradient(90deg, rgba(14,165,233,0.2) 0%, #0f172a 100%); display:flex; align-items:center; gap:11px; box-shadow:0 4px 14px rgba(14,165,233,0.18);">
       <div class="icon-clean-wrap" style="width:42px; height:42px; border-radius:9px; border:1.5px solid #7dd3fc; flex-shrink:0; background:#090e1a;">
@@ -15051,7 +15071,7 @@
           ]},
           { num:"4순위", color:"#c084fc", items:[
             { name:"환영나비", isSkill:true, badge:awkGuideElem==='fire'?'저주II 졸업 시 필수':'번개/어둠 필수', multTag:"3각 241배", desc:"저주II 졸업(크림슨 OUT) 시 화염 아크메이지도 포효+나비 동시 장착!" },
-            { name:"크림슨 웨이브", isSkill:true, badge:"저주II 출혈용", multTag:"", desc:"불멸 저주 II 룬 출혈 조건 달성 (개화/순환:밤 졸업 시 제외)" }
+            { name:"크림슨 웨이브", isSkill:true, badge:"전 구간 필수 고정!", multTag:"출혈 받피증 폭증", desc:"고대·영원 무기(낫·오브·장식) 보유 시 출혈(받피증 260%)이 대폭 증폭되어 저주 룬 여부와 무관하게 무조건 고정!" }
           ]},
           { num:"5순위 (후순위 마무리 · 시너지 조건 확인)", color:"#94a3b8", items:[
             { name:newElemHero, isSkill:false, badge:"시너지 600점+ 필수!", multTag:`${oldElemHero} 대체`, desc:newHeroSynergyDesc },
@@ -15361,7 +15381,7 @@
             s3Tip = guideElem === 'fire' ? '💡 <strong>화염 아크메이지 팁:</strong> [저주/저주 II] 심연장식 룬 착용 중이라면 4차 Lv.80 전까지 그림자 포효(111배) 대신 <strong>환영나비(241배)</strong>가 더 강합니다. (저주 II 졸업 후엔 <strong>[V · 완전 종결]</strong> 탭 참고!)' : '';
           } else if (guideJob === 'reaper') {
             s3Cnt = '6슬롯 (소울리퍼 스킬 +1 추가)';
-            s3Slots = [mkBuildSlot('썬더 오빗','사신 고정','3각 시 303.4배',true,'fix'), mkBuildSlot(elemDebuffSkill,'주속성 고정',debNote,true,'fix'), mkBuildSlot('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), mkBuildSlot('환영나비','★포효 대체 241배','저주II·어둠사신 2.17배 우위! (저주X 화염·번개는 포효)',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈 고정','저주II 출혈용 (졸업 시 포효로 교체)',true,'fix')].join('');
+            s3Slots = [mkBuildSlot('썬더 오빗','사신 고정','3각 시 303.4배',true,'fix'), mkBuildSlot(elemDebuffSkill,'주속성 고정',debNote,true,'fix'), mkBuildSlot('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), mkBuildSlot('환영나비','★포효 대체 241배','저주II·어둠사신 2.17배 우위! (저주X 화염·번개는 포효)',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈 고정','고대·영원 무기 출혈 받피증 고정!',true,'fix')].join('');
             s3Tip = '💡 <strong>사신 나비 vs 포효:</strong> 저주 II 룬이 3상태이상을 자동 부여하므로 <strong>환영나비(241배)</strong>가 그림자 포효(111배)보다 2.17배 더 강합니다! (저주 II 졸업 시 <strong>[V · 완전 종결]</strong> 탭에서 크림슨 빼고 나비+포효 동시 장착!)';
           } else {
             s3Cnt = '5슬롯 (오버로드 스킬 슬롯 동일)';
