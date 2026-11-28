@@ -14504,7 +14504,7 @@
   const JOB_NAMES_FULL = {
     reaper: { title: "사신 (대사신 / 소울리퍼 / 그림리퍼)", icon: "images/reaper.png", color: "#f43f5e", c1: "사신", c2: "대사신", c3: "소울리퍼", c4: "그림리퍼" },
     mage:   { title: "아크메이지 (미스틱 / 제네시스 / 슈프림)", icon: "images/mystic.png", color: "#38bdf8", c1: "아크메이지", c2: "미스틱", c3: "제네시스", c4: "슈프림" },
-    lord:   { title: "오버로드 (다크로드 / 오버로드 / 소울이터)", icon: "images/overload.png", color: "#a855f7", c1: "다크로드", c2: "팬텀", c3: "오버로드", c4: "소울이터" }
+    lord:   { title: "오버로드 (다크로드 / 팬텀 / 오버로드 / 소울이터)", icon: "images/overload.png", color: "#a855f7", c1: "다크로드", c2: "팬텀", c3: "오버로드", c4: "소울이터" }
   };
 
   function makeGuideSlotHtml(name, tagText, noteText, isSkill, styleType, awkNum = 0) {
@@ -15044,14 +15044,14 @@
             { name:"엘리멘탈 차지", isSkill:true, badge:"공용 핵심 버프", multTag:"3각 300배", desc:"3차 전직 기준 상시 300배 곱연산 버프" }
           ]},
           { num:"4순위", color:"#c084fc", items:[
-            { name:"환영나비", isSkill:true, badge:"사신 종결 필수!", multTag:"3각 241배", desc:"별·달·해 졸업 및 저주II 세팅 모두 사신 종결 6슬롯 핵심 버프 (포효 111배의 2.17배!)" },
+            { name:"환영나비", isSkill:true, badge:"사신 종결 필수!", multTag:"3각 241배", desc:"셀렌(감전)+루비(화상)로 상시 발동! 사신 종결 6슬롯 핵심 버프 (포효 111배의 2.17배!)" },
             { name:"크림슨 웨이브", isSkill:true, badge:"전 구간 필수 고정!", multTag:"출혈 받피증 폭증", desc:"고대·영원 무기(낫·오브·장식) 보유 시 출혈(받피증 260%)이 대폭 증폭되어 저주 룬 여부와 무관하게 무조건 고정!" }
           ]},
           { num:"5순위 (후순위 마무리 · 시너지 조건 확인)", color:"#94a3b8", items:[
             { name:newElemHero, isSkill:false, badge:"시너지 600점+ 필수!", multTag:`${oldElemHero} 대체`, desc:newHeroSynergyDesc },
             { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", multTag:"", desc:"오버드라이브 3각 달성 시 엘리시아 대체" },
-            { name:"그림자 포효", isSkill:true, badge:"2각 혼돈 필수", multTag:"3각 111배", desc:"2각 혼돈 상태이상 해금 · 저주II 졸업 후 나비와 동시 장착 (3각 111배)" },
             ...(!hasElemCreate10 ? [debSkItem] : []),
+            { name:"그림자 포효", isSkill:true, badge:"과도기 (후반 교체)", multTag:"1~2각 주차 권장", desc:"원소창조 10돌·4차 Lv.75 전까지 화염·번개 사신 과도기용(2각 혼돈) · 후반엔 주속성 디버프로 빠지므로 3각 스킵/최후순위!" },
             { name:"루비", isSkill:false, badge:"화상+3상태 버퍼", multTag:"1각 21배", desc:"격화 룬 졸업(별·달·해) 후에는 1각 21배 기준이므로 3각 후순위!" }
           ]},
           ownedEffectBand
@@ -15070,17 +15070,42 @@
             { name:"엘리멘탈 차지", isSkill:true, badge:"공용 핵심 버프", multTag:"3각 300배", desc:"3차 전직 기준 상시 300배 곱연산 버프" }
           ]},
           { num:"4순위", color:"#c084fc", items:[
-            { name:"환영나비", isSkill:true, badge:awkGuideElem==='fire'?'저주II 졸업 시 필수':'번개/어둠 필수', multTag:"3각 241배", desc:"저주II 졸업(크림슨 OUT) 시 화염 아크메이지도 포효+나비 동시 장착!" },
+            { name:"환영나비", isSkill:true, badge:awkGuideElem==='fire'?'4차 Lv.80 전 과도기':'번개·어둠 종결 필수', multTag:"3각 241배", desc:awkGuideElem==='fire'?'저주 룬 착용 시 4차 Lv.80 전까지 우세! (단, 4차 Lv.80엔 포효+혼돈의 낙인으로 교체되므로 불앜메는 3각 후순위)':'지옥불베기(화상)+영웅 상태이상으로 상시 발동! 번개·어둠 아크메이지 종결 7슬롯 핵심 버프' },
             { name:"크림슨 웨이브", isSkill:true, badge:"전 구간 필수 고정!", multTag:"출혈 받피증 폭증", desc:"고대·영원 무기(낫·오브·장식) 보유 시 출혈(받피증 260%)이 대폭 증폭되어 저주 룬 여부와 무관하게 무조건 고정!" }
           ]},
           { num:"5순위 (후순위 마무리 · 시너지 조건 확인)", color:"#94a3b8", items:[
             { name:newElemHero, isSkill:false, badge:"시너지 600점+ 필수!", multTag:`${oldElemHero} 대체`, desc:newHeroSynergyDesc },
             { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", multTag:"", desc:"오버드라이브 3각 시 엘리시아 대체" },
-            { name:"그림자 포효", isSkill:true, badge:"2각 혼돈 필수", multTag:"3각 111배", desc:"2각 혼돈 해금 · 불앜메 4차 Lv.80 혼돈의 낙인 핵심 (3각 111배)" },
-            ...(!hasElemCreate10 ? [debSkItem] : [])
+            ...(!hasElemCreate10 ? [debSkItem] : []),
+            { name:"그림자 포효", isSkill:true, badge:awkGuideElem==='fire'?'★불앜메 Lv.80 종결!':'과도기 (후반 교체)', multTag:awkGuideElem==='fire'?'3각 111배×낙인51배':'1~2각 주차 권장', desc:awkGuideElem==='fire'?'불 아크메이지만 4차 Lv.80 [혼돈의 낙인] 링크로 최종 고정! (3각 추천)':'원소창조 10돌·4차 Lv.75 전까지 과도기 사용 · 후반엔 주속성 디버프로 교체되므로 3각 스킵/최후순위!' }
           ]},
           ownedEffectBand
         ] : [
+          { num:"1순위 (전 직업 단독 최우선 3각)", color:"#fbbf24", items:[
+            { name:"오버드라이브", isSkill:true, badge:"전 직업 부동의 1순위", multTag:"", desc:"과성장 졸업 및 공용 버프 코어" }
+          ]},
+          { num:"2순위 (핵심 3각)", color:"#fb7185", items:[
+            { name:l4Hr, isSkill:false, badge:"4차 신영웅 3각!", multTag:"", desc:`3차 주영웅(${l3Hr})은 1각만 하고 사용! 3각성은 무조건 4차 신영웅에 집중` },
+            ...(hasElemCreate10 ? [debSkItem] : []),
+            { name:"나리타", isSkill:false, badge:"무조건 3각 필수!", multTag:"3각 상시 501배", desc:"1·2각에 멈추지 말고 무조건 3각! 조건 없는 상시 501배 깡곱연산" },
+            { name:"백운귀", isSkill:false, badge:"닼로 필수 버퍼", multTag:"3각 상시 501배", desc:"다크로드 전용 상시 501배 버퍼 (3각 필수)" }
+          ]},
+          { num:"3순위", color:"#38bdf8", items:[
+            { name:"카엘", isSkill:false, badge:"닼로 전용 영웅", multTag:"3각 346.25배", desc:"다크로드 전용 영웅 버퍼" },
+            { name:"엘리멘탈 차지", isSkill:true, badge:"공용 핵심 버프", multTag:"3각 300배", desc:"3차 전직 기준 상시 300배 곱연산 버프" }
+          ]},
+          { num:"4순위", color:"#c084fc", items:[
+            { name:"보이드 펄스", isSkill:true, badge:"닼로 전용 스킬", multTag:"", desc:"영웅 스킬 피해량 버프" },
+            { name:"환영나비", isSkill:true, badge:hasElemCreate10?'원소창조 10돌 시 교체':'3·4차 5슬롯 핵심', multTag:"3각 241배", desc:hasElemCreate10?'원소창조 10돌 달성 시 주속성 디버프(881배)로 교체되므로 3각 후순위':'원소창조 10돌 이전(3·4차) 다크로드 5슬롯 핵심 버프 (3각 241배)' },
+            { name:"크림슨 웨이브", isSkill:true, badge:"전 구간 필수 고정!", multTag:"출혈 받피증 폭증", desc:"고대·영원 무기(낫·오브·장식) 보유 시 출혈(받피증 260%)이 대폭 증폭되어 저주 룬 여부와 무관하게 무조건 고정!" }
+          ]},
+          { num:"5순위 (후순위 마무리 · 시너지 조건 확인)", color:"#94a3b8", items:[
+            { name:newElemHero, isSkill:false, badge:"시너지 600점+ 필수!", multTag:`${oldElemHero} 대체`, desc:newHeroSynergyDesc },
+            { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", multTag:"", desc:"오버드라이브 3각 시 엘리시아 대체" },
+            ...(!hasElemCreate10 ? [debSkItem] : [])
+          ]},
+          ownedEffectBand
+        ]);
           { num:"1순위 (전 직업 단독 최우선 3각)", color:"#fbbf24", items:[
             { name:"오버드라이브", isSkill:true, badge:"전 직업 부동의 1순위", multTag:"", desc:"과성장 졸업 및 공용 버프 코어" }
           ]},
@@ -15146,7 +15171,7 @@
         </div>`).join('');
 
         body.innerHTML = `${topCtrl}
-        ${buildElemCreate10ToggleHtml('ON 시 주속성 디버프(불벼락·뇌전검무·암흑붕괴) 3각 배율이 111배 ➔ 881배로 폭등해 2순위로 자동 승격됩니다!')}
+        ${buildElemCreate10ToggleHtml('[초극후반 · V. 완전 종결 전용] ON 시 주속성 디버프(불벼락·뇌전검무·암흑붕괴) 3각 배율이 111배 ➔ 881배로 폭등해 2순위로 자동 승격됩니다!')}
           <!-- 다크모드에서도 절대 놓치지 않는 초고대비 크림슨-골드 필수 경고 배너 -->
           <div style="background:linear-gradient(135deg, #7f1d1d 0%, #450a0a 55%, #78350f 100%); border:2.5px solid #fde047; border-left:6px solid #fb7185; border-radius:13px; padding:14px 16px; margin-bottom:10px; box-shadow:0 6px 22px rgba(225,29,72,0.42);">
             <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
@@ -15252,7 +15277,7 @@
           <h4 style="color:#fde047; font-size:15px; margin-bottom:10px;">✅ 사신으로 키우면서 그대로 겹쳐서 쓰는 공용 스킬 &amp; 영웅</h4>
           <div class="build-slot-grid">
             ${makeGuideSlotHtml(elemDebuffSkill, '공용 필수', '주속성 9돌~2각 디버프', true, 'fix')}
-            ${makeGuideSlotHtml('그림자 포효', '공용 필수', '9돌~2각 혼돈 디버프', true, 'fix')}
+            ${makeGuideSlotHtml('그림자 포효', '과도기 공용', '원소창조 10돌·4차 Lv.75 전까지 고효율 (후반 교체 · 불앜메만 종결)', true, 'flex')}
             ${makeGuideSlotHtml('오버드라이브', '공용 1순위', '전 직업 최우선 돌파/3각', true, 'fix')}
             ${makeGuideSlotHtml('엘리멘탈 차지', '공용 필수', '3차 전직 핵심 버프', true, 'fix')}
             ${makeGuideSlotHtml('크림슨 웨이브', '공용 필수', '불멸 저주II 출혈용', true, 'fix')}
@@ -15319,10 +15344,10 @@
             </div>
           </div>
         </div>
-        ${(guideBuildTab === 'skill' && guideBuildStep >= 3)
+        ${(guideBuildTab === 'skill' && guideBuildStep === 5)
           ? (guideJob === 'lord'
-              ? buildElemCreate10ToggleHtml('다크로드 특이 케이스! 원소창조 10돌 ON 시 주속성 디버프(881배)가 환영나비(241배)를 압도해 슬롯이 자동 교체됩니다.')
-              : buildElemCreate10BlueBannerHtml('사신·아크메이지는 이미 주속성 디버프(불벼락·뇌전검무·암흑붕괴)를 고정 착용 중이라 원소창조 10돌 시 슬롯 변경 없이 111배 ➔ 881배로 자동 적용됩니다.'))
+              ? buildElemCreate10ToggleHtml('다크로드 최종 종결 분기! 원소창조 10돌 ON 시 주속성 디버프(881배)가 환영나비(241배)를 압도해 슬롯이 자동 교체됩니다.')
+              : buildElemCreate10BlueBannerHtml('V. 완전 종결(5고패) 구간에서는 원소창조 10돌 효과로 주속성 디버프(불벼락·뇌전검무·암흑붕괴) 배율이 111배 ➔ 881배로 최종 완성됩니다.'))
           : ''}
       `;
 
@@ -15335,11 +15360,9 @@
 
         const s1Fixed = [
           mkBuildSlot(jobOnlySkill, '직업 필수고정', guideJob==='reaper'?'강타 피해 증가':(guideJob==='mage'?'스킬 피해 증가':'영웅스킬 피해 증가'), true, 'fix'),
-          mkBuildSlot(elemDebuffSkill, '주속성 고정', '최소 9돌파 필수', true, 'fix'),
-          mkBuildSlot('그림자 포효', '공용 고정', '최소 9돌파 필수', true, 'fix')
+          mkBuildSlot(elemDebuffSkill, '주속성 고정', '최소 9돌파 필수 (3각 111배)', true, 'fix'),
+          mkBuildSlot('그림자 포효', '과도기 핵심', '9돌~2각 혼돈 · 후반 교체(불앜메 제외)', true, 'flex')
         ].join('');
-
-        const debNote = hasElemCreate10 ? '★원소창조10돌 881배!' : '3각 111배 + 상태이상';
 
         if (guideBuildStep === 1) {
           const s1Flex = [
@@ -15355,14 +15378,14 @@
             <div class="build-slot-grid">${s1Fixed}</div>
             <div style="font-size:12.5px; font-weight:800; color:#38bdf8; margin:14px 0 6px 0;">📌 나머지 2자리 선택 후보 (오버드라이브 최우선 돌파):</div>
             <div class="build-slot-grid">${s1Flex}</div>
-            <div class="build-tip-box" style="margin-top:12px;">• <strong>9돌파 미만 주의:</strong> 그림자 포효, 환영나비, ${elemDebuffSkill}는 <strong>9돌파 달성 시 투입</strong>하세요!</div>
+            <div class="build-tip-box" style="margin-top:12px;">• <strong>9돌파 미만 주의:</strong> 그림자 포효, 환영나비, ${elemDebuffSkill}는 <strong>9돌파 달성 시 투입</strong>하세요!<br>• <strong>그림자 포효 안내:</strong> 초·중반(원소창조 10돌·4차 Lv.75 전)에는 2각 혼돈과 111배 망각으로 매우 강력하지만, <strong>화염 아크메이지를 제외하면 후반에 빠지는 과도기 스킬</strong>입니다.</div>
           </div>`;
         } else if (guideBuildStep === 2) {
           let s2Slots = s1Fixed + mkBuildSlot('오버드라이브', '주력 버프', '고돌파 착용', true, 'flex') + mkBuildSlot('환영나비', '주력 버프', '엘차/심판/원소 택1', true, 'flex');
           let s2Cnt = '5슬롯';
           if (guideJob === 'mage') { s2Cnt = '6슬롯 (아크메이지 스킬 +1)'; s2Slots += mkBuildSlot(mage3rdDeal, '★1번슬롯 주력딜', `1번 슬롯 [${mage3rdDeal}] 배치!`, true, 'fix'); }
           const s2Prep = [
-            mkBuildSlot('크림슨 웨이브', '3차 출혈준비', '저주II 룬 착용 시 미리 육성', true, 'future'),
+            mkBuildSlot('크림슨 웨이브', '3차 출혈준비', '고대·영원 무기 출혈 증폭 & 저주II 필수!', true, 'future'),
             mkBuildSlot(elemPulseSkill, '보유효과 준비', '주속성 보유효과 1각 필수', true, 'future'),
             ...(guideJob === 'mage' ? [mkBuildSlot(mage3rdDeal, '3차 메인딜 육성', '3차 스킬 집중 투자', true, 'fix')] : [])
           ].join('');
@@ -15375,90 +15398,150 @@
         } else if (guideBuildStep === 3) {
           let s3Slots = '', s3Cnt = '', s3Tip = '';
           if (guideJob === 'mage') {
-            s3Cnt = '7슬롯 (미스틱 스킬 +1 추가)';
-            const fourth = guideElem === 'fire' ? '그림자 포효' : '환영나비';
-            s3Slots = [mkBuildSlot(mage3rdDeal,'★1번슬롯 메인딜','강화스킬 적용용 1번 배치!',true,'fix'), mkBuildSlot('지옥불베기','직업 고정','스킬 피해 버프',true,'fix'), mkBuildSlot(elemDebuffSkill,'주속성 고정',debNote,true,'fix'), mkBuildSlot(fourth,'속성별 분기',guideElem==='fire'?'불속성 고정 (저주룬O 시 나비 241배 우세)':'비불속성: 나비(241배) 채택',true,'fix'), mkBuildSlot('엘리멘탈 차지','고정 버프','3차 핵심 버프 (300배)',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','과성장 졸업 핵심',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈 고정','불멸 저주II 출혈 조건',true,'fix')].join('');
-            s3Tip = guideElem === 'fire' ? '💡 <strong>화염 아크메이지 팁:</strong> [저주/저주 II] 심연장식 룬 착용 중이라면 4차 Lv.80 전까지 그림자 포효(111배) 대신 <strong>환영나비(241배)</strong>가 더 강합니다. (저주 II 졸업 후엔 <strong>[V · 완전 종결]</strong> 탭 참고!)' : '';
+            s3Cnt = '7슬롯 (원소창조 10돌 전 · 3차 기준)';
+            const slot3 = guideElem === 'fire'
+              ? mkBuildSlot('환영나비', '저주룬O 241배', '저주 룬 미착용 시 [불벼락] 사용!', true, 'flex')
+              : mkBuildSlot('환영나비', '필수 버프 241배', '불베기(화상)+영웅 상태이상 상시 발동!', true, 'fix');
+            const slot4 = guideElem === 'dark'
+              ? mkBuildSlot('암흑붕괴', '어둠 고정 111배', '자체 2각 혼돈 보유 (포효 불필요!)', true, 'fix')
+              : mkBuildSlot('그림자 포효', '과도기 111배', guideElem==='fire'?'원소창조 전 고효율 · Lv.80 혼돈낙인까지 유지!':'원소창조 전 과도기 · 4차 Lv.75에 뇌전검무 교체!', true, 'flex');
+            s3Slots = [
+              mkBuildSlot(mage3rdDeal,'★1번슬롯 메인딜','강화스킬 적용용 1번 배치!',true,'fix'),
+              mkBuildSlot('지옥불베기','직업 고정','스킬 피해 버프 + 화상 부여',true,'fix'),
+              slot3,
+              slot4,
+              mkBuildSlot('엘리멘탈 차지','고정 버프','3차 핵심 버프 (300배)',true,'fix'),
+              mkBuildSlot('오버드라이브','고정 버프','과성장 졸업 핵심',true,'fix'),
+              mkBuildSlot('크림슨 웨이브','★출혈 고정!','고대·영원 무기 출혈 증폭 & 저주II',true,'fix')
+            ].join('');
+            s3Tip = guideElem === 'fire'
+              ? '💡 <strong>화염 아크메이지 3차 팁:</strong> 원소창조 10돌 이전에는 [저주/저주 II] 룬 착용 시 <strong>환영나비(241배) + 그림자 포효(111배)</strong>가 가장 강합니다! (저주 룬 미착용 시 나비 불가 ➔ <strong>불벼락 + 그림자 포효</strong> 사용 / 4차 Lv.75~80에는 나비 빼고 불벼락+포효 고정!)'
+              : (guideElem === 'light'
+                ? '💡 <strong>번개 아크메이지 3차 팁:</strong> 원소창조 10돌·4차 Lv.75 전까지는 <strong>그림자 포효(111배)</strong>가 뇌전검무와 동률(이미 키웠다면 더 셈)이지만, <strong>4차 Lv.75(과부하의 낙인)부터는 반드시 뇌전검무로 교체</strong>해야 합니다!'
+                : '💡 <strong>어둠 아크메이지 3차 팁:</strong> 어둠 속성은 <strong>암흑붕괴</strong> 자체가 2각 혼돈 + 111배를 지녀 그림자 포효가 필요 없으며, 4차 Lv.75(공포의 낙인) & 완전 종결까지 그대로 씁니다.');
           } else if (guideJob === 'reaper') {
-            s3Cnt = '6슬롯 (소울리퍼 스킬 +1 추가)';
-            s3Slots = [mkBuildSlot('썬더 오빗','사신 고정','3각 시 303.4배',true,'fix'), mkBuildSlot(elemDebuffSkill,'주속성 고정',debNote,true,'fix'), mkBuildSlot('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), mkBuildSlot('환영나비','★포효 대체 241배','저주II·어둠사신 2.17배 우위! (저주X 화염·번개는 포효)',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈 고정','고대·영원 무기 출혈 받피증 고정!',true,'fix')].join('');
-            s3Tip = '💡 <strong>사신 나비 vs 포효:</strong> 저주 II 룬이 3상태이상을 자동 부여하므로 <strong>환영나비(241배)</strong>가 그림자 포효(111배)보다 2.17배 더 강합니다! (저주 II 졸업 시 <strong>[V · 완전 종결]</strong> 탭에서 크림슨 빼고 나비+포효 동시 장착!)';
+            s3Cnt = '6슬롯 (원소창조 10돌 전 · 3차 기준)';
+            const slot2 = guideElem === 'dark'
+              ? mkBuildSlot('암흑붕괴','어둠 고정 111배','자체 2각 혼돈 + 111배 · 후반 그대로 승계!',true,'fix')
+              : mkBuildSlot('그림자 포효','과도기 우세 111배',`원소창조 전 2각 혼돈(루비/격화 보완) · 4차 Lv.75에 [${elemDebuffSkill}] 교체!`,true,'flex');
+            s3Slots = [
+              mkBuildSlot('썬더 오빗','사신 고정','3각 시 303.4배',true,'fix'),
+              slot2,
+              mkBuildSlot('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'),
+              mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'),
+              mkBuildSlot('환영나비','★핵심 241배','셀렌(감전)+루비(화상)로 상시 발동 (포효의 2.17배!)',true,'fix'),
+              mkBuildSlot('크림슨 웨이브','★출혈 고정!','고대·영원 무기 출혈 증폭 & 저주II 고정!',true,'fix')
+            ].join('');
+            s3Tip = guideElem === 'dark'
+              ? '💡 <strong>어둠 사신 3차 팁:</strong> 어둠 속성은 <strong>암흑붕괴</strong> 자체가 2각 혼돈 + 111배를 갖추고 있어 처음부터 그림자 포효 없이 <strong>환영나비 + 암흑붕괴</strong>로 쭉 가시면 됩니다!'
+              : `💡 <strong>화염·번개 사신 3차 팁:</strong> 원소창조 10돌·4차 Lv.75 전까지는 <strong>그림자 포효(111배)</strong>가 2각 혼돈(루비 3상태이상·격화 보완) 덕분에 <strong>${elemDebuffSkill}</strong>보다 유리합니다! 단, <strong>4차 Lv.75 상위 낙인 해금 시에는 반드시 ${elemDebuffSkill}로 교체</strong>하세요! (※ 홍염/초전도 반지 룬 착용 시엔 3차부터 ${elemDebuffSkill} 사용)`;
           } else {
-            s3Cnt = '5슬롯 (오버로드 스킬 슬롯 동일)';
-            const flex4 = hasElemCreate10 ? mkBuildSlot(elemDebuffSkill,'★원소창조 881배!','원소창조 10돌 시 나비(241배) 압도!',true,'future') : mkBuildSlot('환영나비','고정 버프','3각 241배 (원소창조10돌 시 주속성디버프)',true,'fix');
-            s3Slots = [mkBuildSlot('보이드 펄스','닼로 고정','영웅스킬 피해 버프',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈 고정','저주II 출혈 조건',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), flex4, mkBuildSlot('엘리멘탈 차지','최종 종결','3각 300배 버프',true,'fix')].join('');
+            s3Cnt = '5슬롯 (원소창조 10돌 전 · 3차 기준)';
+            s3Slots = [
+              mkBuildSlot('보이드 펄스','닼로 고정','영웅스킬 피해 버프',true,'fix'),
+              mkBuildSlot('크림슨 웨이브','★출혈 고정!','고대·영원 무기 출혈 증폭 & 저주II',true,'fix'),
+              mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'),
+              mkBuildSlot('환영나비','★3차 핵심 241배','원소창조 10돌 전엔 포효·속성디버프(111배) 압도!',true,'fix'),
+              mkBuildSlot('엘리멘탈 차지','고정 버프','3각 300배 버프',true,'fix')
+            ].join('');
+            s3Tip = '💡 <strong>오버로드(3차) 5슬롯 안내:</strong> 원소창조 10돌 이전에는 <strong>환영나비(241배)</strong>가 포효·주속성 디버프(111배)보다 2.17배 강합니다! (※ 저주 룬 미착용 등으로 2상태이상 미달 시에만 임시로 그림자 포효 사용 / 원소창조 10돌 교체는 <strong>[V. 완전 종결]</strong> 탭 참고)';
           }
           contentHtml = `<div class="stage-build-card" style="border-left-color:#a855f7;">
-            <div class="stage-build-header"><span class="stage-build-title">⚡ 3차 전직 (${jMeta.c3}) 스킬 세팅 (불멸 저주 II 기준)</span><span class="grade-badge grade-mythic">${s3Cnt}</span></div>
+            <div class="stage-build-header"><span class="stage-build-title">⚡ 3차 전직 (${jMeta.c3}) 스킬 세팅 (원소창조 10돌 이전)</span><span class="grade-badge grade-mythic">${s3Cnt}</span></div>
             <div class="build-slot-grid">${s3Slots}</div>
             <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 전 직업 공통 보유효과 스킬 (미장착 · 1각 필수):</div>
             <div class="build-slot-grid">${mkBuildSlot(elemPulseSkill,'보유효과 (1각 필수)','주속성 펄스 미장착 보유효과!',true,'future')}</div>
             ${s3Tip ? `<div class="build-tip-box" style="margin-top:12px;">${s3Tip}</div>` : ''}
           </div>`;
         } else if (guideBuildStep === 4) {
-          let s4Slots = '', s4Cnt = '', s4Note = '';
+          let s4Slots = '', s4Cnt = '', s4Note = '', s4TopBanner = '';
           if (guideJob === 'mage') {
-            s4Cnt = '7슬롯 (4차 신규 메인딜 · 저주 II 기준)';
-            const fourth = guideElem === 'fire' ? '그림자 포효' : '환영나비';
+            s4Cnt = '7슬롯 (4차 이럽션 & Lv.75/80 낙인)';
+            const fourth = guideElem === 'fire'
+              ? mkBuildSlot('그림자 포효','★불앜메 Lv.80 종결!','4차 Lv.80 혼돈의 낙인(51배) ➔ 5,661배!',true,'fix')
+              : mkBuildSlot('환영나비','번개·어둠 종결 241배','그림자 포효 졸업 · 3각 241배 고정!',true,'fix');
             s4Slots = [
               mkBuildSlot(mage4thDeal,'★4차 1번슬롯 메인딜',`[${mage3rdDeal}] 대체 신규 종결 딜스킬!`,true,'future'),
-              mkBuildSlot('지옥불베기','직업 고정','스킬 피해 버프',true,'fix'),
-              mkBuildSlot(elemDebuffSkill,'주속성 고정',debNote,true,'fix'),
-              mkBuildSlot(fourth,'속성별 분기',guideElem==='fire'?'불속성 고정 (4차 Lv.80 혼돈의 낙인!)':'비불속성: 나비(241배) 채택',true,'fix'),
+              mkBuildSlot('지옥불베기','직업 고정','스킬 피해 버프 (찰나의 집중/낙인 링크)',true,'fix'),
+              mkBuildSlot(elemDebuffSkill,'★Lv.75 낙인 필수!','4차 Lv.75 상위 낙인 트리거 (포효 교체!)',true,'future'),
+              fourth,
               mkBuildSlot('엘리멘탈 차지','고정 버프','3차 핵심 버프 (300배)',true,'fix'),
-              mkBuildSlot('오버드라이브','고정 버프','필수 버프',true,'fix'),
-              mkBuildSlot('크림슨 웨이브','출혈 고정','불멸 저주II 출혈 조건',true,'fix')
+              mkBuildSlot('오버드라이브','고정 버프','한계 초월(+700%) 링크 핵심',true,'fix'),
+              mkBuildSlot('크림슨 웨이브','★출혈 고정!','고대·영원 무기 출혈 증폭 & 저주II',true,'fix')
             ].join('');
-            s4Note = `🔥 <strong>4차 슈프림 핵심 변경점:</strong> 기존 3차 주력기(<strong>${mage3rdDeal}</strong>) 대신 <strong>[${mage4thDeal}]</strong>를 1번 슬롯에 배치하세요! (저주 II 졸업 시 <strong>[V · 완전 종결]</strong> 탭 참고)`;
+            s4Note = guideElem === 'fire'
+              ? `🔥 <strong>4차 슈프림(화염) 핵심:</strong> 1번 슬롯을 <strong>[${mage4thDeal}]</strong>로 교체하세요! <strong>화염 아크메이지는 유일하게 4차 Lv.80 [혼돈의 낙인] 덕분에 [그림자 포효]를 끝까지 고정 사용</strong>합니다. (Lv.75 전까지는 3차처럼 나비+포효 가능)`
+              : `🔥 <strong>4차 슈프림(번개·어둠) 핵심:</strong> 1번 슬롯을 <strong>[${mage4thDeal}]</strong>로 교체하고, 4차 Lv.75 상위 낙인 해금 시 <strong>그림자 포효를 빼고 [${elemDebuffSkill}]</strong>를 투입해 <strong>환영나비 + ${elemDebuffSkill}</strong> 조합으로 졸업합니다!`;
           } else if (guideJob === 'reaper') {
-            s4Cnt = '6슬롯 (그림리퍼 · 저주 II 기준)';
-            s4Slots = [mkBuildSlot('썬더 오빗','사신 고정','3각 시 303.4배',true,'fix'), mkBuildSlot(elemDebuffSkill,'주속성 고정',debNote,true,'fix'), mkBuildSlot('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), mkBuildSlot('환영나비','★포효 대체 241배','저주II·어둠사신 2.17배 우위!',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈 고정','저주II 출혈 조건 (졸업 시 포효)',true,'fix')].join('');
-            s4Note = `💡 <strong>그림리퍼(4차):</strong> 저주 II 룬 졸업(개화/영원의 순환:밤) 및 별·달·해 완성 후에는 <strong>[V · 완전 종결]</strong> 탭처럼 크림슨을 빼고 나비+포효를 동시 장착합니다!`;
+            s4Cnt = '6슬롯 (4차 Lv.75 상위 낙인 기준)';
+            s4Slots = [
+              mkBuildSlot('썬더 오빗','사신 고정','3각 시 303.4배',true,'fix'),
+              mkBuildSlot(elemDebuffSkill,'★Lv.75 낙인 필수!','4차 Lv.75 상위 낙인 트리거 (Lv.74 전엔 포효 가능)',true,'future'),
+              mkBuildSlot('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'),
+              mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'),
+              mkBuildSlot('환영나비','★핵심 241배','셀렌(감전)+루비(화상) 상시 발동!',true,'fix'),
+              mkBuildSlot('크림슨 웨이브','★출혈 고정!','고대·영원 무기 출혈 증폭 & 저주II 고정!',true,'fix')
+            ].join('');
+            s4Note = `💡 <strong>그림리퍼(4차) 핵심 교체 시점:</strong> 4차 Lv.74 이전에는 3차처럼 <strong>그림자 포효(과도기)</strong>를 유지해도 되지만, <strong>Lv.75 상위 낙인(열상/과부하/공포의 낙인, 약 16만 배!)이 열리는 순간 포효를 빼고 [${elemDebuffSkill}]로 반드시 교체</strong>하세요!`;
           } else {
-            s4Cnt = '5슬롯 (소울이터 · 저주 II 기준)';
-            const flex4 = hasElemCreate10 ? mkBuildSlot(elemDebuffSkill,'★원소창조 881배!','원소창조 10돌 시 나비(241배) 압도!',true,'future') : mkBuildSlot('환영나비','고정 버프','3각 241배 (원소창조10돌 시 주속성디버프)',true,'fix');
-            s4Slots = [mkBuildSlot('보이드 펄스','닼로 고정','영웅스킬 피해 버프',true,'fix'), mkBuildSlot('크림슨 웨이브','출혈 고정','저주II 출혈 조건',true,'fix'), mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'), flex4, mkBuildSlot('엘리멘탈 차지','최종 종결','3각 300배 버프',true,'fix')].join('');
-            s4Note = `💡 4차 소울이터는 영웅 탭에서 신규 4차 메인딜 <strong>[${lord4thDealHero}]</strong>로 교체하세요! 원소창조 10돌 달성 시 상단 토글을 켜면 주속성 디버프(881배) 세팅으로 전환됩니다.`;
+            s4Cnt = '5슬롯 (4차 소울이터 · 영웅 교체 구간)';
+            s4TopBanner = `<div style="background:linear-gradient(135deg, rgba(250,204,21,0.18) 0%, #1c1917 100%); border:1.5px solid #facc15; border-radius:11px; padding:11px 14px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+              <div style="font-size:12.5px; color:#fef08a; line-height:1.5;">
+                <strong>👑 4차 소울이터 안내:</strong> 스킬 5슬롯은 3차와 동일하게 <strong>환영나비(241배)</strong>를 유지하며, <strong>4차 핵심 변경점은 [영웅 탭]의 신규 4차 메인딜 [${lord4thDealHero}] 교체</strong>입니다!
+              </div>
+              <button type="button" onclick="selectGuideBuildTab('hero')" style="background:#db2777; border:1px solid #f9a8d4; color:#fff; font-size:12px; font-weight:900; padding:6px 12px; border-radius:8px; cursor:pointer; white-space:nowrap;">🦸 4차 영웅 [${lord4thDealHero}] 보기 ➔</button>
+            </div>`;
+            s4Slots = [
+              mkBuildSlot('보이드 펄스','닼로 고정','영웅스킬 피해 버프',true,'fix'),
+              mkBuildSlot('크림슨 웨이브','★출혈 고정!','고대·영원 무기 출혈 증폭 & 저주II',true,'fix'),
+              mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'),
+              mkBuildSlot('환영나비','4차 유지 241배','원소창조 10돌 달성 전까지 고정 (V탭 참고)',true,'fix'),
+              mkBuildSlot('엘리멘탈 차지','고정 버프','3각 300배 버프',true,'fix')
+            ].join('');
+            s4Note = `💡 4차 소울이터 구간은 아직 원소창조 10돌 달성 전이므로 <strong>환영나비(241배)</strong>를 그대로 유지합니다. 추후 5고패 <strong>[원소창조 10돌]</strong>을 달성하는 시점에만 <strong>[V. 완전 종결]</strong> 탭처럼 <strong>${elemDebuffSkill}(881배)</strong>로 교체하세요!`;
           }
           contentHtml = `<div class="stage-build-card" style="border-left-color:#facc15;">
-            <div class="stage-build-header"><span class="stage-build-title">⚡ 4차 전직 (${jMeta.c4}) 스킬 세팅 (저주 II 룬 기준)</span><span class="grade-badge grade-legend">${s4Cnt}</span></div>
+            <div class="stage-build-header"><span class="stage-build-title">⚡ 4차 전직 (${jMeta.c4}) 스킬 세팅 (원소창조 10돌 이전)</span><span class="grade-badge grade-legend">${s4Cnt}</span></div>
+            ${s4TopBanner}
             <div class="build-slot-grid">${s4Slots}</div>
             <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 전 직업 공통 보유효과 스킬 (미장착 · 1각 필수):</div>
             <div class="build-slot-grid">${mkBuildSlot(elemPulseSkill,'보유효과 (1각 필수)','주속성 펄스 미장착 보유효과!',true,'future')}</div>
             <div class="build-tip-box" style="margin-top:12px;">${s4Note}</div>
           </div>`;
         } else {
-          // V. 완전 종결 탭 (별·달·해 졸업 · 크림슨 웨이브 전 직업 절대 고정!)
+          // V. 완전 종결 탭 (별·달·해 + 5고패 원소창조 10돌 · 크림슨 웨이브 전 직업 절대 고정!)
           let s5Slots = '', s5Cnt = '', s5Note = '';
           if (guideJob === 'reaper') {
-            s5Cnt = '6슬롯 · 완전 종결 (별·달·해 기준)';
+            s5Cnt = '6슬롯 · 완전 종결 (별·달·해 & 원소창조 10돌)';
             s5Slots = [
               mkBuildSlot('썬더 오빗','사신 고정','3각 303.4배',true,'fix'),
-              mkBuildSlot(elemDebuffSkill,'주속성 고정','원소창조 10돌 시 881배!',true,'future'),
+              mkBuildSlot(elemDebuffSkill,'★원소창조 881배!','원소창조 10돌(881배) + 75렙 낙인 종결!',true,'future'),
               mkBuildSlot('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'),
               mkBuildSlot('오버드라이브','고정 버프','최우선 3각',true,'fix'),
-              mkBuildSlot('환영나비','★종결 241배','그림자 포효(111배) 대체 · 2.17배 우위!',true,'future'),
+              mkBuildSlot('환영나비','★종결 241배','그림자 포효 완전 졸업 · 2.17배 우위!',true,'future'),
               mkBuildSlot('크림슨 웨이브','★필수 고정!','고대·영원 무기 3종 보유 시 출혈 받피증 압도적!',true,'fix')
             ].join('');
-            s5Note = `👑 <strong>그림리퍼(사신) 완전 종결 해설:</strong> <strong>크림슨 웨이브</strong>는 저주 룬 여부와 상관없이 <strong>고대·영원 대낫·오브·장식 보유 시 출혈(받는 피해량 증가) 버프 증폭이 그림자 포효보다 훨씬 강력</strong>하므로 무조건 고정합니다! 영웅 탭은 격화 룬 대신 <strong>별·달·해</strong>를 장착합니다.`;
+            s5Note = `👑 <strong>그림리퍼(사신) 완전 종결 해설:</strong> <strong>크림슨 웨이브</strong>는 저주 룬 여부와 상관없이 <strong>고대·영원 무기 보유 시 출혈 받피증 증폭이 그림자 포효보다 훨씬 강력</strong>하므로 무조건 고정하며, <strong>그림자 포효</strong>는 완전히 졸업하고 <strong>${elemDebuffSkill}(원소창조 881배) + 환영나비(241배)</strong>로 최종 완성됩니다!`;
           } else if (guideJob === 'mage') {
-            s5Cnt = '7슬롯 · 완전 종결 (별·달·해 기준)';
-            const fourth = guideElem === 'fire' ? '그림자 포효' : '환영나비';
+            s5Cnt = '7슬롯 · 완전 종결 (별·달·해 & 원소창조 10돌)';
+            const fourth = guideElem === 'fire'
+              ? mkBuildSlot('그림자 포효','★불앜메 유일 종결!','4차 Lv.80 혼돈의 낙인(51배) ➔ 5,661배!',true,'future')
+              : mkBuildSlot('환영나비','번개·어둠 종결 241배','그림자 포효 완전 졸업 · 3각 241배!',true,'future');
             s5Slots = [
               mkBuildSlot(mage4thDeal,'★4차 1번슬롯 메인딜','주기 전환 II 링크 종결!',true,'future'),
               mkBuildSlot('지옥불베기','직업 고정',guideElem==='fire'?'찰나의 집중 링크':'작열의 낙인 링크',true,'fix'),
-              mkBuildSlot(elemDebuffSkill,'주속성 고정','75렙 상위 낙인 · 원소창조 10돌 881배!',true,'future'),
-              mkBuildSlot(fourth,'속성별 종결',guideElem==='fire'?'불앜메 4차 Lv.80 혼돈의 낙인 고정!':'번개·어둠 종결 (3각 241배)',true,'future'),
+              mkBuildSlot(elemDebuffSkill,'★원소창조 881배!','75렙 상위 낙인 + 원소창조 10돌 881배!',true,'future'),
+              fourth,
               mkBuildSlot('엘리멘탈 차지','고정 버프','3각 300배 버프',true,'fix'),
               mkBuildSlot('오버드라이브','고정 버프','한계 초월(+700%) 링크',true,'fix'),
               mkBuildSlot('크림슨 웨이브','★필수 고정!','고대·영원 무기 풀증폭 출혈 받피증!',true,'fix')
             ].join('');
-            s5Note = `👑 <strong>슈프림(아크메이지) 완전 종결 해설:</strong> 고대·영원 무기 풀보유 기준 <strong>크림슨 웨이브</strong>는 저주 룬 여부와 무관하게 고정 핵심 버프이며, <strong>원소창조 10돌 보유 시에도 7슬롯 구성은 동일</strong>합니다.`;
+            s5Note = `👑 <strong>슈프림(아크메이지) 완전 종결 해설:</strong> 고대·영원 무기 풀보유 기준 <strong>크림슨 웨이브</strong>는 저주 룬 여부와 무관하게 고정이며, <strong>${elemDebuffSkill}</strong>가 원소창조 10돌로 <strong>881배</strong>까지 폭등합니다. ${guideElem==='fire'?'화염 속성만 Lv.80 [혼돈의 낙인] 덕분에 그림자 포효를 끝까지 고정 사용합니다!':'번개·어둠 속성은 그림자 포효를 완전히 졸업하고 환영나비(241배)로 종결합니다!'}`;
           } else {
-            s5Cnt = '5슬롯 · 완전 종결 (원소창조 10돌 분기)';
+            s5Cnt = '5슬롯 · 완전 종결 (원소창조 10돌 토글 연동)';
             const slot4 = hasElemCreate10
-              ? mkBuildSlot(elemDebuffSkill,'★원소창조 881배!','원소창조 10돌 시 환영나비(241배) 압도!',true,'future')
-              : mkBuildSlot('환영나비','3각 241배','원소창조 10돌 달성 시 상단 토글 ON!',true,'future');
+              ? mkBuildSlot(elemDebuffSkill,'★원소창조 881배!','원소창조 10돌 달성 ➔ 환영나비(241배) 압도 교체!',true,'future')
+              : mkBuildSlot('환영나비','미보유 시 241배','원소창조 10돌 달성 시 위쪽 토글을 ON으로 켜세요!',true,'flex');
             s5Slots = [
               mkBuildSlot('보이드 펄스','닼로 고정','영웅스킬 피해 버프',true,'fix'),
               mkBuildSlot('크림슨 웨이브','★필수 고정!','고대·영원 무기 풀증폭 출혈 받피증!',true,'fix'),
@@ -15466,10 +15549,10 @@
               slot4,
               mkBuildSlot('엘리멘탈 차지','고정 버프','3각 300배',true,'fix')
             ].join('');
-            s5Note = `👑 <strong>소울이터(다크로드) 완전 종결 해설:</strong> <strong>크림슨 웨이브</strong>는 무조건 고정이며, 다크로드는 5슬롯 제한으로 인해 <strong>[원소창조 10돌]</strong> 달성 시 <strong>환영나비(241배) ➔ 주속성 디버프(881배)</strong>로 교체하는 것이 최종 종결입니다!`;
+            s5Note = `👑 <strong>소울이터(다크로드) 완전 종결 해설:</strong> <strong>크림슨 웨이브</strong>는 무조건 고정이며, 다크로드는 5슬롯 제한으로 인해 <strong>위쪽 [원소창조 10돌] 토글을 켜는 시점에 환영나비(241배) ➔ ${elemDebuffSkill}(881배)</strong>로 교체하는 것이 최종 종결입니다!`;
           }
           contentHtml = `<div class="stage-build-card" style="border-left-color:#e879f9; background:linear-gradient(150deg, rgba(168,85,247,0.14) 0%, #0f172a 100%);">
-            <div class="stage-build-header"><span class="stage-build-title">👑 완전 종결 (${jMeta.c4} · 별·달·해 &amp; 영원무기 풀보유) 스킬 세팅</span><span class="grade-badge grade-immortal">${s5Cnt}</span></div>
+            <div class="stage-build-header"><span class="stage-build-title">👑 완전 종결 (${jMeta.c4} · 별·달·해 &amp; 5고패 원소창조 10돌) 스킬 세팅</span><span class="grade-badge grade-immortal">${s5Cnt}</span></div>
             <div class="build-slot-grid">${s5Slots}</div>
             <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 전 직업 공통 보유효과 스킬 (미장착 · 1각 필수):</div>
             <div class="build-slot-grid">${mkBuildSlot(elemPulseSkill,'보유효과 (1각 필수)','주속성 펄스 미장착 보유효과!',true,'future')}</div>
@@ -15532,16 +15615,16 @@
         let h4Slots = '', h4Cnt = '', h4Note = '';
         if (guideJob === 'reaper') {
           h4Cnt = isFinal ? '5슬롯 · 완전 종결 (별·달·해 기준)' : '5슬롯 (그림리퍼 종결)';
-          h4Slots = [mkBuildSlot('솔라리스','과성장 졸업','오버드라이브 3각 필수',false,'fix'), mkBuildSlot('셀렌','사신 고정','3각 1,012.5배 + 감전',false,'fix'), mkBuildSlot(elemNewHero,'주속성 신영웅','시너지 600점+ 3각',false,'fix'), mkBuildSlot('나리타','고정 버퍼','3각 상시 501배',false,'fix'), mkBuildSlot('루비','화상+3상태 21배',isFinal?'격화 졸업 후에도 화상+21배로 나비·포효와 완벽 시너지!':'3상태이상 유지',false,'fix')].join('');
+          h4Slots = [mkBuildSlot('솔라리스','과성장 졸업','오버드라이브 3각 필수',false,'fix'), mkBuildSlot('셀렌','사신 고정','3각 1,012.5배 + 감전',false,'fix'), mkBuildSlot(elemNewHero,'주속성 신영웅','시너지 600점+ 3각',false,'fix'), mkBuildSlot('나리타','고정 버퍼','3각 상시 501배',false,'fix'), mkBuildSlot('루비','화상+나비 시너지',isFinal?'셀렌(감전)+루비(화상)로 환영나비 241배 상시 발동!':'3상태이상 유지',false,'fix')].join('');
           h4Note = isFinal
-            ? `👑 <strong>그림리퍼(완전 종결):</strong> 별·달·해 룬으로 격화를 졸업해도 <strong>루비(화상+21배)</strong> + <strong>셀렌(감전)</strong> + <strong>그림자 포효(혼돈)</strong>로 3상태이상이 완성되어 환영나비(241배)까지 100% 풀발동됩니다.`
+            ? `👑 <strong>그림리퍼(완전 종결):</strong> 별·달·해 룬으로 격화를 졸업해도 <strong>루비(화상) + 셀렌(감전)</strong>으로 2상태이상이 상시 유지되어 스킬 탭의 <strong>환영나비(241배)</strong>가 100% 풀발동됩니다. (저주 II 룬 또는 어둠 속성 기준 3상태이상 시 루비 21배까지 추가 발동!)`
             : `💡 <strong>그림리퍼(4차):</strong> 오버드라이브 3각+솔라리스 9돌 달성 시 엘리시아 대신 <strong>솔라리스</strong>를 투입하고, 공통 보유효과로 <strong>현묵</strong>을 챙기세요.`;
         } else if (guideJob === 'mage') {
           h4Cnt = isFinal ? '4슬롯 · 완전 종결' : '4슬롯 (슈프림 종결)';
           h4Slots = [mkBuildSlot('솔라리스','과성장 졸업','오버드라이브 3각 필수',false,'fix'), mkBuildSlot('카엔','앜메 고정','3각 302.4배',false,'fix'), mkBuildSlot(elemNewHero,'주속성 신영웅','시너지 600점+ 3각',false,'fix'), mkBuildSlot('나리타','고정 버퍼','3각 상시 501배',false,'fix')].join('');
           h4Note = `💡 <strong>슈프림(${isFinal?'완전 종결':'4차'}):</strong> 스킬 탭에서 <strong>[${mage4thDeal}]</strong>를 1번 슬롯에 배치하고, 영웅 4칸은 위 조합 + 보유효과 <strong>현묵</strong>으로 최종 졸업합니다.`;
         } else {
-          h4Cnt = isFinal ? '6슬롯 · 완전 종결' : '6슬롯 (4차 신규 메인딜 반영)';
+          h4Cnt = isFinal ? '6슬롯 · 완전 종결 (4차 영웅 동일)' : '6슬롯 (4차 신규 메인딜 교체!)';
           h4Slots = [
             mkBuildSlot(lord4thDealHero,'★4차 메인딜!',`[${lord3rdDealHero}] 대체 4차 종결 딜러!`,false,'future'),
             mkBuildSlot('솔라리스','과성장 졸업','오버드라이브 3각 필수',false,'fix'),
@@ -15550,7 +15633,9 @@
             mkBuildSlot('카엘','닼로 고정','3각 346.25배',false,'fix'),
             mkBuildSlot('나리타','고정 버퍼','3각 상시 501배',false,'fix')
           ].join('');
-          h4Note = `🔥 <strong>소울이터(${isFinal?'완전 종결':'4차'}):</strong> 신규 4차 메인딜 영웅 <strong>[${lord4thDealHero}]</strong>을 1번 슬롯에 배치하고 위 6영웅 + 보유효과 <strong>현묵</strong>으로 졸업합니다!`;
+          h4Note = isFinal
+            ? `👑 <strong>소울이터(완전 종결):</strong> 영웅 6칸은 4차 세팅과 동일하며, 최종 종결 핵심은 <strong>[스킬 탭]에서 원소창조 10돌 토글을 켜 [${elemDebuffSkill}(881배)]로 교체</strong>하는 것입니다! <button type="button" onclick="selectGuideBuildTab('skill')" style="margin-left:6px; background:#d97706; border:1px solid #fde047; color:#fff; font-size:11.5px; font-weight:900; padding:3px 9px; border-radius:6px; cursor:pointer;">⚡ 스킬 종결 보기 ➔</button>`
+            : `🔥 <strong>소울이터(4차):</strong> 기존 3차 딜러([${lord3rdDealHero}])를 신규 4차 메인딜 영웅 <strong>[${lord4thDealHero}]</strong>으로 교체하고 위 6영웅 + 보유효과 <strong>현묵</strong>으로 완성합니다!`;
         }
         contentHtml = `<div class="stage-build-card" style="border-left-color:${isFinal?'#e879f9':'#facc15'};">
           <div class="stage-build-header"><span class="stage-build-title">${isFinal?'👑 완전 종결':'🦸 4차 전직'} (${jMeta.c4}) 최종 종결 영웅 세팅</span><span class="grade-badge ${isFinal?'grade-immortal':'grade-legend'}">${h4Cnt}</span></div>
@@ -16607,10 +16692,10 @@
     } else if (lv < 55) {
       slots = [
         { linkId: 'rp_stack_pow',   note: '기운 100스택 +3,000%' },
-        { linkId: brand1Id,         note: '상태이상 + 강타 +5,000%' },
-        { linkId: 'rp_link_strike', note: '⚠️ 최종세팅 전엔 [임계점]과 비교!' }
+        { linkId: 'rp_critical_pt', note: '기운100 강타 +5,000% (51배 안정 추천!)' },
+        { linkId: brand1Id,         note: '상태이상 + 강타 +5,000%' }
       ];
-      tip = 'Lv.50~54 (3슬롯): 스킬·영웅 발동마다 강타가 3회씩 쏟아지는 [연계 강타]를 투입합니다. ⚠️ [주의] 스킬·영웅 최종 세팅이 덜 끝났다면 추가 발동 타수가 [임계점(+5,000% · 51배)]을 못 넘어 오히려 약해질 수 있으니, 그 경우 [임계점 + 쌓이는 힘]을 유지하고 수련동굴 비석에서 비교해 보세요!';
+      tip = 'Lv.50~54 (3슬롯): Lv.50 해금 [연계 강타]는 스킬·영웅 최종 세팅이 덜 끝난 경우 추가 발동 타수가 [임계점(+5,000% · 51배)]을 못 넘어 오히려 약해집니다! 따라서 [쌓이는 힘 + 임계점 + 주속성 낙인] 유지를 기본 추천하며, 스킬·영웅 최종 세팅이 완료된 경우에만 [연계 강타]와 수련동굴 비석으로 비교해 보세요.';
     } else if (lv < 60) {
       slots = [
         { linkId: 'rp_hyper_spd', note: '공속 초과 1%당 +50% 곱연산!' },
