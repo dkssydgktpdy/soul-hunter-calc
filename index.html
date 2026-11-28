@@ -15393,15 +15393,33 @@
             <div class="build-slot-grid">${s2Prep}</div>
           </div>`;
         } else if (guideBuildStep === 3) {
-          let s3Slots = '', s3Cnt = '', s3Tip = '';
+          let s3Slots = '', s3Cnt = '', s3Tip = '', s3CompareHtml = '';
+          const mkCompareBar = (skA, subA, skB, subB, descHtml) => {
+            const imgA = SKILL_ICON_MAP[skA], imgB = SKILL_ICON_MAP[skB];
+            return `<div style="margin-top:12px; background:linear-gradient(135deg, rgba(56,189,248,0.12) 0%, #0b1120 100%); border:1.5px solid #38bdf8; border-radius:11px; padding:11px 14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+              <div style="display:flex; align-items:center; gap:9px; flex-shrink:0;">
+                <div style="display:flex; align-items:center; gap:6px; background:#131d33; border:1px solid #475569; border-radius:8px; padding:5px 9px;">
+                  <div class="icon-clean-wrap" style="width:34px; height:34px; border-radius:7px; border:1.5px solid #38bdf8; flex-shrink:0;"><img src="images/${imgA}.png" alt="${skA}" onerror="this.style.display='none';"></div>
+                  <div style="line-height:1.2;"><div style="font-size:12px; font-weight:900; color:#ffffff;">${skA}</div><div style="font-size:10px; color:#7dd3fc; font-weight:700;">${subA}</div></div>
+                </div>
+                <span style="font-size:16px; font-weight:900; color:#fde047;">⇄</span>
+                <div style="display:flex; align-items:center; gap:6px; background:#131d33; border:1px solid #475569; border-radius:8px; padding:5px 9px;">
+                  <div class="icon-clean-wrap" style="width:34px; height:34px; border-radius:7px; border:1.5px solid #c084fc; flex-shrink:0;"><img src="images/${imgB}.png" alt="${skB}" onerror="this.style.display='none';"></div>
+                  <div style="line-height:1.2;"><div style="font-size:12px; font-weight:900; color:#ffffff;">${skB}</div><div style="font-size:10px; color:#e9d5ff; font-weight:700;">${subB}</div></div>
+                </div>
+              </div>
+              <div style="flex:1; min-width:220px; font-size:12px; color:#e2e8f0; line-height:1.55;">${descHtml}</div>
+            </div>`;
+          };
+
           if (guideJob === 'mage') {
             s3Cnt = '7슬롯 (원소창조 10돌 전 · 3차 기준)';
             const slot3 = guideElem === 'fire'
               ? mkBuildSlot('환영나비', '저주룬O 241배', '저주 룬 미착용 시 [불벼락] 사용!', true, 'flex')
               : mkBuildSlot('환영나비', '필수 버프 241배', '불베기(화상)+영웅 상태이상 상시 발동!', true, 'fix');
-            const slot4 = guideElem === 'dark'
-              ? mkBuildSlot('암흑붕괴', '어둠 고정 111배', '자체 2각 혼돈 보유 (포효 불필요!)', true, 'fix')
-              : mkBuildSlot('그림자 포효', '과도기 111배', guideElem==='fire'?'원소창조 전 고효율 · Lv.80 혼돈낙인까지 유지!':'원소창조 전 과도기 · 4차 Lv.75에 뇌전검무 교체!', true, 'flex');
+            const slot4 = guideElem === 'fire'
+              ? mkBuildSlot('그림자 포효', '화염 핵심 111배', '4차 Lv.80 혼돈의 낙인까지 그대로 유지!', true, 'fix')
+              : mkBuildSlot(elemDebuffSkill, '주속성 고정 111배', '4차 Lv.75 상위 낙인 & 종결까지 승계!', true, 'fix');
             s3Slots = [
               mkBuildSlot(mage3rdDeal,'★1번슬롯 메인딜','강화스킬 적용용 1번 배치!',true,'fix'),
               mkBuildSlot('지옥불베기','직업 고정','스킬 피해 버프 + 화상 부여',true,'fix'),
@@ -15411,27 +15429,33 @@
               mkBuildSlot('오버드라이브','고정 버프','과성장 졸업 핵심',true,'fix'),
               mkBuildSlot('크림슨 웨이브','★출혈 고정!','고대·영원 무기 출혈 증폭 & 저주II',true,'fix')
             ].join('');
-            s3Tip = guideElem === 'fire'
-              ? '💡 <strong>화염 아크메이지 3차 팁:</strong> 원소창조 10돌 이전에는 [저주/저주 II] 룬 착용 시 <strong>환영나비(241배) + 그림자 포효(111배)</strong>가 가장 강합니다! (저주 룬 미착용 시 나비 불가 ➔ <strong>불벼락 + 그림자 포효</strong> 사용 / 4차 Lv.75~80에는 나비 빼고 불벼락+포효 고정!)'
-              : (guideElem === 'light'
-                ? '💡 <strong>번개 아크메이지 3차 팁:</strong> 원소창조 10돌·4차 Lv.75 전까지는 <strong>그림자 포효(111배)</strong>가 뇌전검무와 동률(이미 키웠다면 더 셈)이지만, <strong>4차 Lv.75(과부하의 낙인)부터는 반드시 뇌전검무로 교체</strong>해야 합니다!'
-                : '💡 <strong>어둠 아크메이지 3차 팁:</strong> 어둠 속성은 <strong>암흑붕괴</strong> 자체가 2각 혼돈 + 111배를 지녀 그림자 포효가 필요 없으며, 4차 Lv.75(공포의 낙인) & 완전 종결까지 그대로 씁니다.');
+
+            if (guideElem === 'fire') {
+              s3CompareHtml = mkCompareBar('환영나비', '저주룬 O · 241배', '불벼락', '저주룬 X · 111배',
+                '<strong style="color:#fde047;">화염 아크메이지 세팅 비교:</strong> [저주/저주 II] 룬이 있으면 <strong>환영나비 + 그림자 포효</strong>가 가장 강하며, 저주 룬이 없다면 나비가 안 켜지므로 <strong>불벼락 + 그림자 포효</strong>로 세팅하세요! (4차 Lv.75~80엔 불벼락+포효 고정)');
+            } else if (guideElem === 'light') {
+              s3CompareHtml = mkCompareBar('뇌전검무', '기본 추천 · 111배', '그림자 포효', '비교 선택 · 111배',
+                '<strong style="color:#fde047;">번개 아크메이지 세팅 비교:</strong> 원소창조 10돌 · 4차 Lv.75 전까지는 두 스킬 모두 3각 111배로 동일합니다! <strong>각성 단계가 더 높은 쪽</strong>을 비석에서 비교해 사용하시고, <strong>4차 Lv.75(과부하의 낙인)부터는 뇌전검무로 고정</strong>하세요.');
+            } else {
+              s3Tip = '💡 <strong>어둠 아크메이지 3차 팁:</strong> 어둠 속성은 <strong>암흑붕괴</strong> 자체가 2각 혼돈 + 111배를 지녀 그림자 포효가 필요 없으며, 4차 Lv.75(공포의 낙인) & 완전 종결까지 그대로 씁니다.';
+            }
           } else if (guideJob === 'reaper') {
             s3Cnt = '6슬롯 (원소창조 10돌 전 · 3차 기준)';
-            const slot2 = guideElem === 'dark'
-              ? mkBuildSlot('암흑붕괴','어둠 고정 111배','자체 2각 혼돈 + 111배 · 후반 그대로 승계!',true,'fix')
-              : mkBuildSlot('그림자 포효','과도기 우세 111배',`원소창조 전 2각 혼돈(루비/격화 보완) · 4차 Lv.75에 [${elemDebuffSkill}] 교체!`,true,'flex');
             s3Slots = [
               mkBuildSlot('썬더 오빗','사신 고정','3각 시 303.4배',true,'fix'),
-              slot2,
+              mkBuildSlot(elemDebuffSkill,'주속성 고정 111배','4차 Lv.75 상위 낙인 & 종결까지 승계!',true,'fix'),
               mkBuildSlot('엘리멘탈 차지','고정 버프','3차 300배',true,'fix'),
               mkBuildSlot('오버드라이브','고정 버프','최우선 돌파/각성',true,'fix'),
               mkBuildSlot('환영나비','★핵심 241배','셀렌(감전)+루비(화상)로 상시 발동 (포효의 2.17배!)',true,'fix'),
               mkBuildSlot('크림슨 웨이브','★출혈 고정!','고대·영원 무기 출혈 증폭 & 저주II 고정!',true,'fix')
             ].join('');
-            s3Tip = guideElem === 'dark'
-              ? '💡 <strong>어둠 사신 3차 팁:</strong> 어둠 속성은 <strong>암흑붕괴</strong> 자체가 2각 혼돈 + 111배를 갖추고 있어 처음부터 그림자 포효 없이 <strong>환영나비 + 암흑붕괴</strong>로 쭉 가시면 됩니다!'
-              : `💡 <strong>화염·번개 사신 3차 팁:</strong> 원소창조 10돌·4차 Lv.75 전까지는 <strong>그림자 포효(111배)</strong>가 2각 혼돈(루비 3상태이상·격화 보완) 덕분에 <strong>${elemDebuffSkill}</strong>보다 유리합니다! 단, <strong>4차 Lv.75 상위 낙인 해금 시에는 반드시 ${elemDebuffSkill}로 교체</strong>하세요! (※ 홍염/초전도 반지 룬 착용 시엔 3차부터 ${elemDebuffSkill} 사용)`;
+
+            if (guideElem === 'dark') {
+              s3Tip = '💡 <strong>어둠 사신 3차 팁:</strong> 어둠 속성은 <strong>암흑붕괴</strong> 자체가 2각 혼돈 + 111배를 갖추고 있어 그림자 포효 비교 없이 처음부터 <strong>환영나비 + 암흑붕괴</strong>로 쭉 가시면 됩니다!';
+            } else {
+              s3CompareHtml = mkCompareBar(elemDebuffSkill, '기본 추천 · 111배', '그림자 포효', '비교 선택 · 111배',
+                `<strong style="color:#fde047;">내 세팅에 따라 비교 선택!</strong> 원소창조 10돌 · 4차 Lv.75 전까지는 두 스킬 모두 3각 111배로 동일합니다. <strong>${elemDebuffSkill}</strong>를 기본으로 쓰되, <strong>그림자 포효의 각성이 더 높거나 저주 룬 없이 2각 혼돈(루비·격화 3상태이상)이 필요할 때</strong>는 수련동굴 비석에서 비교해 선택하세요! (※ 4차 Lv.75 상위 낙인부터는 ${elemDebuffSkill} 필수)`);
+            }
           } else {
             s3Cnt = '5슬롯 (원소창조 10돌 전 · 3차 기준)';
             s3Slots = [
@@ -15446,6 +15470,7 @@
           contentHtml = `<div class="stage-build-card" style="border-left-color:#a855f7;">
             <div class="stage-build-header"><span class="stage-build-title">⚡ 3차 전직 (${jMeta.c3}) 스킬 세팅 (원소창조 10돌 이전)</span><span class="grade-badge grade-mythic">${s3Cnt}</span></div>
             <div class="build-slot-grid">${s3Slots}</div>
+            ${s3CompareHtml}
             <div style="font-size:12.5px; font-weight:800; color:#fde047; margin:14px 0 6px 0;">➕ 전 직업 공통 보유효과 스킬 (미장착 · 1각 필수):</div>
             <div class="build-slot-grid">${mkBuildSlot(elemPulseSkill,'보유효과 (1각 필수)','주속성 펄스 미장착 보유효과!',true,'future')}</div>
             ${s3Tip ? `<div class="build-tip-box" style="margin-top:12px;">${s3Tip}</div>` : ''}
@@ -21973,10 +21998,10 @@
         [mk('s_12a','스킬 특성 6-1','스킬 피해 II',20,40,'skill_flame','skill_dmg','스킬 피해량 증가',150,'%','사신·닼로 3차 Lv.10+ 전환 적용!'),
          mk('s_12b','스킬 특성 6-2','모든 피해 II',20,40,'all_emblem','skill_all','모든 피해량 증가',250,'%')],
         [mk('s_g7','스킬 특성 7','최종피해 350%',1,70,'eye_book','core','스킬 사용 시 5초간 최종 피해 증가(5중첩)',350,'%')],
-        [mk('s_14a','스킬 특성 7-1','특성 스킬 I',20,60,'skill_flame','skill_trait_dmg','특성 스킬 피해량 증가',15,'%','⚠️ 아크메이지 전용! (전환 미적용 ➔ 타직업 미투자)'),
+        [mk('s_14a','스킬 특성 7-1','특성 스킬 I',20,60,'skill_flame','skill_trait_dmg','특성 스킬 피해량 증가',15,'%','아크메이지 핵심 · 사신 3차 Lv.10+ 전환 시 모피증보다 우선 투자!'),
          mk('s_14b','스킬 특성 7-2','모든 피해 III',20,60,'all_emblem','skill_all','모든 피해량 증가',500,'%')],
         [mk('s_g8','스킬 특성 8','최종피해 500%',1,90,'eye_book','core','스킬 사용 시 5초간 최종 피해 증가(5중첩)',500,'%')],
-        [mk('s_16a','스킬 특성 8-1','특성 스킬 II',40,80,'skill_flame','skill_trait_dmg','특성 스킬 피해량 증가',35,'%','⚠️ 아크메이지 전용! (전환 미적용 ➔ 타직업 미투자)'),
+        [mk('s_16a','스킬 특성 8-1','특성 스킬 II',40,80,'skill_flame','skill_trait_dmg','특성 스킬 피해량 증가',35,'%','아크메이지 핵심 · 사신 3차 Lv.10+ 전환 시 모피증보다 우선 투자!'),
          mk('s_16b','스킬 특성 8-2','모든 피해 IV',40,80,'all_emblem','skill_all','모든 피해량 증가',800,'%')]
       ],
       hero: [
@@ -22054,28 +22079,31 @@
       byRole('elem_' + elem).forEach(n => investNode(n));
     }
 
-    // 3. 직업별 주력 라인(5-1/6-1/7-1/8-1 전부) + 타 탭 모피증 + 3차 Lv.10+ 전환(오직 5-1, 6-1만! '특성' 붙은 7-1/8-1 제외!)
+    // 3. 직업별 주력 라인 + 3차 Lv.10+ 전환 우선 투자 ➔ 이후 남는 CP로 모든 피해량(80➔60➔40➔25P 역순) 투자
     let priorityRoles = [], overflowRole = '';
     if (job === 'reaper') {
-      priorityRoles = ['basic_dmg', 'basic_trait_dmg', 'skill_all', 'hero_all'];
-      if (job3Lv10) priorityRoles.push('skill_dmg'); // 스킬 5-1, 6-1만 추가 (7-1/8-1 특성 스킬피해 제외!)
+      // ① 사신 주력(강타피해 + 특성강타) ➔ ② 3차 Lv.10+ 시 스킬피해 + 특성스킬 전부 최우선! ➔ ③ 남는 CP는 3탭 모든 피해량(80➔60➔40➔25P 역순)
+      ['basic_dmg', 'basic_trait_dmg'].flatMap(r => byRole(r)).sort((a, b) => b.cost - a.cost).forEach(n => investNode(n, false));
+      if (job3Lv10) {
+        ['skill_dmg', 'skill_trait_dmg'].flatMap(r => byRole(r)).sort((a, b) => b.cost - a.cost).forEach(n => investNode(n, false));
+      }
+      ['basic_all', 'skill_all', 'hero_all'].flatMap(r => byRole(r)).sort((a, b) => b.cost - a.cost).forEach(n => investNode(n, true));
       overflowRole = 'basic_all';
-    } else if (job === 'mage') {
-      priorityRoles = ['skill_dmg', 'skill_trait_dmg', 'basic_all', 'hero_all'];
-      if (job3Lv10) priorityRoles.push('hero_dmg');  // 영웅 5-1, 6-1만 추가 (7-1/8-1 특성 영스피 제외!)
-      overflowRole = 'skill_all';
     } else {
-      priorityRoles = ['hero_dmg', 'hero_trait_dmg', 'basic_all', 'skill_all'];
-      if (job3Lv10) priorityRoles.push('skill_dmg'); // 스킬 5-1, 6-1만 추가 (7-1/8-1 특성 스킬피해 제외!)
-      overflowRole = 'hero_all';
+      if (job === 'mage') {
+        priorityRoles = ['skill_dmg', 'skill_trait_dmg', 'basic_all', 'hero_all'];
+        if (job3Lv10) priorityRoles.push('hero_dmg');  // 영웅 5-1, 6-1만 추가 (7-1/8-1 특성 영스피 제외!)
+        overflowRole = 'skill_all';
+      } else {
+        priorityRoles = ['hero_dmg', 'hero_trait_dmg', 'basic_all', 'skill_all'];
+        if (job3Lv10) priorityRoles.push('skill_dmg'); // 스킬 5-1, 6-1만 추가 (7-1/8-1 특성 스킬피해 제외!)
+        overflowRole = 'hero_all';
+      }
+      const primaryPool = priorityRoles.flatMap(r => byRole(r)).sort((a, b) => b.cost - a.cost);
+      primaryPool.forEach(n => investNode(n, false));
+      const overNodes = byRole(overflowRole).sort((a, b) => b.cost - a.cost);
+      overNodes.forEach(n => investNode(n, true));
     }
-
-    const primaryPool = priorityRoles.flatMap(r => byRole(r)).sort((a, b) => b.cost - a.cost);
-    primaryPool.forEach(n => investNode(n, false));
-
-    // 4. 남는 CP: 1CP당 효율이 가장 높은 8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순으로 투자!
-    const overNodes = byRole(overflowRole).sort((a, b) => b.cost - a.cost);
-    overNodes.forEach(n => investNode(n, true));
 
     const tabCP = {};
     ['basic', 'skill', 'hero'].forEach(k => {
@@ -22152,7 +22180,9 @@
     if (sub10) {
       sub10.innerText = job === 'mage'
         ? '영웅 5-1(+1,000%) · 6-1(+3,000%)만 추가 투자 ("특성" 붙은 7-1·8-1 제외!)'
-        : '스킬 5-1(+1,000%) · 6-1(+3,000%)만 추가 투자 ("특성" 붙은 7-1·8-1 제외!)';
+        : (job === 'reaper'
+          ? '스킬피해(5-1·6-1) + 특성 스킬피해(7-1·8-1)를 모피증보다 최우선 투자!'
+          : '스킬 5-1(+1,000%) · 6-1(+3,000%)만 추가 투자 ("특성" 붙은 7-1·8-1 제외!)');
     }
 
     const sim = simulateBasicTraitCP();
@@ -22207,8 +22237,13 @@
     const overTabKr = job === 'reaper' ? '기본 특성' : (job === 'mage' ? '스킬 특성' : '영웅 특성');
     const tipEl = document.getElementById('btrait_summary_tip');
     if (tipEl) {
-      tipEl.innerHTML = `💡 <strong style="color:#fde047;">[${jobKr}] 핵심 규칙 &amp; 남는 CP 투자 가이드 (하늘색 노드):</strong><br>
-        • <strong>남는 CP (하늘색):</strong> 필수 특성을 모두 찍고 남는 포인트는 <strong style="color:#7dd3fc;">[${overTabKr}] 우측 [모든 피해량]</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong>(1CP당 효율 최고 순!)으로 투자합니다. (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)`;
+      if (job === 'reaper') {
+        tipEl.innerHTML = `💡 <strong style="color:#fde047;">[사신] 핵심 규칙 &amp; CP 투자 우선순위 (실전 검증 반영):</strong><br>
+          • <strong>우선 순서:</strong> ① 기본 <strong>강타피해 + 특성강타(5-1~8-1)</strong> ➔ ② 3차 Lv.10+ 시 <strong>스킬피해(5-1·6-1) + 특성 스킬피해(7-1·8-1)</strong> 전부 마스터 ➔ ③ 남는 CP(하늘색)는 <strong>기본·스킬·영웅 모든 피해량</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong> 투자! (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)`;
+      } else {
+        tipEl.innerHTML = `💡 <strong style="color:#fde047;">[${jobKr}] 핵심 규칙 &amp; 남는 CP 투자 가이드 (하늘색 노드):</strong><br>
+          • <strong>남는 CP (하늘색):</strong> 필수 특성을 모두 찍고 남는 포인트는 <strong style="color:#7dd3fc;">[${overTabKr}] 우측 [모든 피해량]</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong>(1CP당 효율 최고 순!)으로 투자합니다. (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)`;
+      }
     }
   }
 
