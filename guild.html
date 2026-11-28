@@ -560,11 +560,7 @@
             <option value="3">+3명 (+50만)</option>
           </select>
         </div>
-
-        <button type="button" id="btn_major_update_boost" onclick="toggleMajorUpdateBoost()" style="background:#1e293b; border:1.5px solid #475569; color:#cbd5e1; padding:6px 13px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; transition:all 0.2s;">
-          <span id="major_update_btn_text">대형 업데이트 스펙업 상향: OFF (평시 기준)</span>
-        </button>
-      </div>
+    </div>
 
       <button type="button" id="btn_major_update_boost" onclick="toggleMajorUpdateBoost()" style="background:#1e293b; border:1.5px solid #475569; color:#cbd5e1; padding:6px 13px; border-radius:8px; font-size:12px; font-weight:800; cursor:pointer; transition:all 0.2s;">
         <span id="major_update_btn_text">대형 업데이트 스펙업 상향: OFF (평시 기준)</span>
@@ -688,10 +684,15 @@
     return String(str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   }
 
+  const GUILD_TYPO_MAP = {"z00": "Zoo", "zo0": "Zoo", "z0o": "Zoo", "zoo": "Zoo", "200": "Zoo", "2oo": "Zoo", "2o0": "Zoo", "20o": "Zoo", "둘둘": "둡둡", "둠둠": "둡둡", "돔돔": "둡둡", "돌돌": "둡둡", "돕돕": "둡둡", "둑둑": "둡둡", "둠둡": "둡둡", "둡둠": "둡둡", "담팁": "탑팀", "담딥": "탑팀", "답딤": "탑팀", "담딤": "탑팀", "탑팁": "탑팀", "답팀": "탑팀", "담팀": "탑팀", "탐팀": "탑팀", "탐팁": "탑팀", "탑딥": "탑팀", "과금없음": "과금없는", "괴금없는": "과금없는", "고금없는": "과금없는", "과금업는": "과금없는", "과금없는길드": "과금없는", "이름없음": "이름없는", "이릉없는": "이름없는", "이름업는": "이름없는", "무걸": "무결", "귀열": "귀멸", "돌맹이": "돌멩이", "낭낭펀지": "냥냥펀치", "낭낭펀치": "냥냥펀치", "냥냥펀지": "냥냥펀치", "심수": "학살", "네오": "네모", "조심": "초심", "파열": "파멸", "버리": "베리", "배리": "베리", "비스": "버스", "pemulaz": "PEMULA2", "pemula_2": "PEMULA2", "zer0": "ZERO", "2ero": "ZERO", "2er0": "ZERO", "zero": "ZERO", "n00b": "NOOB", "no0b": "NOOB", "n0ob": "NOOB", "noob": "NOOB", "t0p": "TOP", "top": "TOP", "k0rosu": "KOROSU", "kor0su": "KOROSU", "k0r0su": "KOROSU", "korosu": "KOROSU", "k0rea": "KOREA", "korea": "KOREA", "bluem00n": "BlueMoon", "bluemo0n": "BlueMoon", "bluem0on": "BlueMoon", "bluemoon": "BlueMoon", "the0rder": "TheOrder", "theorder": "TheOrder", "twllight": "Twilight", "tw1light": "Twilight", "twilight": "Twilight", "phstrike": "PhStrike", "phstr1ke": "PhStrike", "sukar0ti": "SukaRoti", "sukaroti": "SukaRoti", "n0rmies": "Normies", "norm1es": "Normies", "normies": "Normies", "bac0n": "BACON", "bacon": "BACON", "err0r": "ERROR", "error": "ERROR", "w0rd": "WORD", "word": "WORD", "warl0rds": "WARLORDS", "warlords": "WARLORDS", "sogood": "S0G00D", "s0good": "S0G00D", "sog00d": "S0G00D", "s0g0od": "S0G00D", "f2p": "F2p", "fzp": "F2p", "iapis": "lapis", "1apis": "lapis", "lapis": "lapis", "djdnei": "didnei", "sn0wly": "snowly", "snowly": "snowly", "m1lkyway": "milkyway", "milkyway": "milkyway", "mm0rpg": "Mmorpg", "mmorpg": "Mmorpg", "da1sy": "Daisy", "daisy": "Daisy", "s0ul": "Soul", "soul": "Soul", "drag0n": "Dragon", "dragon": "Dragon", "d0bridom": "Dobridom", "dobr1dom": "Dobridom", "hungexp0": "Hungexpo", "k1ller": "Killer", "killer": "Killer"};
+
   function cleanGuildName(raw) {
     if (!raw) return "";
     const s = String(raw).trim();
     if (s.replace(/\s+/g, '').startsWith(OUR_GUILD_NAME)) return OUR_GUILD_NAME;
+    const low = s.toLowerCase();
+    if (GUILD_TYPO_MAP[low]) return GUILD_TYPO_MAP[low];
+    if (/^[z2][o0]{2}$/i.test(s)) return "Zoo";
     return s;
   }
 
@@ -773,15 +774,24 @@
 
           const currentRank = rankMatch ? parseInt(rankMatch[1], 10) : (zRank[zk].length + 1);
 
-          zRank[zk].push({
-            guildName: nameStr,
-            rank: currentRank,
-            score: score,
-            delta: deltaStr,
-            zoneKey: zk,
-            zone: ZONE_CONFIG[zk].name,
-            isScout: false
-          });
+          const existIdx = zRank[zk].findIndex(x => x.guildName.toLowerCase() === nameStr.toLowerCase());
+          if (existIdx >= 0) {
+            if (score > zRank[zk][existIdx].score) {
+              zRank[zk][existIdx].score = score;
+              zRank[zk][existIdx].rank = currentRank;
+              if (deltaStr) zRank[zk][existIdx].delta = deltaStr;
+            }
+          } else {
+            zRank[zk].push({
+              guildName: nameStr,
+              rank: currentRank,
+              score: score,
+              delta: deltaStr,
+              zoneKey: zk,
+              zone: ZONE_CONFIG[zk].name,
+              isScout: false
+            });
+          }
         }
       });
     }
