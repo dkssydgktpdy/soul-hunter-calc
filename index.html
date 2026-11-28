@@ -13733,7 +13733,7 @@
     for (let s = 1; s <= 6; s++) {
       const inst = (s <= currentConnectStageSlots) ? (bestCombo[s - 1] || null) : null;
       const gList = (gemAssignments && inst) ? (gemAssignments[s - 1] || []) : [];
-      const gemSig = gList.map(g => `${g.tier[0]}${g.chain}_${g.pt}`).sort().join(',');
+      const gemSig = gList.map(g => `${g.tier[0]}${g.chain}_${g.pt}_${g.atk||0}_${g.amp||0}`).sort().join(',');
       curCoreSnap[s] = inst ? { key: `${inst.tier}_${inst.core.id}`, label: `[${CORE_TIER_META[inst.tier].kr}] ${inst.core.name}`, gemSig } : null;
     }
     if (!isRestoringState && HELPER_DIFF_STATE.connect.prev) {
@@ -13777,7 +13777,20 @@
       const socketsHtml = [0, 1, 2, 3].map(gIdx => {
         const g = assignedGems[gIdx];
         if (g) {
-          return `<div class="sc-gem-socket filled"><span style="display:inline-flex;align-items:center;"><span class="sc-gem-dot g-${g.tier}"></span>${tierKrMap[g.tier]}</span><span><strong style="color:#86efac;">🔗${g.chain}</strong> <strong style="color:#fde047;">🅿️${g.pt}</strong></span></div>`;
+          const hasStat = (g.atk > 0 || g.amp > 0);
+          const statRow = hasStat
+            ? `<div style="font-size:9px; font-weight:800; display:flex; justify-content:flex-end; gap:4px; flex-wrap:wrap; line-height:1.15; margin-top:2px; border-top:1px dashed rgba(148,163,184,0.22); padding-top:2px;">
+                ${g.atk > 0 ? `<span style="color:#7dd3fc;">공+${formatKoreanNumber(g.atk)}%</span>` : ''}
+                ${g.amp > 0 ? `<span style="color:#f0abfc;">증+${formatKoreanNumber(g.amp)}%</span>` : ''}
+              </div>`
+            : '';
+          return `<div class="sc-gem-socket filled" style="flex-direction:column; align-items:stretch;">
+            <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+              <span style="display:inline-flex;align-items:center;"><span class="sc-gem-dot g-${g.tier}"></span>${tierKrMap[g.tier]}</span>
+              <span><strong style="color:#86efac;">🔗${g.chain}</strong> <strong style="color:#fde047;">🅿️${g.pt}</strong></span>
+            </div>
+            ${statRow}
+          </div>`;
         }
         if (!gemAssignments) {
           const avgC = Math.floor(tMeta.maxCap / 4), avgP = Math.ceil(tMeta.maxP / 4);
@@ -13841,7 +13854,12 @@
           const ampStr = tMeta.ampPct > 0 ? ` / 코어${c.num} 공격력 증폭 +${tMeta.ampPct.toLocaleString()}%` : '';
           const assigned = gemAssignments ? (gemAssignments[idx] || []) : [];
           const gemDetailStr = assigned.length > 0
-            ? `<br>• 추천 보석 배분 (${assigned.length}개): <span style="color:#fde047; font-weight:700;">${assigned.map(g => `[${tierKrMap[g.tier]} 🔗${g.chain}·🅿️${g.pt}]`).join(' + ')}</span>`
+            ? `<br>• 추천 보석 배분 (${assigned.length}개): <span style="color:#fde047; font-weight:700;">${assigned.map(g => {
+                const st = [];
+                if (g.atk > 0) st.push(`<span style="color:#7dd3fc;">공+${formatKoreanNumber(g.atk)}%</span>`);
+                if (g.amp > 0) st.push(`<span style="color:#f0abfc;">공증+${formatKoreanNumber(g.amp)}%</span>`);
+                return `[${tierKrMap[g.tier]} 🔗${g.chain}·🅿️${g.pt}${st.length ? ` (${st.join(' / ')})` : ''}]`;
+              }).join(' + ')}</span>`
             : '';
           return `<div style="background:#0f172a; border:1px solid #334155; border-radius:10px; padding:12px 16px; line-height:1.55;">
             <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
