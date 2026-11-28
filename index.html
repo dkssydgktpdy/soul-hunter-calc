@@ -5489,7 +5489,8 @@
           <select id="sc_sel_promo" onchange="onAwkSealChange()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select>
           <select id="sc_sel_boss" onchange="onAwkSealChange()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select>
           <select id="sc_sel_stage" onchange="onAwkSealChange()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select>
-          <select id="sc_sel_dungeon" onchange="onAwkSealChange()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select>
+          <select id="sc_sel_main_grd" onchange="onAwkSealChange()"><option value="0">0</option><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select>
+          <select id="sc_sel_jeok_brk" onchange="onAwkSealChange()"><option value="6">6</option><option value="9">9</option><option value="10" selected>10</option></select>
         </div>
 
         <div id="sc_cond_step_rows"></div>
@@ -13190,7 +13191,19 @@
           }
         } else if (effStep > 0 && !c.isHyperRate) {
           let tm = 1;
-          if (c.isMark) tm = effStep === 1 ? 5 : (effStep === 2 ? 1000 : 1200000);
+          if (c.isMark) {
+            // 적운영 본체 + 표식 코어(16P +1,000 / 20P +120,000% = ×1,201배 · 적운영 10돌은 최대 표식 2배 = 2,400개!) vs 주력 변신 수호신 본체 배율 비교
+            const mainGrdVal = document.getElementById('sc_sel_main_grd')?.value ?? '2';
+            const jeokBrkVal = document.getElementById('sc_sel_jeok_brk')?.value ?? '10';
+            const mainGrdMult = { '0': 5316, '1': 13571, '2': 32960, '3': 239516 }[mainGrdVal] || 32960;
+            const jeokMultMap = {
+              '6':  { 1: 51,  2: 301,  3: 360301  }, // 6~8돌: 최대 1,200표식 × 25% × 1,201
+              '9':  { 1: 131, 2: 781,  3: 936781  }, // 9돌:   최대 1,200표식 × 65% × 1,201
+              '10': { 1: 301, 2: 1801, 3: 2161801 }  // 10돌:  최대 2,400표식(2배!) × 75% × 1,201
+            };
+            const jeokTotalMult = (jeokMultMap[jeokBrkVal] || jeokMultMap['10'])[effStep] || 1;
+            tm = Math.max(1, jeokTotalMult / mainGrdMult);
+          }
           else if (c.isAwkSkill) tm = (effStep === 1 ? 50 : (effStep === 2 ? 350 : 3850)) / 100;
           else tm = Math.max(1, (effStep === 1 ? c.p12 : (effStep === 2 ? (c.p12 + c.p16) : (c.p12 + c.p16 + c.p20))) / 100);
           if (tm > 1) themePctByCoreId[c.id] = (themePctByCoreId[c.id] || 0) + tm;
@@ -13527,11 +13540,16 @@
     });
     onAwkSealChange();
   }
+  const SC_GUARDIAN_COND_DEFS = [
+    { id: 'sc_sel_main_grd', num: 3, title: '주력 변신 수호신', sub: '표식 코어 vs 변신 수호신 실전 배율 비교 기준', opts: [['0','오멘 이하/10돌X'],['1','카르미나·루시엘10'],['2','아우렐 10돌'],['3','4차전용 10돌']] },
+    { id: 'sc_sel_jeok_brk', num: 3, title: '적운영 돌파 단계', sub: '6~9돌 1,200표식 / 10돌 2배(2,400표식 · 216만배)', opts: [['6','적운영 6~8돌'],['9','적운영 9돌'],['10','적운영 10돌(2배)']] }
+  ];
+
   function syncScCondUI() {
     const rowsEl = document.getElementById('sc_cond_step_rows');
     if (rowsEl) {
-      rowsEl.innerHTML = SC_COND_DEFS.map(d => {
-        const cur = document.getElementById(d.id)?.value ?? '3';
+      const renderRows = (list) => list.map(d => {
+        const cur = document.getElementById(d.id)?.value ?? '';
         const btns = d.opts.map(([v, label]) =>
           `<button type="button" class="seg-pill-btn ${cur === v ? 'active' : ''}" onclick="setScSelectVal('${d.id}','${v}')">${label}</button>`
         ).join('');
@@ -13543,6 +13561,9 @@
           <div class="seg-pill-row">${btns}</div>
         </div>`;
       }).join('');
+      rowsEl.innerHTML = renderRows(SC_COND_DEFS)
+        + `<div style="margin:10px 0 6px 0; padding-top:8px; border-top:1px dashed #334155; font-size:11.5px; font-weight:800; color:#fda4af;">🛡️ 표식 코어 실전 비교용 수호신 스펙 (변신 수호신 vs 적운영)</div>`
+        + renderRows(SC_GUARDIAN_COND_DEFS);
     }
 
     const chipsEl = document.getElementById('sc_cond_summary_chips');
@@ -20908,7 +20929,9 @@
                 <tr><td><strong>적운영</strong></td><td>공용 (표식)</td><td>표식당 +40%</td><td>최대 400개</td><td>30,000% <small>(10돌 전 무한유지)</small></td></tr>
                 <tr><td><strong>녹티스 / 녹티아 / 카이온</strong></td><td>사신 / 앜메 / 닼로</td><td>+30,000%</td><td>+145,000%</td><td style="color:#7dd3fc; font-weight:800;">181,500%</td></tr>
                 <tr><td><strong>오멘</strong></td><td>3차 전직 공용</td><td>+90,000%</td><td>+435,000%</td><td style="color:#fde047; font-weight:900;">531,500%</td></tr>
-                <tr><td><strong style="color:#fda4af;">카르미나 / 루시엘</strong></td><td>3차 사신 / 3차 앜메</td><td>+150,000%</td><td>+1,200,000%</td><td style="color:#34d399; font-weight:900;">1,357,000% (최종!)</td></tr>
+                <tr><td><strong>카르미나 / 루시엘</strong></td><td>3차 사신 / 3차 앜메</td><td>+150,000%</td><td>+1,200,000%</td><td style="color:#38bdf8; font-weight:800;">1,357,000%</td></tr>
+                <tr><td><strong style="color:#fde047;">아우렐</strong></td><td>3차 공용 (버프 100% 즉발!)</td><td>3차버프 100%</td><td>+3,290,000%</td><td style="color:#fde047; font-weight:900;">3,295,950% (안정 종결)</td></tr>
+                <tr><td><strong style="color:#fda4af;">세라핀 / 녹티엘 / 카밀라</strong></td><td>4차 전용 (앜메/사신/닼로)</td><td>+450,000%</td><td>+23,500,000%</td><td style="color:#34d399; font-weight:900;">23,951,500% (아우렐 ×7.27배!)</td></tr>
               </tbody>
             </table>
           </div>
@@ -22132,7 +22155,7 @@
       }
     };
 
-    // 1. 상반부(1~5관문) 필수 관문 + 초반 공통 딜 노드 + 직업별 3단계(3-1/3-2 vs 3-3 방무)
+    // 1. 상반부(1~5관문) 필수 관문 + 초반 공통 딜 노드 + 직업별 3단계
     const LOWER_GATES = new Set(['b_g6','b_g7','b_g8','s_g6','s_g7','s_g8','h_g6','h_g7','h_g8']);
     byRole('core').filter(n => !LOWER_GATES.has(n.id)).forEach(n => investNode(n));
     if (job === 'reaper') byRole('reaper_early').forEach(n => investNode(n));
@@ -22147,8 +22170,7 @@
       byRole('elem_' + elem).forEach(n => investNode(n));
     }
 
-    // 2.5 하반부 관문(6·7·8) 순차 해금 (전 단계 노드 최소 1/20 길뚫기 필수 반영!)
-    // -1 라인을 투자하는 탭은 -1로 길뚫기, 안 찍는 탭(예: 사신 영웅탭)은 -2(모피증) 1/20으로 길뚫기!
+    // 3. 하반부 관문(6·7·8) 순차 해금 — 반드시 전 단계 -1 또는 -2 중 하나를 20/20 MAX 찍어야 다음 관문 개방!
     const activeLeftRoles = new Set(
       job === 'reaper'
         ? ['basic_dmg', 'basic_trait_dmg', ...(job3Lv10 ? ['skill_dmg', 'skill_trait_dmg'] : [])]
@@ -22156,44 +22178,46 @@
           ? ['skill_dmg', 'skill_trait_dmg', ...(job3Lv10 ? ['hero_dmg'] : [])]
           : ['hero_dmg', 'hero_trait_dmg', ...(job3Lv10 ? ['skill_dmg'] : [])])
     );
-    ['basic', 'skill', 'hero'].forEach(tabKey => {
+    const tabOrder = job === 'reaper' ? ['basic', 'skill', 'hero'] : (job === 'mage' ? ['skill', 'hero', 'basic'] : ['hero', 'skill', 'basic']);
+
+    tabOrder.forEach(tabKey => {
       const rows = trees[tabKey];
-      // [행9(5-1/5-2) ➔ 행10(g6)], [행11(6-1/6-2) ➔ 행12(g7)], [행13(7-1/7-2) ➔ 행14(g8)]
+      // [행9(5-1/5-2 MAX) ➔ 행10(g6)], [행11(6-1/6-2 MAX) ➔ 행12(g7)], [행13(7-1/7-2 MAX) ➔ 행14(g8)]
       [[9, 10], [11, 12], [13, 14]].forEach(([prevRowIdx, gateRowIdx]) => {
+        const prevGate = rows[prevRowIdx - 1][0];
+        if (prevGate.cur < 1) return;
         const pair = rows[prevRowIdx];
         const gate = rows[gateRowIdx][0];
         const bridge = activeLeftRoles.has(pair[0].role) ? pair[0] : pair[1];
-        if (bridge.cur < 1) investNode(bridge, false, 1);
-        if (bridge.cur >= 1 && gate.cur < 1) investNode(gate, false, 1);
+        investNode(bridge, false); // 반드시 20/20 MAX까지 투자
+        if (bridge.cur >= bridge.max && gate.cur < 1) investNode(gate, false, 1);
       });
     });
 
-    // 3. 직업별 주력 라인 + 3차 Lv.10+ 전환 우선 투자 ➔ 이후 남는 CP로 모든 피해량(80➔60➔40➔25P 역순) 투자
-    let priorityRoles = [], overflowRole = '';
+    // 4. 8관문이 열린 주력 / 전환 탭의 8-1 (특성 피해 II · 40/40) 최우선 마스터!
     if (job === 'reaper') {
-      // ① 사신 주력(강타피해 + 특성강타) ➔ ② 3차 Lv.10+ 시 스킬피해 + 특성스킬 전부 최우선! ➔ ③ 남는 CP는 3탭 모든 피해량(80➔60➔40➔25P 역순)
-      ['basic_dmg', 'basic_trait_dmg'].flatMap(r => byRole(r)).sort((a, b) => b.cost - a.cost).forEach(n => investNode(n, false));
-      if (job3Lv10) {
-        ['skill_dmg', 'skill_trait_dmg'].flatMap(r => byRole(r)).sort((a, b) => b.cost - a.cost).forEach(n => investNode(n, false));
-      }
-      ['basic_all', 'skill_all', 'hero_all'].flatMap(r => byRole(r)).sort((a, b) => b.cost - a.cost).forEach(n => investNode(n, true));
-      overflowRole = 'basic_all';
+      if (trees.basic[14][0].cur >= 1) investNode(trees.basic[15][0], false); // 기본 8-1 (특성 강타 II)
+      if (job3Lv10 && trees.skill[14][0].cur >= 1) investNode(trees.skill[15][0], false); // 스킬 8-1 (특성 스킬 II)
+    } else if (job === 'mage') {
+      if (trees.skill[14][0].cur >= 1) investNode(trees.skill[15][0], false); // 스킬 8-1 (특성 스킬 II)
     } else {
-      if (job === 'mage') {
-        priorityRoles = ['skill_dmg', 'skill_trait_dmg', 'basic_all', 'hero_all'];
-        if (job3Lv10) priorityRoles.push('hero_dmg');  // 영웅 5-1, 6-1만 추가 (7-1/8-1 특성 영스피 제외!)
-        overflowRole = 'skill_all';
-      } else {
-        priorityRoles = ['hero_dmg', 'hero_trait_dmg', 'basic_all', 'skill_all'];
-        if (job3Lv10) priorityRoles.push('skill_dmg'); // 스킬 5-1, 6-1만 추가 (7-1/8-1 특성 스킬피해 제외!)
-        overflowRole = 'hero_all';
-      }
-      const primaryPool = priorityRoles.flatMap(r => byRole(r)).sort((a, b) => b.cost - a.cost);
-      primaryPool.forEach(n => investNode(n, false));
-      const overNodes = byRole(overflowRole).sort((a, b) => b.cost - a.cost);
-      overNodes.forEach(n => investNode(n, true));
+      if (trees.hero[14][0].cur >= 1) investNode(trees.hero[15][0], false);   // 영웅 8-1 (특성 영스피 II)
     }
 
+    // 5. 남는 CP: 직전 관문이 해금된 모든 피해량(-2) 노드 중 1CP당 효율 최고 순(80➔60➔40➔25P)으로 투자!
+    const overflowCandidates = [];
+    ['basic', 'skill', 'hero'].forEach(tabKey => {
+      const rows = trees[tabKey];
+      [9, 11, 13, 15].forEach(rIdx => {
+        if (rows[rIdx - 1][0].cur >= 1) {
+          const allNode = rows[rIdx][1]; // -2 (모든 피해량)
+          if (allNode.cur < allNode.max) overflowCandidates.push(allNode);
+        }
+      });
+    });
+    overflowCandidates.sort((a, b) => b.cost - a.cost).forEach(n => investNode(n, true));
+
+    const overflowRole = job === 'reaper' ? 'basic_all' : (job === 'mage' ? 'skill_all' : 'hero_all');
     const tabCP = {};
     ['basic', 'skill', 'hero'].forEach(k => {
       tabCP[k] = trees[k].flat().reduce((acc, n) => acc + n.cur * n.cost, 0);
@@ -22327,13 +22351,11 @@
     const tipEl = document.getElementById('btrait_summary_tip');
     if (tipEl) {
       if (job === 'reaper') {
-        tipEl.innerHTML = `💡 <strong style="color:#fde047;">[사신] 핵심 규칙 &amp; CP 투자 우선순위 (실전 검증 반영):</strong><br>
-          • <strong>우선 순서:</strong> ① 기본 <strong>강타피해 + 특성강타(5-1~8-1)</strong> ➔ ② 3차 Lv.10+ 시 <strong>스킬피해(5-1·6-1) + 특성 스킬피해(7-1·8-1)</strong> 전부 마스터 ➔ ③ 남는 CP(하늘색)는 <strong>기본·스킬·영웅 모든 피해량</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong> 투자! (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)<br>
-          • <span style="color:#a7f3d0;">※ 영웅 탭의 6·7·8 관문(모속피 150/350/500%) 해금을 위해 <strong>5-2 · 6-2 · 7-2에 최소 1/20씩 선행 길뚫기(125 CP)</strong>가 자동 반영됩니다.</span>`;
+        tipEl.innerHTML = `💡 <strong style="color:#fde047;">[사신] 핵심 규칙 &amp; CP 투자 우선순위 (20/20 개방 규칙 반영):</strong><br>
+          • <strong>우선 순서:</strong> ① 3탭 하반부 관문(6·7·8) 순차 해금 (기본 <code>5-1~7-1</code> · 스킬 <code>5-1~7-1</code> · 영웅 <code>5-2~7-2</code> 각 <strong>20/20 MAX</strong>) ➔ ② <strong>기본 8-1(특성강타 II) · 스킬 8-1(특성스킬 II)</strong> 마스터 ➔ ③ 남는 CP(하늘색)는 남은 <strong>모든 피해량</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong> 투자! (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)`;
       } else {
-        tipEl.innerHTML = `💡 <strong style="color:#fde047;">[${jobKr}] 핵심 규칙 &amp; 남는 CP 투자 가이드 (하늘색 노드):</strong><br>
-          • <strong>남는 CP (하늘색):</strong> 필수 특성을 모두 찍고 남는 포인트는 <strong style="color:#7dd3fc;">[${overTabKr}] 우측 [모든 피해량]</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong>(1CP당 효율 최고 순!)으로 투자합니다. (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)<br>
-          • <span style="color:#a7f3d0;">※ 하단 관문(6·7·8) 해금을 위한 선행 노드 <strong>최소 1/20 길뚫기</strong>가 자동 반영됩니다.</span>`;
+        tipEl.innerHTML = `💡 <strong style="color:#fde047;">[${jobKr}] 핵심 규칙 &amp; 남는 CP 투자 가이드 (20/20 개방 규칙 반영):</strong><br>
+          • <strong>우선 순서:</strong> 3탭 하반부 관문(6·7·8) 해금을 위해 각 줄 <code>-1</code> 또는 <code>-2</code>를 <strong>20/20 MAX</strong> 찍은 뒤 주력 <code>8-1</code>을 마스터하고, 남는 CP(하늘색)는 남은 <strong>모든 피해량</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong> 투자합니다! (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)`;
       }
     }
   }
