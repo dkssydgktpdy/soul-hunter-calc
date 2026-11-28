@@ -5459,8 +5459,8 @@
         </div>
 
         <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;">
-          <button type="button" onclick="applyScCondPreset(3)" class="seg-pill-btn" style="border-color:#10b981; color:#6ee7b7;">전체 20P 풀달성</button>
-          <button type="button" onclick="applyScCondPreset(2)" class="seg-pill-btn" style="border-color:#38bdf8; color:#bae6fd;">중·후반 (16P 기준)</button>
+          <button type="button" onclick="applyScCondPreset(3)" class="seg-pill-btn" style="border-color:#10b981; color:#6ee7b7;">전체 최종 조건 달성</button>
+          <button type="button" onclick="applyScCondPreset(2)" class="seg-pill-btn" style="border-color:#38bdf8; color:#bae6fd;">중·후반 (2단계 기준)</button>
           <button type="button" onclick="applyScCondPreset(0)" class="seg-pill-btn" style="border-color:#64748b; color:#cbd5e1;">초기화 (미달)</button>
         </div>
 
@@ -13500,12 +13500,12 @@
 
   // ==================== 소울커넥트 & 룬 조건 팝업 모달 + 요약 바 엔진 ====================
   const SC_COND_DEFS = [
-    { id: 'sc_sel_book',    num: 3, title: '수호신 도감', sub: '도감 100% 달성 수 · 12P(1~2개) / 16P(3~4개) / 20P(5개 이상)', opts: [['0','미달'],['1','12P (1~2개)'],['2','16P (3~4개)'],['3','20P (5개+)']] },
-    { id: 'sc_sel_joblv',   num: 4, title: '전직 레벨',   sub: '현재 전직 차수 · 12P(1차) / 16P(2차) / 20P(3차 이상)',         opts: [['0','미달'],['1','12P (1차)'],['2','16P (2차)'],['3','20P (3차+)']] },
-    { id: 'sc_sel_promo',   num: 5, title: '승급전',      sub: '소울헌터 승급전 · 12P(전설 이하) / 16P(신화급) / 20P(고대 1단+)', opts: [['0','미달'],['1','12P (전설↓)'],['2','16P (신화)'],['3','20P (고대1+)']] },
-    { id: 'sc_sel_boss',    num: 5, title: '보스전',      sub: '보스전 클리어 · 12P(1단계) / 16P(2단계) / 20P(하데스 10단+)',   opts: [['0','미달'],['1','12P (1단)'],['2','16P (2단)'],['3','20P (하데스10+)']] },
-    { id: 'sc_sel_stage',   num: 6, title: '스테이지',    sub: '최고 도달 챕터 · 12P(초반) / 16P(중반) / 20P(350챕터 이상)',   opts: [['0','미달'],['1','12P (초반)'],['2','16P (중반)'],['3','20P (350+)']] },
-    { id: 'sc_sel_dungeon', num: 6, title: '룬 던전',     sub: '룬 던전 클리어 · 12P(초반) / 16P(중반) / 20P(154단계 이상)',   opts: [['0','미달'],['1','12P (초반)'],['2','16P (중반)'],['3','20P (154+)']] }
+    { id: 'sc_sel_book',    num: 3, title: '수호신 도감', sub: '도감 100% 달성 수 · 1개 / 3개 / 5개 이상',                          opts: [['0','미달'],['1','1개 100%'],['2','3개 100%'],['3','5개 100%']] },
+    { id: 'sc_sel_joblv',   num: 4, title: '전직 레벨',   sub: '현재 달성한 전직 차수 · 1차 / 2차 / 3차 전직 이상',                 opts: [['0','미달'],['1','1차 전직'],['2','2차 전직'],['3','3차 전직+']] },
+    { id: 'sc_sel_promo',   num: 5, title: '승급전',      sub: '전설급 40단계 / 신화급 1단계 / 고대급 1단계 클리어',                opts: [['0','미달'],['1','전설 40단'],['2','신화 1단'],['3','고대 1단']] },
+    { id: 'sc_sel_boss',    num: 5, title: '보스전',      sub: '하데스 1단계 / 하데스 5단계 / 하데스 10단계 클리어',                opts: [['0','미달'],['1','하데스 1단'],['2','하데스 5단'],['3','하데스 10단']] },
+    { id: 'sc_sel_stage',   num: 6, title: '스테이지',    sub: '250챕터 / 300챕터 / 350챕터 클리어',                                opts: [['0','미달'],['1','250챕터'],['2','300챕터'],['3','350챕터']] },
+    { id: 'sc_sel_dungeon', num: 6, title: '룬 던전',     sub: '룬 던전 61단계 / 100단계 / 154단계 클리어',                         opts: [['0','미달'],['1','61단계'],['2','100단계'],['3','154단계']] }
   ];
 
   function openScCondModal() {
@@ -13557,7 +13557,7 @@
       chipsEl.innerHTML = `
         <span class="cond-chip ${awkSeal ? 'is-on' : 'is-off'}">각성기 봉인 ${awkSeal ? 'ON' : 'OFF'}</span>
         <span class="cond-chip ${noMark ? 'is-on' : 'is-off'}">표식 제외 ${noMark ? 'ON' : 'OFF'}</span>
-        <span class="cond-chip ${full20 === 6 ? 'is-on' : 'is-warn'}">20P 풀달성 ${full20}/6${part > 0 ? ` · 부분 ${part}` : ''}</span>
+        <span class="cond-chip ${full20 === 6 ? 'is-on' : 'is-warn'}">최종 조건 달성 ${full20}/6${part > 0 ? ` · 부분 ${part}` : ''}</span>
       `;
     }
   }
@@ -19130,7 +19130,7 @@
       [2, 3, 4, 5, 6].forEach(n => document.getElementById('sc_stage_' + n)?.classList.toggle('selected', n === targetScSlots));
     }
     const scStgCond = document.getElementById('sc_sel_stage');
-    if (scStgCond) scStgCond.value = c >= 350 ? '3' : (c >= 200 ? '2' : '1');
+    if (scStgCond) scStgCond.value = c >= 350 ? '3' : (c >= 300 ? '2' : (c >= 250 ? '1' : '0'));
     if (slotsChanged) calculateBestConnectLoadout();
 
     if (document.getElementById('master_inv_modal_overlay')?.style.display === 'flex') {
