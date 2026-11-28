@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>길드원 예상 투력 분석 (기부랑길보필수 전용) - 29서버 겨울눈사람</title>
+  <title>길드원 예상 투력 분석 (기부랑길보필수 전용)</title>
   <style>
     :root {
       --bg-main: #0b1120;
@@ -119,7 +119,7 @@
 </head>
 <body>
 
-  <!-- 서버 인증 잠금 화면 (비밀번호는 HTML에 저장하지 않고 Apps Script 서버에서만 검증) -->
+  <!-- 서버 인증 잠금 화면 (비밀번호는 Apps Script 서버에서만 검증) -->
   <div id="gate_lock_overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(11,17,32,0.96); backdrop-filter:blur(8px); z-index:999999; display:flex; align-items:center; justify-content:center; padding:16px;">
     <div style="background:#1e293b; border:2px solid #10b981; border-radius:18px; max-width:390px; width:100%; padding:28px 24px; text-align:center; box-shadow:0 15px 45px rgba(0,0,0,0.85);">
       <div style="font-size:36px; margin-bottom:10px;">🔒</div>
@@ -127,8 +127,7 @@
       <p style="color:#cbd5e1; font-size:13.5px; margin-bottom:18px;">길드원 전용 입력 페이지입니다.<br>비밀번호를 입력해 주세요.</p>
       <input type="password" id="gate_pw_input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter') verifyPw()"
         style="width:100%; text-align:center; padding:12px; font-size:15px; font-weight:bold; background:#0f172a; border:1.5px solid #475569; border-radius:10px; color:#fff; margin-bottom:12px; outline:none;">
-      <button id="gate_submit_btn" onclick="verifyPw()" style="width:100%; background:linear-gradient(135deg,#10b981,#059669); border:1px solid #34d399; padding:12px; border-radius:10px; color:#fff; font-size:14.5px; font-weight:800; cursor:pointer; margin-bottom:12px;">🔓 입장하기</button>
-      <button onclick="location.href='index.html'" style="width:100%; background:#334155; border:1px solid #475569; padding:10px; border-radius:10px; color:#e2e8f0; font-size:13px; font-weight:700; cursor:pointer;">🏠 메인 계산기로 돌아가기</button>
+      <button id="gate_submit_btn" onclick="verifyPw()" style="width:100%; background:linear-gradient(135deg,#10b981,#059669); border:1px solid #34d399; padding:12px; border-radius:10px; color:#fff; font-size:14.5px; font-weight:800; cursor:pointer;">🔓 입장하기</button>
     </div>
   </div>
 
@@ -136,11 +135,7 @@
     <div class="header-bar">
       <div>
         <h1 style="font-size:20px; color:#6ee7b7; margin-bottom:2px;">📊 길드원 예상 투력 분석 (<span style="color:#fde047;">기부랑길보필수</span>)</h1>
-        <span style="font-size:12.5px; color:#cbd5e1;">1타 점수 입력 시 3타 예상(×3) 자동 계산 · 30명 총 예상 화력 &amp; 미기입 인원 실시간 확인</span>
-      </div>
-      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <a href="guild.html" class="btn-nav">⚔️ 쟁탈전 분석실</a>
-        <a href="index.html" class="btn-nav">🏠 메인 계산기</a>
+        <span style="font-size:12.5px; color:#cbd5e1;">1타 점수 입력 시 3타 예상(×3) 자동 계산 · 시트 명단 변경 시 자동 동기화</span>
       </div>
     </div>
 
@@ -148,8 +143,8 @@
     <div class="summary-grid">
       <div class="stat-box" style="border-color:#34d399;">
         <div class="stat-label">기입 완료 인원</div>
-        <div class="stat-val" id="stat_entered_cnt" style="color:#6ee7b7;">0 / 30명</div>
-        <div class="stat-sub" id="stat_missing_cnt">미기입 30명 남음</div>
+        <div class="stat-val" id="stat_entered_cnt" style="color:#6ee7b7;">0 / 0명</div>
+        <div class="stat-sub" id="stat_missing_cnt">미기입 0명 남음</div>
       </div>
       <div class="stat-box" style="border-color:#38bdf8;">
         <div class="stat-label">입력 인원 3타 예상 합계 (∑ 1타×3)</div>
@@ -157,13 +152,13 @@
         <div class="stat-sub" id="stat_entered_avg">1인 3타 평균: 0점</div>
       </div>
       <div class="stat-box" style="border-color:#fbbf24;">
-        <div class="stat-label">30명 전원 환산 예상 총점</div>
-        <div class="stat-val" id="stat_proj_30" style="color:#fde047;">0점</div>
+        <div class="stat-label" id="stat_proj_label">전체 인원 환산 예상 총점</div>
+        <div class="stat-val" id="stat_proj_all" style="color:#fde047;">0점</div>
         <div class="stat-sub">미기입 인원은 입력 평균치로 추산</div>
       </div>
       <div class="stat-box" style="border-color:#a855f7;">
         <div class="stat-label">전주 종료 시점 길드 총점</div>
-        <div class="stat-val" id="stat_prev_total" style="color:#d8b4fe;">4,868,000점</div>
+        <div class="stat-val" id="stat_prev_total" style="color:#d8b4fe;">0점</div>
         <div class="stat-sub" id="stat_vs_prev">전주 대비 비교 대기 중</div>
       </div>
     </div>
@@ -173,7 +168,7 @@
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
         <div>
           <h2 style="font-size:16.5px; color:#fff;">✍️ 내 1타 점수 입력 / 수정</h2>
-          <span style="font-size:12px; color:#94a3b8;">닉네임을 입력하면 등록된 길드원이 아래에 뜹니다. 기존에 적은 닉네임은 새 점수로 자동 업데이트됩니다.</span>
+          <span style="font-size:12px; color:#94a3b8;">닉네임을 입력하면 구글 시트에 등록된 길드원이 아래에 뜹니다. 새 점수 입력 시 자동 업데이트됩니다.</span>
         </div>
         <div style="display:flex; gap:6px; flex-wrap:wrap;">
           <button class="btn-sub" onclick="loadFromSheet(true)">🔄 시트 동기화</button>
@@ -183,7 +178,7 @@
 
       <div class="input-row">
         <div class="ac-wrap">
-          <input type="text" id="nick_input" class="ac-input" placeholder="닉네임 검색 (예: 겨울눈사람, 성월...)" autocomplete="off"
+          <input type="text" id="nick_input" class="ac-input" placeholder="닉네임 검색 (클릭 시 전체 명단 표시)" autocomplete="off"
             oninput="renderAutocomplete(this.value)" onfocus="renderAutocomplete(this.value)" onkeydown="onAcKeyDown(event)">
           <div id="ac_dropdown" class="ac-dropdown"></div>
         </div>
@@ -201,17 +196,17 @@
     <!-- 미기입 길드원 리스트 -->
     <div class="card" style="border-left:4px solid #f43f5e;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-        <h2 style="font-size:15.5px; color:#fda4af;">🚨 미기입 길드원 리스트 (<span id="missing_cnt_title">30</span>명)</h2>
+        <h2 style="font-size:15.5px; color:#fda4af;">🚨 미기입 길드원 리스트 (<span id="missing_cnt_title">0</span>명)</h2>
         <button class="btn-sub" onclick="copyMissingList()">📋 미기입 명단 복사 (카톡 공지용)</button>
       </div>
       <p style="font-size:12px; color:#94a3b8; margin-top:3px;">* 이름을 클릭하면 위 입력창에 바로 자동 입력됩니다.</p>
       <div id="missing_chips_wrap" class="missing-chips"></div>
     </div>
 
-    <!-- 전체 30명 현황 테이블 -->
+    <!-- 전체 길드원 현황 테이블 -->
     <div class="card" style="border-left:4px solid #38bdf8;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
-        <h2 style="font-size:16px; color:#fff;">📋 길드원 30명 전체 현황 (3타 예상 점수순 자동 정렬)</h2>
+        <h2 style="font-size:16px; color:#fff;">📋 길드원 전체 현황 (<span id="roster_cnt_title">0</span>명 · 3타 예상 점수순 자동 정렬)</h2>
         <span id="sync_status_badge" style="font-size:12px; color:#94a3b8;">인증 대기 중</span>
       </div>
       <div class="table-wrap">
@@ -233,29 +228,16 @@
   </div>
 
 <script>
-  const MEMBER_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbx0sdB0a8k1P4v8HGQtAfHq04ey87WbIxvtvdtCzy-lXBoFVW6xwF7V3HWIJVhheDcqtA/exec";
+  // ★ 인계받는 분이 배포한 Apps Script 웹앱 URL 1줄만 여기에 붙여넣으면 끝!
+  const MEMBER_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzXDtAHoyH-NlqJ1cyTFRgeffRsc3djQ-Kq3ohWV3_5KVA7eZOb_8MC2s8FdcIq4wqMGw/exec";
   let activePw = sessionStorage.getItem("member_auth_pw") || "";
 
-  const ROSTER_30 = [
-    "성월", "가해자", "Minari", "퍽", "북어코",
-    "은크", "크양", "목", "또리토리", "Dangboo", "피해자",
-    "민서", "다래코코", "토탬", "영후", "제브코", "흑호랑",
-    "잠이", "우민철", "paradoxx", "판", "돌아온만식이", "리본",
-    "대사신", "불꽃처럼", "BMW", "겨울눈사람", "지존검사", "왕십리", "벽풍사"
-  ];
-
+  // ★ 하드코딩 없음! 구글 시트(A열)에서 길드원 명단을 실시간으로 불러옵니다.
+  let dynamicRoster = [];
   let memberData = {};
-  let prevWeekClosingTotal = 4868000;
+  let prevWeekClosingTotal = 0;
   let acFocusIdx = -1;
   let currentAcList = [];
-
-  function initDefaultData() {
-    ROSTER_30.forEach(name => {
-      if (!memberData[name]) {
-        memberData[name] = { hitScore: 0, est3x: 0, status: "미기입", updatedAt: "" };
-      }
-    });
-  }
 
   function escHtml(s) {
     return String(s || "").replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
@@ -263,16 +245,21 @@
 
   function findRosterMatch(raw) {
     const q = String(raw || "").trim().toLowerCase();
-    return ROSTER_30.find(n => n.toLowerCase() === q) || null;
+    return dynamicRoster.find(n => n.toLowerCase() === q) || null;
   }
 
   function applySheetJson(json) {
-    initDefaultData();
+    dynamicRoster = [];
+    memberData = {};
+
     if (Array.isArray(json.rows)) {
       for (let i = 1; i < json.rows.length; i++) {
         const r = json.rows[i];
-        const nick = findRosterMatch(r[0]);
-        if (!nick) continue;
+        const nick = String(r[0] || "").trim();
+        if (!nick || nick === "총합계" || nick === "합계" || nick === "길드원명") continue;
+        if (!memberData[nick]) {
+          dynamicRoster.push(nick);
+        }
         const hit = parseInt(String(r[1] || "0").replace(/[^0-9]/g, ""), 10) || 0;
         memberData[nick] = {
           hitScore: hit,
@@ -282,6 +269,7 @@
         };
       }
     }
+
     if (json.prevTotal && Number(json.prevTotal) > 0) {
       prevWeekClosingTotal = Number(json.prevTotal);
     }
@@ -312,7 +300,7 @@
         inputEl.focus();
       }
     } catch (e) {
-      alert("서버 연결에 실패했습니다. Apps Script가 새 버전으로 배포되었는지 확인해 주세요.");
+      alert("서버 연결에 실패했습니다. Apps Script 웹앱 URL과 배포 상태를 확인해 주세요.");
     } finally {
       btnEl.disabled = false;
       btnEl.innerText = "🔓 입장하기";
@@ -342,11 +330,11 @@
   function renderAutocomplete(query) {
     const dd = document.getElementById("ac_dropdown");
     const q = String(query || "").trim().toLowerCase();
-    currentAcList = ROSTER_30.filter(n => !q || n.toLowerCase().includes(q));
+    currentAcList = dynamicRoster.filter(n => !q || n.toLowerCase().includes(q));
     acFocusIdx = -1;
 
     if (currentAcList.length === 0) {
-      dd.innerHTML = `<div style="padding:10px 14px; color:#fda4af; font-size:13px;">⚠️ 리스트에 등록된 닉네임이 아닙니다.</div>`;
+      dd.innerHTML = `<div style="padding:10px 14px; color:#fda4af; font-size:13px;">⚠️ 시트에 등록된 닉네임이 아닙니다.</div>`;
       dd.style.display = "block";
       return;
     }
@@ -419,7 +407,6 @@
   });
 
   async function loadFromSheet(isManual) {
-    initDefaultData();
     const badge = document.getElementById("sync_status_badge");
     if (!activePw) {
       document.getElementById("gate_lock_overlay").style.display = "flex";
@@ -452,7 +439,7 @@
 
     const matchedNick = findRosterMatch(rawNick);
     if (!matchedNick) {
-      showFormMsg("⚠️ 리스트에 등록된 닉네임이 아닙니다. 아래 자동완성 목록에서 선택해 주세요.", true);
+      showFormMsg("⚠️ 시트에 등록된 닉네임이 아닙니다. 아래 자동완성 목록에서 선택해 주세요.", true);
       return;
     }
     if (hitScore <= 0) {
@@ -495,8 +482,8 @@
   }
 
   function renderAll() {
-    initDefaultData();
-    const list = ROSTER_30.map(name => ({ name, ...memberData[name] }));
+    const totalMembers = dynamicRoster.length;
+    const list = dynamicRoster.map(name => ({ name, ...memberData[name] }));
     list.sort((a, b) => (b.est3x - a.est3x) || a.name.localeCompare(b.name, "ko"));
 
     const entered = list.filter(x => x.hitScore > 0);
@@ -504,27 +491,33 @@
 
     const sum3x = entered.reduce((acc, x) => acc + x.est3x, 0);
     const avg3x = entered.length > 0 ? Math.round(sum3x / entered.length) : 0;
-    const proj30 = entered.length > 0 ? Math.round(avg3x * ROSTER_30.length) : 0;
+    const projAll = entered.length > 0 ? Math.round(avg3x * totalMembers) : 0;
 
-    document.getElementById("stat_entered_cnt").innerText = `${entered.length} / ${ROSTER_30.length}명`;
+    document.getElementById("roster_cnt_title").innerText = totalMembers;
+    document.getElementById("stat_proj_label").innerText = `${totalMembers}명 전원 환산 예상 총점`;
+    document.getElementById("stat_entered_cnt").innerText = `${entered.length} / ${totalMembers}명`;
     document.getElementById("stat_missing_cnt").innerText = `미기입 ${missing.length}명 남음`;
     document.getElementById("stat_entered_sum").innerText = `${sum3x.toLocaleString()}점`;
     document.getElementById("stat_entered_avg").innerText = `1인 3타 평균: ${avg3x.toLocaleString()}점`;
-    document.getElementById("stat_proj_30").innerText = `${proj30.toLocaleString()}점`;
+    document.getElementById("stat_proj_all").innerText = `${projAll.toLocaleString()}점`;
     document.getElementById("stat_prev_total").innerText = `${prevWeekClosingTotal.toLocaleString()}점`;
 
-    if (proj30 > 0 && prevWeekClosingTotal > 0) {
-      const diff = proj30 - prevWeekClosingTotal;
+    if (projAll > 0 && prevWeekClosingTotal > 0) {
+      const diff = projAll - prevWeekClosingTotal;
       const pct = ((diff / prevWeekClosingTotal) * 100).toFixed(1);
       document.getElementById("stat_vs_prev").innerHTML = diff >= 0
         ? `<span style="color:#6ee7b7;">전주 대비 +${diff.toLocaleString()}점 (+${pct}%)</span>`
         : `<span style="color:#fda4af;">전주 대비 ${diff.toLocaleString()}점 (${pct}%)</span>`;
+    } else {
+      document.getElementById("stat_vs_prev").innerText = "전주 대비 비교 대기 중";
     }
 
     document.getElementById("missing_cnt_title").innerText = missing.length;
     const mWrap = document.getElementById("missing_chips_wrap");
-    if (missing.length === 0) {
-      mWrap.innerHTML = `<span style="color:#6ee7b7; font-size:13px; font-weight:800;">🎉 30명 전원 기입 완료!</span>`;
+    if (totalMembers === 0) {
+      mWrap.innerHTML = `<span style="color:#94a3b8; font-size:13px;">시트에서 명단을 불러오는 중...</span>`;
+    } else if (missing.length === 0) {
+      mWrap.innerHTML = `<span style="color:#6ee7b7; font-size:13px; font-weight:800;">🎉 ${totalMembers}명 전원 기입 완료!</span>`;
     } else {
       mWrap.innerHTML = missing.map(m =>
         `<span class="missing-chip" onclick="pickAcName('${escHtml(m.name)}')">${escHtml(m.name)} (미기입)</span>`
@@ -547,7 +540,7 @@
   }
 
   function copyMissingList() {
-    const missing = ROSTER_30.filter(n => !memberData[n] || memberData[n].hitScore <= 0);
+    const missing = dynamicRoster.filter(n => !memberData[n] || memberData[n].hitScore <= 0);
     if (missing.length === 0) { alert("미기입 길드원이 없습니다!"); return; }
     const txt = `[길보길 쟁탈전 1타 점수 미기입 명단 (${missing.length}명)]\n` + missing.join(", ");
     navigator.clipboard.writeText(txt).then(() => alert("미기입 명단이 복사되었습니다!"));
@@ -555,7 +548,7 @@
 
   function downloadCsv() {
     const rows = [["순위", "길드원명", "1타점수", "3타예상(x3)", "상태", "업데이트시각"]];
-    const list = ROSTER_30.map(name => ({ name, ...memberData[name] }))
+    const list = dynamicRoster.map(name => ({ name, ...memberData[name] }))
       .sort((a, b) => (b.est3x - a.est3x) || a.name.localeCompare(b.name, "ko"));
     list.forEach((m, i) => {
       rows.push([m.hitScore > 0 ? `${i+1}위` : "-", m.name, m.hitScore, m.est3x, m.status, m.updatedAt || ""]);
@@ -569,7 +562,6 @@
   }
 
   window.addEventListener("DOMContentLoaded", () => {
-    initDefaultData();
     checkAuth();
   });
 </script>
