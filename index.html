@@ -22057,16 +22057,18 @@
 
     const allNodes = [...trees.basic.flat(), ...trees.skill.flat(), ...trees.hero.flat()];
     const byRole = (r) => allNodes.filter(n => n.role === r);
-    const investNode = (node, extraMark = false) => {
-      while (node.cur < node.max && remCP >= node.cost) {
+    const investNode = (node, extraMark = false, maxCap = null) => {
+      const lim = maxCap !== null ? Math.min(node.max, maxCap) : node.max;
+      while (node.cur < lim && remCP >= node.cost) {
         node.cur++;
         remCP -= node.cost;
         if (extraMark) node.isExtra = true;
       }
     };
 
-    // 1. 필수 관문 + 초반 공통 딜 노드 + 직업별 3단계(3-1/3-2 vs 3-3 방무)
-    byRole('core').forEach(n => investNode(n));
+    // 1. 상반부(1~5관문) 필수 관문 + 초반 공통 딜 노드 + 직업별 3단계(3-1/3-2 vs 3-3 방무)
+    const LOWER_GATES = new Set(['b_g6','b_g7','b_g8','s_g6','s_g7','s_g8','h_g6','h_g7','h_g8']);
+    byRole('core').filter(n => !LOWER_GATES.has(n.id)).forEach(n => investNode(n));
     if (job === 'reaper') byRole('reaper_early').forEach(n => investNode(n));
     else byRole('non_reaper_early').forEach(n => investNode(n));
     if (job === 'mage') byRole('mage_early').forEach(n => investNode(n));
@@ -22078,6 +22080,27 @@
     } else {
       byRole('elem_' + elem).forEach(n => investNode(n));
     }
+
+    // 2.5 하반부 관문(6·7·8) 순차 해금 (전 단계 노드 최소 1/20 길뚫기 필수 반영!)
+    // -1 라인을 투자하는 탭은 -1로 길뚫기, 안 찍는 탭(예: 사신 영웅탭)은 -2(모피증) 1/20으로 길뚫기!
+    const activeLeftRoles = new Set(
+      job === 'reaper'
+        ? ['basic_dmg', 'basic_trait_dmg', ...(job3Lv10 ? ['skill_dmg', 'skill_trait_dmg'] : [])]
+        : (job === 'mage'
+          ? ['skill_dmg', 'skill_trait_dmg', ...(job3Lv10 ? ['hero_dmg'] : [])]
+          : ['hero_dmg', 'hero_trait_dmg', ...(job3Lv10 ? ['skill_dmg'] : [])])
+    );
+    ['basic', 'skill', 'hero'].forEach(tabKey => {
+      const rows = trees[tabKey];
+      // [행9(5-1/5-2) ➔ 행10(g6)], [행11(6-1/6-2) ➔ 행12(g7)], [행13(7-1/7-2) ➔ 행14(g8)]
+      [[9, 10], [11, 12], [13, 14]].forEach(([prevRowIdx, gateRowIdx]) => {
+        const pair = rows[prevRowIdx];
+        const gate = rows[gateRowIdx][0];
+        const bridge = activeLeftRoles.has(pair[0].role) ? pair[0] : pair[1];
+        if (bridge.cur < 1) investNode(bridge, false, 1);
+        if (bridge.cur >= 1 && gate.cur < 1) investNode(gate, false, 1);
+      });
+    });
 
     // 3. 직업별 주력 라인 + 3차 Lv.10+ 전환 우선 투자 ➔ 이후 남는 CP로 모든 피해량(80➔60➔40➔25P 역순) 투자
     let priorityRoles = [], overflowRole = '';
@@ -22239,10 +22262,12 @@
     if (tipEl) {
       if (job === 'reaper') {
         tipEl.innerHTML = `💡 <strong style="color:#fde047;">[사신] 핵심 규칙 &amp; CP 투자 우선순위 (실전 검증 반영):</strong><br>
-          • <strong>우선 순서:</strong> ① 기본 <strong>강타피해 + 특성강타(5-1~8-1)</strong> ➔ ② 3차 Lv.10+ 시 <strong>스킬피해(5-1·6-1) + 특성 스킬피해(7-1·8-1)</strong> 전부 마스터 ➔ ③ 남는 CP(하늘색)는 <strong>기본·스킬·영웅 모든 피해량</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong> 투자! (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)`;
+          • <strong>우선 순서:</strong> ① 기본 <strong>강타피해 + 특성강타(5-1~8-1)</strong> ➔ ② 3차 Lv.10+ 시 <strong>스킬피해(5-1·6-1) + 특성 스킬피해(7-1·8-1)</strong> 전부 마스터 ➔ ③ 남는 CP(하늘색)는 <strong>기본·스킬·영웅 모든 피해량</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong> 투자! (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)<br>
+          • <span style="color:#a7f3d0;">※ 영웅 탭의 6·7·8 관문(모속피 150/350/500%) 해금을 위해 <strong>5-2 · 6-2 · 7-2에 최소 1/20씩 선행 길뚫기(125 CP)</strong>가 자동 반영됩니다.</span>`;
       } else {
         tipEl.innerHTML = `💡 <strong style="color:#fde047;">[${jobKr}] 핵심 규칙 &amp; 남는 CP 투자 가이드 (하늘색 노드):</strong><br>
-          • <strong>남는 CP (하늘색):</strong> 필수 특성을 모두 찍고 남는 포인트는 <strong style="color:#7dd3fc;">[${overTabKr}] 우측 [모든 피해량]</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong>(1CP당 효율 최고 순!)으로 투자합니다. (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)`;
+          • <strong>남는 CP (하늘색):</strong> 필수 특성을 모두 찍고 남는 포인트는 <strong style="color:#7dd3fc;">[${overTabKr}] 우측 [모든 피해량]</strong>에 <strong>8-2(80P) ➔ 7-2(60P) ➔ 6-2(40P) ➔ 5-2(25P) 역순</strong>(1CP당 효율 최고 순!)으로 투자합니다. (잔여 <strong style="color:#6ee7b7;">${sim.remCP}P</strong>)<br>
+          • <span style="color:#a7f3d0;">※ 하단 관문(6·7·8) 해금을 위한 선행 노드 <strong>최소 1/20 길뚫기</strong>가 자동 반영됩니다.</span>`;
       }
     }
   }
