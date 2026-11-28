@@ -3520,18 +3520,22 @@
     }
     /* ==================== 9.98 추천 배치 변경 인디케이터 & 스르륵 복사 토스트 ==================== */
     @keyframes diffPulseGlow {
-      0%, 100% { box-shadow: 0 0 14px rgba(250, 204, 21, 0.72), inset 0 0 10px rgba(250, 204, 21, 0.22); }
-      50%      { box-shadow: 0 0 24px rgba(250, 204, 21, 0.98), inset 0 0 14px rgba(250, 204, 21, 0.35); }
+      0%, 100% { box-shadow: 0 0 18px 3px rgba(250, 204, 21, 0.68), 0 0 34px 6px rgba(250, 204, 21, 0.26); }
+      50%      { box-shadow: 0 0 26px 5px rgba(250, 204, 21, 0.95), 0 0 46px 10px rgba(250, 204, 21, 0.42); }
+    }
+    @keyframes diffGemGlow {
+      0%, 100% { box-shadow: 0 0 16px 3px rgba(52, 211, 153, 0.65), 0 0 32px 6px rgba(52, 211, 153, 0.24); }
+      50%      { box-shadow: 0 0 24px 5px rgba(52, 211, 153, 0.92), 0 0 42px 9px rgba(52, 211, 153, 0.4); }
     }
     .slot-diff-changed {
-      border: 2.5px solid #fde047 !important;
       animation: diffPulseGlow 1.9s ease-in-out infinite;
       position: relative;
       z-index: 3;
     }
     .slot-diff-gem-only {
-      border-color: #22d3ee !important;
-      box-shadow: 0 0 16px rgba(34, 211, 238, 0.65) !important;
+      animation: diffGemGlow 2.1s ease-in-out infinite;
+      position: relative;
+      z-index: 3;
     }
     .slot-diff-pill {
       display: inline-flex;
@@ -3557,9 +3561,9 @@
       color: #a7f3d0;
     }
     .slot-diff-pill.is-gem {
-      background: rgba(34, 211, 238, 0.2);
-      border-color: #22d3ee;
-      color: #a5f3fc;
+      background: rgba(52, 211, 153, 0.2);
+      border-color: #34d399;
+      color: #a7f3d0;
     }
     .diff-summary-banner {
       display: none;
