@@ -15106,31 +15106,6 @@
           ]},
           ownedEffectBand
         ]);
-          { num:"1순위 (전 직업 단독 최우선 3각)", color:"#fbbf24", items:[
-            { name:"오버드라이브", isSkill:true, badge:"전 직업 부동의 1순위", multTag:"", desc:"과성장 졸업 및 공용 버프 코어" }
-          ]},
-          { num:"2순위 (핵심 3각)", color:"#fb7185", items:[
-            { name:l4Hr, isSkill:false, badge:"4차 신영웅 3각!", multTag:"", desc:`3차 주영웅(${l3Hr})은 1각만 하고 사용! 3각성은 무조건 4차 신영웅에 집중` },
-            ...(hasElemCreate10 ? [debSkItem] : []),
-            { name:"나리타", isSkill:false, badge:"무조건 3각 필수!", multTag:"3각 상시 501배", desc:"1·2각에 멈추지 말고 무조건 3각! 조건 없는 상시 501배 깡곱연산" },
-            { name:"백운귀", isSkill:false, badge:"닼로 필수 버퍼", multTag:"3각 상시 501배", desc:"다크로드 전용 상시 501배 버퍼 (3각 필수)" }
-          ]},
-          { num:"3순위", color:"#38bdf8", items:[
-            { name:"카엘", isSkill:false, badge:"닼로 전용 영웅", multTag:"3각 346.25배", desc:"다크로드 전용 영웅 버퍼" },
-            { name:"엘리멘탈 차지", isSkill:true, badge:"공용 핵심 버프", multTag:"3각 300배", desc:"3차 전직 기준 상시 300배 곱연산 버프" }
-          ]},
-          { num:"4순위", color:"#c084fc", items:[
-            { name:"보이드 펄스", isSkill:true, badge:"닼로 전용 스킬", multTag:"", desc:"영웅 스킬 피해량 버프" },
-            { name:"환영나비", isSkill:true, badge:hasElemCreate10?'원소창조 10돌 시 후순위':'공용 버프', multTag:"3각 241배", desc:"3각 시 241배 버프 지원" },
-            { name:"크림슨 웨이브", isSkill:true, badge:"저주II 출혈용", multTag:"", desc:"불멸 저주 II 룬 출혈 조건 달성" }
-          ]},
-          { num:"5순위 (후순위 마무리 · 시너지 조건 확인)", color:"#94a3b8", items:[
-            { name:newElemHero, isSkill:false, badge:"시너지 600점+ 필수!", multTag:`${oldElemHero} 대체`, desc:newHeroSynergyDesc },
-            { name:"솔라리스", isSkill:false, badge:"과성장 졸업픽", multTag:"", desc:"오버드라이브 3각 시 엘리시아 대체" },
-            ...(!hasElemCreate10 ? [debSkItem] : [])
-          ]},
-          ownedEffectBand
-        ]);
 
         const thirdStopNotice = (awkGuideJob === 'mage' || awkGuideJob === 'lord')
           ? `<div style="background:linear-gradient(135deg, rgba(245, 158, 11, 0.22) 0%, #1c1008 100%); border:2px solid #facc15; border-radius:12px; padding:11px 15px; margin-bottom:10px; font-size:12.5px; color:#fef08a; line-height:1.6;">
